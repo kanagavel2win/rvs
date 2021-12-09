@@ -24,9 +24,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
     	
-        http
-                .authorizeRequests()
+        http.authorizeRequests()
                     .antMatchers(
+                    		"/*",
                             "/registration**",
                             "/app-assets/**",
                             "/assets/**",
@@ -36,30 +36,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "/webjars/**",
                             "/ajax","/api/customer/all","/api/customer/save","/js/**"
                     		).permitAll()
-                    .antMatchers("/").access("hasRole('ROLE_CLUBADMIN') or hasRole('ROLE_MEMBER')")
-                    .antMatchers("/index").access("hasRole('ROLE_CLUBADMIN') or hasRole('ROLE_MEMBER')")
-                    .antMatchers("/internationallionsclub").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/memberview").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/memberedit").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/memberlist").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/membersearch").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/memberupload").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/MemberPendingInfo").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/ReportAllmemberdetails").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/ReportAllmemberdetailswithFamily").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/ReportOthers").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/Color").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/ReportDOB").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/ReportWedd").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/ReportBloodGroup").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/ReportDifferentIntvslocal").access("hasRole('ROLE_CLUBADMIN')")
-                    .antMatchers("/memberFamilyDelete").access("hasRole('ROLE_CLUBADMIN')")
-                    
-                    //Member Access
-                    .antMatchers("/ReportDifferentIntvslocalRoleMember").access("hasRole('ROLE_MEMBER')")
-                    .antMatchers("/membereditRoleMember").access("hasRole('ROLE_MEMBER')")
-                    .antMatchers("/MemberviewRoleMember").access("hasRole('ROLE_MEMBER')")
-                    //.antMatchers("/index").access("hasRole('ROLE_MEMBER')")
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -73,9 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .logoutSuccessUrl("/login?logout")
                 .permitAll()
                 .and()
-                .exceptionHandling().accessDeniedPage("/error/401Unaut")
-                
-                ;
+                .exceptionHandling().accessDeniedPage("/error/401Unaut");
         
         
     }

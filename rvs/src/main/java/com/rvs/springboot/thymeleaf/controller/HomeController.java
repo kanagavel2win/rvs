@@ -5,24 +5,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.rvs.springboot.thymeleaf.dao.UserRepository;
-import com.rvs.springboot.thymeleaf.entity.User;
-
 @Controller
 
 public class HomeController {
 
 	
-	@Autowired
-	private UserRepository userRepository;
 
 	/*@ModelAttribute
 	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
@@ -90,7 +83,7 @@ public class HomeController {
 
 	}
 
-	public String getLoginemailID() {
+/*	public String getLoginemailID() {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
@@ -116,7 +109,7 @@ public class HomeController {
 		return user2.getClubID();
 
 	}
-
+*/
 	@GetMapping("/index")
 	public String index(Model theModel) {
 		return "index";

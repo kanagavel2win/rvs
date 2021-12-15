@@ -17,7 +17,7 @@
 	<packaging>war</packaging>
 	<properties>
 		<java.version>1.8</java.version>
-		<start-class>com.rvs.springboot.thymeleaf.ThymeleafdemoApplication</start-class>
+		<start-class>com.rvs.springboot.thymeleaf.RvsApplication</start-class>
 	</properties>
 
 	<dependencies>

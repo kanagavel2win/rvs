@@ -53,6 +53,20 @@
 <!-- BEGIN: Custom CSS-->
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
+<style>
+	.addnewbranch
+	{
+	 float:right;
+	 margin-top:-30px;
+	}
+	.bx-edit, .bx-show
+	{
+	 float:right;
+	 padding-top:10%;
+	 padding-right:10%;
+	 font-size:20px;
+	}
+</style>
 
 </head>
 <!-- END: Head-->
@@ -88,13 +102,15 @@
                                     </li>
                                     <li class="breadcrumb-item"><a href="#">Branch</a>
                                     </li>
-                                    <li class="breadcrumb-item active"><a href="#">Branch List</a>
-                                    </li>
+                                	   
                                 </ol>
+                                <a href="addnewbranch" class="addnewbranch"><button type="button" class="btn btn-warning mr-1 mb-1">Add Branch</button></a>
                             </div>
                         </div>
+                   
                     </div>
                 </div>
+                
             </div>
             <div class="content-body">
               
@@ -102,7 +118,7 @@
                 <section id="basic-datatable">
                     <div class="row">
                         <div class="col-12">
-                        	<h5  th:text="${clubName}" style="background:#ccc;"></h5>
+                        	
                             <div class="card">
                                 
                                 <div class="card-content">
@@ -134,7 +150,9 @@
 														</td>
 													   <td>Sugumar <br/><a href="tel:+91 96005 35855">+91 9600535855</a></td>
 													   <td><a href="tel:+91 96005 35855">+91 9600535855</a><br></td>
-													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a></td>
+													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a>
+													   	<i class="bx bx-edit"></i> <i class="bx bx-show"></i>
+													   </td>
 													</tr>
 													<tr>
 													   <td>2</td> 	
@@ -147,7 +165,10 @@
 														</td>
 													   <td>Sugumar <br/><a href="tel:+91 96005 35855">+91 9600535855</a></td>
 													   <td><a href="tel:+91 96005 35855">+91 9600535855</a><br></td>
-													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a></td>
+													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a>
+													   <i class="bx bx-edit"></i> <i class="bx bx-show"></i>
+													   </td>
+													   
 													</tr>
                                                     
                                                    

@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="ICC">
-<title>Branch List</title>
+<title>Employee List</title>
 <link rel="apple-touch-icon"
 	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
 <link rel="shortcut icon" type="image/x-icon"
@@ -54,7 +54,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
-	.addnewbranch
+	.addnewEmployee
 	{
 	 float:right;
 	 margin-top:-30px;
@@ -103,16 +103,15 @@
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Branch List</h5>
+                            <h5 class="content-header-title float-left pr-1 mb-0">Employee List</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
                                     <li class="breadcrumb-item"><a href="index.html"><i class="bx bx-home-alt"></i></a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="#">Branch</a>
-                                    </li>
+                                  
                                 	   
                                 </ol>
-                                <a href="addnewbranch" class="addnewbranch"><button type="button" class="btn btn-warning mr-1 mb-1">Add Branch</button></a>
+                                <a href="empnew" class="addnewEmployee"><button type="button" class="btn btn-warning mr-1 mb-1">Add Employee</button></a>
                             </div>
                         </div>
                    
@@ -136,12 +135,13 @@
                                             <table class="table zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th>S.No</th>
-                                                        <th>Branch Name</th>
-                                                        <th>Address</th>
-                                                        <th>In-charge</th>
-                                                        <th>Off Phone Number</th>
-                                                        <th>Off Email</th>                                                                                                             
+                                                        <th>Employee photo</th>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Job Title</th>
+                                                        <th>Location</th>
+                                                        <th>Employment Status</th>                                                                                                             
+                                                        <th>Hire Date</th>
                                                         
                                                         
 	
@@ -149,47 +149,44 @@
                                                 </thead>
                                                 <tbody>
                                                 	<tr>
-													   <td>1</td> 	
-													   <td>Coimbatore<br/>Head Office</td>
-													   <td>29, Palani Illam,<br>
-															Sundaram Brothers Layout,<br>
-															Ramanathapuram,<br>
-															Coimbatore – 641 045.<br>
-														</td>
-													   <td>Sugumar <br/><a href="tel:+91 96005 35855">+91 9600535855</a></td>
-													   <td><a href="tel:+91 96005 35855">+91 9600535855</a><br></td>
-													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a>
-													   	<span class="iconalign"><i class="bx bx-edit"></i> <i class="bx bx-show"></i><span>
-													   </td>
+													   <td>
+													         <div class="avatar mr-1 avatar-xl">
+					                                            <img  th:src="@{app-assets/images/profile/pages/page-01.jpg}" alt="avtar img holder">
+					                                       	 </div>
+									                   </td> 	
+													   <td>1</td>
+													   <td><a href="empjob">Kanagavel.K</a></td>
+													   <td>Sr. HR Administrator</td>
+													   <td>Coimbatore</td>
+													   <td>Full-Time</td>
+													   <td>11/03/2020</td>
 													</tr>
 													<tr>
-													   <td>2</td> 	
-													   <td>Coimbatore<br/>Head Office</td>
-													   <td>146/4, Ramanathan Complex,<br>
-															New Scheme Road,<br>
-															Pollachi – 642 001.<br>
-															<br>
-															
-														</td>
-													   <td>Sugumar <br/><a href="tel:+91 96005 35855">+91 9600535855</a></td>
-													   <td><a href="tel:+91 96005 35855">+91 9600535855</a><br></td>
-													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a>
-													   <span class="iconalign"><i class="bx bx-edit"></i> <i class="bx bx-show"></i></span>
-													   </td>
-													   
+													   <td>
+												            <div class="avatar mr-1 avatar-xl">
+					                                            <img  th:src="@{app-assets/images/profile/pages/page-01.jpg}" alt="avtar img holder">
+					                                       	 </div>
+									                   </td> 	
+													   <td>2</td>
+													   <td><a href="empjob">Sugumar</a></td>
+													   <td>Chief Operating Officer</td>
+													   <td>Coimbatore</td>
+													   <td>Full-Time</td>
+													   <td>11/03/2020</td>
 													</tr>
-                                                    
+													
                                                    
                                                    
                                                 </tbody>
                                                 <tfoot>
                                                      <tr>
-                                                        <th>S.No</th>
-                                                        <th>Branch Name</th>
-                                                        <th>Address</th>
-                                                        <th>In-charge</th>
-                                                        <th>Off Phone Number</th>
-                                                        <th>Off Email</th>                                                                                                             
+                                                        <th>Employee photo</th>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Job Title</th>
+                                                        <th>Location</th>
+                                                        <th>Employment Status</th>                                                                                                             
+                                                        <th>Hire Date</th>                                                                                                        
                                                         
                                                     </tr>
                                                 </tfoot>

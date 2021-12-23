@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Employee Job</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+	.emptitle
+	{
+		color: #527a00;
+		font-size: 15px;
+	    line-height: 20px;
+	    font-weight: 600;
+	    font-family: Fira Sans,Trebuchet MS,sans-serif;
+	}
+	thead
+	{
+		background-color: #ebebeb;
+		border-color: transparent;
+	    color: #555;
+	    font-weight: 700;
+	    padding: 12px 16px 11px;
+	    transition: background-color .15s ease-in-out;
+	}
+	tbody{
+		color: #222;
+	}
+	
+	.empnametitle
+	{
+		color: #FF4500;
+		font-size: 15px;
+	    line-height: 20px;
+	    font-weight: 600;
+	    font-family: Fira Sans,Trebuchet MS,sans-serif;
+	}
+	.ownstyle{
+		font-size:30px;
+		position: absolute;
+		left:-20px;
+		top:-5px;
+	}
+	.ownstyle1{
+		font-size:25px;
+		position: absolute;
+		right:80px;
+		top:-2px;
+	}
+	.iconalign
+	{
+	 text-align:right;
+	 font-size:20px;
+	 width: 200px;
+	 right:0px;
+	 color:#fff;
+	}
+	tbody>tr:hover .iconalign
+	{
+		color:#527a00;
+	}
+	
+	.bullet.bullet-success {
+    background-color: #527a00;
+	}
+</style>
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class="content-header-title float-left pr-1 mb-0">Employee Job</h5>
+                            <div class="breadcrumb-wrapper col-12">
+                                <ol class="breadcrumb p-0 mb-0">
+                                    <li class="breadcrumb-item"><a href="index.html"><i class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+              
+                <!-- Basic Vertical form layout section start -->
+                <section id="basic-vertical-layouts">
+                    <div class="row match-height">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                    	<div class="col-md-12">
+                                    		<div class="form-group">
+                                               <label class="empnametitle"> RVS00001 - Kanagavel</label>
+                                             </div>
+                                         </div>
+                                    	<div class="col-md-12">
+                                    		
+                                    		
+                                    		
+                                            <div class="form-group">
+                                            	
+                                               <label class="emptitle"> <i class="bx bxs-id-card ownstyle"></i> Employment Status</label>
+                                               	<div class="form-group" style="float:right"> 
+                                               		<label class="emptitle" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+                                             	</div>
+                                             </div>
+                                             <!--scrolling content Modal -->
+                                       		 <div class="modal fade" id="employeeStatusScrollable" tabindex="-1" role="dialog" aria-labelledby="employeeStatusScrollableTitle" aria-hidden="true">
+		                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+		                                                <div class="modal-content">
+		                                                    <div class="modal-header bg-warning">
+		                                                        <h5 class="modal-title white" id="employeeStatusScrollableTitle">Employment Status</h5>
+		                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                                                            <i class="bx bx-x"></i>
+		                                                        </button>
+		                                                    </div>
+		                                                    <div class="modal-body">
+		                                                        <div class="col-md-12">
+			                                                        <div class="form-group">
+			                                                            <label for="email-id-icon">Employment Status</label>
+			                                                            <div class="position-relative has-icon-left">
+			                                                                <fieldset class="form-group">
+							                                                    <select class="form-control" id="empstatus_employmentstatus">
+							                                                        <option>-</option>
+							                                                        <option>Full-Time</option>
+							                                                        <option>Part-Time</option>
+							                                                        <option>Intern</option>
+							                                                        <option>Contractor</option>
+							                                                        <option>Terminated</option>
+							                                                      </select>
+							                                                </fieldset>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                   
+			                                                    <div class="col-md-12">
+			                                                        <div class="form-group">
+			                                                            <label for="contact-info-icon">Effective Date</label>
+			                                                            <div class="position-relative has-icon-left">
+			                                                                <input type="date"  class="form-control" id="empstatus_effectivedate">
+			                                                                <div class="form-control-position">
+			                                                                    <i class="bx bx-calendar-event"></i>
+			                                                                </div>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                     <div class="col-md-12">
+			                                                        <div class="form-group">
+			                                                            <label for="contact-info-icon">Remarks</label>
+			                                                            <div class="position-relative has-icon-left">
+			                                                                <input type="text"  class="form-control" id="empstatus_remarks">
+			                                                                <div class="form-control-position">
+			                                                                    <i class="bx bx-comment"></i>
+			                                                                </div>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                    
+		                                                    </div>
+		                                                    <div class="modal-footer">
+		                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+		                                                            <i class="bx bx-x d-block d-sm-none"></i>
+		                                                            <span class="d-none d-sm-block">Close</span>
+		                                                        </button>
+		                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+		                                                            <i class="bx bx-check d-block d-sm-none"></i>
+		                                                            <span class="d-none d-sm-block">Save</span>
+		                                                        </button>
+		                                                    </div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+                                        	 <!--scrolling content Modal -->
+                                       </div>
+                                     	<div class="table-responsive">
+		                                    <table class="table table-hover mb-0">
+		                                        <thead>
+		                                            <tr>
+		                                                <th>Effective Date</th>
+		                                                <th>Employment Status</th>
+		                                                <th colspan="2">Remarks</th>
+		                                               	
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                            <tr>
+		                                                <td class="text-bold-500">
+		                                                <span class="bullet bullet-sm bullet-success"></span>
+		                                                11/03/2018</td>
+		                                                <td>Full-Time</td>
+		                                                <td class="text-bold-500">NA</td>
+		                                                <td width="110px"><span class="iconalign">
+		                                               	 	
+		                                               	 	<span  data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-pencil"></i></span>
+		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
+		                                                	
+		                                                	<span>
+		                                                </td>
+		                                                
+		                                            </tr>
+		                                            </tbody>
+		                                    </table>
+		                                </div>
+                                     	<br/><hr/><br/>
+                                     	<div class="col-md-12">
+                                            <div class="form-group">
+                                            	
+                                               <label class="emptitle"> <i class="bx bxs-briefcase-alt-2 ownstyle"></i>Job Information</label>
+                                               	<div class="form-group" style="float:right"> 
+                                               		<label class="emptitle"  data-toggle="modal" data-target="#jobInformationScrollable"> <i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+                                             	</div>
+                                             </div>
+                                             <!--scrolling content Modal -->
+                                       		 <div class="modal fade" id="jobInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="jobInformationScrollableTitle" aria-hidden="true">
+	                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+	                                                <div class="modal-content">
+	                                                    <div class="modal-header bg-warning">
+	                                                        <h5 class="modal-title white" id="jobInformationScrollableTitle">Job Information</h5>
+	                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                                                            <i class="bx bx-x"></i>
+	                                                        </button>
+	                                                    </div>
+	                                                    <div class="modal-body">
+	                                                        
+		                                                    <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="contact-info-icon">Effective Date</label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <input type="date"  class="form-control" id="jobinformation_effectivedate">
+		                                                                <div class="form-control-position">
+		                                                                    <i class="bx bx-calendar-event"></i>
+		                                                                </div>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                    <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="email-id-icon">Location</label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <fieldset class="form-group">
+						                                                    <select class="form-control"  id="jobinformation_location">
+						                                                        <option>-</option>
+						                                                        <option>Coimbatore</option>
+						                                                        <option>Madurai</option>
+						                                                        <option>Pollachi</option>
+						                                                       </select>
+						                                                </fieldset>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                    <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="email-id-icon">Department </label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <fieldset class="form-group">
+						                                                    <select class="form-control"  id="jobinformation_department">
+						                                                        <option>-</option>
+						                                                        <option>Survey</option>
+						                                                        <option>Drafting</option>
+						                                                        <option>Accounts</option>
+						                                                        <option>Marketing</option>
+						                                                        <option>BD</option>
+						                                                      </select>
+						                                                </fieldset>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                    <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="email-id-icon">Job Title</label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <fieldset class="form-group">
+						                                                    <select class="form-control"  id="jobinformation_jobtitle">
+						                                                        <option>-</option>
+						                                                        <option>Surveyor</option>
+						                                                        <option>Survey Assistant</option>
+						                                                        <option>Draftman</option>
+						                                                        <option>Accountant</option>
+						                                                        
+						                                                      </select>
+						                                                </fieldset>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                     <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="contact-info-icon">Reports To</label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <input type="text"  class="form-control" id="jobinformation_reportsto">
+		                                                                <div class="form-control-position">
+		                                                                    <i class="bx bx-comment"></i>
+		                                                                </div>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                    
+	                                                    </div>
+	                                                    <div class="modal-footer">
+	                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+	                                                            <i class="bx bx-x d-block d-sm-none"></i>
+	                                                            <span class="d-none d-sm-block">Close</span>
+	                                                        </button>
+	                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+	                                                            <i class="bx bx-check d-block d-sm-none"></i>
+	                                                            <span class="d-none d-sm-block">Save</span>
+	                                                        </button>
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+	                                         </div>
+                                        	 <!--scrolling content Modal -->
+                                             
+                                        </div>
+                                     	<div class="table-responsive">
+		                                    <table class="table table-hover mb-0">
+		                                        <thead>
+		                                            <tr>
+		                                                <th>Effective Date</th>
+		                                                <th>Location</th>
+		                                                <th>Department</th>
+		                                                <th>Job Title</th>
+		                                                <th colspan="2">Reports To</th>
+		                                                
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                            <tr>
+		                                                <td class="text-bold-500">
+		                                                <span class="bullet bullet-sm bullet-success"></span>
+		                                                11/03/2020</td>
+		                                                <td>Lindon, Utah</td>
+		                                                <td class="text-bold-500">Human Resources</td>
+		                                                <td>Sr. HR Administrator</td>
+		                                                <td>Jennifer Caldwell</td>
+		                                                <td><span class="iconalign">
+															<span  data-toggle="modal" data-target="#jobInformationScrollable"><i class="bx bxs-pencil"></i></span>
+		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
+														</span></td>
+		                                            </tr>
+		                                            </tbody>
+		                                    </table>
+		                                </div>
+                                     	<br/><hr/><br/>
+                                     	<div class="col-md-12">
+                                            <div class="form-group">
+                                               <label class="emptitle"> <i class="bx bx-dollar-circle ownstyle"></i>Compensation</label>
+                                               	<div class="form-group" style="float:right"> 
+                                               		<label class="emptitle"  data-toggle="modal" data-target="#compensationScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+                                             	</div>
+                                             </div>
+                                              <!--scrolling content Modal -->
+                                       		 <div class="modal fade" id="compensationScrollable" tabindex="-1" role="dialog" aria-labelledby="compensationScrollableTitle" aria-hidden="true">
+		                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+		                                                <div class="modal-content">
+		                                                    <div class="modal-header bg-warning">
+		                                                        <h5 class="modal-title white" id="compensationScrollableTitle">Compensation</h5>
+		                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                                                            <i class="bx bx-x"></i>
+		                                                        </button>
+		                                                    </div>
+		                                                    <div class="modal-body">
+		                                                        <div class="col-md-12">
+			                                                        <div class="form-group">
+			                                                            <label for="contact-info-icon">Effective Date</label>
+			                                                            <div class="position-relative has-icon-left">
+			                                                                <input type="date"  class="form-control" id="compensation_effectivedate">
+			                                                                <div class="form-control-position">
+			                                                                    <i class="bx bx-calendar-event"></i>
+			                                                                </div>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                  <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="email-id-icon">Pay Schedule</label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <fieldset class="form-group">
+						                                                    <select class="form-control"  id="compensation_payschedule">
+						                                                        <option>-</option>
+						                                                        <option>Monthly</option>
+						                                                        <option>Weekly</option>
+						                                                        <option>Day</option>
+						                                                       </select>
+						                                                </fieldset>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                    <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="email-id-icon">Pay Type</label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <fieldset class="form-group">
+						                                                    <select class="form-control"  id="compensation_paytype">
+						                                                        <option>-</option>
+						                                                        <option>Salary</option>
+						                                                     </select>
+						                                                     
+						                                                </fieldset>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                    <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="email-id-icon">Pay Rate</label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <fieldset class="form-group">
+						                                                    <input type="text"  class="form-control"  style="width:50%;float:left;" id="compensation_payrate">
+				                                                             <div class="form-control-position">
+			                                                                    <i class="bx bx-money"></i>
+			                                                                </div>
+						                                                
+						                                                    <select class="form-control"  style="width:50%;float:right" id="compensation_payratetype">
+						                                                        <option>-</option>
+						                                                        <option>Day</option>
+						                                                        <option>Month</option>
+						                                                        <option>Year</option>
+						                                                       </select>
+						                                                </fieldset>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                    <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="email-id-icon">Change Reason</label>
+		                                                            <div class="position-relative has-icon-left">
+		                                                                <fieldset class="form-group">
+						                                                    <select class="form-control"  id="compensation_changereason">
+						                                                        <option>-</option>
+						                                                        <option>Annual Pay increase</option>
+						                                                        <option>NA</option>
+						                                                        <option>Pay increase</option>
+						                                                        <option>Promotion</option>
+						                                                        <option>Relocated</option>
+						                                                        <option>Title Change</option>
+						                                                        
+						                                                       </select>
+						                                                </fieldset>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+			                                                     <div class="col-md-12">
+			                                                        <div class="form-group">
+			                                                            <label for="contact-info-icon">Comments</label>
+			                                                            <div class="position-relative has-icon-left">
+			                                                                <input type="text"  class="form-control" id="compensation_comments">
+			                                                                <div class="form-control-position">
+			                                                                    <i class="bx bx-comment"></i>
+			                                                                </div>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                    
+		                                                    </div>
+		                                                    <div class="modal-footer">
+		                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+		                                                            <i class="bx bx-x d-block d-sm-none"></i>
+		                                                            <span class="d-none d-sm-block">Close</span>
+		                                                        </button>
+		                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+		                                                            <i class="bx bx-check d-block d-sm-none"></i>
+		                                                            <span class="d-none d-sm-block">Save</span>
+		                                                        </button>
+		                                                    </div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+                                        	 <!--scrolling content Modal -->
+                                       </div>
+                                    	 <div class="table-responsive">
+		                                    <table class="table table-hover mb-0">
+		                                        <thead>
+		                                            <tr>
+		                                                <th>Effective Date</th>
+		                                                <th>Pay Schedule</th>
+		                                                <th>Pay Type</th>
+		                                                <th>Pay Rate</th>
+		                                                <th>Change Reason</th>
+		                                                <th  colspan="2">Comments</th>
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                            <tr>
+		                                                <td class="text-bold-500">
+		                                                <span class="bullet bullet-sm bullet-success"></span>
+		                                                11/03/2020</td>
+		                                                <td>Twice a month</td>
+		                                                <td class="text-bold-500">Salary</td>
+		                                                <td>$65,000.00 / Year</td>
+		                                                <td>Promotion</td>
+		                                                <td>Promotion</td>
+		                                                <td><span class="iconalign">
+															<span  data-toggle="modal" data-target="#compensationScrollable"><i class="bx bxs-pencil"></i></span>
+		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
+														</span></td>
+		                                            </tr>
+		                                            </tbody>
+		                                    </table>
+		                                </div>
+                                     
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- // Basic Vertical form layout section end -->
+
+				<!--scrolling content Modal -->
+                	<div class="modal fade" id="deleteInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="deleteInformationScrollableTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-scrollable" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header bg-danger">
+                                  <h5 class="modal-title white" id="deleteInformationScrollableTitle">Delete Row</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <i class="bx bx-x"></i>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                  
+                               <div class="col-md-12">
+                                   <div class="form-group">
+                                       <label for="contact-info-icon">Are you sure you want to delete this row?</label>
+                                       
+                                   </div>
+                               </div>
+                               
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+                                      <i class="bx bx-x d-block d-sm-none"></i>
+                                      <span class="d-none d-sm-block">Cancel</span>
+                                  </button>
+                                  <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+                                      <i class="bx bx-check d-block d-sm-none"></i>
+                                      <span class="d-none d-sm-block">Yes</span>
+                                  </button>
+                               </div>
+                           </div>
+                       </div>
+                    </div>
+                  	 <!--scrolling content Modal -->
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		<!-- END: Footer-->
+
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		<script
+			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+			<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
+		<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

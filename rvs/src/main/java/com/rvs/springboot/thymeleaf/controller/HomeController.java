@@ -145,4 +145,21 @@ public class HomeController {
 		return "branchlist";
 
 	}
+	
+	@GetMapping("emplist")
+	public String employeelist(Model theModel)
+	{
+		return "emplist";
+	}
+	
+	@GetMapping("empnew")
+	public String employeeadd(Model themodel)
+	{
+		return "empadd";
+	}
+	@GetMapping("empjob")
+	public String employeejob(Model theModel)
+	{
+		return "empjob";
+	}
 }

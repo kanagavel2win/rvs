@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Add Employee</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+	.emptitle
+	{
+		color: #527a00;
+		font-size: 15px;
+	    line-height: 20px;
+	    font-weight: 600;
+	    font-family: Fira Sans,Trebuchet MS,sans-serif;
+	}
+</style>
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class="content-header-title float-left pr-1 mb-0">New Employee</h5>
+                            <div class="breadcrumb-wrapper col-12">
+                                <ol class="breadcrumb p-0 mb-0">
+                                    <li class="breadcrumb-item"><a href="index.html"><i class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+              
+                <!-- Basic Vertical form layout section start -->
+                <section id="basic-vertical-layouts">
+                    <div class="row match-height">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <form class="form form-vertical">
+                                            <div class="form-body">
+                                                <div class="row">
+                                                	<div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Basic Information</label>
+                                                          </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="first-name-icon">E.ID</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="first-name-icon" class="form-control" name="fname-icon" placeholder="E.ID">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-id-card"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="first-name-icon">Staff Name</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="first-name-icon" class="form-control" name="fname-icon" placeholder="Staff Name">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-user"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="email-id-icon">Gender</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <fieldset class="form-group">
+				                                                    <select class="form-control" id="basicSelect">
+				                                                        <option>-</option>
+				                                                        <option>Male</option>
+				                                                        <option>Female</option>
+				                                                        
+				                                                    </select>
+				                                                    <div class="form-control-position">
+	                                                                    <i class="bx bxs-user-voice"></i>
+	                                                                </div>
+
+				                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="email-id-icon">Marital Status</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <fieldset class="form-group">
+				                                                    <select class="form-control" id="basicSelect">
+				                                                        <option>-</option>
+				                                                        <option>Single</option>
+				                                                        <option>Married</option>
+				                                                        
+				                                                    </select>
+				                                                    <div class="form-control-position">
+	                                                                    <i class="bx bxl-redux"></i>
+	                                                                </div>
+				                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Date of Birth</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="date" id="contact-info-icon" class="form-control" name="contact-icon">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-calendar-event"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Blood Group</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Blood Group">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-droplet"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Height</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Height">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-up-arrow-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Weight</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Weight">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-cloud"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Aadhar No</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Aadhar No">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-grid-small"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">PAN No</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="PAN No">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-layout"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">D.L.No</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="D.L.No">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-border-radius"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Accommodation</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <select class="form-control" id="basicSelect">
+				                                                        <option>-</option>
+				                                                        <option>Office</option>
+				                                                        <option>Self</option>
+				                                                 </select>
+				                                                 <div class="form-control-position">
+                                                                    <i class="bx bxs-bath"></i>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Shirt Size</label>
+                                                            <div class="position-relative has-icon-left">
+                                                               <select class="form-control" id="basicSelect">
+			                                                        <option>-</option>
+			                                                        <option>Small</option>
+			                                                        <option>Medium</option>
+			                                                        <option>Large</option>
+			                                                        <option>Xlarge</option>
+			                                                        <option>XXLarge</option>
+			                                                    </select>
+			                                                    <div class="form-control-position">
+                                                                    <i class="bx bxs-t-shirt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Address</label>
+                                                          </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 1">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-home"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 2">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-navigation"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Village">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-directions"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Taluk">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-city"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="City">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-building-house"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="State">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-stats"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="number" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Zip code">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-message-alt-dots"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Country">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-flag-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                   <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Contact</label>
+                                                          </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Work Phone">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-dialpad"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Personal Phone	">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-phone"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Other Phone">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-phone"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Email ID">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-mail-send"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Work Email">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-mail-send"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Personal Email">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-mail-send"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Education</label>
+                                                          </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">College / Institution</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="College / Institution">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-buildings"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Degree</label>
+                                                            <div class="position-relative has-icon-left">
+                                                                <select class="form-control" id="basicSelect">
+				                                                        <option>-</option>
+				                                                        <option>Bachelor's</option>
+				                                                        <option>Master's</option>
+				                                                        <option>Delploma</option>
+				                                                        <option>ITI</option>
+				                                                        <option>Doctorate</option>
+				                                                    </select>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Major / Specialization</label>
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Major / Specialization">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-layer"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Percentage / GPA</label>
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Percentage / GPA">
+                                                                <div class="form-control-position">
+                                                                    %
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">From </label>
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From ">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">To</label>
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Language</label>
+                                                             <div class="position-relative has-icon-left">
+                                                                <div class="position-relative has-icon-left">
+                                                                <select class="form-control" id="basicSelect">
+				                                                        <option>-</option>
+				                                                        <option>Tamil</option>
+				                                                        <option>Engligh</option>
+				                                                        <option>Hindi</option>
+				                                                        <option>Telugu</option>
+				                                                    </select>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Experience</label>
+                                                          </div>
+                                                    </div>
+                                                     <div class="col-md-6">
+                                                        <div class="form-group">
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Company">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-building"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Location">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-target-lock"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From ">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="JobTitle">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-briefcase-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Hiring Source</label>
+                                                          </div>
+                                                    </div>
+                                                     <div class="col-md-6">
+                                                        <div class="form-group">
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Recruitment Source">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-news"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Institute/Consultant Name">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-bullseye"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Bank Account Details</label>
+                                                          </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="A.C.No">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-bank"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Bank Name">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-bookmark-plus"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Branch Name">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-stats"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                             <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="IFSC Code">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-code"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Emergency Contact</label>
+                                                          </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                              <fieldset>
+				                                                    <div class="checkbox checkbox-primary checkbox-glow">
+				                                                        <input type="checkbox" id="checkboxGlow1">
+				                                                        <label for="checkboxGlow1">Tick Mark for Primary Contact and Insurance Nominee </label>
+				                                                    </div>
+				                                                </fieldset> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Name">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-contact"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Relation">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-git-repo-forked"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Personal Phone">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-phone-call"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Other Phone">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-phone-call"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Email ID">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-mail-send"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 1">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-home"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 2">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-navigation"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Village">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-directions"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Taluk">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-city"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="City">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-building-house"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="State">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-stats"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="number" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Zip code">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bx-message-alt-dots"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="position-relative has-icon-left">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Country">
+                                                                <div class="form-control-position">
+                                                                    <i class="bx bxs-flag-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="emptitle">Files</label>
+                                                          </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Photo</label>
+                                                             <div class="position-relative">
+                                                               <input type="file" class="form-control" id="inputGroupFile01">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Resume</label>
+                                                             <div class="position-relative">
+                                                               <input type="file" class="form-control" id="inputGroupFile01">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="contact-info-icon">Certificates</label>
+                                                             <div class="position-relative">
+                                                               <input type="file" class="form-control" id="inputGroupFile01">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    
+                                                    
+                                                    <div class="col-12 d-flex justify-content-end">
+                                                        <button type="submit" class="btn btn-primary mr-1 mb-1">Save</button>
+                                                        <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+                                                        <a href="emplist"><button type="button" class="btn btn-warning mr-1 mb-1">Cancel</button></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- // Basic Vertical form layout section end -->
+
+
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		<!-- END: Footer-->
+
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		<script
+			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+		<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

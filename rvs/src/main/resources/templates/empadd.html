@@ -121,6 +121,45 @@
                                                           </div>
                                                     </div>
                                                     <div class="col-md-3">
+                                                    
+                                                    	
+					                                             <!--scrolling content Modal -->
+					                                       		 <div class="modal fade" id="employeeStatusScrollable" tabindex="-1" role="dialog" aria-labelledby="employeeStatusScrollableTitle" aria-hidden="true">
+							                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+							                                                <div class="modal-content">
+							                                                    <div class="modal-header bg-warning">
+							                                                        <h5 class="modal-title white" id="employeeStatusScrollableTitle"></h5>
+							                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                                                            <i class="bx bx-x"></i>
+							                                                        </button>
+							                                                    </div>
+							                                                    <div class="modal-body">
+							                                                        <div class="col-md-12">
+								                                                        <div class="form-group">
+								                                                            <label for="addmodel" id="additemalltxt"></label>
+								                                                            <div class="position-relative">
+								                                                                <fieldset class="form-group">
+												                                                   <input type="text" id="additemall" name="addmodel" class="form-control" >
+												                                                </fieldset>
+								                                                            </div>
+								                                                        </div>
+								                                                    </div>
+								                                                  
+							                                                    </div>
+							                                                    <div class="modal-footer">
+							                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+							                                                            <i class="bx bx-x d-block d-sm-none"></i>
+							                                                            <span class="d-none d-sm-block">Close</span>
+							                                                        </button>
+							                                                        <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
+							                                                            <i class="bx bx-check d-block d-sm-none"></i>
+							                                                            <span class="d-none d-sm-block">ADD</span>
+							                                                        </button>
+							                                                    </div>
+							                                                </div>
+							                                            </div>
+							                                        </div>
+					                                        	 <!--scrolling content Modal -->
                                                         <div class="form-group">
                                                             <label for="first-name-icon">E.ID</label>
                                                             <div class="position-relative has-icon-left">
@@ -163,10 +202,12 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label for="email-id-icon">Marital Status</label>
+                                                            <label for="email-id-icon">Marital Status
+                                                            	<label class="emptitle additem" name="addmaritalstatusdata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+                                                            </label>
                                                             <div class="position-relative has-icon-left">
                                                                 <fieldset class="form-group">
-				                                                    <select class="form-control" id="basicSelect">
+				                                                    <select class="form-control addmaritalstatusdata">
 				                                                        <option>-</option>
 				                                                        <option>Single</option>
 				                                                        <option>Married</option>
@@ -290,8 +331,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                        <hr/>
                                                             <label class="emptitle">Address</label>
                                                           </div>
                                                     </div>
@@ -387,6 +430,7 @@
                                                     </div>
                                                    <div class="col-md-12">
                                                         <div class="form-group">
+                                                        	<hr/>
                                                             <label class="emptitle">Contact</label>
                                                           </div>
                                                     </div>
@@ -458,6 +502,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                        	<hr/>
                                                             <label class="emptitle">Education</label>
                                                           </div>
                                                     </div>
@@ -475,9 +520,12 @@
                                                     
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label for="contact-info-icon">Degree</label>
+                                                            <label for="contact-info-icon">Degree
+                                                            	<label class="emptitle additem" name="addDegreedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label>
+                                                            	
+                                                            </label>
                                                             <div class="position-relative has-icon-left">
-                                                                <select class="form-control" id="basicSelect">
+                                                                <select class="form-control addDegreedata" >
 				                                                        <option>-</option>
 				                                                        <option>Bachelor's</option>
 				                                                        <option>Master's</option>
@@ -533,24 +581,52 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                        <hr/>
+                                                            <label class="emptitle">Language</label>
+                                                          </div>
+                                                    </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label for="contact-info-icon">Language</label>
+                                                            <label for="contact-info-icon">Language 
+                                                            	<label class="emptitle additem" name="addLanguagedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label>
+                                                            	
+                                                            </label>
                                                              <div class="position-relative has-icon-left">
                                                                 <div class="position-relative has-icon-left">
-                                                                <select class="form-control" id="basicSelect">
+                                                                <select class="form-control addLanguagedata" id="basicSelect">
 				                                                        <option>-</option>
 				                                                        <option>Tamil</option>
 				                                                        <option>Engligh</option>
 				                                                        <option>Hindi</option>
 				                                                        <option>Telugu</option>
 				                                                    </select>
-                                                            </div>
+                                                            	</div>
+
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                        	<br/>
+                                                			 <div class="checkbox checkbox-primary checkbox-glow">
+		                                                        <input type="checkbox" id="Read1">
+		                                                        <label for="Read1">Read</label>
+		                                                    </div>
+		                                                    <div class="checkbox checkbox-primary checkbox-glow">
+		                                                        <input type="checkbox" id="Write1">
+		                                                        <label for="Write1">Write</label>
+		                                                    </div>
+		                                                    <div class="checkbox checkbox-primary checkbox-glow">
+		                                                        <input type="checkbox" id="Speak1">
+		                                                        <label for="Speak1">Speak</label>
+		                                                    </div>
+				                                          </div>
+				                                    </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                        	<hr/>
                                                             <label class="emptitle">Experience</label>
                                                           </div>
                                                     </div>
@@ -610,6 +686,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                        	<hr/>
                                                             <label class="emptitle">Hiring Source</label>
                                                           </div>
                                                     </div>
@@ -635,6 +712,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                        	<hr/>
                                                             <label class="emptitle">Bank Account Details</label>
                                                           </div>
                                                     </div>
@@ -680,6 +758,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                        	<hr/>
                                                             <label class="emptitle">Emergency Contact</label>
                                                           </div>
                                                     </div>
@@ -690,7 +769,11 @@
                                                               <fieldset>
 				                                                    <div class="checkbox checkbox-primary checkbox-glow">
 				                                                        <input type="checkbox" id="checkboxGlow1">
-				                                                        <label for="checkboxGlow1">Tick Mark for Primary Contact and Insurance Nominee </label>
+				                                                        <label for="checkboxGlow1">Primary Contact</label>
+				                                                    </div>
+				                                                    <div class="checkbox checkbox-primary checkbox-glow">
+				                                                        <input type="checkbox" id="checkboxGlow2">
+				                                                        <label for="checkboxGlow2">Insurance Nominee </label>
 				                                                    </div>
 				                                                </fieldset> 
                                                             </div>
@@ -711,10 +794,25 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Relation">
+                                                            	
+                                                                 <select class="form-control addemgrelationdata" id="basicSelect">
+				                                                        <option>-</option>
+				                                                        <option>Father</option>
+																		<option>Mother</option>
+																		<option>Husband</option>
+																		<option>wife</option>
+																		<option>Friend</option>
+																		<option>Brother</option>
+																		<option>Sister</option>
+																		<option>Uncle</option>
+																		<option>Daughter</option>
+																		<option>son</option>
+				                                                    </select>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-git-repo-forked"></i>
                                                                 </div>
+                                                                <label class="emptitle additem" name="addemgrelationdata" style="float:right;"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -842,6 +940,7 @@
                                                     </div>
                                                      <div class="col-md-12">
                                                         <div class="form-group">
+                                                        	<hr/>
                                                             <label class="emptitle">Files</label>
                                                           </div>
                                                     </div>
@@ -869,10 +968,23 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
-                                                    
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                        	<hr/>
+                                                            <label class="emptitle">Notes</label>
+                                                          </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            
+                                                             <div class="position-relative">
+                                                               <input type="text" class="form-control" id="inputGroupFile01">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     
                                                     <div class="col-12 d-flex justify-content-end">
+                                                    
                                                         <button type="submit" class="btn btn-primary mr-1 mb-1">Save</button>
                                                         <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
                                                         <a href="emplist"><button type="button" class="btn btn-warning mr-1 mb-1">Cancel</button></a>
@@ -938,6 +1050,40 @@
 		<script
 			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
 		<!-- END: Page JS-->
+		<script>
+			$(document).ready(function(){
+				
+				$(".additem").click(function(){
+					var name=$(this).attr('name');
+					var labeltext="";
+					if(name=="addmaritalstatusdata"){ labeltext="New Marital status"; }
+					if(name=="addDegreedata"){ labeltext="New Degree"; }
+					if(name=="addLanguagedata"){ labeltext="New Language"; }
+					if(name=="addemgrelationdata"){ labeltext="New Relationship"; }
+					$('#additemalltxt').text(labeltext);
+					$('#employeeStatusScrollable').modal('toggle');
+					
+				});
+				
+				$("#additemallsavebtn").click(function(){
+					if($("#additemall").val()!='')
+					{
+						var name=$('#additemalltxt').text();
+						var labeltext="";
+						if(name=="New Marital status"){ labeltext="addmaritalstatusdata"; }
+						if(name=="New Degree"){ labeltext="addDegreedata"; }
+						if(name=="New Language"){ labeltext="addLanguagedata"; }
+						if(name=="New Relationship"){ labeltext="addemgrelationdata"; }
+						$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
+						$('.' + labeltext).val($("#additemall").val());
+						$("#additemall").val('');
+						$('#employeeStatusScrollable').modal('toggle');
+					}
+				});
+			});
+		
+		</script>
+		
 </body>
 <!-- END: Body-->
 

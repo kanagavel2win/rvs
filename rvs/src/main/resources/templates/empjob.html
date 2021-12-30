@@ -169,7 +169,43 @@
                                     	<div class="col-md-12">
                                     		
                                     		
-                                    		
+                                    		<!--scrolling content Modal -->
+					                                       		 <div class="modal fade" id="addnewitemmodelScrollable" tabindex="-1" role="dialog" aria-labelledby="addnewitemmodelScrollableTitle" aria-hidden="true">
+							                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+							                                                <div class="modal-content">
+							                                                    <div class="modal-header bg-warning">
+							                                                        <h5 class="modal-title white" id="addnewitemmodelScrollableTitle"></h5>
+							                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                                                            <i class="bx bx-x"></i>
+							                                                        </button>
+							                                                    </div>
+							                                                    <div class="modal-body">
+							                                                        <div class="col-md-12">
+								                                                        <div class="form-group">
+								                                                            <label for="addmodel" id="additemalltxt"></label>
+								                                                            <div class="position-relative">
+								                                                                <fieldset class="form-group">
+												                                                   <input type="text" id="additemall" name="addmodel" class="form-control" >
+												                                                </fieldset>
+								                                                            </div>
+								                                                        </div>
+								                                                    </div>
+								                                                  
+							                                                    </div>
+							                                                    <div class="modal-footer">
+							                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+							                                                            <i class="bx bx-x d-block d-sm-none"></i>
+							                                                            <span class="d-none d-sm-block">Close</span>
+							                                                        </button>
+							                                                        <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
+							                                                            <i class="bx bx-check d-block d-sm-none"></i>
+							                                                            <span class="d-none d-sm-block">ADD</span>
+							                                                        </button>
+							                                                    </div>
+							                                                </div>
+							                                            </div>
+							                                        </div>
+					                                        	 <!--scrolling content Modal -->
                                             <div class="form-group">
                                             	
                                                <label class="emptitle"> <i class="bx bxs-id-card ownstyle"></i> Employment Status</label>
@@ -663,7 +699,39 @@
 		<!-- END: Page JS-->
 </body>
 <!-- END: Body-->
-
+	<script>
+			$(document).ready(function(){
+				
+				$(".additem").click(function(){
+					var name=$(this).attr('name');
+					var labeltext="";
+					if(name=="addmaritalstatusdata"){ labeltext="New Marital status"; }
+					if(name=="addDegreedata"){ labeltext="New Degree"; }
+					if(name=="addLanguagedata"){ labeltext="New Language"; }
+					if(name=="addemgrelationdata"){ labeltext="New Relationship"; }
+					$('#additemalltxt').text(labeltext);
+					$('#employeeStatusScrollable').modal('toggle');
+					
+				});
+				
+				$("#additemallsavebtn").click(function(){
+					if($("#additemall").val()!='')
+					{
+						var name=$('#additemalltxt').text();
+						var labeltext="";
+						if(name=="New Marital status"){ labeltext="addmaritalstatusdata"; }
+						if(name=="New Degree"){ labeltext="addDegreedata"; }
+						if(name=="New Language"){ labeltext="addLanguagedata"; }
+						if(name=="New Relationship"){ labeltext="addemgrelationdata"; }
+						$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
+						$('.' + labeltext).val($("#additemall").val());
+						$("#additemall").val('');
+						$('#employeeStatusScrollable').modal('toggle');
+					}
+				});
+			});
+		
+		</script>
 </html>
 
 

@@ -54,107 +54,152 @@
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
-	.addnewEmployee
-	{
-	 float:right;
-	 margin-top:-30px;
+
+
+  	#tabledate{
+	height:350px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:14px;		
+	border:1px #ccc solid;	
+
 	}
-	.bx-edit, .bx-show
+	.selectdate
 	{
-	 float:right;
-	 padding-top:10%;
-	 padding-right:10%;
-	 font-size:20px;
+		border:1px #ccc solid;	
+	   	vertical-align:top;
+		text-align:right;
+		cursor:pointer;
+		background:#FFE7BA;
 	}
-	.iconalign
+	.ttd
 	{
-	 float:right;
-	 position:relative;
-	 padding-top:10%;
-	 font-size:20px;
-	 width: 100px;
+		border:1px #ccc solid;	
+		vertical-align:top;
+		text-align:right;
+		color:#000;
+		text-align:center;
+		vertical-align:middle;
+		width:80px;
+		height:40px;
 	}
+
+   .td
+   {
+   	border:1px #ccc solid;	
+   	vertical-align:top;
+	text-align:right;
+	cursor:pointer;
+	
+   }
+   
+    .td:hover
+    {
+    	background:#F7F7F7;
+    }
+    .caltoptxt
+    {
+    	font-size:16px;
+    	text-align:center;
+    	vertical-align:middle;
+    	font-weight:bold;
+    }
+    .caltoptxtcontainer i
+    {
+    	font-size:38px;
+    	background:#F7F7F7;
+    	cursor:pointer;
+    }
+    
+    .calender
+    {
+    	float: left;
+    	
+    }
+    .attendancelisttable td:nth-child(1) i
+	{
+		font-size:20px;
+		
+	}
+	.btnmasternote, .btnmasternote i
+	{
+		padding: 2px;
+   		padding-right: 10px;
+   		padding-left: 10px;
+   		border:0px #ccc solid;
+		font-size:28px;
+		background: #fff;
+		
+	}	    
+	.attendancelisttable
+	{
+	  line-height:45px;
+	}
+	.attendancelisttable td:nth-child(2)
+	{
+		padding-left: 10px;
+		font-size:13px;
+	}
+	.attendancelisttable td:nth-child(3) button
+	{
+   		padding: 2px;
+   		padding-right: 10px;
+   		padding-left: 10px;
+   		font-size:13px;	
+	}
+	.attendancelisttable td:nth-child(4) button
+	{
+		padding: 2px;
+   		padding-right: 10px;
+   		padding-left: 10px;
+   		font-size:13px;		
+	}
+	.attendancelisttable td:nth-child(5) button
+	{
+		padding: 2px;
+   		padding-right: 10px;
+   		padding-left: 10px;
+   		font-size:13px;	
+	}
+	.attendancelisttable td:nth-child(6) button
+	{
+		padding: 2px;
+   		padding-right: 10px;
+   		padding-left: 10px;
+   		font-size:13px;	
+	}
+
+	.btn, .btn-outline-info, .btn-outline-danger, .btn-outline-warning
+	{
+		border:1px #B5B5B5 solid;
+		color:#B5B5B5;
+	}
+	.cal_inner_holder
+	{
+		width:60px;
+		font-size:11px;
+		margin-top:35px;
+
+	}
+	.cal_inner_holder_right
+	{
+		width:50px;
+		font-size:11px;
+		float:right;
+		border-radius:3px;
+		margin:1px;
+		margin-left:15px;
+		position:absolute;
+	}
+	.cal_inner{
+		float:left;
+		border-radius:3px;
+		background:#CCC;
+		padding:2px;
+		margin:1px;
+	}
+							  
+	
 </style>
-  <style>
-		  	#tabledate{
-			height:400px;
-			width:600px;
-			font-family:Verdana, Geneva, sans-serif;
-			font-size:14px;		
-			border:1px #ccc solid;	
-
-			}
-			.selectdate
-			{
-				border:1px #ccc solid;	
-			   	vertical-align:top;
-				text-align:right;
-				cursor:pointer;
-				background:#FFE7BA;
-			}
-			.ttd
-			{
-				border:1px #ccc solid;	
-				vertical-align:top;
-				text-align:right;
-				color:#000;
-				text-align:center;
-				vertical-align:middle;
-				width:100px;
-				height:40px;
-			}
-			.cal_inner_holder
-			{
-				width:50px;
-				font-size:11px;
-				margin-top:1px;
-
-			}
-			.cal_inner_holder_right
-			{
-				width:50px;
-				font-size:11px;
-				float:right;
-				border-radius:3px;
-				margin:1px;
-				margin-left:28px;
-				position:absolute;
-			}
-			.cal_inner{
-				float:left;
-				border-radius:3px;
-				background:#CCC;
-				padding:2px;
-				margin:1px;
-			}
-		   .td
-		   {
-		   	border:1px #ccc solid;	
-		   	vertical-align:top;
-			text-align:right;
-			cursor:pointer;
-			
-		   }
-		   
-		    .td:hover
-		    {
-		    	background:#F7F7F7;
-		    }
-		    .caltoptxt
-		    {
-		    	font-size:28px;
-		    	text-align:center;
-		    	vertical-align:middle;
-		    	font-weight:bold;
-		    }
-		    .caltoptxtcontainer i
-		    {
-		    	font-size:38px;
-		    	background:#F7F7F7;
-		    	cursor:pointer;
-		    }
-		    
-		  </style>
 </head>
 <!-- END: Head-->
 
@@ -182,6 +227,47 @@
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
+                        
+                        	 <!--scrolling content Modal -->
+                         		<div class="modal fade" id="employeeStatusScrollable" tabindex="-1" role="dialog" aria-labelledby="employeeStatusScrollableTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-warning">
+                                            <h5 class="modal-title white" id="employeeStatusScrollableTitle"></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <i class="bx bx-x"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="col-md-12">
+                                             <div class="form-group">
+                                                 <label for="addmodel">Note</label>
+                                                 <div class="position-relative">
+                                                     <fieldset class="form-group">
+                                            	<input type="hidden" id="additemalltxt"/>
+                                            	<textarea id="additemall" name="addmodel" class="form-control">
+                                            	
+                                            	</textarea>
+                                         </fieldset>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                       
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">Close</span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
+                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">ADD</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          	 <!--scrolling content Modal -->
                             <h5 class="content-header-title float-left pr-1 mb-0">Attendance</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
@@ -204,39 +290,124 @@
                 <section id="basic-datatable">
                     <div class="row">
                         <div class="col-12">
-                        	
-                            <div class="card">
-                                
-                                <div class="card-content">
-                                    <div class="card-body card-dashboard">
-                                        <p class="card-text"></p>
-                                        <!-- ---------------------- -- ---------------------- -->
-                                        <!-- ---------------------- -- ---------------------- -->
-                                        <div class="calender">
-                                        	<span class="caltoptxtcontainer">
-	                                        	<span class="caltoptxt"><i class="bx bx-chevron-left"></i></span>
-	                                        	<span class="caltoptxt" th:text="${currentmonname}"></span>
-	                                        	<span class="caltoptxt" th:text="${currentyear}"></span>
-	                                        	<span class="caltoptxt"><i class="bx bx-chevron-right"></i></span>
-                                        	</span>
-                                        <table  id='tabledate'>
-                                        	<tr>
-                                            <th class='ttd'>Sun</th>
-                                            <th class='ttd'>Mon</th>
-                                            <th class='ttd'>Tue</th>
-                                            <th class='ttd'>Wed</th>
-                                            <th class='ttd'>Thu</th>
-                                            <th class='ttd'>Fri</th>
-                                            <th class='ttd'>Sat</th>
-                                      	  </tr>
-                                       
-                                       		 [(${calhtml})]
-                                        	
-                                       
-                                        </table>
-                                        </div>
-                                        <!-- ---------------------- -- ---------------------- -->
-                                        <!-- ---------------------- -- ---------------------- -->
+                        	<div class="card">
+                                <div class="">
+                                    <div class="card-body">
+                                    	<div class="row">
+                                        	<div class="col-md-6">
+		                                        <!-- ---------------------- -- ---------------------- -->
+		                                        <!-- ---------------------- -- ---------------------- -->
+		                                        
+		                                        <div class="calender">
+		                                        	<span class="caltoptxtcontainer">
+			                                        	<a th:href="@{empattendance?date={d}(d=${preDate})}">
+				                                        	<span class="caltoptxt"><i class="bx bx-chevron-left"></i></span>
+				                                        </a>
+			                                        	<span class="caltoptxt" th:text="${currentmonname}"></span>
+			                                        	<span class="caltoptxt" th:text="${currentyear}"></span>
+			                                        	<a th:href="@{empattendance?date={d}(d=${nxtDate})}">
+			                                        		<span class="caltoptxt"><i class="bx bx-chevron-right"></i></span>
+			                                        	</a>
+		                                        	</span>
+			                                        <div class="table-responsive">
+				                                        <table  id='tabledate'>
+				                                        	<tr>
+				                                            <th class='ttd'>Sun</th>
+				                                            <th class='ttd'>Mon</th>
+				                                            <th class='ttd'>Tue</th>
+				                                            <th class='ttd'>Wed</th>
+				                                            <th class='ttd'>Thu</th>
+				                                            <th class='ttd'>Fri</th>
+				                                            <th class='ttd'>Sat</th>
+				                                      	  </tr>
+				                                       
+				                                       		 [(${calhtml})]
+				                                        </table>
+				                                     </div>
+				                                     
+		                                        </div>
+		                                        <!-- ---------------------- -- ---------------------- -->
+		                                        <!-- ---------------------- -- ---------------------- -->
+		                                        
+		                                     </div>
+		                                     <div class="col-md-6">
+                                                <div class="row">
+	                                                  <div class="form-group col-md-6">
+	                                                      <div class="position-relative has-icon-left">
+                                                               	<input type="hidden" id="currentdd" th:value="${currentdd}" />
+                                                                <select class="form-control" id="basicSelect">
+				                                                        <option>-Select Branch</option>
+				                                                        <option>Coimbatore</option>
+				                                                        <option>Madurai</option>
+				                                                        <option>Pollachi</option>
+				                                                    </select>
+				                                                 <div class="form-control-position">B-</div>
+                                                            </div>
+	                                                  </div>
+	                                                  <div class="form-group col-md-2">
+	                                                  	   <label class="emptitle additem" name="masterremarksdata">
+	                                                  	   <input type="hidden" id="master"/>
+	                                                      	<button type="button" class="btnmasternote"><i class="bx bx-notepad"></i></button>
+	                                                      </label>
+	                                                  </div>
+	                                                  <div class="form-group col-md-4">
+	                                                      <select class="form-control" id="atten_status_change">
+		                                                        <option>Mark All As</option>
+		                                                        <option>Present</option>
+		                                                        <option>Absent</option>
+		                                                        <option>Tardy</option>
+		                                                        <option>Half Day</option>
+		                                                    </select>
+	                                                  </div>
+	                                                  <div class="table-responsive col-md-12">
+				                                        <table class="attendancelisttable">
+				                                        <tr>
+				                                             <td width="5%"><label class="emptitle additem" name="remark1"><input type="hidden" class="childremarks"  id="remark1"/><i class="bx bx-notepad"></i></label></td>
+				                                             <td width="50%">Kanagavel K</td>
+				                                             <td width="15%"><button type="button" name="1" class="btn btnp ">P</button></td>
+				                                             <td  width="15%"><button type="button" name="1" class="btn btna ">A</button></td>
+				                                             <td  width="15%"><button type="button" name="1" class="btn btnt ">T</button></td>
+				                                             <td  width="15%"><button type="button" name="1" class="btn btnhl ">HL</button></td>
+				                                      	  </tr>
+				                                      	  <tr>
+				                                             <td width="5%"><label class="emptitle additem" name="remark2"><input type="hidden" class="childremarks"  id="remark2"/><i class="bx bx-notepad"></i></label></td>
+				                                             <td width="50%">Kanagavel K</td>
+				                                             <td width="15%"><button type="button" name="2" class="btn btnp ">P</button></td>
+				                                             <td  width="15%"><button type="button" name="2" class="btn btna ">A</button></td>
+				                                             <td  width="15%"><button type="button" name="2" class="btn btnt ">T</button></td>
+				                                             <td  width="15%"><button type="button" name="2" class="btn btnhl ">HL</button></td>
+				                                      	  </tr>
+				                                      	  <tr>
+				                                             <td width="5%"><label class="emptitle additem" name="remark3"><input type="hidden" class="childremarks"  id="remark3"/><i class="bx bx-notepad"></i></label></td>
+				                                             <td width="50%">Kanagavel K</td>
+				                                             <td width="15%"><button type="button" name="3" class="btn btnp ">P</button></td>
+				                                             <td  width="15%"><button type="button" name="3" class="btn btna ">A</button></td>
+				                                             <td  width="15%"><button type="button" name="3" class="btn btnt ">T</button></td>
+				                                             <td  width="15%"><button type="button" name="3" class="btn btnhl ">HL</button></td>
+				                                      	  </tr>
+				                                      	   <tr>
+				                                             <td width="5%"><label class="emptitle additem" name="remark4"><input type="hidden" class="childremarks" id="remark4"/><i class="bx bx-notepad"></i></label></td>
+				                                             <td width="50%">Kanagavel K</td>
+				                                             <td width="15%"><button type="button" name="4" class="btn btnp ">P</button></td>
+				                                             <td  width="15%"><button type="button" name="4" class="btn btna ">A</button></td>
+				                                             <td  width="15%"><button type="button" name="4" class="btn btnt ">T</button></td>
+				                                             <td  width="15%"><button type="button" name="4" class="btn btnhl ">HL</button></td>
+				                                      	  </tr>
+				                                      	   
+				                                      	   
+				                                      	  <tr>
+				                                             <td colspan="6" align="right">
+				                                             <br/><br/>
+				                                             <button type="button" id="saveall" class="btn btn-secondary mr-1 mb-1 text-white">Save</button></td>
+				                                      	  </tr>
+				                                      	  	 
+				                                        </table>
+				                                      
+				                                     </div>
+				                                    
+	                                                  
+	                                            </div>
+		                                  </div>
                                     </div>
                                 </div>
                             </div>
@@ -301,6 +472,143 @@
 		$('.td').click(function(){
 			alert($(this).attr('name'));
 		});
+		//--------------------------------------------------------
+		
+		$('#atten_status_change').change(function(){
+
+			var selected_val=$('#atten_status_change').val();
+		
+			$('.btnp').removeClass("cp btn-success text-white");
+			$('.btna').removeClass("ca btn-danger text-white");				
+			$('.btnt').removeClass("ct btn-warning text-white");					
+			$('.btnhl').removeClass("chl btn-light text-white");
+			
+				if(selected_val=="Present")
+				{
+					$('.btnp').toggleClass("cp btn-success text-white");
+				}
+				if(selected_val=="Absent")
+				{
+					$('.btna').toggleClass("ca btn-danger text-white");
+				}
+				if(selected_val=="Tardy")
+				{
+					$('.btnt').toggleClass("ct btn-warning text-white");					
+				}
+				if(selected_val=="Half Day")
+				{
+					$('.btnhl').toggleClass("chl btn-light text-white");					
+				}
+		});
+		//--------------------------------------------------------
+		//--------------------------------------------------------
+		$(".btnp").click(function()
+		{			
+			var empid_name=$(this).attr('name');							
+			remover_atten_status(empid_name);	
+	  		$(this).toggleClass(" cp btn-success text-white");
+			
+		});
+		$(".btna").click(function()
+		{
+			var empid_name=$(this).attr('name');							
+			remover_atten_status(empid_name);		
+			$(this).toggleClass(" ca btn-danger text-white");
+		});
+		$(".btnt").click(function()
+		{
+			var empid_name=$(this).attr('name');							
+			remover_atten_status(empid_name);		
+			$(this).toggleClass(" ct btn-warning text-white");
+		});
+		$(".btnhl").click(function()
+		{
+			var empid_name=$(this).attr('name');							
+			remover_atten_status(empid_name);		
+			$(this).toggleClass(" chl btn-light text-white");
+		});
+		
+		//--------------------------------------------------------
+		//--------------------------------------------------------
+
+		function remover_atten_status(empid_name)
+		{
+			
+			$('.btnp[name='+empid_name+']').removeClass("cp btn-success text-white");
+			$('.btna[name='+empid_name+']').removeClass("ca btn-danger text-white");				
+			$('.btnt[name='+empid_name+']').removeClass("ct btn-warning text-white");
+			$('.btnhl[name='+empid_name+']').removeClass("chl btn-light text-white");		
+			
+		}
+		
+		//--------------------------------------------------------------------------------
+		
+				
+		$('#saveall').click(function(){
+			var currentdd=$('#currentdd').val();
+			
+			//------------------------------------------------------------------------------
+			// Update calendar as per the attendance count
+			var P=0;
+			var A=0; 
+			var T=0;
+			var HL=0; 
+			
+			P=document.querySelectorAll('.cp').length;
+			A=document.querySelectorAll('.ca').length;
+			T=document.querySelectorAll('.ct').length;
+			HL=document.querySelectorAll('.chl').length;
+			 
+			$('.cal_innerp' + currentdd).text(P);
+			$('.cal_innera' + currentdd).text(A);
+			$('.cal_innert' + currentdd).text(T);
+			$('.cal_innerhl' + currentdd).text(HL);
+			//------------------------------------------------------------------------------
+		});
+		
+		
 	});
 </script>	
+		<script>
+			$(document).ready(function(){
+				
+				$(".additem").click(function(){
+					var name=$(this).attr('name');
+					var labeltext="";
+					if(name=="masterremarksdata")
+					{ labeltext="master"; }
+					else
+					{
+						labeltext=name; 
+					}
+					$('#additemalltxt').val(labeltext);
+					
+					$("#additemall").val($('#'+labeltext).val());
+					$('#employeeStatusScrollable').modal('toggle');
+					
+				});
+				
+				$("#additemallsavebtn").click(function(){
+						
+					if($("#additemall").val()!='')
+					{
+						var name=$('#additemalltxt').val();
+						var labeltext="";
+						if(name=="master"){ labeltext="master"; 
+							$('.childremarks').val($("#additemall").val());
+							$('#master').val($("#additemall").val());
+						}
+						else
+						{
+							labeltext=name;
+							$('#' + labeltext).val($("#additemall").val());
+						}
+						
+						$('#employeeStatusScrollable').modal('toggle');
+					}
+				});
+			});
+		
+		</script>
+
 </html>

@@ -186,7 +186,12 @@ public class HomeController {
 			}
 		}
 		String currentDate=formatterdate.format(date).toString();
-	    int currentyear=Integer.parseInt(formatteryear.format(date).toString());
+		final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+		
+		String preDate=formatterdate.format( new Date(date.getTime() - MILLIS_IN_A_DAY)).toString();
+		String nxtDate=formatterdate.format( new Date(date.getTime() + MILLIS_IN_A_DAY)).toString();
+	    
+		int currentyear=Integer.parseInt(formatteryear.format(date).toString());
 	    int currentmonth=Integer.parseInt(formattermonth.format(date).toString());
 	    int currentdd=Integer.parseInt(formatterdd.format(date).toString());
 	    String currentmonname=formattermonname.format(date).toString();
@@ -222,14 +227,25 @@ public class HomeController {
 	    	
 	    	if(currentdd==i)
 	    	{
-	    		calhtml=calhtml+"<td class='selectdate' name='"+ (i) +"/"+ (currentmonth) +"/"+ (currentyear) +"'>"+ i+ "</td>";
+	    		calhtml=calhtml+"<td class='selectdate' name='"+ (i) +"/"+ (currentmonth) +"/"+ (currentyear) +"'>";
 	    	}else
 	    	{
-	    	calhtml=calhtml+"<td class='td' name='"+ (i) +"/"+ (currentmonth) +"/"+ (currentyear) +"'>"+ i+ "</td>";
+	    	calhtml=calhtml+"<td class='td' name='"+ (i) +"/"+ (currentmonth) +"/"+ (currentyear) +"'>";
 	    	}
+	    	calhtml=calhtml +"<div class='cal_inner_holder_right'>" + i + "</div>" ;
+	    	calhtml=calhtml + "<div class='cal_inner_holder' id='"+ i+ "_div1'>"
+	    			+ "<a class='cal_inner cal_innerp"+ i +"' style='background:#8FBC8F;color:#000'>0</a>"
+	    			+ "<a class='cal_inner cal_innera"+ i +"' style='background:#FF8C69;color:#000'>0</a>"
+	    			+ "<a class='cal_inner cal_innert"+ i +"' style='background:#FFEC8B;color:#000'>0</a>"
+	    			+ "<a class='cal_inner cal_innerhl"+ i +"' style='background:#DEDEDE;color:#000'>0</a><div></td>";
+	    	
+	    	
 	    }
 	    calhtml=calhtml+"</tr>";
 	    
+	    theModel.addAttribute("preDate", preDate);
+	    theModel.addAttribute("nxtDate", nxtDate);
+	    theModel.addAttribute("currentdd", currentdd);
 	    theModel.addAttribute("currentyear", currentyear);
 	    theModel.addAttribute("currentmonname", currentmonname);
 	    theModel.addAttribute("calhtml", calhtml);

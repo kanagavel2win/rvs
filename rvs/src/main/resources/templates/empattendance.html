@@ -469,7 +469,9 @@
 <script>
 	$(document).ready(function(){
 		$('.td').click(function(){
-			alert($(this).attr('name'));
+			
+			window.location.href="empattendance?date="+ $(this).attr('name');
+			
 		});
 		//--------------------------------------------------------
 		

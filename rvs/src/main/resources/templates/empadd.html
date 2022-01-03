@@ -504,8 +504,16 @@
                                                         <div class="form-group">
                                                         	<hr/>
                                                             <label class="emptitle">Education</label>
+                                                            <button class="btn btn-light-primary btn-sm" id="edudivadd" type="button" title="Add new education">
+	                                                            <i class="bx bx-plus"></i>
+	                                                          </button>
                                                           </div>
                                                     </div>
+                                               			
+                                               		
+                                               		<div class="col-md-12">
+														
+                                                      </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">College / Institution</label>
@@ -517,7 +525,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Degree
@@ -538,21 +545,21 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label for="contact-info-icon">Major / Specialization</label>
-                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Major / Specialization">
-                                                                <div class="form-control-position">
-                                                                    <i class="bx bxs-layer"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                       <div class="form-group">
+                                                           <label for="contact-info-icon">Major / Specialization</label>
+                                                            <div class="position-relative has-icon-left">
+                                                               <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Major / Specialization" />
+                                                               <div class="form-control-position">
+                                                                   <i class="bx bxs-layer"></i>
+                                                               </div>
+                                                           </div>
+                                                       </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Percentage / GPA</label>
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Percentage / GPA">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Percentage / GPA" />
                                                                 <div class="form-control-position">
                                                                     %
                                                                 </div>
@@ -563,7 +570,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">From </label>
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From ">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From " />
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-calendar"></i>
                                                                 </div>
@@ -574,62 +581,91 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">To</label>
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To">
+                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To" />
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-calendar"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+			                                              	
+	                                                 <span id="edudivlast"></span>
+                                                       
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                        <hr/>
+                                                        	<hr/>
                                                             <label class="emptitle">Language</label>
+                                                          	  <button class="btn btn-light-primary btn-sm" id="langudivadd" data-repeater-create type="button" title="Add new language">
+	                                                            <i class="bx bx-plus"></i>
+	                                                          </button>
                                                           </div>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label for="contact-info-icon">Language 
-                                                            	<label class="emptitle additem" name="addLanguagedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label>
-                                                            	
-                                                            </label>
-                                                             <div class="position-relative has-icon-left">
-                                                                <div class="position-relative has-icon-left">
-                                                                <select class="form-control addLanguagedata" id="basicSelect">
-				                                                        <option>-</option>
-				                                                        <option>Tamil</option>
-				                                                        <option>Engligh</option>
-				                                                        <option>Hindi</option>
-				                                                        <option>Telugu</option>
-				                                                    </select>
-                                                            	</div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                        	<br/>
-                                                			 <div class="checkbox checkbox-primary checkbox-glow">
-		                                                        <input type="checkbox" id="Read1">
-		                                                        <label for="Read1">Read</label>
+                                                   <table id="langudiv" class="col-md-12">
+                                                   	<tr>
+                                                   		<td>
+	                                                   		<div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                            <label for="contact-info-icon">Language 
+		                                                            	<label class="emptitle additem" name="addLanguagedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label>
+		                                                            	
+		                                                            </label>
+		                                                             <div class="position-relative has-icon-left">
+		                                                                <div class="position-relative has-icon-left">
+		                                                                <select class="form-control addLanguagedata" id="basicSelect">
+						                                                        <option>-</option>
+						                                                        <option>Tamil</option>
+						                                                        <option>Engligh</option>
+						                                                        <option>Hindi</option>
+						                                                        <option>Telugu</option>
+						                                                    </select>
+		                                                            	</div>
+		
+		                                                            </div>
+		                                                        </div>
+		                                                        
 		                                                    </div>
-		                                                    <div class="checkbox checkbox-primary checkbox-glow">
-		                                                        <input type="checkbox" id="Write1">
-		                                                        <label for="Write1">Write</label>
-		                                                    </div>
-		                                                    <div class="checkbox checkbox-primary checkbox-glow">
-		                                                        <input type="checkbox" id="Speak1">
-		                                                        <label for="Speak1">Speak</label>
-		                                                    </div>
-				                                          </div>
-				                                    </div>
+	                                                    </td>
+	                                                    <td>
+		                                                    <div class="col-md-12">
+		                                                        <div class="form-group">
+		                                                        	
+	                                                   				<br/>
+		                                                			 <div class="checkbox checkbox-primary checkbox-glow">
+				                                                        <input type="checkbox" id="Read1">
+				                                                        <label for="Read1">Read</label>
+				                                                    </div>
+				                                                    <div class="checkbox checkbox-primary checkbox-glow">
+				                                                        <input type="checkbox" id="Write1">
+				                                                        <label for="Write1">Write</label>
+				                                                    </div>
+				                                                    <div class="checkbox checkbox-primary checkbox-glow">
+				                                                        <input type="checkbox" id="Speak1">
+				                                                        <label for="Speak1">Speak</label>
+				                                                    </div>
+				                                                 
+				                                                    
+						                                          </div>
+						                                    </div>
+					                                 	</td>
+                                                   	</tr>
+                                                   	
+                                                   
+                                                   </table>
+	                                                    
+	                                                    
+					                                 
+					                                 
+					                                 
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                         	<hr/>
                                                             <label class="emptitle">Experience</label>
-                                                          </div>
+                                                            <button class="btn btn-light-primary btn-sm" id="exprdivadd" type="button" title="Add new education">
+	                                                            <i class="bx bx-plus"></i>
+	                                                          </button>
+															</div>
                                                     </div>
+                                                     
                                                      <div class="col-md-6">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
@@ -664,7 +700,6 @@
                                                     </div>
                                                      <div class="col-md-3">
                                                         <div class="form-group">
-                                                            
                                                              <div class="position-relative has-icon-left">
                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To">
                                                                 <div class="form-control-position">
@@ -684,6 +719,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
+                                                    <span id="exprdivlast"></span>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                         	<hr/>
@@ -760,6 +797,9 @@
                                                         <div class="form-group">
                                                         	<hr/>
                                                             <label class="emptitle">Emergency Contact</label>
+                                                            <button class="btn btn-light-primary btn-sm" id="econtactdivadd" type="button" title="Add new education">
+	                                                            <i class="bx bx-plus"></i>
+	                                                          </button>
                                                           </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -938,6 +978,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                     
+                                                     <span id="econtactdivlast"></span>
                                                      <div class="col-md-12">
                                                         <div class="form-group">
                                                         	<hr/>
@@ -1075,13 +1117,56 @@
 						if(name=="New Language"){ labeltext="addLanguagedata"; }
 						if(name=="New Relationship"){ labeltext="addemgrelationdata"; }
 						$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
-						$('.' + labeltext).val($("#additemall").val());
+						//$('.' + labeltext).val($("#additemall").val());
 						$("#additemall").val('');
 						$('#employeeStatusScrollable').modal('toggle');
 					}
 				});
 			});
 		
+			var langudivadd=2;
+			$("#langudivadd").click(function(){
+				langudivadd=langudivadd+1;
+				//$("#langudiv").append("<tr><divclass='col-md-12'align='right'><spanclass='cursor-pointer'data-repeater-delete><iclass='bxbx-x'></i></span></div><divclass='col-md-3'><divclass='form-group'><labelfor='contact-info-icon'>Language<labelclass='emptitleadditem'name='addLanguagedata'><iclass='bxbxs-plus-circleownstyle1'></i></label></label><divclass='position-relativehas-icon-left'><divclass='position-relativehas-icon-left'>selectclass='form-controladdLanguagedata'id='basicSelect'><option>-</option><option>Tamil</option><option>Engligh</option><option>Hindi</option><option>Telugu</option></select></div></div></div></div><divclass='col-md-3'><divclass='form-group'><br/><divclass='checkboxcheckbox-primarycheckbox-glow'><inputtype='checkbox'id='Read1'><labelfor='Read1'>Read</label></div><divclass='checkboxcheckbox-primarycheckbox-glow'><inputtype='checkbox'id='Write1'><labelfor='Write1'>Write</label></div><divclass='checkboxcheckbox-primarycheckbox-glow'><inputtype='checkbox'id='Speak1'><labelfor='Speak1'>Speak</label></div></div></div></tr>");
+				$("#langudiv  tr:last").after('<tr><td><div class="col-md-12"><div class="form-group"><label for="contact-info-icon">Language <label class="emptitle additem" name="addLanguagedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label></label><div class="position-relative has-icon-left">   <div class="position-relative has-icon-left">   <select class="form-control addLanguagedata" id="basicSelect"><option>-</option><option>Tamil</option><option>Engligh</option><option>Hindi</option><option>Telugu</option> </select></div></div></div> </div> </td> <td> <div class="col-md-12"><div class="form-group"><br/><div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Read'+ langudivadd + '"><label for="Read'+ langudivadd + '">Read</label> </div> <div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Write'+ langudivadd + '"><label for="Write'+ langudivadd + '">Write</label> </div> <div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Speak'+ langudivadd + '"><label for="Speak'+ langudivadd + '">Speak</label> </div>  <span class="cursor-pointer langudivdelete" style="float:right">  <i class="bx bx-x"></i>   </span>   </div> </div>   </td></tr>');
+			});
+			$(document).on( "click", ".langudivdelete", function() {
+				   $(this).closest("tr").remove();
+			});
+			
+			var edudivadd=2;
+			$("#edudivadd").click(function(){
+				edudivadd=edudivadd+1;
+				$("#edudivlast").before('<div class="tedudiv'+ edudivadd +'  col-md-12"> <span class="cursor-pointer edudivdelete" name="'+ edudivadd +'" style="float:right"> 	                                                                    <i class="bx bx-x"></i> 	                                                                </span> 	                                                             </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-6"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">College / Institution</label> 			                                                            <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder=" College / Institution"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-buildings"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Degree 			                                                            	<label class="emptitle additem" name="addDegreedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label> 			                                                            </label> 			                                                            <div class="position-relative has-icon-left"> 			                                                                <select class="form-control addDegreedata" > 							                                                        <option>-</option> 							                                                        <option>Bachelor"s</option> 							                                                        <option>Master"s</option> 							                                                        <option>Delploma</option> 							                                                        <option>ITI</option> 							                                                        <option>Doctorate</option> 							                                                    </select> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Major / Specialization</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Major / Specialization"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bxs-layer"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Percentage / GPA</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Percentage / GPA"> 			                                                                <div class="form-control-position"> 			                                                                    % 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">From </label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From "> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">To</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div>');
+			});
+			
+			$(document).on( "click", ".edudivdelete", function() {
+				   var id= $(this).attr('name');
+				   $('.tedudiv'+ id).hide();
+			});
+			
+			var exprdivadd=2;
+			$("#exprdivadd").click(function(){
+				exprdivadd=exprdivadd+1;
+			$("#exprdivlast").before('<div class="texprdiv'+ exprdivadd +'  col-md-12"><span class="cursor-pointer exprdivdelete" name="'+ exprdivadd +'" style="float:right"> 	                                                   	       <i class="bx bx-x"></i> 	                                                   	 </span>                                                    	</div>                                                    <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Company">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-building"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Location">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-target-lock"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From ">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="JobTitle">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-briefcase-alt"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     ');
+			});
+			
+			$(document).on( "click", ".exprdivdelete", function() {
+				   var id= $(this).attr('name');
+				   $('.texprdiv'+ id).hide();
+			});
+			
+			
+			var econtactdivadd=2;
+			$("#econtactdivadd").click(function(){
+				econtactdivadd=econtactdivadd+1;
+			$("#econtactdivlast").before('<div class="tecontactdiv'+ econtactdivadd +'  col-md-12"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 		  <fieldset> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlow'+ econtactdivadd +'"> 					<label for="checkboxGlow'+ econtactdivadd +'">Primary Contact</label> 				</div> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlowt'+ econtactdivadd +'"> 					<label for="checkboxGlowt'+ econtactdivadd +'">Insurance Nominee </label> 				</div> 				<span class="cursor-pointer econtactdivdelete" name="'+ econtactdivadd +'" style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			</fieldset> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Name"> 			<div class="form-control-position"> 				<i class="bx bxs-contact"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			 <select class="form-control addemgrelationdata" id="basicSelect"> 					<option>-</option> 					<option>Father</option> 					<option>Mother</option> 					<option>Husband</option> 					<option>wife</option> 					<option>Friend</option> 					<option>Brother</option> 					<option>Sister</option> 					<option>Uncle</option> 					<option>Daughter</option> 					<option>son</option> 				</select> 			<div class="form-control-position"> 				<i class="bx bx-git-repo-forked"></i> 			</div> 			<label class="emptitle additem" name="addemgrelationdata" style="float:right;"><i class="bx bxs-plus-circle ownstyle1"></i></label> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Personal Phone"> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Other Phone"> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Email ID"> 			<div class="form-control-position"> 				<i class="bx bx-mail-send"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 1"> 			<div class="form-control-position"> 				<i class="bx bxs-home"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 2"> 			<div class="form-control-position"> 				<i class="bx bx-navigation"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Village"> 			<div class="form-control-position"> 				<i class="bx bx-directions"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Taluk"> 			<div class="form-control-position"> 				<i class="bx bxs-city"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="City"> 			<div class="form-control-position"> 				<i class="bx bxs-building-house"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="State"> 			<div class="form-control-position"> 				<i class="bx bx-stats"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="number" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Zip code"> 			<div class="form-control-position"> 				<i class="bx bx-message-alt-dots"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Country"> 			<div class="form-control-position"> 				<i class="bx bxs-flag-alt"></i> 			</div> 		</div> 	</div> </div>  ');
+			});
+			
+			$(document).on( "click", ".econtactdivdelete", function() {
+				   var id= $(this).attr('name');
+				   $('.tecontactdiv'+ id).hide();
+			});
 		</script>
 		
 </body>

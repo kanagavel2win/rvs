@@ -182,13 +182,12 @@
 	}
 	.cal_inner_holder_right
 	{
-		width:50px;
 		font-size:11px;
 		float:right;
 		border-radius:3px;
 		margin:1px;
 		margin-left:15px;
-		position:absolute;
+		
 	}
 	.cal_inner{
 		float:left;
@@ -297,7 +296,7 @@
                                         	<div class="col-md-6">
 		                                        <!-- ---------------------- -- ---------------------- -->
 		                                        <!-- ---------------------- -- ---------------------- -->
-		                                        
+		                                        <div class="table-responsive">
 		                                        <div class="calender">
 		                                        	<span class="caltoptxtcontainer">
 			                                        	<a th:href="@{empattendance?date={d}(d=${preDate})}">
@@ -309,8 +308,8 @@
 			                                        		<span class="caltoptxt"><i class="bx bx-chevron-right"></i></span>
 			                                        	</a>
 		                                        	</span>
-			                                        <div class="table-responsive">
-				                                        <table  id='tabledate'>
+			                                        
+				                                        <table  id='tabledate' class="">
 				                                        	<tr>
 				                                            <th class='ttd'>Sun</th>
 				                                            <th class='ttd'>Mon</th>

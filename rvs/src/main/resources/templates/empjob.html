@@ -91,8 +91,6 @@
 	}
 	.ownstyle1{
 		font-size:25px;
-		position: absolute;
-		right:80px;
 		top:-2px;
 	}
 	.iconalign
@@ -166,10 +164,40 @@
                                                <label class="empnametitle"> RVS00001 - Kanagavel</label>
                                              </div>
                                          </div>
+                                   	 
+                                        <div class="col-md-12">
+                                         	<div class="form-group">
+                                              <label class="emptitle"> <i class="bx bx-briefcase-alt-2 ownstyle"></i> JOB</label>
+                                             </div>
+                                        </div>
+                                        <div class="row">
+		                                        <div class="col-3">
+		                                         	<div class="form-group">
+		                                                  <label for="contact-info-icon">Hire Date</label>
+		                                                  <div class="position-relative has-icon-left">
+		                                                      <input type="date"  class="form-control" >
+		                                                      <div class="form-control-position">
+		                                                          <i class="bx bx-calendar-event"></i>
+		                                                      </div>
+		                                                       
+		                                           		</div>
+		                                            </div>
+		                                        </div>
+		                                         <div class="col-3">
+		                                         
+		                                         	<div class="form-group">
+		                                         			<br/>
+		                                             		<button type="button" class=" position-relative  btn btn-primary ml-1">
+		                                                     <span class="d-none d-sm-block">Save</span>
+		                                                 	</button>
+			                                      	</div>
+		                                         </div>    
+		                                  </div>
+                                         <hr/>
                                     	<div class="col-md-12">
                                     		
                                     		
-                                    		<!--scrolling content Modal -->
+                                    						<!--scrolling content Modal -->
 					                                       		 <div class="modal fade" id="addnewitemmodelScrollable" tabindex="-1" role="dialog" aria-labelledby="addnewitemmodelScrollableTitle" aria-hidden="true">
 							                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
 							                                                <div class="modal-content">
@@ -182,10 +210,10 @@
 							                                                    <div class="modal-body">
 							                                                        <div class="col-md-12">
 								                                                        <div class="form-group">
-								                                                            <label for="addmodel" id="additemalltxt"></label>
+								                                                            <label for="addmodel" id="temp"></label>
 								                                                            <div class="position-relative">
 								                                                                <fieldset class="form-group">
-												                                                   <input type="text" id="additemall" name="addmodel" class="form-control" >
+												                                                   <input type="text" id="temp" name="addmodel" class="form-control" >
 												                                                </fieldset>
 								                                                            </div>
 								                                                        </div>
@@ -197,7 +225,7 @@
 							                                                            <i class="bx bx-x d-block d-sm-none"></i>
 							                                                            <span class="d-none d-sm-block">Close</span>
 							                                                        </button>
-							                                                        <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
+							                                                        <button type="button" class="btn btn-primary ml-1" id="tempsavebtn">
 							                                                            <i class="bx bx-check d-block d-sm-none"></i>
 							                                                            <span class="d-none d-sm-block">ADD</span>
 							                                                        </button>
@@ -206,6 +234,10 @@
 							                                            </div>
 							                                        </div>
 					                                        	 <!--scrolling content Modal -->
+                                            
+                                            
+                                             
+                                             
                                             <div class="form-group">
                                             	
                                                <label class="emptitle"> <i class="bx bxs-id-card ownstyle"></i> Employment Status</label>
@@ -226,10 +258,12 @@
 		                                                    <div class="modal-body">
 		                                                        <div class="col-md-12">
 			                                                        <div class="form-group">
-			                                                            <label for="email-id-icon">Employment Status</label>
+			                                                            <label for="email-id-icon">Employment Status
+			                                                            	<label class="emptitle additem" name="addemployeestatusdata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+			                                                            </label>
 			                                                            <div class="position-relative has-icon-left">
 			                                                                <fieldset class="form-group">
-							                                                    <select class="form-control" id="empstatus_employmentstatus">
+							                                                    <select class="form-control addemployeestatusdata" id="empstatus_employmentstatus">
 							                                                        <option>-</option>
 							                                                        <option>Full-Time</option>
 							                                                        <option>Part-Time</option>
@@ -242,6 +276,65 @@
 			                                                        </div>
 			                                                    </div>
 			                                                   
+			                                                   <div class="Termination col-md-12">
+			                                                        <div class="form-group">
+			                                                            <label for="email-id-icon">Termination Type
+			                                                            	<label class="emptitle additem" name="addterminationtypedata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+			                                                            </label>
+			                                                            <div class="position-relative has-icon-left">
+			                                                                <fieldset class="form-group">
+							                                                    <select class="form-control addterminationtypedata" id="empstatus_employmentstatus">
+							                                                        <option>-</option>
+							                                                        <option>Death</option>
+							                                                        <option>Involuntary</option>
+							                                                        <option>Voluntary</option>
+							                                                        
+							                                                      </select>
+							                                                </fieldset>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                    <div class="Termination col-md-12">
+			                                                        <div class="form-group">
+			                                                            <label for="email-id-icon">Termination Reason
+			                                                            	<label class="emptitle additem" name="addterminationreasondata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+			                                                            </label>
+			                                                            <div class="position-relative has-icon-left">
+			                                                                <fieldset class="form-group">
+							                                                    <select class="form-control addterminationreasondata" id="empstatus_employmentstatus">
+							                                                        <option>-</option>
+							                                                        <option>Attendance</option>
+							                                                        <option>Life Happens</option>
+							                                                        <option>Not a Fit</option>
+							                                                        <option>Other</option>
+							                                                        <option>Other employment</option>
+							                                                        <option>Performance</option>
+							                                                        <option>Relocation</option>
+							                                                      </select>
+							                                                </fieldset>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                    <div class="Termination col-md-12">
+			                                                        <div class="form-group">
+			                                                            <label for="email-id-icon">Eligible for rehire
+			                                                            	
+			                                                            </label>
+			                                                            <div class="position-relative has-icon-left">
+			                                                                <fieldset class="form-group">
+							                                                    <select class="form-control" id="empstatus_employmentstatus">
+							                                                        <option>-</option>
+							                                                        <option>Yes</option>
+							                                                        <option>No</option>
+							                                                        <option>Upon review </option>
+							                                                        
+							                                                      </select>
+							                                                </fieldset>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                    
+			                                                    
 			                                                    <div class="col-md-12">
 			                                                        <div class="form-group">
 			                                                            <label for="contact-info-icon">Effective Date</label>
@@ -359,10 +452,12 @@
 		                                                    </div>
 		                                                    <div class="col-md-12">
 		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Department </label>
+		                                                            <label for="email-id-icon">Department
+		                                                            	<label class="emptitle additem" name="adddepartmentdata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="jobinformation_department">
+						                                                    <select class="form-control adddepartmentdata"  id="jobinformation_department">
 						                                                        <option>-</option>
 						                                                        <option>Survey</option>
 						                                                        <option>Drafting</option>
@@ -376,10 +471,12 @@
 		                                                    </div>
 		                                                    <div class="col-md-12">
 		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Job Title</label>
+		                                                            <label for="email-id-icon">Job Title
+		                                                            	<label class="emptitle additem" name="addjobtitledata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="jobinformation_jobtitle">
+						                                                    <select class="form-control addjobtitledata"  id="jobinformation_jobtitle">
 						                                                        <option>-</option>
 						                                                        <option>Surveyor</option>
 						                                                        <option>Survey Assistant</option>
@@ -530,10 +627,12 @@
 		                                                    </div>
 		                                                    <div class="col-md-12">
 		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Change Reason</label>
+		                                                            <label for="email-id-icon">Change Reason
+		                                                            	<label class="emptitle additem" name="addchangereasondata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="compensation_changereason">
+						                                                    <select class="form-control addchangereasondata"  id="compensation_changereason">
 						                                                        <option>-</option>
 						                                                        <option>Annual Pay increase</option>
 						                                                        <option>NA</option>
@@ -657,6 +756,46 @@
 		<div class="sidenav-overlay"></div>
 		<div class="drag-target"></div>
 
+
+								<!--scrolling content Modal -->
+                              		 <div class="modal fade" id="newadditemScrollable" tabindex="-1" role="dialog" aria-labelledby="newadditemScrollableTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-primary">
+                                                    <h5 class="modal-title white" id="newadditemScrollableTitle"></h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <i class="bx bx-x"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="col-md-12">
+                                                     <div class="form-group">
+                                                         <label for="addmodel" id="additemalltxt"></label>
+                                                         <div class="position-relative">
+                                                             <fieldset class="form-group">
+	                                                   <input type="text" id="additemall" name="addmodel" class="form-control" >
+	                                                </fieldset>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                               
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+                                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">Close</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
+                                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">ADD</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  	 <!--scrolling content Modal -->
+                                       
+                                       
 		<!-- BEGIN: Footer-->
 		<footer class="footer footer-static footer-light">
 		<p class="clearfix mb-0">
@@ -701,16 +840,19 @@
 <!-- END: Body-->
 	<script>
 			$(document).ready(function(){
+				$(".Termination").hide();
 				
 				$(".additem").click(function(){
 					var name=$(this).attr('name');
 					var labeltext="";
-					if(name=="addmaritalstatusdata"){ labeltext="New Marital status"; }
-					if(name=="addDegreedata"){ labeltext="New Degree"; }
-					if(name=="addLanguagedata"){ labeltext="New Language"; }
-					if(name=="addemgrelationdata"){ labeltext="New Relationship"; }
+					if(name=="adddepartmentdata"){ labeltext="New Department"; }
+					if(name=="addjobtitledata"){ labeltext="New Job Title"; }
+					if(name=="addchangereasondata"){ labeltext="New Change Reason"; }
+					if(name=="addemployeestatusdata"){ labeltext="New Employee Status"; }
+					if(name=="addterminationreasondata"){ labeltext="New Termination Reason"; }
+					if(name=="addterminationtypedata"){ labeltext="New Termination Type"; }
 					$('#additemalltxt').text(labeltext);
-					$('#employeeStatusScrollable').modal('toggle');
+					$('#newadditemScrollable').modal('toggle');
 					
 				});
 				
@@ -719,16 +861,32 @@
 					{
 						var name=$('#additemalltxt').text();
 						var labeltext="";
-						if(name=="New Marital status"){ labeltext="addmaritalstatusdata"; }
-						if(name=="New Degree"){ labeltext="addDegreedata"; }
-						if(name=="New Language"){ labeltext="addLanguagedata"; }
-						if(name=="New Relationship"){ labeltext="addemgrelationdata"; }
+						if(name=="New Department"){ labeltext="adddepartmentdata"; }
+						if(name=="New Job Title"){ labeltext="addjobtitledata"; }
+						if(name=="New Change Reason"){ labeltext="addchangereasondata"; }
+						
+						if(name=="New Employee Status"){ labeltext="addemployeestatusdata"; }
+						if(name=="New Termination Reason"){ labeltext="addterminationreasondata"; }
+						if(name=="New Termination Type"){ labeltext="addterminationtypedata"; }
+						
 						$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
-						$('.' + labeltext).val($("#additemall").val());
 						$("#additemall").val('');
-						$('#employeeStatusScrollable').modal('toggle');
+						$('#newadditemScrollable').modal('toggle');
 					}
 				});
+				
+				$("#empstatus_employmentstatus").change(function(){
+					
+					if($(this).val()=="Terminated")
+					{
+						$(".Termination").show();	
+					}else
+					{
+						$(".Termination").hide();
+					}
+				
+				});
+				
 			});
 		
 		</script>

@@ -196,7 +196,13 @@
 		padding:2px;
 		margin:1px;
 	}
-							  
+	.today
+	{
+		float:right;
+		padding:5px;
+		border: none;
+		color:#ccc;
+	}				  
 	
 </style>
 </head>
@@ -308,7 +314,7 @@
 			                                        		<span class="caltoptxt"><i class="bx bx-chevron-right"></i></span>
 			                                        	</a>
 		                                        	</span>
-			                                        
+			                                        	<a th:href="@{empattendance?date={d}(d=${tempcurrentdate})}" class="btn-outline-primary today">Today</a>
 				                                        <table  id='tabledate' class="">
 				                                        	<tr>
 				                                            <th class='ttd'>Sun</th>

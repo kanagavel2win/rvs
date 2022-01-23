@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Hiring</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+	.emptitle
+	{
+		color: #527a00;
+		font-size: 15px;
+	    line-height: 20px;
+	    font-weight: 600;
+	    font-family: Fira Sans,Trebuchet MS,sans-serif;
+	    cursor:pointer;
+	}
+	thead
+	{
+		background-color: #ebebeb;
+		border-color: transparent;
+	    color: #555;
+	    font-weight: 700;
+	    padding: 12px 16px 11px;
+	    transition: background-color .15s ease-in-out;
+	}
+	tbody{
+		color: #222;
+	}
+	
+	.empnametitle
+	{
+		color: #FF4500;
+		font-size: 15px;
+	    line-height: 20px;
+	    font-weight: 600;
+	    font-family: Fira Sans,Trebuchet MS,sans-serif;
+	}
+	.ownstyle{
+		font-size:30px;
+		position: absolute;
+		left:-20px;
+		top:-5px;
+	}
+	.ownstyle1{
+		font-size:25px;
+		position: absolute;
+		top: -2px;
+		left:-12px;
+	}
+	.iconalign
+	{
+	 text-align:right;
+	 font-size:20px;
+	 width: 200px;
+	 right:0px;
+	 color:#fff;
+	}
+	tbody>tr:hover .iconalign
+	{
+		color:#527a00;
+	}
+	
+	.emptitle:hover 
+	{
+		color:#000;
+	}
+	
+	.bullet.bullet-success {
+    background-color: #527a00;
+	}
+</style>
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            
+            <div class="content-body">
+              
+                <!-- Basic Vertical form layout section start -->
+                <section id="basic-vertical-layouts">
+                    <div class="row match-height">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                    
+                                    	<div class="col-md-12">
+                                    	 	<div class="form-group">
+                                                <label class="emptitle"> <i class="bx bx-chart ownstyle"></i> Hiring</label>
+                                             </div>
+                                          </div>
+                                    	<ul class="nav nav-tabs " id="myTab" role="tablist">
+                                            <li class="nav-item current">
+                                                <a class="nav-link active" id="home-tab-fill" data-toggle="tab" href="#home-fill" role="tab" aria-controls="home-fill" aria-selected="true">
+                                                    <i class="bx bx-carousel align-middle"></i>
+                                            		<span class="align-middle">Job Openings</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="profile-tab-fill" data-toggle="tab" href="#profile-fill" role="tab" aria-controls="profile-fill" aria-selected="false">
+                                                    <i class="bx bxs-group align-middle"></i>
+                                            		<span class="align-middle">Candidates</span>
+                                                </a>
+                                            </li>
+                                           
+                                        </ul>
+                                        <div class="tab-content pt-1">
+                                            <div class="tab-pane active" id="home-fill" role="tabpanel" aria-labelledby="home-tab-fill">
+                                                <div class="col-md-12">
+			                                    	 	<div class="form-group">
+			                                            	<a href="hireaddjob">
+			                                            	<label class="emptitle"><i class="bx bxs-plus-circle ownstyle1"></i>
+															Add Job Opening</label>
+															</a>
+			                                             </div>
+			                                            
+			                                       </div>
+			                                     	<div class="table-responsive">
+					                                    <table class="table table-hover mb-0">
+					                                        <thead>
+					                                            <tr>
+					                                                <th>Posting Title</th>
+					                                                <th>Job Status</th>
+					                                                <th>Hiring Lead</th>
+					                                                <th>Created on</th>
+					                                                <th>Status</th>
+					                                                <th></th>
+					                                                
+					                                               	
+					                                            </tr>
+					                                        </thead>
+					                                        <tbody>
+					                                            <tr>
+					                                                <td class="text-bold-500">1 ABCDEF</td>
+					                                                <td>Drafting </td>
+					                                                <td>Amy Graner</td>
+					                                                <td>Nov 29,2021</td>
+					                                                <td>Open</td>
+					                                                
+					                                                <td width="110px"><span class="iconalign">
+					                                               	 	
+					                                               	 	<span  data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-pencil"></i></span>
+					                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
+					                                                	
+					                                                	<span>
+					                                                </td>
+					                                                
+					                                            </tr>
+					                                            </tbody>
+					                                    </table>
+					                                </div>
+			                                     	
+                                            </div>
+                                            <div class="tab-pane" id="profile-fill" role="tabpanel" aria-labelledby="profile-tab-fill">
+                                                
+			                                     	<div class="table-responsive">
+					                                    <table class="table table-hover mb-0">
+					                                        <thead>
+					                                            <tr>
+					                                                <th>Candidate Info</th>
+					                                                <th>Job Opening</th>
+					                                                <th>Status</th>
+					                                                <th>Rating</th>
+					                                                <th></th>
+					                                                
+					                                               	
+					                                            </tr>
+					                                        </thead>
+					                                        <tbody>
+					                                            <tr>
+					                                                <td class="text-bold-500">1 Kanagavel</td>
+					                                                <td>Drafting </td>
+					                                                <td>Offer Sent</td>
+					                                                <td>4.5/5</td>
+					                                                
+					                                                <td width="110px"><span class="iconalign">
+					                                               	 	
+					                                               	 	<span  data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-pencil"></i></span>
+					                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bx-dots-vertical"></i></span>
+					                                                	
+					                                                	<span>
+					                                                </td>
+					                                                
+					                                            </tr>
+					                                            </tbody>
+					                                    </table>
+					                                </div>
+			                                     
+                                            </div>
+                                            
+                                        </div>
+                                    	
+                                    	
+                                    	
+                                    	
+                                        
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- // Basic Vertical form layout section end -->
+
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+
+							
+                                       
+                                       
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		<!-- END: Footer-->
+
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		<script
+			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+			<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
+			<script th:src="@{/app-assets/js/scripts/navs/navs.js}"></script>
+		<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+	<script>
+			$(document).ready(function(){
+				
+				$(".additem").click(function(){
+					var name=$(this).attr('name');
+					var labeltext="";
+					if(name=="adddepartmentdata"){ labeltext="New Department"; }
+					if(name=="addjobtitledata"){ labeltext="New Job Title"; }
+					if(name=="addchangereasondata"){ labeltext="New Change Reason"; }
+					if(name=="addemployeestatusdata"){ labeltext="New Employee Status"; }
+					if(name=="addterminationreasondata"){ labeltext="New Termination Reason"; }
+					if(name=="addterminationtypedata"){ labeltext="New Termination Type"; }
+					$('#additemalltxt').text(labeltext);
+					$('#newadditemScrollable').modal('toggle');
+					
+				});
+				
+				
+				
+			});
+		
+		</script>
+</html>
+
+
+
+

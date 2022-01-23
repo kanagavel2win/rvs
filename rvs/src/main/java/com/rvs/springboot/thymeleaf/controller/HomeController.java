@@ -501,4 +501,13 @@ public class HomeController {
 		theModel.addAttribute("calhtml", calhtml);
 		return "leaverequest";
 	}
+
+	@GetMapping("hire")
+	public String hire(Model theModel) {
+		return "hiring";
+	}
+	@GetMapping("hireaddjob")
+	public String hirejobadd(Model theModel) {
+		return "hirejobadd";
+	}
 }

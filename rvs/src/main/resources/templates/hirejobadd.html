@@ -162,10 +162,12 @@
 	                                                    
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
-	                                                            <label for="password-icon">Department</label>
+	                                                            <label for="password-icon">Department
+	                                                            	<label class="emptitle additem" name="adddepartmentdata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+	                                                            </label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control" >
+					                                                    <select class="form-control adddepartmentdata" >
 					                                                        <option value="">-</option>
 					                                                        <option>Admin</option>
 					                                                        <option>Accounts</option>
@@ -176,6 +178,41 @@
 					                                                        <option>Designing</option>
 					                                                        
 					                                                        
+					                                                    </select>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Employment Type
+	                                                            	<label class="emptitle additem" name="addemployeetypedata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+	                                                            </label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control addemployeetypedata" >
+					                                                        <option value="">-</option>
+					                                                        <option>Contractor</option>
+					                                                        <option>Full-Time</option>
+					                                                        <option>Intern</option>
+					                                                        <option>Part -Time</option>
+					                                                        
+					                                                    </select>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                     <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Minimum Experience</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control" >
+					                                                        <option value="">-</option>
+					                                                        <option>Entry-level</option>
+					                                                        <option>Mid-level</option>
+					                                                        <option>Experienced</option>
+					                                                        					                                                        
 					                                                    </select>
 					                                                </fieldset>
 	                                                            </div>
@@ -334,6 +371,45 @@
 		<div class="sidenav-overlay"></div>
 		<div class="drag-target"></div>
 
+							<!--scrolling content Modal -->
+                              		 <div class="modal fade" id="newadditemScrollable" tabindex="-1" role="dialog" aria-labelledby="newadditemScrollableTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-primary">
+                                                    <h5 class="modal-title white" id="newadditemScrollableTitle"></h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <i class="bx bx-x"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="col-md-12">
+                                                     <div class="form-group">
+                                                         <label for="addmodel" id="additemalltxt"></label>
+                                                         <div class="position-relative">
+                                                             <fieldset class="form-group">
+	                                                   <input type="text" id="additemall" name="addmodel" class="form-control" >
+	                                                </fieldset>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                               
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+                                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">Close</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
+                                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">ADD</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  	 <!--scrolling content Modal -->
+                                       
+
 		<!-- BEGIN: Footer-->
 		<footer class="footer footer-static footer-light">
 		<p class="clearfix mb-0">
@@ -409,6 +485,32 @@
 					   var id= $(this).attr('name');
 					   $('.'+ id).hide();
 				});	
+				
+				
+				$(".additem").click(function(){
+					var name=$(this).attr('name');
+					var labeltext="";
+					if(name=="adddepartmentdata"){ labeltext="New Department"; }
+					if(name=="addemployeetypedata"){ labeltext="New Employment Type"; }
+
+					$('#additemalltxt').text(labeltext);
+					$('#newadditemScrollable').modal('toggle');
+					
+				});
+				
+				$("#additemallsavebtn").click(function(){
+					if($("#additemall").val()!='')
+					{
+						var name=$('#additemalltxt').text();
+						var labeltext="";
+						if(name=="New Department"){ labeltext="adddepartmentdata"; }
+						if(name=="New Employment Type"){ labeltext="addemployeetypedata"; }
+						
+						$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
+						$("#additemall").val('');
+						$('#newadditemScrollable').modal('toggle');
+					}
+				});
 			});
 		</script>
 </body>

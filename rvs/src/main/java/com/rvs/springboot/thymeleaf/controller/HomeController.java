@@ -368,14 +368,15 @@ public class HomeController {
 			
 			if (currentdd == i) {
 				calhtml = calhtml + "<td class='td selectdate "+ sunday + "' name='" + (i) + "/" + (currentmonth) + "/" + (currentyear)
-						+ "'>";
+						+ "'  ondrop='drop(event)' ondragover='allowDrop(event)'";
 				calhtml = calhtml + "<div class='cal_inner_holder_right_today'>" + i + "</div>";
 			} else {
-				calhtml = calhtml + "<td class='td  "+ sunday + "' name='" + (i) + "/" + (currentmonth) + "/" + (currentyear) + "'>";
+				calhtml = calhtml + "<td class='td  "+ sunday + "' name='" + (i) + "/" + (currentmonth) + "/" + (currentyear) 
+						+ "' ondrop='drop(event)' ondragover='allowDrop(event)'";
 				calhtml = calhtml + "<div class='cal_inner_holder_right'>" + i + "</div>";
 			}
 			
-			calhtml = calhtml + "<div class='cal_inner_holder' id='" + i + "_div1'>" + "<div></td>";
+			calhtml = calhtml + "<div class='cal_inner_holder' id='" + i + "_div1' name='"  + (i) + "/" + (currentmonth) + "/" + (currentyear)+ "'>" + "<div></td>";
 
 		}
 		calhtml = calhtml + "</tr>";
@@ -509,5 +510,11 @@ public class HomeController {
 	@GetMapping("hireaddjob")
 	public String hirejobadd(Model theModel) {
 		return "hirejobadd";
+	}
+	
+	@GetMapping("calendar")
+	public String calendarMaster(Model themodel)
+	{
+		return "calendarMaster";
 	}
 }

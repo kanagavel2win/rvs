@@ -48,6 +48,9 @@
 	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+	
+
+<link rel="stylesheet" type="text/css" th:href="@{/app-assets/css/plugins/extensions/drag-and-drop.css}">
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
@@ -61,26 +64,63 @@
 		min-width:80px;
 		font-size:10px;
 		text-align:left;
+		 
 	}
 	
 	.divholidaysunday
 	{
-		background:#FFBEBE;	
+			
 		min-width:80px;
-		font-size:10px;
+		font-size:12px;
 		text-align:left;
+		color:#FF5B5C; 
+		background-color:#FFDEDE;
+	}
+	.redspace{
+		background-color:#FF5B5C;
+		height:100%;
+		font-size:8px;
 	}
 	.HD_color1{
-		background:#48D1CC;
+		color:#00CFDD; 
+		background-color:#CCF5F8;
+		font-size:12px;
 	}
 	.HD_color2{
-		background:#9ACD32;
+		color:#5A8DEE; 
+		background-color:#E2ECFF;
+		font-size:12px;
 	}
 	.HD_color3{
-		background:#FFEFDB;
+		color:#475F7B; 
+		background-color:#E6EAEE;
+		font-size:12px;
 	}
 	.HD_color4{
-		background:#87CEFF;
+		color:#39DA8A; 
+		background-color:#D2FFE8;
+		font-size:12px;
+	}
+	
+	.HD_color1space{
+		background-color:#00CFDD;
+		height:100%;
+		font-size:8px;
+	}
+	.HD_color2space{
+		background-color:#5A8DEE;
+		height:100%;
+		font-size:8px;
+	}
+	.HD_color3space{
+		background-color:#475F7B;
+		height:100%;
+		font-size:8px;
+	}
+	.HD_color4space{
+		background-color:#39DA8A;
+		height:100%;
+		font-size:8px;
 	}
 	 
 	
@@ -260,9 +300,27 @@
 		border: none;
 		color:#ccc;
 	}				  
-	
+	table .td.highlighted {
+  background-color:#999;
+}
 	
 </style>
+
+<script>
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
+</script>
 </head>
 <!-- END: Head-->
 
@@ -310,10 +368,18 @@
                                             	
                                             	<div class="row">
 	                                                  <div class="form-group col-md-6">
-	                                                      <div class="position-relative">Date</div>
+	                                                      <div class="position-relative">From Date</div>
 	                                                  </div>
 	                                                  <div class="form-group col-md-6">
-	                                                      <input type="text"  id="popdate" class="form-control" readonly />
+	                                                      <input type="text"  id="fromdate" class="form-control" />
+	                                                  </div>
+	                                            </div>
+	                                            <div class="row">
+	                                                  <div class="form-group col-md-6">
+	                                                      <div class="position-relative">To Date</div>
+	                                                  </div>
+	                                                  <div class="form-group col-md-6">
+	                                                      <input type="text"  id="todate" class="form-control" />
 	                                                  </div>
 	                                            </div>
 	                                            <div class="row">
@@ -436,7 +502,7 @@
                     </div>
                 </section>
                 <!--/ Zero configuration table -->               
-
+			
             </div>
         </div>
     </div>
@@ -485,49 +551,96 @@
 		<!-- BEGIN: Page JS-->
 		<script
 			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+			
+    	<script th:src="@{/app-assets/js/scripts/extensions/drag-drop.js}"></script>
 		<!-- END: Page JS-->
 </body>
 <!-- END: Body-->
 <script>
 	$(document).ready(function(){
+		
+		var drag=1;
 		$('.td').click(function(){
 			
 			var popdate= $(this).attr("name");
-			$('#popdate').val(popdate);
+			$('#fromdate').val(popdate);
+			$('#todate').val(popdate);
 			$('#holidayStatusScrollable').modal('toggle');
 			
 		});
 		//--------------------------------------------------------
 		$('#additemallsavebtn').click(function(){
-			popdate = $('#popdate').val();
+			alert($('#fromdate').val());
+			fromdate = $('#fromdate').val();
+			todate = $('#todate').val();
 			popholidaytype= $('#popholidaytype').val();
 			popholidaydescription= $('#popholidaydescription').val();
-						
+			
+			holidaycolor="";
+			holidaycolorspace="";
 			if(popholidaytype=="National holiday")
 			{
 				holidaycolor="HD_color1";	
+				holidaycolorspace="HD_color1space";
 			}
 			if(popholidaytype=="State holiday")
 			{
 				holidaycolor="HD_color2";	
+				holidaycolorspace="HD_color2space";
 			}
 			if(popholidaytype=="Local Holiday")
 			{
 				holidaycolor="HD_color3";
+				holidaycolorspace="HD_color3space";
 			}
 			if(popholidaytype=="Others")
 			{
 				holidaycolor="HD_color4";
+				holidaycolorspace="HD_color4space";
 			}
 			
-			
-			$('.td[name="' + popdate + '"]').append("<div class='divholiday "+ holidaycolor +"'>"+ popholidaydescription +"</div>");
+			drag=drag+1;
+			$('.td[name="' + fromdate + '"]').append("<div class='divholiday "+ holidaycolor +"' draggable='true' ondragstart='drag(event)' id='drag"+ drag +"'> <span class='"+ holidaycolorspace +"'>|</span> "+ popholidaydescription +"</div>");
 			
 			$('#holidayStatusScrollable').modal('toggle');
 		
 		});
 
-		$(".sunday").append("<div class='divholidaysunday'>Sunday</div>");
+		$(".sunday").append("<div class='divholidaysunday'><span class='redspace'>|</span> Sunday</div>");
+		
+		//--------------------------------------------------------	
+		//--------------------------------------------------------
+		/*$(function () {
+			 var startdate="";
+			 var enddate="";
+			  var isMouseDown = false;
+			  $(".td")
+			    .mousedown(function () {
+			      isMouseDown = true;
+			      //$(this).toggleClass("highlighted");
+			      startdate=$(this).attr("name");
+			      enddate=$(this).attr("name");
+			      return false; // prevent text selection
+			    })
+			    .mouseup(function () {
+			    	 isMouseDown = false;
+				      //alert(startdate+ " - "+ enddate);
+				      $('#fromdate').val(startdate);
+					  $('#todate').val(enddate);
+					  $('#holidayStatusScrollable').modal('toggle');
+			    })
+			    .mouseover(function () {
+			      if (isMouseDown) {
+			        //$(this).toggleClass("highlighted");
+			    	  enddate=$(this).attr("name");
+			      }
+			      
+			    });
+			  
+			 
+			});*/
+		//--------------------------------------------------------
+		//--------------------------------------------------------
 	});
 </script>	
 

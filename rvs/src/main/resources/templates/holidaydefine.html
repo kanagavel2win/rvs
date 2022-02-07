@@ -108,6 +108,7 @@
   text-decoration: none;
   cursor: pointer;
 }
+
 </style>
 </head>
 <!-- END: Head-->
@@ -160,7 +161,8 @@
 	                                                      <div class="position-relative">From Date</div>
 	                                                  </div>
 	                                                  <div class="form-group col-md-6">
-	                                                      <input type="text"  id="fromdate" class="form-control" />
+	                                                      <input type="text"  id="fromdate" class="form-control" readonly/>
+	                                                      
 	                                                  </div>
 	                                            </div>
 	                                            <div class="row">
@@ -168,7 +170,7 @@
 	                                                      <div class="position-relative">To Date</div>
 	                                                  </div>
 	                                                  <div class="form-group col-md-6">
-	                                                      <input type="text"  id="todate" class="form-control" />
+	                                                      <input type="text"  id="todate" class="form-control" readonly/>
 	                                                  </div>
 	                                            </div>
 	                                            <div class="row">
@@ -196,6 +198,7 @@
 	                                                  </div>
 	                                                  <div class="form-group col-md-6">
 	                                                      <input type="text" id="popholidaydescription" class="form-control" />
+	                                                       <input type="hidden" id="eventid" class="form-control" />
 	                                                  </div>
 	                                            </div>
 	                                           
@@ -206,10 +209,16 @@
                                        
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" class="btn btn-light-danger" id="itemalldeletebtn">
+                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">Delete</span>
+                                            </button>
+                                            
                                             <button type="button" class="btn btn-light-secondary modelclose">
                                                 <i class="bx bx-x d-block d-sm-none"></i>
                                                 <span class="d-none d-sm-block">Close</span>
                                             </button>
+                                          
                                             <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
                                                 <i class="bx bx-check d-block d-sm-none"></i>
                                                 <span class="d-none d-sm-block text-white">ADD</span>
@@ -339,7 +348,6 @@ $(document).ready(function() {
   var m = date.getMonth();  
   var y = date.getFullYear();  
   
-  
   var calendar = $('#calendar').fullCalendar({  
    editable: true,  
    header: {  
@@ -348,7 +356,7 @@ $(document).ready(function() {
     right: 'month,agendaWeek,agendaDay,list'  
    },  
   
-   events: "[]",  
+   events: [],  
   
    eventRender: function(event, element, view) {  
     if (event.allDay === 'true') {  
@@ -359,68 +367,45 @@ $(document).ready(function() {
    },  
    selectable: true,  
    selectHelper: true,  
-   
+   displayEventTime : false,
    
    select: function(start, end, allDay) {  
 	   
-	   var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");  
-	   var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+	   var start = $.fullCalendar.formatDate(start, "Y-MM-DD");  
+	   var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
+	   
+	   
 	   $('#fromdate').val(start);
 	   $('#todate').val(end);
+	   $('#eventid').val('');
+	   $('#additemallsavebtn').text("ADD");
+	   $('#itemalldeletebtn').hide();
 	   $('#myModal').css("display","block");
-		  /* $('#additemallsavebtn').click(function(){  
-				   var title="dfdfd";
-				   
-				    $.ajax({  
-				       url: 'add_events.php',  
-				       data: 'title='+ title+'&start='+ start +'&end='+ end,  
-				       type: "POST",  
-				       success: function(json) {  
-				       alert('Added Successfully');  
-				       }  
-				   });  
-				   alert('Added Successfully'); 
-				   $('#myModal').css("display","none");
-				   
-				   calendar.fullCalendar('renderEvent',  
-				   {  
-				       title: title,  
-				       start: start,  
-				       end: end,  
-				       allDay: allDay  
-				   },true); 
-				   $('#calendar').fullCalendar('refetchEvents');
-				   
-	   		}); */  
+	   	
+	   
    calendar.fullCalendar('unselect');  
    },  
-  
+   
    editable: true,  
    
    eventDrop: function(event, delta) {  
-   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");  
-   var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");  
-   /*$.ajax({  
-       url: 'update_events.php',  
-       data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
-       type: "POST",  
-       success: function(json) {  
-        alert("Updated Successfully");  
-       }  
-   });  */
-   alert("Updated Successfully");
+   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
+   var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");  
+ 
+  // alert("Updated Successfully");
    },  
+   
    eventClick: function(event) {  
 	   
-	  // var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");  
-	   //var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-	   var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");  
-       var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");  
-       
-	  
+	   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
+       var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");  
+      
 	   $('#popholidaydescription').val(event.title);
-       $('#fromdate').val(event.start);  
-       $('#todate').val(event.end);
+       $('#fromdate').val(start);  
+       $('#todate').val(end);
+       $('#eventid').val(event.id);
+       $('#additemallsavebtn').text("Update");
+       $('#itemalldeletebtn').show();
        $('#myModal').css("display","block");
 	   
 	  
@@ -439,8 +424,8 @@ $(document).ready(function() {
     }  */
     },  
    eventResize: function(event) {  
-       var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");  
-       var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");  
+       var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");  
+       var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd");  
        /*$.ajax({  
         url: 'update_events.php',  
         data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
@@ -455,24 +440,61 @@ $(document).ready(function() {
   }); 
   
  //----------------------------------------------------
+ 
+ $('#itemalldeletebtn').click(function(){
+	 var decision = confirm("Do you really want to do delete it?");   
+	 if (decision) {  
+	  	$('#calendar').fullCalendar('removeEvents', $('#eventid').val());
+	  	
+	 }
+	 $('#myModal').css("display","none");
+ });
+ //----------------------------------------------------
   $('#additemallsavebtn').click(function(){  
+	  
+	   if($('#eventid').val()!='')
+	   {
+		   $('#calendar').fullCalendar('removeEvents', $('#eventid').val());
+	   }
 	   calid=calid+1;
 	   $('#myModal').css("display","none");
 	   
 	   title= $('#popholidaydescription').val();
+	   popholidaytype= $('#popholidaytype').val();
        start= $('#fromdate').val();  
        end= $('#todate').val();
        allDay= false;
-	   
+       holidaycolor="";
+       
+       if(popholidaytype=="National holiday")
+		{
+			holidaycolor="#48D1CC";	
+		}
+		if(popholidaytype=="State holiday")
+		{
+			holidaycolor="#9ACD32";	
+		}
+		if(popholidaytype=="Local Holiday")
+		{
+			holidaycolor="#FFEFDB";
+		}
+		if(popholidaytype=="Others")
+		{
+			holidaycolor="#87CEFF";
+		}
+		
 	   $('#calendar').fullCalendar('renderEvent',  
 	   {  
 		   id:calid,
 	       title: title,  
 	       start: start,  
 	       end: end,  
-	       allDay: allDay  
+	       allDay: allDay,
+	       backgroundColor: holidaycolor,
+	       color:"#40E0D0"
 	   },true); 
 	   $('#calendar').fullCalendar('refetchEvents');
+	   $('#popholidaydescription').val('');
 	   
 	});
   

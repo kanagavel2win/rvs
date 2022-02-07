@@ -122,11 +122,11 @@ public class HomeController {
 
 	}
 
-	@GetMapping("login")
+	/*@GetMapping("login")
 	public String login(Model model) {
 
 		return "login";
-	}
+	}*/
 
 	@GetMapping("403")
 	public String accessDenied(Model model) {
@@ -281,8 +281,8 @@ public class HomeController {
 	@SuppressWarnings("deprecation")
 	@GetMapping("holidaydefine")
 	public String holidaydefine(Model theModel,
-			@RequestParam(value = "date", defaultValue = "", required = false) String attdate) {
-		SimpleDateFormat formatterdate = new SimpleDateFormat("dd/MM/yyyy");
+		@RequestParam(value = "date", defaultValue = "", required = false) String attdate) {
+	/*	SimpleDateFormat formatterdate = new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat formatteryear = new SimpleDateFormat("yyyy");
 		SimpleDateFormat formattermonth = new SimpleDateFormat("MM");
 		SimpleDateFormat formatterdd = new SimpleDateFormat("dd");
@@ -387,7 +387,7 @@ public class HomeController {
 		theModel.addAttribute("currentdd", currentdd);
 		theModel.addAttribute("currentyear", currentyear);
 		theModel.addAttribute("currentmonname", currentmonname);
-		theModel.addAttribute("calhtml", calhtml);
+		theModel.addAttribute("calhtml", calhtml);*/
 		return "holidaydefine";
 	}
 	

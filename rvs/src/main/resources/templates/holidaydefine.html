@@ -56,271 +56,59 @@
 <!-- BEGIN: Custom CSS-->
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
-<style>
 
-	.divholiday
-	{
-		
-		min-width:80px;
-		font-size:10px;
-		text-align:left;
-		 
-	}
-	
-	.divholidaysunday
-	{
-			
-		min-width:80px;
-		font-size:12px;
-		text-align:left;
-		color:#FF5B5C; 
-		background-color:#FFDEDE;
-	}
-	.redspace{
-		background-color:#FF5B5C;
-		height:100%;
-		font-size:8px;
-	}
-	.HD_color1{
-		color:#00CFDD; 
-		background-color:#CCF5F8;
-		font-size:12px;
-	}
-	.HD_color2{
-		color:#5A8DEE; 
-		background-color:#E2ECFF;
-		font-size:12px;
-	}
-	.HD_color3{
-		color:#475F7B; 
-		background-color:#E6EAEE;
-		font-size:12px;
-	}
-	.HD_color4{
-		color:#39DA8A; 
-		background-color:#D2FFE8;
-		font-size:12px;
-	}
-	
-	.HD_color1space{
-		background-color:#00CFDD;
-		height:100%;
-		font-size:8px;
-	}
-	.HD_color2space{
-		background-color:#5A8DEE;
-		height:100%;
-		font-size:8px;
-	}
-	.HD_color3space{
-		background-color:#475F7B;
-		height:100%;
-		font-size:8px;
-	}
-	.HD_color4space{
-		background-color:#39DA8A;
-		height:100%;
-		font-size:8px;
-	}
-	 
-	
-  	#tabledate{
-	height:400px;
-	font-family:Verdana, Geneva, sans-serif;
-	font-size:14px;		
-	border:1px #ccc solid;	
-
-	}
-	.selectdate
-	{
-		border:1px #ccc solid;	
-	   	vertical-align:top;
-		text-align:right;
-		cursor:pointer;
-		
-	}
-	.ttd
-	{
-		border:1px #ccc solid;	
-		vertical-align:top;
-		text-align:right;
-		color:#000;
-		text-align:center;
-		vertical-align:middle;
-		width:80px;
-		height:40px;
-	}
-
-   .td
-   {
-   	border:1px #ccc solid;	
-   	vertical-align:top;
-	text-align:right;
-	cursor:pointer;
-	
-   }
-   
-    
-    .caltoptxt
-    {
-    	font-size:16px;
-    	text-align:center;
-    	vertical-align:middle;
-    	font-weight:bold;
-    }
-    .caltoptxtcontainer i
-    {
-    	font-size:38px;
-    	background:#F7F7F7;
-    	cursor:pointer;
-    }
-    
-    .calender
-    {
-    	float: left;
-    	
-    }
-    .Holidaylisttable td:nth-child(1) i
-	{
-		font-size:20px;
-		
-	}
-	.btnmasternote, .btnmasternote i
-	{
-		padding: 2px;
-   		padding-right: 10px;
-   		padding-left: 10px;
-   		border:0px #ccc solid;
-		font-size:28px;
-		background: #fff;
-		
-	}	    
-	.Holidaylisttable
-	{
-	  line-height:45px;
-	}
-	.Holidaylisttable td:nth-child(2)
-	{
-		padding-left: 10px;
-		font-size:13px;
-	}
-	.Holidaylisttable td:nth-child(3) button
-	{
-   		padding: 2px;
-   		padding-right: 10px;
-   		padding-left: 10px;
-   		font-size:13px;	
-	}
-	.Holidaylisttable td:nth-child(4) button
-	{
-		padding: 2px;
-   		padding-right: 10px;
-   		padding-left: 10px;
-   		font-size:13px;		
-	}
-	.Holidaylisttable td:nth-child(5) button
-	{
-		padding: 2px;
-   		padding-right: 10px;
-   		padding-left: 10px;
-   		font-size:13px;	
-	}
-	.Holidaylisttable td:nth-child(6) button
-	{
-		padding: 2px;
-   		padding-right: 10px;
-   		padding-left: 10px;
-   		font-size:13px;	
-	}
-
-	.btn, .btn-outline-info, .btn-outline-danger, .btn-outline-warning
-	{
-		border:1px #B5B5B5 solid;
-		color:#B5B5B5;
-	}
-	.cal_inner_holder
-	{
-		width:60px;
-		font-size:11px;
-		margin-top:35px;
-
-	}
-	.cal_inner_holder_right
-	{
-		
-		float:right;
-		font-size: 12px;
-	    min-width: 25px;
-	    height:23px;
-	    padding-top:4px;
-	    
-	    text-align: center;
-		
-	}
-	
-	.td:hover{
-	background-color: #D4D4D4;
-	}
-	.td:hover > .cal_inner_holder_right
-    {
-    	background-color: #6B6B6B;
-	    border-radius: 50%;
-	    color: #FFFFFF;
-	    transition: background-color 0.2s;
-    }
-    
-    .cal_inner_holder_right_today
-	{
-		float:right;
-		font-size: 12px;
-	    min-width: 25px;
-	    height:23px;
-	    padding-top:4px;
-	    text-align: center;
-	    border-radius: 50%;
-	    color: #FFFFFF;
-	    transition: background-color 0.2s;
-	    background-color: #ff3b30;
-	    
-		
-	}
-	.cal_inner{
-		float:left;
-		border-radius:3px;
-		width:20px;
-		text-align:center;
-		background:#CCC;
-		padding:2px;
-		margin:1px;
-	}
-	.today
-	{
-		float:right;
-		padding:5px;
-		border: none;
-		color:#ccc;
-	}				  
-	table .td.highlighted {
-  background-color:#999;
-}
-	
+<link rel="stylesheet"  type="text/css" th:href="@{/app-assets/fullcalendar/fullcalendar.css}" />  
+<link rel="stylesheet"  type="text/css" th:href="@{/app-assets/fullcalendar/bootstrap.css}" />  
+<script th:src="@{/app-assets/fullcalendar/jquery.min.js}"></script>  
+<script th:src="@{/app-assets/fullcalendar/jquery-ui.min.js}"></script>  
+<script th:src="@{/app-assets/fullcalendar/moment.min.js}"></script>  
+<script th:src="@{/app-assets/fullcalendar/fullcalendar.min.js}"></script> 
+ 
+<style>  
+ 
+ #calendar {  
+  min-width: 450px;  
+  margin: 0 auto;  
+  }  
 </style>
 
-<script>
-function allowDrop(ev) {
-  ev.preventDefault();
+<style>
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  z-index: 10000; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  
+  border: 1px solid #888;
+  width: 50%;
 }
 
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
-</script>
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
 </head>
 <!-- END: Head-->
 
@@ -345,17 +133,18 @@ function drop(ev) {
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-header row">
+            	
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
                         	
                         	 <!--scrolling content Modal -->
-                         		<div class="modal fade" id="holidayStatusScrollable" tabindex="-1" role="dialog" aria-labelledby="holidayStatusScrollableTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                    <div class="modal-content">
+	                        	 <!-- The Modal -->
+									<div id="myModal" class="modal">
+								        <div class="modal-content">
                                         <div class="modal-header bg-warning">
                                             <h5 class="modal-title white" id="holidayStatusScrollableTitle"></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close modelclose" data-dismiss="modal" aria-label="Close">
                                                 <i class="bx bx-x"></i>
                                             </button>
                                         </div>
@@ -417,7 +206,7 @@ function drop(ev) {
                                        
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+                                            <button type="button" class="btn btn-light-secondary modelclose">
                                                 <i class="bx bx-x d-block d-sm-none"></i>
                                                 <span class="d-none d-sm-block">Close</span>
                                             </button>
@@ -428,9 +217,10 @@ function drop(ev) {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            
+                          	 
                           	 <!--scrolling content Modal -->
-                        
+                        	<p></p>
                             <h5 class="content-header-title float-left pr-1 mb-0">Holiday</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
@@ -447,59 +237,31 @@ function drop(ev) {
                 </div>
                 
             </div>
+            
+
+			<!-- Trigger/Open The Modal -->
+			<button id="myBtn" style="display:none">Open Modal</button>
+			
+
             <div class="content-body">
               
 				 <!-- Zero configuration table -->
                 <section id="basic-datatable">
                     <div class="row">
-                        <div class="col-8">
-                        	<div class="card">
-                                <div class="">
-                                    <div class="card-body">
-                                    	<div class="row">
-                                        	<div class="col-md-12">
-		                                        <!-- ---------------------- -- ---------------------- -->
-		                                        <!-- ---------------------- -- ---------------------- -->
-		                                        <div class="table-responsive">
-		                                        <div class="calender">
-		                                        	<span class="caltoptxtcontainer">
-			                                        	<a th:href="@{holidaydefine?date={d}(d=${preDate})}">
-				                                        	<span class="caltoptxt"><i class="bx bx-chevron-left"></i></span>
-				                                        </a>
-			                                        	<span class="caltoptxt" th:text="${currentmonname}"></span>
-			                                        	<span class="caltoptxt" th:text="${currentyear}"></span>
-			                                        	<a th:href="@{holidaydefine?date={d}(d=${nxtDate})}">
-			                                        		<span class="caltoptxt"><i class="bx bx-chevron-right"></i></span>
-			                                        	</a>
-		                                        	</span>
-			                                        	<a th:href="@{holidaydefine?date={d}(d=${tempcurrentdate})}" class="btn-outline-primary today">Today</a>
-				                                        <table  id='tabledate' class="">
-				                                        	<tr>
-				                                            <th class='ttd'>Sun</th>
-				                                            <th class='ttd'>Mon</th>
-				                                            <th class='ttd'>Tue</th>
-				                                            <th class='ttd'>Wed</th>
-				                                            <th class='ttd'>Thu</th>
-				                                            <th class='ttd'>Fri</th>
-				                                            <th class='ttd'>Sat</th>
-				                                      	  </tr>
-				                                       
-				                                       		 [(${calhtml})]
-				                                        </table>
-				                                     </div>
-				                                     
-		                                        </div>
-		                                        <!-- ---------------------- -- ---------------------- -->
-		                                        <!-- ---------------------- -- ---------------------- -->
-		                                        
-		                                     </div>
-		                                     
-		                                     
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                       	<div class="card">
+                       				<p></p>
+                       			
+                                  <div class="col-md-12">
+                                     <!-- ---------------------- -- ---------------------- -->
+                                     <!-- ---------------------- -- ---------------------- -->
+                                     <div class="table-responsive">
+                                     	<div id='calendar'></div> 
+                                     </div>
+                                     <!-- ---------------------- -- ---------------------- -->
+                                     <!-- ---------------------- -- ---------------------- -->
+                                  </div>
+	                      </div>
+                       </div>
                 </section>
                 <!--/ Zero configuration table -->               
 			
@@ -525,17 +287,7 @@ function drop(ev) {
 		</footer>
 		<!-- END: Footer-->
 
-
-		<!-- BEGIN: Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-		<!-- BEGIN Vendor JS-->
-
+		
 		<!-- BEGIN: Page Vendor JS-->
 		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
 		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
@@ -552,96 +304,183 @@ function drop(ev) {
 		<script
 			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
 			
-    	<script th:src="@{/app-assets/js/scripts/extensions/drag-drop.js}"></script>
 		<!-- END: Page JS-->
 </body>
 <!-- END: Body-->
 <script>
-	$(document).ready(function(){
-		
-		var drag=1;
-		$('.td').click(function(){
-			
-			var popdate= $(this).attr("name");
-			$('#fromdate').val(popdate);
-			$('#todate').val(popdate);
-			$('#holidayStatusScrollable').modal('toggle');
-			
-		});
-		//--------------------------------------------------------
-		$('#additemallsavebtn').click(function(){
-			alert($('#fromdate').val());
-			fromdate = $('#fromdate').val();
-			todate = $('#todate').val();
-			popholidaytype= $('#popholidaytype').val();
-			popholidaydescription= $('#popholidaydescription').val();
-			
-			holidaycolor="";
-			holidaycolorspace="";
-			if(popholidaytype=="National holiday")
-			{
-				holidaycolor="HD_color1";	
-				holidaycolorspace="HD_color1space";
-			}
-			if(popholidaytype=="State holiday")
-			{
-				holidaycolor="HD_color2";	
-				holidaycolorspace="HD_color2space";
-			}
-			if(popholidaytype=="Local Holiday")
-			{
-				holidaycolor="HD_color3";
-				holidaycolorspace="HD_color3space";
-			}
-			if(popholidaytype=="Others")
-			{
-				holidaycolor="HD_color4";
-				holidaycolorspace="HD_color4space";
-			}
-			
-			drag=drag+1;
-			$('.td[name="' + fromdate + '"]').append("<div class='divholiday "+ holidaycolor +"' draggable='true' ondragstart='drag(event)' id='drag"+ drag +"'> <span class='"+ holidaycolorspace +"'>|</span> "+ popholidaydescription +"</div>");
-			
-			$('#holidayStatusScrollable').modal('toggle');
-		
-		});
-
-		$(".sunday").append("<div class='divholidaysunday'><span class='redspace'>|</span> Sunday</div>");
-		
-		//--------------------------------------------------------	
-		//--------------------------------------------------------
-		/*$(function () {
-			 var startdate="";
-			 var enddate="";
-			  var isMouseDown = false;
-			  $(".td")
-			    .mousedown(function () {
-			      isMouseDown = true;
-			      //$(this).toggleClass("highlighted");
-			      startdate=$(this).attr("name");
-			      enddate=$(this).attr("name");
-			      return false; // prevent text selection
-			    })
-			    .mouseup(function () {
-			    	 isMouseDown = false;
-				      //alert(startdate+ " - "+ enddate);
-				      $('#fromdate').val(startdate);
-					  $('#todate').val(enddate);
-					  $('#holidayStatusScrollable').modal('toggle');
-			    })
-			    .mouseover(function () {
-			      if (isMouseDown) {
-			        //$(this).toggleClass("highlighted");
-			    	  enddate=$(this).attr("name");
-			      }
-			      
-			    });
-			  
-			 
-			});*/
-		//--------------------------------------------------------
-		//--------------------------------------------------------
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("modelclose")[0];
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+span.onclick = function() {
+  modal.style.display = "none";
+}
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+$(document).ready(function() {  
+	$('.modelclose').click(function(){
+		$('#myModal').css("display","none");
 	});
-</script>	
+
+});
+</script>
+<script>  
+  
+ $(document).ready(function() {  
+	 
+  var calid=1;
+  var date = new Date();  
+  var d = date.getDate();  
+  var m = date.getMonth();  
+  var y = date.getFullYear();  
+  
+  
+  var calendar = $('#calendar').fullCalendar({  
+   editable: true,  
+   header: {  
+    left: 'prev,next today',  
+    center: 'title',  
+    right: 'month,agendaWeek,agendaDay,list'  
+   },  
+  
+   events: "[]",  
+  
+   eventRender: function(event, element, view) {  
+    if (event.allDay === 'true') {  
+     event.allDay = true;  
+    } else {  
+     event.allDay = false;  
+    }  
+   },  
+   selectable: true,  
+   selectHelper: true,  
+   
+   
+   select: function(start, end, allDay) {  
+	   
+	   var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");  
+	   var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+	   $('#fromdate').val(start);
+	   $('#todate').val(end);
+	   $('#myModal').css("display","block");
+		  /* $('#additemallsavebtn').click(function(){  
+				   var title="dfdfd";
+				   
+				    $.ajax({  
+				       url: 'add_events.php',  
+				       data: 'title='+ title+'&start='+ start +'&end='+ end,  
+				       type: "POST",  
+				       success: function(json) {  
+				       alert('Added Successfully');  
+				       }  
+				   });  
+				   alert('Added Successfully'); 
+				   $('#myModal').css("display","none");
+				   
+				   calendar.fullCalendar('renderEvent',  
+				   {  
+				       title: title,  
+				       start: start,  
+				       end: end,  
+				       allDay: allDay  
+				   },true); 
+				   $('#calendar').fullCalendar('refetchEvents');
+				   
+	   		}); */  
+   calendar.fullCalendar('unselect');  
+   },  
+  
+   editable: true,  
+   
+   eventDrop: function(event, delta) {  
+   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");  
+   var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");  
+   /*$.ajax({  
+       url: 'update_events.php',  
+       data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
+       type: "POST",  
+       success: function(json) {  
+        alert("Updated Successfully");  
+       }  
+   });  */
+   alert("Updated Successfully");
+   },  
+   eventClick: function(event) {  
+	   
+	  // var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");  
+	   //var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+	   var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");  
+       var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");  
+       
+	  
+	   $('#popholidaydescription').val(event.title);
+       $('#fromdate').val(event.start);  
+       $('#todate').val(event.end);
+       $('#myModal').css("display","block");
+	   
+	  
+    /*var decision = confirm("Do you really want to do delete it?");   
+    if (decision) {  
+    /*$.ajax({  
+        type: "POST",  
+        url: "delete_event.php",  
+        data: "&id=" + event.id,  
+         success: function(json) {  
+             $('#calendar').fullCalendar('removeEvents', event.id);  
+              alert("Updated Successfully");}  
+    });  
+    	$('#calendar').fullCalendar('removeEvents', event.id);  
+        alert("Deleted Successfully");
+    }  */
+    },  
+   eventResize: function(event) {  
+       var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");  
+       var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");  
+       /*$.ajax({  
+        url: 'update_events.php',  
+        data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
+        type: "POST",  
+        success: function(json) {  
+         alert("Updated Successfully");  
+        }  
+       }); */
+       alert("Updated Successfully");
+    }  
+     
+  }); 
+  
+ //----------------------------------------------------
+  $('#additemallsavebtn').click(function(){  
+	   calid=calid+1;
+	   $('#myModal').css("display","none");
+	   
+	   title= $('#popholidaydescription').val();
+       start= $('#fromdate').val();  
+       end= $('#todate').val();
+       allDay= false;
+	   
+	   $('#calendar').fullCalendar('renderEvent',  
+	   {  
+		   id:calid,
+	       title: title,  
+	       start: start,  
+	       end: end,  
+	       allDay: allDay  
+	   },true); 
+	   $('#calendar').fullCalendar('refetchEvents');
+	   
+	});
+  
+  //----------------------------------------------------
+ });  
+  
+</script>  
+
+
 
 </html>

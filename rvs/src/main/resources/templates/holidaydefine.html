@@ -377,8 +377,10 @@ $(document).ready(function() {
    select: function(start, end, allDay) {  
 	   
 	   var start = $.fullCalendar.formatDate(start, "Y-MM-DD");  
-	   var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
-	   
+	   //var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
+	   endtemp=new Date(end-(1*24*60*60*1000));
+	   var end= moment(endtemp).format('Y-MM-DD');
+       
 	   
 	   $('#fromdate').val(start);
 	   $('#todate').val(end);
@@ -403,13 +405,18 @@ $(document).ready(function() {
    eventClick: function(event) {  
 	   
 	   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
-       var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");  
-      
-	   $('#popholidaydescription').val(event.title);
+       //var end1 = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
+       
+       endtemp=new Date(event.end-(1*24*60*60*1000));
+	   var end= moment(endtemp).format('Y-MM-DD');
+       
+        $('#popholidaydescription').val(event.title);
 	   
        $('#fromdate').val(start);  
        $('#todate').val(end);
        $('#eventid').val(event.id);
+       $('#popholidaytype').val(event.description);
+       
        $('#additemallsavebtn').text("Update");
        $('#itemalldeletebtn').show();
        $('#myModal').css("display","block");
@@ -429,19 +436,19 @@ $(document).ready(function() {
         alert("Deleted Successfully");
     }  */
     },  
-   eventResize: function(event) {  
-       var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");  
-       var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd");  
-       /*$.ajax({  
-        url: 'update_events.php',  
-        data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
-        type: "POST",  
-        success: function(json) {  
-         alert("Updated Successfully");  
-        }  
-       }); */
-       alert("Updated Successfully");
-    }  
+    eventResize: function(event) {  
+        var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");  
+        var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");  
+        /*$.ajax({  
+         url: 'update_events.php',  
+         data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
+         type: "POST",  
+         success: function(json) {  
+          alert("Updated Successfully");  
+         }  
+        }); */
+        alert("Updated Successfully");
+     }  
      
   }); 
   
@@ -468,8 +475,11 @@ $(document).ready(function() {
 	   title= $('#popholidaydescription').val();
 	   popholidaytype= $('#popholidaytype').val();
        start= $('#fromdate').val();  
-       end= $('#todate').val();
-       allDay= false;
+       var endtemp= new Date($('#todate').val());
+       var end1=new Date(endtemp.getTime() + (1*24*60*60*1000));
+	   var end= moment(end1).format('Y-MM-DD');
+       
+       allDay= true;
        holidaycolor="";
        
        if(popholidaytype=="National holiday")
@@ -498,7 +508,8 @@ $(document).ready(function() {
 	       allDay: allDay,
 	       backgroundColor: holidaycolor,
 	       borderColor:holidaycolor,
-	       color:"#40E0D0"
+	       color:"#40E0D0",
+	       description:popholidaytype
 	   },true); 
 	   $('#calendar').fullCalendar('refetchEvents');
 	   $('#popholidaydescription').val('');

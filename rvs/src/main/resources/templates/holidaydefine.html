@@ -242,7 +242,7 @@
                             <h5 class="content-header-title float-left pr-1 mb-0">Holiday</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index.html"><i class="bx bx-home-alt"></i></a>
+                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
                                     </li>
                                   
                                 	   
@@ -291,8 +291,8 @@
 
 
 		
-		<div class="sidenav-overlay"></div>
-		<div class="drag-target"></div>
+		<div class="sidenav-overlay" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+		<div class="drag-target" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
 
 		<!-- BEGIN: Footer-->
 		<footer class="footer footer-static footer-light">
@@ -307,7 +307,9 @@
 		<!-- END: Footer-->
 
 		
+		
 		<!-- BEGIN: Page Vendor JS-->
+		
 		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
 		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
 		<!-- END: Page Vendor JS-->
@@ -524,7 +526,36 @@ $(document).ready(function() {
 	   
 	});
   
-  //----------------------------------------------------
+
+ //----------------------------------------------------
+ $('.mobile-menu').click(function(){
+	
+	 $('.vertical-layout').addClass('vertical-overlay-menu pace-done menu-open');
+	 $('.vertical-layout').removeClass('vertical-menu-modern');
+	 $('.main-menu').addClass('expanded');
+	 $('.main-menu').css('touch-action','none');
+	 $('.main-menu').css('user-select','none'); 
+	 $('.main-menu').css('-webkit-user-drag','none'); 
+	 $('.main-menu').css('-webkit-tap-highlight-color','rgba(0, 0, 0, 0)');
+	 $('.navbar-header').addClass('expanded');
+	 $('.main-menu-content').addClass('ps');
+	$('.sidenav-overlay').addClass('d-block');
+ });
+ 
+ $('.sidenav-overlay').click(function(){
+		
+	 $('.vertical-layout').removeClass('vertical-overlay-menu pace-done menu-open');
+	 $('.vertical-layout').addClass('vertical-menu-modern');
+	 $('.main-menu').removeClass('expanded');
+	 $('.main-menu').css('touch-action','none');
+	 $('.main-menu').css('user-select','none'); 
+	 $('.main-menu').css('-webkit-user-drag','none'); 
+	 $('.main-menu').css('-webkit-tap-highlight-color','rgba(0, 0, 0, 0)');
+	 $('.navbar-header').removeClass('expanded');
+	 $('.main-menu-content').removeClass('ps');
+	$('.sidenav-overlay').removeClass('d-block');
+ });
+ 
  });  
   
 </script>  

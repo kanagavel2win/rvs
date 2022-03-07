@@ -56,8 +56,11 @@
 <style>
 	.addnewbranch
 	{
-	 float:right;
-	 margin-top:-30px;
+	 
+	 position:absolute;
+	 right:-20px;
+	 top:0px;
+	 cursor:pointer;
 	}
 	.bx-edit, .bx-show
 	{
@@ -65,6 +68,7 @@
 	 padding-top:10%;
 	 padding-right:10%;
 	 font-size:20px;
+	 cursor:pointer;
 	}
 	.iconalign
 	{
@@ -74,6 +78,13 @@
 	 font-size:20px;
 	 width: 100px;
 	}
+	
+	table td:nth-child(2),td:nth-child(3),td:nth-child(4)
+	{
+  		min-width:150px;
+  		padding-left:0px;
+  		padding-right:0px;
+  	}
 </style>
 
 </head>
@@ -106,7 +117,7 @@
                             <h5 class="content-header-title float-left pr-1 mb-0">Branch List</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index.html"><i class="bx bx-home-alt"></i></a>
+                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
                                     </li>
                                     <li class="breadcrumb-item"><a href="#">Branch</a>
                                     </li>
@@ -136,12 +147,12 @@
                                             <table class="table zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th width="5%">S.No</th>
-                                                        <th width="25%">Branch Name</th>
-                                                        <th width="25%">In-charge</th>
-                                                        <th width="25%">Off Phone Number</th>
-                                                        <th width="15%">Off Email</th>                                                                                                             
-                                                        <th width="5%"></th>
+                                                        <th>S.No</th>
+                                                        <th>Branch Name</th>
+                                                        <th>In-charge</th>
+                                                        <th>Off Phone Number</th>
+                                                        <th>Off Email</th>                                                                                                             
+                                                        <th></th>
                                                         
 	
                                                     </tr>
@@ -163,18 +174,8 @@
 													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a> </td>
 													   <td><span class="iconalign"><i class="bx bx-edit"></i> <i class="bx bx-show"></i><span></td>
 													</tr>
-                                                                                                       
                                                 </tbody>
-                                                <tfoot>
-                                                     <tr>
-                                                        <th>S.No</th>
-                                                        <th>Branch Name</th>
-                                                        <th>In-charge</th>
-                                                        <th>Off Phone Number</th>
-                                                        <th>Off Email</th>                                                                                                             
-                                                        <th></th>
-                                                    </tr>
-                                                </tfoot>
+                                                
                                             </table>
                                         </div>
                                     </div>

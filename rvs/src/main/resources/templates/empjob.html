@@ -61,6 +61,7 @@
 	    line-height: 20px;
 	    font-weight: 600;
 	    font-family: Fira Sans,Trebuchet MS,sans-serif;
+	    cursor:pointer;
 	}
 	thead
 	{
@@ -88,10 +89,12 @@
 		position: absolute;
 		left:-20px;
 		top:-5px;
+		cursor:pointer;
 	}
 	.ownstyle1{
 		font-size:25px;
 		top:-2px;
+		cursor:pointer;
 	}
 	.iconalign
 	{
@@ -109,6 +112,19 @@
 	.bullet.bullet-success {
     background-color: #527a00;
 	}
+	
+	.e1
+	{
+		max-width:200px;
+	
+	}
+	.e2
+	{
+		min-width:100px;
+		min-height:25px;
+	}
+	
+	
 </style>
 
 </head>
@@ -141,7 +157,7 @@
                             <h5 class="content-header-title float-left pr-1 mb-0">Employee Job</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index.html"><i class="bx bx-home-alt"></i></a>
+                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
                                     </li>
                                     
                                 </ol>
@@ -170,28 +186,26 @@
                                               <label class="emptitle"> <i class="bx bx-briefcase-alt-2 ownstyle"></i> JOB</label>
                                              </div>
                                         </div>
-                                        <div class="row">
-		                                        <div class="col-3">
+                                        <div class="col-md-12">
+		                                        
 		                                         	<div class="form-group">
 		                                                  <label for="contact-info-icon">Hire Date</label>
+		                                                  <div class="form-group">
 		                                                  <div class="position-relative has-icon-left">
-		                                                      <input type="date"  class="form-control" >
+		                                                      <input type="date"  class="e1 form-control" >
 		                                                      <div class="form-control-position">
 		                                                          <i class="bx bx-calendar-event"></i>
 		                                                      </div>
-		                                                       
+		                                                </div>       
 		                                           		</div>
 		                                            </div>
-		                                        </div>
-		                                         <div class="col-3">
 		                                         
 		                                         	<div class="form-group">
-		                                         			<br/>
-		                                             		<button type="button" class=" position-relative  btn btn-primary ml-1">
-		                                                     <span class="d-none d-sm-block">Save</span>
+		                                             		<button type="button" class="e2 position-relative  btn btn-primary ml-1">
+		                                                     Save
 		                                                 	</button>
 			                                      	</div>
-		                                         </div>    
+		                                            
 		                                  </div>
                                          <hr/>
                                     	<div class="col-md-12">
@@ -607,7 +621,9 @@
 		                                                    </div>
 		                                                    <div class="col-md-12">
 		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Pay Rate</label>
+		                                                            <label for="email-id-icon">Pay Rate
+		                                                            	<label class="emptitle additem" name="addpayratedata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
 						                                                    <input type="text"  class="form-control"  style="width:50%;float:left;" id="compensation_payrate">
@@ -615,7 +631,7 @@
 			                                                                    <i class="bx bx-money"></i>
 			                                                                </div>
 						                                                
-						                                                    <select class="form-control"  style="width:50%;float:right" id="compensation_payratetype">
+						                                                    <select class="form-control addpayratedata"  style="width:50%;float:right" id="compensation_payratetype">
 						                                                        <option>-</option>
 						                                                        <option>Day</option>
 						                                                        <option>Month</option>
@@ -851,6 +867,7 @@
 					if(name=="addemployeestatusdata"){ labeltext="New Employee Status"; }
 					if(name=="addterminationreasondata"){ labeltext="New Termination Reason"; }
 					if(name=="addterminationtypedata"){ labeltext="New Termination Type"; }
+					if(name=="addpayratedata"){ labeltext="New Type of Pay Rate"; }
 					$('#additemalltxt').text(labeltext);
 					$('#newadditemScrollable').modal('toggle');
 					
@@ -868,6 +885,7 @@
 						if(name=="New Employee Status"){ labeltext="addemployeestatusdata"; }
 						if(name=="New Termination Reason"){ labeltext="addterminationreasondata"; }
 						if(name=="New Termination Type"){ labeltext="addterminationtypedata"; }
+						if(name=="New Type of Pay Rate"){ labeltext="addpayratedata"; }
 						
 						$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
 						$("#additemall").val('');

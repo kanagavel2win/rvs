@@ -85,6 +85,7 @@
   		padding-left:0px;
   		padding-right:0px;
   	}
+  	
 </style>
 
 </head>
@@ -148,7 +149,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S.No</th>
-                                                        <th>Branch Name</th>
+                                                        <th>Branch_Name</th>
                                                         <th>In-charge</th>
                                                         <th>Off Phone Number</th>
                                                         <th>Off Email</th>                                                                                                             
@@ -158,22 +159,38 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                	<tr>
-													   <td>1</td> 	
-													   <td>Coimbatore<br/>Head Office</td>
-													   <td>Sugumar <br/><a href="tel:+91 96005 35855">+91 9600535855</a></td>
-													   <td><a href="tel:+91 96005 35855">+91 9600535855</a><br></td>
-													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a></td>
-													   <td><span class="iconalign"><i class="bx bx-edit"></i> <i class="bx bx-show"></i><span></td>
+                                                
+                                                	<tr th:each="blist : ${branchlist}">
+                                                	
+													   <td th:text="${blist['id']}"></td> 
+													   <td><span th:text="${blist['BRANCH_NAME']}"></span>
+													   <br/>
+													   <span th:text="${blist['B_TYPE']}"></span>
+													   </td>	
+													   <td><span th:text="${blist['BRANCH_IN_CHARGE']}"></span>
+													   <br/>
+													   	<a th:href="'tel:' + @{{id} (id=${blist['IN_CHARGE_CONTACT_DETAILS']})}">
+													   		<span th:text="${blist['IN_CHARGE_CONTACT_DETAILS']}"></span>
+													   	</a>
+													   </td>
+													   <td>
+													   		<a th:href="'tel:' + @{{id} (id=${blist['OFFICE_PHONE_NUMBER']})}">
+													   			<span th:text="${blist['OFFICE_PHONE_NUMBER']}"></span>
+													   		</a>
+													   </td>
+													    <td>
+													   		<a th:href="'tel:' + @{{id} (id=${blist['BRANCH_OFFICE_EMAIL_ID']})}">
+													   			<span th:text="${blist['BRANCH_OFFICE_EMAIL_ID']}"></span>
+													   		</a>
+													   </td>	
+													   <td>
+													   	<a th:href="'editbranch?id=' + @{{id} (id=${blist['id']})}">
+													   			<span class="iconalign"><i class="bx bx-edit"></i> <i class="bx bx-show"></i>
+													   			</span>
+													   	</a>
+													   	</td>
 													</tr>
-													<tr>
-													   <td>2</td> 	
-													   <td>Coimbatore<br/>Head Office</td>
-													   <td>Sugumar <br/><a href="tel:+91 96005 35855">+91 9600535855</a></td>
-													   <td><a href="tel:+91 96005 35855">+91 9600535855</a><br></td>
-													   <td><a href="mailto:helpdesk@rvsls.com">helpdesk@rvsls.com</a> </td>
-													   <td><span class="iconalign"><i class="bx bx-edit"></i> <i class="bx bx-show"></i><span></td>
-													</tr>
+													
                                                 </tbody>
                                                 
                                             </table>

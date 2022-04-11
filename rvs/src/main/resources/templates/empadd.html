@@ -113,7 +113,10 @@
                             <div class="card">
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form class="form form-vertical">
+                                        <form th:action="@{/employeesave}" th:object="${employeemaster}"
+											method="POST" class="wizard-horizontal"
+											enctype="multipart/form-data">
+											
                                             <div class="form-body">
                                                 <div class="row">
                                                 	<div class="col-md-12">
@@ -122,9 +125,7 @@
                                                           </div>
                                                     </div>
                                                     <div class="col-md-3">
-                                                    
-                                                    	
-					                                             <!--scrolling content Modal -->
+                                                                 <!--scrolling content Modal -->
 					                                       		 <div class="modal fade" id="employeeStatusScrollable" tabindex="-1" role="dialog" aria-labelledby="employeeStatusScrollableTitle" aria-hidden="true">
 							                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
 							                                                <div class="modal-content">
@@ -164,7 +165,8 @@
                                                         <div class="form-group">
                                                             <label for="first-name-icon">E.ID</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="first-name-icon" class="form-control" name="fname-icon" placeholder="E.ID">
+                                                                <input type="hidden" th:value="${employeemaster['empMasterid']}" th:field="*{empMasterid}">
+                                                                <input type="text" id="first-name-icon" class="form-control" name="fname-icon" placeholder="E.ID" th:value="${employeemaster['Empid']}" th:field="*{Empid}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-id-card"></i>
                                                                 </div>
@@ -175,7 +177,7 @@
                                                         <div class="form-group">
                                                             <label for="first-name-icon">Staff Name</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="first-name-icon" class="form-control" name="fname-icon" placeholder="Staff Name">
+                                                                <input type="text" id="first-name-icon" class="form-control" name="fname-icon" placeholder="Staff Name" th:value="${employeemaster['StaffName']}" th:field="*{StaffName}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-user"></i>
                                                                 </div>
@@ -187,10 +189,10 @@
                                                             <label for="email-id-icon">Gender</label>
                                                             <div class="position-relative has-icon-left">
                                                                 <fieldset class="form-group">
-				                                                    <select class="form-control" id="basicSelect">
-				                                                        <option>-</option>
-				                                                        <option>Male</option>
-				                                                        <option>Female</option>
+				                                                    <select class="form-control"  th:value="${employeemaster['Gender']}" th:field="*{Gender}">
+				                                                        <option value="-">-</option>
+				                                                        <option value="Male">Male</option>
+				                                                        <option value="Female">Female</option>
 				                                                        
 				                                                    </select>
 				                                                    <div class="form-control-position">
@@ -208,10 +210,10 @@
                                                             </label>
                                                             <div class="position-relative has-icon-left">
                                                                 <fieldset class="form-group">
-				                                                    <select class="form-control addmaritalstatusdata">
-				                                                        <option>-</option>
-				                                                        <option>Single</option>
-				                                                        <option>Married</option>
+				                                                    <select class="form-control addmaritalstatusdata"  th:value="${employeemaster['MaritalStatus']}" th:field="*{MaritalStatus}">
+				                                                        <option value="-">-</option>
+				                                                        <option value="Single">Single</option>
+				                                                        <option value="Married">Married</option>
 				                                                        
 				                                                    </select>
 				                                                    <div class="form-control-position">
@@ -225,7 +227,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Date of Birth</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="date" id="contact-info-icon" class="form-control" name="contact-icon">
+                                                                <input type="date"  class="form-control"  th:value="${employeemaster['DateofBirth']}" th:field="*{DateofBirth}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-calendar-event"></i>
                                                                 </div>
@@ -236,7 +238,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Blood Group</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Blood Group">
+                                                                <input type="text"  class="form-control"  placeholder="Blood Group" th:value="${employeemaster['BloodGroup']}" th:field="*{BloodGroup}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-droplet"></i>
                                                                 </div>
@@ -247,7 +249,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Height</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Height">
+                                                                <input type="text"  class="form-control"  placeholder="Height" th:value="${employeemaster['Height']}" th:field="*{Height}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-up-arrow-alt"></i>
                                                                 </div>
@@ -258,7 +260,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Weight</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Weight">
+                                                                <input type="text"  class="form-control"  placeholder="Weight" th:value="${employeemaster['Weight']}" th:field="*{Weight}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-cloud"></i>
                                                                 </div>
@@ -269,7 +271,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Aadhar No</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Aadhar No">
+                                                                <input type="text"  class="form-control"  placeholder="Aadhar No" th:value="${employeemaster['AadharNo']}" th:field="*{AadharNo}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-grid-small"></i>
                                                                 </div>
@@ -280,7 +282,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">PAN No</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="PAN No">
+                                                                <input type="text"  class="form-control"  placeholder="PAN No" th:value="${employeemaster['PANNo']}" th:field="*{PANNo}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-layout"></i>
                                                                 </div>
@@ -291,7 +293,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">D.L.No</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="D.L.No">
+                                                                <input type="text"  class="form-control"  placeholder="D.L.No" th:value="${employeemaster['DLNo']}" th:field="*{DLNo}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-border-radius"></i>
                                                                 </div>
@@ -302,10 +304,10 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Accommodation</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <select class="form-control" id="basicSelect">
-				                                                        <option>-</option>
-				                                                        <option>Office</option>
-				                                                        <option>Self</option>
+                                                                <select class="form-control"  th:value="${employeemaster['Accommodation']}" th:field="*{Accommodation}">
+				                                                        <option value="-">-</option>
+				                                                        <option value="Office">Office</option>
+				                                                        <option value="Self">Self</option>
 				                                                 </select>
 				                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-bath"></i>
@@ -318,13 +320,13 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Shirt Size</label>
                                                             <div class="position-relative has-icon-left">
-                                                               <select class="form-control" id="basicSelect">
-			                                                        <option>-</option>
-			                                                        <option>Small</option>
-			                                                        <option>Medium</option>
-			                                                        <option>Large</option>
-			                                                        <option>Xlarge</option>
-			                                                        <option>XXLarge</option>
+                                                               <select class="form-control"  th:value="${employeemaster['ShirtSize']}" th:field="*{ShirtSize}">
+			                                                        <option value="-">-</option>
+			                                                        <option value="Small">Small</option>
+			                                                        <option value="Medium">Medium</option>
+			                                                        <option value="Large">Large</option>
+			                                                        <option value="Xlarge">Xlarge</option>
+			                                                        <option value="XXLarge">XXLarge</option>
 			                                                    </select>
 			                                                    <div class="form-control-position">
                                                                     <i class="bx bxs-t-shirt"></i>
@@ -344,7 +346,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 1">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Street 1" th:value="${employeemaster['Address_Street1']}" th:field="*{Address_Street1}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-home"></i>
                                                                 </div>
@@ -355,7 +357,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 2">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Street 2" th:value="${employeemaster['Address_Street2']}" th:field="*{Address_Street2}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-navigation"></i>
                                                                 </div>
@@ -366,7 +368,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Village">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Village" th:value="${employeemaster['Address_Village']}" th:field="*{Address_Village}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-directions"></i>
                                                                 </div>
@@ -377,7 +379,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Taluk">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Taluk" th:value="${employeemaster['Address_Taluk']}" th:field="*{Address_Taluk}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-city"></i>
                                                                 </div>
@@ -389,7 +391,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="City">
+                                                                <input type="text"  class="form-control"  placeholder="City" th:value="${employeemaster['Address_City']}" th:field="*{Address_City}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-building-house"></i>
                                                                 </div>
@@ -400,7 +402,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="State">
+                                                                <input type="text"  class="form-control"  placeholder="State" th:value="${employeemaster['Address_State']}" th:field="*{Address_State}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-stats"></i>
                                                                 </div>
@@ -411,7 +413,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="number" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Zip code">
+                                                                <input type="number"  class="form-control"  placeholder="Zip code" th:value="${employeemaster['Address_ZIP']}" th:field="*{Address_ZIP}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-message-alt-dots"></i>
                                                                 </div>
@@ -422,7 +424,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Country">
+                                                                <input type="text"  class="form-control"  placeholder="Country" th:value="${employeemaster['Address_Country']}" th:field="*{Address_Country}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-flag-alt"></i>
                                                                 </div>
@@ -439,7 +441,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Work Phone">
+                                                                <input type="text"  class="form-control"  placeholder="Work Phone" th:value="${employeemaster['Contact_WorkPhone']}" th:field="*{Contact_WorkPhone}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-dialpad"></i>
                                                                 </div>
@@ -450,7 +452,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Personal Phone	">
+                                                                <input type="text"  class="form-control"  placeholder="Personal Phone" th:value="${employeemaster['Contact_PersonalPhone']}" th:field="*{Contact_PersonalPhone}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-phone"></i>
                                                                 </div>
@@ -461,7 +463,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Other Phone">
+                                                                <input type="text"  class="form-control"  placeholder="Other Phone" th:value="${employeemaster['Contact_OtherPhone']}" th:field="*{Contact_OtherPhone}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-phone"></i>
                                                                 </div>
@@ -472,7 +474,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Email ID">
+                                                                <input type="text"  class="form-control"  placeholder="Email ID" th:value="${employeemaster['Contact_EmailID']}" th:field="*{Contact_EmailID}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-mail-send"></i>
                                                                 </div>
@@ -483,7 +485,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Work Email">
+                                                                <input type="text"  class="form-control"  placeholder="Work Email" th:value="${employeemaster['Contact_WorkEmail']}" th:field="*{Contact_WorkEmail}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-mail-send"></i>
                                                                 </div>
@@ -494,7 +496,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Personal Email">
+                                                                <input type="text"  class="form-control"  placeholder="Personal Email" th:value="${employeemaster['Contact_PersonalEmail']}" th:field="*{Contact_PersonalEmail}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-mail-send"></i>
                                                                 </div>
@@ -515,11 +517,14 @@
                                                		<div class="col-md-12">
 														
                                                       </div>
+                                                 <th:block th:each="EmployeeEducation : ${employeeEducation}"> 
+                                                  
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">College / Institution</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="College / Institution">
+                                                                <input type="hidden"  th:value="${EmployeeEducation.empEduid}" name="empEduid">
+                                                                <input type="text"  class="form-control"  placeholder="College / Institution" th:value="${EmployeeEducation.College_Institution}" name="College_Institution">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-buildings"></i>
                                                                 </div>
@@ -533,13 +538,14 @@
                                                             	
                                                             </label>
                                                             <div class="position-relative has-icon-left">
-                                                                <select class="form-control addDegreedata" >
-				                                                        <option>-</option>
-				                                                        <option>Bachelor's</option>
-				                                                        <option>Master's</option>
-				                                                        <option>Delploma</option>
-				                                                        <option>ITI</option>
-				                                                        <option>Doctorate</option>
+                                                                <select class="form-control addDegreedata"  th:value="${EmployeeEducation.Degree}"   name="Degree">
+				                                                        <option th:if="${EmployeeEducation.Degree} !='' " th:value="${EmployeeEducation.Degree}"  th:text="${EmployeeEducation.Degree}" ></option>
+				                                                        
+				                                                        <option value="Bachelor">Bachelor</option>
+				                                                        <option value="Master">Master</option>
+				                                                        <option value="Delploma">Delploma</option>
+				                                                        <option value="ITI">ITI</option>
+				                                                        <option value="Doctorate">Doctorate</option>
 				                                                    </select>
                                                             </div>
                                                            
@@ -549,7 +555,7 @@
                                                        <div class="form-group">
                                                            <label for="contact-info-icon">Major / Specialization</label>
                                                             <div class="position-relative has-icon-left">
-                                                               <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Major / Specialization" />
+                                                               <input type="text"  class="form-control"  placeholder="Major / Specialization"  th:value="${EmployeeEducation.MajorSpecialization}"   name="MajorSpecialization"/>
                                                                <div class="form-control-position">
                                                                    <i class="bx bxs-layer"></i>
                                                                </div>
@@ -560,7 +566,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Percentage / GPA</label>
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Percentage / GPA" />
+                                                                <input type="text"  class="form-control"  placeholder="Percentage / GPA"  th:value="${EmployeeEducation.Percentage_GPA}"   name="Percentage_GPA"/>
                                                                 <div class="form-control-position">
                                                                     %
                                                                 </div>
@@ -570,8 +576,8 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">From </label>
-                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From " />
+                                                             <div class="position-relative has-icon-left"> 
+                                                                <input type="text"  class="form-control"  placeholder="From " th:value="${EmployeeEducation.FromYear}"  name="FromYear"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-calendar"></i>
                                                                 </div>
@@ -582,16 +588,17 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">To</label>
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To" />
+                                                                <input type="text"  class="form-control"  placeholder="To" th:value="${EmployeeEducation.ToYear}"   name="ToYear"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-calendar"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-			                                              	
+			                                       </th:block>   
+			                                             	
 	                                                 <span id="edudivlast"></span>
-                                                       
+                                                   
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                         	<hr/>
@@ -602,6 +609,9 @@
                                                           </div>
                                                     </div>
                                                    <table id="langudiv" class="col-md-12">
+                                                   
+                                                   <script th:inline="javascript"> var emplanstat=0; var emgstat=0; </script>
+                                                   	<th:block th:each="EmployeeLanguage, emplanstat : ${employeeLanguage}">
                                                    	<tr>
                                                    		<td>
 	                                                   		<div class="col-md-12">
@@ -612,13 +622,16 @@
 		                                                            </label>
 		                                                             <div class="position-relative has-icon-left">
 		                                                                <div class="position-relative has-icon-left">
-		                                                                <select class="form-control addLanguagedata" id="basicSelect">
-						                                                        <option>-</option>
-						                                                        <option>Tamil</option>
-						                                                        <option>Engligh</option>
-						                                                        <option>Hindi</option>
-						                                                        <option>Telugu</option>
-						                                                    </select>
+		                                                                <input type="hidden"  th:value="${EmployeeLanguage.empLanguid}" name="empLanguid">
+		                                                                <select class="form-control addLanguagedata"  th:value="${EmployeeLanguage['language']}"  name="language">
+						                                                       <option th:if="${EmployeeLanguage.language} !='' " th:value="${EmployeeLanguage.language}"  th:text="${EmployeeLanguage.language}" ></option>
+						                                                        
+						                                                        <option value="Tamil">Tamil</option>
+						                                                        <option value="English">English</option>
+						                                                        <option value="Hindi">Hindi</option>
+						                                                        <option value="Telugu">Telugu</option>
+						                                                   </select>
+						                                                   <input type="hidden" th:value="${emplanstat.index}"  name="languageid">
 		                                                            	</div>
 		
 		                                                            </div>
@@ -632,25 +645,28 @@
 		                                                        	
 	                                                   				<br/>
 		                                                			 <div class="checkbox checkbox-primary checkbox-glow">
-				                                                        <input type="checkbox" id="Read1">
+				                                                        <input type="checkbox" id="Read1" th:checked="${EmployeeLanguage['lan_read']}"   th:name="'lan_read'+ ${emplanstat.index}"/>
 				                                                        <label for="Read1">Read</label>
 				                                                    </div>
 				                                                    <div class="checkbox checkbox-primary checkbox-glow">
-				                                                        <input type="checkbox" id="Write1">
+				                                                        <input type="checkbox" id="Write1" th:checked="${EmployeeLanguage['lan_write']}"  th:name="'lan_write'+ ${emplanstat.index}"/>
 				                                                        <label for="Write1">Write</label>
 				                                                    </div>
 				                                                    <div class="checkbox checkbox-primary checkbox-glow">
-				                                                        <input type="checkbox" id="Speak1">
+				                                                        <input type="checkbox" id="Speak1" th:checked="${EmployeeLanguage['lan_speak']}"   th:name="'lan_speak'+ ${emplanstat.index}"/>
 				                                                        <label for="Speak1">Speak</label>
 				                                                    </div>
-				                                                 
+				                                                 	<script th:inline="javascript">
+				                                                 		emplanstat=emplanstat+1;
+																		
+																	</script>
 				                                                    
 						                                          </div>
 						                                    </div>
 					                                 	</td>
                                                    	</tr>
                                                    	
-                                                   
+                                                    </th:block>   
                                                    </table>
 	                                                    
 	                                                    
@@ -666,11 +682,12 @@
 	                                                          </button>
 															</div>
                                                     </div>
-                                                     
+                                                     <th:block th:each="EmployeeExperience : ${employeeExperience}">
                                                      <div class="col-md-6">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Company">
+                                                             	<input type="hidden"  th:value="${EmployeeExperience.empExperienceid}" name="empExperienceid">
+                                                                <input type="text"  class="form-control"  placeholder="Company" th:value="${EmployeeExperience['Company']}"  name="Company"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-building"></i>
                                                                 </div>
@@ -681,7 +698,7 @@
                                                         <div class="form-group">
                                                             
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Location">
+                                                                <input type="text"  class="form-control"  placeholder="Location" th:value="${EmployeeExperience['Location']}"  name="Location"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-target-lock"></i>
                                                                 </div>
@@ -692,7 +709,7 @@
                                                         <div class="form-group">
                                                             
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From ">
+                                                                <input type="text"  class="form-control"  placeholder="From" th:value="${EmployeeExperience['expFromyear']}"   name="expFromyear"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-calendar"></i>
                                                                 </div>
@@ -702,7 +719,7 @@
                                                      <div class="col-md-3">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To">
+                                                                <input type="text"  class="form-control"  placeholder="To" th:value="${EmployeeExperience['expToyear']}"   name="expToyear"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-calendar"></i>
                                                                 </div>
@@ -713,15 +730,17 @@
                                                         <div class="form-group">
                                                             
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="JobTitle">
+                                                                <input type="text"  class="form-control"  placeholder="JobTitle" th:value="${EmployeeExperience['JobTitle']}"   name="JobTitle"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-briefcase-alt"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+                                                    </th:block>
                                                     <span id="exprdivlast"></span>
+                                                      
+                                                    
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                         	<hr/>
@@ -731,7 +750,7 @@
                                                      <div class="col-md-6">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Recruitment Source">
+                                                                <input type="text"  class="form-control"  placeholder="Recruitment Source" th:value="${employeemaster['RecruitmentSource']}" th:field="*{RecruitmentSource}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-news"></i>
                                                                 </div>
@@ -741,7 +760,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Institute/Consultant Name">
+                                                                <input type="text"  class="form-control"  placeholder="Institute/Consultant Name" th:value="${employeemaster['RecruInstituteConsultantName']}" th:field="*{RecruInstituteConsultantName}">
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-bullseye"></i>
                                                                 </div>
@@ -757,7 +776,7 @@
                                                      <div class="col-md-3">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="A.C.No">
+                                                                <input type="text"  class="form-control"  placeholder="A.C.No" th:value="${employeemaster['BankACNo']}" th:field="*{BankACNo}"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-bank"></i>
                                                                 </div>
@@ -767,7 +786,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Bank Name">
+                                                                <input type="text"  class="form-control"  placeholder="Bank Name" th:value="${employeemaster['BankName']}" th:field="*{BankName}"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-bookmark-plus"></i>
                                                                 </div>
@@ -777,7 +796,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Branch Name">
+                                                                <input type="text"  class="form-control"  placeholder="Branch Name" th:value="${employeemaster['BranchName']}" th:field="*{BranchName}"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-stats"></i>
                                                                 </div>
@@ -787,7 +806,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                              <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="IFSC Code">
+                                                                <input type="text"  class="form-control"  placeholder="IFSC Code" th:value="${employeemaster['BankIFSCCode']}" th:field="*{BankIFSCCode}"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-code"></i>
                                                                 </div>
@@ -798,22 +817,28 @@
                                                         <div class="form-group">
                                                         	<hr/>
                                                             <label class="emptitle">Emergency Contact</label>
-                                                            <button class="btn btn-light-primary btn-sm" id="econtactdivadd" type="button" title="Add new education">
+                                                            <button class="btn btn-light-primary btn-sm" id="econtactdivadd" type="button" title="Add new Emergency Contact">
 	                                                            <i class="bx bx-plus"></i>
 	                                                          </button>
                                                           </div>
                                                     </div>
+                                                    
+                                                    <th:block th:each="EmployeeEmgContact, emgstat : ${employeeEmgContact}">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
                                                               <fieldset>
 				                                                    <div class="checkbox checkbox-primary checkbox-glow">
-				                                                        <input type="checkbox" id="checkboxGlow1">
+				                                                    	<input type="hidden"  th:value="${EmployeeEmgContact.empEmgContactid}" name="empEmgContactid">
+				                                                    	<input type="hidden" th:value="${emgstat.index}"  name="emgid">
+				                                                        <script th:inline="javascript"> emgstat=emgstat+1; </script>
+				                                                        
+				                                                        <input type="checkbox" id="checkboxGlow1" th:checked="${EmployeeEmgContact['Emg_primarycontact']}"   th:name="'Emg_primarycontact' + ${emgstat.index}"/>
 				                                                        <label for="checkboxGlow1">Primary Contact</label>
 				                                                    </div>
 				                                                    <div class="checkbox checkbox-primary checkbox-glow">
-				                                                        <input type="checkbox" id="checkboxGlow2">
+				                                                        <input type="checkbox" id="checkboxGlow2" th:checked="${EmployeeEmgContact['Emg_InsuranceNominee']}"   th:name="'Emg_InsuranceNominee' + ${emgstat.index}"/>
 				                                                        <label for="checkboxGlow2">Insurance Nominee </label>
 				                                                    </div>
 				                                                </fieldset> 
@@ -824,7 +849,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Name">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Name" th:value="${EmployeeEmgContact['Emg_Name']}"   name="Emg_Name"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-contact"></i>
                                                                 </div>
@@ -836,18 +861,19 @@
                                                             
                                                             <div class="position-relative has-icon-left">
                                                             	
-                                                                 <select class="form-control addemgrelationdata" id="basicSelect">
-				                                                        <option>-</option>
-				                                                        <option>Father</option>
-																		<option>Mother</option>
-																		<option>Husband</option>
-																		<option>wife</option>
-																		<option>Friend</option>
-																		<option>Brother</option>
-																		<option>Sister</option>
-																		<option>Uncle</option>
-																		<option>Daughter</option>
-																		<option>son</option>
+                                                                 <select class="form-control addemgrelationdata"  th:value="${EmployeeEmgContact['Emg_Relation']}"  name="Emg_Relation"/>
+				                                                        <option th:if="${EmployeeEmgContact.Emg_Relation} !='' " th:value="${EmployeeEmgContact.Emg_Relation}"  th:text="${EmployeeEmgContact.Emg_Relation}" ></option>
+				                                                        
+				                                                        <option value="Father">Father</option>
+																		<option value="Mother">Mother</option>
+																		<option value="Husband">Husband</option>
+																		<option value="wife">wife</option>
+																		<option value="Friend">Friend</option>
+																		<option value="Brother">Brother</option>
+																		<option value="Sister">Sister</option>
+																		<option value="Uncle">Uncle</option>
+																		<option value="Daughter">Daughter</option>
+																		<option value="son">son</option>
 				                                                    </select>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-git-repo-forked"></i>
@@ -861,7 +887,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Personal Phone">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Personal Phone" th:value="${EmployeeEmgContact['Emg_PersonalPhone']}"  name="Emg_PersonalPhone"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-phone-call"></i>
                                                                 </div>
@@ -872,7 +898,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Other Phone">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Other Phone" th:value="${EmployeeEmgContact['Emg_OtherPhone']}"  name="Emg_OtherPhone"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-phone-call"></i>
                                                                 </div>
@@ -883,7 +909,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Email ID">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Email ID" th:value="${EmployeeEmgContact['Emg_EmailID']}"   name="Emg_EmailID"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-mail-send"></i>
                                                                 </div>
@@ -894,7 +920,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 1">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Street 1" th:value="${EmployeeEmgContact['Emg_Street1']}"   name="Emg_Street1"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-home"></i>
                                                                 </div>
@@ -905,7 +931,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 2">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Street 2" th:value="${EmployeeEmgContact['Emg_Street2']}"   name="Emg_Street2"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-navigation"></i>
                                                                 </div>
@@ -916,7 +942,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Village">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Village" th:value="${EmployeeEmgContact['Emg_Village']}"   name="Emg_Village"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-directions"></i>
                                                                 </div>
@@ -927,7 +953,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Taluk">
+                                                                <input type="text" id="password-icon" class="form-control"  placeholder="Taluk" th:value="${EmployeeEmgContact['Emg_Taluk']}"   name="Emg_Taluk"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-city"></i>
                                                                 </div>
@@ -939,7 +965,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="City">
+                                                                <input type="text"  class="form-control"  placeholder="City" th:value="${EmployeeEmgContact['Emg_City']}"   name="Emg_City"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-building-house"></i>
                                                                 </div>
@@ -950,7 +976,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="State">
+                                                                <input type="text"  class="form-control"  placeholder="State" th:value="${EmployeeEmgContact['Emg_State']}"  name="Emg_State"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-stats"></i>
                                                                 </div>
@@ -961,7 +987,7 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="number" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Zip code">
+                                                                <input type="number"  class="form-control"  placeholder="Zip code" th:value="${EmployeeEmgContact['Emg_ZIP']}"  name="Emg_ZIP"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bx-message-alt-dots"></i>
                                                                 </div>
@@ -972,14 +998,15 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Country">
+                                                                <input type="text"  class="form-control"  placeholder="Country" th:value="${EmployeeEmgContact['Emg_Country']}"  name="Emg_Country"/>
                                                                 <div class="form-control-position">
                                                                     <i class="bx bxs-flag-alt"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                     
+                                                      </th:block>   
+                                                      
                                                      <span id="econtactdivlast"></span>
                                                      <div class="col-md-12">
                                                         <div class="form-group">
@@ -987,11 +1014,12 @@
                                                             <label class="emptitle">Files</label>
                                                           </div>
                                                     </div>
+                                                    
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Photo</label>
                                                              <div class="position-relative">
-                                                               <input type="file" class="form-control" id="inputGroupFile01">
+                                                               <input type="file" class="form-control" th:value="${employeeFiles['Photo_Attach']}"  name="Photo_Attach"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -999,7 +1027,7 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Resume</label>
                                                              <div class="position-relative">
-                                                               <input type="file" class="form-control" id="inputGroupFile01">
+                                                               <input type="file" class="form-control" th:value="${employeeFiles['Resume_Attach']}"  name="Resume_Attach"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1007,10 +1035,13 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">Certificates</label>
                                                              <div class="position-relative">
-                                                               <input type="file" class="form-control" id="inputGroupFile01">
+                                                               <input type="file" class="form-control" th:value="${employeeFiles['Certificates_Attach']}" name="Certificates_Attach"/>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
+                                                    
+                                                    
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                         	<hr/>
@@ -1021,7 +1052,7 @@
                                                         <div class="form-group">
                                                             
                                                              <div class="position-relative">
-                                                               <input type="text" class="form-control" id="inputGroupFile01">
+                                                               <input type="text" class="form-control" th:value="${employeemaster['Notes']}" th:field="*{Notes}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1096,6 +1127,7 @@
 		<script>
 			$(document).ready(function(){
 				
+				
 				$(".additem").click(function(){
 					var name=$(this).attr('name');
 					var labeltext="";
@@ -1117,7 +1149,7 @@
 						if(name=="New Degree"){ labeltext="addDegreedata"; }
 						if(name=="New Language"){ labeltext="addLanguagedata"; }
 						if(name=="New Relationship"){ labeltext="addemgrelationdata"; }
-						$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
+						$('.' + labeltext).append("<option value='" + $("#additemall").val() + "'>" + $("#additemall").val() + "</option>");
 						//$('.' + labeltext).val($("#additemall").val());
 						$("#additemall").val('');
 						$('#employeeStatusScrollable').modal('toggle');
@@ -1125,20 +1157,23 @@
 				});
 			});
 		
+			
 			var langudivadd=2;
 			$("#langudivadd").click(function(){
 				langudivadd=langudivadd+1;
-				//$("#langudiv").append("<tr><divclass='col-md-12'align='right'><spanclass='cursor-pointer'data-repeater-delete><iclass='bxbx-x'></i></span></div><divclass='col-md-3'><divclass='form-group'><labelfor='contact-info-icon'>Language<labelclass='emptitleadditem'name='addLanguagedata'><iclass='bxbxs-plus-circleownstyle1'></i></label></label><divclass='position-relativehas-icon-left'><divclass='position-relativehas-icon-left'>selectclass='form-controladdLanguagedata'id='basicSelect'><option>-</option><option>Tamil</option><option>Engligh</option><option>Hindi</option><option>Telugu</option></select></div></div></div></div><divclass='col-md-3'><divclass='form-group'><br/><divclass='checkboxcheckbox-primarycheckbox-glow'><inputtype='checkbox'id='Read1'><labelfor='Read1'>Read</label></div><divclass='checkboxcheckbox-primarycheckbox-glow'><inputtype='checkbox'id='Write1'><labelfor='Write1'>Write</label></div><divclass='checkboxcheckbox-primarycheckbox-glow'><inputtype='checkbox'id='Speak1'><labelfor='Speak1'>Speak</label></div></div></div></tr>");
-				$("#langudiv  tr:last").after('<tr><td><div class="col-md-12"><div class="form-group"><label for="contact-info-icon">Language <label class="emptitle additem" name="addLanguagedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label></label><div class="position-relative has-icon-left">   <div class="position-relative has-icon-left">   <select class="form-control addLanguagedata" id="basicSelect"><option>-</option><option>Tamil</option><option>Engligh</option><option>Hindi</option><option>Telugu</option> </select></div></div></div> </div> </td> <td> <div class="col-md-12"><div class="form-group"><br/><div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Read'+ langudivadd + '"><label for="Read'+ langudivadd + '">Read</label> </div> <div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Write'+ langudivadd + '"><label for="Write'+ langudivadd + '">Write</label> </div> <div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Speak'+ langudivadd + '"><label for="Speak'+ langudivadd + '">Speak</label> </div>  <span class="cursor-pointer langudivdelete" style="float:right">  <i class="bx bx-x"></i>   </span>   </div> </div>   </td></tr>');
+				
+				$("#langudiv  tr:last").after('<tr><td><div class="col-md-12"><div class="form-group"><label for="contact-info-icon">Language <label class="emptitle additem" name="addLanguagedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label></label><div class="position-relative has-icon-left">   <div class="position-relative has-icon-left">  <input type="hidden"  th:value="${EmployeeLanguage.empLanguid}" name="empLanguid"> <select class="form-control addLanguagedata" name="language"><option value="-">-</option><option value="Tamil">Tamil</option><option value="English">English</option><option value="Hindi">Hindi</option><option value="Telugu">Telugu</option> </select><input type="hidden" value="'+ emplanstat +'"  name="languageid"></div></div></div> </div> </td> <td> <div class="col-md-12"><div class="form-group"><br/><div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Read'+ langudivadd + '" name="lan_read' + emplanstat +'"><label for="Read'+ langudivadd + '">Read</label> </div> <div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Write'+ langudivadd + '" name="lan_write' + emplanstat +'"><label for="Write'+ langudivadd + '">Write</label> </div> <div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Speak'+ langudivadd + '" name="lan_speak' + emplanstat +'"><label for="Speak'+ langudivadd + '">Speak</label> </div>  <span class="cursor-pointer langudivdelete" style="float:right">  <i class="bx bx-x"></i>   </span>   </div> </div>   </td></tr>');
+				emplanstat=emplanstat+1;
 			});
 			$(document).on( "click", ".langudivdelete", function() {
 				   $(this).closest("tr").remove();
 			});
 			
+			
 			var edudivadd=2;
 			$("#edudivadd").click(function(){
 				edudivadd=edudivadd+1;
-				$("#edudivlast").before('<div class="tedudiv'+ edudivadd +'  col-md-12"> <span class="cursor-pointer edudivdelete" name="'+ edudivadd +'" style="float:right"> 	                                                                    <i class="bx bx-x"></i> 	                                                                </span> 	                                                             </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-6"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">College / Institution</label> 			                                                            <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder=" College / Institution"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-buildings"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Degree 			                                                            	<label class="emptitle additem" name="addDegreedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label> 			                                                            </label> 			                                                            <div class="position-relative has-icon-left"> 			                                                                <select class="form-control addDegreedata" > 							                                                        <option>-</option> 							                                                        <option>Bachelor"s</option> 							                                                        <option>Master"s</option> 							                                                        <option>Delploma</option> 							                                                        <option>ITI</option> 							                                                        <option>Doctorate</option> 							                                                    </select> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Major / Specialization</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Major / Specialization"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bxs-layer"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Percentage / GPA</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Percentage / GPA"> 			                                                                <div class="form-control-position"> 			                                                                    % 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">From </label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From "> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">To</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div>');
+				$("#edudivlast").before('<div class="tedudiv'+ edudivadd +'  col-md-12"> <span class="cursor-pointer edudivdelete" name="'+ edudivadd +'" style="float:right"> 	                                                                    <i class="bx bx-x"></i> 	                                                                </span> 	                                                             </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-6"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">College / Institution</label> 			                                                            <div class="position-relative has-icon-left"><input type="hidden"  th:value="${EmployeeEducation.empEduid}" name="empEduid"><input type="text"  class="form-control"  placeholder=" College / Institution" name="College_Institution"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-buildings"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Degree 			                                                            	<label class="emptitle additem" name="addDegreedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label> 			                                                            </label> 			                                                            <div class="position-relative has-icon-left"> 			                                                                <select class="form-control addDegreedata" name="Degree"> 							                                                        <option value="-">-</option>                        <option value="Bachelor">Bachelor</option>                        <option value="Master">Master</option>                        <option value="Delploma">Delploma</option>                        <option value="ITI">ITI</option>                        <option value="Doctorate">Doctorate</option>							                                                    </select> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Major / Specialization</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control"  placeholder="Major / Specialization" name="MajorSpecialization"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bxs-layer"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Percentage / GPA</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control"  placeholder="Percentage / GPA" name="Percentage_GPA"> 			                                                                <div class="form-control-position"> 			                                                                    % 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">From </label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control"  placeholder="From " name="FromYear"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">To</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control"  placeholder="To" name="ToYear"> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div>');
 			});
 			
 			$(document).on( "click", ".edudivdelete", function() {
@@ -1149,7 +1184,7 @@
 			var exprdivadd=2;
 			$("#exprdivadd").click(function(){
 				exprdivadd=exprdivadd+1;
-			$("#exprdivlast").before('<div class="texprdiv'+ exprdivadd +'  col-md-12"><span class="cursor-pointer exprdivdelete" name="'+ exprdivadd +'" style="float:right"> 	                                                   	       <i class="bx bx-x"></i> 	                                                   	 </span>                                                    	</div>                                                    <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Company">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-building"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Location">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-target-lock"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="From ">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="To">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="JobTitle">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-briefcase-alt"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     ');
+				$("#exprdivlast").before('<div class="texprdiv'+ exprdivadd +'  col-md-12"><span class="cursor-pointer exprdivdelete" name="'+ exprdivadd +'" style="float:right"> 	                                                   	       <i class="bx bx-x"></i> 	                                                   	 </span>                                                    	</div>                                                    <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left"><input type="hidden"  th:value="${EmployeeExperience.empExperienceid}" name="empExperienceid" /><input type="text"  class="form-control"  placeholder="Company" name="Company">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-building"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control"  placeholder="Location" name="Location">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-target-lock"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control"  placeholder="From " name="expFromyear">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control"  placeholder="To" name="expToyear">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control"  placeholder="JobTitle" name="JobTitle">                                                                 <div class="form-control-position">                                                                     <i class="bx bx-briefcase-alt"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     ');
 			});
 			
 			$(document).on( "click", ".exprdivdelete", function() {
@@ -1161,8 +1196,9 @@
 			var econtactdivadd=2;
 			$("#econtactdivadd").click(function(){
 				econtactdivadd=econtactdivadd+1;
-			$("#econtactdivlast").before('<div class="tecontactdiv'+ econtactdivadd +'  col-md-12"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 		  <fieldset> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlow'+ econtactdivadd +'"> 					<label for="checkboxGlow'+ econtactdivadd +'">Primary Contact</label> 				</div> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlowt'+ econtactdivadd +'"> 					<label for="checkboxGlowt'+ econtactdivadd +'">Insurance Nominee </label> 				</div> 				<span class="cursor-pointer econtactdivdelete" name="'+ econtactdivadd +'" style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			</fieldset> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Name"> 			<div class="form-control-position"> 				<i class="bx bxs-contact"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			 <select class="form-control addemgrelationdata" id="basicSelect"> 					<option>-</option> 					<option>Father</option> 					<option>Mother</option> 					<option>Husband</option> 					<option>wife</option> 					<option>Friend</option> 					<option>Brother</option> 					<option>Sister</option> 					<option>Uncle</option> 					<option>Daughter</option> 					<option>son</option> 				</select> 			<div class="form-control-position"> 				<i class="bx bx-git-repo-forked"></i> 			</div> 			<label class="emptitle additem" name="addemgrelationdata" style="float:right;"><i class="bx bxs-plus-circle ownstyle1"></i></label> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Personal Phone"> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Other Phone"> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Email ID"> 			<div class="form-control-position"> 				<i class="bx bx-mail-send"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 1"> 			<div class="form-control-position"> 				<i class="bx bxs-home"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Street 2"> 			<div class="form-control-position"> 				<i class="bx bx-navigation"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Village"> 			<div class="form-control-position"> 				<i class="bx bx-directions"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control" name="contact-icon" placeholder="Taluk"> 			<div class="form-control-position"> 				<i class="bx bxs-city"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="City"> 			<div class="form-control-position"> 				<i class="bx bxs-building-house"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="State"> 			<div class="form-control-position"> 				<i class="bx bx-stats"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="number" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Zip code"> 			<div class="form-control-position"> 				<i class="bx bx-message-alt-dots"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="contact-info-icon" class="form-control" name="contact-icon" placeholder="Country"> 			<div class="form-control-position"> 				<i class="bx bxs-flag-alt"></i> 			</div> 		</div> 	</div> </div>  ');
-			});
+				$("#econtactdivlast").before('<div class="tecontactdiv'+ econtactdivadd +'  col-md-12"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 		  <fieldset> 				<div class="checkbox checkbox-primary checkbox-glow"> <input type="hidden"  th:value="${EmployeeEmgContact.empEmgContactid}" name="empEmgContactid"> <input type="hidden" value="' + emgstat + '"  name="emgid" /><input type="checkbox" id="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact' + emgstat + '" /> 					<label for="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact">Primary Contact</label> 				</div> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlowt'+ econtactdivadd +'" name="Emg_InsuranceNominee'+  emgstat +'" /> 					<label for="checkboxGlowt'+ econtactdivadd +'">Insurance Nominee </label> 				</div> 				<span class="cursor-pointer econtactdivdelete" name="'+ econtactdivadd +'" style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			</fieldset> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control"  placeholder="Name" name="Emg_Name"> 			<div class="form-control-position"> 				<i class="bx bxs-contact"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			 <select class="form-control addemgrelationdata" name="Emg_Relation"> 					<option value="-">-</option>                        <option value="Father">Father</option>						<option value="Mother">Mother</option>						<option value="Husband">Husband</option>						<option value="wife">wife</option>						<option value="Friend">Friend</option>						<option value="Brother">Brother</option>						<option value="Sister">Sister</option>						<option value="Uncle">Uncle</option>						<option value="Daughter">Daughter</option>						<option value="son">son</option>						</select> 			<div class="form-control-position"> 				<i class="bx bx-git-repo-forked"></i> 			</div> 			<label class="emptitle additem" name="addemgrelationdata" style="float:right;"><i class="bx bxs-plus-circle ownstyle1"></i></label> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control"  placeholder="Personal Phone"  name="Emg_PersonalPhone"> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control"  placeholder="Other Phone" name="Emg_OtherPhone"> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control"  placeholder="Email ID" name="Emg_EmailID"> 			<div class="form-control-position"> 				<i class="bx bx-mail-send"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control"  placeholder="Street 1" name="Emg_Street1"> 			<div class="form-control-position"> 				<i class="bx bxs-home"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control"  placeholder="Street 2" name="Emg_Street2"> 			<div class="form-control-position"> 				<i class="bx bx-navigation"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control"  placeholder="Village"  name="Emg_Village"> 			<div class="form-control-position"> 				<i class="bx bx-directions"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text" id="password-icon" class="form-control"  placeholder="Taluk" name="Emg_Taluk"> 			<div class="form-control-position"> 				<i class="bx bxs-city"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="City" name="Emg_City"> 			<div class="form-control-position"> 				<i class="bx bxs-building-house"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="State" name="Emg_State"> 			<div class="form-control-position"> 				<i class="bx bx-stats"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="number"  class="form-control"  placeholder="Zip code"  name="Emg_ZIP"> 			<div class="form-control-position"> 				<i class="bx bx-message-alt-dots"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Country" name="Emg_Country"> 			<div class="form-control-position"> 				<i class="bx bxs-flag-alt"></i> 			</div> 		</div> 	</div> </div>  ');			
+				emgstat=emgstat+1;
+			});			
 			
 			$(document).on( "click", ".econtactdivdelete", function() {
 				   var id= $(this).attr('name');

@@ -14,26 +14,28 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString 
-@Table(name="EmployeeEducation")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Table(name = "employeeeducation")
 public class EmployeeEducation {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int empEduid;
-	
-	@Column  
+	@Column
 	private String College_Institution;
-	@Column  
+	@Column
 	private String Degree;
-	@Column  
+	@Column
 	private String MajorSpecialization;
-	@Column  
+	@Column
 	private String Percentage_GPA;
-	@Column  
+	@Column
 	private String FromYear;
-	@Column  
+	@Column
 	private String ToYear;
 
-	
 }

@@ -14,15 +14,18 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString 
-@Table(name="EmployeeEmgContact")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Table(name="employeeemgcontact")
 public class EmployeeEmgContact {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int empEmgContactid;
 
-	
 	@Column  
 	private Boolean Emg_primarycontact;
 	@Column  

@@ -14,8 +14,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString 
-@Table(name="EmployeeFiles")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Table(name="employeefiles")
 
 public class EmployeeFiles {
 

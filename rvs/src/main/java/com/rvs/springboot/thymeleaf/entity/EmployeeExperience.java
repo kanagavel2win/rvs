@@ -14,15 +14,18 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString 
-@Table(name="EmployeeExperience")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Table(name="employeeexperience")
 public class EmployeeExperience {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int empExperienceid;
-	
-	
+
 	@Column  
 	private String Company;
 	@Column  

@@ -16,8 +16,8 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 	EmployeeMasterRepository employeeRepo;
 	
 	@Override
-	public void save(EmployeeMaster obj) {
-		employeeRepo.save(obj);
+	public EmployeeMaster save(EmployeeMaster obj) {
+		return employeeRepo.save(obj);
 	}
 
 	@Override

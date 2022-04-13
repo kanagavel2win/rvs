@@ -1,5 +1,11 @@
 package com.rvs.springboot.thymeleaf.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -243,37 +249,58 @@ public class HomeController {
 
 	@PostMapping("employeesave")
 	public String employeesave(HttpServletRequest req, @ModelAttribute("employeemaster") EmployeeMaster employeemaster,
-			@RequestParam("empEduid") String[] empEduid,
-			@RequestParam("College_Institution") String[] College_Institution, @RequestParam("Degree") String[] Degree,
-			@RequestParam("MajorSpecialization") String[] MajorSpecialization,
-			@RequestParam("Percentage_GPA") String[] Percentage_GPA, @RequestParam("FromYear") String[] FromYear,
-			@RequestParam("ToYear") String[] ToYear,
+			@RequestParam(name = "empEduid", required = false) String[] empEduid,
+			@RequestParam(name = "College_Institution", required = false) String[] College_Institution,
+			@RequestParam(name = "Degree", required = false) String[] Degree,
+			@RequestParam(name = "MajorSpecialization", required = false) String[] MajorSpecialization,
+			@RequestParam(name = "Percentage_GPA", required = false) String[] Percentage_GPA,
+			@RequestParam(name = "FromYear", required = false) String[] FromYear,
+			@RequestParam(name = "ToYear", required = false) String[] ToYear,
 
-			@RequestParam("empLanguid") String[] empLanguid, @RequestParam("language") String[] language,
-			@RequestParam("languageid") String[] languageid,
+			@RequestParam(name = "empLanguid", required = false) String[] empLanguid,
+			@RequestParam(name = "language", required = false) String[] language,
+			@RequestParam(name = "languageid", required = false) String[] languageid,
 			@RequestParam(name = "lan_write", required = false) Boolean[] lan_write,
 			@RequestParam(name = "lan_read", required = false) Boolean[] lan_read,
 			@RequestParam(name = "lan_speak", required = false) Boolean[] lan_speak,
 
-			@RequestParam("Photo_Attach") MultipartFile Photo_Attach,
-			@RequestParam("Resume_Attach") MultipartFile Resume_Attach,
-			@RequestParam("Certificates_Attach") MultipartFile Certificates_Attach,
+			@RequestParam(name = "photoempFileid", required = false) String[] photoempFileid,
+			@RequestParam(name = "resumeempFileid", required = false) String[] resumeempFileid,
+			@RequestParam(name = "certificateempFileid", required = false) String[] certificateempFileid,
+			@RequestParam(name = "photoempFileidstr", required = false) String[] photoempFileidstr,
+			@RequestParam(name = "resumeempFileidstr", required = false) String[] resumeempFileidstr,
+			@RequestParam(name = "certificateempFileidstr", required = false) String[] certificateempFileidstr,
 
-			@RequestParam("empExperienceid") String[] empExperienceid, @RequestParam("Company") String[] Company,
-			@RequestParam("Location") String[] Location, @RequestParam("expFromyear") String[] expFromyear,
-			@RequestParam("expToyear") String[] expToyear, @RequestParam("JobTitle") String[] JobTitle,
+			@RequestParam(name = "Photo_Attach", required = false) MultipartFile Photo_Attach,
+			@RequestParam(name = "Resume_Attach", required = false) MultipartFile Resume_Attach,
+			@RequestParam(name = "Certificates_Attach", required = false) MultipartFile Certificates_Attach,
 
-			@RequestParam("empEmgContactid") String[] empEmgContactid, @RequestParam("emgid") String[] emgid,
+			@RequestParam(name = "empExperienceid", required = false) String[] empExperienceid,
+			@RequestParam(name = "Company", required = false) String[] Company,
+			@RequestParam(name = "Location", required = false) String[] Location,
+			@RequestParam(name = "expFromyear", required = false) String[] expFromyear,
+			@RequestParam(name = "expToyear", required = false) String[] expToyear,
+			@RequestParam(name = "JobTitle", required = false) String[] JobTitle,
+
+			@RequestParam(name = "empEmgContactid", required = false) String[] empEmgContactid,
+			@RequestParam(name = "emgid", required = false) String[] emgid,
 			@RequestParam(name = "Emg_primarycontact", required = false) Boolean[] Emg_primarycontact,
 			@RequestParam(name = "Emg_InsuranceNominee", required = false) Boolean[] Emg_InsuranceNominee,
-			@RequestParam("Emg_Name") String[] Emg_Name, @RequestParam("Emg_Relation") String[] Emg_Relation,
-			@RequestParam("Emg_PersonalPhone") String[] Emg_PersonalPhone,
-			@RequestParam("Emg_OtherPhone") String[] Emg_OtherPhone, @RequestParam("Emg_EmailID") String[] Emg_EmailID,
-			@RequestParam("Emg_Street1") String[] Emg_Street1, @RequestParam("Emg_Street2") String[] Emg_Street2,
-			@RequestParam("Emg_Village") String[] Emg_Village, @RequestParam("Emg_Taluk") String[] Emg_Taluk,
-			@RequestParam("Emg_City") String[] Emg_City, @RequestParam("Emg_State") String[] Emg_State,
-			@RequestParam("Emg_ZIP") String[] Emg_ZIP, @RequestParam("Emg_Country") String[] Emg_Country,
-			@RequestParam Map<String, String> params, Model themodel) {
+			@RequestParam(name = "Emg_Name", required = false) String[] Emg_Name,
+			@RequestParam(name = "Emg_Relation", required = false) String[] Emg_Relation,
+			@RequestParam(name = "Emg_PersonalPhone", required = false) String[] Emg_PersonalPhone,
+			@RequestParam(name = "Emg_OtherPhone", required = false) String[] Emg_OtherPhone,
+			@RequestParam(name = "Emg_EmailID", required = false) String[] Emg_EmailID,
+			@RequestParam(name = "Emg_Street1", required = false) String[] Emg_Street1,
+			@RequestParam(name = "Emg_Street2", required = false) String[] Emg_Street2,
+			@RequestParam(name = "Emg_Village", required = false) String[] Emg_Village,
+			@RequestParam(name = "Emg_Taluk", required = false) String[] Emg_Taluk,
+			@RequestParam(name = "Emg_City", required = false) String[] Emg_City,
+			@RequestParam(name = "Emg_State", required = false) String[] Emg_State,
+			@RequestParam(name = "Emg_ZIP", required = false) String[] Emg_ZIP,
+			@RequestParam(name = "Emg_Country", required = false) String[] Emg_Country,
+
+			@RequestParam Map<String, String> params, HttpServletRequest request, Model themodel) {
 		System.out.println("empEduid" + Arrays.toString(empEduid));
 		System.out.println(College_Institution.length);
 		System.out.println("College_Institution" + Arrays.toString(College_Institution));
@@ -333,7 +360,11 @@ public class HomeController {
 
 			empedu.setCollege_Institution(College_Institution[farr]);
 			empedu.setDegree(Degree[farr]);
-			empedu.setEmpEduid(Integer.parseInt(empEduid[farr]));
+
+			if (!empEduid[farr].isEmpty()) {
+				empedu.setEmpEduid(Integer.parseInt(empEduid[farr]));
+			}
+
 			empedu.setFromYear(FromYear[farr]);
 			empedu.setMajorSpecialization(MajorSpecialization[farr]);
 			empedu.setPercentage_GPA(Percentage_GPA[farr]);
@@ -347,22 +378,21 @@ public class HomeController {
 		for (int farr = 0; farr < Emg_Name.length; farr++) {
 			EmployeeEmgContact empcont = new EmployeeEmgContact();
 
-			for (int farr1 = 0; farr1 < emgid.length; farr1++) {
-				String templangurow = emgid[farr1];
-				if (params.get("Emg_primarycontact" + templangurow) != null) {
-					empcont.setEmg_primarycontact(true);
-				} else {
-					empcont.setEmg_primarycontact(false);
-				}
-				if (params.get("Emg_InsuranceNominee" + templangurow) != null) {
-					empcont.setEmg_InsuranceNominee(true);
-				} else {
-					empcont.setEmg_InsuranceNominee(false);
-				}
-
+			String templangurow = emgid[farr];
+			if (params.get("Emg_primarycontact" + templangurow) != null) {
+				empcont.setEmg_primarycontact(true);
+			} else {
+				empcont.setEmg_primarycontact(false);
+			}
+			if (params.get("Emg_InsuranceNominee" + templangurow) != null) {
+				empcont.setEmg_InsuranceNominee(true);
+			} else {
+				empcont.setEmg_InsuranceNominee(false);
 			}
 
-			empcont.setEmpEmgContactid(Integer.parseInt(empEmgContactid[farr]));
+			if (!empEmgContactid[farr].isEmpty()) {
+				empcont.setEmpEmgContactid(Integer.parseInt(empEmgContactid[farr]));
+			}
 			empcont.setEmg_City(Emg_City[farr]);
 			empcont.setEmg_Country(Emg_Country[farr]);
 			empcont.setEmg_EmailID(Emg_EmailID[farr]);
@@ -385,7 +415,10 @@ public class HomeController {
 		for (int farr = 0; farr < Company.length; farr++) {
 			EmployeeExperience empexper = new EmployeeExperience();
 			empexper.setCompany(Company[farr]);
-			empexper.setEmpExperienceid(Integer.parseInt(empExperienceid[farr]));
+
+			if (!empExperienceid[farr].isEmpty()) {
+				empexper.setEmpExperienceid(Integer.parseInt(empExperienceid[farr]));
+			}
 			empexper.setExpFromyear(expFromyear[farr]);
 			empexper.setExpToyear(expToyear[farr]);
 			empexper.setJobTitle(JobTitle[farr]);
@@ -398,51 +431,302 @@ public class HomeController {
 		Set<EmployeeLanguage> langls = new LinkedHashSet<EmployeeLanguage>();
 		for (int farr = 0; farr < language.length; farr++) {
 			EmployeeLanguage emplang = new EmployeeLanguage();
-
-			for (int farr1 = 0; farr1 < languageid.length; farr1++) {
-				String templangurow = languageid[farr1];
-				if (params.get("lan_read" + templangurow) != null) {
-					emplang.setLan_read(true);
-				} else {
-					emplang.setLan_read(false);
-				}
-				if (params.get("lan_write" + templangurow) != null) {
-					emplang.setLan_write(true);
-				} else {
-					emplang.setLan_write(false);
-				}
-				if (params.get("lan_speak" + templangurow) != null) {
-					emplang.setLan_speak(true);
-				} else {
-					emplang.setLan_speak(false);
-				}
-
+			String templangurow = languageid[farr];
+			System.out.println("params.get(\"lan_read\" + templangurow) " + params.get("lan_read" + templangurow));
+			System.out.println("params.get(\"lan_write\" + templangurow) " + params.get("lan_write" + templangurow));
+			System.out.println("params.get(\"lan_speak\" + templangurow) " + params.get("lan_speak" + templangurow));
+			if (params.get("lan_read" + templangurow) != null) {
+				emplang.setLan_read(true);
+			} else {
+				emplang.setLan_read(false);
 			}
-			emplang.setEmpLanguid(Integer.parseInt(empLanguid[farr]));
+			if (params.get("lan_write" + templangurow) != null) {
+				emplang.setLan_write(true);
+			} else {
+				emplang.setLan_write(false);
+			}
+			if (params.get("lan_speak" + templangurow) != null) {
+				emplang.setLan_speak(true);
+			} else {
+				emplang.setLan_speak(false);
+			}
+
+			if (!empLanguid[farr].isEmpty()) {
+				emplang.setEmpLanguid((Integer) Integer.parseInt(empLanguid[farr]));
+			}
 			emplang.setLanguage(language[farr]);
 
 			langls.add(emplang);
 
 		}
 		employeemaster.setEmployeeLanguage(langls);
+		System.out.println("--------------Step 4 end----------------------");
+		System.out.println(Arrays.toString(photoempFileid));
+		System.out.println(Arrays.toString(resumeempFileid));
+		System.out.println(Arrays.toString(certificateempFileid));
+		System.out.println(Arrays.toString(photoempFileidstr));
+		System.out.println(Arrays.toString(resumeempFileidstr));
+		System.out.println(Arrays.toString(certificateempFileidstr));
 
+		Set<EmployeeFiles> filels = new LinkedHashSet<EmployeeFiles>();
+
+		if (photoempFileid != null)
+			for (int farr = 0; farr < photoempFileid.length; farr++) {
+				EmployeeFiles obj = new EmployeeFiles();
+
+				if (photoempFileid[farr] != null) {
+					obj.setEmpFileid(Integer.parseInt(photoempFileid[farr]));
+				}
+				obj.setPhoto_Attach(photoempFileidstr[farr]);
+				filels.add(obj);
+			}
+
+		if (resumeempFileid != null)
+			for (int farr = 0; farr < resumeempFileid.length; farr++) {
+				EmployeeFiles obj = new EmployeeFiles();
+
+				if (resumeempFileid[farr] != null) {
+					obj.setEmpFileid(Integer.parseInt(resumeempFileid[farr]));
+				}
+				obj.setResume_Attach(resumeempFileidstr[farr]);
+				filels.add(obj);
+			}
+
+		if (certificateempFileid != null)
+			for (int farr = 0; farr < certificateempFileid.length; farr++) {
+				EmployeeFiles obj = new EmployeeFiles();
+
+				if (certificateempFileid[farr] != null) {
+					obj.setEmpFileid(Integer.parseInt(certificateempFileid[farr]));
+				}
+				obj.setCertificates_Attach(certificateempFileidstr[farr]);
+				filels.add(obj);
+			}
+
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("employeeprofilephoto");
+		System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+
+		String resumeuploadRootPath = request.getServletContext().getRealPath("employeeresume");
+		System.out.println("uploadRootPath=" + resumeuploadRootPath);
+
+		File uploadRootDirresume = new File(resumeuploadRootPath);
+		if (!uploadRootDirresume.exists()) {
+			uploadRootDirresume.mkdirs();
+		}
+
+		String certificateuploadRootPath = request.getServletContext().getRealPath("employeecertification");
+		System.out.println("uploadRootPath=" + certificateuploadRootPath);
+
+		File uploadRootDircertificate = new File(certificateuploadRootPath);
+		if (!uploadRootDircertificate.exists()) {
+			uploadRootDircertificate.mkdirs();
+		}
+
+		if (Photo_Attach.getOriginalFilename().toString().length() > 0) {
+			EmployeeFiles empfiles = new EmployeeFiles();
+			StringBuilder filename = new StringBuilder();
+			String tempfilename = stringdatetime() + Photo_Attach.getOriginalFilename();
+			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+			filename.append(tempfilename);
+			empfiles.setPhoto_Attach("employeeprofilephoto/" + filename);
+			try {
+				Files.write(fileNameandPath, Photo_Attach.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			filels.add(empfiles);
+		}
+
+		if (Resume_Attach.getOriginalFilename().toString().length() > 0) {
+			EmployeeFiles empfiles = new EmployeeFiles();
+			StringBuilder filename = new StringBuilder();
+			String tempfilename = stringdatetime() + Resume_Attach.getOriginalFilename();
+			Path fileNameandPath = Paths.get(resumeuploadRootPath, tempfilename);
+			filename.append(tempfilename);
+			empfiles.setResume_Attach("employeeresume/" + filename);
+			try {
+				Files.write(fileNameandPath, Resume_Attach.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			filels.add(empfiles);
+		}
+
+		if (Certificates_Attach.getOriginalFilename().toString().length() > 0) {
+			EmployeeFiles empfiles = new EmployeeFiles();
+			StringBuilder filename = new StringBuilder();
+			String tempfilename = stringdatetime() + Certificates_Attach.getOriginalFilename();
+			Path fileNameandPath = Paths.get(certificateuploadRootPath, tempfilename);
+			filename.append(tempfilename);
+			empfiles.setCertificates_Attach("employeecertification/" + filename);
+			try {
+				Files.write(fileNameandPath, Certificates_Attach.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			filels.add(empfiles);
+		}
+
+		employeemaster.setEmployeeFiles(filels);
 		System.out.println("--------------Step 5 end----------------------");
-		EmployeeFiles empfiles = new EmployeeFiles();
-		ArrayList<EmployeeFiles> filels = new ArrayList<EmployeeFiles>();
-		filels.add(empfiles);
+
 		System.out.println("--------------Step 6 end----------------------");
 		System.out.println(employeemaster);
 
-		employeeMasterService.save(employeemaster);
-		themodel.addAttribute("employeeEducation", eduls);
-		themodel.addAttribute("employeeEmgContact", emgls);
-		themodel.addAttribute("employeeExperience", exptrls);
-		themodel.addAttribute("employeeLanguage", langls);
-		themodel.addAttribute("employeeFiles", empfiles);
-		themodel.addAttribute("employeemaster", employeemaster);
+		EmployeeMaster employeemasternew = new EmployeeMaster();
+		employeemasternew = employeeMasterService.save(employeemaster);
+		System.out.println(employeemasternew);
+
+		Set<EmployeeEducation> edulsnew = new LinkedHashSet<EmployeeEducation>();
+		Set<EmployeeEmgContact> emglsnew = new LinkedHashSet<EmployeeEmgContact>();
+		Set<EmployeeExperience> exptrlsnew = new LinkedHashSet<EmployeeExperience>();
+		Set<EmployeeLanguage> langlsnew = new LinkedHashSet<EmployeeLanguage>();
+		Set<EmployeeFiles> filelsnew = new LinkedHashSet<EmployeeFiles>();
+
+		System.out.println(employeemasternew.getEmployeeEducation().size());
+		if (employeemasternew.getEmployeeEducation().size() > 0) {
+			edulsnew.addAll(employeemasternew.getEmployeeEducation());
+		} else {
+			EmployeeEducation empedu = new EmployeeEducation();
+			empedu.setDegree("-");
+			edulsnew.add(empedu);
+
+		}
+
+		System.out.println(employeemasternew.getEmployeeEmgContact().size());
+		if (employeemasternew.getEmployeeEmgContact().size() > 0) {
+			emglsnew.addAll(employeemasternew.getEmployeeEmgContact());
+		} else {
+			EmployeeEmgContact empcont = new EmployeeEmgContact();
+			empcont.setEmg_Relation("-");
+			emglsnew.add(empcont);
+
+		}
+		System.out.println(employeemasternew.getEmployeeExperience().size());
+		if (employeemasternew.getEmployeeExperience().size() > 0) {
+			exptrlsnew.addAll(employeemasternew.getEmployeeExperience());
+		} else {
+			EmployeeExperience empexper = new EmployeeExperience();
+			exptrlsnew.add(empexper);
+
+		}
+		if (employeemasternew.getEmployeeLanguage().size() > 0) {
+			langlsnew.addAll(employeemasternew.getEmployeeLanguage());
+		} else {
+			EmployeeLanguage emplang = new EmployeeLanguage();
+			emplang.setLanguage("-");
+			langlsnew.add(emplang);
+
+		}
+		if (employeemasternew.getEmployeeFiles().size() > 0) {
+			filelsnew.addAll(employeemasternew.getEmployeeFiles());
+		} else {
+			EmployeeFiles empfiles1 = new EmployeeFiles();
+			filelsnew.add(empfiles1);
+		}
+
+		System.out.println(edulsnew);
+		System.out.println(emglsnew);
+		System.out.println(exptrlsnew);
+		System.out.println(langlsnew);
+		System.out.println(filelsnew);
+
+		themodel.addAttribute("employeeEducation", edulsnew);
+		themodel.addAttribute("employeeEmgContact", emglsnew);
+		themodel.addAttribute("employeeExperience", exptrlsnew);
+		themodel.addAttribute("employeeLanguage", langlsnew);
+		themodel.addAttribute("employeeFiles", filelsnew);
+		themodel.addAttribute("employeemaster", employeemasternew);
 		themodel.addAttribute("save", true);
 		return "empadd";
 
+	}
+
+	@GetMapping("emp")
+	public String employeedetails(Model themodel, @RequestParam("id") int id) {
+
+		EmployeeMaster employeemasternew = new EmployeeMaster();
+		employeemasternew = employeeMasterService.findById(id);
+		System.out.println(employeemasternew);
+
+		Set<EmployeeEducation> edulsnew = new LinkedHashSet<EmployeeEducation>();
+		Set<EmployeeEmgContact> emglsnew = new LinkedHashSet<EmployeeEmgContact>();
+		Set<EmployeeExperience> exptrlsnew = new LinkedHashSet<EmployeeExperience>();
+		Set<EmployeeLanguage> langlsnew = new LinkedHashSet<EmployeeLanguage>();
+		Set<EmployeeFiles> filelsnew = new LinkedHashSet<EmployeeFiles>();
+
+		System.out.println(employeemasternew.getEmployeeEducation().size());
+		if (employeemasternew.getEmployeeEducation().size() > 0) {
+			edulsnew.addAll(employeemasternew.getEmployeeEducation());
+		} else {
+			EmployeeEducation empedu = new EmployeeEducation();
+			empedu.setDegree("-");
+			edulsnew.add(empedu);
+
+		}
+
+		System.out.println(employeemasternew.getEmployeeEmgContact().size());
+		if (employeemasternew.getEmployeeEmgContact().size() > 0) {
+			emglsnew.addAll(employeemasternew.getEmployeeEmgContact());
+		} else {
+			EmployeeEmgContact empcont = new EmployeeEmgContact();
+			empcont.setEmg_Relation("-");
+			emglsnew.add(empcont);
+
+		}
+		System.out.println(employeemasternew.getEmployeeExperience().size());
+		if (employeemasternew.getEmployeeExperience().size() > 0) {
+			exptrlsnew.addAll(employeemasternew.getEmployeeExperience());
+		} else {
+			EmployeeExperience empexper = new EmployeeExperience();
+			exptrlsnew.add(empexper);
+
+		}
+		if (employeemasternew.getEmployeeLanguage().size() > 0) {
+			langlsnew.addAll(employeemasternew.getEmployeeLanguage());
+		} else {
+			EmployeeLanguage emplang = new EmployeeLanguage();
+			emplang.setLanguage("-");
+			langlsnew.add(emplang);
+
+		}
+		if (employeemasternew.getEmployeeFiles().size() > 0) {
+			filelsnew.addAll(employeemasternew.getEmployeeFiles());
+		} else {
+			EmployeeFiles empfiles1 = new EmployeeFiles();
+			filelsnew.add(empfiles1);
+		}
+
+		System.out.println(edulsnew);
+		System.out.println(emglsnew);
+		System.out.println(exptrlsnew);
+		System.out.println(langlsnew);
+		System.out.println(filelsnew);
+
+		themodel.addAttribute("employeeEducation", edulsnew);
+		themodel.addAttribute("employeeEmgContact", emglsnew);
+		themodel.addAttribute("employeeExperience", exptrlsnew);
+		themodel.addAttribute("employeeLanguage", langlsnew);
+		themodel.addAttribute("employeeFiles", filelsnew);
+		themodel.addAttribute("employeemaster", employeemasternew);
+		themodel.addAttribute("save", true);
+		return "empadd";
+	}
+
+	public String stringdatetime() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		Date date = new Date();
+		return dateFormat.format(date);
 	}
 
 	@GetMapping("empjob")

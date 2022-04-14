@@ -16,6 +16,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -204,6 +205,32 @@ public class HomeController {
 
 	@GetMapping("emplist")
 	public String employeelist(Model theModel) {
+		List<String> data=new ArrayList();
+		
+		List<EmployeeMaster> ls=new ArrayList();
+		ls = employeeMasterService.findAll();
+		
+		for(EmployeeMaster obj:ls)
+		{
+			String str="";
+			List<EmployeeFiles> validProfilephoto=obj.getEmployeeFiles().stream().filter(c -> c.getPhoto_Attach() != null)
+			  .collect(Collectors.toList());
+			
+			str +=obj.getStaffName() +"|";
+			if(validProfilephoto.size()>0)
+			{
+				str +=validProfilephoto.get(0).getPhoto_Attach()+ "|";
+			}else
+			{
+				str +=" |";
+			}
+			
+			str +=obj.getEmpMasterid() +"|";
+			
+			data.add(str);
+		}
+		System.out.println(data);
+		theModel.addAttribute("emplist", data);
 		return "emplist";
 	}
 
@@ -719,7 +746,6 @@ public class HomeController {
 		themodel.addAttribute("employeeLanguage", langlsnew);
 		themodel.addAttribute("employeeFiles", filelsnew);
 		themodel.addAttribute("employeemaster", employeemasternew);
-		themodel.addAttribute("save", true);
 		return "empadd";
 	}
 

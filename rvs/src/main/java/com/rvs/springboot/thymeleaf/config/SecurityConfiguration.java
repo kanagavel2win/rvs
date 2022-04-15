@@ -25,6 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     		"/employeeprofilephoto/**",
                     		"/employeeresume/**",
                     		"/employeecertification/**",
+                    		"/employeehiredate**",
                             "/registration**",
                             "/app-assets/**",
                             "/assets/**",

@@ -4,6 +4,10 @@
 <!-- BEGIN: Head-->
 
 <head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -107,6 +111,7 @@
 	tbody>tr:hover .iconalign
 	{
 		color:#527a00;
+		cursor:pointer;
 	}
 	
 	.bullet.bullet-success {
@@ -123,10 +128,17 @@
 		min-width:100px;
 		min-height:25px;
 	}
-	
+	.modal-footer
+	{
+		border-top: none;
+	}
 	
 </style>
-
+<script>
+var tblemployeeJobempstatusid=0;
+var tblemployeeJobinfoid=0;
+var tblemployeecompensationid=0; 
+</script>
 </head>
 <!-- END: Head-->
 
@@ -172,12 +184,15 @@
                 <section id="basic-vertical-layouts">
                     <div class="row match-height">
                         <div class="col-12">
+                       
                             <div class="card">
                                 <div class="card-content">
                                     <div class="card-body">
                                     	<div class="col-md-12">
                                     		<div class="form-group">
-                                               <label class="empnametitle"> RVS00001 - Kanagavel</label>
+                                               <label class="empnametitle"> RVS00001 - Kanagavel
+                                               <input type="hidden" th:value='${empid}' id="empid" />
+                                               </label>
                                              </div>
                                          </div>
                                    	 
@@ -192,7 +207,8 @@
 		                                                  <label for="contact-info-icon">Hire Date</label>
 		                                                  <div class="form-group">
 		                                                  <div class="position-relative has-icon-left">
-		                                                      <input type="date"  class="e1 form-control" >
+		                                                      <input type="hidden"  class="e1 form-control"  id="hiredateid" />
+		                                                      <input type="date"  class="e1 form-control" th:value="${employeeJobemphiredate}" id="hiredate" />
 		                                                      <div class="form-control-position">
 		                                                          <i class="bx bx-calendar-event"></i>
 		                                                      </div>
@@ -201,7 +217,7 @@
 		                                            </div>
 		                                         
 		                                         	<div class="form-group">
-		                                             		<button type="button" class="e2 position-relative  btn btn-primary ml-1">
+		                                             		<button type="button" class="e2 position-relative  btn btn-primary ml-1" id="hiredatebtn">
 		                                                     Save
 		                                                 	</button>
 			                                      	</div>
@@ -256,7 +272,7 @@
                                             	
                                                <label class="emptitle"> <i class="bx bxs-id-card ownstyle"></i> Employment Status</label>
                                                	<div class="form-group" style="float:right"> 
-                                               		<label class="emptitle" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+                                               		<label class="emptitle newemplstatus" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
                                              	</div>
                                              </div>
                                              <!--scrolling content Modal -->
@@ -277,6 +293,8 @@
 			                                                            </label>
 			                                                            <div class="position-relative has-icon-left">
 			                                                                <fieldset class="form-group">
+			                                                                	<input type="hidden"  id="employeeJobempstatusid"/>
+							                                                    <input type="hidden"  id="employeeJobempstatusidrow"/>
 							                                                    <select class="form-control addemployeestatusdata" id="empstatus_employmentstatus">
 							                                                        <option>-</option>
 							                                                        <option>Full-Time</option>
@@ -297,7 +315,7 @@
 			                                                            </label>
 			                                                            <div class="position-relative has-icon-left">
 			                                                                <fieldset class="form-group">
-							                                                    <select class="form-control addterminationtypedata" id="empstatus_employmentstatus">
+							                                                    <select class="form-control addterminationtypedata" id="empstatus_terminationtype">
 							                                                        <option>-</option>
 							                                                        <option>Death</option>
 							                                                        <option>Involuntary</option>
@@ -315,7 +333,8 @@
 			                                                            </label>
 			                                                            <div class="position-relative has-icon-left">
 			                                                                <fieldset class="form-group">
-							                                                    <select class="form-control addterminationreasondata" id="empstatus_employmentstatus">
+			                                                                	
+							                                                    <select class="form-control addterminationreasondata" id="empstatus_terminationreason">
 							                                                        <option>-</option>
 							                                                        <option>Attendance</option>
 							                                                        <option>Life Happens</option>
@@ -336,7 +355,7 @@
 			                                                            </label>
 			                                                            <div class="position-relative has-icon-left">
 			                                                                <fieldset class="form-group">
-							                                                    <select class="form-control" id="empstatus_employmentstatus">
+							                                                    <select class="form-control" id="empstatus_rehire">
 							                                                        <option>-</option>
 							                                                        <option>Yes</option>
 							                                                        <option>No</option>
@@ -378,7 +397,7 @@
 		                                                            <i class="bx bx-x d-block d-sm-none"></i>
 		                                                            <span class="d-none d-sm-block">Close</span>
 		                                                        </button>
-		                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+		                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_EMPLOYMENTSTATUS_save">
 		                                                            <i class="bx bx-check d-block d-sm-none"></i>
 		                                                            <span class="d-none d-sm-block">Save</span>
 		                                                        </button>
@@ -388,7 +407,7 @@
 		                                        </div>
                                         	 <!--scrolling content Modal -->
                                        </div>
-                                     	<div class="table-responsive">
+                                     	<div class="table-responsive" id="tbl_EMPLOYMENTSTATUS">
 		                                    <table class="table table-hover mb-0">
 		                                        <thead>
 		                                            <tr>
@@ -399,22 +418,36 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
-		                                            <tr>
+		                                            <tr th:each="emp,stat : ${employeeJobempstatus}">
 		                                                <td class="text-bold-500">
 		                                                <span class="bullet bullet-sm bullet-success"></span>
-		                                                11/03/2018</td>
-		                                                <td>Full-Time</td>
-		                                                <td class="text-bold-500">NA</td>
+		                                                <input type="hidden" th:value="${emp.employeejobempstatusid}" th:id="'tblemployeeJobempstatusid' + ${stat.index}"/>
+		                                                <span th:id="'tblempstatus_effectivedate' + ${stat.index}" th:text="${emp.empstatus_effectivedate}"></span>
+		                                                
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tblempstatus_employmentstatus' + ${stat.index}" th:text="${emp.empstatus_employmentstatus}"></span>
+		                                                	<input type="hidden" th:value="${emp.empstatus_terminationtype}" th:id="'tblempstatus_terminationtype' + ${stat.index}"/>
+		                                                	<input type="hidden" th:value="${emp.empstatus_terminationreason}" th:id="'tblempstatus_terminationreason' + ${stat.index}"/>
+		                                                	<input type="hidden" th:value="${emp.empstatus_rehire}" th:id="'tblempstatus_rehire' + ${stat.index}"/>
+		                                                
+		                                                </td>
+		                                                <td class="text-bold-500">
+		                                                	<span th:id="'tblempstatus_remarks' + ${stat.index}" th:text="${emp.empstatus_remarks}"></span>
+		                                                </td>
 		                                                <td width="110px"><span class="iconalign">
 		                                               	 	
-		                                               	 	<span  data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-pencil"></i></span>
-		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
+		                                               	 	<span  data-toggle="modal" data-target="#employeeStatusScrollable" th:name="${stat.index}" class="updateemplstatus"><i class="bx bxs-pencil"></i></span>
+		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobempstatusid}" th:id="${stat.index}" class="deleteemplstatus"><i class="bx bxs-trash-alt"></i></span>
 		                                                	
 		                                                	<span>
 		                                                </td>
-		                                                
+		                                                <script>
+															tblemployeeJobempstatusid=tblemployeeJobempstatusid+1;
+															</script>
 		                                            </tr>
-		                                            </tbody>
+		                                            
+		                                           </tbody>
 		                                    </table>
 		                                </div>
                                      	<br/><hr/><br/>
@@ -423,7 +456,7 @@
                                             	
                                                <label class="emptitle"> <i class="bx bxs-briefcase-alt-2 ownstyle"></i>Job Information</label>
                                                	<div class="form-group" style="float:right"> 
-                                               		<label class="emptitle"  data-toggle="modal" data-target="#jobInformationScrollable"> <i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+                                               		<label class="emptitle newemplinfostatus"  data-toggle="modal" data-target="#jobInformationScrollable"> <i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
                                              	</div>
                                              </div>
                                              <!--scrolling content Modal -->
@@ -442,7 +475,9 @@
 		                                                        <div class="form-group">
 		                                                            <label for="contact-info-icon">Effective Date</label>
 		                                                            <div class="position-relative has-icon-left">
-		                                                                <input type="date"  class="form-control" id="jobinformation_effectivedate">
+		                                                            	<input type="hidden"  class="form-control" id="employeejobinfoid">
+		                                                            	<input type="hidden" class="form-control" id="employeejobinfoidrow">
+		                                                                <input type="date"  class="form-control" id="jobeffectivedate">
 		                                                                <div class="form-control-position">
 		                                                                    <i class="bx bx-calendar-event"></i>
 		                                                                </div>
@@ -454,7 +489,7 @@
 		                                                            <label for="email-id-icon">Location</label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="jobinformation_location">
+						                                                    <select class="form-control"  id="joblocation">
 						                                                        <option>-</option>
 						                                                        <option>Coimbatore</option>
 						                                                        <option>Madurai</option>
@@ -471,7 +506,7 @@
 		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control adddepartmentdata"  id="jobinformation_department">
+						                                                    <select class="form-control adddepartmentdata"  id="jobdeparment">
 						                                                        <option>-</option>
 						                                                        <option>Survey</option>
 						                                                        <option>Drafting</option>
@@ -490,7 +525,7 @@
 		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control addjobtitledata"  id="jobinformation_jobtitle">
+						                                                    <select class="form-control addjobtitledata"  id="jobtitle">
 						                                                        <option>-</option>
 						                                                        <option>Surveyor</option>
 						                                                        <option>Survey Assistant</option>
@@ -506,7 +541,7 @@
 		                                                        <div class="form-group">
 		                                                            <label for="contact-info-icon">Reports To</label>
 		                                                            <div class="position-relative has-icon-left">
-		                                                                <input type="text"  class="form-control" id="jobinformation_reportsto">
+		                                                                <input type="text"  class="form-control" id="jobreportsto">
 		                                                                <div class="form-control-position">
 		                                                                    <i class="bx bx-comment"></i>
 		                                                                </div>
@@ -520,7 +555,7 @@
 	                                                            <i class="bx bx-x d-block d-sm-none"></i>
 	                                                            <span class="d-none d-sm-block">Close</span>
 	                                                        </button>
-	                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+	                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_jobinfo_save">
 	                                                            <i class="bx bx-check d-block d-sm-none"></i>
 	                                                            <span class="d-none d-sm-block">Save</span>
 	                                                        </button>
@@ -532,7 +567,7 @@
                                              
                                         </div>
                                      	<div class="table-responsive">
-		                                    <table class="table table-hover mb-0">
+		                                    <table class="table table-hover mb-0" id="tbl_JOB_information">
 		                                        <thead>
 		                                            <tr>
 		                                                <th>Effective Date</th>
@@ -544,18 +579,31 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
-		                                            <tr>
+		                                            <tr th:each="emp,stat : ${employeeJobinfomation}">
 		                                                <td class="text-bold-500">
 		                                                <span class="bullet bullet-sm bullet-success"></span>
-		                                                11/03/2020</td>
-		                                                <td>Lindon, Utah</td>
-		                                                <td class="text-bold-500">Human Resources</td>
-		                                                <td>Sr. HR Administrator</td>
-		                                                <td>Jennifer Caldwell</td>
+		                                               	<input type="hidden" th:value="${emp.employeejobinfoid}" th:id="'tblemployeejobinfoid' + ${stat.index}"/>
+														<span th:id="'tbljobeffectivedate' + ${stat.index}" th:text="${emp.jobeffectivedate}"></span>
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tbljoblocation' + ${stat.index}" th:text="${emp.joblocation}"></span>
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tbljobdeparment' + ${stat.index}" th:text="${emp.jobdeparment}"></span>
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tbljobtitle' + ${stat.index}" th:text="${emp.jobtitle}"></span>
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tbljobreportsto' + ${stat.index}" th:text="${emp.jobreportsto}"></span>
+		                                                </td>
 		                                                <td><span class="iconalign">
-															<span  data-toggle="modal" data-target="#jobInformationScrollable"><i class="bx bxs-pencil"></i></span>
-		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
+															<span  data-toggle="modal" data-target="#jobInformationScrollable" th:name="${stat.index}" class="updatejobinfostatus"><i class="bx bxs-pencil"></i></span>
+		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobinfoid}"  th:id="${stat.index}" class="deletejobinfostatus"><i class="bx bxs-trash-alt"></i></span>
 														</span></td>
+														 <script>
+														 tblemployeeJobinfoid=tblemployeeJobinfoid+1;
+															</script>
 		                                            </tr>
 		                                            </tbody>
 		                                    </table>
@@ -565,7 +613,7 @@
                                             <div class="form-group">
                                                <label class="emptitle"> <i class="bx bx-dollar-circle ownstyle"></i>Compensation</label>
                                                	<div class="form-group" style="float:right"> 
-                                               		<label class="emptitle"  data-toggle="modal" data-target="#compensationScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+                                               		<label class="emptitle newempcompensationstatus"  data-toggle="modal" data-target="#compensationScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
                                              	</div>
                                              </div>
                                               <!--scrolling content Modal -->
@@ -583,7 +631,9 @@
 			                                                        <div class="form-group">
 			                                                            <label for="contact-info-icon">Effective Date</label>
 			                                                            <div class="position-relative has-icon-left">
-			                                                                <input type="date"  class="form-control" id="compensation_effectivedate">
+			                                                                <input type="hidden"  class="form-control" id="employeejobcompensationid">
+		                                                            		<input type="hidden" class="form-control" id="employeejobcompensationidrow">
+		                                                                    <input type="date"  class="form-control" id="comeffectivedate">
 			                                                                <div class="form-control-position">
 			                                                                    <i class="bx bx-calendar-event"></i>
 			                                                                </div>
@@ -595,7 +645,7 @@
 		                                                            <label for="email-id-icon">Pay Schedule</label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="compensation_payschedule">
+						                                                    <select class="form-control"  id="comPayschedule">
 						                                                        <option>-</option>
 						                                                        <option>Monthly</option>
 						                                                        <option>Weekly</option>
@@ -610,7 +660,7 @@
 		                                                            <label for="email-id-icon">Pay Type</label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="compensation_paytype">
+						                                                    <select class="form-control"  id="compaytype">
 						                                                        <option>-</option>
 						                                                        <option>Salary</option>
 						                                                     </select>
@@ -626,12 +676,12 @@
 		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <input type="text"  class="form-control"  style="width:50%;float:left;" id="compensation_payrate">
+						                                                    <input type="text"  class="form-control"  style="width:50%;float:left;" id="compayrate">
 				                                                             <div class="form-control-position">
 			                                                                    <i class="bx bx-money"></i>
 			                                                                </div>
 						                                                
-						                                                    <select class="form-control addpayratedata"  style="width:50%;float:right" id="compensation_payratetype">
+						                                                    <select class="form-control addpayratedata"  style="width:50%;float:right" id="compayratetype">
 						                                                        <option>-</option>
 						                                                        <option>Day</option>
 						                                                        <option>Month</option>
@@ -648,7 +698,7 @@
 		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control addchangereasondata"  id="compensation_changereason">
+						                                                    <select class="form-control addchangereasondata"  id="comchangereason">
 						                                                        <option>-</option>
 						                                                        <option>Annual Pay increase</option>
 						                                                        <option>NA</option>
@@ -666,7 +716,7 @@
 			                                                        <div class="form-group">
 			                                                            <label for="contact-info-icon">Comments</label>
 			                                                            <div class="position-relative has-icon-left">
-			                                                                <input type="text"  class="form-control" id="compensation_comments">
+			                                                                <input type="text"  class="form-control" id="comcomments">
 			                                                                <div class="form-control-position">
 			                                                                    <i class="bx bx-comment"></i>
 			                                                                </div>
@@ -680,7 +730,7 @@
 		                                                            <i class="bx bx-x d-block d-sm-none"></i>
 		                                                            <span class="d-none d-sm-block">Close</span>
 		                                                        </button>
-		                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+		                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_jobcompensation_save">
 		                                                            <i class="bx bx-check d-block d-sm-none"></i>
 		                                                            <span class="d-none d-sm-block">Save</span>
 		                                                        </button>
@@ -691,7 +741,7 @@
                                         	 <!--scrolling content Modal -->
                                        </div>
                                     	 <div class="table-responsive">
-		                                    <table class="table table-hover mb-0">
+		                                    <table class="table table-hover mb-0" id="tbl_compensation_information">
 		                                        <thead>
 		                                            <tr>
 		                                                <th>Effective Date</th>
@@ -703,19 +753,35 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
-		                                            <tr>
+		                                            <tr th:each="emp,stat : ${employeecompensation}">
 		                                                <td class="text-bold-500">
 		                                                <span class="bullet bullet-sm bullet-success"></span>
-		                                                11/03/2020</td>
-		                                                <td>Twice a month</td>
-		                                                <td class="text-bold-500">Salary</td>
-		                                                <td>$65,000.00 / Year</td>
-		                                                <td>Promotion</td>
-		                                                <td>Promotion</td>
+		                                                <input type="hidden" th:value="${emp.employeejobcompensationid}" th:id="'tblemployeejobcompensationid' + ${stat.index}"/>
+		                                                <span th:id="'tblcomeffectivedate' + ${stat.index}" th:text="${emp.comeffectivedate}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcomPayschedule' + ${stat.index}" th:text="${emp.comPayschedule}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcompaytype' + ${stat.index}" th:text="${emp.compaytype}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcompayrate' + ${stat.index}" th:text="${emp.compayrate}"></span>
+		                                                <span th:id="'tblcompayratetype' + ${stat.index}" th:text="${emp.compayratetype}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcomchangereason' + ${stat.index}" th:text="${emp.comchangereason}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcomcomments' + ${stat.index}" th:text="${emp.comcomments}"></span>
+		                                                </td>
 		                                                <td><span class="iconalign">
-															<span  data-toggle="modal" data-target="#compensationScrollable"><i class="bx bxs-pencil"></i></span>
-		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
+															<span  data-toggle="modal" data-target="#compensationScrollable" th:name="${stat.index}"  class="updatejobcompensationstatus"><i class="bx bxs-pencil"></i></span>
+		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobcompensationid}"  th:id="${stat.index}" class="deletecompensationstatus"><i class="bx bxs-trash-alt"></i></span>
 														</span></td>
+														<script>
+														 	tblemployeecompensationid=tblemployeecompensationid+1;
+														</script>
 		                                            </tr>
 		                                            </tbody>
 		                                    </table>
@@ -744,7 +810,9 @@
                                <div class="col-md-12">
                                    <div class="form-group">
                                        <label for="contact-info-icon">Are you sure you want to delete this row?</label>
-                                       
+                                       <input type="text" id="deleteid" />
+                                       <input type="text" id="deletetype" />
+                                       <input type="text" id="deleteindex" />
                                    </div>
                                </div>
                                
@@ -753,7 +821,7 @@
                                       <i class="bx bx-x d-block d-sm-none"></i>
                                       <span class="d-none d-sm-block">Cancel</span>
                                   </button>
-                                  <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+                                  <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="deleteidbtn">
                                       <i class="bx bx-check d-block d-sm-none"></i>
                                       <span class="d-none d-sm-block">Yes</span>
                                   </button>
@@ -762,6 +830,8 @@
                        </div>
                     </div>
                   	 <!--scrolling content Modal -->
+                  	 
+                  	 
             </div>
         </div>
     </div>
@@ -822,6 +892,38 @@
 			</button>
 		</p>
 		</footer>
+		
+		 <!--scrolling content Modal -->
+               	<div class="modal fade" id="jqueryInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="jqueryInformationScrollableTitle" aria-hidden="true">
+                     <div class="modal-dialog modal-dialog-scrollable" role="document">
+                         <div class="modal-content">
+                             <div class="modal-header bg-success">
+                                 <h5 class="modal-title white" id="jqueryInformationScrollableTitle"></h5>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                     <i class="bx bx-x"></i>
+                                 </button>
+                             </div>
+                             <div class="modal-body">
+                                 
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <center>
+                                      	<label for="contact-info-icon" id="modeljqueryresult" style="font-weight:bold"></label>
+                                      </center>
+                                  </div>
+                              </div>
+                              
+                             <div class="modal-footer">
+                                 
+                                 <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+                                     <i class="bx bx-check d-block d-sm-none"></i>
+                                     <span class="d-none d-sm-block">Ok</span>
+                                 </button>
+                              </div>
+                          </div>
+                      </div>
+                   </div>
+                	 <!--scrolling content Modal -->
 		<!-- END: Footer-->
 
 
@@ -856,6 +958,11 @@
 <!-- END: Body-->
 	<script>
 			$(document).ready(function(){
+				var empid=$('#empid').val();
+				
+				
+				
+
 				$(".Termination").hide();
 				
 				$(".additem").click(function(){
@@ -905,6 +1012,377 @@
 				
 				});
 				
+				
+				$("#hiredatebtn").click(function() {
+					var hiredateid = $("#hiredateid").val();
+					var hiredate = $("#hiredate").val();
+					
+					var formData = {
+							hiredateid : hiredateid,
+							hiredate : hiredate,
+							empid : empid
+					}
+					$.ajax({
+						type : "POST",url : "employeehiredate",
+						data : formData,success : function(result) {
+							
+							$("#hiredateid").val(result.replace("Success",""))
+							$('#modeljqueryresult').text("Hire Date updated successfully");
+						},
+						error : function(e) {
+							$('#modeljqueryresult').text("Error" + e);
+						}
+					});
+
+					$('#jqueryInformationScrollable').modal('toggle');
+				});
+				
+				//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+				$(function() {
+					var token = $("meta[name='_csrf']").attr("content");
+					var header = $("meta[name='_csrf_header']").attr("content");
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(header, token);
+					});
+				});
+				//--------------------------------------------------------------------------------------------------------------------------------------		 
+				//--------------------------------------------------------------------------------------------------------------------------------------		 		
+				$("#tbl_EMPLOYMENTSTATUS_save").click(function(){
+					var employeeJobempstatusidrow= $('#employeeJobempstatusidrow').val();
+					var employeeJobempstatusid=$('#employeeJobempstatusid').val();
+					var empstatus_employmentstatus= $('#empstatus_employmentstatus').val();
+					var empstatus_terminationtype= $('#empstatus_terminationtype').val();
+					var empstatus_terminationreason= $('#empstatus_terminationreason').val();
+					var empstatus_rehire= $('#empstatus_rehire').val();
+					var empstatus_effectivedate= $('#empstatus_effectivedate').val();
+					var empstatus_remarks= $('#empstatus_remarks').val();
+					
+					
+					var formData = {
+							empid : empid,
+							employeeJobempstatusid : employeeJobempstatusid,
+							empstatus_employmentstatus : empstatus_employmentstatus,
+							empstatus_terminationtype : empstatus_terminationtype,
+							empstatus_terminationreason : empstatus_terminationreason,
+							empstatus_rehire : empstatus_rehire,
+							empstatus_remarks : empstatus_remarks,
+							empstatus_effectivedate : empstatus_effectivedate
+					}
+					$.ajax({
+						type : "POST",url : "employeeemploymentupdate",
+						data : formData,success : function(result) {
+							
+							var objid= result.replace("Success","");
+							$('#modeljqueryresult').text("Employment status updated successfully");
+								if(employeeJobempstatusidrow=="")
+									{
+									var html='<tr><td><span class="bullet bullet-sm bullet-success"></span>';
+									html += '<input type="hidden" value="'+objid+'" id="tblemployeeJobempstatusid'+ tblemployeeJobempstatusid +'"/>';
+									
+									html += '<span id="tblempstatus_effectivedate'+ tblemployeeJobempstatusid +'">'+ empstatus_effectivedate +'</span></td><td>';
+				                    html += '<span id="tblempstatus_employmentstatus'+ tblemployeeJobempstatusid +'">'+ empstatus_employmentstatus +'</span>';
+				                    html += '<input type="hidden" value="" id="tblempstatus_terminationtype'+ tblemployeeJobempstatusid +'"/>';
+				                    html += '<input type="hidden" value="" id="tblempstatus_terminationreason'+ tblemployeeJobempstatusid +'"/>';
+				                    html += '<input type="hidden" value="" id="tblempstatus_rehire'+ tblemployeeJobempstatusid +'"/></td> <td>';
+				                    html += '<span id="tblempstatus_remarks'+ tblemployeeJobempstatusid +'">'+ empstatus_remarks +'</span>           </td>                    <td width="110px"><span class="iconalign">';                   	 	
+				                    html += '<span  data-toggle="modal" data-target="#employeeStatusScrollable" name="'+ tblemployeeJobempstatusid +'" class="updateemplstatus"><i class="bx bxs-pencil"></i></span>';
+				                    html += '<span  data-toggle="modal" data-target="#deleteInformationScrollable" id="'+ tblemployeeJobempstatusid +'" name="'+objid+'" class="deleteemplstatus"><i class="bx bxs-trash-alt"></i></span>                    	                    	<span>                    </td>                                    </tr>';
+				
+				                    $('#tbl_EMPLOYMENTSTATUS tbody').append(html);
+				                    tblemployeeJobempstatusid=tblemployeeJobempstatusid+1;
+									}
+									else
+									{
+										
+										$('#tblempstatus_employmentstatus'+employeeJobempstatusidrow).text(empstatus_employmentstatus);
+										$('#tblempstatus_terminationtype'+employeeJobempstatusidrow).val(empstatus_terminationtype);
+										$('#tblempstatus_terminationreason'+employeeJobempstatusidrow).val(empstatus_terminationreason);
+										$('#tblempstatus_rehire'+employeeJobempstatusidrow).val(empstatus_rehire);
+										$('#tblempstatus_effectivedate'+employeeJobempstatusidrow).text(empstatus_effectivedate);
+										$('#tblempstatus_remarks'+employeeJobempstatusidrow).text(empstatus_remarks);
+									}
+						},
+						error : function(e) {
+							$('#modeljqueryresult').text("Error" + e);
+						}
+					});
+					
+					
+					
+					$('#jqueryInformationScrollable').modal('toggle');
+				});
+				
+				$(document).on('click', ".updateemplstatus", function() {
+				
+					var id =$(this).attr('name');
+					$('#employeeJobempstatusid').val($('#tblemployeeJobempstatusid'+id).val());
+					$('#employeeJobempstatusidrow').val(id);
+					$('#empstatus_employmentstatus').val($('#tblempstatus_employmentstatus'+id).text()).change();
+					$('#empstatus_terminationtype').val($('#tblempstatus_terminationtype'+id).val()).change();
+					$('#empstatus_terminationreason').val($('#tblempstatus_terminationreason'+id).val()).change();
+					$('#empstatus_rehire').val($('#tblempstatus_rehire'+id).val());
+					$('#empstatus_effectivedate').val($('#tblempstatus_effectivedate'+id).text());
+					$('#empstatus_remarks').val($('#tblempstatus_remarks'+id).text());
+				});
+				
+				$(".newemplstatus").click(function(){
+					$('#employeeJobempstatusid').val('');
+					$('#employeeJobempstatusidrow').val('');
+					
+				});
+				
+				//--------------------------------------------------------------------------------------------------------------------------------------		 
+				//--------------------------------------------------------------------------------------------------------------------------------------		 		
+				$("#tbl_jobinfo_save").click(function(){
+					
+					var employeejobinfoid= $('#employeejobinfoid').val();
+					var employeejobinfoidrow= $('#employeejobinfoidrow').val();
+					var jobeffectivedate= $('#jobeffectivedate').val();
+					var joblocation= $('#joblocation').val();
+					var jobdeparment= $('#jobdeparment').val();
+					var jobtitle= $('#jobtitle').val();
+					var jobreportsto= $('#jobreportsto').val();
+					
+					var formData = {
+							empid : empid,
+							employeejobinfoid : employeejobinfoid,
+							employeejobinfoidrow : employeejobinfoidrow,
+							jobeffectivedate : jobeffectivedate,
+							joblocation : joblocation,
+							jobdeparment : jobdeparment,
+							jobtitle : jobtitle,
+							jobreportsto : jobreportsto
+					}
+					$.ajax({
+						type : "POST",url : "employeejobinformationupdate",
+						data : formData,success : function(result) {
+							
+							var objid= result.replace("Success","");
+							$('#modeljqueryresult').text("Job Infomation updated successfully");
+								if(employeejobinfoidrow=="")
+									{
+									
+									html= '<tr>';
+									html += '<td>';
+									html += '<span class="bullet bullet-sm bullet-success"></span>';
+									html += '<input type="hidden" value="'+objid+'" id="tblemployeejobinfoid' + tblemployeeJobinfoid  + '"/>';
+									html += '<span id="tbljobeffectivedate' + tblemployeeJobinfoid  + '" >' + jobeffectivedate  +'</span>                                    </td>                                    <td>';
+									html += '<span id="tbljoblocation' + tblemployeeJobinfoid  + '" >' + joblocation +'</span>                                    </td>                                    <td>';
+                                    html += '	<span id="tbljobdeparment' + tblemployeeJobinfoid  + '" >' + jobdeparment +'</span>                                    </td>                                    <td>';
+                                    html += '	<span id="tbljobtitle' + tblemployeeJobinfoid  + '" >' +  jobtitle +'</span>                                    </td>                                    <td>';
+                                    html += '<span id="tbljobreportsto' + tblemployeeJobinfoid  + '">' + jobreportsto +'</span>                                    </td>                                    <td><span class="iconalign">';
+                                    html += '	<span  data-toggle="modal" data-target="#jobInformationScrollable" name="' + tblemployeeJobinfoid  + '" class="updatejobinfostatus"><i class="bx bxs-pencil"></i></span>';
+                                    html += '<span  data-toggle="modal" data-target="#deleteInformationScrollable" id="' + tblemployeeJobinfoid  + '"  name="'+objid+'"  class="deletejobinfostatus"><i class="bx bxs-trash-alt"></i></span>                                    </span></td>                                </tr>';
+                                
+				                    $('#tbl_JOB_information tbody').append(html);
+				                    tblemployeeJobinfoid=tblemployeeJobinfoid+1;
+									}
+									else
+									{
+										
+										$('#tbljobeffectivedate'+employeejobinfoidrow).text(jobeffectivedate);
+										$('#tbljoblocation'+employeejobinfoidrow).text(joblocation);
+										$('#tbljobdeparment'+employeejobinfoidrow).text(jobdeparment);
+										$('#tbljobtitle'+employeejobinfoidrow).text(jobtitle);
+										$('#tbljobreportsto'+employeejobinfoidrow).text(jobreportsto);
+										
+									}
+						},
+						error : function(e) {
+							$('#modeljqueryresult').text("Error" + e);
+						}
+					});
+					
+					
+					
+					$('#jqueryInformationScrollable').modal('toggle');
+				});
+				
+				$(document).on('click', ".updatejobinfostatus", function() {
+				
+					var id =$(this).attr('name');
+					$('#employeejobinfoid').val($('#tblemployeejobinfoid'+id).val());
+					$('#employeejobinfoidrow').val(id);
+					$('#jobeffectivedate').val($('#tbljobeffectivedate'+id).text());
+					$('#joblocation').val($('#tbljoblocation'+id).text()).change();
+					$('#jobdeparment').val($('#tbljobdeparment'+id).text()).change();
+					$('#jobtitle').val($('#tbljobtitle'+id).text()).change();
+					$('#jobreportsto').val($('#tbljobreportsto'+id).text());
+					
+				});
+				
+				$(".newemplinfostatus").click(function(){
+					$('#employeejobinfoid').val('');
+					$('#employeejobinfoidrow').val('');
+					
+				});
+				//--------------------------------------------------------------------------------------------------------------------------------------		 
+				//--------------------------------------------------------------------------------------------------------------------------------------		 		
+				$("#tbl_jobcompensation_save").click(function(){
+					
+					var employeejobcompensationid= $('#employeejobcompensationid').val();
+					var employeejobcompensationidrow= $('#employeejobcompensationidrow').val();
+					var comeffectivedate= $('#comeffectivedate').val();
+					var comPayschedule= $('#comPayschedule').val();
+					var compaytype= $('#compaytype').val();
+					var compayrate= $('#compayrate').val();
+					var compayratetype= $('#compayratetype').val();
+					var comchangereason= $('#comchangereason').val();
+					var comcomments= $('#comcomments').val();
+					
+					var formData = {
+							empid : empid,
+							employeejobcompensationid : employeejobcompensationid,
+							comeffectivedate : comeffectivedate,
+							comPayschedule : comPayschedule,
+							compaytype : compaytype ,
+							compayrate : compayrate,
+							compayratetype : compayratetype,
+							comchangereason : comchangereason,
+							comcomments : comcomments
+					}
+					$.ajax({
+						type : "POST",url : "employeecompensationupdate",
+						data : formData,success : function(result) {
+							
+							var objid= result.replace("Success","");
+							$('#modeljqueryresult').text("Compensation Infomation updated successfully");
+								if(employeejobcompensationidrow=="")
+									{
+									
+									html= '<tr>';
+									html += '<td>         <span class="bullet bullet-sm bullet-success"></span>';
+									html += '<input type="hidden" value="'+objid+'" id="tblemployeejobcompensationid' + tblemployeecompensationid + '"/>';
+									html += '<span id="tblcomeffectivedate' + tblemployeecompensationid + '" >'+ comeffectivedate +'</span>                                    </td>                                    <td>';
+									html += '<span id="tblcomPayschedule' + tblemployeecompensationid + '" >'+ comPayschedule +'</span>                                    </td>                                    <td>';
+									html += '<span id="tblcompaytype' + tblemployeecompensationid + '" >'+ compaytype +'</span>                                    </td>                                    <td>';
+									html += '<span id="tblcompayrate' + tblemployeecompensationid + '" >'+ compayrate +'</span>'; 
+									html += '<span id="tblcompayratetype' + tblemployeecompensationid + '" >'+ compayratetype +'</span></td>                                    <td>';
+									html += '<span id="tblcomchangereason' + tblemployeecompensationid + '" >'+ comchangereason +'</span>                                    </td>                                    <td>';
+									html += '<span id="tblcomcomments' + tblemployeecompensationid + '">'+ comcomments +'</span>                                    </td>                                    <td><span class="iconalign">';
+									html += '<span  data-toggle="modal" data-target="#compensationScrollable" name="' + tblemployeecompensationid + '"  class="updatejobcompensationstatus"><i class="bx bxs-pencil"></i></span>';
+									html += '<span  data-toggle="modal" data-target="#deleteInformationScrollable" id="' + tblemployeecompensationid + '"  name="'+objid+'"  class="deletecompensationstatus"><i class="bx bxs-trash-alt"></i></span>									</span></td>								                                </tr>';
+                                
+									
+				                    $('#tbl_compensation_information tbody').append(html);
+				                    tblemployeecompensationid=tblemployeecompensationid+1;
+									}
+									else
+									{
+										
+										$('#tblcomeffectivedate'+employeejobcompensationidrow).text(comeffectivedate);
+										$('#tblcomPayschedule'+employeejobcompensationidrow).text(comPayschedule);
+										$('#tblcompaytype'+employeejobcompensationidrow).text(compaytype);
+										$('#tblcompayrate'+employeejobcompensationidrow).text(compayrate);
+										$('#tblcompayratetype'+employeejobcompensationidrow).text(compayratetype);
+										$('#tblcomchangereason'+employeejobcompensationidrow).text(comchangereason);
+										$('#tblcomcomments'+employeejobcompensationidrow).text(comcomments);
+									}
+						},
+						error : function(e) {
+							$('#modeljqueryresult').text("Error" + e);
+						}
+					});
+					
+					
+					
+					$('#jqueryInformationScrollable').modal('toggle');
+				});
+				
+				$(document).on('click', ".updatejobcompensationstatus", function() {
+					
+					var id =$(this).attr('name');
+					$('#employeejobcompensationid').val($('#tblemployeejobcompensationid'+id).val());
+					$('#employeejobcompensationidrow').val(id);
+					$('#comeffectivedate').val($('#tblcomeffectivedate'+id).text());
+					$('#comPayschedule').val($('#tblcomPayschedule'+id).text()).change();
+					$('#compaytype').val($('#tblcompaytype'+id).text()).change();
+					$('#compayrate').val($('#tblcompayrate'+id).text());
+					$('#compayratetype').val($('#tblcompayratetype'+id).text()).change();
+					$('#comchangereason').val($('#tblcomchangereason'+id).text()).change();
+					$('#comcomments').val($('#tblcomcomments'+id).text());
+				});
+				
+				$(".newempcompensationstatus").click(function(){
+					$('#employeejobcompensationid').val('');
+					$('#employeejobcompensationidrow').val('');
+					
+				});
+				//--------------------------------------------------------------------------------------------------------------------------------------		 
+				//--------------------------------------------------------------------------------------------------------------------------------------		 		
+				
+				$(document).on('click', ".deleteemplstatus", function() {
+					var id =$(this).attr('name');
+					cleandelete();
+					$("#deleteid").val(id);
+					$("#deletetype").val("employmentstatus");
+					$('#deleteindex').val($(this).attr('id'));
+				
+				});
+				
+				$(document).on('click', ".deletejobinfostatus", function() {
+					var id =$(this).attr('name');
+					cleandelete();
+					$("#deleteid").val(id);
+					$("#deletetype").val("jobinformation");
+					$('#deleteindex').val($(this).attr('id'));
+				});
+				
+				$(document).on('click', ".deletecompensationstatus", function() {
+				
+					var id =$(this).attr('name');
+					cleandelete();
+					$("#deleteid").val(id);
+					$("#deletetype").val("compensation");
+					$('#deleteindex').val($(this).attr('id'));
+				});
+				
+				function cleandelete()
+				{
+					$("#deleteid").val("");
+					$("#deletetype").val("");
+					$("#deleteindex").val("");
+				}
+				
+				$("#deleteidbtn").click(function() {
+					var deleteid = $("#deleteid").val();
+					var deletetype = $("#deletetype").val();
+					var deleteindex= $('#deleteindex').val();
+					var formData = {
+							deletetype : deletetype,
+							deleteid : deleteid
+							
+					}
+					$.ajax({
+						type : "POST",url : "employeedelete",
+						data : formData,success : function(result) {
+							
+							$('#modeljqueryresult').text("Data removed successfully");
+							
+							if(deletetype=="employmentstatus")
+							{
+								$($("#tblemployeeJobempstatusid"+deleteindex)).closest('tr').remove();
+								
+							}else if(deletetype=="jobinformation")
+							{
+								$($("#tblemployeejobinfoid"+deleteindex)).closest('tr').remove();
+							}else if(deletetype=="compensation")
+							{
+								$($("#tblemployeejobcompensationid"+deleteindex)).closest('tr').remove();
+							}
+							
+						},
+						error : function(e) {
+							$('#modeljqueryresult').text("Error" + e);
+						}
+					});
+
+					$('#jqueryInformationScrollable').modal('toggle');
+				});
+				//--------------------------------------------------------------------------------------------------------------------------------------		 
+				//--------------------------------------------------------------------------------------------------------------------------------------
+
 			});
 		
 		</script>

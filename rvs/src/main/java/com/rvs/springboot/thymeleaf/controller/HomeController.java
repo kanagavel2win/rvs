@@ -39,9 +39,17 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
 import com.rvs.springboot.thymeleaf.entity.EmployeeFiles;
+import com.rvs.springboot.thymeleaf.entity.EmployeeJobHire;
+import com.rvs.springboot.thymeleaf.entity.EmployeeJobcompensation;
+import com.rvs.springboot.thymeleaf.entity.EmployeeJobempstatus;
+import com.rvs.springboot.thymeleaf.entity.EmployeeJobinfo;
 import com.rvs.springboot.thymeleaf.entity.EmployeeLanguage;
 import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
+import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
+import com.rvs.springboot.thymeleaf.service.EmployeeJobcompensationService;
+import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
+import com.rvs.springboot.thymeleaf.service.EmployeeJobinfoService;
 import com.rvs.springboot.thymeleaf.service.EmployeeMasterService;
 
 @Controller
@@ -53,6 +61,15 @@ public class HomeController {
 
 	@Autowired
 	EmployeeMasterService employeeMasterService;
+
+	@Autowired
+	EmployeeJobcompensationService employeeJobcompensationService;
+	@Autowired
+	EmployeeJobempstatusService employeeJobempstatusService;
+	@Autowired
+	EmployeeJobHireService employeeJobHireService;
+	@Autowired
+	EmployeeJobinfoService employeeJobinfoService;
 
 	/*
 	 * @ModelAttribute public void addAttributes(Model themodel, HttpSession
@@ -756,10 +773,144 @@ public class HomeController {
 	}
 
 	@GetMapping("empjob")
-	public String employeejob(Model theModel) {
+	public String employeejob(Model theModel, @RequestParam("id") int empid) {
+		
+		List<EmployeeJobempstatus> obj=new ArrayList<>();
+		obj=employeeJobempstatusService.findByEmployeeid(empid);
+		
+		List<EmployeeJobinfo> infoobj=new ArrayList<>();
+		infoobj=employeeJobinfoService.findByEmployeeid(empid);
+		
+		List<EmployeeJobcompensation> comoobj=new ArrayList<>();
+		comoobj=employeeJobcompensationService.findByEmployeeid(empid);
+		
+		
+		List<EmployeeJobHire> hireobj=new ArrayList<>();
+		hireobj=employeeJobHireService.findByEmployeeid(empid);
+		String stringhiredate="";
+		if(hireobj.size()>0)
+		{
+			stringhiredate=hireobj.get(0).getEmployeehiredate();
+		}
+		System.out.println("stringhiredate" + stringhiredate);
+		theModel.addAttribute("employeeJobemphiredate", stringhiredate);
+		theModel.addAttribute("employeeJobempstatus", obj);
+		theModel.addAttribute("employeeJobinfomation", infoobj);
+		theModel.addAttribute("employeecompensation", comoobj);
+		theModel.addAttribute("empid", empid);
 		return "empjob";
 	}
+	
+	@PostMapping("employeehiredate")
+	@ResponseBody
+	public String employeehiredate(@RequestParam Map<String, String> params)
+	{
+		EmployeeJobHire obj=new EmployeeJobHire();
+		
+		obj.setEmployeehiredate(params.get("hiredate"));
+		obj.setEmployeeid(Integer.valueOf(params.get("empid")));
+		
+		if(params.get("hiredateid") != null && params.get("hiredateid") != "" )
+		{
+			obj.setEmployeehireid(Integer.valueOf(params.get("hiredateid")));
+		}
+		System.out.println(obj);
+		employeeJobHireService.save(obj);
+		return "Success" + obj.getEmployeehireid();
+	}
 
+
+	@PostMapping("employeeemploymentupdate")
+	@ResponseBody
+	public String employeeemploymentupdate(@RequestParam Map<String, String> params)
+	{
+		EmployeeJobempstatus obj=new EmployeeJobempstatus();
+		
+		obj.setEmployeeid(Integer.parseInt(params.get("empid")));
+		
+		obj.setEmpstatus_effectivedate(params.get("empstatus_effectivedate"));
+		obj.setEmpstatus_employmentstatus(params.get("empstatus_employmentstatus"));
+		obj.setEmpstatus_rehire(params.get("empstatus_rehire"));
+		obj.setEmpstatus_remarks(params.get("empstatus_remarks"));
+		obj.setEmpstatus_terminationreason(params.get("empstatus_terminationreason"));
+		obj.setEmpstatus_terminationtype(params.get("empstatus_terminationtype"));
+				
+		if(params.get("employeeJobempstatusid") != null && params.get("employeeJobempstatusid") != "" )
+		{
+			obj.setEmployeejobempstatusid(Integer.parseInt(params.get("employeeJobempstatusid")));
+		}
+		
+		employeeJobempstatusService.save(obj);
+		return "Success" + obj.getEmployeejobempstatusid();
+	}
+	
+	@PostMapping("employeejobinformationupdate")
+	@ResponseBody
+	public String employeejobinformationupdate(@RequestParam Map<String, String> params)
+	{
+		EmployeeJobinfo obj=new EmployeeJobinfo();
+		
+		obj.setEmployeeid(Integer.parseInt(params.get("empid")));
+		obj.setJobdeparment(params.get("jobdeparment"));
+		obj.setJobeffectivedate(params.get("jobeffectivedate"));
+		obj.setJoblocation(params.get("joblocation"));
+		obj.setJobreportsto(params.get("jobreportsto"));
+		obj.setJobtitle(params.get("jobtitle"));
+		
+		if(params.get("employeejobinfoid") != null && params.get("employeejobinfoid") != "" )
+		{
+			obj.setEmployeejobinfoid(Integer.parseInt(params.get("employeejobinfoid")));
+		}
+		System.out.println(obj);
+		employeeJobinfoService.save(obj);
+		return "Success" + obj.getEmployeejobinfoid();
+	}
+
+	@PostMapping("employeecompensationupdate")
+	@ResponseBody
+	public String employeecompensationupdate(@RequestParam Map<String, String> params)
+	{
+		EmployeeJobcompensation obj=new EmployeeJobcompensation();
+		
+		obj.setEmployeeid(Integer.parseInt(params.get("empid")));
+		obj.setComchangereason(params.get("comchangereason"));
+		obj.setComcomments(params.get("comcomments"));
+		obj.setComeffectivedate(params.get("comeffectivedate"));
+		obj.setCompayrate(params.get("compayrate"));
+		obj.setCompayratetype(params.get("compayratetype"));
+		obj.setComPayschedule(params.get("comPayschedule"));
+		obj.setCompaytype(params.get("compaytype"));
+		
+		if(params.get("employeejobcompensationid") != null && params.get("employeejobcompensationid") != "" )
+		{
+			obj.setEmployeejobcompensationid(Integer.parseInt(params.get("employeejobcompensationid")));
+		}
+		System.out.println(obj);
+		employeeJobcompensationService.save(obj);
+		return "Success" + obj.getEmployeejobcompensationid();
+	}
+
+	@PostMapping("employeedelete")
+	@ResponseBody
+	public String employeedelete(@RequestParam Map<String, String> params)
+	{
+		
+		if(params.get("deletetype").equalsIgnoreCase("employmentstatus"))
+		{
+			employeeJobempstatusService.deleteById(Integer.parseInt(params.get("deleteid")));
+		}else if(params.get("deletetype").equalsIgnoreCase("jobinformation"))
+		{
+			employeeJobinfoService.deleteById(Integer.parseInt(params.get("deleteid")));
+		}else if(params.get("deletetype").equalsIgnoreCase("compensation"))
+		{
+			employeeJobcompensationService.deleteById(Integer.parseInt(params.get("deleteid")));
+		}
+		
+		
+		return "Success" ;
+	}
+
+	
 	@SuppressWarnings("deprecation")
 	@GetMapping("empattendance")
 	public String empattendance(Model theModel,

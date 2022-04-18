@@ -420,7 +420,10 @@ var tblemployeecompensationid=0;
 		                                        <tbody>
 		                                            <tr th:each="emp,stat : ${employeeJobempstatus}">
 		                                                <td class="text-bold-500">
-		                                                <span class="bullet bullet-sm bullet-success"></span>
+		                                                <th:block th:if="${emp.employeejobempstatusid} == ${greenpointemployementstatus}">
+		                                                	<span class="bullet bullet-sm bullet-success"></span>
+		                                                </th:block>
+		                                                
 		                                                <input type="hidden" th:value="${emp.employeejobempstatusid}" th:id="'tblemployeeJobempstatusid' + ${stat.index}"/>
 		                                                <span th:id="'tblempstatus_effectivedate' + ${stat.index}" th:text="${emp.empstatus_effectivedate}"></span>
 		                                                
@@ -581,7 +584,9 @@ var tblemployeecompensationid=0;
 		                                        <tbody>
 		                                            <tr th:each="emp,stat : ${employeeJobinfomation}">
 		                                                <td class="text-bold-500">
-		                                                <span class="bullet bullet-sm bullet-success"></span>
+		                                                 <th:block th:if="${emp.employeejobinfoid} == ${greenpointjobstatus}">
+		                                                	<span class="bullet bullet-sm bullet-success"></span>
+		                                                </th:block>
 		                                               	<input type="hidden" th:value="${emp.employeejobinfoid}" th:id="'tblemployeejobinfoid' + ${stat.index}"/>
 														<span th:id="'tbljobeffectivedate' + ${stat.index}" th:text="${emp.jobeffectivedate}"></span>
 		                                                </td>
@@ -755,7 +760,9 @@ var tblemployeecompensationid=0;
 		                                        <tbody>
 		                                            <tr th:each="emp,stat : ${employeecompensation}">
 		                                                <td class="text-bold-500">
-		                                                <span class="bullet bullet-sm bullet-success"></span>
+		                                                 <th:block th:if="${emp.employeejobcompensationid} == ${greenpointcompensationstatus}">
+		                                                	<span class="bullet bullet-sm bullet-success"></span>
+		                                                </th:block>
 		                                                <input type="hidden" th:value="${emp.employeejobcompensationid}" th:id="'tblemployeejobcompensationid' + ${stat.index}"/>
 		                                                <span th:id="'tblcomeffectivedate' + ${stat.index}" th:text="${emp.comeffectivedate}"></span>
 		                                                </td>
@@ -810,9 +817,9 @@ var tblemployeecompensationid=0;
                                <div class="col-md-12">
                                    <div class="form-group">
                                        <label for="contact-info-icon">Are you sure you want to delete this row?</label>
-                                       <input type="text" id="deleteid" />
-                                       <input type="text" id="deletetype" />
-                                       <input type="text" id="deleteindex" />
+                                       <input type="hidden" id="deleteid" />
+                                       <input type="hidden" id="deletetype" />
+                                       <input type="hidden" id="deleteindex" />
                                    </div>
                                </div>
                                
@@ -1077,7 +1084,7 @@ var tblemployeecompensationid=0;
 							$('#modeljqueryresult').text("Employment status updated successfully");
 								if(employeeJobempstatusidrow=="")
 									{
-									var html='<tr><td><span class="bullet bullet-sm bullet-success"></span>';
+									var html='<tr><td>';
 									html += '<input type="hidden" value="'+objid+'" id="tblemployeeJobempstatusid'+ tblemployeeJobempstatusid +'"/>';
 									
 									html += '<span id="tblempstatus_effectivedate'+ tblemployeeJobempstatusid +'">'+ empstatus_effectivedate +'</span></td><td>';
@@ -1165,7 +1172,7 @@ var tblemployeecompensationid=0;
 									
 									html= '<tr>';
 									html += '<td>';
-									html += '<span class="bullet bullet-sm bullet-success"></span>';
+									html += '';
 									html += '<input type="hidden" value="'+objid+'" id="tblemployeejobinfoid' + tblemployeeJobinfoid  + '"/>';
 									html += '<span id="tbljobeffectivedate' + tblemployeeJobinfoid  + '" >' + jobeffectivedate  +'</span>                                    </td>                                    <td>';
 									html += '<span id="tbljoblocation' + tblemployeeJobinfoid  + '" >' + joblocation +'</span>                                    </td>                                    <td>';
@@ -1252,7 +1259,7 @@ var tblemployeecompensationid=0;
 									{
 									
 									html= '<tr>';
-									html += '<td>         <span class="bullet bullet-sm bullet-success"></span>';
+									html += '<td> ';
 									html += '<input type="hidden" value="'+objid+'" id="tblemployeejobcompensationid' + tblemployeecompensationid + '"/>';
 									html += '<span id="tblcomeffectivedate' + tblemployeecompensationid + '" >'+ comeffectivedate +'</span>                                    </td>                                    <td>';
 									html += '<span id="tblcomPayschedule' + tblemployeecompensationid + '" >'+ comPayschedule +'</span>                                    </td>                                    <td>';

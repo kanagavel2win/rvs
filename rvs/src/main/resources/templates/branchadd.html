@@ -120,7 +120,7 @@
 	                                                            <label for="first-name-icon">Branch Name</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                               	<input type="hidden" th:value="${BranchMaster['id']}" th:field="*{id}"/>
-	                                                                <input type="text" id="first-name-icon" class="form-control" th:value="${BranchMaster['BRANCH_NAME']}" th:field="*{BRANCH_NAME}"  placeholder="First Name">
+	                                                                <input type="text" id="first-name-icon" class="form-control" th:value="${BranchMaster['BRANCH_NAME']}" th:field="*{BRANCH_NAME}"  placeholder="Branch Name" required>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-user"></i>
 	                                                                </div>
@@ -132,7 +132,7 @@
 	                                                            <label for="email-id-icon">Type</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control"  th:field="*{B_TYPE}" >
+					                                                    <select class="form-control"  th:field="*{B_TYPE}" required>
 					                                                        <option value="">-</option>
 					                                                        <option value="Head Office">Head Office</option>
 					                                                        <option value="Branch">Branch</option>
@@ -146,7 +146,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Branch Head Ofiice</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text" id="contact-info-icon" class="form-control" th:value="${BranchMaster['COMES_UNDER']}" th:field="*{COMES_UNDER}"  placeholder="Head Office">
+	                                                                <input type="text" id="contact-info-icon" class="form-control" th:value="${BranchMaster['COMES_UNDER']}" th:field="*{COMES_UNDER}"  placeholder="Head Office" required>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-git-merge"></i>
 	                                                                </div>
@@ -157,7 +157,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="password-icon">Branch Address</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text" id="password-icon" class="form-control" th:value="${BranchMaster['BRANCH_ADDRESS']}" th:field="*{BRANCH_ADDRESS}"    placeholder="Branch Address">
+	                                                                <input type="text" id="password-icon" class="form-control" th:value="${BranchMaster['BRANCH_ADDRESS']}" th:field="*{BRANCH_ADDRESS}"    placeholder="Branch Address" required>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-home"></i>
 	                                                                </div>
@@ -169,7 +169,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">City</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text" id="contact-info-icon" class="form-control" th:value="${BranchMaster['CITY']}" th:field="*{CITY}"   placeholder="City">
+	                                                                <input type="text" id="contact-info-icon" class="form-control" th:value="${BranchMaster['CITY']}" th:field="*{CITY}"   placeholder="City" required>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-building-house"></i>
 	                                                                </div>
@@ -180,7 +180,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">State</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text" id="contact-info-icon" class="form-control" th:value="${BranchMaster['STATE']}" th:field="*{STATE}"    placeholder="State">
+	                                                                <input type="text" id="contact-info-icon" class="form-control" th:value="${BranchMaster['STATE']}" th:field="*{STATE}"    placeholder="State" required>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-stats"></i>
 	                                                                </div>
@@ -191,7 +191,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Country</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text" id="contact-info-icon" class="form-control" th:value="${BranchMaster['COUNTRY']}" th:field="*{COUNTRY}"   placeholder="Country">
+	                                                                <input type="text" id="contact-info-icon" class="form-control" th:value="${BranchMaster['COUNTRY']}" th:field="*{COUNTRY}"   placeholder="Country" required>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-flag-alt"></i>
 	                                                                </div>
@@ -202,7 +202,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Zip code</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="number" id="contact-info-icon" class="form-control" th:value="${BranchMaster['ZIP_CODE']}" th:field="*{ZIP_CODE}"    placeholder="Zip code">
+	                                                                <input type="number" id="contact-info-icon" class="form-control" th:value="${BranchMaster['ZIP_CODE']}" th:field="*{ZIP_CODE}"    placeholder="Zip code" required>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-message-alt-dots"></i>
 	                                                                </div>
@@ -301,7 +301,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Current Status</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <select class="form-control" th:field="*{CURRENT_STATUS}" >
+	                                                                <select class="form-control" th:field="*{CURRENT_STATUS}" required>
 					                                                        <option value="">-</option>
 					                                                        <option value="Active">Active</option>
 					                                                        <option value="Inactive">Inactive</option>

@@ -160,10 +160,12 @@
 									                   </td> 	
 													   <td th:text="${stat.index+1}"></td>
 													   <td><a th:href="'emp?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${#strings.arraySplit(emp,'|')[0] }" title="Edit Profile"></a></td>
-													   <td><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}"  title="Edit Job details">Sr. HR Administrator</a></td>
-													   <td>Coimbatore</td>
-													   <td>Full-Time</td>
-													   <td>11/03/2020</td>
+													   <td th:if="${#strings.arraySplit(emp,'|')[4] }==' '"><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}" title="Edit Job details">Empty</a></td>
+													   <td th:if="${#strings.arraySplit(emp,'|')[4] }!=''"><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${#strings.arraySplit(emp,'|')[4] }"  title="Edit Job details"></a></td>
+													   <td th:text="${#strings.arraySplit(emp,'|')[3] }"></td>
+													   <td th:text="${#strings.arraySplit(emp,'|')[5] }"></td>
+													   <td th:text="${#strings.arraySplit(emp,'|')[6] }"></td>
+													   
 													</tr>
 													
                                                 </tbody>

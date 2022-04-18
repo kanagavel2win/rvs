@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -227,6 +228,8 @@ public class HomeController {
 		List<EmployeeMaster> ls=new ArrayList();
 		ls = employeeMasterService.findAll();
 		
+		
+		
 		for(EmployeeMaster obj:ls)
 		{
 			String str="";
@@ -243,6 +246,57 @@ public class HomeController {
 			}
 			
 			str +=obj.getEmpMasterid() +"|";
+			
+			//----------------------------------------------------------------------
+			
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
+			
+			List<EmployeeJobempstatus> objjob=new ArrayList<>();
+			objjob=employeeJobempstatusService.findByEmployeeid(obj.getEmpMasterid());
+			if(objjob.size()>0)
+			{
+				List<EmployeeJobempstatus> objjobgreen= objjob.stream().filter(c -> dateFormat.format(date).compareTo(c.getEmpstatus_effectivedate().toString()) >=0 ).collect(Collectors.toList());
+				objjobgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
+				if(objjobgreen.size()>0)
+				{
+					
+					str +=objjobgreen.get(objjobgreen.size()-1).getEmpstatus_employmentstatus() +"|";
+				}
+			}else
+			{
+				str +=" |";
+			}
+			
+			List<EmployeeJobinfo> infoobjjob=new ArrayList<>();
+			infoobjjob=employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
+			if(infoobjjob.size()>0)
+			{
+				List<EmployeeJobinfo> infoobjjobgreen= infoobjjob.stream().filter(c -> dateFormat.format(date).compareTo(c.getJobeffectivedate().toString()) >= 0 ).collect(Collectors.toList());
+				infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+				if(infoobjjobgreen.size()>0)
+				{
+					str +=infoobjjobgreen.get(infoobjjobgreen.size()-1).getJobtitle() +"|";
+					str +=infoobjjobgreen.get(infoobjjobgreen.size()-1).getJoblocation() +"|";
+				}
+			}
+			else
+			{
+				str +=" | |";
+			}
+			
+			List<EmployeeJobHire> hireobj=new ArrayList<>();
+			hireobj=employeeJobHireService.findByEmployeeid(obj.getEmpMasterid());
+			
+			if(hireobj.size()>0)
+			{
+				str +=hireobj.get(0).getEmployeehiredate()+"|";
+			}else
+			{
+				str +=" |";	
+			}
+			
+			//----------------------------------------------------------------------
 			
 			data.add(str);
 		}
@@ -775,15 +829,48 @@ public class HomeController {
 	@GetMapping("empjob")
 	public String employeejob(Model theModel, @RequestParam("id") int empid) {
 		
+		int greenpointemployementstatus= 0;
+		int greenpointjobstatus= 0;
+		int greenpointcompensationstatus= 0;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		
 		List<EmployeeJobempstatus> obj=new ArrayList<>();
 		obj=employeeJobempstatusService.findByEmployeeid(empid);
+		if(obj.size()>0)
+		{
+			List<EmployeeJobempstatus> objgreen= obj.stream().filter(c -> dateFormat.format(date).compareTo(c.getEmpstatus_effectivedate().toString()) >=0 ).collect(Collectors.toList());
+			objgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
+			if(objgreen.size()>0)
+			{
+				greenpointemployementstatus=objgreen.get(objgreen.size()-1).getEmployeejobempstatusid();
+			}
+		}
 		
 		List<EmployeeJobinfo> infoobj=new ArrayList<>();
 		infoobj=employeeJobinfoService.findByEmployeeid(empid);
+		if(infoobj.size()>0)
+		{
+			List<EmployeeJobinfo> infoobjgreen= infoobj.stream().filter(c -> dateFormat.format(date).compareTo(c.getJobeffectivedate().toString()) >= 0 ).collect(Collectors.toList());
+			infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+			if(infoobjgreen.size()>0)
+			{
+				greenpointjobstatus=infoobjgreen.get(infoobjgreen.size()-1).getEmployeejobinfoid();
+			}
+		}
+		
 		
 		List<EmployeeJobcompensation> comoobj=new ArrayList<>();
 		comoobj=employeeJobcompensationService.findByEmployeeid(empid);
-		
+		if(comoobj.size()>0)
+		{
+			List<EmployeeJobcompensation> comoobjgreen= comoobj.stream().filter(c -> dateFormat.format(date).compareTo(c.getComeffectivedate().toString()) >= 0 ).collect(Collectors.toList());
+			comoobjgreen.sort(Comparator.comparing(EmployeeJobcompensation::getComeffectivedate));
+			if(comoobjgreen.size()>0)
+			{
+				greenpointcompensationstatus=comoobjgreen.get(comoobjgreen.size()-1).getEmployeejobcompensationid();
+			}
+		}
 		
 		List<EmployeeJobHire> hireobj=new ArrayList<>();
 		hireobj=employeeJobHireService.findByEmployeeid(empid);
@@ -792,7 +879,11 @@ public class HomeController {
 		{
 			stringhiredate=hireobj.get(0).getEmployeehiredate();
 		}
-		System.out.println("stringhiredate" + stringhiredate);
+		//System.out.println("stringhiredate" + stringhiredate);
+		theModel.addAttribute("greenpointemployementstatus", greenpointemployementstatus);
+		theModel.addAttribute("greenpointjobstatus", greenpointjobstatus);
+		theModel.addAttribute("greenpointcompensationstatus", greenpointcompensationstatus);
+		
 		theModel.addAttribute("employeeJobemphiredate", stringhiredate);
 		theModel.addAttribute("employeeJobempstatus", obj);
 		theModel.addAttribute("employeeJobinfomation", infoobj);

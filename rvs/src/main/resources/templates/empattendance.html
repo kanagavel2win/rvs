@@ -369,11 +369,20 @@
 	                                                  <div class="form-group col-md-6">
 	                                                      <div class="position-relative has-icon-left">
                                                                	<input type="hidden" id="currentdd" th:value="${currentdd}" />
-                                                                <select class="form-control" id="basicSelect">
-				                                                        <option>-Select Branch</option>
-				                                                        <option>Coimbatore</option>
-				                                                        <option>Madurai</option>
-				                                                        <option>Pollachi</option>
+                                                               	<input type="hidden" id="currentdate" th:value="${tempcurrentdate}" />
+                                                                <input type="hidden" id="targetedbranchid" th:value="${targetedbranchid}" />
+                                                                
+                                                                <select class="form-control">
+                                                                		
+                                                                	<th:block th:if="${targetedbranchName} !=''"> 
+                                                                			<option th:value="${targetedbranchName}" th:text="${targetedbranchName}"></option>
+                                                                	</th:block>	
+				                                                        
+				                                                       <th:block th:each="obj : ${branchls}">
+				                                                       		<option th:value="${obj.BRANCH_NAME}" th:text="${obj.BRANCH_NAME}"></option>
+				                                                       </th:block>
+				                                                        
+				                                                        
 				                                                    </select>
 				                                                 <div class="form-control-position">B-</div>
                                                             </div>
@@ -395,39 +404,18 @@
 	                                                  </div>
 	                                                  <div class="table-responsive col-md-12">
 				                                        <table class="attendancelisttable">
-				                                        <tr>
-				                                             <td width="5%"><label class="emptitle additem" name="remark1"><input type="hidden" class="childremarks"  id="remark1"/><i class="bx bx-notepad"></i></label></td>
-				                                             <td width="50%">Kanagavel K</td>
-				                                             <td width="15%"><button type="button" name="1" class="btn btnp ">P</button></td>
-				                                             <td  width="15%"><button type="button" name="1" class="btn btna ">A</button></td>
-				                                             <td  width="15%"><button type="button" name="1" class="btn btnt ">T</button></td>
-				                                             <td  width="15%"><button type="button" name="1" class="btn btnhl ">HL</button></td>
+				                                        <tr th:each="emp,stat : ${employeeMasterlswitheffectivelocation}">
+				                                             <td width="5%"><label class="emptitle additem" th:name="remark + ${stat.index}">
+				                                             	<input type="hidden" class="childremarks"  th:id="remark + ${stat.index}"/>
+				                                             	<input type="hidden"  th:id="emp +${stat.index}" th:value="${emp.empMasterid}"/>
+				                                             <i class="bx bx-notepad"></i></label></td>
+				                                             <td width="50%" th:text="${emp.StaffName}"></td>
+				                                             <td width="15%"><button type="button" th:name=" ${stat.index}" class="btn btnp ">P</button></td>
+				                                             <td  width="15%"><button type="button" th:name="${stat.index}" class="btn btna ">A</button></td>
+				                                             <td  width="15%"><button type="button" th:name="${stat.index}" class="btn btnt ">T</button></td>
+				                                             <td  width="15%"><button type="button" th:name="${stat.index}" class="btn btnhl ">HL</button></td>
 				                                      	  </tr>
-				                                      	  <tr>
-				                                             <td width="5%"><label class="emptitle additem" name="remark2"><input type="hidden" class="childremarks"  id="remark2"/><i class="bx bx-notepad"></i></label></td>
-				                                             <td width="50%">Kanagavel K</td>
-				                                             <td width="15%"><button type="button" name="2" class="btn btnp ">P</button></td>
-				                                             <td  width="15%"><button type="button" name="2" class="btn btna ">A</button></td>
-				                                             <td  width="15%"><button type="button" name="2" class="btn btnt ">T</button></td>
-				                                             <td  width="15%"><button type="button" name="2" class="btn btnhl ">HL</button></td>
-				                                      	  </tr>
-				                                      	  <tr>
-				                                             <td width="5%"><label class="emptitle additem" name="remark3"><input type="hidden" class="childremarks"  id="remark3"/><i class="bx bx-notepad"></i></label></td>
-				                                             <td width="50%">Kanagavel K</td>
-				                                             <td width="15%"><button type="button" name="3" class="btn btnp ">P</button></td>
-				                                             <td  width="15%"><button type="button" name="3" class="btn btna ">A</button></td>
-				                                             <td  width="15%"><button type="button" name="3" class="btn btnt ">T</button></td>
-				                                             <td  width="15%"><button type="button" name="3" class="btn btnhl ">HL</button></td>
-				                                      	  </tr>
-				                                      	   <tr>
-				                                             <td width="5%"><label class="emptitle additem" name="remark4"><input type="hidden" class="childremarks" id="remark4"/><i class="bx bx-notepad"></i></label></td>
-				                                             <td width="50%">Kanagavel K</td>
-				                                             <td width="15%"><button type="button" name="4" class="btn btnp ">P</button></td>
-				                                             <td  width="15%"><button type="button" name="4" class="btn btna ">A</button></td>
-				                                             <td  width="15%"><button type="button" name="4" class="btn btnt ">T</button></td>
-				                                             <td  width="15%"><button type="button" name="4" class="btn btnhl ">HL</button></td>
-				                                      	  </tr>
-				                                      	   
+				                                      	    	   
 				                                      	   
 				                                      	  <tr>
 				                                             <td colspan="6" align="right">
@@ -599,6 +587,35 @@
 			$('.cal_innera' + currentdd).text(A);
 			$('.cal_innert' + currentdd).text(T);
 			$('.cal_innerhl' + currentdd).text(HL);
+			//------------------------------------------------------------------------------
+			var attendancestr="";
+			var branchid= $('#targetedbranchid').val();
+			var currentdate= $('#currentdate').val();
+			$(".cp").each(function() {
+			    var rowindex =$(this).attr('name');
+			    var empid=$('#emp'+ rowindex).val();
+			    var note=$('#remark'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|P|";
+			});
+			$(".ca").each(function() {
+			    var rowindex =$(this).attr('name');
+			    var empid=$('#emp'+ rowindex).val();
+			    var note=$('#remark'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|A|";
+			});
+			$(".ct").each(function() {
+			    var rowindex =$(this).attr('name');
+			    var empid=$('#emp'+ rowindex).val();
+			    var note=$('#remark'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|T|";
+			});
+			$(".chl").each(function() {
+			    var rowindex =$(this).attr('name');
+			    var empid=$('#emp'+ rowindex).val();
+			    var note=$('#remark'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|HL|";
+			});
+			console.info(attendancestr);
 			//------------------------------------------------------------------------------
 		});
 		

@@ -1099,7 +1099,53 @@ public class HomeController {
 
 		}
 		calhtml = calhtml + "</tr>";
-
+		//------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------
+		
+		//Getting Branch List
+		List<BranchMaster> branchls= new ArrayList();
+		branchls=branchMasterService.findAll();
+		
+		//Getting All employee
+		List<EmployeeMaster> employeeMasterls= new ArrayList();
+		List<EmployeeMaster> employeeMasterlswitheffectivelocation= new ArrayList();
+		employeeMasterls= employeeMasterService.findAll();
+		String targetedbranchName="Coimbatore";
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateforeffectemp = new Date();
+		
+		// Find out Effective location Employee filter with selected branch
+		for(EmployeeMaster obj:employeeMasterls)
+		{
+			List<EmployeeJobinfo> infoobj=new ArrayList<>();
+			infoobj=employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
+			if(infoobj.size()>0)
+			{
+				List<EmployeeJobinfo> infoobjgreen= infoobj.stream().filter(c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0 ).collect(Collectors.toList());
+				infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+				if(infoobjgreen.size()>0)
+				{
+					if(infoobjgreen.get(infoobjgreen.size()-1).getJoblocation().equalsIgnoreCase(targetedbranchName)) {
+						employeeMasterlswitheffectivelocation.add(obj);
+					}
+				}
+			}
+		}
+		
+		//------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------
+		//System.out.println(Arrays.asList(employeeMasterlswitheffectivelocation));
+		int targetedbranchid=0;
+		if(branchls.stream().filter(c -> c.getBRANCH_NAME().equalsIgnoreCase(targetedbranchName)).collect(Collectors.toList()).size()>0)
+		{
+			targetedbranchid = branchls.stream().filter(c -> c.getBRANCH_NAME().equalsIgnoreCase(targetedbranchName)).collect(Collectors.toList()).get(0).getId();
+		}
+		
+		theModel.addAttribute("targetedbranchName", targetedbranchName);
+		theModel.addAttribute("targetedbranchid", targetedbranchid);
+		theModel.addAttribute("employeeMasterlswitheffectivelocation", employeeMasterlswitheffectivelocation);
+		theModel.addAttribute("branchls",branchls);
 		theModel.addAttribute("preDate", preDate);
 		theModel.addAttribute("nxtDate", nxtDate);
 		theModel.addAttribute("tempcurrentdate", tempcurrentdate);
@@ -1108,6 +1154,8 @@ public class HomeController {
 		theModel.addAttribute("currentmonname", currentmonname);
 		theModel.addAttribute("calhtml", calhtml);
 		return "empattendance";
+		
+		
 	}
 
 	@SuppressWarnings("deprecation")

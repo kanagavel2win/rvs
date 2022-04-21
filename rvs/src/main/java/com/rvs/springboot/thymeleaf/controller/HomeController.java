@@ -71,7 +71,8 @@ public class HomeController {
 	EmployeeJobHireService employeeJobHireService;
 	@Autowired
 	EmployeeJobinfoService employeeJobinfoService;
-
+	
+	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	/*
 	 * @ModelAttribute public void addAttributes(Model themodel, HttpSession
 	 * session, HttpServletRequest request) {
@@ -262,7 +263,11 @@ public class HomeController {
 				{
 					
 					str +=objjobgreen.get(objjobgreen.size()-1).getEmpstatus_employmentstatus() +"|";
+				}else
+				{
+					str +=" |";
 				}
+				
 			}else
 			{
 				str +=" |";
@@ -278,6 +283,9 @@ public class HomeController {
 				{
 					str +=infoobjjobgreen.get(infoobjjobgreen.size()-1).getJobtitle() +"|";
 					str +=infoobjjobgreen.get(infoobjjobgreen.size()-1).getJoblocation() +"|";
+				}else
+				{
+					str +=" | |";
 				}
 			}
 			else
@@ -290,7 +298,11 @@ public class HomeController {
 			
 			if(hireobj.size()>0)
 			{
-				str +=hireobj.get(0).getEmployeehiredate()+"|";
+				try {
+					str +=displaydateFormat.format(new SimpleDateFormat("yyyy-MM-dd").parse(hireobj.get(0).getEmployeehiredate().toString()))+"|";
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 			}else
 			{
 				str +=" |";	

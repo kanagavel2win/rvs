@@ -76,6 +76,17 @@
 	vertical-align:middle;
 	line-height: 20px;
 }
+	
+	.uppercase{
+		text-transform:uppercase;
+	}
+	.capitalize{
+		text-transform:capitalize;
+	}
+		
+	.highlight-error {
+  border-color: red;
+}	
 </style>
 
 </head>
@@ -203,7 +214,7 @@
 																			<div class="position-relative">
 																				<fieldset class="form-group">
 																					<input type="text" id="additemall" name="addmodel"
-																						class="form-control">
+																						class="form-control capitalize">
 																				</fieldset>
 																			</div>
 																		</div>
@@ -232,7 +243,7 @@
 															<input type="hidden"
 																th:value="${employeemaster['empMasterid']}"
 																th:field="*{empMasterid}"> <input type="text"
-																id="first-name-icon" class="form-control"
+																id="first-name-icon" class="form-control capitalize"
 																name="fname-icon" placeholder="E.ID"
 																th:value="${employeemaster['Empid']}"
 																th:field="*{Empid}"  required/>
@@ -247,10 +258,10 @@
 														<label for="first-name-icon">Staff Name</label>
 														<div class="position-relative has-icon-left">
 															<input type="text" id="first-name-icon"
-																class="form-control" name="fname-icon"
+																class="form-control capitalize" name="fname-icon"
 																placeholder="Staff Name"
 																th:value="${employeemaster['StaffName']}"
-																th:field="*{StaffName}">
+																th:field="*{StaffName}" onkeypress="return onlyAlphabets(event,this);" >
 															<div class="form-control-position"  required/>
 																<i class="bx bx-user"></i>
 															</div>
@@ -305,7 +316,7 @@
 													<div class="form-group">
 														<label for="contact-info-icon">Date of Birth</label>
 														<div class="position-relative has-icon-left">
-															<input type="date" class="form-control"
+															<input type="date" class="form-control capitalize"
 																th:value="${employeemaster['DateofBirth']}"
 																th:field="*{DateofBirth}"  required/>
 															<div class="form-control-position">
@@ -318,10 +329,19 @@
 													<div class="form-group">
 														<label for="contact-info-icon">Blood Group</label>
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
-																placeholder="Blood Group"
+															<select class="form-control"
 																th:value="${employeemaster['BloodGroup']}"
-																th:field="*{BloodGroup}"  required/>
+																th:field="*{BloodGroup}"  required>
+																	<option value="-">-</option>
+																	<option value="A+">A+</option>
+																	<option value="O+">O+</option>
+																	<option value="B+">B+</option>
+																	<option value="AB+">AB+</option>
+																	<option value="A-">A-</option>
+																	<option value="O-">O-</option>
+																	<option value="B-">B-</option>
+																	<option value="AB-">AB-</option>
+															</select>
 															<div class="form-control-position">
 																<i class="bx bxs-droplet"></i>
 															</div>
@@ -330,9 +350,9 @@
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Height</label>
+														<label for="contact-info-icon">Height (CM)</label>
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="number" class="form-control capitalize"
 																placeholder="Height"
 																th:value="${employeemaster['Height']}"
 																th:field="*{Height}"  required/>
@@ -344,9 +364,9 @@
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Weight</label>
+														<label for="contact-info-icon">Weight (Kg)</label>
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="number" class="form-control capitalize"
 																placeholder="Weight"
 																th:value="${employeemaster['Weight']}"
 																th:field="*{Weight}"  required/>
@@ -360,10 +380,10 @@
 													<div class="form-group">
 														<label for="contact-info-icon">Aadhar No</label>
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control capitalize"
 																placeholder="Aadhar No"
 																th:value="${employeemaster['AadharNo']}"
-																th:field="*{AadharNo}"  required/>
+																th:field="*{AadharNo}"  data-type="adhaar-number" maxLength="14" required/>
 															<div class="form-control-position">
 																<i class="bx bx-grid-small"></i>
 															</div>
@@ -374,10 +394,10 @@
 													<div class="form-group">
 														<label for="contact-info-icon">PAN No</label>
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control uppercase"
 																placeholder="PAN No"
 																th:value="${employeemaster['PANNo']}"
-																th:field="*{PANNo}"  required/>
+																th:field="*{PANNo}" maxlength="10" required/>
 															<div class="form-control-position">
 																<i class="bx bxs-layout"></i>
 															</div>
@@ -388,7 +408,7 @@
 													<div class="form-group">
 														<label for="contact-info-icon">D.L.No</label>
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control capitalize"
 																placeholder="D.L.No"
 																th:value="${employeemaster['DLNo']}" th:field="*{DLNo}"  required/>
 															<div class="form-control-position">
@@ -461,7 +481,7 @@
 
 														<div class="position-relative has-icon-left">
 															<input type="text" 
-																class="form-control" placeholder="Street 1"
+																class="form-control capitalize" placeholder="Street 1"
 																th:value="${employeemaster['Address_Street1']}"
 																th:field="*{Address_Street1}"  required/>
 															<div class="form-control-position">
@@ -475,7 +495,7 @@
 
 														<div class="position-relative has-icon-left">
 															<input type="text" 
-																class="form-control" placeholder="Street 2"
+																class="form-control capitalize" placeholder="Street 2"
 																th:value="${employeemaster['Address_Street2']}"
 																th:field="*{Address_Street2}"  required/>
 															<div class="form-control-position">
@@ -489,7 +509,7 @@
 
 														<div class="position-relative has-icon-left">
 															<input type="text" 
-																class="form-control" placeholder="Village"
+																class="form-control capitalize" placeholder="Village"
 																th:value="${employeemaster['Address_Village']}"
 																th:field="*{Address_Village}"  required/>
 															<div class="form-control-position">
@@ -503,9 +523,9 @@
 
 														<div class="position-relative has-icon-left">
 															<input type="text" 
-																class="form-control" placeholder="Taluk"
+																class="form-control capitalize" placeholder="Taluk"
 																th:value="${employeemaster['Address_Taluk']}"
-																th:field="*{Address_Taluk}"  required/>
+																th:field="*{Address_Taluk}"  onkeypress="return onlyAlphabets(event,this);"   required/>
 															<div class="form-control-position">
 																<i class="bx bxs-city"></i>
 															</div>
@@ -517,10 +537,10 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control capitalize"
 																placeholder="City"
 																th:value="${employeemaster['Address_City']}"
-																th:field="*{Address_City}"  required/>
+																th:field="*{Address_City}"  onkeypress="return onlyAlphabets(event,this);"   required/>
 															<div class="form-control-position">
 																<i class="bx bxs-building-house"></i>
 															</div>
@@ -531,10 +551,10 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control capitalize"
 																placeholder="State"
 																th:value="${employeemaster['Address_State']}"
-																th:field="*{Address_State}"  required/>
+																th:field="*{Address_State}" onkeypress="return onlyAlphabets(event,this);"   required/>
 															<div class="form-control-position">
 																<i class="bx bx-stats"></i>
 															</div>
@@ -545,7 +565,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control"
+															<input type="number" class="form-control capitalize"
 																placeholder="Zip code"
 																th:value="${employeemaster['Address_ZIP']}"
 																th:field="*{Address_ZIP}"  required/>
@@ -559,10 +579,11 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control capitalize"
 																placeholder="Country"
 																th:value="${employeemaster['Address_Country']}"
-																th:field="*{Address_Country}"  required/>
+																th:field="*{Address_Country}" onkeypress="return onlyAlphabets(event,this);"  
+																  required/>
 															<div class="form-control-position">
 																<i class="bx bxs-flag-alt"></i>
 															</div>
@@ -580,7 +601,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="number" class="form-control capitalize"
 																placeholder="Work Phone"
 																th:value="${employeemaster['Contact_WorkPhone']}"
 																th:field="*{Contact_WorkPhone}"  required/>
@@ -594,7 +615,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="number" class="form-control capitalize"
 																placeholder="Personal Phone"
 																th:value="${employeemaster['Contact_PersonalPhone']}"
 																th:field="*{Contact_PersonalPhone}"  required/>
@@ -608,7 +629,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="number" class="form-control capitalize"
 																placeholder="Other Phone"
 																th:value="${employeemaster['Contact_OtherPhone']}"
 																th:field="*{Contact_OtherPhone}"  required/>
@@ -622,7 +643,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="email" class="form-control capitalize"
 																placeholder="Email ID"
 																th:value="${employeemaster['Contact_EmailID']}"
 																th:field="*{Contact_EmailID}"  required/>
@@ -636,7 +657,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="email" class="form-control capitalize"
 																placeholder="Work Email"
 																th:value="${employeemaster['Contact_WorkEmail']}"
 																th:field="*{Contact_WorkEmail}"  required/>
@@ -650,7 +671,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="email" class="form-control capitalize"
 																placeholder="Personal Email"
 																th:value="${employeemaster['Contact_PersonalEmail']}"
 																th:field="*{Contact_PersonalEmail}"  required/>
@@ -705,10 +726,11 @@
 																<input type="hidden"
 																	th:value="${EmployeeEducation.empEduid}"
 																	name="empEduid"> <input type="text"
-																	class="form-control"
+																	class="form-control capitalize"
 																	placeholder="College / Institution"
 																	th:value="${EmployeeEducation.College_Institution}"
-																	name="College_Institution"  required/>
+																	name="College_Institution" onkeypress="return onlyAlphabets(event,this);"  
+																	  required/>
 																<div class="form-control-position">
 																	<i class="bx bx-buildings"></i>
 																</div>
@@ -744,10 +766,11 @@
 															<label for="contact-info-icon">Major /
 																Specialization</label>
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="text" class="form-control capitalize"
 																	placeholder="Major / Specialization"
 																	th:value="${EmployeeEducation.MajorSpecialization}"
-																	name="MajorSpecialization"   required/>
+																	name="MajorSpecialization" onkeypress="return onlyAlphabets(event,this);"  
+																	  required/>
 																<div class="form-control-position">
 																	<i class="bx bxs-layer"></i>
 																</div>
@@ -758,7 +781,7 @@
 														<div class="form-group">
 															<label for="contact-info-icon">Percentage / GPA</label>
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="number" class="form-control"
 																	placeholder="Percentage / GPA"
 																	th:value="${EmployeeEducation.Percentage_GPA}"
 																	name="Percentage_GPA"   required/>
@@ -770,7 +793,7 @@
 														<div class="form-group">
 															<label for="contact-info-icon">From </label>
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="date" class="form-control"
 																	placeholder="From "
 																	th:value="${EmployeeEducation.FromYear}"
 																	name="FromYear"   required/>
@@ -784,7 +807,7 @@
 														<div class="form-group">
 															<label for="contact-info-icon">To</label>
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="date" class="form-control"
 																	placeholder="To"
 																	th:value="${EmployeeEducation.ToYear}" name="ToYear"   required/>
 																<div class="form-control-position">
@@ -926,9 +949,10 @@
 																<input type="hidden"
 																	th:value="${EmployeeExperience.empExperienceid}"
 																	name="empExperienceid"> <input type="text"
-																	class="form-control" placeholder="Company"
+																	class="form-control capitalize" placeholder="Company"
 																	th:value="${EmployeeExperience['Company']}"
-																	name="Company"   required/>
+																	name="Company" onkeypress="return onlyAlphabets(event,this);"  
+																	  required/>
 																<div class="form-control-position">
 																	<i class="bx bx-building"></i>
 																</div>
@@ -939,10 +963,11 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="text" class="form-control capitalize"
 																	placeholder="Location"
 																	th:value="${EmployeeExperience['Location']}"
-																	name="Location"   required/>
+																	name="Location"  onkeypress="return onlyAlphabets(event,this);"  
+																	 required/>
 																<div class="form-control-position">
 																	<i class="bx bx-target-lock"></i>
 																</div>
@@ -953,7 +978,7 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="date" class="form-control capitalize"
 																	placeholder="From"
 																	th:value="${EmployeeExperience['expFromyear']}"
 																	name="expFromyear"   required/>
@@ -966,7 +991,7 @@
 													<div th:class="'srctexpdiv'+ ${stat.index} + ' col-md-3'">
 														<div class="form-group">
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="date" class="form-control capitalize"
 																	placeholder="To"
 																	th:value="${EmployeeExperience['expToyear']}"
 																	name="expToyear" required/>
@@ -980,10 +1005,11 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="text" class="form-control capitalize"
 																	placeholder="JobTitle"
 																	th:value="${EmployeeExperience['JobTitle']}"
-																	name="JobTitle" required/>
+																	name="JobTitle" onkeypress="return onlyAlphabets(event,this);"  
+																	 required/>
 																<div class="form-control-position">
 																	<i class="bx bx-briefcase-alt"></i>
 																</div>
@@ -1003,10 +1029,11 @@
 												<div class="col-md-6">
 													<div class="form-group">
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control capitalize"
 																placeholder="Recruitment Source"
 																th:value="${employeemaster['RecruitmentSource']}"
-																th:field="*{RecruitmentSource}" required/>
+																th:field="*{RecruitmentSource}" onkeypress="return onlyAlphabets(event,this);"  
+																required/>
 															<div class="form-control-position">
 																<i class="bx bxs-news"></i>
 															</div>
@@ -1016,10 +1043,11 @@
 												<div class="col-md-6">
 													<div class="form-group">
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control capitalize"
 																placeholder="Institute/Consultant Name"
 																th:value="${employeemaster['RecruInstituteConsultantName']}"
-																th:field="*{RecruInstituteConsultantName}" required/>
+																th:field="*{RecruInstituteConsultantName}"  onkeypress="return onlyAlphabets(event,this);"  
+																required/>
 															<div class="form-control-position">
 																<i class="bx bx-bullseye"></i>
 															</div>
@@ -1035,7 +1063,7 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="number" class="form-control capitalize"
 																placeholder="A.C.No"
 																th:value="${employeemaster['BankACNo']}"
 																th:field="*{BankACNo}" required />
@@ -1048,10 +1076,10 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control uppercase"
 																placeholder="Bank Name"
 																th:value="${employeemaster['BankName']}"
-																th:field="*{BankName}" required />
+																th:field="*{BankName}" onkeypress="return onlyAlphabets(event,this);"  required />
 															<div class="form-control-position">
 																<i class="bx bxs-bookmark-plus"></i>
 															</div>
@@ -1061,10 +1089,10 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control uppercase"
 																placeholder="Branch Name"
 																th:value="${employeemaster['BranchName']}"
-																th:field="*{BranchName}" required />
+																th:field="*{BranchName}" onkeypress="return onlyAlphabets(event,this);"  required />
 															<div class="form-control-position">
 																<i class="bx bx-stats"></i>
 															</div>
@@ -1074,10 +1102,10 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control uppercase"
 																placeholder="IFSC Code"
 																th:value="${employeemaster['BankIFSCCode']}"
-																th:field="*{BankIFSCCode}" required />
+																th:field="*{BankIFSCCode}" onkeypress="return onlyAlphanumeric(event,this);"  required />
 															<div class="form-control-position">
 																<i class="bx bx-code"></i>
 															</div>
@@ -1151,9 +1179,9 @@
 
 															<div class="position-relative has-icon-left">
 																<input type="text"  
-																	class="form-control" placeholder="Name"
+																	class="form-control capitalize" placeholder="Name"
 																	th:value="${EmployeeEmgContact['Emg_Name']}"
-																	name="Emg_Name" required/>
+																	onkeypress="return onlyAlphabets(event,this);"  name="Emg_Name" required/>
 																<div class="form-control-position">
 																	<i class="bx bxs-contact"></i>
 																</div>
@@ -1167,7 +1195,7 @@
 
 																<select class="form-control addemgrelationdata"
 																	th:value="${EmployeeEmgContact['Emg_Relation']}"
-																	name="Emg_Relation" />
+																	name="Emg_Relation" >
 																<option
 																	th:if="${EmployeeEmgContact.Emg_Relation} !='' "
 																	th:value="${EmployeeEmgContact.Emg_Relation}"
@@ -1198,8 +1226,8 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" 
-																	class="form-control" placeholder="Personal Phone"
+																<input type="number" 
+																	class="form-control capitalize" placeholder="Personal Phone"
 																	th:value="${EmployeeEmgContact['Emg_PersonalPhone']}"
 																	name="Emg_PersonalPhone" required />
 																<div class="form-control-position">
@@ -1212,8 +1240,8 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" 
-																	class="form-control" placeholder="Other Phone"
+																<input type="number" 
+																	class="form-control capitalize" placeholder="Other Phone"
 																	th:value="${EmployeeEmgContact['Emg_OtherPhone']}"
 																	name="Emg_OtherPhone" required/>
 																<div class="form-control-position">
@@ -1226,8 +1254,8 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" 
-																	class="form-control" placeholder="Email ID"
+																<input type="email" 
+																	class="form-control capitalize" placeholder="Email ID"
 																	th:value="${EmployeeEmgContact['Emg_EmailID']}"
 																	name="Emg_EmailID" required />
 																<div class="form-control-position">
@@ -1241,7 +1269,7 @@
 
 															<div class="position-relative has-icon-left">
 																<input type="text" 
-																	class="form-control" placeholder="Street 1"
+																	class="form-control capitalize" placeholder="Street 1"
 																	th:value="${EmployeeEmgContact['Emg_Street1']}"
 																	name="Emg_Street1" required/>
 																<div class="form-control-position">
@@ -1255,7 +1283,7 @@
 
 															<div class="position-relative has-icon-left">
 																<input type="text" 
-																	class="form-control" placeholder="Street 2"
+																	class="form-control capitalize" placeholder="Street 2"
 																	th:value="${EmployeeEmgContact['Emg_Street2']}"
 																	name="Emg_Street2" required />
 																<div class="form-control-position">
@@ -1269,9 +1297,10 @@
 
 															<div class="position-relative has-icon-left">
 																<input type="text" 
-																	class="form-control" placeholder="Village"
+																	class="form-control capitalize" placeholder="Village"
 																	th:value="${EmployeeEmgContact['Emg_Village']}"
-																	name="Emg_Village" required />
+																	name="Emg_Village" onkeypress="return onlyAlphanumeric(event,this);" 
+																	required />
 																<div class="form-control-position">
 																	<i class="bx bx-directions"></i>
 																</div>
@@ -1283,9 +1312,10 @@
 
 															<div class="position-relative has-icon-left">
 																<input type="text" 
-																	class="form-control" placeholder="Taluk"
+																	class="form-control capitalize" placeholder="Taluk"
 																	th:value="${EmployeeEmgContact['Emg_Taluk']}"
-																	name="Emg_Taluk" required/>
+																	name="Emg_Taluk" onkeypress="return onlyAlphanumeric(event,this);" 
+																	 required/>
 																<div class="form-control-position">
 																	<i class="bx bxs-city"></i>
 																</div>
@@ -1297,10 +1327,11 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="text" class="form-control capitalize"
 																	placeholder="City"
 																	th:value="${EmployeeEmgContact['Emg_City']}"
-																	name="Emg_City" required/>
+																	name="Emg_City" onkeypress="return onlyAlphanumeric(event,this);" 
+																	 required/>
 																<div class="form-control-position">
 																	<i class="bx bxs-building-house"></i>
 																</div>
@@ -1311,10 +1342,11 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="text" class="form-control capitalize"
 																	placeholder="State"
 																	th:value="${EmployeeEmgContact['Emg_State']}"
-																	name="Emg_State" required />
+																	name="Emg_State" onkeypress="return onlyAlphanumeric(event,this);" 
+																	 required />
 																<div class="form-control-position">
 																	<i class="bx bx-stats"></i>
 																</div>
@@ -1325,7 +1357,7 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="number" class="form-control"
+																<input type="number" class="form-control capitalize"
 																	placeholder="Zip code"
 																	th:value="${EmployeeEmgContact['Emg_ZIP']}"
 																	name="Emg_ZIP" required/>
@@ -1339,7 +1371,7 @@
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
+																<input type="text" class="form-control capitalize"
 																	placeholder="Country"
 																	th:value="${EmployeeEmgContact['Emg_Country']}"
 																	name="Emg_Country" required/>
@@ -1399,7 +1431,7 @@
 													<div class="form-group">
 														<label for="contact-info-icon">Photo</label>
 														<div class="position-relative">
-															<input type="file" class="form-control"
+															<input type="file" class="form-control capitalize"
 																name="Photo_Attach" accept="image/*" />
 														</div>
 													</div>
@@ -1408,7 +1440,7 @@
 													<div class="form-group">
 														<label for="contact-info-icon">Resume</label>
 														<div class="position-relative">
-															<input type="file" class="form-control"
+															<input type="file" class="form-control capitalize"
 																name="Resume_Attach" accept=".pdf" />
 														</div>
 													</div>
@@ -1417,7 +1449,7 @@
 													<div class="form-group">
 														<label for="contact-info-icon">Certificates</label>
 														<div class="position-relative">
-															<input type="file" class="form-control"
+															<input type="file" class="form-control capitalize"
 																name="Certificates_Attach" accept=".pdf" />
 														</div>
 													</div>
@@ -1435,7 +1467,7 @@
 													<div class="form-group">
 
 														<div class="position-relative">
-															<input type="text" class="form-control"
+															<input type="text" class="form-control capitalize"
 																th:value="${employeemaster['Notes']}"
 																th:field="*{Notes}">
 														</div>
@@ -1488,7 +1520,7 @@
 	</footer>
 	<!-- END: Footer-->
 
-
+	
 	<!-- BEGIN: Vendor JS-->
 	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
 	<script
@@ -1515,6 +1547,9 @@
 	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
 	<script th:src="@{/app-assets/js/scripts/forms/wizard-steps.js}"></script>
 	<!-- END: Page JS-->
+	<!-- Custom Java script validations -->
+	<script th:src="@{/js/customvalidation.js}"></script>
+
 	<script>
 		$(document).ready(
 				function() {
@@ -1592,7 +1627,7 @@
 							edudivadd = edudivadd + 1;
 							$("#edudivlast")
 									.before(
-											'<div class="tedudiv'+ edudivadd +'  col-md-12"> <span class="cursor-pointer edudivdelete" name="'+ edudivadd +'" style="float:right"> 	                                                                    <i class="bx bx-x"></i> 	                                                                </span> 	                                                             </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-6"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">College / Institution</label> 			                                                            <div class="position-relative has-icon-left"><input type="hidden"  th:value="${EmployeeEducation.empEduid}" name="empEduid"><input type="text"  class="form-control"  placeholder=" College / Institution" name="College_Institution" required/> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-buildings"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Degree 			                                                            	<label class="emptitle additem" name="addDegreedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label> 			                                                            </label> 			                                                            <div class="position-relative has-icon-left"> 			                                                                <select class="form-control addDegreedata" name="Degree"> 							                                                        <option value="-">-</option>                        <option value="Bachelor">Bachelor</option>                        <option value="Master">Master</option>                        <option value="Delploma">Delploma</option>                        <option value="ITI">ITI</option>                        <option value="Doctorate">Doctorate</option>							                                                    </select> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Major / Specialization</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control"  placeholder="Major / Specialization" name="MajorSpecialization"  required/> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bxs-layer"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Percentage / GPA</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control"  placeholder="Percentage / GPA" name="Percentage_GPA" required/> 			                                                                <div class="form-control-position"> 			                                                                    % 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">From </label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control"  placeholder="From " name="FromYear"  required/> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">To</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control"  placeholder="To" name="ToYear"  required/> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div>');
+											'<div class="tedudiv'+ edudivadd +'  col-md-12"> <span class="cursor-pointer edudivdelete" name="'+ edudivadd +'" style="float:right"> 	                                                                    <i class="bx bx-x"></i> 	                                                                </span> 	                                                             </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-6"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">College / Institution</label> 			                                                            <div class="position-relative has-icon-left"><input type="hidden"  th:value="${EmployeeEducation.empEduid}" name="empEduid"><input type="text"  class="form-control capitalize"  placeholder=" College / Institution" name="College_Institution" required/> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-buildings"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Degree 			                                                            	<label class="emptitle additem" name="addDegreedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label> 			                                                            </label> 			                                                            <div class="position-relative has-icon-left"> 			                                                                <select class="form-control addDegreedata" name="Degree"> 							                                                        <option value="-">-</option>                        <option value="Bachelor">Bachelor</option>                        <option value="Master">Master</option>                        <option value="Delploma">Delploma</option>                        <option value="ITI">ITI</option>                        <option value="Doctorate">Doctorate</option>							                                                    </select> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Major / Specialization</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control capitalize"  placeholder="Major / Specialization" name="MajorSpecialization"  required/> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bxs-layer"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Percentage / GPA</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control capitalize"  placeholder="Percentage / GPA" name="Percentage_GPA" required/> 			                                                                <div class="form-control-position"> 			                                                                    % 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">From </label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control capitalize"  placeholder="From " name="FromYear"  required/> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">To</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control capitalize"  placeholder="To" name="ToYear"  required/> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div>');
 						});
 
 		$(document).on("click", ".edudivdelete", function() {
@@ -1607,7 +1642,7 @@
 							exprdivadd = exprdivadd + 1;
 							$("#exprdivlast")
 									.before(
-											'<div class="texprdiv'+ exprdivadd +'  col-md-12"><span class="cursor-pointer exprdivdelete" name="'+ exprdivadd +'" style="float:right"> 	                                                   	       <i class="bx bx-x"></i> 	                                                   	 </span>                                                    	</div>                                                    <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left"><input type="hidden"  th:value="${EmployeeExperience.empExperienceid}" name="empExperienceid" /><input type="text"  class="form-control"  placeholder="Company" name="Company"  required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-building"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control"  placeholder="Location" name="Location" required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-target-lock"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control"  placeholder="From " name="expFromyear"  required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control"  placeholder="To" name="expToyear"  required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control"  placeholder="JobTitle" name="JobTitle"  required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-briefcase-alt"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     ');
+											'<div class="texprdiv'+ exprdivadd +'  col-md-12"><span class="cursor-pointer exprdivdelete" name="'+ exprdivadd +'" style="float:right"> 	                                                   	       <i class="bx bx-x"></i> 	                                                   	 </span>                                                    	</div>                                                    <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left"><input type="hidden"  th:value="${EmployeeExperience.empExperienceid}" name="empExperienceid" /><input type="text"  class="form-control capitalize"  placeholder="Company" name="Company"  required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-building"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control capitalize"  placeholder="Location" name="Location" required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-target-lock"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control capitalize"  placeholder="From " name="expFromyear"  required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control capitalize"  placeholder="To" name="expToyear"  required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control capitalize"  placeholder="JobTitle" name="JobTitle"  required/>                                                                 <div class="form-control-position">                                                                     <i class="bx bx-briefcase-alt"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     ');
 						});
 
 		$(document).on("click", ".exprdivdelete", function() {
@@ -1622,7 +1657,7 @@
 							econtactdivadd = econtactdivadd + 1;
 							$("#econtactdivlast")
 									.before(
-											'<div class="tecontactdiv'+ econtactdivadd +'  col-md-12"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 		  <fieldset> 				<div class="checkbox checkbox-primary checkbox-glow"> <input type="hidden"  th:value="${EmployeeEmgContact.empEmgContactid}" name="empEmgContactid"> <input type="hidden" value="' + emgstat + '"  name="emgid" /><input type="checkbox" id="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact' + emgstat + '" /> 					<label for="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact">Primary Contact</label> 				</div> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlowt'+ econtactdivadd +'" name="Emg_InsuranceNominee'+  emgstat +'" /> 					<label for="checkboxGlowt'+ econtactdivadd +'">Insurance Nominee </label> 				</div> 				<span class="cursor-pointer econtactdivdelete" name="'+ econtactdivadd +'" style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			</fieldset> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Name" name="Emg_Name"  required/> 			<div class="form-control-position"> 				<i class="bx bxs-contact"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			 <select class="form-control addemgrelationdata" name="Emg_Relation"> 					<option value="-">-</option>                        <option value="Father">Father</option>						<option value="Mother">Mother</option>						<option value="Husband">Husband</option>						<option value="wife">wife</option>						<option value="Friend">Friend</option>						<option value="Brother">Brother</option>						<option value="Sister">Sister</option>						<option value="Uncle">Uncle</option>						<option value="Daughter">Daughter</option>						<option value="son">son</option>						</select> 			<div class="form-control-position"> 				<i class="bx bx-git-repo-forked"></i> 			</div> 			<label class="emptitle additem" name="addemgrelationdata" style="float:right;"><i class="bx bxs-plus-circle ownstyle1"></i></label> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Personal Phone"  name="Emg_PersonalPhone"  required/> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Other Phone" name="Emg_OtherPhone" required/> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Email ID" name="Emg_EmailID" required/> 			<div class="form-control-position"> 				<i class="bx bx-mail-send"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Street 1" name="Emg_Street1"  required/> 			<div class="form-control-position"> 				<i class="bx bxs-home"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Street 2" name="Emg_Street2"  required/> 			<div class="form-control-position"> 				<i class="bx bx-navigation"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Village"  name="Emg_Village" required/> 			<div class="form-control-position"> 				<i class="bx bx-directions"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Taluk" name="Emg_Taluk" required/> 			<div class="form-control-position"> 				<i class="bx bxs-city"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="City" name="Emg_City" required/> 			<div class="form-control-position"> 				<i class="bx bxs-building-house"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="State" name="Emg_State" required/> 			<div class="form-control-position"> 				<i class="bx bx-stats"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="number"  class="form-control"  placeholder="Zip code"  name="Emg_ZIP" required/> 			<div class="form-control-position"> 				<i class="bx bx-message-alt-dots"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control"  placeholder="Country" name="Emg_Country" required/> 			<div class="form-control-position"> 				<i class="bx bxs-flag-alt"></i> 			</div> 		</div> 	</div> </div>  ');
+											'<div class="tecontactdiv'+ econtactdivadd +'  col-md-12"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 		  <fieldset> 				<div class="checkbox checkbox-primary checkbox-glow"> <input type="hidden"  th:value="${EmployeeEmgContact.empEmgContactid}" name="empEmgContactid"> <input type="hidden" value="' + emgstat + '"  name="emgid" /><input type="checkbox" id="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact' + emgstat + '" /> 					<label for="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact">Primary Contact</label> 				</div> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlowt'+ econtactdivadd +'" name="Emg_InsuranceNominee'+  emgstat +'" /> 					<label for="checkboxGlowt'+ econtactdivadd +'">Insurance Nominee </label> 				</div> 				<span class="cursor-pointer econtactdivdelete" name="'+ econtactdivadd +'" style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			</fieldset> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Name" name="Emg_Name"  required/> 			<div class="form-control-position"> 				<i class="bx bxs-contact"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			 <select class="form-control addemgrelationdata" name="Emg_Relation"> 					<option value="-">-</option>                        <option value="Father">Father</option>						<option value="Mother">Mother</option>						<option value="Husband">Husband</option>						<option value="wife">wife</option>						<option value="Friend">Friend</option>						<option value="Brother">Brother</option>						<option value="Sister">Sister</option>						<option value="Uncle">Uncle</option>						<option value="Daughter">Daughter</option>						<option value="son">son</option>						</select> 			<div class="form-control-position"> 				<i class="bx bx-git-repo-forked"></i> 			</div> 			<label class="emptitle additem" name="addemgrelationdata" style="float:right;"><i class="bx bxs-plus-circle ownstyle1"></i></label> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Personal Phone"  name="Emg_PersonalPhone"  required/> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Other Phone" name="Emg_OtherPhone" required/> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Email ID" name="Emg_EmailID" required/> 			<div class="form-control-position"> 				<i class="bx bx-mail-send"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Street 1" name="Emg_Street1"  required/> 			<div class="form-control-position"> 				<i class="bx bxs-home"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Street 2" name="Emg_Street2"  required/> 			<div class="form-control-position"> 				<i class="bx bx-navigation"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Village"  name="Emg_Village" required/> 			<div class="form-control-position"> 				<i class="bx bx-directions"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Taluk" name="Emg_Taluk" required/> 			<div class="form-control-position"> 				<i class="bx bxs-city"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="City" name="Emg_City" required/> 			<div class="form-control-position"> 				<i class="bx bxs-building-house"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="State" name="Emg_State" required/> 			<div class="form-control-position"> 				<i class="bx bx-stats"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="number"  class="form-control capitalize"  placeholder="Zip code"  name="Emg_ZIP" required/> 			<div class="form-control-position"> 				<i class="bx bx-message-alt-dots"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Country" name="Emg_Country" required/> 			<div class="form-control-position"> 				<i class="bx bxs-flag-alt"></i> 			</div> 		</div> 	</div> </div>  ');
 							emgstat = emgstat + 1;
 						});
 

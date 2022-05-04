@@ -87,11 +87,11 @@
 	.highlight-error {
   border-color: red;
 }	
-
 .error
 {
 	color:red;
 }
+
 </style>
 
 </head>
@@ -384,7 +384,7 @@
 															<input type="text" class="form-control capitalize"
 																placeholder="Aadhar No"
 																th:value="${employeemaster['AadharNo']}"
-																th:field="*{AadharNo}"  data-type="adhaar-number" maxLength="14" minLength="14" />
+																th:field="*{AadharNo}"  data-type="adhaar-number" maxLength="14" />
 															<div class="form-control-position">
 																<i class="bx bx-grid-small"></i>
 															</div>
@@ -398,7 +398,7 @@
 															<input type="text" class="form-control uppercase"
 																placeholder="PAN No"
 																th:value="${employeemaster['PANNo']}"
-																th:field="*{PANNo}" minlength="10" maxlength="10" />
+																th:field="*{PANNo}" maxlength="10" />
 															<div class="form-control-position">
 																<i class="bx bxs-layout"></i>
 															</div>
@@ -645,7 +645,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control capitalize"
+															<input type="email" class="form-control capitalize email"
 																placeholder="Email ID"
 																th:value="${employeemaster['Contact_EmailID']}"
 																th:field="*{Contact_EmailID}"  />
@@ -659,7 +659,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control capitalize"
+															<input type="email" class="form-control capitalize email"
 																placeholder="Work Email"
 																th:value="${employeemaster['Contact_WorkEmail']}"
 																th:field="*{Contact_WorkEmail}"  />
@@ -673,7 +673,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control capitalize"
+															<input type="email" class="form-control capitalize email"
 																placeholder="Personal Email"
 																th:value="${employeemaster['Contact_PersonalEmail']}"
 																th:field="*{Contact_PersonalEmail}"  />
@@ -1556,24 +1556,20 @@
 	<script>
 		$(document).ready(
 				function() {
-					   $('#formId').validate({
-			                ignore: [],
-			                invalidHandler: function (e, validator) {
-			                    if (validator.errorList.length)
-			                    {
-			                        //debugger;
-			                        //$('#shipperConsigneeTabs a[href="#' + jQuery(validator.errorList[0].element).closest(".tab-pane").attr('id') + '"]').tab('show')
-			                    	alert($(validator.errorList[0].element).attr("name") + " Invalid format");
-			                    	//$(validator.errorList[0].element).addClass("highlight-error");
-			                    }
-			                }
-			            });
-
-			            //add click event to the form's button
-			            $('#formId button').click(function (evt) {
-			                evt.preventDefault();
-			                
-			            });
+		/* 			$('#formId').validate({
+		                ignore: [],
+		                invalidHandler: function (e, validator) {
+		                    if (validator.errorList.length)
+		                    {
+		                        //debugger;
+		                        //$('#shipperConsigneeTabs a[href="#' + jQuery(validator.errorList[0].element).closest(".tab-pane").attr('id') + '"]').tab('show')
+		                    	alert($(validator.errorList[0].element).attr("name") + " Invalid format");
+		                    	//$(validator.errorList[0].element).addClass("highlight-error");
+		                    }
+		                }
+		            });
+ */
+		            
 					
 					
 					$("#submit_validation").click(function(){

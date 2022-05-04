@@ -61,4 +61,16 @@ $(document).ready(function(){
 	  }
 	});
 	
+	$('.email').on("change, blur", function() {
+		  var value = $(this).val();
+		  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+		  if (!emailReg.test(value)) {
+		    $(this).addClass("highlight-error");
+		  } else {
+		    $(this).removeClass("highlight-error");
+		  }
+	});
+		
+	
+	
 });

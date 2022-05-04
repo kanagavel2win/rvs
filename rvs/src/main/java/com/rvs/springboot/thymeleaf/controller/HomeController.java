@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -299,6 +300,8 @@ public class HomeController {
 			if(hireobj.size()>0)
 			{
 				try {
+					
+					
 					str +=displaydateFormat.format(new SimpleDateFormat("yyyy-MM-dd").parse(hireobj.get(0).getEmployeehiredate().toString()))+"|";
 				} catch (ParseException e) {
 					e.printStackTrace();
@@ -411,6 +414,8 @@ public class HomeController {
 			@RequestParam(name = "Emg_Country", required = false) String[] Emg_Country,
 
 			@RequestParam Map<String, String> params, HttpServletRequest request, Model themodel) {
+		
+		employeemaster.setEmpid("RVS");
 		System.out.println("empEduid" + Arrays.toString(empEduid));
 		System.out.println(College_Institution.length);
 		System.out.println("College_Institution" + Arrays.toString(College_Institution));
@@ -522,18 +527,23 @@ public class HomeController {
 		System.out.println("--------------Step 2 End----------------------");
 
 		Set<EmployeeExperience> exptrls = new LinkedHashSet<EmployeeExperience>();
-		for (int farr = 0; farr < Company.length; farr++) {
-			EmployeeExperience empexper = new EmployeeExperience();
-			empexper.setCompany(Company[farr]);
-
-			if (!empExperienceid[farr].isEmpty()) {
-				empexper.setEmpExperienceid(Integer.parseInt(empExperienceid[farr]));
+		if (!Objects.isNull(Company))
+		{
+			
+		
+			for (int farr = 0; farr < Company.length; farr++) {
+				EmployeeExperience empexper = new EmployeeExperience();
+				empexper.setCompany(Company[farr]);
+	
+				if (!empExperienceid[farr].isEmpty()) {
+					empexper.setEmpExperienceid(Integer.parseInt(empExperienceid[farr]));
+				}
+				empexper.setExpFromyear(expFromyear[farr]);
+				empexper.setExpToyear(expToyear[farr]);
+				empexper.setJobTitle(JobTitle[farr]);
+				empexper.setLocation(Location[farr]);
+				exptrls.add(empexper);
 			}
-			empexper.setExpFromyear(expFromyear[farr]);
-			empexper.setExpToyear(expToyear[farr]);
-			empexper.setJobTitle(JobTitle[farr]);
-			empexper.setLocation(Location[farr]);
-			exptrls.add(empexper);
 		}
 		employeemaster.setEmployeeExperience(exptrls);
 
@@ -847,6 +857,8 @@ public class HomeController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		
+		EmployeeMaster emobj=employeeMasterService.findById(empid);
+		
 		List<EmployeeJobempstatus> obj=new ArrayList<>();
 		obj=employeeJobempstatusService.findByEmployeeid(empid);
 		if(obj.size()>0)
@@ -901,6 +913,7 @@ public class HomeController {
 		theModel.addAttribute("employeeJobinfomation", infoobj);
 		theModel.addAttribute("employeecompensation", comoobj);
 		theModel.addAttribute("empid", empid);
+		theModel.addAttribute("emptitle", emobj.getEmpid()+ "000" + emobj.getEmpMasterid() +" - " +emobj.getStaffName());
 		return "empjob";
 	}
 	

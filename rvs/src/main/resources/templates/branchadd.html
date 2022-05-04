@@ -129,7 +129,7 @@
 	                                                            <label for="first-name-icon">Branch Name</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                               	<input type="hidden" th:value="${BranchMaster['id']}" th:field="*{id}"/>
-	                                                                <input type="text" id="first-name-icon" class="form-control capitalize" th:value="${BranchMaster['BRANCH_NAME']}" th:field="*{BRANCH_NAME}"  placeholder="Branch Name"  onkeypress="return onlyAlphabets(event,this);"  required>
+	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['BRANCH_NAME']}" th:field="*{BRANCH_NAME}"  placeholder="Branch Name"  onkeypress="return onlyAlphabets(event,this);"  required>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-user"></i>
 	                                                                </div>
@@ -166,7 +166,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="password-icon">Branch Address</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text" id="password-icon" class="form-control capitalize" th:value="${BranchMaster['BRANCH_ADDRESS']}" th:field="*{BRANCH_ADDRESS}"    placeholder="Branch Address" onkeypress="return onlyAlphanumeric(event,this);" required>
+	                                                                <input type="text" id="password-icon" class="form-control capitalize" th:value="${BranchMaster['BRANCH_ADDRESS']}" th:field="*{BRANCH_ADDRESS}"    placeholder="Branch Address" onkeypress="return onlyAlphanumeric(event,this);" >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-home"></i>
 	                                                                </div>
@@ -178,7 +178,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">City</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['CITY']}" th:field="*{CITY}"   placeholder="City" onkeypress="return onlyAlphabets(event,this);"  required>
+	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['CITY']}" th:field="*{CITY}"   placeholder="City" onkeypress="return onlyAlphabets(event,this);"  >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-building-house"></i>
 	                                                                </div>
@@ -189,7 +189,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">State</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['STATE']}" th:field="*{STATE}"    placeholder="State" onkeypress="return onlyAlphabets(event,this);"  required>
+	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['STATE']}" th:field="*{STATE}"    placeholder="State" onkeypress="return onlyAlphabets(event,this);"  >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-stats"></i>
 	                                                                </div>
@@ -200,7 +200,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Country</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['COUNTRY']}" th:field="*{COUNTRY}"   placeholder="Country" onkeypress="return onlyAlphabets(event,this);"  required>
+	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['COUNTRY']}" th:field="*{COUNTRY}"   placeholder="Country" onkeypress="return onlyAlphabets(event,this);"  >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-flag-alt"></i>
 	                                                                </div>
@@ -211,7 +211,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Zip code</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="number"  class="form-control" th:value="${BranchMaster['ZIP_CODE']}" th:field="*{ZIP_CODE}"    placeholder="Zip code" required>
+	                                                                <input type="number"  class="form-control" th:value="${BranchMaster['ZIP_CODE']}" th:field="*{ZIP_CODE}"    placeholder="Zip code" >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-message-alt-dots"></i>
 	                                                                </div>
@@ -255,7 +255,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Branch In-charge</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['BRANCH_IN_CHARGE']}" th:field="*{BRANCH_IN_CHARGE}"   placeholder="Branch In-charge" onkeypress="return onlyAlphabets(event,this);"  required  />
+	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['BRANCH_IN_CHARGE']}" th:field="*{BRANCH_IN_CHARGE}"   placeholder="Branch In-charge" onkeypress="return onlyAlphabets(event,this);"    />
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-user-circle"></i>
 	                                                                </div>
@@ -266,7 +266,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">In-charge Contact Details</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="number"  class="form-control" th:value="${BranchMaster['IN_CHARGE_CONTACT_DETAILS']}" th:field="*{IN_CHARGE_CONTACT_DETAILS}"  maxlength="10"  placeholder="In-charge Contact Details" required >
+	                                                                <input type="number"  class="form-control" th:value="${BranchMaster['IN_CHARGE_CONTACT_DETAILS']}" th:field="*{IN_CHARGE_CONTACT_DETAILS}"  maxlength="10"  placeholder="In-charge Contact Details"  >
 	                                                                <div class="form-control-position">
 	                                                                    +91
 	                                                                </div>
@@ -277,7 +277,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Office Phone Number</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="number"  class="form-control" th:value="${BranchMaster['OFFICE_PHONE_NUMBER']}" th:field="*{OFFICE_PHONE_NUMBER}"    maxlength="10" placeholder="Office Phone Number"  required >
+	                                                                <input type="number"  class="form-control" th:value="${BranchMaster['OFFICE_PHONE_NUMBER']}" th:field="*{OFFICE_PHONE_NUMBER}"    maxlength="10" placeholder="Office Phone Number"   >
 	                                                                <div class="form-control-position">
 	                                                                    +91
 	                                                                </div>
@@ -288,7 +288,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Branch Office Email ID</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="email"  class="form-control" th:value="${BranchMaster['BRANCH_OFFICE_EMAIL_ID']}" th:field="*{BRANCH_OFFICE_EMAIL_ID}"    placeholder="Branch Office Email ID" required />
+	                                                                <input type="email"  class="form-control" th:value="${BranchMaster['BRANCH_OFFICE_EMAIL_ID']}" th:field="*{BRANCH_OFFICE_EMAIL_ID}"    placeholder="Branch Office Email ID"  />
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-mail-send"></i>
 	                                                                </div>
@@ -299,7 +299,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Started Date</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="date"  class="form-control" th:value="${BranchMaster['STATED_DATE']}" th:field="*{STATED_DATE}"    placeholder="Stated Date" required >
+	                                                                <input type="date"  class="form-control" th:value="${BranchMaster['STATED_DATE']}" th:field="*{STATED_DATE}"    placeholder="Stated Date"  >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-calendar"></i>
 	                                                                </div>
@@ -310,7 +310,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Current Status</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <select class="form-control CURRENT_STATUS" th:field="*{CURRENT_STATUS}"  required>
+	                                                                <select class="form-control CURRENT_STATUS" th:field="*{CURRENT_STATUS}" >
 					                                                        <option value="">-</option>
 					                                                        <option value="Active">Active</option>
 					                                                        <option value="Inactive">Inactive</option>
@@ -412,7 +412,7 @@
 				
 				function closedatecal(val){
 					
-					if(val == "Inactive")
+					if(val != "Inactive")
 					{
 						$('.CLOSED_DATE').attr("type","hidden");
 						$(".CLOSED_DATE_label").hide();

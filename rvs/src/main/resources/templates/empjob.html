@@ -190,7 +190,7 @@ var tblemployeecompensationid=0;
                                     <div class="card-body">
                                     	<div class="col-md-12">
                                     		<div class="form-group">
-                                               <label class="empnametitle"> RVS00001 - Kanagavel
+                                               <label class="empnametitle"><span  th:text="${emptitle}"></span>
                                                <input type="hidden" th:value='${empid}' id="empid" />
                                                </label>
                                              </div>
@@ -425,8 +425,11 @@ var tblemployeecompensationid=0;
 		                                                </th:block>
 		                                                
 		                                                <input type="hidden" th:value="${emp.employeejobempstatusid}" th:id="'tblemployeeJobempstatusid' + ${stat.index}"/>
-		                                                <span th:id="'tblempstatus_effectivedate' + ${stat.index}" th:text="${emp.empstatus_effectivedate}"></span>
-		                                                
+		                                                <input type="hidden" th:id="'tblempstatus_effectivedate' + ${stat.index}" th:value="${emp.empstatus_effectivedate}" />
+		                                               	<th:block th:if="${emp.empstatus_effectivedate} !=''">
+		                                               		<span  th:text="${#strings.arraySplit(emp.empstatus_effectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[0]}"></span>
+		                                                </th:block>
+		                                                	
 		                                                </td>
 		                                                <td>
 		                                                	<span th:id="'tblempstatus_employmentstatus' + ${stat.index}" th:text="${emp.empstatus_employmentstatus}"></span>
@@ -588,7 +591,12 @@ var tblemployeecompensationid=0;
 		                                                	<span class="bullet bullet-sm bullet-success"></span>
 		                                                </th:block>
 		                                               	<input type="hidden" th:value="${emp.employeejobinfoid}" th:id="'tblemployeejobinfoid' + ${stat.index}"/>
-														<span th:id="'tbljobeffectivedate' + ${stat.index}" th:text="${emp.jobeffectivedate}"></span>
+		                                               	<input type="hidden" th:value="${emp.jobeffectivedate}" th:id="'tbljobeffectivedate' + ${stat.index}"/>
+														
+														<th:block th:if="${emp.jobeffectivedate} !=''">
+		                                               		<span  th:text="${#strings.arraySplit(emp.jobeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[0]}"></span>
+		                                                </th:block>
+		                                                
 		                                                </td>
 		                                                <td>
 		                                                	<span th:id="'tbljoblocation' + ${stat.index}" th:text="${emp.joblocation}"></span>
@@ -764,7 +772,11 @@ var tblemployeecompensationid=0;
 		                                                	<span class="bullet bullet-sm bullet-success"></span>
 		                                                </th:block>
 		                                                <input type="hidden" th:value="${emp.employeejobcompensationid}" th:id="'tblemployeejobcompensationid' + ${stat.index}"/>
-		                                                <span th:id="'tblcomeffectivedate' + ${stat.index}" th:text="${emp.comeffectivedate}"></span>
+		                                                <input type="hidden" th:value="${emp.comeffectivedate}" th:id="'tblcomeffectivedate' + ${stat.index}"/>
+		                                                <th:block th:if="${emp.comeffectivedate} !=''">
+		                                               		<span  th:text="${#strings.arraySplit(emp.comeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[0]}"></span>
+		                                                </th:block>
+		                                                
 		                                                </td>
 		                                                <td>
 		                                                <span th:id="'tblcomPayschedule' + ${stat.index}" th:text="${emp.comPayschedule}"></span>
@@ -1024,24 +1036,30 @@ var tblemployeecompensationid=0;
 					var hiredateid = $("#hiredateid").val();
 					var hiredate = $("#hiredate").val();
 					
-					var formData = {
-							hiredateid : hiredateid,
-							hiredate : hiredate,
-							empid : empid
-					}
-					$.ajax({
-						type : "POST",url : "employeehiredate",
-						data : formData,success : function(result) {
-							
-							$("#hiredateid").val(result.replace("Success",""))
-							$('#modeljqueryresult').text("Hire Date updated successfully");
-						},
-						error : function(e) {
-							$('#modeljqueryresult').text("Error" + e);
+					if(hiredate =="")
+					{
+						alert(" Hire Date should not be empty");
+					}else
+					{
+						var formData = {
+								hiredateid : hiredateid,
+								hiredate : hiredate,
+								empid : empid
 						}
-					});
-
-					$('#jqueryInformationScrollable').modal('toggle');
+						$.ajax({
+							type : "POST",url : "employeehiredate",
+							data : formData,success : function(result) {
+								
+								$("#hiredateid").val(result.replace("Success",""))
+								$('#modeljqueryresult').text("Hire Date updated successfully");
+							},
+							error : function(e) {
+								$('#modeljqueryresult').text("Error" + e);
+							}
+						});
+	
+						$('#jqueryInformationScrollable').modal('toggle');
+					}
 				});
 				
 				//--------------------------------------------------------------------------------------------------------------------------------------		 		
@@ -1065,6 +1083,12 @@ var tblemployeecompensationid=0;
 					var empstatus_effectivedate= $('#empstatus_effectivedate').val();
 					var empstatus_remarks= $('#empstatus_remarks').val();
 					
+					var empstatus_effectivedate_new="";
+					if(empstatus_effectivedate != "")
+					{
+						var myArray = empstatus_effectivedate.split("-");
+						empstatus_effectivedate_new= myArray[2]+'-'+myArray[1]+'-'+myArray[0];
+					}
 					
 					var formData = {
 							empid : empid,
@@ -1086,8 +1110,8 @@ var tblemployeecompensationid=0;
 									{
 									var html='<tr><td>';
 									html += '<input type="hidden" value="'+objid+'" id="tblemployeeJobempstatusid'+ tblemployeeJobempstatusid +'"/>';
-									
-									html += '<span id="tblempstatus_effectivedate'+ tblemployeeJobempstatusid +'">'+ empstatus_effectivedate +'</span></td><td>';
+									html += '<input type="hidden" value="'+empstatus_effectivedate+'" id="tblempstatus_effectivedate'+ tblemployeeJobempstatusid +'"/>';
+									html += '<span>'+ empstatus_effectivedate_new +'</span></td><td>';
 				                    html += '<span id="tblempstatus_employmentstatus'+ tblemployeeJobempstatusid +'">'+ empstatus_employmentstatus +'</span>';
 				                    html += '<input type="hidden" value="" id="tblempstatus_terminationtype'+ tblemployeeJobempstatusid +'"/>';
 				                    html += '<input type="hidden" value="" id="tblempstatus_terminationreason'+ tblemployeeJobempstatusid +'"/>';
@@ -1129,7 +1153,7 @@ var tblemployeecompensationid=0;
 					$('#empstatus_terminationtype').val($('#tblempstatus_terminationtype'+id).val()).change();
 					$('#empstatus_terminationreason').val($('#tblempstatus_terminationreason'+id).val()).change();
 					$('#empstatus_rehire').val($('#tblempstatus_rehire'+id).val());
-					$('#empstatus_effectivedate').val($('#tblempstatus_effectivedate'+id).text());
+					$('#empstatus_effectivedate').val($('#tblempstatus_effectivedate'+id).val());
 					$('#empstatus_remarks').val($('#tblempstatus_remarks'+id).text());
 				});
 				
@@ -1150,6 +1174,13 @@ var tblemployeecompensationid=0;
 					var jobdeparment= $('#jobdeparment').val();
 					var jobtitle= $('#jobtitle').val();
 					var jobreportsto= $('#jobreportsto').val();
+					
+					var jobeffectivedate_new="";
+					if(jobeffectivedate != "")
+					{
+						var myArray = jobeffectivedate.split("-");
+						jobeffectivedate_new= myArray[2]+'-'+myArray[1]+'-'+myArray[0];
+					}
 					
 					var formData = {
 							empid : empid,
@@ -1174,7 +1205,8 @@ var tblemployeecompensationid=0;
 									html += '<td>';
 									html += '';
 									html += '<input type="hidden" value="'+objid+'" id="tblemployeejobinfoid' + tblemployeeJobinfoid  + '"/>';
-									html += '<span id="tbljobeffectivedate' + tblemployeeJobinfoid  + '" >' + jobeffectivedate  +'</span>                                    </td>                                    <td>';
+									html += '<input type="hidden" value="'+jobeffectivedate+'" id="tbljobeffectivedate' + tblemployeeJobinfoid  + '"/>';
+									html += '<span>' + jobeffectivedate_new  +'</span>                                    </td>                                    <td>';
 									html += '<span id="tbljoblocation' + tblemployeeJobinfoid  + '" >' + joblocation +'</span>                                    </td>                                    <td>';
                                     html += '	<span id="tbljobdeparment' + tblemployeeJobinfoid  + '" >' + jobdeparment +'</span>                                    </td>                                    <td>';
                                     html += '	<span id="tbljobtitle' + tblemployeeJobinfoid  + '" >' +  jobtitle +'</span>                                    </td>                                    <td>';
@@ -1211,7 +1243,7 @@ var tblemployeecompensationid=0;
 					var id =$(this).attr('name');
 					$('#employeejobinfoid').val($('#tblemployeejobinfoid'+id).val());
 					$('#employeejobinfoidrow').val(id);
-					$('#jobeffectivedate').val($('#tbljobeffectivedate'+id).text());
+					$('#jobeffectivedate').val($('#tbljobeffectivedate'+id).val());
 					$('#joblocation').val($('#tbljoblocation'+id).text()).change();
 					$('#jobdeparment').val($('#tbljobdeparment'+id).text()).change();
 					$('#jobtitle').val($('#tbljobtitle'+id).text()).change();
@@ -1238,6 +1270,13 @@ var tblemployeecompensationid=0;
 					var comchangereason= $('#comchangereason').val();
 					var comcomments= $('#comcomments').val();
 					
+					var comeffectivedate_new="";
+					if(comeffectivedate != "")
+					{
+						var myArray = comeffectivedate.split("-");
+						comeffectivedate_new= myArray[2]+'-'+myArray[1]+'-'+myArray[0];
+					}
+					
 					var formData = {
 							empid : empid,
 							employeejobcompensationid : employeejobcompensationid,
@@ -1261,7 +1300,8 @@ var tblemployeecompensationid=0;
 									html= '<tr>';
 									html += '<td> ';
 									html += '<input type="hidden" value="'+objid+'" id="tblemployeejobcompensationid' + tblemployeecompensationid + '"/>';
-									html += '<span id="tblcomeffectivedate' + tblemployeecompensationid + '" >'+ comeffectivedate +'</span>                                    </td>                                    <td>';
+									html += '<input type="hidden" value="'+comeffectivedate+'" id="tblcomeffectivedate' + tblemployeecompensationid + '"/>';
+									html += '<span>'+ comeffectivedate_new +'</span>                                    </td>                                    <td>';
 									html += '<span id="tblcomPayschedule' + tblemployeecompensationid + '" >'+ comPayschedule +'</span>                                    </td>                                    <td>';
 									html += '<span id="tblcompaytype' + tblemployeecompensationid + '" >'+ compaytype +'</span>                                    </td>                                    <td>';
 									html += '<span id="tblcompayrate' + tblemployeecompensationid + '" >'+ compayrate +'</span>'; 
@@ -1302,7 +1342,7 @@ var tblemployeecompensationid=0;
 					var id =$(this).attr('name');
 					$('#employeejobcompensationid').val($('#tblemployeejobcompensationid'+id).val());
 					$('#employeejobcompensationidrow').val(id);
-					$('#comeffectivedate').val($('#tblcomeffectivedate'+id).text());
+					$('#comeffectivedate').val($('#tblcomeffectivedate'+id).val());
 					$('#comPayschedule').val($('#tblcomPayschedule'+id).text()).change();
 					$('#compaytype').val($('#tblcompaytype'+id).text()).change();
 					$('#compayrate').val($('#tblcompayrate'+id).text());
@@ -1394,7 +1434,6 @@ var tblemployeecompensationid=0;
 		
 		</script>
 </html>
-
 
 
 

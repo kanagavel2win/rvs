@@ -1,7 +1,5 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@Getter @Setter @NoArgsConstructor  @AllArgsConstructor @ToString
 @Table(name="attendancemaster")
 public class AttendanceMaster {
 	
@@ -25,7 +23,7 @@ public class AttendanceMaster {
 	private int attendancemasterid;
 	
 	@Column
-	private Date attendanceDate;
+	private String attendanceDate;
 		
 	@Column
 	private int branchMasterid;

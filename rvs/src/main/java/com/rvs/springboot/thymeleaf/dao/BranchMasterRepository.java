@@ -6,4 +6,5 @@ import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 
 public interface BranchMasterRepository extends JpaRepository<BranchMaster,Integer>{
 
+	
 }

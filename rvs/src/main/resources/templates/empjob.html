@@ -496,10 +496,9 @@ var tblemployeecompensationid=0;
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
 						                                                    <select class="form-control"  id="joblocation">
-						                                                        <option>-</option>
-						                                                        <option>Coimbatore</option>
-						                                                        <option>Madurai</option>
-						                                                        <option>Pollachi</option>
+						                                                        <th:block th:each="obj : ${branchls}">
+						                                                        	<option th:text="${obj.BRANCH_NAME}"></option>
+						                                                        </th:block>
 						                                                       </select>
 						                                                </fieldset>
 		                                                            </div>

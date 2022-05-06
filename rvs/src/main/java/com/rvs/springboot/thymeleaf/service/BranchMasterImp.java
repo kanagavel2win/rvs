@@ -41,7 +41,6 @@ public class BranchMasterImp implements BranchMasterService {
 		
 		return branchRepo.findAll();
 	}
-
-	
+		
 	
 }

@@ -4,6 +4,9 @@
 <!-- BEGIN: Head-->
 
 <head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -372,14 +375,14 @@
                                                                	<input type="hidden" id="currentdate" th:value="${tempcurrentdate}" />
                                                                 <input type="hidden" id="targetedbranchid" th:value="${targetedbranchid}" />
                                                                 
-                                                                <select class="form-control">
+                                                                <select class="form-control" id="branchlist">
                                                                 		
                                                                 	<th:block th:if="${targetedbranchName} !=''"> 
-                                                                			<option th:value="${targetedbranchName}" th:text="${targetedbranchName}"></option>
+                                                                			<option th:value="${targetedbranchid}" th:text="${targetedbranchName}"></option>
                                                                 	</th:block>	
 				                                                        
 				                                                       <th:block th:each="obj : ${branchls}">
-				                                                       		<option th:value="${obj.BRANCH_NAME}" th:text="${obj.BRANCH_NAME}"></option>
+				                                                       		<option th:if="${obj.BRANCH_NAME} != ${targetedbranchName}" th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
 				                                                       </th:block>
 				                                                        
 				                                                        
@@ -404,16 +407,26 @@
 	                                                  </div>
 	                                                  <div class="table-responsive col-md-12">
 				                                        <table class="attendancelisttable">
-				                                        <tr th:each="emp,stat : ${employeeMasterlswitheffectivelocation}">
+				                                         <tr th:each="emp,stat : ${empattendancedetailslist}">
 				                                             <td width="5%"><label class="emptitle additem" th:name="remark + ${stat.index}">
-				                                             	<input type="hidden" class="childremarks"  th:id="remark + ${stat.index}"/>
-				                                             	<input type="hidden"  th:id="emp +${stat.index}" th:value="${emp.empMasterid}"/>
+				                                             	<input type="hidden" class="childremarks"  th:id="remark + ${stat.index}" th:value="${#strings.arraySplit(emp,'||')[4]}"/>
+				                                             	<input type="hidden"  th:id="emp +${stat.index}" th:value="${#strings.arraySplit(emp,'||')[0]}"/>
+				                                             	<input type="hidden"  th:id="attid +${stat.index}" th:value="${#strings.arraySplit(emp,'||')[2]}"/>
 				                                             <i class="bx bx-notepad"></i></label></td>
-				                                             <td width="50%" th:text="${emp.StaffName}"></td>
-				                                             <td width="15%"><button type="button" th:name=" ${stat.index}" class="btn btnp ">P</button></td>
-				                                             <td  width="15%"><button type="button" th:name="${stat.index}" class="btn btna ">A</button></td>
-				                                             <td  width="15%"><button type="button" th:name="${stat.index}" class="btn btnt ">T</button></td>
-				                                             <td  width="15%"><button type="button" th:name="${stat.index}" class="btn btnhl ">HL</button></td>
+				                                             <td width="50%" th:text="${#strings.arraySplit(emp,'||')[1]}"></td>
+				                                             
+				                                             
+				                                             <td th:if="${#strings.arraySplit(emp,'||')[3]}=='P'" width="15%"><button type="button" th:name=" ${stat.index}" class="btn btnp cp btn-success text-white ">P</button></td>
+				                                             <td th:unless="${#strings.arraySplit(emp,'||')[3]}=='P'" width="15%"><button type="button" th:name=" ${stat.index}" class="btn btnp ">P</button></td>
+				                                             
+				                                             <td th:if="${#strings.arraySplit(emp,'||')[3]}=='A'" width="15%"><button type="button" th:name="${stat.index}" class="btn btna ca btn-danger text-white">A</button></td>
+				                                             <td th:unless="${#strings.arraySplit(emp,'||')[3]}=='A'" width="15%"><button type="button" th:name="${stat.index}" class="btn btna ">A</button></td>
+				                                             
+				                                             <td th:if="${#strings.arraySplit(emp,'||')[3]}=='T'" width="15%"><button type="button" th:name="${stat.index}" class="btn btnt ct btn-warning text-white ">T</button></td>
+				                                             <td th:unless="${#strings.arraySplit(emp,'||')[3]}=='T'" width="15%"><button type="button" th:name="${stat.index}" class="btn btnt ">T</button></td>
+				                                             
+				                                             <td th:if="${#strings.arraySplit(emp,'||')[3]}=='HL'" width="15%"><button type="button" th:name="${stat.index}" class="btn btnhl chl btn-light text-white">HL</button></td>
+				                                             <td th:unless="${#strings.arraySplit(emp,'||')[3]}=='HL'" width="15%"><button type="button" th:name="${stat.index}" class="btn btnhl ">HL</button></td>
 				                                      	  </tr>
 				                                      	    	   
 				                                      	   
@@ -435,6 +448,7 @@
                             </div>
                         </div>
                     </div>
+                	</div>
                 </section>
                 <!--/ Zero configuration table -->               
 
@@ -455,9 +469,42 @@
 				class="float-right d-sm-inline-block d-none"></span>
 			<button class="btn btn-primary btn-icon scroll-top" type="button">
 				<i class="bx bx-up-arrow-alt"></i>
+				
 			</button>
 		</p>
 		</footer>
+		<!--scrolling content Modal -->
+               	<div class="modal fade" id="jqueryInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="jqueryInformationScrollableTitle" aria-hidden="true">
+                     <div class="modal-dialog modal-dialog-scrollable" role="document">
+                         <div class="modal-content">
+                             <div class="modal-header bg-success">
+                                 <h5 class="modal-title white" id="jqueryInformationScrollableTitle"></h5>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                     <i class="bx bx-x"></i>
+                                 </button>
+                             </div>
+                             <div class="modal-body">
+                                 
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <center>
+                                      	<label for="contact-info-icon" id="modeljqueryresult" style="font-weight:bold"></label>
+                                      </center>
+                                  </div>
+                              </div>
+                              
+                             <div class="modal-footer">
+                                 
+                                 <button type="button" id="btnmodelclose" class="btn btn-primary ml-1" data-dismiss="modal">
+                                     <i class="bx bx-check d-block d-sm-none"></i>
+                                     <span class="d-none d-sm-block  text-white">Ok</span>
+                                 </button>
+                              </div>
+                          	 </div>
+                          </div>
+                      </div>
+                   </div>
+                	 <!--scrolling content Modal -->
 		<!-- END: Footer-->
 
 
@@ -491,9 +538,26 @@
 <!-- END: Body-->
 <script>
 	$(document).ready(function(){
+		
+		//--------------------------------------------------------
+		$(function() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+			});
+		});
+		//--------------------------------------------------------
 		$('.td').click(function(){
+			var branch =$("#branchlist :selected").text();
+			window.location.href="empattendance?date="+ $(this).attr('name') +"&branch="+ branch +"";
 			
-			window.location.href="empattendance?date="+ $(this).attr('name');
+		});
+		
+		$("#branchlist").change(function(){
+			var selectdate= $(".selectdate").attr("name");
+			var branch =$("#branchlist :selected").text();
+			window.location.href="empattendance?date="+ selectdate +"&branch="+ branch +"";
 			
 		});
 		//--------------------------------------------------------
@@ -569,6 +633,8 @@
 		
 				
 		$('#saveall').click(function(){
+			$("#btnmodelclose").removeClass("refresh");
+			$('#modeljqueryresult').text("");
 			var currentdd=$('#currentdd').val();
 			
 			//------------------------------------------------------------------------------
@@ -595,30 +661,55 @@
 			    var rowindex =$(this).attr('name');
 			    var empid=$('#emp'+ rowindex).val();
 			    var note=$('#remark'+ rowindex).val();
-			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|P|";
+			    var attendid=$('#attid'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|P|" + attendid +"~";
 			});
 			$(".ca").each(function() {
 			    var rowindex =$(this).attr('name');
 			    var empid=$('#emp'+ rowindex).val();
 			    var note=$('#remark'+ rowindex).val();
-			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|A|";
+			    var attendid=$('#attid'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|A|" + attendid +"~";
 			});
 			$(".ct").each(function() {
 			    var rowindex =$(this).attr('name');
 			    var empid=$('#emp'+ rowindex).val();
 			    var note=$('#remark'+ rowindex).val();
-			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|T|";
+			    var attendid=$('#attid'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|T|" + attendid +"~";
 			});
 			$(".chl").each(function() {
 			    var rowindex =$(this).attr('name');
 			    var empid=$('#emp'+ rowindex).val();
 			    var note=$('#remark'+ rowindex).val();
-			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|HL|";
+			    var attendid=$('#attid'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|HL|" + attendid +"~";
 			});
 			console.info(attendancestr);
+			
+			 var formData = {
+					attendancestr : attendancestr					
+			}
+			$.ajax({
+				type : "POST",url : "employeeattendancesave",
+				data : formData,success : function(result) {
+					
+					$('#modeljqueryresult').text( "Attendance updated successfully");
+					$("#btnmodelclose").toggleClass("refresh");
+				},
+				error : function(e) {
+					$('#modeljqueryresult').text("Error" + e);
+				}
+			});
+			
+			$('#jqueryInformationScrollable').modal('toggle'); 
 			//------------------------------------------------------------------------------
 		});
 		
+		
+		$(document).on('click', ".refresh", function() {
+			location.reload();
+		});
 		
 	});
 </script>	

@@ -155,7 +155,14 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Branch Head Office</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control capitalize" th:value="${BranchMaster['COMES_UNDER']}" th:field="*{COMES_UNDER}"  placeholder="Head Office" onkeypress="return onlyAlphabets(event,this);"  required>
+	                                                                <select class="form-control"  th:field="*{COMES_UNDER}" required>
+					                                                       <option value="">-</option>
+					                                                        <th:block th:each="obj : ${Headofficelist}">
+					                                                        	<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}">Self</option>
+					                                                        </th:block>
+					                                                        
+					                                                        <option value="-">Self</option>
+					                                                 </select>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-git-merge"></i>
 	                                                                </div>

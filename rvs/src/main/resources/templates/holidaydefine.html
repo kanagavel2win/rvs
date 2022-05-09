@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
 
 <!-- BEGIN: Head-->
 
 <head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- 
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -49,74 +54,75 @@
 	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
-	
 
-<link rel="stylesheet" type="text/css" th:href="@{/app-assets/css/plugins/extensions/drag-and-drop.css}">
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/plugins/extensions/drag-and-drop.css}">
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 
-<link rel="stylesheet"  type="text/css" th:href="@{/app-assets/fullcalendar/fullcalendar.css}" />  
-<link rel="stylesheet"  type="text/css" th:href="@{/app-assets/fullcalendar/bootstrap.css}" />  
-<script th:src="@{/app-assets/fullcalendar/jquery.min.js}"></script>  
-<script th:src="@{/app-assets/fullcalendar/jquery-ui.min.js}"></script>  
-<script th:src="@{/app-assets/fullcalendar/moment.min.js}"></script>  
-<script th:src="@{/app-assets/fullcalendar/fullcalendar.min.js}"></script> 
- 
-<style>  
- 
- #calendar {  
-  min-width: 450px;  
-  margin: 0 auto;  
-  }  
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/fullcalendar/fullcalendar.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/fullcalendar/bootstrap.css}" />
+<script th:src="@{/app-assets/fullcalendar/jquery.min.js}"></script>
+<script th:src="@{/app-assets/fullcalendar/jquery-ui.min.js}"></script>
+<script th:src="@{/app-assets/fullcalendar/moment.min.js}"></script>
+<script th:src="@{/app-assets/fullcalendar/fullcalendar.min.js}"></script>
+
+<style>
+#calendar {
+	min-width: 450px;
+	margin: 0 auto;
+}
 </style>
 
 <style>
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  z-index: 10000; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	display: none; /* Hidden by default */
+	z-index: 10000; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  border: 1px solid #888;
-  width: 50%;
+	background-color: #fefefe;
+	margin: auto;
+	border: 1px solid #888;
+	width: 50%;
 }
 
-@media only screen and (min-width: 10px) and (max-width: 700px) { 
- .modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  border: 1px solid #888;
-  width: 80%;
-}
+@media only screen and (min-width: 10px) and (max-width: 700px) {
+	.modal-content {
+		background-color: #fefefe;
+		margin: auto;
+		border: 1px solid #888;
+		width: 80%;
+	}
 }
 /* The Close Button */
 .close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+.close:hover, .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
 }
-
 </style>
 </head>
 <!-- END: Head-->
@@ -127,175 +133,180 @@
 	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
 	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
-		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
-		<!-- END: Header-->
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
 
 
-		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
-		<!-- END: Main Menu-->
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
 
-			<!-- BEGIN: Content-->
-				<!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-            	
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                        	
-                        	 <!--scrolling content Modal -->
-	                        	 <!-- The Modal -->
-									<div id="myModal" class="modal">
-								        <div class="modal-content">
-                                        <div class="modal-header bg-warning">
-                                            <h5 class="modal-title white" id="holidayStatusScrollableTitle"></h5>
-                                            <button type="button" class="close modelclose" data-dismiss="modal" aria-label="Close">
-                                                <i class="bx bx-x"></i>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="col-12">
-                                             <div class="form-group">
-                                                
-                                                 <div class="position-relative">
-                                                     <fieldset class="form-group">
-                                            	
-                                            	<div class="row">
-	                                                  <div class="form-group col-md-6">
-	                                                      <div class="position-relative">From Date</div>
-	                                                  </div>
-	                                                  <div class="form-group col-md-6">
-	                                                      <input type="date"  id="fromdate" class="form-control"/>
-	                                                      
-	                                                      
-	                                                  </div>
-	                                            </div>
-	                                            <div class="row">
-	                                                  <div class="form-group col-md-6">
-	                                                      <div class="position-relative">To Date</div>
-	                                                  </div>
-	                                                  <div class="form-group col-md-6">
-	                                                      <input type="date"  id="todate" class="form-control"/>
-	                                                  </div>
-	                                            </div>
-	                                            <div class="row">
-	                                                  <div class="form-group col-md-6">
-	                                                      <div class="position-relative">
-                                                               	Holiday Type
-                                                            </div>
-	                                                  </div>
-	                                                  <div class="form-group col-md-6">
-	                                                      <select class="form-control" id="popholidaytype">
-		                                                        <option>National holiday</option>
-		                                                        <option>State holiday</option>
-		                                                        <option>Local Holiday</option>
-		                                                        <option>Others</option>
-			                                                        
-		                                                    </select>
-	                                                  </div>
-	                                            </div>
-	                                            <div class="row">
-	                                                  <div class="form-group col-md-6">
-	                                                      <div class="position-relative">
-                                                               	Holiday Description
-                                                                
-                                                            </div>
-	                                                  </div>
-	                                                  <div class="form-group col-md-6">
-	                                                      <input type="text" id="popholidaydescription" class="form-control" />
-	                                                       <input type="hidden" id="eventid" class="form-control" />
-	                                                  </div>
-	                                            </div>
-	                                           
-                                         		</fieldset>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                       
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light-danger" id="itemalldeletebtn">
-                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block">Delete</span>
-                                            </button>
-                                            
-                                            <button type="button" class="btn btn-light-secondary modelclose">
-                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block">Close</span>
-                                            </button>
-                                          
-                                            <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
-                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block text-white">ADD</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                          	 
-                          	 <!--scrolling content Modal -->
-                        	<p></p>
-                            <h5 class="content-header-title float-left pr-1 mb-0">Holiday</h5>
-                            <div class="breadcrumb-wrapper col-12">
-                                <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
-                                    </li>
-                                  
-                                	   
-                                </ol>
-                                
-                            </div>
-                        </div>
-                   
-                    </div>
-                </div>
-                
-            </div>
-            
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+
+							<!--scrolling content Modal -->
+							<!-- The Modal -->
+							<div id="myModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header bg-warning">
+										<h5 class="modal-title white"
+											id="holidayStatusScrollableTitle"></h5>
+										<button type="button" class="close modelclose"
+											data-dismiss="modal" aria-label="Close">
+											<i class="bx bx-x"></i>
+										</button>
+									</div>
+									<div class="modal-body">
+										<div class="col-12">
+											<div class="form-group">
+
+												<div class="position-relative">
+													<fieldset class="form-group">
+
+														<div class="row">
+															<div class="form-group col-md-6">
+																<div class="position-relative">From Date</div>
+															</div>
+															<div class="form-group col-md-6">
+																<input type="date" id="fromdate" class="form-control" />
+
+
+															</div>
+														</div>
+														<div class="row">
+															<div class="form-group col-md-6">
+																<div class="position-relative">To Date</div>
+															</div>
+															<div class="form-group col-md-6">
+																<input type="date" id="todate" class="form-control" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="form-group col-md-6">
+																<div class="position-relative">Holiday Type</div>
+															</div>
+															<div class="form-group col-md-6">
+																<select class="form-control" id="popholidaytype">
+																	<option>National holiday</option>
+																	<option>State holiday</option>
+																	<option>Local Holiday</option>
+																	<option>Others</option>
+
+																</select>
+															</div>
+														</div>
+														<div class="row">
+															<div class="form-group col-md-6">
+																<div class="position-relative">Holiday Description
+
+																</div>
+															</div>
+															<div class="form-group col-md-6">
+																<input type="text" id="popholidaydescription"
+																	class="form-control" /> <input type="hidden"
+																	id="eventid" class="form-control" />
+															</div>
+														</div>
+
+													</fieldset>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-light-danger"
+											id="itemalldeletebtn">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Delete</span>
+										</button>
+
+										<button type="button"
+											class="btn btn-light-secondary modelclose">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Close</span>
+										</button>
+
+										<button type="button" class="btn btn-primary ml-1"
+											id="additemallsavebtn">
+											<i class="bx bx-check d-block d-sm-none"></i> <span
+												class="d-none d-sm-block text-white">ADD</span>
+										</button>
+									</div>
+								</div>
+							</div>
+
+
+							<!--scrolling content Modal -->
+							<p></p>
+							<h5 class="content-header-title float-left pr-1 mb-0">Holiday</h5>
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+
+
+								</ol>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
 
 			<!-- Trigger/Open The Modal -->
-			<button id="myBtn" style="display:none">Open Modal</button>
-			
+			<button id="myBtn" style="display: none">Open Modal</button>
+			<input type="text" th:value="${str}" />
 
-            <div class="content-body">
-              
-				 <!-- Zero configuration table -->
-                <section id="basic-datatable">
-                    <div class="row">
-                       	<div class="card">
-                       				<p></p>
-                       			 
-                       			 
-                                  <div class="col-md-12">
-                                     <!-- ---------------------- -- ---------------------- -->
-                                     <!-- ---------------------- -- ---------------------- -->
-                                     <div class="table-responsive">
-                                     	<div id='calendar'></div> 
-                                     </div>
-                                     <!-- ---------------------- -- ---------------------- -->
-                                     <!-- ---------------------- -- ---------------------- -->
-                                  </div>
-	                      </div>
-                       </div>
-                </section>
-                <!--/ Zero configuration table -->               
-			
-            </div>
-        </div>
-    </div>
-			<!-- END: Content-->
+			<div class="content-body">
+
+				<!-- Zero configuration table -->
+				<section id="basic-datatable">
+					<div class="row">
+						<div class="card">
+							<p></p>
 
 
-		
-		<div class="sidenav-overlay" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
-		<div class="drag-target" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+							<div class="col-md-12">
+								<!-- ---------------------- -- ---------------------- -->
+								<!-- ---------------------- -- ---------------------- -->
+								<div class="table-responsive">
+									<div id='calendar'></div>
+								</div>
+								<!-- ---------------------- -- ---------------------- -->
+								<!-- ---------------------- -- ---------------------- -->
+							</div>
+						</div>
+					</div>
+				</section>
+				<!--/ Zero configuration table -->
 
-		<!-- BEGIN: Footer-->
-		<footer class="footer footer-static footer-light">
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"
+		style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+	<div class="drag-target"
+		style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
 		<p class="clearfix mb-0">
 			<span class="float-left d-inline-block"></span><span
 				class="float-right d-sm-inline-block d-none"></span>
@@ -303,262 +314,296 @@
 				<i class="bx bx-up-arrow-alt"></i>
 			</button>
 		</p>
-		</footer>
-		<!-- END: Footer-->
+	</footer>
 
-		
-		
-		<!-- BEGIN: Page Vendor JS-->
-		
-		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-		<!-- END: Page Vendor JS-->
+	<!-- END: Footer-->
 
-		<!-- BEGIN: Theme JS-->
-		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-		<script th:src="@{/app-assets/js/core/app.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-		<!-- END: Theme JS-->
 
-		<!-- BEGIN: Page JS-->
-		<script
-			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
-			
-		<!-- END: Page JS-->
+
+	<!-- BEGIN: Page Vendor JS-->
+
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+
+	<!-- END: Page JS-->
 </body>
 <!-- END: Body-->
 <script>
-var modal = document.getElementById("myModal");
-var btn = document.getElementById("myBtn");
-var span = document.getElementsByClassName("modelclose")[0];
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-span.onclick = function() {
-  modal.style.display = "none";
-}
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-$(document).ready(function() {  
-	$('.modelclose').click(function(){
-		$('#myModal').css("display","none");
-	});
-
-});
+		var modal = document.getElementById("myModal");
+		var btn = document.getElementById("myBtn");
+		var span = document.getElementsByClassName("modelclose")[0];
+		btn.onclick = function() {
+		  modal.style.display = "block";
+		}
+		span.onclick = function() {
+		  modal.style.display = "none";
+		}
+		window.onclick = function(event) {
+		  if (event.target == modal) {
+		    modal.style.display = "none";
+		  }
+		}
+		$(document).ready(function() {  
+			$('.modelclose').click(function(){
+				$('#myModal').css("display","none");
+			});
+		
+		});
 </script>
 <script>  
   
  $(document).ready(function() {  
-	 
-	 
-	    
-	 
-  var calid=1;
-  var date = new Date();  
-  var d = date.getDate();  
-  var m = date.getMonth();  
-  var y = date.getFullYear();  
-  
-  var calendar = $('#calendar').fullCalendar({  
-   editable: true,  
-   header: {  
-    left: 'prev,next today',  
-    center: 'title',  
-    right: 'month,agendaWeek,agendaDay,list'  
-   },  
-  
-   events: [],  
-  
-   eventRender: function(event, element, view) {  
-    if (event.allDay === 'true') {  
-     event.allDay = true;  
-    } else {  
-     event.allDay = false;  
-    }  
-   },  
-   selectable: true,  
-   selectHelper: true,  
-   displayEventTime : false,
-   
-   select: function(start, end, allDay) {  
-	   
-	   var start = $.fullCalendar.formatDate(start, "Y-MM-DD");  
-	   //var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
-	   endtemp=new Date(end-(1*24*60*60*1000));
-	   var end= moment(endtemp).format('Y-MM-DD');
-       
-	   
-	   $('#fromdate').val(start);
-	   $('#todate').val(end);
-	   $('#eventid').val('');
-	   $('#additemallsavebtn').text("ADD");
-	   $('#itemalldeletebtn').hide();
-	   $('#myModal').css("display","block");
-	   	
-	   
-   calendar.fullCalendar('unselect');  
-   },  
-   
-   editable: true,  
-   
-   eventDrop: function(event, delta) {  
-   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
-   var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");  
- 
-  // alert("Updated Successfully");
-   },  
-   
-   eventClick: function(event) {  
-	   
-	   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
-       //var end1 = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
-       
-       endtemp=new Date(event.end-(1*24*60*60*1000));
-	   var end= moment(endtemp).format('Y-MM-DD');
-       
-        $('#popholidaydescription').val(event.title);
-	   
-       $('#fromdate').val(start);  
-       $('#todate').val(end);
-       $('#eventid').val(event.id);
-       $('#popholidaytype').val(event.description);
-       
-       $('#additemallsavebtn').text("Update");
-       $('#itemalldeletebtn').show();
-       $('#myModal').css("display","block");
-	   
-	  
-    /*var decision = confirm("Do you really want to do delete it?");   
-    if (decision) {  
-    /*$.ajax({  
-        type: "POST",  
-        url: "delete_event.php",  
-        data: "&id=" + event.id,  
-         success: function(json) {  
-             $('#calendar').fullCalendar('removeEvents', event.id);  
-              alert("Updated Successfully");}  
-    });  
-    	$('#calendar').fullCalendar('removeEvents', event.id);  
-        alert("Deleted Successfully");
-    }  */
-    },  
-    eventResize: function(event) {  
-        var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");  
-        var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");  
-        /*$.ajax({  
-         url: 'update_events.php',  
-         data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
-         type: "POST",  
-         success: function(json) {  
-          alert("Updated Successfully");  
-         }  
-        }); */
-        alert("Updated Successfully");
-     }  
-     
-  }); 
-  
- //----------------------------------------------------
- 
- $('#itemalldeletebtn').click(function(){
-	 var decision = confirm("Do you really want to do delete it?");   
-	 if (decision) {  
-	  	$('#calendar').fullCalendar('removeEvents', $('#eventid').val());
-	  	
-	 }
-	 $('#myModal').css("display","none");
- });
- //----------------------------------------------------
-  $('#additemallsavebtn').click(function(){  
-	  
-	   if($('#eventid').val()!='')
-	   {
-		   $('#calendar').fullCalendar('removeEvents', $('#eventid').val());
-	   }
-	   calid=calid+1;
-	   $('#myModal').css("display","none");
-	   
-	   title= $('#popholidaydescription').val();
-	   popholidaytype= $('#popholidaytype').val();
-       start= $('#fromdate').val();  
-       var endtemp= new Date($('#todate').val());
-       var end1=new Date(endtemp.getTime() + (1*24*60*60*1000));
-	   var end= moment(end1).format('Y-MM-DD');
-       
-       allDay= true;
-       holidaycolor="";
-       
-       if(popholidaytype=="National holiday")
-		{
-			holidaycolor="#48D1CC";	
-		}
-		if(popholidaytype=="State holiday")
-		{
-			holidaycolor="#9ACD32";	
-		}
-		if(popholidaytype=="Local Holiday")
-		{
-			holidaycolor="#FFEFDB";
-		}
-		if(popholidaytype=="Others")
-		{
-			holidaycolor="#87CEFF";
-		}
-		
-	   $('#calendar').fullCalendar('renderEvent',  
-	   {  
-		   id:calid,
-	       title: title,  
-	       start: start,  
-	       end: end,  
-	       allDay: allDay,
-	       backgroundColor: holidaycolor,
-	       borderColor:holidaycolor,
-	       color:"#40E0D0",
-	       description:popholidaytype
-	   },true); 
-	   $('#calendar').fullCalendar('refetchEvents');
-	   $('#popholidaydescription').val('');
-	   
-	});
-  
+	 		  var calid=1;
+			  var date = new Date();  
+			  var d = date.getDate();  
+			  var m = date.getMonth();  
+			  var y = date.getFullYear();  
+			  
+			  var calendar = $('#calendar').fullCalendar({  
+			   editable: true,  
+			   header: {  
+			    left: 'prev,next today',  
+			    center: 'title',  
+			    right: 'month,agendaWeek,agendaDay,list'  
+			   },  
+			  
+			   eventSources: [
+				    {
+				      url: 'events',
+				      type: 'GET',
+				      
+				      error: function() {
+				        alert('there was an error while fetching events!');
+				      }
+				    }
+				  ],    
+			  
+			   eventRender: function(event, element, view) {  
+			    if (event.allDay === 'true') {  
+			     event.allDay = true;  
+			    } else {  
+			     event.allDay = false;  
+			    }  
+			   },  
+			   selectable: true,  
+			   selectHelper: true,  
+			   displayEventTime : false,
+			   
+			   select: function(start, end, allDay) {  
+				   
+				   var start = $.fullCalendar.formatDate(start, "Y-MM-DD");  
+				   //var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
+				   endtemp=new Date(end-(1*24*60*60*1000));
+				   var end= moment(endtemp).format('Y-MM-DD');
+			       
+				   
+				   $('#fromdate').val(start);
+				   $('#todate').val(end);
+				   $('#eventid').val('');
+				   $('#additemallsavebtn').text("ADD");
+				   $('#itemalldeletebtn').hide();
+				   $('#myModal').css("display","block");
+				   	
+				   
+			   calendar.fullCalendar('unselect');  
+			   },  
+			   
+			   editable: true,  
+			   
+			   eventDrop: function(event, delta) {  
+			   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
+			   var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");  
+			 
+			   alert("1 Updated Successfully");
+			   },  
+			   
+			   eventClick: function(event) {  
+				   
+				   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
+			       //var end1 = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
+			       
+			       endtemp=new Date(event.end-(1*24*60*60*1000));
+				   var end= moment(endtemp).format('Y-MM-DD');
+			       
+			        $('#popholidaydescription').val(event.title);
+				   
+			       $('#fromdate').val(start);  
+			       $('#todate').val(end);
+			       $('#eventid').val(event.id);
+			       $('#popholidaytype').val(event.description);
+			       
+			       $('#additemallsavebtn').text("Update");
+			       $('#itemalldeletebtn').show();
+			       $('#myModal').css("display","block");
+				   
+				  
+			    /*var decision = confirm("Do you really want to do delete it?");   
+			    if (decision) {  
+			    /*$.ajax({  
+			        type: "POST",  
+			        url: "delete_event.php",  
+			        data: "&id=" + event.id,  
+			         success: function(json) {  
+			             $('#calendar').fullCalendar('removeEvents', event.id);  
+			              alert("Updated Successfully");}  
+			    });  
+			    	$('#calendar').fullCalendar('removeEvents', event.id);  
+			        alert("Deleted Successfully");
+			    }  */
+			       //alert("Deleted Successfully");
+			    },  
+			    eventResize: function(event) {  
+			        var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");  
+			        var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");  
+			        /*$.ajax({  
+			         url: 'update_events.php',  
+			         data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
+			         type: "POST",  
+			         success: function(json) {  
+			          alert("Updated Successfully");  
+			         }  
+			        }); */
+			        alert("2 Updated Successfully");
+			     }  
+			     
+			  }); 
+			  
+			//--------------------------------------------------------------------------------------------------------------------------------------		 		
 
- //----------------------------------------------------
- $('.mobile-menu').click(function(){
-	
-	 $('.vertical-layout').addClass('vertical-overlay-menu pace-done menu-open');
-	 $('.vertical-layout').removeClass('vertical-menu-modern');
-	 $('.main-menu').addClass('expanded');
-	 $('.main-menu').css('touch-action','none');
-	 $('.main-menu').css('user-select','none'); 
-	 $('.main-menu').css('-webkit-user-drag','none'); 
-	 $('.main-menu').css('-webkit-tap-highlight-color','rgba(0, 0, 0, 0)');
-	 $('.navbar-header').addClass('expanded');
-	 $('.main-menu-content').addClass('ps');
-	$('.sidenav-overlay').addClass('d-block');
- });
- 
- $('.sidenav-overlay').click(function(){
-		
-	 $('.vertical-layout').removeClass('vertical-overlay-menu pace-done menu-open');
-	 $('.vertical-layout').addClass('vertical-menu-modern');
-	 $('.main-menu').removeClass('expanded');
-	 $('.main-menu').css('touch-action','none');
-	 $('.main-menu').css('user-select','none'); 
-	 $('.main-menu').css('-webkit-user-drag','none'); 
-	 $('.main-menu').css('-webkit-tap-highlight-color','rgba(0, 0, 0, 0)');
-	 $('.navbar-header').removeClass('expanded');
-	 $('.main-menu-content').removeClass('ps');
-	$('.sidenav-overlay').removeClass('d-block');
- });
+				$(function() {
+					var token = $("meta[name='_csrf']").attr("content");
+					var header = $("meta[name='_csrf_header']").attr("content");
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(header, token);
+					});
+				});
+				//--------------------------------------------------------------------------------------------------------------------------------------		 
+				
+			 //----------------------------------------------------
+			 
+			 $('#itemalldeletebtn').click(function(){
+				 var decision = confirm("Do you really want to do delete it?");   
+				 if (decision) {  
+				  	$('#calendar').fullCalendar('removeEvents', $('#eventid').val());
+				  	
+				 }
+				 $('#myModal').css("display","none");
+			 });
+			 //----------------------------------------------------
+			  $('#additemallsavebtn').click(function(){  
+				   var calid=null;
+				   
+				   if($('#eventid').val()!='')
+				   {
+					   calid = $('#eventid').val();
+					   $('#calendar').fullCalendar('removeEvents', $('#eventid').val());					   
+				   }
+				   
+				   
+				   $('#myModal').css("display","none");
+				   
+				   title= $('#popholidaydescription').val();
+				   popholidaytype= $('#popholidaytype').val();
+			       start= $('#fromdate').val();  
+			       var endtemp= new Date($('#todate').val());
+			       var end1=new Date(endtemp.getTime() + (1*24*60*60*1000));
+				   var end= moment(end1).format('Y-MM-DD');
+			       
+			       allDay= true;
+			       holidaycolor="";
+			       
+			       if(popholidaytype=="National holiday")
+					{
+						holidaycolor="#48D1CC";	
+					}
+					if(popholidaytype=="State holiday")
+					{
+						holidaycolor="#9ACD32";	
+					}
+					if(popholidaytype=="Local Holiday")
+					{
+						holidaycolor="#FFEFDB";
+					}
+					if(popholidaytype=="Others")
+					{
+						holidaycolor="#87CEFF";
+					}
+					
+				   
+				   //----------------------------------------------------
+				   var formData = {
+						   calid : calid,
+						   fromdate : start,
+						   todate : end,
+						   title : title,
+						   allDay : allDay,
+						   holidaycolor : holidaycolor,
+						   color : "#40E0D0",
+						   popholidaytype : popholidaytype
+							
+					}
+					$.ajax({
+						type : "POST",url : "holidaysave",
+						data : formData,success : function(result) {
+							
+									var tempid=result;
+									   $('#calendar').fullCalendar('refetchEvents');
+									   //$('#popholidaydescription').val('');
+									   
+								
+						},
+						error : function(e) {
+							alert("Error" + e);
+						}
+					});
+				   
+					//----------------------------------------------------
+				});
+			  
+			
+			 //----------------------------------------------------
+			 $('.mobile-menu').click(function(){
+				
+				 $('.vertical-layout').addClass('vertical-overlay-menu pace-done menu-open');
+				 $('.vertical-layout').removeClass('vertical-menu-modern');
+				 $('.main-menu').addClass('expanded');
+				 $('.main-menu').css('touch-action','none');
+				 $('.main-menu').css('user-select','none'); 
+				 $('.main-menu').css('-webkit-user-drag','none'); 
+				 $('.main-menu').css('-webkit-tap-highlight-color','rgba(0, 0, 0, 0)');
+				 $('.navbar-header').addClass('expanded');
+				 $('.main-menu-content').addClass('ps');
+				$('.sidenav-overlay').addClass('d-block');
+			 });
+			 
+			 $('.sidenav-overlay').click(function(){
+					
+				 $('.vertical-layout').removeClass('vertical-overlay-menu pace-done menu-open');
+				 $('.vertical-layout').addClass('vertical-menu-modern');
+				 $('.main-menu').removeClass('expanded');
+				 $('.main-menu').css('touch-action','none');
+				 $('.main-menu').css('user-select','none'); 
+				 $('.main-menu').css('-webkit-user-drag','none'); 
+				 $('.main-menu').css('-webkit-tap-highlight-color','rgba(0, 0, 0, 0)');
+				 $('.navbar-header').removeClass('expanded');
+				 $('.main-menu-content').removeClass('ps');
+				$('.sidenav-overlay').removeClass('d-block');
+			 });
  
  });  
   
-</script>  
+</script>
 
 
 

@@ -1308,36 +1308,9 @@ public class HomeController {
 		
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	@GetMapping("holidaydefine")
-	public String holidaydefine(Model theModel,
-			@RequestParam(value = "date", defaultValue = "", required = false) String attdate) {
-		
-		String str ="";
-		String str1="";
-		
-		for (Holiday obj: holidayService.findAll()) {
-			str1 +="{";
-			str1 +="id : '"+ obj.getId() + "',  ";
-			str1 +="title : '"+ obj.getTitle() + "',  ";
-			str1 +="start : '"+ obj.getStart() + "',  ";
-			str1 +="end : '"+ obj.getEnd() + "',  ";
-			str1 +="allDay : '"+ obj.getAllDay() + "',  ";
-			str1 +="backgroundColor : '"+ obj.getBackgroundColor() + "',  ";
-			str1 +="borderColor : '"+ obj.getBorderColor() + "',  ";
-			str1 +="color : '"+ obj.getColor() + "',  ";
-			str1 +="description : '"+ obj.getDescription() + "'";
-			str1 +="} ,";
-			
-			
-		}
-		
-		if(str1.length()>2)
-		{
-			str =str1.substring(0, str1.length()-2);
-		}
-		theModel.addAttribute("holidaylist", str);
-		
+	public String holidaydefine(Model theModel) {
 		return "holidaydefine";
 	}
 
@@ -1470,5 +1443,13 @@ public class HomeController {
 		branchMasterService.save(objBM);
 		return "Success";
 	}
+	@ResponseBody
+	@PostMapping("holidaydelete")
+	public String holidaydelete(@RequestParam Map<String, String> param) {
 
+		holidayService.deleteByid(Integer.parseInt(param.get("calid")));
+		
+		return "deleted";
+		
+	}
 }

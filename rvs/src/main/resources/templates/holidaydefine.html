@@ -123,6 +123,12 @@
 	text-decoration: none;
 	cursor: pointer;
 }
+
+#itemalldeletebtn
+{
+	left:10px;
+	position:absolute;
+}
 </style>
 </head>
 <!-- END: Head-->
@@ -225,15 +231,9 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-light-danger"
-											id="itemalldeletebtn">
+											id="itemalldeletebtn" >
 											<i class="bx bx-x d-block d-sm-none"></i> <span
 												class="d-none d-sm-block">Delete</span>
-										</button>
-
-										<button type="button"
-											class="btn btn-light-secondary modelclose">
-											<i class="bx bx-x d-block d-sm-none"></i> <span
-												class="d-none d-sm-block">Close</span>
 										</button>
 
 										<button type="button" class="btn btn-primary ml-1"
@@ -241,6 +241,13 @@
 											<i class="bx bx-check d-block d-sm-none"></i> <span
 												class="d-none d-sm-block text-white">ADD</span>
 										</button>
+										<button type="button"
+											class="btn btn-light-secondary modelclose">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Close</span>
+										</button>
+
+										
 									</div>
 								</div>
 							</div>
@@ -268,7 +275,6 @@
 
 			<!-- Trigger/Open The Modal -->
 			<button id="myBtn" style="display: none">Open Modal</button>
-			<input type="text" th:value="${str}" />
 
 			<div class="content-body">
 
@@ -422,17 +428,43 @@
 			   editable: true,  
 			   
 			   eventDrop: function(event, delta) {  
-			   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
-			   var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");  
-			 
+				   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
+				   var endtemp= new Date(event.end);
+			       var end1=new Date(endtemp.getTime());
+				   var end= moment(end1).format('Y-MM-DD');
+			       title= event.title;
+				   popholidaytype= event.description;
+			       allDay= true;
+			       holidaycolor=holidaycolorfunction(popholidaytype);
+			       //----------------------------------------------------
+				   var formData = {
+						   calid : event.id,
+						   fromdate : start,
+						   todate : end,
+						   title : title,
+						   allDay : allDay,
+						   holidaycolor : holidaycolor,
+						   color : "#40E0D0",
+						   description : popholidaytype
+							
+					}
+					$.ajax({
+						type : "POST",url : "holidaysave",
+						data : formData,success : function(result) {
+									   $('#calendar').fullCalendar('refetchEvents');
+						},
+						error : function(e) {
+							alert("Error" + e);
+						}
+					});
+				   
+					//----------------------------------------------------
 			   alert("1 Updated Successfully");
 			   },  
 			   
 			   eventClick: function(event) {  
 				   
 				   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
-			       //var end1 = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
-			       
 			       endtemp=new Date(event.end-(1*24*60*60*1000));
 				   var end= moment(endtemp).format('Y-MM-DD');
 			       
@@ -446,34 +478,41 @@
 			       $('#additemallsavebtn').text("Update");
 			       $('#itemalldeletebtn').show();
 			       $('#myModal').css("display","block");
-				   
-				  
-			    /*var decision = confirm("Do you really want to do delete it?");   
-			    if (decision) {  
-			    /*$.ajax({  
-			        type: "POST",  
-			        url: "delete_event.php",  
-			        data: "&id=" + event.id,  
-			         success: function(json) {  
-			             $('#calendar').fullCalendar('removeEvents', event.id);  
-			              alert("Updated Successfully");}  
-			    });  
-			    	$('#calendar').fullCalendar('removeEvents', event.id);  
-			        alert("Deleted Successfully");
-			    }  */
-			       //alert("Deleted Successfully");
+				
 			    },  
 			    eventResize: function(event) {  
-			        var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");  
-			        var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");  
-			        /*$.ajax({  
-			         url: 'update_events.php',  
-			         data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,  
-			         type: "POST",  
-			         success: function(json) {  
-			          alert("Updated Successfully");  
-			         }  
-			        }); */
+			    	   var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");  
+			    	   var endtemp= new Date(event.end);
+				       var end1=new Date(endtemp.getTime());
+					   var end= moment(end1).format('Y-MM-DD');
+				       title= event.title;
+					   popholidaytype= event.description;
+				       allDay= true;
+				       holidaycolor=holidaycolorfunction(popholidaytype);
+				       //----------------------------------------------------
+					   var formData = {
+							   calid : event.id,
+							   fromdate : start,
+							   todate : end,
+							   title : title,
+							   allDay : allDay,
+							   holidaycolor : holidaycolor,
+							   color : "#40E0D0",
+							   description : popholidaytype
+								
+						}
+						$.ajax({
+							type : "POST",url : "holidaysave",
+							data : formData,success : function(result) {
+										   $('#calendar').fullCalendar('refetchEvents');
+							},
+							error : function(e) {
+								alert("Error" + e);
+							}
+						});
+					   
+						//----------------------------------------------------
+			        
 			        alert("2 Updated Successfully");
 			     }  
 			     
@@ -495,7 +534,24 @@
 			 $('#itemalldeletebtn').click(function(){
 				 var decision = confirm("Do you really want to do delete it?");   
 				 if (decision) {  
-				  	$('#calendar').fullCalendar('removeEvents', $('#eventid').val());
+				  	
+					 if($('#eventid').val()!='')
+					   {
+						 //----------------------------------------------------
+						   var formData = { calid : $('#eventid').val() }
+							$.ajax({
+								type : "POST",url : "holidaydelete",
+								data : formData,success : function(result) {
+											   $('#calendar').fullCalendar('refetchEvents');
+								},
+								error : function(e) {
+									alert("Error" + e);
+								}
+							});
+						//----------------------------------------------------					   
+					   }
+					 
+					 
 				  	
 				 }
 				 $('#myModal').css("display","none");
@@ -521,9 +577,35 @@
 				   var end= moment(end1).format('Y-MM-DD');
 			       
 			       allDay= true;
-			       holidaycolor="";
-			       
-			       if(popholidaytype=="National holiday")
+			       holidaycolor=holidaycolorfunction(popholidaytype);
+			       //----------------------------------------------------
+				   var formData = {
+						   calid : calid,
+						   fromdate : start,
+						   todate : end,
+						   title : title,
+						   allDay : allDay,
+						   holidaycolor : holidaycolor,
+						   color : "#40E0D0",
+						   description : popholidaytype
+							
+					}
+					$.ajax({
+						type : "POST",url : "holidaysave",
+						data : formData,success : function(result) {
+									   $('#calendar').fullCalendar('refetchEvents');
+						},
+						error : function(e) {
+							alert("Error" + e);
+						}
+					});
+				   
+					//----------------------------------------------------
+				});
+			  
+			function holidaycolorfunction(popholidaytype){
+					holidaycolor="#87CEFF";
+				  if(popholidaytype=="National holiday")
 					{
 						holidaycolor="#48D1CC";	
 					}
@@ -539,38 +621,8 @@
 					{
 						holidaycolor="#87CEFF";
 					}
-					
-				   
-				   //----------------------------------------------------
-				   var formData = {
-						   calid : calid,
-						   fromdate : start,
-						   todate : end,
-						   title : title,
-						   allDay : allDay,
-						   holidaycolor : holidaycolor,
-						   color : "#40E0D0",
-						   popholidaytype : popholidaytype
-							
-					}
-					$.ajax({
-						type : "POST",url : "holidaysave",
-						data : formData,success : function(result) {
-							
-									var tempid=result;
-									   $('#calendar').fullCalendar('refetchEvents');
-									   //$('#popholidaydescription').val('');
-									   
-								
-						},
-						error : function(e) {
-							alert("Error" + e);
-						}
-					});
-				   
-					//----------------------------------------------------
-				});
-			  
+					return holidaycolor;
+			}
 			
 			 //----------------------------------------------------
 			 $('.mobile-menu').click(function(){

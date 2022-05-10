@@ -10,7 +10,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -50,6 +49,7 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeJobinfo;
 import com.rvs.springboot.thymeleaf.entity.EmployeeLanguage;
 import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
+import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
@@ -58,6 +58,7 @@ import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobinfoService;
 import com.rvs.springboot.thymeleaf.service.EmployeeMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
+import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 
 
 @Controller
@@ -78,12 +79,12 @@ public class HomeController {
 	EmployeeJobHireService employeeJobHireService;
 	@Autowired
 	EmployeeJobinfoService employeeJobinfoService;
-
 	@Autowired
 	AttendanceMasterService attendanceMasterService;
-
 	@Autowired
 	HolidayService holidayService;
+	@Autowired
+	LeaveMasterService leaveMasterService;
 	
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -921,10 +922,9 @@ public class HomeController {
 		}
 
 		// Get all branch info
-		List<BranchMaster> branchls = new ArrayList();
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
 
-		// System.out.println("stringhiredate" + stringhiredate);
 		theModel.addAttribute("greenpointemployementstatus", greenpointemployementstatus);
 		theModel.addAttribute("greenpointjobstatus", greenpointjobstatus);
 		theModel.addAttribute("greenpointcompensationstatus", greenpointcompensationstatus);
@@ -1313,114 +1313,37 @@ public class HomeController {
 	public String holidaydefine(Model theModel) {
 		return "holidaydefine";
 	}
+	
 
-	@SuppressWarnings("deprecation")
+	
 	@GetMapping("leaverequest")
-	public String leaverequest(Model theModel,
-			@RequestParam(value = "date", defaultValue = "", required = false) String attdate) {
-		SimpleDateFormat formatterdate = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat formatteryear = new SimpleDateFormat("yyyy");
-		SimpleDateFormat formattermonth = new SimpleDateFormat("MM");
-		SimpleDateFormat formatterdd = new SimpleDateFormat("dd");
-		SimpleDateFormat formattermonname = new SimpleDateFormat("MMMM");
-		Date date = new Date();
-		Date temppredate = new Date();
-		Date tempnxtdate = new Date();
-		String tempcurrentdate = formatterdate.format(new Date()).toString();
-
-		if (!attdate.equalsIgnoreCase("")) {
-			try {
-				date = formatterdate.parse(attdate);
-				temppredate = formatterdate.parse(attdate);
-				tempnxtdate = formatterdate.parse(attdate);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-		String currentDate = formatterdate.format(date).toString();
-
-		int currentyear = Integer.parseInt(formatteryear.format(date).toString());
-		int currentmonth = Integer.parseInt(formattermonth.format(date).toString());
-		int currentdd = Integer.parseInt(formatterdd.format(date).toString());
-
-		Calendar nxtcal = Calendar.getInstance();
-		nxtcal.set(currentyear, currentmonth - 1, 1);
-		nxtcal.add(Calendar.MONTH, 1);
-
-		Calendar precal = Calendar.getInstance();
-		precal.set(currentyear, currentmonth - 1, 1);
-		precal.add(Calendar.MONTH, -1);
-		String preDate = formatterdate.format(precal.getTime()).toString();
-		String nxtDate = formatterdate.format(nxtcal.getTime()).toString();
-
-		String currentmonname = formattermonname.format(date).toString();
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(currentyear, currentmonth - 1, 1);
-		String stringDay = calendar.getTime().toString().substring(0, 3);
-		int currentmonthnumDays = calendar.getActualMaximum(Calendar.DATE);
-		int firstdayofmonth = 1;
-		switch (stringDay) {
-		case "Sun":
-			firstdayofmonth = 1;
-			break;
-		case "Mon":
-			firstdayofmonth = 2;
-			break;
-		case "Tue":
-			firstdayofmonth = 3;
-			break;
-		case "Wed":
-			firstdayofmonth = 4;
-			break;
-		case "Thu":
-			firstdayofmonth = 5;
-			break;
-		case "Fri":
-			firstdayofmonth = 6;
-			break;
-		case "Sat":
-			firstdayofmonth = 7;
-			break;
-		}
-
-		String calhtml = "<tr>";
-
-		for (int i = 1; i < firstdayofmonth; i++) {
-			calhtml = calhtml + "<td></td>";
-		}
-
-		for (int i = 1; i <= currentmonthnumDays; i++) {
-			String sunday = "";
-			if ((firstdayofmonth + i - 2) % 7 == 0) {
-				calhtml = calhtml + "</tr><tr>";
-				sunday = " sunday";
-			}
-
-			if (currentdd == i) {
-				calhtml = calhtml + "<td class='td selectdate " + sunday + "' name='" + (i) + "/" + (currentmonth) + "/"
-						+ (currentyear) + "'>";
-				calhtml = calhtml + "<div class='cal_inner_holder_right_today'>" + i + "</div>";
-			} else {
-				calhtml = calhtml + "<td class='td  " + sunday + "' name='" + (i) + "/" + (currentmonth) + "/"
-						+ (currentyear) + "'>";
-				calhtml = calhtml + "<div class='cal_inner_holder_right'>" + i + "</div>";
-			}
-
-			calhtml = calhtml + "<div class='cal_inner_holder' id='" + i + "_div1'>" + "<div></td>";
-
-		}
-		calhtml = calhtml + "</tr>";
-
-		theModel.addAttribute("preDate", preDate);
-		theModel.addAttribute("nxtDate", nxtDate);
-		theModel.addAttribute("tempcurrentdate", tempcurrentdate);
-		theModel.addAttribute("currentdd", currentdd);
-		theModel.addAttribute("currentyear", currentyear);
-		theModel.addAttribute("currentmonname", currentmonname);
-		theModel.addAttribute("calhtml", calhtml);
+	public String leaverequest(Model theModel) {
+		
+		LeaveMaster leavemaster =new LeaveMaster();
+		List<EmployeeMaster> emplist= employeeMasterService.findAll();
+		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll();
+		
+		theModel.addAttribute("emplist", emplist);
+		theModel.addAttribute("leavemaster", leavemaster);
+		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
 		return "leaverequest";
 	}
-
+	@PostMapping("leaverequest")
+	public String leaverequestsave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster leaveMasterobj) {
+		
+		leaveMasterobj.setStatus("Pending");
+		LeaveMaster leavemaster =new LeaveMaster();
+		LeaveMaster leaveMasterobjtemp = leaveMasterService.save(leaveMasterobj);
+		List<EmployeeMaster> emplist= employeeMasterService.findAll();
+		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll();
+		
+		theModel.addAttribute("emplist", emplist);
+		theModel.addAttribute("leavemaster", leavemaster);
+		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
+		theModel.addAttribute("save", "save");
+		return "leaverequest";
+	}
+	
 	@GetMapping("hire")
 	public String hire(Model theModel) {
 		return "hiring";

@@ -104,14 +104,40 @@
 	                            <div class="card">
 	                                <div class="card-content">
 	                                    <div class="card-body">
-	                                        <form class="form form-vertical">
+	                                        
+	                                        <div th:if="${save}" class="form-group col-12">
+												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">
+												Leave request has been raised
+												</button>
+											</div>
+							            
+	                                        <form th:action="@{/leavemaster}" th:object="${leavemaster}" method="POST" class="form form-vertical"
+											enctype="multipart/form-data">
 	                                            <div class="form-body">
 	                                                <div class="row">
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
+	                                                            <label for="first-name-icon">Employee</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="hidden" th:field="*{id}" />
+	                                                                <select class="form-control"  th:field="*{empid}" >
+	                                                                	<option value="0">-</option>
+	                                                                	<th:block th:each="obj : ${emplist}">
+	                                                                		<option th:value="${obj.empMasterid}"  th:text="${obj.StaffName}"></option>
+	                                                                	</th:block>
+	                                                                </select>
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-grid-alt"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6"></div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">From Date</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="date" id="first-name-icon" class="form-control" >
+	                                                                <input type="date" id="first-name-icon" th:field="*{fromadate}" class="form-control" >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-calendar-plus"></i>
 	                                                                </div>
@@ -123,7 +149,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">To Date</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="date" id="first-name-icon" class="form-control" >
+	                                                                <input type="date" id="first-name-icon" th:field="*{todate}" class="form-control" >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-calendar-minus"></i>
 	                                                                </div>
@@ -135,10 +161,10 @@
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">Leave Type</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <select class="form-control" >
-	                                                                	<option>Personal</option>
-	                                                                	<option>Sick</option>
-	                                                                	<option>Vacation</option>
+	                                                                <select class="form-control"  th:field="*{leavetype}" >
+	                                                                	<option value="Personal">Personal</option>
+	                                                                	<option value="Sick">Sick</option>
+	                                                                	<option value="Vacation">Vacation</option>
 	                                                                </select>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-grid-alt"></i>
@@ -151,7 +177,8 @@
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">Notes</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text" id="first-name-icon" class="form-control" >
+	                                                                <input type="text" id="first-name-icon" class="form-control"  th:field="*{notes}" />
+	                                                                <input type="hidden" th:field="*{status}" />
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-notepad"></i>
 	                                                                </div>
@@ -178,6 +205,7 @@
                                             	<thead>
                                                     <tr>
                                                     	<th rowspan="1" colspan="1">S.No</th>
+                                                    	<th rowspan="1" colspan="1">Employee</th>
                                                     	<th rowspan="1" colspan="1">FromDate</th>
                                                     	<th rowspan="1" colspan="1">ToDate</th>
                                                     	<th rowspan="1" colspan="1">Leave Type</th>
@@ -186,26 +214,21 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                 	<tr role="row" class="odd">
-                                                        <td class="sorting_1">1</td>
-                                                        <td>12/01/2022</td>
-                                                        <td>13/01/2022</td>
-                                                        <td>Vacation</td>
-                                                        <td>Pongal</td>
-                                                        <td style="color:#FF4500">Pending</td>
+                                                 	<tr th:each="obj,stat : ${leaveMasterlist}" role="row" class="odd">
+                                                        <td class="sorting_1" th:text="${stat.index +1}"></td>
+                                                        <td  th:text="${obj.empid}"></td>
+                                                        <td th:text="${obj.fromadate}"></td>
+                                                        <td th:text="${obj.todate}"></td>
+                                                        <td th:text="${obj.leavetype}"></td>
+                                                        <td th:text="${obj.notes}"></td>
+                                                        <td th:text="${obj.status}"></td>
                                                     </tr>
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1">2</td>
-                                                        <td>12/12/2021</td>
-                                                        <td>13/12/2021</td>
-                                                        <td>Vacation</td>
-                                                        <td>Diwali</td>
-                                                        <td style="color:#00CD00">Approved</td>
-                                                    </tr>
+                                                    
                                                  </tbody>
                                                 <tfoot>
                                                     <tr>
                                                     	<th rowspan="1" colspan="1">S.No</th>
+                                                    	<th rowspan="1" colspan="1">Employee</th>
                                                     	<th rowspan="1" colspan="1">FromDate</th>
                                                     	<th rowspan="1" colspan="1">ToDate</th>
                                                     	<th rowspan="1" colspan="1">Leave Type</th>

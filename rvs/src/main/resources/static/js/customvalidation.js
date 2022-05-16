@@ -7,7 +7,7 @@ function onlyAlphabets(e, t) {
                     var charCode = e.which;
                 }
                 else { return true; }
-                if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123))
+                if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || (charCode == 32))
                     return true;
                 else
                     return false;
@@ -28,7 +28,7 @@ function onlyAlphanumeric(e, t) {
         else { return true; }
         
         // check number only.
-        if(charCode == 48 || charCode == 49 || charCode == 50 || charCode == 51 || charCode == 52 || charCode == 53 ||  charCode ==  54 ||  charCode == 55 || charCode == 56 || charCode == 57){
+        if(charCode == 48 || charCode == 49 || charCode == 50 || charCode == 51 || charCode == 52 || charCode == 53 ||  charCode ==  54 ||  charCode == 55 || charCode == 56 || charCode == 57 || charCode == 32){
             return true;
         }
         

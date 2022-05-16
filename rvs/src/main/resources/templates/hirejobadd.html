@@ -115,15 +115,22 @@
 	                            <div class="card">
 	                                <div class="card-content">
 	                                    <div class="card-body">
-	                                        <form class="form form-vertical">
+	                                        <form th:action="@{/hirejobadd}" th:object="${HireMaster}" method="POST" class="form form-vertical"
+											enctype="multipart/form-data">
+											<div th:if="${save}" class="form-group col-12">
+												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">
+													Hire Job Details are Updated Successfully</button>
+											</div>
+											
 	                                            <div class="form-body">
 	                                                <div class="row">
 	                                                    <div class=" col-md-6">
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">Posting Title</label>
 	                                                            <div class="position-relative">
-	                                                                <input type="text" id="first-name-icon" class="form-control" >
-	                                                                
+	                                                                <input type="text" th:field="*{posttitle}" class="form-control" >
+	                                                                <input type="hidden" th:field="*{id}"/>
+	                                                                <input type="hidden" th:field="*{createddate}"/>
 	                                                            </div>
 	                                                        </div>
 	                                                    </div>
@@ -132,13 +139,13 @@
 	                                                            <label for="email-id-icon">Job Status</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control" >
+					                                                    <select class="form-control"  th:field="*{job_status}" >
 					                                                        <option value="">-</option>
-					                                                        <option>Draft</option>
-					                                                        <option>Open</option>
-					                                                        <option>On Hold</option>
-					                                                        <option>Filled</option>
-					                                                        <option>Cancelled</option>
+					                                                        <option value="Draft">Draft</option>
+					                                                        <option value="Open">Open</option>
+					                                                        <option value="On Hold">On Hold</option>
+					                                                        <option value="Filled">Filled</option>
+					                                                        <option value="Cancelled">Cancelled</option>
 					                                                        
 					                                                    </select>
 					                                                </fieldset>
@@ -150,11 +157,11 @@
 	                                                            <label for="contact-info-icon">Hiring Lead</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control" >
+					                                                    <select class="form-control"  th:field="*{hiring_lead}">
 					                                                        <option value="">-</option>
-					                                                        <option>Kanagavel</option>
-					                                                        <option>Sugumar</option>
-					                                                        
+					                                                       <th:block th:each="obj : ${emplist}"> 
+					                                                        <option th:value="${obj.empMasterid}" th:text="${obj.StaffName}"></option>
+					                                                        </th:block>
 					                                                    </select>
 					                                                </fieldset>
 	                                                            </div>
@@ -168,15 +175,16 @@
 	                                                            </label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control adddepartmentdata" >
+					                                                    <select class="form-control adddepartmentdata"  th:field="*{department}">
+					                                                        <option th:value="${HireMaster.department}" th:text="${HireMaster.department}"></option>
 					                                                        <option value="">-</option>
-					                                                        <option>Admin</option>
-					                                                        <option>Accounts</option>
-					                                                        <option>Marketing</option>
-					                                                        <option>BD</option>
-					                                                        <option>HR</option>
-					                                                        <option>Surveying</option>
-					                                                        <option>Designing</option>
+					                                                        <option value="Admin">Admin</option>
+					                                                        <option value="Accounts">Accounts</option>
+					                                                        <option value="Marketing">Marketing</option>
+					                                                        <option value="BD">BD</option>
+					                                                        <option value="HR">HR</option>
+					                                                        <option value="Surveying">Surveying</option>
+					                                                        <option value="Designing">Designing</option>
 					                                                        
 					                                                        
 					                                                    </select>
@@ -191,12 +199,12 @@
 	                                                            </label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control addemployeetypedata" >
+					                                                    <select class="form-control addemployeetypedata"  th:field="*{employment_type}">
 					                                                        <option value="">-</option>
-					                                                        <option>Contractor</option>
-					                                                        <option>Full-Time</option>
-					                                                        <option>Intern</option>
-					                                                        <option>Part -Time</option>
+					                                                        <option value="Contractor">Contractor</option>
+					                                                        <option value="Full-Time">Full-Time</option>
+					                                                        <option value="Intern">Intern</option>
+					                                                        <option value="Part -Time">Part -Time</option>
 					                                                        
 					                                                    </select>
 					                                                </fieldset>
@@ -208,11 +216,11 @@
 	                                                            <label for="password-icon">Minimum Experience</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control" >
+					                                                    <select class="form-control"  th:field="*{minimumexperience}">
 					                                                        <option value="">-</option>
-					                                                        <option>Entry-level</option>
-					                                                        <option>Mid-level</option>
-					                                                        <option>Experienced</option>
+					                                                        <option value="Entry-level">Entry-level</option>
+					                                                        <option value="Mid-level">Mid-level</option>
+					                                                        <option value="Experienced">Experienced</option>
 					                                                        					                                                        
 					                                                    </select>
 					                                                </fieldset>
@@ -224,7 +232,7 @@
 	                                                            <label for="password-icon">Job Description</label>
 	                                                            <div class="position-relative">
 	                                                                <fieldset class="form-group">
-					                                                    <textarea class="form-control" ></textarea>
+					                                                    <textarea class="form-control"  th:field="*{jobdescription}"></textarea>
 					                                                </fieldset>
 	                                                            </div>
 	                                                        </div>
@@ -235,10 +243,11 @@
 	                                                            <label for="password-icon">Location</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control" >
+					                                                    <select class="form-control"  th:field="*{location}">
 					                                                        <option value="">-</option>
-					                                                        <option>Coimbatore</option>
-					                                                        <option>Madurai</option>
+					                                                        <th:block th:each="obj : ${bmlist}"> 
+					                                                        <option th:value="${obj.BRANCH_NAME}" th:text="${obj.BRANCH_NAME}"></option>
+					                                                        </th:block>
 					                                                        
 					                                                    </select>
 					                                                </fieldset>
@@ -250,10 +259,10 @@
 	                                                            <label for="password-icon">State</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control" >
+					                                                    <select class="form-control"  th:field="*{state}">
 					                                                        <option value="">-</option>
-					                                                        <option>TamilNadu</option>
-					                                                        <option>Kerala</option>
+					                                                        <option value="TamilNadu">TamilNadu</option>
+					                                                        <option value="Kerala">Kerala</option>
 					                                                        
 					                                                    </select>
 					                                                </fieldset>
@@ -264,7 +273,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">Compensation</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text" id="first-name-icon" class="form-control" >
+	                                                                <input type="text"  class="form-control"  th:field="*{compensation}" />
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-dollar-circle"></i>
 	                                                                </div>
@@ -282,7 +291,7 @@
 				                                            <li class="d-inline-block mr-2 mb-1">
 				                                                <fieldset>
 				                                                    <div class="checkbox">
-				                                                        <input type="checkbox" class="checkbox-input" id="Resume" checked="">
+				                                                        <input type="checkbox" class="checkbox-input" id="Resume" checked=""  th:field="*{resume}">
 				                                                        <label for="Resume">Resume</label>
 				                                                    </div>
 				                                                </fieldset>
@@ -290,7 +299,7 @@
 				                                           <li class="d-inline-block mr-2 mb-1">
 				                                                <fieldset>
 				                                                    <div class="checkbox">
-				                                                        <input type="checkbox" class="checkbox-input" id="Address" checked="">
+				                                                        <input type="checkbox" class="checkbox-input" id="Address" checked=""  th:field="*{address}">
 				                                                        <label for="Address">Address</label>
 				                                                    </div>
 				                                                </fieldset>
@@ -298,7 +307,7 @@
 				                                           <li class="d-inline-block mr-2 mb-1">
 				                                                <fieldset>
 				                                                    <div class="checkbox">
-				                                                        <input type="checkbox" class="checkbox-input" id="DateAvailable" checked="">
+				                                                        <input type="checkbox" class="checkbox-input" id="DateAvailable" checked=""  th:field="*{dateavailable}">
 				                                                        <label for="DateAvailable">Date Available</label>
 				                                                    </div>
 				                                                </fieldset>
@@ -306,7 +315,7 @@
 				                                           <li class="d-inline-block mr-2 mb-1">
 				                                                <fieldset>
 				                                                    <div class="checkbox">
-				                                                        <input type="checkbox" class="checkbox-input" id="DesiredSalary" checked="">
+				                                                        <input type="checkbox" class="checkbox-input" id="DesiredSalary" checked=""  th:field="*{desiredsalary}">
 				                                                        <label for="DesiredSalary">Desired Salary</label>
 				                                                    </div>
 				                                                </fieldset>
@@ -315,13 +324,80 @@
 				                                        </ul>
 	                                                    </div>
 	                                                    
-	                                                    
+	                                                    <th:block th:each="obj,stat : ${HireMaster.hireMasterQuestions}">
+		                                                    <div th:class="'col-md-12 divshadow ' + ${stat.index}">                            
+		                                                    	<div class="col-md-6">                            
+		                                                    		<div class="form-group">                                
+		                                                    			<label for="first-name-icon" th:text="${obj.qtype}"></label>
+		                                                    			<span class="cursor-pointer econtactdivdelete" th:name=" ${stat.index}" style="float:right"><i class="bx bx-x"></i></span>                                 
+		                                                    			<div class="position-relative has-icon-left">            
+		                                                    				
+		                                                    				<th:block th:if="${obj.qtype} == 'Short Answer'">
+			                                                    				<input type="hidden" name="shortansid"  th:value="${obj.questionid}">                        
+			                                                    				<input type="text" name="shortans" class="form-control"  th:value="${obj.questiontitle}" />
+		                                                    				</th:block>
+		                                                    				<th:block th:if="${obj.qtype} == 'Long Answer'">
+			                                                    				<input type="hidden" name="longansid"  th:value="${obj.questionid}">                        
+			                                                    				<input type="text" name="longans" class="form-control"  th:value="${obj.questiontitle}" />
+		                                                    				</th:block>
+		                                                    				<th:block th:if="${obj.qtype} == 'Yes / No'">
+			                                                    				<input type="hidden" name="yesnoansid"  th:value="${obj.questionid}">                        
+			                                                    				<input type="text" name="yesnoans" class="form-control"  th:value="${obj.questiontitle}" />
+		                                                    				</th:block>
+		                                                    				<th:block th:if="${obj.qtype} == 'Multiple Choice'">
+			                                                    				<input type="hidden" name="multipleansid"  th:value="${obj.questionid}">                        
+			                                                    				<input type="text" name="multipleans" class="form-control"  th:value="${obj.questiontitle}" />
+		                                                    				</th:block>
+		                                                    				<th:block th:if="${obj.qtype} == 'Check box'">
+			                                                    				<input type="hidden" name="checkansid"  th:value="${obj.questionid}">                        
+			                                                    				<input type="text" name="checkans" class="form-control"  th:value="${obj.questiontitle}" />
+		                                                    				</th:block>
+		                                                    				<th:block th:if="${obj.qtype} == 'File Upload'">
+			                                                    				<input type="hidden" name="fileuploadansid"  th:value="${obj.questionid}">                        
+			                                                    				<input type="text" name="fileuploadans" class="form-control"  th:value="${obj.questiontitle}" />
+		                                                    				</th:block>
+		                                                    				                                    
+		                                                    				<div class="form-control-position">                                       
+		                                                    					<i class="bx bx-align-justify"></i>                                    
+		                                                    				</div>                                
+		                                                    			</div>                            
+		                                                    		</div>                        
+		                                                    	</div>                    
+		                                                    </div>
+		                                                     <th:block th:if="${obj.qtype} == 'Multiple Choice'">
+			                                                    <div th:class="'row col-md-12 ' + ${stat.index}">
+	                                                                 <div class="col-md-2" align="right">  
+	                                                                 	<label>Answer 1</label>   
+	                                                                 </div>                            
+	                                                                 <div class="col-md-5">                                
+	                                                                 	<input type="text"  class="form-control" name="option1" th:value="${obj.option1}" />                            
+	                                                                 </div>                     
+	                                                             </div>
+	                                                             <div th:class="'row col-md-12 ' + ${stat.index}">
+	                                                                 <div class="col-md-2" align="right">  
+	                                                                 	<label>Answer 2</label>   
+	                                                                 </div>                            
+	                                                                 <div class="col-md-5">                                
+	                                                                 	<input type="text"  class="form-control" name="option2"  th:value="${obj.option2}" />                            
+	                                                                 </div>                     
+	                                                             </div>
+	                                                             <div th:class="'row col-md-12 ' + ${stat.index}">
+	                                                                 <div class="col-md-2" align="right">  
+	                                                                 	<label>Answer 3</label>   
+	                                                                 </div>                            
+	                                                                 <div class="col-md-5">                                
+	                                                                 	<input type="text"  class="form-control" name="option3" th:value="${obj.option3}" />                            
+	                                                                 </div>                     
+	                                                             </div>
+                                                             </th:block>
+	                                                    </th:block>
 	                                                    <span id="divlast"></span>     
 	                                                    <div class="col-md-12">
 	                                                        <div class="form-group">
 	                                                        <hr>
 	                                                            <label class="emptitle">Additional Questions</label>
 	                                                          </div>
+	                                                          
 	                                                    </div>
 	                                                     <div class="col-md-12">
 	                                                        <div class="btn-group mb-1">
@@ -454,37 +530,37 @@
 		<script>
 			$(document).ready(function(){
 				
-				var dividdelete=1;
+				var dividdelete=1000;
 				$('.shortans').click(function(){
 					dividdelete=dividdelete+1;
-					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'">                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Short Answer</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                 <div class="position-relative has-icon-left">                                    <input type="text" id="first-name-icon" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-align-justify"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
+					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'">                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Short Answer</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                 <div class="position-relative has-icon-left">            <input type="hidden" name="shortansid"  value="" />                        <input type="text" name="shortans" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-align-justify"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
 				});
 				$('.longans').click(function(){
 					dividdelete=dividdelete+1;
-					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Long Answer</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                <div class="position-relative has-icon-left">                                    <input type="text" id="first-name-icon" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-align-middle"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
+					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Long Answer</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                <div class="position-relative has-icon-left">      <input type="hidden" name="longansid" value="" />                                   <input type="text" name="longans"  class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-align-middle"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
 				});
 				
 				$('.yesnoans').click(function(){
 					dividdelete=dividdelete+1;	
-					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Yes / No</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                <div class="position-relative has-icon-left">                                    <input type="text" id="first-name-icon" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-toggle-right"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
+					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Yes / No</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                <div class="position-relative has-icon-left">        <input type="hidden" name="yesnoansid" value="" />                                 <input type="text" name="yesnoans" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-toggle-right"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
 					});
 
 				$('.multipleans').click(function(){
 					dividdelete=dividdelete+1;
-					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Multiple Choice</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                               <div class="position-relative has-icon-left">                                    <input type="text" id="first-name-icon" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-check-double"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>                    		<div class="row  col-md-12 '+ dividdelete +'">                    		<div class="col-md-2" align="right">                                <label>Answer 1</label>                            </div>                            <div class="col-md-5">                                <input type="text" id="first-name" class="form-control" name="fname" >                            </div>                     </div>                     <div class="row  col-md-12 '+ dividdelete +'">                    		<div class="col-md-2" align="right">                                <label>Answer 2</label>                            </div>                            <div class="col-md-5">                                <input type="text" id="first-name" class="form-control" name="fname" >                            </div>                     </div>                     <div class="row  col-md-12 '+ dividdelete +'">                    		<div class="col-md-2" align="right">                                <label>Answer 3</label>                            </div>                            <div class="col-md-5">                                <input type="text" id="first-name" class="form-control" name="fname" >                            </div>                     </div>      ');
+					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Multiple Choice</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                               <div class="position-relative has-icon-left">    <input type="hidden" name="multipleansid" value=""/>                                     <input type="text" name="multipleans" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-check-double"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>                    		<div class="row  col-md-12 '+ dividdelete +'">                    		<div class="col-md-2" align="right">                                <label>Answer 1</label>                            </div>                            <div class="col-md-5">                                <input type="text"  class="form-control" name="option1">                            </div>                     </div>                     <div class="row  col-md-12 '+ dividdelete +'">                    		<div class="col-md-2" align="right">                                <label>Answer 2</label>                            </div>                            <div class="col-md-5">                                <input type="text"  class="form-control" name="option2" >                            </div>                     </div>                     <div class="row  col-md-12 '+ dividdelete +'">                    		<div class="col-md-2" align="right">                                <label>Answer 3</label>                            </div>                            <div class="col-md-5">                                <input type="text"  class="form-control" name="option3" >                            </div>                     </div>      ');
 					});
 				$('.checkans').click(function(){
 					dividdelete=dividdelete+1;
-					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Check box</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                <div class="position-relative has-icon-left">                                    <input type="text" id="first-name-icon" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bxs-checkbox-checked"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
+					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">Check box</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                <div class="position-relative has-icon-left">         <input type="hidden" name="checkansid" value=""/>                                <input type="text" name="checkans"  class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bxs-checkbox-checked"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
 				});
 				$('.fileuploadans').click(function(){
 					dividdelete=dividdelete+1;
-					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">File Upload</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                <div class="position-relative has-icon-left">                                    <input type="text" id="first-name-icon" class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-cloud-upload"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
+					$("#divlast").before('<div class="col-md-12 divshadow '+ dividdelete +'" >                            <div class="col-md-6">                            <div class="form-group">                                <label for="first-name-icon">File Upload</label><span class="cursor-pointer econtactdivdelete" name="'+ dividdelete+'" style="float:right"><i class="bx bx-x"></i></span>                                <div class="position-relative has-icon-left">       <input type="hidden" name="fileuploadansid" value="" />                                  <input type="text" name="fileuploadans"  class="form-control" >                                    <div class="form-control-position">                                        <i class="bx bx-cloud-upload"></i>                                    </div>                                </div>                            </div>                        </div>                    </div>');
 				});
 
 				$(document).on( "click", ".econtactdivdelete", function() {
 					   var id= $(this).attr('name');
-					   $('.'+ id).hide();
+					   $('.'+ id).remove();
 				});	
 				
 				
@@ -507,7 +583,7 @@
 						if(name=="New Department"){ labeltext="adddepartmentdata"; }
 						if(name=="New Employment Type"){ labeltext="addemployeetypedata"; }
 						
-						$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
+						$('.' + labeltext).append("<option value='" + $("#additemall").val() + "'>" + $("#additemall").val() + "</option>");
 						$("#additemall").val('');
 						$('#newadditemScrollable').modal('toggle');
 					}

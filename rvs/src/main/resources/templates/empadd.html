@@ -121,7 +121,7 @@
 				<div class="content-header-left col-12 mb-2 mt-1">
 					<div class="row breadcrumbs-top">
 						<div class="col-12">
-							<a href="empnew" style="float:right"><button type="button"  class="btn btn-primary mr-1 mb-1">+ New</button></a>
+							<a href="empnew" style="float:right"><button type="button" class="btn btn-primary mr-1 mb-1">+ New</button></a>
 							<h5 class="content-header-title float-left pr-1 mb-0">
 								Employee</h5>
 							
@@ -787,7 +787,7 @@
 														<div class="form-group">
 															<label for="contact-info-icon">Percentage / GPA</label>
 															<div class="position-relative has-icon-left">
-																<input type="number" class="form-control"
+																<input type="text" class="form-control"
 																	placeholder="Percentage / GPA"
 																	th:value="${EmployeeEducation.Percentage_GPA}"
 																	name="Percentage_GPA"   />
@@ -1574,7 +1574,7 @@
 		            });
  */
 		            
-					
+			 	
 					
 					$("#submit_validation").click(function(){
 						
@@ -1730,6 +1730,7 @@
 		$('.abouttabclick').click(function(){$('#about-tab').click();});
 		$('.about1tabclick').click(function(){$('#about1-tab').click();});
 		$('.about2tabclick').click(function(){$('#about2-tab').click();});
+		
 		
 	</script>
 

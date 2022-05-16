@@ -104,10 +104,18 @@
 	 right:0px;
 	 color:#fff;
 	}
-	tbody>tr:hover .iconalign
+	 .iconalign>a
+	 {
+	 color:#fff;
+	 }
+	 
+	 
+	tbody>tr:hover .iconalign, tr:hover  .iconalign>a
 	{
 		color:#527a00;
 	}
+	
+	
 	
 	.emptitle:hover 
 	{
@@ -189,28 +197,31 @@
 					                                        <thead>
 					                                            <tr>
 					                                                <th>Posting Title</th>
-					                                                <th>Job Status</th>
+					                                                <th>Department</th>
 					                                                <th>Hiring Lead</th>
 					                                                <th>Created on</th>
 					                                                <th>Status</th>
 					                                                <th></th>
 					                                                
-					                                               	
 					                                            </tr>
 					                                        </thead>
 					                                        <tbody>
-					                                            <tr>
-					                                                <td class="text-bold-500">1 ABCDEF</td>
-					                                                <td>Drafting </td>
-					                                                <td>Amy Graner</td>
-					                                                <td>Nov 29,2021</td>
-					                                                <td>Open</td>
+					                                            <tr th:each="obj, stat : ${hmlist}">
+					                                            
+					                                                <td class="text-bold-500" th:text="${obj.posttitle}"></td>
+					                                                <td  th:text="${obj.department}"></td>
+					                                                
+					                                                <td  th:text="${emp[stat.index]}"> </td>
+					                                                <td  th:text="${obj.createddate}"></td>
+					                                                <td  th:text="${obj.job_status}"></td>
 					                                                
 					                                                <td width="110px"><span class="iconalign">
 					                                               	 	
-					                                               	 	<span  data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-pencil"></i></span>
-					                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
-					                                                	
+					                                               	 	<a th:href="'hireaddjob?id=' +${obj.id}">
+					                                               	 		<span  data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-pencil"></i></span>
+					                                               	 	</a>
+					                                               	 	<!-- <span  data-toggle="modal" data-target="#deleteInformationScrollable"><i class="bx bxs-trash-alt"></i></span>
+					                                                	 -->
 					                                                	<span>
 					                                                </td>
 					                                                
@@ -237,7 +248,7 @@
 					                                        </thead>
 					                                        <tbody>
 					                                            <tr>
-					                                                <td class="text-bold-500">1 Kanagavel</td>
+					                                                <td class="text-bold-500">1 Kanagavel (Sample)</td>
 					                                                <td>Drafting </td>
 					                                                <td>Offer Sent</td>
 					                                                <td>4.5/5</td>

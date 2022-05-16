@@ -10,14 +10,18 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +52,8 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeJobempstatus;
 import com.rvs.springboot.thymeleaf.entity.EmployeeJobinfo;
 import com.rvs.springboot.thymeleaf.entity.EmployeeLanguage;
 import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
+import com.rvs.springboot.thymeleaf.entity.HireMaster;
+import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
@@ -57,9 +63,9 @@ import com.rvs.springboot.thymeleaf.service.EmployeeJobcompensationService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobinfoService;
 import com.rvs.springboot.thymeleaf.service.EmployeeMasterService;
+import com.rvs.springboot.thymeleaf.service.HireMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
-
 
 @Controller
 
@@ -85,7 +91,9 @@ public class HomeController {
 	HolidayService holidayService;
 	@Autowired
 	LeaveMasterService leaveMasterService;
-	
+	@Autowired
+	HireMasterService hireMasterService;
+
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 	/*
@@ -470,22 +478,22 @@ public class HomeController {
 			// System.out.println(params.get("Emg_InsuranceNominee" + templangurow));
 
 		}
-
-		// System.out.println("empEmgContactid" + Arrays.toString(empEmgContactid));
-		// System.out.println("Emg_Name" + Arrays.toString(Emg_Name));
-		// System.out.println("Emg_Relation" + Arrays.toString(Emg_Relation));
-		// System.out.println("Emg_PersonalPhone" + Arrays.toString(Emg_PersonalPhone));
-		// System.out.println("Emg_OtherPhone" + Arrays.toString(Emg_OtherPhone));
-		// System.out.println("Emg_EmailID" + Arrays.toString(Emg_EmailID));
-		// System.out.println("Emg_Street1" + Arrays.toString(Emg_Street1));
-		// System.out.println("Emg_Street2" + Arrays.toString(Emg_Street2));
-		// System.out.println("Emg_Village" + Arrays.toString(Emg_Village));
-		// System.out.println("Emg_Taluk" + Arrays.toString(Emg_Taluk));
-		// System.out.println("Emg_City" + Arrays.toString(Emg_City));
-		// System.out.println("Emg_State" + Arrays.toString(Emg_State));
-		// System.out.println("Emg_ZIP" + Arrays.toString(Emg_ZIP));
-		// System.out.println("Emg_Country" + Arrays.toString(Emg_Country));
-
+		/*
+		 * System.out.println("empEmgContactid" + Arrays.toString(empEmgContactid));
+		 * System.out.println("Emg_Name" + Arrays.toString(Emg_Name));
+		 * System.out.println("Emg_Relation" + Arrays.toString(Emg_Relation));
+		 * System.out.println("Emg_PersonalPhone" + Arrays.toString(Emg_PersonalPhone));
+		 * System.out.println("Emg_OtherPhone" + Arrays.toString(Emg_OtherPhone));
+		 * System.out.println("Emg_EmailID" + Arrays.toString(Emg_EmailID));
+		 * System.out.println("Emg_Street1" + Arrays.toString(Emg_Street1));
+		 * System.out.println("Emg_Street2" + Arrays.toString(Emg_Street2));
+		 * System.out.println("Emg_Village" + Arrays.toString(Emg_Village));
+		 * System.out.println("Emg_Taluk" + Arrays.toString(Emg_Taluk));
+		 * System.out.println("Emg_City" + Arrays.toString(Emg_City));
+		 * System.out.println("Emg_State" + Arrays.toString(Emg_State));
+		 * System.out.println("Emg_ZIP" + Arrays.toString(Emg_ZIP));
+		 * System.out.println("Emg_Country" + Arrays.toString(Emg_Country));
+		 */
 		// System.out.println("------------------------------------");
 		Set<EmployeeEducation> eduls = new LinkedHashSet<EmployeeEducation>();
 		for (int farr = 0; farr < College_Institution.length; farr++) {
@@ -498,10 +506,14 @@ public class HomeController {
 				empedu.setEmpEduid(Integer.parseInt(empEduid[farr]));
 			}
 
-			empedu.setFromYear(FromYear[farr]);
-			empedu.setMajorSpecialization(MajorSpecialization[farr]);
-			empedu.setPercentage_GPA(Percentage_GPA[farr]);
-			empedu.setToYear(ToYear[farr]);
+			if (FromYear.length > 0)
+				empedu.setFromYear(FromYear[farr]);
+			if (MajorSpecialization.length > 0)
+				empedu.setMajorSpecialization(MajorSpecialization[farr]);
+			if (Percentage_GPA.length > 0)
+				empedu.setPercentage_GPA(Percentage_GPA[farr]);
+			if (ToYear.length > 0)
+				empedu.setToYear(ToYear[farr]);
 			eduls.add(empedu);
 		}
 		employeemaster.setEmployeeEducation(eduls);
@@ -526,19 +538,33 @@ public class HomeController {
 			if (!empEmgContactid[farr].isEmpty()) {
 				empcont.setEmpEmgContactid(Integer.parseInt(empEmgContactid[farr]));
 			}
-			empcont.setEmg_City(Emg_City[farr]);
-			empcont.setEmg_Country(Emg_Country[farr]);
-			empcont.setEmg_EmailID(Emg_EmailID[farr]);
-			empcont.setEmg_Name(Emg_Name[farr]);
-			empcont.setEmg_OtherPhone(Emg_OtherPhone[farr]);
-			empcont.setEmg_PersonalPhone(Emg_PersonalPhone[farr]);
-			empcont.setEmg_Relation(Emg_Relation[farr]);
-			empcont.setEmg_State(Emg_State[farr]);
-			empcont.setEmg_Street1(Emg_Street1[farr]);
-			empcont.setEmg_Street2(Emg_Street2[farr]);
-			empcont.setEmg_Taluk(Emg_Taluk[farr]);
-			empcont.setEmg_Village(Emg_Village[farr]);
-			empcont.setEmg_ZIP(Emg_ZIP[farr]);
+
+			if (Emg_City.length > 0)
+				empcont.setEmg_City(Emg_City[farr]);
+			if (Emg_Country.length > 0)
+				empcont.setEmg_Country(Emg_Country[farr]);
+			if (Emg_EmailID.length > 0)
+				empcont.setEmg_EmailID(Emg_EmailID[farr]);
+			if (Emg_Name.length > 0)
+				empcont.setEmg_Name(Emg_Name[farr]);
+			if (Emg_OtherPhone.length > 0)
+				empcont.setEmg_OtherPhone(Emg_OtherPhone[farr]);
+			if (Emg_PersonalPhone.length > 0)
+				empcont.setEmg_PersonalPhone(Emg_PersonalPhone[farr]);
+			if (Emg_Relation.length > 0)
+				empcont.setEmg_Relation(Emg_Relation[farr]);
+			if (Emg_State.length > 0)
+				empcont.setEmg_State(Emg_State[farr]);
+			if (Emg_Street1.length > 0)
+				empcont.setEmg_Street1(Emg_Street1[farr]);
+			if (Emg_Street2.length > 0)
+				empcont.setEmg_Street2(Emg_Street2[farr]);
+			if (Emg_Taluk.length > 0)
+				empcont.setEmg_Taluk(Emg_Taluk[farr]);
+			if (Emg_Village.length > 0)
+				empcont.setEmg_Village(Emg_Village[farr]);
+			if (Emg_ZIP.length > 0)
+				empcont.setEmg_ZIP(Emg_ZIP[farr]);
 			emgls.add(empcont);
 		}
 		employeemaster.setEmployeeEmgContact(emgls);
@@ -554,10 +580,14 @@ public class HomeController {
 				if (!empExperienceid[farr].isEmpty()) {
 					empexper.setEmpExperienceid(Integer.parseInt(empExperienceid[farr]));
 				}
-				empexper.setExpFromyear(expFromyear[farr]);
-				empexper.setExpToyear(expToyear[farr]);
-				empexper.setJobTitle(JobTitle[farr]);
-				empexper.setLocation(Location[farr]);
+				if (expFromyear.length > 0)
+					empexper.setExpFromyear(expFromyear[farr]);
+				if (expToyear.length > 0)
+					empexper.setExpToyear(expToyear[farr]);
+				if (JobTitle.length > 0)
+					empexper.setJobTitle(JobTitle[farr]);
+				if (Location.length > 0)
+					empexper.setLocation(Location[farr]);
 				exptrls.add(empexper);
 			}
 		}
@@ -593,7 +623,8 @@ public class HomeController {
 			if (!empLanguid[farr].isEmpty()) {
 				emplang.setEmpLanguid((Integer) Integer.parseInt(empLanguid[farr]));
 			}
-			emplang.setLanguage(language[farr]);
+			if (language.length > 0)
+				emplang.setLanguage(language[farr]);
 
 			langls.add(emplang);
 
@@ -1303,54 +1334,203 @@ public class HomeController {
 		obj.setColor(param.get("color").toString());
 		obj.setDescription(param.get("description"));
 		holidayService.save(obj);
-		
+
 		return String.valueOf(obj.getId());
-		
+
 	}
 
-	
 	@GetMapping("holidaydefine")
 	public String holidaydefine(Model theModel) {
 		return "holidaydefine";
 	}
-	
 
-	
 	@GetMapping("leaverequest")
 	public String leaverequest(Model theModel) {
-		
-		LeaveMaster leavemaster =new LeaveMaster();
-		List<EmployeeMaster> emplist= employeeMasterService.findAll();
+
+		LeaveMaster leavemaster = new LeaveMaster();
+		List<EmployeeMaster> emplist = employeeMasterService.findAll();
 		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll();
-		
+
 		theModel.addAttribute("emplist", emplist);
 		theModel.addAttribute("leavemaster", leavemaster);
 		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
 		return "leaverequest";
 	}
+
 	@PostMapping("leaverequest")
 	public String leaverequestsave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster leaveMasterobj) {
-		
+
 		leaveMasterobj.setStatus("Pending");
-		LeaveMaster leavemaster =new LeaveMaster();
+		LeaveMaster leavemaster = new LeaveMaster();
 		LeaveMaster leaveMasterobjtemp = leaveMasterService.save(leaveMasterobj);
-		List<EmployeeMaster> emplist= employeeMasterService.findAll();
+		List<EmployeeMaster> emplist = employeeMasterService.findAll();
 		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll();
-		
+
 		theModel.addAttribute("emplist", emplist);
 		theModel.addAttribute("leavemaster", leavemaster);
 		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
 		theModel.addAttribute("save", "save");
 		return "leaverequest";
 	}
-	
+
 	@GetMapping("hire")
 	public String hire(Model theModel) {
+		List<HireMaster> hmlist = hireMasterService.findAll();
+		List<String> hmlistemp = new ArrayList<String>();
+		List<EmployeeMaster> emplist = employeeMasterService.findAll();
+		for (HireMaster hm : hmlist) {
+			hmlistemp.add(emplist.stream()
+					.filter(c -> String.valueOf(c.getEmpMasterid()).equalsIgnoreCase(hm.getHiring_lead()))
+					.collect(Collectors.toList()).get(0).getStaffName());
+
+		}
+		System.out.println(hmlistemp);
+		theModel.addAttribute("hmlist", hmlist);
+		theModel.addAttribute("emp", hmlistemp);
 		return "hiring";
 	}
 
 	@GetMapping("hireaddjob")
-	public String hirejobadd(Model theModel) {
+	public String hirejobadd(Model theModel,
+			@RequestParam(name = "id", required = false, defaultValue = "0") String id) {
+		List<EmployeeMaster> emplist = employeeMasterService.findAll();
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		HireMaster obj = new HireMaster();
+		if (!id.equalsIgnoreCase("0")) {
+			obj = hireMasterService.findById(Integer.parseInt(id));
+			/*List<HireMasterQuestions> list = new ArrayList<HireMasterQuestions>(obj.getHireMasterQuestions());
+	        Collections.sort(list);
+	        obj.setHireMasterQuestions(new HashSet<HireMasterQuestions>(list));*/
+		}
+
+		theModel.addAttribute("bmlist", bmlist);
+		theModel.addAttribute("emplist", emplist);
+		theModel.addAttribute("HireMaster", obj);
+		return "hirejobadd";
+	}
+
+	@PostMapping("hireaddjob")
+	public String hirejobaddsave(Model theModel, @ModelAttribute HireMaster hireMaster,
+			@RequestParam(name = "shortans", required = false) String[] shortans,
+			@RequestParam(name = "shortansid", required = false) String[] shortansid,
+			@RequestParam(name = "longans", required = false) String[] longans,
+			@RequestParam(name = "longansid", required = false) String[] longansid,
+			@RequestParam(name = "yesnoans", required = false) String[] yesnoans,
+			@RequestParam(name = "yesnoansid", required = false) String[] yesnoansid,
+			@RequestParam(name = "multipleans", required = false) String[] multipleans,
+			@RequestParam(name = "multipleansid", required = false) String[] multipleansid,
+			@RequestParam(name = "option1", required = false) String[] option1,
+			@RequestParam(name = "option2", required = false) String[] option2,
+			@RequestParam(name = "option3", required = false) String[] option3,
+			@RequestParam(name = "checkans", required = false) String[] checkans,
+			@RequestParam(name = "checkansid", required = false) String[] checkansid,
+			@RequestParam(name = "fileuploadans", required = false) String[] fileuploadans,
+			@RequestParam(name = "fileuploadansid", required = false) String[] fileuploadansid) {
+		//--------------------------------------------------------------
+		System.out.println("shortans" + Arrays.toString(shortans));
+		System.out.println("shortansid" + Arrays.toString(shortansid));
+		System.out.println("longans" + Arrays.toString(longans));
+		System.out.println("longansid" + Arrays.toString(longansid));
+		System.out.println("yesnoans" + Arrays.toString(yesnoans));
+		System.out.println("yesnoansid" + Arrays.toString(yesnoansid));
+		System.out.println("multipleans" + Arrays.toString(multipleans));
+		System.out.println("multipleansid" + Arrays.toString(multipleansid));
+		System.out.println("option1" + Arrays.toString(option1));
+		System.out.println("option2" + Arrays.toString(option2));
+		System.out.println("option3" + Arrays.toString(option3));
+		System.out.println("checkans" + Arrays.toString(checkans));
+		System.out.println("checkansid" + Arrays.toString(checkansid));
+		System.out.println("fileuploadans" + Arrays.toString(fileuploadans));
+		System.out.println("fileuploadansid" + Arrays.toString(fileuploadansid));
+
+		//--------------------------------------------------------------
+		Date currentdate = new Date();
+		SimpleDateFormat formatterdate = new SimpleDateFormat("dd/MM/yyyy");
+		if (hireMaster.getCreateddate().toString().equalsIgnoreCase("")) {
+			hireMaster.setCreateddate(formatterdate.format(currentdate));
+		}
+		
+		Set<HireMasterQuestions> setHireMasterQuestions = new HashSet<HireMasterQuestions>();
+		
+		if (shortans != null) 
+		for (int i = 0; i < shortans.length; i++) {
+			HireMasterQuestions hmq = new HireMasterQuestions();
+			hmq.setQtype("Short Answer");
+			hmq.setQuestiontitle(shortans[i]);
+			if (!shortansid[i].isEmpty()) {
+				hmq.setQuestionid(Integer.parseInt(shortansid[i]));
+			}
+			setHireMasterQuestions.add(hmq);
+		}
+		
+		if (longans != null)
+		for (int i = 0; i < longans.length; i++) {
+			HireMasterQuestions hmq = new HireMasterQuestions();
+			hmq.setQtype("Long Answer");
+			hmq.setQuestiontitle(longans[i]);
+			if (!longansid[i].isEmpty()) {
+				hmq.setQuestionid(Integer.parseInt(longansid[i]));
+			}
+			setHireMasterQuestions.add(hmq);
+		}
+		
+		if (yesnoans != null)
+		for (int i = 0; i < yesnoans.length; i++) {
+			HireMasterQuestions hmq = new HireMasterQuestions();
+			hmq.setQtype("Yes / No");
+			hmq.setQuestiontitle(yesnoans[i]);
+			if (!yesnoansid[i].isEmpty()) {
+				hmq.setQuestionid(Integer.parseInt(yesnoansid[i]));
+			}
+			setHireMasterQuestions.add(hmq);
+		}
+		
+		if (multipleans != null)
+		for (int i = 0; i < multipleans.length; i++) {
+			HireMasterQuestions hmq = new HireMasterQuestions();
+			hmq.setQtype("Multiple Choice");
+			hmq.setQuestiontitle(multipleans[i]);
+			hmq.setOption1(option1[i]);
+			hmq.setOption2(option2[i]);
+			hmq.setOption3(option3[i]);
+			
+			if (!multipleansid[i].isEmpty()) {
+				hmq.setQuestionid(Integer.parseInt(multipleansid[i]));
+			}
+			setHireMasterQuestions.add(hmq);
+		}
+		
+		if (checkans != null)
+		for (int i = 0; i < checkans.length; i++) {
+			HireMasterQuestions hmq = new HireMasterQuestions();
+			hmq.setQtype("Check box");
+			hmq.setQuestiontitle(checkans[i]);
+			if (!checkansid[i].isEmpty()) {
+				hmq.setQuestionid(Integer.parseInt(checkansid[i]));
+			}
+			setHireMasterQuestions.add(hmq);
+		}
+		if (fileuploadans != null)
+		for (int i = 0; i < fileuploadans.length; i++) {
+			HireMasterQuestions hmq = new HireMasterQuestions();
+			hmq.setQtype("File Upload");
+			hmq.setQuestiontitle(fileuploadans[i]);
+			if (!fileuploadansid[i].isEmpty()) {
+				hmq.setQuestionid(Integer.parseInt(fileuploadansid[i]));
+			}
+			setHireMasterQuestions.add(hmq);
+		}
+
+		hireMaster.setHireMasterQuestions(setHireMasterQuestions);
+		hireMaster = hireMasterService.save(hireMaster);
+
+		List<EmployeeMaster> emplist = employeeMasterService.findAll();
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+
+		theModel.addAttribute("bmlist", bmlist);
+		theModel.addAttribute("emplist", emplist);
+		theModel.addAttribute("HireMaster", hireMaster);
+		theModel.addAttribute("save", "save");
 		return "hirejobadd";
 	}
 
@@ -1366,13 +1546,14 @@ public class HomeController {
 		branchMasterService.save(objBM);
 		return "Success";
 	}
+
 	@ResponseBody
 	@PostMapping("holidaydelete")
 	public String holidaydelete(@RequestParam Map<String, String> param) {
 
 		holidayService.deleteByid(Integer.parseInt(param.get("calid")));
-		
+
 		return "deleted";
-		
+
 	}
 }

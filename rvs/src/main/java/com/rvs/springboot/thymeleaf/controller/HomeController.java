@@ -1076,6 +1076,7 @@ public class HomeController {
 		SimpleDateFormat formatterdd = new SimpleDateFormat("dd");
 		SimpleDateFormat formattermonname = new SimpleDateFormat("MMMM");
 		DecimalFormat decformatter = new DecimalFormat("00");
+		String jsdate="";
 		Date date = new Date();
 		Date temppredate = new Date();
 		Date tempnxtdate = new Date();
@@ -1171,6 +1172,7 @@ public class HomeController {
 				calhtml = calhtml + "<td class='selectdate' name='" + (i) + "/" + (currentmonth) + "/" + (currentyear)
 						+ "'>";
 				calhtml = calhtml + "<div class='cal_inner_holder_right_today'>" + i + "</div>";
+				jsdate= (i) + "/" + (currentmonth) + "/" + (currentyear);
 			} else {
 				calhtml = calhtml + "<td class='td' name='" + (i) + "/" + (currentmonth) + "/" + (currentyear) + "'>";
 				calhtml = calhtml + "<div class='cal_inner_holder_right'>" + i + "</div>";
@@ -1218,21 +1220,28 @@ public class HomeController {
 		employeeMasterls = employeeMasterService.findAll();
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date dateforeffectemp = new Date();
+		Date dateforeffectemp = date;
+		
 		// ------------------------------------------------------------------------------------
 		// Find out Effective location Employee filter with selected branch
 		for (EmployeeMaster obj : employeeMasterls) {
 			List<EmployeeJobinfo> infoobj = new ArrayList<>();
 			infoobj = employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
+
 			if (infoobj.size() > 0) {
 				List<EmployeeJobinfo> infoobjgreen = infoobj.stream().filter(
 						c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0)
 						.collect(Collectors.toList());
 				infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+				
+				
 				if (infoobjgreen.size() > 0) {
 					if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation()
 							.equalsIgnoreCase(targetedbranchName)) {
-						employeeMasterlswitheffectivelocation.add(obj);
+
+						if (!calculateTerminatedstatus(obj.getEmpMasterid(),date)) {
+							employeeMasterlswitheffectivelocation.add(obj);
+						}
 					}
 				}
 			}
@@ -1286,8 +1295,37 @@ public class HomeController {
 		theModel.addAttribute("currentyear", currentyear);
 		theModel.addAttribute("currentmonname", currentmonname);
 		theModel.addAttribute("calhtml", calhtml);
+		theModel.addAttribute("jsdate", jsdate);
 		return "empattendance";
 
+	}
+
+	private boolean calculateTerminatedstatus(int EmpMasterid,Date date) {
+		// --------------------------------------------
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateforeffectemp = date;
+		
+		Boolean returnstatus = false;
+		// --------------------------------------------
+		// Start Termination Details calculate
+
+		List<EmployeeJobempstatus> empstatusobj = new ArrayList<>();
+		empstatusobj = employeeJobempstatusService.findByEmployeeid(EmpMasterid);
+
+		if (empstatusobj.size() > 0) {
+			List<EmployeeJobempstatus> empstatusobjgreen = empstatusobj.stream().filter(
+					c -> dateFormat.format(dateforeffectemp).compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
+					.collect(Collectors.toList());
+			empstatusobjgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
+			if (empstatusobjgreen.size() > 0) {
+				if (empstatusobjgreen.get(empstatusobjgreen.size() - 1).getEmpstatus_employmentstatus()
+						.equalsIgnoreCase("Terminated")) {
+					returnstatus = true;
+				}
+			}
+		}
+
+		return returnstatus;
 	}
 
 	@ResponseBody
@@ -1309,7 +1347,7 @@ public class HomeController {
 			attdmast.setNotes(temparr2[3]);
 			attdmast.setAttendancemasterid(Integer.parseInt(temparr2[5]));
 
-			System.out.println(attdmast);
+			// System.out.println(attdmast);
 			attendanceMasterService.save(attdmast);
 		}
 		return attendancestr;
@@ -1384,7 +1422,7 @@ public class HomeController {
 					.collect(Collectors.toList()).get(0).getStaffName());
 
 		}
-		System.out.println(hmlistemp);
+		//System.out.println(hmlistemp);
 		theModel.addAttribute("hmlist", hmlist);
 		theModel.addAttribute("emp", hmlistemp);
 		return "hiring";
@@ -1398,9 +1436,12 @@ public class HomeController {
 		HireMaster obj = new HireMaster();
 		if (!id.equalsIgnoreCase("0")) {
 			obj = hireMasterService.findById(Integer.parseInt(id));
-			/*List<HireMasterQuestions> list = new ArrayList<HireMasterQuestions>(obj.getHireMasterQuestions());
-	        Collections.sort(list);
-	        obj.setHireMasterQuestions(new HashSet<HireMasterQuestions>(list));*/
+			/*
+			 * List<HireMasterQuestions> list = new
+			 * ArrayList<HireMasterQuestions>(obj.getHireMasterQuestions());
+			 * Collections.sort(list); obj.setHireMasterQuestions(new
+			 * HashSet<HireMasterQuestions>(list));
+			 */
 		}
 
 		theModel.addAttribute("bmlist", bmlist);
@@ -1426,8 +1467,8 @@ public class HomeController {
 			@RequestParam(name = "checkansid", required = false) String[] checkansid,
 			@RequestParam(name = "fileuploadans", required = false) String[] fileuploadans,
 			@RequestParam(name = "fileuploadansid", required = false) String[] fileuploadansid) {
-		//--------------------------------------------------------------
-		System.out.println("shortans" + Arrays.toString(shortans));
+		// --------------------------------------------------------------
+		/*System.out.println("shortans" + Arrays.toString(shortans));
 		System.out.println("shortansid" + Arrays.toString(shortansid));
 		System.out.println("longans" + Arrays.toString(longans));
 		System.out.println("longansid" + Arrays.toString(longansid));
@@ -1442,84 +1483,84 @@ public class HomeController {
 		System.out.println("checkansid" + Arrays.toString(checkansid));
 		System.out.println("fileuploadans" + Arrays.toString(fileuploadans));
 		System.out.println("fileuploadansid" + Arrays.toString(fileuploadansid));
-
-		//--------------------------------------------------------------
+*/
+		// --------------------------------------------------------------
 		Date currentdate = new Date();
 		SimpleDateFormat formatterdate = new SimpleDateFormat("dd/MM/yyyy");
 		if (hireMaster.getCreateddate().toString().equalsIgnoreCase("")) {
 			hireMaster.setCreateddate(formatterdate.format(currentdate));
 		}
-		
+
 		Set<HireMasterQuestions> setHireMasterQuestions = new HashSet<HireMasterQuestions>();
-		
-		if (shortans != null) 
-		for (int i = 0; i < shortans.length; i++) {
-			HireMasterQuestions hmq = new HireMasterQuestions();
-			hmq.setQtype("Short Answer");
-			hmq.setQuestiontitle(shortans[i]);
-			if (!shortansid[i].isEmpty()) {
-				hmq.setQuestionid(Integer.parseInt(shortansid[i]));
+
+		if (shortans != null)
+			for (int i = 0; i < shortans.length; i++) {
+				HireMasterQuestions hmq = new HireMasterQuestions();
+				hmq.setQtype("Short Answer");
+				hmq.setQuestiontitle(shortans[i]);
+				if (!shortansid[i].isEmpty()) {
+					hmq.setQuestionid(Integer.parseInt(shortansid[i]));
+				}
+				setHireMasterQuestions.add(hmq);
 			}
-			setHireMasterQuestions.add(hmq);
-		}
-		
+
 		if (longans != null)
-		for (int i = 0; i < longans.length; i++) {
-			HireMasterQuestions hmq = new HireMasterQuestions();
-			hmq.setQtype("Long Answer");
-			hmq.setQuestiontitle(longans[i]);
-			if (!longansid[i].isEmpty()) {
-				hmq.setQuestionid(Integer.parseInt(longansid[i]));
+			for (int i = 0; i < longans.length; i++) {
+				HireMasterQuestions hmq = new HireMasterQuestions();
+				hmq.setQtype("Long Answer");
+				hmq.setQuestiontitle(longans[i]);
+				if (!longansid[i].isEmpty()) {
+					hmq.setQuestionid(Integer.parseInt(longansid[i]));
+				}
+				setHireMasterQuestions.add(hmq);
 			}
-			setHireMasterQuestions.add(hmq);
-		}
-		
+
 		if (yesnoans != null)
-		for (int i = 0; i < yesnoans.length; i++) {
-			HireMasterQuestions hmq = new HireMasterQuestions();
-			hmq.setQtype("Yes / No");
-			hmq.setQuestiontitle(yesnoans[i]);
-			if (!yesnoansid[i].isEmpty()) {
-				hmq.setQuestionid(Integer.parseInt(yesnoansid[i]));
+			for (int i = 0; i < yesnoans.length; i++) {
+				HireMasterQuestions hmq = new HireMasterQuestions();
+				hmq.setQtype("Yes / No");
+				hmq.setQuestiontitle(yesnoans[i]);
+				if (!yesnoansid[i].isEmpty()) {
+					hmq.setQuestionid(Integer.parseInt(yesnoansid[i]));
+				}
+				setHireMasterQuestions.add(hmq);
 			}
-			setHireMasterQuestions.add(hmq);
-		}
-		
+
 		if (multipleans != null)
-		for (int i = 0; i < multipleans.length; i++) {
-			HireMasterQuestions hmq = new HireMasterQuestions();
-			hmq.setQtype("Multiple Choice");
-			hmq.setQuestiontitle(multipleans[i]);
-			hmq.setOption1(option1[i]);
-			hmq.setOption2(option2[i]);
-			hmq.setOption3(option3[i]);
-			
-			if (!multipleansid[i].isEmpty()) {
-				hmq.setQuestionid(Integer.parseInt(multipleansid[i]));
+			for (int i = 0; i < multipleans.length; i++) {
+				HireMasterQuestions hmq = new HireMasterQuestions();
+				hmq.setQtype("Multiple Choice");
+				hmq.setQuestiontitle(multipleans[i]);
+				hmq.setOption1(option1[i]);
+				hmq.setOption2(option2[i]);
+				hmq.setOption3(option3[i]);
+
+				if (!multipleansid[i].isEmpty()) {
+					hmq.setQuestionid(Integer.parseInt(multipleansid[i]));
+				}
+				setHireMasterQuestions.add(hmq);
 			}
-			setHireMasterQuestions.add(hmq);
-		}
-		
+
 		if (checkans != null)
-		for (int i = 0; i < checkans.length; i++) {
-			HireMasterQuestions hmq = new HireMasterQuestions();
-			hmq.setQtype("Check box");
-			hmq.setQuestiontitle(checkans[i]);
-			if (!checkansid[i].isEmpty()) {
-				hmq.setQuestionid(Integer.parseInt(checkansid[i]));
+			for (int i = 0; i < checkans.length; i++) {
+				HireMasterQuestions hmq = new HireMasterQuestions();
+				hmq.setQtype("Check box");
+				hmq.setQuestiontitle(checkans[i]);
+				if (!checkansid[i].isEmpty()) {
+					hmq.setQuestionid(Integer.parseInt(checkansid[i]));
+				}
+				setHireMasterQuestions.add(hmq);
 			}
-			setHireMasterQuestions.add(hmq);
-		}
 		if (fileuploadans != null)
-		for (int i = 0; i < fileuploadans.length; i++) {
-			HireMasterQuestions hmq = new HireMasterQuestions();
-			hmq.setQtype("File Upload");
-			hmq.setQuestiontitle(fileuploadans[i]);
-			if (!fileuploadansid[i].isEmpty()) {
-				hmq.setQuestionid(Integer.parseInt(fileuploadansid[i]));
+			for (int i = 0; i < fileuploadans.length; i++) {
+				HireMasterQuestions hmq = new HireMasterQuestions();
+				hmq.setQtype("File Upload");
+				hmq.setQuestiontitle(fileuploadans[i]);
+				if (!fileuploadansid[i].isEmpty()) {
+					hmq.setQuestionid(Integer.parseInt(fileuploadansid[i]));
+				}
+				setHireMasterQuestions.add(hmq);
 			}
-			setHireMasterQuestions.add(hmq);
-		}
 
 		hireMaster.setHireMasterQuestions(setHireMasterQuestions);
 		hireMaster = hireMasterService.save(hireMaster);

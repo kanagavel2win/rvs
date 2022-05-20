@@ -322,7 +322,7 @@
                 
             </div>
             <div class="content-body">
-              
+               
 				 <!-- Zero configuration table -->
                 <section id="basic-datatable">
                     <div class="row">
@@ -372,7 +372,7 @@
 	                                                  <div class="form-group col-md-6">
 	                                                      <div class="position-relative has-icon-left">
                                                                	<input type="hidden" id="currentdd" th:value="${currentdd}" />
-                                                               	<input type="hidden" id="currentdate" th:value="${tempcurrentdate}" />
+                                                               	<input type="hidden" id="currentdate" th:value="${jsdate}" />
                                                                 <input type="hidden" id="targetedbranchid" th:value="${targetedbranchid}" />
                                                                 
                                                                 <select class="form-control" id="branchlist">
@@ -633,6 +633,7 @@
 		
 				
 		$('#saveall').click(function(){
+			$(this).hide();
 			$("#btnmodelclose").removeClass("refresh");
 			$('#modeljqueryresult').text("");
 			var currentdd=$('#currentdd').val();

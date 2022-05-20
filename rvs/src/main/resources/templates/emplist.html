@@ -26,6 +26,10 @@
 	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+	
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/tables/datatable/datatables.min.css}">
+	
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->
@@ -145,7 +149,7 @@
                                                         <th>Job Title</th>
                                                         <th>Employment Status</th>  
                                                         <th>Location</th>
-                                                        <th>Hire Date</th>
+                                                        <th width="15%">Hire_Date</th>
                                                         
                                                         
 	
@@ -226,6 +230,11 @@
 		<!-- BEGIN Vendor JS-->
 
 		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
+		
+		
 		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
 		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
 		<!-- END: Page Vendor JS-->
@@ -239,7 +248,7 @@
 
 		<!-- BEGIN: Page JS-->
 		<script
-			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+			th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
 		<!-- END: Page JS-->
 </body>
 <!-- END: Body-->

@@ -1,19 +1,25 @@
 package com.rvs.springboot.thymeleaf.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.rvs.springboot.thymeleaf.service.LoginService;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-/*    @Autowired
-    private UserService userService;
-*/
+    @Autowired
+    private LoginService loginService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	http.sessionManagement()
@@ -21,20 +27,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	
         http.authorizeRequests()
                     .antMatchers(
-                    		"/*",
-                    		"/employeeprofilephoto/**",
-                    		"/employeeresume/**",
-                    		"/employeecertification/**",
-                    		"/employeehiredate**",
-                            "/registration**",
-                            "/app-assets/**",
+                    		"/app-assets/**",
                             "/assets/**",
                             "/gulp-tasks/**",
                             "/src/**",
                             "/css/**",
                             "/webjars/**",
-                            "/ajax","/api/customer/all","/api/customer/save","/js/**"
+                            "/ajax","/js/**","/","/index"
                     		).permitAll()
+                    .antMatchers("/rvsemp/**").access("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+                    .antMatchers("/**").access("hasRole('ROLE_ADMIN')")                    
+                    .antMatchers(
+                    		"/employeeprofilephoto/**",
+                    		"/employeeresume/**",
+                    		"/employeecertification/**",
+                    		"/employeehiredate**",
+                            "/api/customer/all",
+                            "/api/customer/save").access("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+                    
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -58,10 +68,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-/*    @Bean
+    @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userService);
+        auth.setUserDetailsService(loginService);
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
@@ -70,17 +80,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
-*/
+
     
-    /*@Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-      return http.requiresChannel(channel -> 
-            channel.anyRequest().requiresSecure())
-        .authorizeRequests(authorize ->
-            authorize.anyRequest().permitAll())
-        .build();
-    	return 	http.requiresChannel().anyRequest().requiresSecure();
-      }*/
+   
     
   
 }

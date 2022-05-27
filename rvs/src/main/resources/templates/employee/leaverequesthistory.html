@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="ICC">
-<title>Employee List</title>
+<title>Leave Request List</title>
 <link rel="apple-touch-icon"
 	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
 <link rel="shortcut icon" type="image/x-icon"
@@ -94,12 +94,12 @@
 	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
+		 <div th:insert="employee/header">  </div>
 		<!-- END: Header-->
 
 
 		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
+		<div th:insert="employee/menu">  </div>
 		<!-- END: Main Menu-->
 
 			<!-- BEGIN: Content-->
@@ -111,7 +111,7 @@
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Employee List</h5>
+                            <h5 class="content-header-title float-left pr-1 mb-0">Leave Request List</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
                                     <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
@@ -119,7 +119,7 @@
                                   
                                 	   
                                 </ol>
-                                <a href="empnew" class="addnewEmployee"><button type="button" class="btn btn-warning mr-1 mb-1">Add Employee</button></a>
+                                
                             </div>
                         </div>
                    
@@ -143,47 +143,60 @@
                                             <table class="table zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th>Employee photo</th>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Job Title</th>
-                                                        <th>Employment Status</th>  
-                                                        <th>Location</th>
-                                                        <th width="15%">Hire_Date</th>
-                                                        
-                                                        
-	
+                                                    	<th rowspan="1" colspan="1">S.No</th>
+                                                    	<th rowspan="1" colspan="1">FromDate</th>
+                                                    	<th rowspan="1" colspan="1">ToDate</th>
+                                                    	<th rowspan="1" colspan="1">Leave Type</th>
+                                                    	<th rowspan="1" colspan="1">Time</th>
+                                                    	<th rowspan="1" colspan="1">Note</th>
+                                                    	<th rowspan="1" colspan="1">Status & Comments</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                	<tr th:each="emp,stat : ${emplist}">
-													   <td >
-													         <div class="avatar mr-1 avatar-xl">
-					                                            <img  th:src="${#strings.arraySplit(emp,'|')[1] }" alt="avtar img holder">
-					                                       	 </div>
-									                   </td> 	
-													   <td><a th:href="'createpwd?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${stat.index+1}"></a></td>
-													   <td><a th:href="'emp?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${#strings.arraySplit(emp,'|')[0] }" title="Edit Profile"></a></td>
-													   <td th:if="${#strings.arraySplit(emp,'|')[4] }==' '"><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}" title="Edit Job details">Empty</a></td>
-													   <td th:unless="${#strings.arraySplit(emp,'|')[4] }==' '"><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${#strings.arraySplit(emp,'|')[4] }"  title="Edit Job details"></a></td>
-													   
-													   <td th:text="${#strings.arraySplit(emp,'|')[3] }"></td>
-													   <td th:text="${#strings.arraySplit(emp,'|')[5] }"></td>
-													   <td th:text="${#strings.arraySplit(emp,'|')[6] }"></td>
-													   
-													</tr>
-													
-                                                </tbody>
-                                                <tfoot>
-                                                     <tr>
-                                                        <th>Employee photo</th>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Job Title</th>
-                                                        <th>Employment Status</th>  
-                                                        <th>Location</th>
-                                                        <th>Hire Date</th>                                                                                                        
+                                                 	<tr th:each="obj,stat : ${leaveMasterlist}" role="row" class="odd">
+                                                        <td class="sorting_1" th:text="${stat.index +1}"></td>
+                                                       <td>
+                                                       	<span th:text="${obj.fromadate}"></span>
+                                                       	<span th:if="${obj.halfday}" class="halfday">Halfday</span>
+                                                       </td>
+                                                        <td th:text="${obj.todate}"></td>
+                                                        <td th:text="${obj.leavetype}"></td>
+                                                        <td th:text="${obj.permissionstarttime} +'-' + ${obj.permissionendtime}"></td>
+                                                        <td th:text="${obj.notes}"></td>
+                                                        <td>
                                                         
+                                                        	<div th:if="${obj.status == 'Approved'}" class="chip chip-primary mr-1">
+		                                                        <div class="chip-body">
+		                                                            <span class="chip-text">Approved</span>
+		                                                          
+		                                                        </div>
+		                                                    </div>
+		                                                    <div th:if="${obj.status == 'Rejected'}" class="chip chip-danger mr-1">
+		                                                        <div class="chip-body">
+		                                                            <span class="chip-text">Rejected</span>
+		                                                        </div>
+		                                                    </div>
+		                                                    <div th:if="${obj.status == 'Pending'}" class="chip chip-warning mr-1">
+		                                                        <div class="chip-body">
+		                                                            <span class="chip-text">Pending</span>
+		                                                        </div>
+		                                                    </div>
+                                                        	  <span class="chip-text" th:text="${obj.approvercomments}"></span>
+		                                                          
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                 </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                    	<th rowspan="1" colspan="1">S.No</th>
+                                                    	
+                                                    	<th rowspan="1" colspan="1">FromDate</th>
+                                                    	<th rowspan="1" colspan="1">ToDate</th>
+                                                    	<th rowspan="1" colspan="1">Leave Type</th>
+                                                    	<th rowspan="1" colspan="1">Time</th>
+                                                    	<th rowspan="1" colspan="1">Note</th>
+                                                    	<th rowspan="1" colspan="1">Status</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>

@@ -55,4 +55,9 @@ public class LeaveMasterImp implements LeaveMasterService {
 		 LeaveMasterrespository.deleteById(id);
 	}
 
+	@Override
+	public List<LeaveMaster> findByEmpid(Integer id) {
+		return LeaveMasterrespository.findByEmpid(id);
+	}
+
 }

@@ -9,6 +9,7 @@ public interface LeaveMasterService {
 
 	public LeaveMaster save(LeaveMaster obj);
 	public LeaveMaster findById(Integer id);
+	public List<LeaveMaster> findByEmpid(Integer id);
 	public List<LeaveMaster> findAll();
 	public void deleteByid(int id);
 }

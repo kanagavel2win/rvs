@@ -10,7 +10,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -56,6 +55,8 @@ import com.rvs.springboot.thymeleaf.entity.HireMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
+import com.rvs.springboot.thymeleaf.entity.Login;
+import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
@@ -66,6 +67,7 @@ import com.rvs.springboot.thymeleaf.service.EmployeeMasterService;
 import com.rvs.springboot.thymeleaf.service.HireMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
+import com.rvs.springboot.thymeleaf.service.LoginService;
 
 @Controller
 
@@ -93,48 +95,68 @@ public class HomeController {
 	LeaveMasterService leaveMasterService;
 	@Autowired
 	HireMasterService hireMasterService;
-
+	@Autowired
+    private LoginService loginService;
+	
+	
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-	/*
-	 * @ModelAttribute public void addAttributes(Model themodel, HttpSession
-	 * session, HttpServletRequest request) {
-	 * 
-	 * String dataLoginEmailID = ""; String dataLoginClubID = ""; try {
-	 * 
-	 * try { if
-	 * (request.getSession().getAttribute("dataLoginEmailID").toString().equals(null
-	 * )) { dataLoginClubID = getLoginClubID();
-	 * request.getSession().setAttribute("dataLoginClubID", dataLoginClubID);
-	 * dataLoginEmailID = getLoginemailID();
-	 * request.getSession().setAttribute("dataLoginEmailID", dataLoginEmailID); } }
-	 * catch (NullPointerException e) { dataLoginClubID = getLoginClubID();
-	 * request.getSession().setAttribute("dataLoginClubID", dataLoginClubID);
-	 * dataLoginEmailID = getLoginemailID();
-	 * request.getSession().setAttribute("dataLoginEmailID", dataLoginEmailID); }
-	 * 
-	 * dataLoginEmailID =
-	 * request.getSession().getAttribute("dataLoginEmailID").toString();
-	 * dataLoginClubID =
-	 * request.getSession().getAttribute("dataLoginClubID").toString();
-	 * 
-	 * } catch (Exception e) {
-	 * 
-	 * } finally { themodel.addAttribute("dataLoginEmailID", dataLoginEmailID);
-	 * themodel.addAttribute("dataLoginClubID", dataLoginClubID); }
-	 * 
-	 * }
-	 */
+	@ModelAttribute
+	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
+
+		String dataLoginEmpID = "";
+		String dataLoginEmpName="";
+		try {
+
+			try {
+				if (request.getSession().getAttribute("dataLoginEmpID").toString().equals(null)) {
+					request.getSession().setAttribute("dataLoginEmpID", getLoginempID());
+				}
+				if (request.getSession().getAttribute("dataLoginEmpName").toString().equals(null)) {
+					request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
+				}
+			} catch (NullPointerException e) {
+				request.getSession().setAttribute("dataLoginEmpID", getLoginempID());	
+				request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
+			}
+
+			dataLoginEmpID = request.getSession().getAttribute("dataLoginEmpID").toString();
+			dataLoginEmpName = request.getSession().getAttribute("dataLoginEmpName").toString();
+
+		} catch (Exception e) {
+
+		} finally {
+			themodel.addAttribute("dataLoginEmpID", dataLoginEmpID);
+			themodel.addAttribute("dataLoginEmpName", dataLoginEmpName);
+		}
+
+	}
+
 	@GetMapping("/")
 	public String home(Model theModel, HttpSession session, HttpServletRequest request) {
-		return "index";
-		/*
-		 * if (logintype("ROLE_MEMBER")) {
-		 * 
-		 * theModel.addAttribute("MemberID", getLoginMemberID()); return "indexMember";
-		 * } else if (logintype("ROLE_CLUBADMIN")) { return "index"; } else { return
-		 * "redirect:logout"; }
-		 */
+		if (logintype("ROLE_EMPLOYEE")) {
+			return "redirect:rvsemp/";
+		} else if (logintype("ROLE_ADMIN")) {
+			return "index";
+		} else {
+			return "login";
+		}
+
+		//return "index";
+	}
+	@GetMapping("/index")
+	public String index(Model theModel) {
+		
+		if (logintype("ROLE_EMPLOYEE")) {
+			return "redirect:rvsemp/";
+		} else if (logintype("ROLE_ADMIN")) {
+			return "index";
+		} else {
+			//return "redirect:logout";
+			return "login";
+		}
+
+		
 	}
 
 	private boolean logintype(String expectedrole) {
@@ -151,63 +173,75 @@ public class HomeController {
 				RoleStatus = true;
 			}
 		}
-
+		
 		return RoleStatus;
 
 	}
 
-	/*
-	 * public String getLoginemailID() {
-	 * 
-	 * Authentication authentication =
-	 * SecurityContextHolder.getContext().getAuthentication(); String
-	 * currentPrincipalName = authentication.getName(); User user2 =
-	 * userRepository.findByEmail(currentPrincipalName); return user2.getEmail();
-	 * 
-	 * }
-	 * 
-	 * public String getLoginMemberID() {
-	 * 
-	 * Authentication authentication =
-	 * SecurityContextHolder.getContext().getAuthentication(); String
-	 * currentPrincipalName = authentication.getName(); User user2 =
-	 * userRepository.findByEmail(currentPrincipalName); return user2.getmemberID();
-	 * 
-	 * }
-	 * 
-	 * public String getLoginClubID() {
-	 * 
-	 * Authentication authentication =
-	 * SecurityContextHolder.getContext().getAuthentication(); String
-	 * currentPrincipalName = authentication.getName(); User user2 =
-	 * userRepository.findByEmail(currentPrincipalName); return user2.getClubID();
-	 * 
-	 * }
-	 */
-	@GetMapping("/index")
-	public String index(Model theModel) {
-		return "index";
-		/*
-		 * if (logintype("ROLE_MEMBER")) { theModel.addAttribute("MemberID",
-		 * getLoginMemberID()); return "indexMember"; } else if
-		 * (logintype("ROLE_CLUBADMIN")) { return "index"; } else { return
-		 * "redirect:logout"; }
-		 */
+	public String getLoginempID() {
 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();
 	}
+	public String getLoginEmpName()
+	{
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
+		return obj.getStaffName();
+	}
+	
 
-	/*
-	 * @GetMapping("login") public String login(Model model) {
-	 * 
-	 * return "login"; }
-	 */
+	
+	@GetMapping("login")
+	public String login(Model model) {
+
+		return "login";
+	}
 
 	@GetMapping("403")
 	public String accessDenied(Model model) {
 
-		return "403";
+		return "error/403";
 	}
 
+	@GetMapping("createpwd")
+	public String createpwd(Model themodel, @RequestParam(name="id", required=false) Long id) {
+		
+		if(!(id == null))
+		{
+		EmployeeMaster empobj= employeeMasterService.findById(Integer.parseInt(String.valueOf(id)));
+		
+		Login obj= new Login();
+		obj.setId(Long.valueOf(empobj.getEmpMasterid()));
+		themodel.addAttribute("login", obj);
+		themodel.addAttribute("empname", empobj.getStaffName());
+		}
+		return "credentialreg";
+	}
+	
+
+    @PostMapping("createpwd")
+    public String registerloginAccount(@ModelAttribute("login") Login login, @RequestParam(name="privilege" , defaultValue="ROLE_EMPLOYEE") String privilege){
+
+        Login existing = loginService.findByEmpid(String.valueOf(login.getId()));
+        if (existing != null){
+        	return "redirect:/createpwd?error";
+        }else
+        {
+        	EmployeeMaster empobj= employeeMasterService.findById(Integer.parseInt(String.valueOf(login.getId())));
+    		
+        	LoginRegistrationDto loginDto=new LoginRegistrationDto();
+        	loginDto.setEmpid(String.valueOf(empobj.getEmpMasterid()));
+        	loginDto.setConfirmPassword(String.valueOf(empobj.getEmpMasterid()));
+        	loginDto.setPassword(String.valueOf(empobj.getEmpMasterid()));
+        	
+        	loginService.save(loginDto, privilege);
+        	
+        }
+        return "redirect:/createpwd?success";
+    }
+
+	
 	@GetMapping("addnewbranch")
 	public String addnewbranch(Model theModel) {
 
@@ -1076,7 +1110,7 @@ public class HomeController {
 		SimpleDateFormat formatterdd = new SimpleDateFormat("dd");
 		SimpleDateFormat formattermonname = new SimpleDateFormat("MMMM");
 		DecimalFormat decformatter = new DecimalFormat("00");
-		String jsdate="";
+		String jsdate = "";
 		Date date = new Date();
 		Date temppredate = new Date();
 		Date tempnxtdate = new Date();
@@ -1172,7 +1206,7 @@ public class HomeController {
 				calhtml = calhtml + "<td class='selectdate' name='" + (i) + "/" + (currentmonth) + "/" + (currentyear)
 						+ "'>";
 				calhtml = calhtml + "<div class='cal_inner_holder_right_today'>" + i + "</div>";
-				jsdate= (i) + "/" + (currentmonth) + "/" + (currentyear);
+				jsdate = (i) + "/" + (currentmonth) + "/" + (currentyear);
 			} else {
 				calhtml = calhtml + "<td class='td' name='" + (i) + "/" + (currentmonth) + "/" + (currentyear) + "'>";
 				calhtml = calhtml + "<div class='cal_inner_holder_right'>" + i + "</div>";
@@ -1221,7 +1255,7 @@ public class HomeController {
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date dateforeffectemp = date;
-		
+
 		// ------------------------------------------------------------------------------------
 		// Find out Effective location Employee filter with selected branch
 		for (EmployeeMaster obj : employeeMasterls) {
@@ -1233,13 +1267,12 @@ public class HomeController {
 						c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0)
 						.collect(Collectors.toList());
 				infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
-				
-				
+
 				if (infoobjgreen.size() > 0) {
 					if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation()
 							.equalsIgnoreCase(targetedbranchName)) {
 
-						if (!calculateTerminatedstatus(obj.getEmpMasterid(),date)) {
+						if (!calculateTerminatedstatus(obj.getEmpMasterid(), date)) {
 							employeeMasterlswitheffectivelocation.add(obj);
 						}
 					}
@@ -1300,11 +1333,11 @@ public class HomeController {
 
 	}
 
-	private boolean calculateTerminatedstatus(int EmpMasterid,Date date) {
+	private boolean calculateTerminatedstatus(int EmpMasterid, Date date) {
 		// --------------------------------------------
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date dateforeffectemp = date;
-		
+
 		Boolean returnstatus = false;
 		// --------------------------------------------
 		// Start Termination Details calculate
@@ -1382,35 +1415,7 @@ public class HomeController {
 		return "holidaydefine";
 	}
 
-	@GetMapping("leaverequest")
-	public String leaverequest(Model theModel) {
-
-		LeaveMaster leavemaster = new LeaveMaster();
-		List<EmployeeMaster> emplist = employeeMasterService.findAll();
-		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll();
-
-		theModel.addAttribute("emplist", emplist);
-		theModel.addAttribute("leavemaster", leavemaster);
-		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
-		return "leaverequest";
-	}
-
-	@PostMapping("leaverequest")
-	public String leaverequestsave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster leaveMasterobj) {
-
-		leaveMasterobj.setStatus("Pending");
-		LeaveMaster leavemaster = new LeaveMaster();
-		LeaveMaster leaveMasterobjtemp = leaveMasterService.save(leaveMasterobj);
-		List<EmployeeMaster> emplist = employeeMasterService.findAll();
-		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll();
-
-		theModel.addAttribute("emplist", emplist);
-		theModel.addAttribute("leavemaster", leavemaster);
-		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
-		theModel.addAttribute("save", "save");
-		return "leaverequest";
-	}
-
+	
 	@GetMapping("hire")
 	public String hire(Model theModel) {
 		List<HireMaster> hmlist = hireMasterService.findAll();
@@ -1422,7 +1427,7 @@ public class HomeController {
 					.collect(Collectors.toList()).get(0).getStaffName());
 
 		}
-		//System.out.println(hmlistemp);
+		// System.out.println(hmlistemp);
 		theModel.addAttribute("hmlist", hmlist);
 		theModel.addAttribute("emp", hmlistemp);
 		return "hiring";
@@ -1468,22 +1473,23 @@ public class HomeController {
 			@RequestParam(name = "fileuploadans", required = false) String[] fileuploadans,
 			@RequestParam(name = "fileuploadansid", required = false) String[] fileuploadansid) {
 		// --------------------------------------------------------------
-		/*System.out.println("shortans" + Arrays.toString(shortans));
-		System.out.println("shortansid" + Arrays.toString(shortansid));
-		System.out.println("longans" + Arrays.toString(longans));
-		System.out.println("longansid" + Arrays.toString(longansid));
-		System.out.println("yesnoans" + Arrays.toString(yesnoans));
-		System.out.println("yesnoansid" + Arrays.toString(yesnoansid));
-		System.out.println("multipleans" + Arrays.toString(multipleans));
-		System.out.println("multipleansid" + Arrays.toString(multipleansid));
-		System.out.println("option1" + Arrays.toString(option1));
-		System.out.println("option2" + Arrays.toString(option2));
-		System.out.println("option3" + Arrays.toString(option3));
-		System.out.println("checkans" + Arrays.toString(checkans));
-		System.out.println("checkansid" + Arrays.toString(checkansid));
-		System.out.println("fileuploadans" + Arrays.toString(fileuploadans));
-		System.out.println("fileuploadansid" + Arrays.toString(fileuploadansid));
-*/
+		/*
+		 * System.out.println("shortans" + Arrays.toString(shortans));
+		 * System.out.println("shortansid" + Arrays.toString(shortansid));
+		 * System.out.println("longans" + Arrays.toString(longans));
+		 * System.out.println("longansid" + Arrays.toString(longansid));
+		 * System.out.println("yesnoans" + Arrays.toString(yesnoans));
+		 * System.out.println("yesnoansid" + Arrays.toString(yesnoansid));
+		 * System.out.println("multipleans" + Arrays.toString(multipleans));
+		 * System.out.println("multipleansid" + Arrays.toString(multipleansid));
+		 * System.out.println("option1" + Arrays.toString(option1));
+		 * System.out.println("option2" + Arrays.toString(option2));
+		 * System.out.println("option3" + Arrays.toString(option3));
+		 * System.out.println("checkans" + Arrays.toString(checkans));
+		 * System.out.println("checkansid" + Arrays.toString(checkansid));
+		 * System.out.println("fileuploadans" + Arrays.toString(fileuploadans));
+		 * System.out.println("fileuploadansid" + Arrays.toString(fileuploadansid));
+		 */
 		// --------------------------------------------------------------
 		Date currentdate = new Date();
 		SimpleDateFormat formatterdate = new SimpleDateFormat("dd/MM/yyyy");
@@ -1596,5 +1602,44 @@ public class HomeController {
 
 		return "deleted";
 
+	}
+	
+	@GetMapping("leaveapprove")
+	public String leaveapprove(Model theModel) {
+		
+		LeaveMaster leavemaster = new LeaveMaster();
+		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll().stream().filter(c -> c.getStatus().equalsIgnoreCase("Pending")).collect(Collectors.toList());
+		Collections.sort(leaveMasterlist, Collections.reverseOrder());
+		List<EmployeeMaster> em= employeeMasterService.findAll();
+		
+		Map<Integer, String> emmap = em.stream().collect(Collectors.toMap(EmployeeMaster::getEmpMasterid, EmployeeMaster::getStaffName)); 
+		theModel.addAttribute("emmap", emmap);
+		theModel.addAttribute("leavemaster", leavemaster);
+		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
+		return "leaveapprove";
+	}
+
+	@GetMapping("leavereview")
+	public String leavereview(Model theModel, @RequestParam("id") int id) {
+		
+		LeaveMaster leaveMaster = leaveMasterService.findById(id);
+		EmployeeMaster emp= employeeMasterService.findById(leaveMaster.getEmpid());
+		theModel.addAttribute("emmap", emp);
+		theModel.addAttribute("leavemaster", leaveMaster);
+		
+		return "leavereview";
+	}
+
+	@PostMapping("leavereview")
+	public String leaveresave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster obj) {
+		obj.setApproverejectdate(String.valueOf(new Date()));
+		LeaveMaster leaveMaster = leaveMasterService.save(obj);
+		EmployeeMaster emp= employeeMasterService.findById(leaveMaster.getEmpid());
+		theModel.addAttribute("emmap", emp);
+		
+		theModel.addAttribute("leavemaster", leaveMaster);
+		theModel.addAttribute("save", "save");
+		
+		return "leavereview";
 	}
 }

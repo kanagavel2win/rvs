@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Leave Approve</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/tables/datatable/datatables.min.css}">
+	
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+	.card-text
+	{
+		background: #E5E5E5;
+		padding:5px;
+		color:#000;
+	}
+	.halfday
+	{
+		color:red
+	}
+</style>
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="employee/header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="employee/menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class="content-header-title pr-1 mb-0">Leave Approval</h5>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+              	<form 
+											method="POST" class="wizard-horizontal"
+											enctype="multipart/form-data">
+	                <!-- Basic Vertical form layout section start -->
+	                <section id="basic-vertical-layouts">
+	                    <div class="row match-height">
+	                        <div class="col-12">
+	                            <div class="card">
+	                                <div class="card-content">
+	                                    <div class="card-body">
+	                                        
+	                                        <div th:if="${save}" class="form-group col-12">
+												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">
+												Leave request has been raised
+												</button>
+											</div>
+							            
+	                                        
+	                                    
+	                                    	<hr/>
+	                                    	<div class="table-responsive">
+
+      										
+                                            <table class="table zero-configuration table-hover">
+                                            	<thead>
+                                                    <tr>
+                                                    	<th rowspan="1" colspan="1">S.No</th>
+                                                    	<th rowspan="1" colspan="1">Name</th>
+                                                    	<th rowspan="1" colspan="1">FromDate</th>
+                                                    	<th rowspan="1" colspan="1">ToDate</th>
+                                                    	<th rowspan="1" colspan="1">Leave Type</th>
+                                                    	<th rowspan="1" colspan="1">Time</th>
+                                                    	<th rowspan="1" colspan="1">Note</th>
+                                                    	
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                 	<tr th:each="obj,stat : ${leaveMasterlist}" role="row" class="odd">
+                                                        <td class="sorting_1" th:text="${stat.index +1}"></td>
+                                                        <td>
+                                                        	<a th:href="'leavereview?id='+ ${obj.id}"><span th:text="${emmap.get(obj.empid)}"></span></a>
+                                                        </td>
+                                                       <td>
+                                                       	<span th:text="${obj.fromadate}"></span>
+                                                       	<span th:if="${obj.halfday}" class="halfday">Halfday</span>
+                                                       </td>
+                                                        <td th:text="${obj.todate}"></td>
+                                                        <td th:text="${obj.leavetype}"></td>
+                                                        <td th:text="${obj.permissionstarttime} +'-' + ${obj.permissionendtime}"></td>
+                                                        <td th:text="${obj.notes}"></td>
+                                                        
+                                                    </tr>
+                                                    
+                                                 </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                    	<th rowspan="1" colspan="1">S.No</th>
+                                                    	<th rowspan="1" colspan="1">Name</th>
+                                                    	<th rowspan="1" colspan="1">FromDate</th>
+                                                    	<th rowspan="1" colspan="1">ToDate</th>
+                                                    	<th rowspan="1" colspan="1">Leave Type</th>
+                                                    	<th rowspan="1" colspan="1">Time</th>
+                                                    	<th rowspan="1" colspan="1">Note</th>
+                                                    	
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        	</div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </section>
+	                <!-- // Basic Vertical form layout section end -->
+				</form>
+
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		<!-- END: Footer-->
+
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
+    	<script th:src="@{app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
+    	<script th:src="@{app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
+    	<script th:src="@{app-assets/vendors/js/tables/datatable/buttons.html5.min.js}"></script>
+    	<script th:src="@{app-assets/vendors/js/tables/datatable/buttons.print.min.js}"></script>
+    	<script th:src="@{app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js}"></script>
+    	<script th:src="@{app-assets/vendors/js/tables/datatable/pdfmake.min.js}"></script>
+    	<script th:src="@{app-assets/vendors/js/tables/datatable/vfs_fonts.js}"></script>
+    	
+		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		
+		<script
+			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+			<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
+		<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

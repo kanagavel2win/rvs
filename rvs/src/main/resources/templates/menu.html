@@ -6,6 +6,7 @@
                         <h2 class="brand-text mb-0"><b>RVS</b></h2>
                     </a></li>
                 <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="bx bx-x d-block d-xl-none font-medium-4 primary"></i><i class="toggle-icon bx bx-disc font-medium-4 d-none d-xl-block primary" data-ticon="bx-disc"></i></a></li>
+                
             </ul>
         </div>
         
@@ -13,26 +14,27 @@
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="">
                 <li class=" nav-item"><a href="index"><i class="bx bx-home-alt"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>					
                 </li>
-                
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class=" nav-item"><a href="rvsemp/">
+	                <i class="bx bxs-left-arrow-square"></i><span class="menu-title">Personal Portal</span></a>
+                </li>
                 
                 <li class=" navigation-header"><span>Apps</span>
                 </li>
-                
-                <li class=" nav-item"><a href="branchlist"><i class="bx bx-buildings"></i><span class="menu-title" data-i18n="Invoice">Branch</span></a>
+                <li class=" nav-item"><a href="branchlist"><i class="bx bx-buildings"></i><span class="menu-title">Branch</span></a>
                 </li>
-                <li class=" nav-item"><a href="emplist"><i class="bx bx-id-card"></i><span class="menu-title" data-i18n="Invoice">Employee</span></a>
+                <li class=" nav-item"><a href="emplist"><i class="bx bx-id-card"></i><span class="menu-title">Employee</span></a>
                 </li>
-                <li class=" nav-item"><a href="empattendance"><i class="bx bx-spreadsheet"></i><span class="menu-title" data-i18n="Invoice">Attendance</span></a>
+                <li class=" nav-item"><a href="empattendance"><i class="bx bx-spreadsheet"></i><span class="menu-title">Attendance</span></a>
                 </li>
-                <li class=" nav-item"><a href="holidaydefine"><i class="bx bx-calendar-event"></i><span class="menu-title" data-i18n="Invoice">Holiday</span></a>
+                <li class=" nav-item"><a href="holidaydefine"><i class="bx bx-calendar-event"></i><span class="menu-title">Holiday</span></a>
                 </li>
-                <li class=" nav-item"><a href="leaverequest"><i class="bx bxs-calendar-x"></i><span class="menu-title" data-i18n="Invoice">Leave Req</span></a>
+                <li class=" nav-item"><a href="leaveapprove"><i class="bx bxs-calendar-x"></i><span class="menu-title">Leave Approve</span></a>
                 </li>
-                <li class=" nav-item"><a href="hire"><i class="bx bx-award"></i><span class="menu-title" data-i18n="Invoice">Hire</span></a>
+                <li class=" nav-item"><a href="hire"><i class="bx bx-award"></i><span class="menu-title">Hire</span></a>
                 </li>
-                <li class=" nav-item"><a href="calendar"><i class="bx bx-award"></i><span class="menu-title" data-i18n="Invoice">Calendar</span></a>
+<!--                <li class=" nav-item"><a href="calendar"><i class="bx bx-award"></i><span class="menu-title">Calendar</span></a>
                 </li>
-<!--                  <li class="nav-item has-sub sidebar-group-active open"><a href="#"><i class="bx bx-bulb"></i><span class="menu-title" data-i18n="Icons">Icons</span></a>
+                  <li class="nav-item has-sub sidebar-group-active open"><a href="#"><i class="bx bx-bulb"></i><span class="menu-title" data-i18n="Icons">Icons</span></a>
                     <ul class="menu-content">
                         <li class=""><a href="icons-livicons.html"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="LivIcons">LivIcons</span></a>
                         </li>

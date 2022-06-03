@@ -13,7 +13,7 @@
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="">
                 <li class=" nav-item"><a href="index"><i class="bx bx-home-alt"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>					
                 </li>
-                <li sec:authorize="hasRole('ROLE_ADMIN')" class=" nav-item"><a href="../">
+                <li th:if="${dataLoginrole}=='ROLE_ADMIN'" class=" nav-item"><a href="../">
 	                <i class="bx bxs-left-arrow-square"></i><span class="menu-title">Admin Portal</span></a>
                 </li>
                 
@@ -24,6 +24,19 @@
                 </li>
                 <li class=" nav-item"><a href="leavereqlist"><i class="bx bx-list-ul"></i><span class="menu-title" data-i18n="Invoice">Leave Request List</span></a>
                 </li>
+                
+                 <li class=" navigation-header"><span>Profile</span>
+                </li>
+                
+                <li class=" nav-item"><a href="viewprofile"><i class="bx bxs-user-detail"></i><span class="menu-title" data-i18n="Invoice">Personal Details</span></a>
+                </li>
+                
+                <li class=" nav-item"><a href="viewjob"><i class="bx bx-book-open"></i><span class="menu-title" data-i18n="Invoice">Job Details</span></a>
+                </li>
+                
+                <li class=" nav-item"><a href="changepassword"><i class="bx bxs-key"></i><span class="menu-title" data-i18n="Invoice">Change Password</span></a>
+                </li>
+                
                
 			 </ul>
         </div>

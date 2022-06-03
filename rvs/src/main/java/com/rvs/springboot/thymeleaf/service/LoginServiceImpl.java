@@ -21,61 +21,63 @@ import com.rvs.springboot.thymeleaf.entity.LoginRole;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    @Autowired
-    private LoginRepository userRepository;
+	@Autowired
+	private LoginRepository userRepository;
 
-    @Autowired
-    private LoginRoleRepository userRoleRepository;
-    
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private LoginRoleRepository userRoleRepository;
 
-    public Login findByEmpid(String empid){
-        return userRepository.findByEmpid(empid);
-    }
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
-    
+	public Login findByEmpid(String empid) {
+		return userRepository.findByEmpid(empid);
+	}
 
-    
-    public Login save(LoginRegistrationDto registration, String privilege) {
-    	
-    	ArrayList<LoginRole> ls =new ArrayList<LoginRole>();
-    	//ls.add(new LoginRole(null,privilege));
-    	ls.add(userRoleRepository.findByRole(privilege));
-    	
-        Login user = new Login();
-        user.setEmpid(registration.getEmpid());
-        user.setPassword(passwordEncoder.encode(registration.getEmpid()));
-        user.setRoles(ls);
-        return userRepository.save(user);
-    }
+	public Login save(LoginRegistrationDto registration, String privilege) {
 
-    @Override
-    public UserDetails loadUserByUsername(String empid) throws UsernameNotFoundException {
-        Login user = userRepository.findByEmpid(empid);
-        if (user == null){
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }else
-        {
-        
-        	
-    		 
-    		
-        }
-       
-        return new org.springframework.security.core.userdetails.User(user.getEmpid(),
-                user.getPassword(),
-                mapRolesToAuthorities(user.getRoles()));
-    }
+		ArrayList<LoginRole> ls = new ArrayList<LoginRole>();
+		// ls.add(new LoginRole(null,privilege));
+		ls.add(userRoleRepository.findByRole(privilege));
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<LoginRole> roles){
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole()))
-                .collect(Collectors.toList());
-    }
+		Login user = new Login();
+		user.setEmpid(registration.getEmpid());
+		user.setPassword(passwordEncoder.encode(registration.getEmpid()));
+		user.setRoles(ls);
+		return userRepository.save(user);
+	}
 
+	@Override
+	public UserDetails loadUserByUsername(String empid) throws UsernameNotFoundException {
+		Login user =null;
+		empid=empid.toUpperCase();
+		
+		if (empid.contains("RVS")) {
+			empid= String.valueOf(Integer.parseInt(empid.replace("RVS","")));
+			
+			user = userRepository.findByEmpid(empid);
+
+			if (user == null) {
+				throw new UsernameNotFoundException("Invalid username or password.");
+			}
+		} else {
+			throw new UsernameNotFoundException("Invalid username or password.");
+		}
+
+		return new org.springframework.security.core.userdetails.User(user.getEmpid(), user.getPassword(),
+				mapRolesToAuthorities(user.getRoles()));
+	}
+
+	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<LoginRole> roles) {
+		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
+	}
+
+	@Override
+	public Login savePasswordchange(Login obj) {
+
+		return userRepository.save(obj);
+	}
 
 	
 
-		
 }

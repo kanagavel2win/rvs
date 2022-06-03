@@ -33,17 +33,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "/src/**",
                             "/css/**",
                             "/webjars/**",
-                            "/ajax","/js/**","/","/index"
-                    		).permitAll()
-                    .antMatchers("/rvsemp/**").access("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
-                    .antMatchers("/**").access("hasRole('ROLE_ADMIN')")                    
-                    .antMatchers(
-                    		"/employeeprofilephoto/**",
+                            "/ajax","/js/**","/","/index").permitAll()
+                    .antMatchers("/rvsemp/**",
+                            "/employeeprofilephoto/**",
                     		"/employeeresume/**",
-                    		"/employeecertification/**",
-                    		"/employeehiredate**",
-                            "/api/customer/all",
-                            "/api/customer/save").access("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+                    		"/employeecertification/**").access("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+                    .antMatchers("/**").access("hasRole('ROLE_ADMIN')")                    
                     
                     .anyRequest().authenticated()
                 .and()

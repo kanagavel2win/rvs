@@ -106,6 +106,7 @@ public class HomeController {
 
 		String dataLoginEmpID = "";
 		String dataLoginEmpName="";
+		String dataLoginrole="";
 		try {
 
 			try {
@@ -115,19 +116,24 @@ public class HomeController {
 				if (request.getSession().getAttribute("dataLoginEmpName").toString().equals(null)) {
 					request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
 				}
+				if (request.getSession().getAttribute("dataLoginrole").toString().equals(null)) {
+					request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
+				}
 			} catch (NullPointerException e) {
 				request.getSession().setAttribute("dataLoginEmpID", getLoginempID());	
 				request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
+				request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
 			}
 
 			dataLoginEmpID = request.getSession().getAttribute("dataLoginEmpID").toString();
 			dataLoginEmpName = request.getSession().getAttribute("dataLoginEmpName").toString();
-
+			dataLoginrole = request.getSession().getAttribute("dataLoginrole").toString();
 		} catch (Exception e) {
 
 		} finally {
 			themodel.addAttribute("dataLoginEmpID", dataLoginEmpID);
 			themodel.addAttribute("dataLoginEmpName", dataLoginEmpName);
+			themodel.addAttribute("dataLoginrole", dataLoginrole);
 		}
 
 	}
@@ -158,7 +164,8 @@ public class HomeController {
 
 		
 	}
-
+	
+	
 	private boolean logintype(String expectedrole) {
 
 		@SuppressWarnings("unchecked")
@@ -177,7 +184,15 @@ public class HomeController {
 		return RoleStatus;
 
 	}
-
+	public String getdataLoginrole() {
+		if (logintype("ROLE_EMPLOYEE")) {
+			return "ROLE_EMPLOYEE";
+		} else if (logintype("ROLE_ADMIN")) {
+			return "ROLE_ADMIN";
+		} else {
+			return "NA";
+		}
+	}
 	public String getLoginempID() {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -1642,4 +1657,7 @@ public class HomeController {
 		
 		return "leavereview";
 	}
+	
+	
+	
 }

@@ -14,7 +14,7 @@
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="">
                 <li class=" nav-item"><a href="index"><i class="bx bx-home-alt"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>					
                 </li>
-                <li sec:authorize="hasRole('ROLE_ADMIN')" class=" nav-item"><a href="rvsemp/">
+                <li th:if="${dataLoginrole}=='ROLE_ADMIN'" class=" nav-item"><a href="rvsemp/">
 	                <i class="bx bxs-left-arrow-square"></i><span class="menu-title">Personal Portal</span></a>
                 </li>
                 

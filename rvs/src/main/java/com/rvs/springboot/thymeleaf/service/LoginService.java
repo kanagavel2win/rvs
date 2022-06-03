@@ -12,5 +12,7 @@ public interface LoginService extends UserDetailsService {
 
     Login findByEmpid(String email);
     Login save(LoginRegistrationDto registration, String privilege);
+    Login savePasswordchange(Login obj);
+   
 	UserDetails loadUserByUsername(String empid) throws UsernameNotFoundException;
 }

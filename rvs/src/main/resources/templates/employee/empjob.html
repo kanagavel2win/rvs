@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Employee Job</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+	.emptitle
+	{
+		color: #527a00;
+		font-size: 15px;
+	    line-height: 20px;
+	    font-weight: 600;
+	    font-family: Fira Sans,Trebuchet MS,sans-serif;
+	    cursor:pointer;
+	}
+	thead
+	{
+		background-color: #ebebeb;
+		border-color: transparent;
+	    color: #555;
+	    font-weight: 700;
+	    padding: 12px 16px 11px;
+	    transition: background-color .15s ease-in-out;
+	}
+	tbody{
+		color: #222;
+	}
+	
+	.empnametitle
+	{
+		color: #FF4500;
+		font-size: 15px;
+	    line-height: 20px;
+	    font-weight: 600;
+	    font-family: Fira Sans,Trebuchet MS,sans-serif;
+	}
+	.ownstyle{
+		font-size:30px;
+		position: absolute;
+		left:-20px;
+		top:-5px;
+		cursor:pointer;
+	}
+	.ownstyle1{
+		font-size:25px;
+		top:-2px;
+		cursor:pointer;
+	}
+	.iconalign
+	{
+	 text-align:right;
+	 font-size:20px;
+	 width: 200px;
+	 right:0px;
+	 color:#fff;
+	}
+	tbody>tr:hover .iconalign
+	{
+		color:#527a00;
+		cursor:pointer;
+	}
+	
+	.bullet.bullet-success {
+    background-color: #527a00;
+	}
+	
+	.e1
+	{
+		max-width:200px;
+	
+	}
+	.e2
+	{
+		min-width:100px;
+		min-height:25px;
+	}
+	.modal-footer
+	{
+		border-top: none;
+	}
+	
+	input
+{
+	pointer-events:none;
+}
+	
+</style>
+<script>
+var tblemployeeJobempstatusid=0;
+var tblemployeeJobinfoid=0;
+var tblemployeecompensationid=0; 
+</script>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="employee/header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="employee/menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class="content-header-title float-left pr-1 mb-0">Job Details</h5>
+                            <div class="breadcrumb-wrapper col-12">
+                                <ol class="breadcrumb p-0 mb-0">
+                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+              
+                <!-- Basic Vertical form layout section start -->
+                <section id="basic-vertical-layouts">
+                    <div class="row match-height">
+                        <div class="col-12">
+                       
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                    	<div class="col-md-12">
+                                    		<div class="form-group">
+                                               <label class="empnametitle"><span  th:text="${emptitle}"></span>
+                                               <input type="hidden" th:value='${empid}' id="empid" />
+                                               </label>
+                                             </div>
+                                         </div>
+                                   	 
+                                        <div class="col-md-12">
+                                         	<div class="form-group">
+                                              <label class="emptitle"> <i class="bx bx-briefcase-alt-2 ownstyle"></i> JOB</label>
+                                             </div>
+                                        </div>
+                                        <div class="col-md-12">
+		                                        
+		                                         	<div class="form-group">
+		                                                  <label for="contact-info-icon">Hire Date</label>
+		                                                  <div class="form-group">
+		                                                  <div class="position-relative has-icon-left">
+		                                                      <input type="hidden"  class="e1 form-control"  id="hiredateid" />
+		                                                      <input type="date"  class="e1 form-control" th:value="${employeeJobemphiredate}" id="hiredate" />
+		                                                      <div class="form-control-position">
+		                                                          <i class="bx bx-calendar-event"></i>
+		                                                      </div>
+		                                                </div>       
+		                                           		</div>
+		                                            </div>
+		                                         
+		                                         	
+		                                            
+		                                  </div>
+                                         <hr/>
+                                    	<div class="col-md-12">
+                                    		
+                                    		
+                                    						
+                                             
+                                            <div class="form-group">
+                                            	
+                                               <label class="emptitle"> <i class="bx bxs-id-card ownstyle"></i> Employment Status</label>
+                                               	
+                                             </div>
+                                          </div>
+                                     	<div class="table-responsive" id="tbl_EMPLOYMENTSTATUS">
+		                                    <table class="table table-hover mb-0">
+		                                        <thead>
+		                                            <tr>
+		                                                <th>Effective Date</th>
+		                                                <th>Employment Status</th>
+		                                                <th>Remarks</th>
+		                                               	
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                            <tr th:each="emp,stat : ${employeeJobempstatus}">
+		                                                <td class="text-bold-500">
+		                                                <th:block th:if="${emp.employeejobempstatusid} == ${greenpointemployementstatus}">
+		                                                	<span class="bullet bullet-sm bullet-success"></span>
+		                                                </th:block>
+		                                                
+		                                                <input type="hidden" th:value="${emp.employeejobempstatusid}" th:id="'tblemployeeJobempstatusid' + ${stat.index}"/>
+		                                                <input type="hidden" th:id="'tblempstatus_effectivedate' + ${stat.index}" th:value="${emp.empstatus_effectivedate}" />
+		                                               	<th:block th:if="${emp.empstatus_effectivedate} !=''">
+		                                               		<span  th:text="${#strings.arraySplit(emp.empstatus_effectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[0]}"></span>
+		                                                </th:block>
+		                                                	
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tblempstatus_employmentstatus' + ${stat.index}" th:text="${emp.empstatus_employmentstatus}"></span>
+		                                                	<input type="hidden" th:value="${emp.empstatus_terminationtype}" th:id="'tblempstatus_terminationtype' + ${stat.index}"/>
+		                                                	<input type="hidden" th:value="${emp.empstatus_terminationreason}" th:id="'tblempstatus_terminationreason' + ${stat.index}"/>
+		                                                	<input type="hidden" th:value="${emp.empstatus_rehire}" th:id="'tblempstatus_rehire' + ${stat.index}"/>
+		                                                
+		                                                </td>
+		                                                <td class="text-bold-500">
+		                                                	<span th:id="'tblempstatus_remarks' + ${stat.index}" th:text="${emp.empstatus_remarks}"></span>
+		                                                </td>
+		                                                
+		                                                <script>
+															tblemployeeJobempstatusid=tblemployeeJobempstatusid+1;
+															</script>
+		                                            </tr>
+		                                            
+		                                           </tbody>
+		                                    </table>
+		                                </div>
+                                     	<br/><hr/><br/>
+                                     	<div class="col-md-12">
+                                            <div class="form-group">
+                                            	
+                                               <label class="emptitle"> <i class="bx bxs-briefcase-alt-2 ownstyle"></i>Job Information</label>
+                                               	
+                                             </div>
+                                                 
+                                        </div>
+                                     	<div class="table-responsive">
+		                                    <table class="table table-hover mb-0" id="tbl_JOB_information">
+		                                        <thead>
+		                                            <tr>
+		                                                <th>Effective Date</th>
+		                                                <th>Location</th>
+		                                                <th>Department</th>
+		                                                <th>Job Title</th>
+		                                                <th>Reports To</th>
+		                                                
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                            <tr th:each="emp,stat : ${employeeJobinfomation}">
+		                                                <td class="text-bold-500">
+		                                                 <th:block th:if="${emp.employeejobinfoid} == ${greenpointjobstatus}">
+		                                                	<span class="bullet bullet-sm bullet-success"></span>
+		                                                </th:block>
+		                                               	<input type="hidden" th:value="${emp.employeejobinfoid}" th:id="'tblemployeejobinfoid' + ${stat.index}"/>
+		                                               	<input type="hidden" th:value="${emp.jobeffectivedate}" th:id="'tbljobeffectivedate' + ${stat.index}"/>
+														
+														<th:block th:if="${emp.jobeffectivedate} !=''">
+		                                               		<span  th:text="${#strings.arraySplit(emp.jobeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[0]}"></span>
+		                                                </th:block>
+		                                                
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tbljoblocation' + ${stat.index}" th:text="${emp.joblocation}"></span>
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tbljobdeparment' + ${stat.index}" th:text="${emp.jobdeparment}"></span>
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tbljobtitle' + ${stat.index}" th:text="${emp.jobtitle}"></span>
+		                                                </td>
+		                                                <td>
+		                                                	<span th:id="'tbljobreportsto' + ${stat.index}" th:text="${emp.jobreportsto}"></span>
+		                                                </td>
+		                                               
+														 <script>
+														 tblemployeeJobinfoid=tblemployeeJobinfoid+1;
+															</script>
+		                                            </tr>
+		                                            </tbody>
+		                                    </table>
+		                                </div>
+                                     	<br/><hr/><br/>
+                                     	<div class="col-md-12">
+                                            <div class="form-group">
+                                               <label class="emptitle"> <i class="bx bx-dollar-circle ownstyle"></i>Compensation</label>
+                                               	<div class="form-group" style="float:right"> 
+                                               
+                                             	</div>
+                                             </div>
+                                              
+                                       </div>
+                                    	 <div class="table-responsive">
+		                                    <table class="table table-hover mb-0" id="tbl_compensation_information">
+		                                        <thead>
+		                                            <tr>
+		                                                <th>Effective Date</th>
+		                                                <th>Pay Schedule</th>
+		                                                <th>Pay Type</th>
+		                                                <th>Pay Rate</th>
+		                                                <th>Change Reason</th>
+		                                                <th>Comments</th>
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                            <tr th:each="emp,stat : ${employeecompensation}">
+		                                                <td class="text-bold-500">
+		                                                 <th:block th:if="${emp.employeejobcompensationid} == ${greenpointcompensationstatus}">
+		                                                	<span class="bullet bullet-sm bullet-success"></span>
+		                                                </th:block>
+		                                                <input type="hidden" th:value="${emp.employeejobcompensationid}" th:id="'tblemployeejobcompensationid' + ${stat.index}"/>
+		                                                <input type="hidden" th:value="${emp.comeffectivedate}" th:id="'tblcomeffectivedate' + ${stat.index}"/>
+		                                                <th:block th:if="${emp.comeffectivedate} !=''">
+		                                               		<span  th:text="${#strings.arraySplit(emp.comeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[0]}"></span>
+		                                                </th:block>
+		                                                
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcomPayschedule' + ${stat.index}" th:text="${emp.comPayschedule}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcompaytype' + ${stat.index}" th:text="${emp.compaytype}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcompayrate' + ${stat.index}" th:text="${emp.compayrate}"></span>
+		                                                <span th:id="'tblcompayratetype' + ${stat.index}" th:text="${emp.compayratetype}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcomchangereason' + ${stat.index}" th:text="${emp.comchangereason}"></span>
+		                                                </td>
+		                                                <td>
+		                                                <span th:id="'tblcomcomments' + ${stat.index}" th:text="${emp.comcomments}"></span>
+		                                                </td>
+		                                                
+														<script>
+														 	tblemployeecompensationid=tblemployeecompensationid+1;
+														</script>
+		                                            </tr>
+		                                            </tbody>
+		                                    </table>
+		                                </div>
+                                     
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+               	 
+                  	 
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+
+							
+                                       
+                                       
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		
+	
+		<!-- END: Footer-->
+
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		<script
+			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+			<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
+		<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+	
+</html>
+
+
+

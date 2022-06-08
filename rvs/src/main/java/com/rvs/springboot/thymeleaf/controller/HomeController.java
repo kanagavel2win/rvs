@@ -2,6 +2,7 @@ package com.rvs.springboot.thymeleaf.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,6 +10,9 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -57,6 +61,7 @@ import com.rvs.springboot.thymeleaf.entity.Holiday;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
+import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
@@ -68,6 +73,7 @@ import com.rvs.springboot.thymeleaf.service.HireMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 import com.rvs.springboot.thymeleaf.service.LoginService;
+import com.rvs.springboot.thymeleaf.service.PaySlipService;
 
 @Controller
 
@@ -96,17 +102,19 @@ public class HomeController {
 	@Autowired
 	HireMasterService hireMasterService;
 	@Autowired
-    private LoginService loginService;
+	private LoginService loginService;
+	@Autowired
+	private PaySlipService payslipserive;
 	
-	
+
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 	@ModelAttribute
 	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
 
 		String dataLoginEmpID = "";
-		String dataLoginEmpName="";
-		String dataLoginrole="";
+		String dataLoginEmpName = "";
+		String dataLoginrole = "";
 		try {
 
 			try {
@@ -120,7 +128,7 @@ public class HomeController {
 					request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
 				}
 			} catch (NullPointerException e) {
-				request.getSession().setAttribute("dataLoginEmpID", getLoginempID());	
+				request.getSession().setAttribute("dataLoginEmpID", getLoginempID());
 				request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
 				request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
 			}
@@ -148,24 +156,23 @@ public class HomeController {
 			return "login";
 		}
 
-		//return "index";
+		// return "index";
 	}
+
 	@GetMapping("/index")
 	public String index(Model theModel) {
-		
+
 		if (logintype("ROLE_EMPLOYEE")) {
 			return "redirect:rvsemp/";
 		} else if (logintype("ROLE_ADMIN")) {
 			return "index";
 		} else {
-			//return "redirect:logout";
+			// return "redirect:logout";
 			return "login";
 		}
 
-		
 	}
-	
-	
+
 	private boolean logintype(String expectedrole) {
 
 		@SuppressWarnings("unchecked")
@@ -180,10 +187,11 @@ public class HomeController {
 				RoleStatus = true;
 			}
 		}
-		
+
 		return RoleStatus;
 
 	}
+
 	public String getdataLoginrole() {
 		if (logintype("ROLE_EMPLOYEE")) {
 			return "ROLE_EMPLOYEE";
@@ -193,20 +201,19 @@ public class HomeController {
 			return "NA";
 		}
 	}
+
 	public String getLoginempID() {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		return authentication.getName();
 	}
-	public String getLoginEmpName()
-	{
+
+	public String getLoginEmpName() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
 		return obj.getStaffName();
 	}
-	
 
-	
 	@GetMapping("login")
 	public String login(Model model) {
 
@@ -220,43 +227,40 @@ public class HomeController {
 	}
 
 	@GetMapping("createpwd")
-	public String createpwd(Model themodel, @RequestParam(name="id", required=false) Long id) {
-		
-		if(!(id == null))
-		{
-		EmployeeMaster empobj= employeeMasterService.findById(Integer.parseInt(String.valueOf(id)));
-		
-		Login obj= new Login();
-		obj.setId(Long.valueOf(empobj.getEmpMasterid()));
-		themodel.addAttribute("login", obj);
-		themodel.addAttribute("empname", empobj.getStaffName());
+	public String createpwd(Model themodel, @RequestParam(name = "id", required = false) Long id) {
+
+		if (!(id == null)) {
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(String.valueOf(id)));
+
+			Login obj = new Login();
+			obj.setId(Long.valueOf(empobj.getEmpMasterid()));
+			themodel.addAttribute("login", obj);
+			themodel.addAttribute("empname", empobj.getStaffName());
 		}
 		return "credentialreg";
 	}
-	
 
-    @PostMapping("createpwd")
-    public String registerloginAccount(@ModelAttribute("login") Login login, @RequestParam(name="privilege" , defaultValue="ROLE_EMPLOYEE") String privilege){
+	@PostMapping("createpwd")
+	public String registerloginAccount(@ModelAttribute("login") Login login,
+			@RequestParam(name = "privilege", defaultValue = "ROLE_EMPLOYEE") String privilege) {
 
-        Login existing = loginService.findByEmpid(String.valueOf(login.getId()));
-        if (existing != null){
-        	return "redirect:/createpwd?error";
-        }else
-        {
-        	EmployeeMaster empobj= employeeMasterService.findById(Integer.parseInt(String.valueOf(login.getId())));
-    		
-        	LoginRegistrationDto loginDto=new LoginRegistrationDto();
-        	loginDto.setEmpid(String.valueOf(empobj.getEmpMasterid()));
-        	loginDto.setConfirmPassword(String.valueOf(empobj.getEmpMasterid()));
-        	loginDto.setPassword(String.valueOf(empobj.getEmpMasterid()));
-        	
-        	loginService.save(loginDto, privilege);
-        	
-        }
-        return "redirect:/createpwd?success";
-    }
+		Login existing = loginService.findByEmpid(String.valueOf(login.getId()));
+		if (existing != null) {
+			return "redirect:/createpwd?error";
+		} else {
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(String.valueOf(login.getId())));
 
-	
+			LoginRegistrationDto loginDto = new LoginRegistrationDto();
+			loginDto.setEmpid(String.valueOf(empobj.getEmpMasterid()));
+			loginDto.setConfirmPassword(String.valueOf(empobj.getEmpMasterid()));
+			loginDto.setPassword(String.valueOf(empobj.getEmpMasterid()));
+
+			loginService.save(loginDto, privilege);
+
+		}
+		return "redirect:/createpwd?success";
+	}
+
 	@GetMapping("addnewbranch")
 	public String addnewbranch(Model theModel) {
 
@@ -1430,7 +1434,6 @@ public class HomeController {
 		return "holidaydefine";
 	}
 
-	
 	@GetMapping("hire")
 	public String hire(Model theModel) {
 		List<HireMaster> hmlist = hireMasterService.findAll();
@@ -1618,16 +1621,18 @@ public class HomeController {
 		return "deleted";
 
 	}
-	
+
 	@GetMapping("leaveapprove")
 	public String leaveapprove(Model theModel) {
-		
+
 		LeaveMaster leavemaster = new LeaveMaster();
-		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll().stream().filter(c -> c.getStatus().equalsIgnoreCase("Pending")).collect(Collectors.toList());
+		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll().stream()
+				.filter(c -> c.getStatus().equalsIgnoreCase("Pending")).collect(Collectors.toList());
 		Collections.sort(leaveMasterlist, Collections.reverseOrder());
-		List<EmployeeMaster> em= employeeMasterService.findAll();
-		
-		Map<Integer, String> emmap = em.stream().collect(Collectors.toMap(EmployeeMaster::getEmpMasterid, EmployeeMaster::getStaffName)); 
+		List<EmployeeMaster> em = employeeMasterService.findAll();
+
+		Map<Integer, String> emmap = em.stream()
+				.collect(Collectors.toMap(EmployeeMaster::getEmpMasterid, EmployeeMaster::getStaffName));
 		theModel.addAttribute("emmap", emmap);
 		theModel.addAttribute("leavemaster", leavemaster);
 		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
@@ -1636,12 +1641,12 @@ public class HomeController {
 
 	@GetMapping("leavereview")
 	public String leavereview(Model theModel, @RequestParam("id") int id) {
-		
+
 		LeaveMaster leaveMaster = leaveMasterService.findById(id);
-		EmployeeMaster emp= employeeMasterService.findById(leaveMaster.getEmpid());
+		EmployeeMaster emp = employeeMasterService.findById(leaveMaster.getEmpid());
 		theModel.addAttribute("emmap", emp);
 		theModel.addAttribute("leavemaster", leaveMaster);
-		
+
 		return "leavereview";
 	}
 
@@ -1649,15 +1654,137 @@ public class HomeController {
 	public String leaveresave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster obj) {
 		obj.setApproverejectdate(String.valueOf(new Date()));
 		LeaveMaster leaveMaster = leaveMasterService.save(obj);
-		EmployeeMaster emp= employeeMasterService.findById(leaveMaster.getEmpid());
+		EmployeeMaster emp = employeeMasterService.findById(leaveMaster.getEmpid());
 		theModel.addAttribute("emmap", emp);
-		
+
 		theModel.addAttribute("leavemaster", leaveMaster);
 		theModel.addAttribute("save", "save");
-		
+
 		return "leavereview";
 	}
-	
-	
-	
+
+	@GetMapping("payroll")
+	public String payrollget(Model themodel) {
+
+		return "payroll";
+	}
+
+	@PostMapping("payroll")
+	public String payrollpost(@RequestParam("month") String selectedmonth, Model themodel, @RequestParam(value="save", defaultValue="", required=false) String save) {
+		
+		LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth+"-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+			       .with(TemporalAdjusters.lastDayOfMonth());
+		String prd[]=lastDayOfMonth.toString().split("-");
+		String prdenddate= prd[2]+"."+prd[1]+"."+prd[0];
+		String prdStartdate= "01."+prd[1]+"."+prd[0];
+		
+		String Payperiod=prdStartdate + " - "+ prdenddate;
+		if(!save.equalsIgnoreCase(""))
+		 {
+			 payslipserive.deleteByPayperiod(Payperiod);
+		 }
+		
+		
+		ArrayList<String> report = new ArrayList<String>();
+		List<Map<String, Object>> atm= attendanceMasterService.getpayrolldetails(selectedmonth);
+		
+		ArrayList<Double> totalnet= new ArrayList<Double>();
+		totalnet.add(0, 0.0);
+		atm.forEach(rowMap -> {
+
+			int employeeid = (int) rowMap.get("employeeid");
+			int P = ((BigDecimal) rowMap.get("P")).intValue();
+			int A = ((BigDecimal) rowMap.get("A")).intValue();
+			int T = ((BigDecimal) rowMap.get("T")).intValue();
+			int HL = ((BigDecimal) rowMap.get("HL")).intValue();
+			String staff_name = (String) rowMap.get("staff_name");
+			String AccountNo = (String) rowMap.get("bankacno");
+			String BankName = (String) rowMap.get("bank_name");
+			String Locationstate= (String) rowMap.get("joblocation");
+			int compayrate = Integer.parseInt(rowMap.get("compayrate").toString());
+
+			double ctc = compayrate;
+			double TotalWorkingDays = 0;
+			double Absent = 0;
+			double WorkingDays = 0;
+			double ExtraWorkingDays = 0;
+			double BasicSalary = 0;
+			double DA = 0;
+			double HRA = 0;
+			double TOTALGROSS = 0;
+			double ESI = 0;
+			double EPF = 0;
+			double Advance = 0;
+			double TOTALDeduction = 0;
+			double Monthlyincentives = 0;
+			double net = 0;
+			// ----------------------------------------------------
+			TotalWorkingDays = P + T + (HL / 2);
+			Absent = A;
+			WorkingDays = TotalWorkingDays;
+			if (TotalWorkingDays > 26) {
+				ExtraWorkingDays = TotalWorkingDays - 26;
+				WorkingDays = TotalWorkingDays-ExtraWorkingDays;
+			}
+			
+			BasicSalary = Math.round((ctc / 26) * WorkingDays * 0.40);
+			DA =  Math.round( (ctc / 26) * WorkingDays * 0.35);
+			HRA =  Math.round( (ctc / 26) * WorkingDays * 0.25);
+			TOTALGROSS =  Math.round( BasicSalary + DA + HRA);
+			ESI =  Math.round( BasicSalary * (0.01)* 0);
+			EPF =  Math.round( BasicSalary * (0.12)* 0);
+			TOTALDeduction=ESI+EPF+Advance;
+			Monthlyincentives =  Math.round( ExtraWorkingDays * (ctc / 26));
+			net =  Math.round( (TOTALGROSS - TOTALDeduction) + Monthlyincentives);
+			
+			String str=  employeeid + "-" + staff_name + "-" + ctc + "-" + TotalWorkingDays + "-" + Absent + "-" + WorkingDays + "-" + ExtraWorkingDays;
+			 str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance + "-" + TOTALDeduction+ "-" + Monthlyincentives + "-" + net;
+			
+			 report.add(str);
+			 totalnet.set(0, totalnet.get(0)+net);
+			
+			 if(!save.equalsIgnoreCase(""))
+			 {
+				 
+				 payslip payslipboj= new payslip();
+				 payslipboj.setPaymonth(Integer.parseInt(selectedmonth.replace("-", "")));
+				 payslipboj.setAbsent(String.valueOf(Absent));
+				 payslipboj.setAccountNo(AccountNo);
+				 payslipboj.setAdvance(String.valueOf(Advance));
+				 payslipboj.setBankName(String.valueOf(BankName));
+				 payslipboj.setBasicSalary(String.valueOf(BasicSalary));
+				 payslipboj.setCtc(String.valueOf(ctc));
+				 payslipboj.setDa(String.valueOf(DA));
+				 payslipboj.setEmployeeid(String.valueOf(employeeid));
+				 payslipboj.setEpf(String.valueOf(EPF));
+				 payslipboj.setEsi(String.valueOf(ESI));
+				 payslipboj.setExtraWorkingDays(String.valueOf(ExtraWorkingDays));
+				 payslipboj.setHra(String.valueOf(HRA));
+				 payslipboj.setLocationstate(String.valueOf(Locationstate));
+				 payslipboj.setMonthlyincentives(String.valueOf(Monthlyincentives));
+				 payslipboj.setNet(String.valueOf(net));
+				 payslipboj.setPayperiod(String.valueOf(Payperiod));
+				 payslipboj.setStaff_name(String.valueOf(staff_name));
+				 payslipboj.setTotaldeduction(String.valueOf(TOTALDeduction));
+				 payslipboj.setTotalgross(String.valueOf(TOTALGROSS));
+				 payslipboj.setTotalWorkingDays(String.valueOf(TotalWorkingDays));
+				 payslipboj.setWorkingDays(String.valueOf(WorkingDays));
+				 
+				 payslipserive.save(payslipboj);
+				 
+				 
+			 }
+		});
+		
+		/*if(payslipserive.findByPayperiod(Payperiod).size() >0 )
+		 {
+			themodel.addAttribute("save","save");
+		 }*/
+		themodel.addAttribute("report",report);
+		themodel.addAttribute("selectedmonth" , selectedmonth);
+		themodel.addAttribute("totalnet" , totalnet.get(0));
+		
+		return "payroll";
+	}
+
 }

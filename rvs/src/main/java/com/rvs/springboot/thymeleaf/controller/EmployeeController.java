@@ -2,6 +2,9 @@ package com.rvs.springboot.thymeleaf.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.rvs.springboot.thymeleaf.dao.LoginRepository;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
@@ -38,7 +39,7 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeLanguage;
 import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
-import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
+import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
@@ -48,6 +49,7 @@ import com.rvs.springboot.thymeleaf.service.EmployeeJobinfoService;
 import com.rvs.springboot.thymeleaf.service.EmployeeMasterService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 import com.rvs.springboot.thymeleaf.service.LoginService;
+import com.rvs.springboot.thymeleaf.service.PaySlipService;
 
 @Controller
 @RequestMapping("/rvsemp")
@@ -75,6 +77,9 @@ public class EmployeeController {
 	private LoginService loginService;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+
+	@Autowired
+	private PaySlipService paySlipService;
 
 	@ModelAttribute
 	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
@@ -245,11 +250,11 @@ public class EmployeeController {
 			String empid = request.getSession().getAttribute("dataLoginEmpID").toString();
 
 			user = loginService.findByEmpid(empid);
-			
+
 			if (user == null) {
 				themodel.addAttribute("error", "Invalid username or password.");
-				
-			} else if (! passwordEncoder.matches(oldpwd,user.getPassword().toString()) ){
+
+			} else if (!passwordEncoder.matches(oldpwd, user.getPassword().toString())) {
 				themodel.addAttribute("error", "Invalid old password.");
 
 			} else {
@@ -264,4 +269,33 @@ public class EmployeeController {
 		return "employee/changepassword";
 	}
 
+	@GetMapping("paysliplist")
+	public String paysliplist(Model themodel, HttpSession session, HttpServletRequest request) {
+
+		String empid = request.getSession().getAttribute("dataLoginEmpID").toString();
+
+		List<payslip> paysliplist = paySlipService.findByEmpid(empid);
+		Collections.sort(paysliplist, Collections.reverseOrder());
+		themodel.addAttribute("paysliplist", paysliplist);
+		return "employee/paysliplist";
+	}
+
+	@GetMapping("payslipview")
+	public String payslipview(Model themodel, @RequestParam("p") int payid) {
+
+		payslip payslip = paySlipService.findById(payid);
+		
+		System.out.println(String.valueOf(payslip.getPaymonth()).trim().substring(4,6));
+		
+		String Str=this.theMonth(Integer.parseInt(String.valueOf(payslip.getPaymonth()).substring(4, 6))).toUpperCase() + " " +String.valueOf(payslip.getPaymonth()).substring(0, 4);
+			
+		themodel.addAttribute("payslip", payslip);
+		themodel.addAttribute("monthtext", Str);
+		return "employee/payslipview";
+	}
+
+	public  String theMonth(int month){
+	    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	    return monthNames[month-1];
+	}
 }

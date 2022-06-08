@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>PayRoll</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+.emptitle {
+	color: #527a00;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+	cursor: pointer;
+}
+
+thead {
+	background-color: #ebebeb;
+	border-color: transparent;
+	color: #555;
+	font-weight: 700;
+	padding: 12px 16px 11px;
+	transition: background-color .15s ease-in-out;
+}
+
+tbody {
+	color: #222;
+}
+
+.empnametitle {
+	color: #FF4500;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+}
+
+.ownstyle {
+	font-size: 30px;
+	position: absolute;
+	left: -20px;
+	top: -5px;
+	cursor: pointer;
+}
+
+.ownstyle1 {
+	font-size: 25px;
+	top: -2px;
+	cursor: pointer;
+}
+
+.iconalign {
+	text-align: right;
+	font-size: 20px;
+	width: 200px;
+	right: 0px;
+	color: #fff;
+}
+
+tbody>tr:hover .iconalign {
+	color: #527a00;
+	cursor: pointer;
+}
+
+.bullet.bullet-success {
+	background-color: #527a00;
+}
+
+.e1 {
+	max-width: 200px;
+}
+
+.e2 {
+	min-width: 100px;
+	min-height: 25px;
+}
+
+.modal-footer {
+	border-top: none;
+}
+
+.view {
+	margin: auto;
+	
+}
+
+.wrapper {
+	position: relative;
+	overflow: auto;
+	border: 1px solid #ccc;
+	white-space: nowrap;
+}
+
+.sticky-col {
+	position: -webkit-sticky;
+	position: sticky;
+	background-color: white !important;
+	border-right: 1px solid #ccc;
+}
+
+.first-col {
+	text-align: left;
+	width: 50px;
+	min-width: 50px;
+	max-width: 50px;
+	left: 0px;
+	border-right: 1px solid #ccc;
+}
+
+.second-col {
+	text-align: left;
+	width: 200px;
+	min-width: 200px;
+	max-width: 200px;
+	left: 50px;
+	border-right: 1px solid #ccc;
+}
+
+table tr td{
+	text-align: right;
+	border-right: 1px solid #ccc;
+}
+
+.td16{
+	background:#66CD00;
+	text-weight:bold;
+	color:#fff;
+}
+
+.d1, .d1 > div > label, .d1 > div > h4{
+	background:#c09F80;
+	padding:1%;
+	color:#fff;
+}
+.d2,.d2 > div > label, .d2 > div > h4{
+	background:#565656;
+	padding:1%;
+	color:#fff;
+}
+</style>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
+
+
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
+
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+							<h5 class="content-header-title float-left pr-1 mb-0">Payroll</h5>
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+
+								</ol>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-body">
+
+				<!-- Basic Vertical form layout section start -->
+				<section id="basic-vertical-layouts">
+					<div class="row match-height">
+						<div class="col-12">
+
+							<div class="card">
+								<div class="card-content">
+									<div class="card-body">
+
+										<hr />
+										<form th:action="@{payroll}" method="POST"
+											class="wizard-horizontal" enctype="multipart/form-data">
+											<div class="col-md-12">
+
+												<div class="form-group">
+													<label for="contact-info-icon">Payroll Month</label>
+													<div class="form-group">
+														<div class="position-relative has-icon-left">
+
+															<input type="month" name="month" class="e1 form-control" />
+															<div class="form-control-position">
+																<i class="bx bx-calendar-event"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<button type="submit"
+														class="e2 position-relative  btn btn-primary ml-1"
+														id="hiredatebtn">Search</button>
+												</div>
+
+											</div>
+										</form>
+										<hr />
+										<div class="row">
+										
+										<div class="col-md-2 d1">
+											<div class="form-group">
+												
+												<label>Payroll Month</label>
+												
+												<h4 th:text="${selectedmonth}"></h4>
+											</div>
+
+										</div>
+										
+										
+										<div class="col-md-2 d2">
+											<div class="form-group d2">
+												<label>Total Amount</label>
+												<h4 th:text="${totalnet}"></h4>
+											</div>
+
+										</div>
+										<div class="col-md-2"></div>
+										<div class="col-md-2"></div>
+										<div class="col-md-4" th:if="${report}">
+											<div class="form-group" th:unless="${save}">
+													<form th:action="@{payroll}" method="POST"
+											class="wizard-horizontal" enctype="multipart/form-data">
+												<input type="hidden" th:value="${selectedmonth}" name="month" />
+												<input type="hidden" th:value="${selectedmonth}" name="save"/>
+												<button type="submit"
+													class="e2 position-relative  btn btn-secondary ml-1">Generate Payslips</button>
+													<!-- <br/><label>Note: This is One Time Generation.</label> -->
+												</form>
+											</div>
+
+										</div>
+										</div>
+										<hr />
+										<th:block>
+											<div class="view">
+												<div class="wrapper">
+													<table class="table">
+														<thead>
+															<tr>
+																<th class="sticky-col first-col">S.No</th>
+																<th class="sticky-col second-col">Name</th>
+																<th>CTC</th>
+																<th>Total</th>
+																<th>Absent</th>
+																<th>Working Days</th>
+																<th>Extra Working Days</th>
+																<th>Basic Salary</th>
+																<th>DA</th>
+																<th>HRA</th>
+																<th>TOTAL GROSS</th>
+																<th>ESI</th>
+																<th>EPF</th>
+																<th>Advance</th>
+																<th>TOTAL Deduction</th>
+																<th>Monthly incentives</th>
+																<th>Net salary</th>
+
+															</tr>
+														</thead>
+														<tbody>
+															<tr th:each="str,i : ${report}">
+																<td class="sticky-col first-col" th:text="${i.index+1}"></td>
+																<td class="sticky-col second-col"  th:text="${#strings.arraySplit(str,'-')[1]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[2]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[3]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[4]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[5]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[6]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[7]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[8]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[9]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[10]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[11]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[12]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[13]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[14]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[15]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'-')[16]}" class="td16"></td>
+																
+																
+															</tr>
+															
+														</tbody>
+													</table>
+												</div>
+											</div>
+																		
+										</th:block>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- // Basic Vertical form layout section end -->
+
+
+
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+
+
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+	</footer>
+
+	<!-- END: Footer-->
+
+
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+	<!-- BEGIN Vendor JS-->
+
+	<!-- BEGIN: Page Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
+	<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+</html>
+
+
+

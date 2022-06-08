@@ -1,6 +1,7 @@
 package com.rvs.springboot.thymeleaf.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
 
@@ -10,7 +11,7 @@ public interface AttendanceMasterService {
 	public AttendanceMaster findById(Integer id);
 	public List<AttendanceMaster> findAll();
 	public List<AttendanceMaster>  findByattendanceDate(String date);
-	
+	public List<Map<String, Object>> getpayrolldetails(String selectedmonth);
 	
 	
 }

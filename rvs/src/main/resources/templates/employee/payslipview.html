@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title th:text="'PAY SLIP ' + ${monthtext}"></title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+body, td {
+	font-family: "IBM Plex Sans", Helvetica, Arial, serif;
+}
+
+.title {
+	text-align: center;
+	font-size: 20px;
+}
+
+.img-fluid {
+	float: right;
+	position: absolute;
+	right: 0px;
+	top: -10px;
+}
+
+.pc {
+	text-align: right;
+	font-size: 12px;
+	
+}
+
+td {
+	line-height: 35px;
+	 border-bottom: 1px dashed #ccc;
+}
+.bold
+{
+font-weight: bold;
+}
+.amt
+{
+	text-align: right;
+	padding-right: 10%;
+}
+table {
+	width: 100%;
+}
+.monthtitle{
+text-align: center;
+font-weight: 600;
+}
+</style>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body style="background: #fff">
+
+	<div class="content-body">
+
+		<div class="card-content">
+			<div class="card-body">
+				<div class="col-md-12">
+
+					<p class="title">
+						<b>RVS Land Surveyors</b>
+					</p>
+					<img class="img-fluid"
+						th:src="@{/app-assets/images/logo/rvslogo2.jpg}"
+						alt="branding logo"> <br />
+					<p class="pc">
+						Private and Confidential
+					</p>
+					<p class="monthtitle" th:text="'PAYSLIP FOR MONTH OF '+ ${monthtext}"></p>
+				</div>
+	<hr/>
+
+				<div class="col-md-12">
+					<table>
+						<tr>
+							<td>Name</td>
+							<td class="colon">:</td>
+							<td th:text="${payslip.staff_name}"></td>
+							<td>Location</td>
+							<td class="colon">:</td>
+							<td th:text="${payslip.locationstate}"></td>
+							<td>Bank Name</td>
+							<td class="colon">:</td>
+							<td th:text="${payslip.bankName}"></td>
+						</tr>
+						<tr>
+							<td>Emp No</td>
+							<td class="colon">:</td>
+							<td th:text="'RVS000'+${dataLoginEmpID}"></td>
+							<td>PF</td>
+							<td class="colon">:</td>
+							<td>-</td>
+							<td>Bank Acc</td>
+							<td class="colon">:</td>
+							<td th:text="${payslip.accountNo}"></td>
+						</tr>
+						<tr>
+							<td>Pay period</td>
+							<td class="colon">:</td>
+							<td th:text="${payslip.payperiod}"></td>
+							<td>UAN</td>
+							<td class="colon">:</td>
+							<td>-</td>
+							<td colspan="3"></td>
+						</tr>
+						<tr>
+							<td>Total Working day</td>
+							<td class="colon">:</td>
+							<td th:text="${payslip.totalWorkingDays}"></td>
+							<td>Working day</td>
+							<td class="colon">:</td>
+							<td th:text="${payslip.totalWorkingDays}"></td>
+							<td>Extra Working day</td>
+							<td class="colon">:</td>
+							<td th:text="${payslip.extraWorkingDays}"></td>
+						</tr>
+						<tr>
+							<td colspan="4" class="bold">Earnings</td>
+							<td colspan="4" class="bold">Deductions</td>
+							<td colspan="2"></td>
+						</tr>
+						<tr>
+							<td colspan="2">Monthly Basic Salary <br /> Dearness
+								Allowance <br /> House Rent Allowance <br />
+								
+								<th:block th:if="${payslip.monthlyincentives !='0.0'}"> Monthly Incentive <br /> </th:block>
+							</td>
+							<td colspan="2" class="amt" ><span  th:text="${payslip.basicSalary} "></span><br />
+								<span  th:text="${payslip.da}"></span><br /> <span
+								th:text="${payslip.hra}"></span><br />
+								<th:block th:if="${payslip.monthlyincentives !='0.0'}"> 
+								<span   th:text="${payslip.monthlyincentives}"></span> <br /> </th:block>
+								</td>
+							
+							<td colspan="2">ESI Contribution<br /> EPF Contribution <br />
+								Advance <br />
+							</td>
+							<td colspan="2" class="amt" >
+							<span  th:text="${payslip.esi}"></span><br />
+								<span  th:text="${payslip.epf}"></span><br /> 
+								<span  th:text="${payslip.advance}"></span><br /></td>
+							<td colspan="2"></td>
+						</tr>
+						<tr>
+							<td colspan="2">Total
+							</td>
+							<td colspan="2" class="amt v" ><span  th:text="${payslip.totalgross} +${payslip.monthlyincentives}"></span>
+							</td>
+							<td colspan="2">Total
+							</td>
+							<td colspan="2" class="amt bold" ><span  th:text="${payslip.totaldeduction}"></span>
+							</td>
+							<td colspan="2"></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="bold">Take Home Pay
+							</td>
+							<td colspan="2" class="bold"><span th:text="${payslip.net}"></span>
+							</td>
+							<td colspan="6"></td>
+						</tr>
+						
+						</tr>
+					</table>
+
+<p ><br/><br/>This is computer generated payslip signature not required.</p>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+	<!-- BEGIN Vendor JS-->
+
+	<!-- BEGIN: Page Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
+	<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+

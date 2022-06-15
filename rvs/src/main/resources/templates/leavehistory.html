@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="ICC">
-<title>Leave Approve</title>
+<title>Leave History</title>
 <link rel="apple-touch-icon"
 	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
 <link rel="shortcut icon" type="image/x-icon"
@@ -106,9 +106,8 @@
                 </div>
             </div>
             <div class="content-body">
-              	<form 
-											method="POST" class="wizard-horizontal"
-											enctype="multipart/form-data">
+              
+											
 	                <!-- Basic Vertical form layout section start -->
 	                <section id="basic-vertical-layouts">
 	                    <div class="row match-height">
@@ -116,15 +115,40 @@
 	                            <div class="card">
 	                                <div class="card-content">
 	                                    <div class="card-body">
-	                                        
-	                                        <div th:if="${save}" class="form-group col-12">
-												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">
-												Leave request has been raised
-												</button>
-											</div>
-							            
-	                                        
-	                                    
+	                                        	<form 
+											method="GET" class="wizard-horizontal"
+											enctype="multipart/form-data">
+											<div class="row">
+												 <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Start Date</label>
+                                                           <div class="position-relative">
+                                                               <input type="date"  class="form-control" name="startdate" required>
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">End Date</label>
+                                                           <div class="position-relative">
+                                                               <input type="date"  class="form-control" name="enddate" required>
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   <div>
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">&nbsp;</label>
+                                                           <div class="position-relative">
+                                                               <button type="submit" class="btn btn-primary mr-1 mb-1">Search</button>
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                 </div>
+											</form>
+                                    		
 	                                    	<hr/>
 	                                    	<div class="table-responsive">
 
@@ -132,43 +156,57 @@
                                             <table class="table zero-configuration table-hover">
                                             	<thead>
                                                     <tr>
-                                                    	<th rowspan="1" colspan="1">S.No</th>
-                                                    	<th rowspan="1" colspan="1">Name</th>
-                                                    	<th rowspan="1" colspan="1">FromDate</th>
-                                                    	<th rowspan="1" colspan="1">ToDate</th>
-                                                    	<th rowspan="1" colspan="1">Leave Type</th>
-                                                    	<th rowspan="1" colspan="1">Time</th>
-                                                    	<th rowspan="1" colspan="1">Note</th>
-                                                    	
+                                                    	<th>S.No</th>
+                                                    	<th>Name</th>
+                                                    	<th>FromDate</th>
+                                                    	<th>ToDate</th>
+                                                    	<th>Leave Type</th>
+                                                    	<th>Status</th>
+                                                    	<th>Note</th>
+                                                    	<th>P Starttime</th>
+                                                    	<th>P Endtime</th>
+                                                    	<th>Approver Name</th>
+                                                    	<th>Approver Comments</th>
+                                                    	<th>Modified Time</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                 	<tr th:each="obj,stat : ${leaveMasterlist}" role="row" class="odd">
+                                                 	<tr th:each="obj,stat : ${leavhistorylist}" role="row" class="odd">
                                                         <td class="sorting_1" th:text="${stat.index +1}"></td>
-                                                        <td>
-                                                        	<a th:href="'leavereview?id='+ ${obj.id}"><span th:text="${emmap.get(obj.empid)}"></span></a>
-                                                        </td>
+                                                        <td  th:text="${#strings.arraySplit(obj,'~')[0]}"></td>
                                                        <td>
-                                                       	<span th:text="${#strings.arraySplit(obj.fromadate,'-')[2] +'-'+ #strings.arraySplit(obj.fromadate,'-')[1] +'-'+ #strings.arraySplit(obj.fromadate,'-')[0] }"></span>
-                                                       	<span th:if="${obj.halfday}" class="halfday">Halfday</span>
+                                                       	<span th:text="${#strings.arraySplit(obj,'~')[1]}"></span>
+                                                       	
+                                                       	<span th:if="${#strings.arraySplit(obj,'~')[3]}" class="halfday">Halfday</span>
                                                        </td>
-                                                        <td th:text="${#strings.arraySplit(obj.todate,'-')[2] +'-'+ #strings.arraySplit(obj.todate,'-')[1] +'-'+ #strings.arraySplit(obj.todate,'-')[0] }"></td>
-                                                        <td th:text="${obj.leavetype}"></td>
-                                                        <td th:text="${obj.permissionstarttime} +'-' + ${obj.permissionendtime}"></td>
-                                                        <td th:text="${obj.notes}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[2]}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[4]}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[5]}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[6]}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[7]}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[8]}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[9]}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[10]}"></td>
+                                                        <td th:text="${#strings.arraySplit(obj,'~')[11]}"></td>
+                                                        
                                                         
                                                     </tr>
                                                     
                                                  </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                    	<th rowspan="1" colspan="1">S.No</th>
-                                                    	<th rowspan="1" colspan="1">Name</th>
-                                                    	<th rowspan="1" colspan="1">FromDate</th>
-                                                    	<th rowspan="1" colspan="1">ToDate</th>
-                                                    	<th rowspan="1" colspan="1">Leave Type</th>
-                                                    	<th rowspan="1" colspan="1">Time</th>
-                                                    	<th rowspan="1" colspan="1">Note</th>
+                                                    	<th>S.No</th>
+                                                    	<th>Name</th>
+                                                    	<th>FromDate</th>
+                                                    	<th>ToDate</th>
+                                                    	<th>Leave Type</th>
+                                                    	<th>Status</th>
+                                                    	<th>Note</th>
+                                                    	<th>P Starttime</th>
+                                                    	<th>P Endtime</th>
+                                                    	<th>Approver Name</th>
+                                                    	<th>Approver Comments</th>
+                                                    	<th>Modified Time</th>
                                                     	
                                                     </tr>
                                                 </tfoot>
@@ -181,7 +219,7 @@
 	                    </div>
 	                </section>
 	                <!-- // Basic Vertical form layout section end -->
-				</form>
+				
 
             </div>
         </div>

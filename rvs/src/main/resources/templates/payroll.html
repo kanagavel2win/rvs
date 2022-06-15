@@ -270,6 +270,9 @@ table tr td{
 											</div>
 										</form>
 										<hr />
+										<div th:if="${save}" class="form-group col-12">
+											<button type="button" class="btn mb-1 btn-outline-success btn-block">PaySlip Generated Successfully</button>
+										</div>
 										<div class="row">
 										
 										<div class="col-md-2 d1">
@@ -293,7 +296,7 @@ table tr td{
 										<div class="col-md-2"></div>
 										<div class="col-md-2"></div>
 										<div class="col-md-4" th:if="${report}">
-											<div class="form-group" th:unless="${save}">
+											<div class="form-group">
 													<form th:action="@{payroll}" method="POST"
 											class="wizard-horizontal" enctype="multipart/form-data">
 												<input type="hidden" th:value="${selectedmonth}" name="month" />

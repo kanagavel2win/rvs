@@ -48,6 +48,8 @@ public class LeaveMaster implements Comparable<LeaveMaster> {
 	String status;
 	
 	@Column
+	String approver;
+	@Column
 	String approvercomments;
 	@Column
 	String approverejectdate;

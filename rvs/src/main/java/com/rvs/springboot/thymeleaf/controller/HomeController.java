@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
@@ -1651,18 +1652,54 @@ public class HomeController {
 	}
 
 	@PostMapping("leavereview")
-	public String leaveresave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster obj) {
+	public String leaveresave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster obj,HttpServletRequest request) {
+		
+		
 		obj.setApproverejectdate(String.valueOf(new Date()));
+		obj.setApprover(request.getSession().getAttribute("dataLoginEmpID").toString());
 		LeaveMaster leaveMaster = leaveMasterService.save(obj);
 		EmployeeMaster emp = employeeMasterService.findById(leaveMaster.getEmpid());
 		theModel.addAttribute("emmap", emp);
-
 		theModel.addAttribute("leavemaster", leaveMaster);
 		theModel.addAttribute("save", "save");
 
 		return "leavereview";
 	}
+	
+	@GetMapping("leavehistory")
+	public String leavehistory(Model theModel, @RequestParam(name="startdate", required=false) String startdate, @RequestParam(name="enddate", required=false) String enddate) {
 
+			
+		List<Map<String,Object>> lmhistory= leaveMasterService.findByDates(startdate, enddate);
+		
+		ArrayList<String> leavhistorylist= new ArrayList<String>();
+		
+		lmhistory.forEach(rowMap ->{
+			
+			String tempstr="";
+			
+			tempstr += rowMap.get("empname").toString() +" ~";
+			String fromdate[]=rowMap.get("fromadate").toString().split("-");
+			String todate[]=rowMap.get("todate").toString().split("-");
+			tempstr += fromdate[2]+ "-"+ fromdate[1] + "-"+ fromdate[0] +" ~";
+			tempstr += todate[2]+ "-"+ todate[1] + "-"+ todate[0] +" ~";
+			tempstr += rowMap.get("halfday").toString() +" ~";
+			tempstr += rowMap.get("leavetype").toString() +" ~";
+			tempstr += rowMap.get("status").toString() +" ~";
+			tempstr += rowMap.get("notes").toString() +" ~";
+			tempstr += rowMap.get("permissionstarttime").toString() +" ~";
+			tempstr += rowMap.get("permissionendtime").toString() +" ~";
+			tempstr += rowMap.get("approvername").toString() +" ~";
+			tempstr += rowMap.get("approvercomments").toString() +" ~";
+			tempstr += rowMap.get("approverejectdate").toString() +" ~";
+			leavhistorylist.add(tempstr);
+			
+		});
+		theModel.addAttribute("leavhistorylist", leavhistorylist);
+
+		return "leavehistory";
+	}
+	
 	@GetMapping("payroll")
 	public String payrollget(Model themodel) {
 
@@ -1771,15 +1808,15 @@ public class HomeController {
 				 payslipboj.setWorkingDays(String.valueOf(WorkingDays));
 				 
 				 payslipserive.save(payslipboj);
-				 
+				 themodel.addAttribute("save","save");
 				 
 			 }
 		});
 		
-		/*if(payslipserive.findByPayperiod(Payperiod).size() >0 )
+		if(!save.equalsIgnoreCase(""))
 		 {
 			themodel.addAttribute("save","save");
-		 }*/
+		 }
 		themodel.addAttribute("report",report);
 		themodel.addAttribute("selectedmonth" , selectedmonth);
 		themodel.addAttribute("totalnet" , totalnet.get(0));
@@ -1788,3 +1825,4 @@ public class HomeController {
 	}
 
 }
+

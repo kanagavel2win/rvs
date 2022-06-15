@@ -156,10 +156,10 @@
                                                  	<tr th:each="obj,stat : ${leaveMasterlist}" role="row" class="odd">
                                                         <td class="sorting_1" th:text="${stat.index +1}"></td>
                                                        <td>
-                                                       	<span th:text="${obj.fromadate}"></span>
+                                                       	<span th:text="${#strings.arraySplit(obj.fromadate,'-')[2] +'-'+ #strings.arraySplit(obj.fromadate,'-')[1] +'-'+ #strings.arraySplit(obj.fromadate,'-')[0] }"></span>
                                                        	<span th:if="${obj.halfday}" class="halfday">Halfday</span>
                                                        </td>
-                                                        <td th:text="${obj.todate}"></td>
+                                                         <td th:text="${#strings.arraySplit(obj.todate,'-')[2] +'-'+ #strings.arraySplit(obj.todate,'-')[1] +'-'+ #strings.arraySplit(obj.todate,'-')[0] }"></td>
                                                         <td th:text="${obj.leavetype}"></td>
                                                         <td th:text="${obj.permissionstarttime} +'-' + ${obj.permissionendtime}"></td>
                                                         <td th:text="${obj.notes}"></td>

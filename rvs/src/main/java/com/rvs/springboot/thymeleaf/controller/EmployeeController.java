@@ -285,8 +285,6 @@ public class EmployeeController {
 
 		payslip payslip = paySlipService.findById(payid);
 		
-		System.out.println(String.valueOf(payslip.getPaymonth()).trim().substring(4,6));
-		
 		String Str=this.theMonth(Integer.parseInt(String.valueOf(payslip.getPaymonth()).substring(4, 6))).toUpperCase() + " " +String.valueOf(payslip.getPaymonth()).substring(0, 4);
 			
 		themodel.addAttribute("payslip", payslip);

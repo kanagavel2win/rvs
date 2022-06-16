@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Report - Attendance</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+	
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/tables/datatable/datatables.min.css}">
+	
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+	
+	.table, .table>tr, .table td
+	{
+		line-height:8px;
+		
+		padding: 0.5rem 0.5rem;
+		text-align: left;
+	}
+	.table th
+	{
+	padding: 1.5rem 0.5rem;
+		text-align: left;
+	}
+	
+	
+.sticky-col {
+	position: -webkit-sticky;
+	position: sticky;
+	background-color: white !important;
+	border-right: 1px solid #ccc;
+}
+
+.first-col {
+	text-align: left;
+	width: 50px;
+	min-width: 50px;
+	max-width: 50px;
+	left: 0px;
+	border-right: 1px solid #ccc;
+}
+
+.second-col {
+	text-align: left;
+	width: 200px;
+	min-width: 200px;
+	max-width: 200px;
+	left: 50px;
+	border-right: 1px solid #ccc;
+}
+.P
+{
+	color:green;
+}
+.A
+{
+	color:red;
+}
+.T
+{
+	color:#FDAC41;
+}
+.HL
+{
+	color:#4169E1;
+}
+	
+</style>
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class="content-header-title float-left pr-1 mb-0">Employee List</h5>
+                            <div class="breadcrumb-wrapper col-12">
+                                <ol class="breadcrumb p-0 mb-0">
+                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
+                                    </li>
+                                  
+                                	   
+                                </ol>
+                                
+                            </div>
+                        </div>
+                   
+                    </div>
+                </div>
+                
+            </div>
+            <div class="content-body">
+              
+				 <!-- Zero configuration table -->
+                <section id="basic-datatable">
+                    <div class="row">
+                        <div class="col-12">
+                        		
+                            <div class="card">
+                                
+                                <div class="card-content">
+                                    <div class="card-body card-dashboard">
+                                        <form th:action="@{attendancereport}" method="GET"
+											class="wizard-horizontal" enctype="multipart/form-data">
+											<div class="row">
+											<div class="col-md-3">
+
+												<div class="form-group">
+													<label for="contact-info-icon">Attendance Month</label>
+													<div class="form-group">
+														<div class="position-relative has-icon-left">
+															<input type="month" name="month" class="e1 form-control" />
+															<div class="form-control-position">
+																<i class="bx bx-calendar-event"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group"><br/>
+													<button type="submit"
+														class="e2 position-relative  btn btn-primary ml-1"
+														id="hiredatebtn">Search</button>
+												</div>
+
+											</div>
+											</div>
+										</form>
+										<hr />
+                                        
+                                        <div class="table-responsive">
+                                            <table class="table	 table-hover zero-configuration">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="sticky-col first-col">S.No</th>
+														<th class="sticky-col second-col">Name</th>
+                                                        <th:block th:each="i : ${#numbers.sequence( 1, prdenddate, 1)}">
+														   
+														   <th th:text="${ i }"></th>
+														</th:block>
+                                                        <th>Total_P</th>
+                                                        <th>Total_A</th>
+                                                        <th>Total_HL</th>
+                                                        <th>Total_T</th>
+                                                        
+	
+                                                    </tr>
+                                                </thead>
+                                                <tbody >
+                                                	<tr th:each="rpt,stat : ${reportarr}">
+													  <td class="sticky-col first-col" th:text="${stat.index+1}"></td>
+													   <td class="sticky-col second-col" th:text="${#strings.arraySplit(rpt,'~')[0] }"></td>
+													   
+													   <th:block th:each="i : ${#numbers.sequence( 1, prdenddate+4, 1)}">
+														   <td th:text="${#strings.arraySplit(rpt,'~')[i+1] }" th:class="${#strings.arraySplit(rpt,'~')[i+1] }"></td>
+														</th:block>
+													    
+													</tr>
+													
+                                                </tbody>
+                                                
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!--/ Zero configuration table -->               
+
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		<!-- END: Footer-->
+
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
+		
+		
+		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		<script
+			th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
+		<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

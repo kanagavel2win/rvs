@@ -106,7 +106,6 @@ public class HomeController {
 	private LoginService loginService;
 	@Autowired
 	private PaySlipService payslipserive;
-	
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -1652,9 +1651,9 @@ public class HomeController {
 	}
 
 	@PostMapping("leavereview")
-	public String leaveresave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster obj,HttpServletRequest request) {
-		
-		
+	public String leaveresave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster obj,
+			HttpServletRequest request) {
+
 		obj.setApproverejectdate(String.valueOf(new Date()));
 		obj.setApprover(request.getSession().getAttribute("dataLoginEmpID").toString());
 		LeaveMaster leaveMaster = leaveMasterService.save(obj);
@@ -1665,41 +1664,41 @@ public class HomeController {
 
 		return "leavereview";
 	}
-	
-	@GetMapping("leavehistory")
-	public String leavehistory(Model theModel, @RequestParam(name="startdate", required=false) String startdate, @RequestParam(name="enddate", required=false) String enddate) {
 
-			
-		List<Map<String,Object>> lmhistory= leaveMasterService.findByDates(startdate, enddate);
-		
-		ArrayList<String> leavhistorylist= new ArrayList<String>();
-		
-		lmhistory.forEach(rowMap ->{
-			
-			String tempstr="";
-			
-			tempstr += rowMap.get("empname").toString() +" ~";
-			String fromdate[]=rowMap.get("fromadate").toString().split("-");
-			String todate[]=rowMap.get("todate").toString().split("-");
-			tempstr += fromdate[2]+ "-"+ fromdate[1] + "-"+ fromdate[0] +" ~";
-			tempstr += todate[2]+ "-"+ todate[1] + "-"+ todate[0] +" ~";
-			tempstr += rowMap.get("halfday").toString() +" ~";
-			tempstr += rowMap.get("leavetype").toString() +" ~";
-			tempstr += rowMap.get("status").toString() +" ~";
-			tempstr += rowMap.get("notes").toString() +" ~";
-			tempstr += rowMap.get("permissionstarttime").toString() +" ~";
-			tempstr += rowMap.get("permissionendtime").toString() +" ~";
-			tempstr += rowMap.get("approvername").toString() +" ~";
-			tempstr += rowMap.get("approvercomments").toString() +" ~";
-			tempstr += rowMap.get("approverejectdate").toString() +" ~";
+	@GetMapping("leavehistory")
+	public String leavehistory(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
+			@RequestParam(name = "enddate", required = false) String enddate) {
+
+		List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
+
+		ArrayList<String> leavhistorylist = new ArrayList<String>();
+
+		lmhistory.forEach(rowMap -> {
+
+			String tempstr = "";
+
+			tempstr += rowMap.get("empname").toString() + " ~";
+			String fromdate[] = rowMap.get("fromadate").toString().split("-");
+			String todate[] = rowMap.get("todate").toString().split("-");
+			tempstr += fromdate[2] + "-" + fromdate[1] + "-" + fromdate[0] + " ~";
+			tempstr += todate[2] + "-" + todate[1] + "-" + todate[0] + " ~";
+			tempstr += rowMap.get("halfday").toString() + " ~";
+			tempstr += rowMap.get("leavetype").toString() + " ~";
+			tempstr += rowMap.get("status").toString() + " ~";
+			tempstr += rowMap.get("notes").toString() + " ~";
+			tempstr += rowMap.get("permissionstarttime").toString() + " ~";
+			tempstr += rowMap.get("permissionendtime").toString() + " ~";
+			tempstr += rowMap.get("approvername").toString() + " ~";
+			tempstr += rowMap.get("approvercomments").toString() + " ~";
+			tempstr += rowMap.get("approverejectdate").toString() + " ~";
 			leavhistorylist.add(tempstr);
-			
+
 		});
 		theModel.addAttribute("leavhistorylist", leavhistorylist);
 
 		return "leavehistory";
 	}
-	
+
 	@GetMapping("payroll")
 	public String payrollget(Model themodel) {
 
@@ -1707,25 +1706,25 @@ public class HomeController {
 	}
 
 	@PostMapping("payroll")
-	public String payrollpost(@RequestParam("month") String selectedmonth, Model themodel, @RequestParam(value="save", defaultValue="", required=false) String save) {
-		
-		LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth+"-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
-			       .with(TemporalAdjusters.lastDayOfMonth());
-		String prd[]=lastDayOfMonth.toString().split("-");
-		String prdenddate= prd[2]+"."+prd[1]+"."+prd[0];
-		String prdStartdate= "01."+prd[1]+"."+prd[0];
-		
-		String Payperiod=prdStartdate + " - "+ prdenddate;
-		if(!save.equalsIgnoreCase(""))
-		 {
-			 payslipserive.deleteByPayperiod(Payperiod);
-		 }
-		
-		
+	public String payrollpost(@RequestParam(name = "month") String selectedmonth, Model themodel,
+			@RequestParam(value = "save", defaultValue = "", required = false) String save) {
+
+		LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+				.with(TemporalAdjusters.lastDayOfMonth());
+
+		String prd[] = lastDayOfMonth.toString().split("-");
+		String prdenddate = prd[2] + "." + prd[1] + "." + prd[0];
+		String prdStartdate = "01." + prd[1] + "." + prd[0];
+
+		String Payperiod = prdStartdate + " - " + prdenddate;
+		if (!save.equalsIgnoreCase("")) {
+			payslipserive.deleteByPayperiod(Payperiod);
+		}
+
 		ArrayList<String> report = new ArrayList<String>();
-		List<Map<String, Object>> atm= attendanceMasterService.getpayrolldetails(selectedmonth);
-		
-		ArrayList<Double> totalnet= new ArrayList<Double>();
+		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth);
+
+		ArrayList<Double> totalnet = new ArrayList<Double>();
 		totalnet.add(0, 0.0);
 		atm.forEach(rowMap -> {
 
@@ -1737,7 +1736,7 @@ public class HomeController {
 			String staff_name = (String) rowMap.get("staff_name");
 			String AccountNo = (String) rowMap.get("bankacno");
 			String BankName = (String) rowMap.get("bank_name");
-			String Locationstate= (String) rowMap.get("joblocation");
+			String Locationstate = (String) rowMap.get("joblocation");
 			int compayrate = Integer.parseInt(rowMap.get("compayrate").toString());
 
 			double ctc = compayrate;
@@ -1761,68 +1760,151 @@ public class HomeController {
 			WorkingDays = TotalWorkingDays;
 			if (TotalWorkingDays > 26) {
 				ExtraWorkingDays = TotalWorkingDays - 26;
-				WorkingDays = TotalWorkingDays-ExtraWorkingDays;
+				WorkingDays = TotalWorkingDays - ExtraWorkingDays;
 			}
-			
+
 			BasicSalary = Math.round((ctc / 26) * WorkingDays * 0.40);
-			DA =  Math.round( (ctc / 26) * WorkingDays * 0.35);
-			HRA =  Math.round( (ctc / 26) * WorkingDays * 0.25);
-			TOTALGROSS =  Math.round( BasicSalary + DA + HRA);
-			ESI =  Math.round( BasicSalary * (0.01)* 0);
-			EPF =  Math.round( BasicSalary * (0.12)* 0);
-			TOTALDeduction=ESI+EPF+Advance;
-			Monthlyincentives =  Math.round( ExtraWorkingDays * (ctc / 26));
-			net =  Math.round( (TOTALGROSS - TOTALDeduction) + Monthlyincentives);
-			
-			String str=  employeeid + "-" + staff_name + "-" + ctc + "-" + TotalWorkingDays + "-" + Absent + "-" + WorkingDays + "-" + ExtraWorkingDays;
-			 str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance + "-" + TOTALDeduction+ "-" + Monthlyincentives + "-" + net;
-			
-			 report.add(str);
-			 totalnet.set(0, totalnet.get(0)+net);
-			
-			 if(!save.equalsIgnoreCase(""))
-			 {
-				 
-				 payslip payslipboj= new payslip();
-				 payslipboj.setPaymonth(Integer.parseInt(selectedmonth.replace("-", "")));
-				 payslipboj.setAbsent(String.valueOf(Absent));
-				 payslipboj.setAccountNo(AccountNo);
-				 payslipboj.setAdvance(String.valueOf(Advance));
-				 payslipboj.setBankName(String.valueOf(BankName));
-				 payslipboj.setBasicSalary(String.valueOf(BasicSalary));
-				 payslipboj.setCtc(String.valueOf(ctc));
-				 payslipboj.setDa(String.valueOf(DA));
-				 payslipboj.setEmployeeid(String.valueOf(employeeid));
-				 payslipboj.setEpf(String.valueOf(EPF));
-				 payslipboj.setEsi(String.valueOf(ESI));
-				 payslipboj.setExtraWorkingDays(String.valueOf(ExtraWorkingDays));
-				 payslipboj.setHra(String.valueOf(HRA));
-				 payslipboj.setLocationstate(String.valueOf(Locationstate));
-				 payslipboj.setMonthlyincentives(String.valueOf(Monthlyincentives));
-				 payslipboj.setNet(String.valueOf(net));
-				 payslipboj.setPayperiod(String.valueOf(Payperiod));
-				 payslipboj.setStaff_name(String.valueOf(staff_name));
-				 payslipboj.setTotaldeduction(String.valueOf(TOTALDeduction));
-				 payslipboj.setTotalgross(String.valueOf(TOTALGROSS));
-				 payslipboj.setTotalWorkingDays(String.valueOf(TotalWorkingDays));
-				 payslipboj.setWorkingDays(String.valueOf(WorkingDays));
-				 
-				 payslipserive.save(payslipboj);
-				 themodel.addAttribute("save","save");
-				 
-			 }
+			DA = Math.round((ctc / 26) * WorkingDays * 0.35);
+			HRA = Math.round((ctc / 26) * WorkingDays * 0.25);
+			TOTALGROSS = Math.round(BasicSalary + DA + HRA);
+			ESI = Math.round(BasicSalary * (0.01) * 0);
+			EPF = Math.round(BasicSalary * (0.12) * 0);
+			TOTALDeduction = ESI + EPF + Advance;
+			Monthlyincentives = Math.round(ExtraWorkingDays * (ctc / 26));
+			net = Math.round((TOTALGROSS - TOTALDeduction) + Monthlyincentives);
+
+			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + TotalWorkingDays + "-" + Absent + "-"
+					+ WorkingDays + "-" + ExtraWorkingDays;
+			str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance
+					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net;
+
+			report.add(str);
+			totalnet.set(0, totalnet.get(0) + net);
+
+			if (!save.equalsIgnoreCase("")) {
+
+				payslip payslipboj = new payslip();
+				payslipboj.setPaymonth(Integer.parseInt(selectedmonth.replace("-", "")));
+				payslipboj.setAbsent(String.valueOf(Absent));
+				payslipboj.setAccountNo(AccountNo);
+				payslipboj.setAdvance(String.valueOf(Advance));
+				payslipboj.setBankName(String.valueOf(BankName));
+				payslipboj.setBasicSalary(String.valueOf(BasicSalary));
+				payslipboj.setCtc(String.valueOf(ctc));
+				payslipboj.setDa(String.valueOf(DA));
+				payslipboj.setEmployeeid(String.valueOf(employeeid));
+				payslipboj.setEpf(String.valueOf(EPF));
+				payslipboj.setEsi(String.valueOf(ESI));
+				payslipboj.setExtraWorkingDays(String.valueOf(ExtraWorkingDays));
+				payslipboj.setHra(String.valueOf(HRA));
+				payslipboj.setLocationstate(String.valueOf(Locationstate));
+				payslipboj.setMonthlyincentives(String.valueOf(Monthlyincentives));
+				payslipboj.setNet(String.valueOf(net));
+				payslipboj.setPayperiod(String.valueOf(Payperiod));
+				payslipboj.setStaff_name(String.valueOf(staff_name));
+				payslipboj.setTotaldeduction(String.valueOf(TOTALDeduction));
+				payslipboj.setTotalgross(String.valueOf(TOTALGROSS));
+				payslipboj.setTotalWorkingDays(String.valueOf(TotalWorkingDays));
+				payslipboj.setWorkingDays(String.valueOf(WorkingDays));
+
+				payslipserive.save(payslipboj);
+				themodel.addAttribute("save", "save");
+
+			}
 		});
-		
-		if(!save.equalsIgnoreCase(""))
-		 {
-			themodel.addAttribute("save","save");
-		 }
-		themodel.addAttribute("report",report);
-		themodel.addAttribute("selectedmonth" , selectedmonth);
-		themodel.addAttribute("totalnet" , totalnet.get(0));
-		
+
+		if (!save.equalsIgnoreCase("")) {
+			themodel.addAttribute("save", "save");
+		}
+		themodel.addAttribute("report", report);
+		themodel.addAttribute("selectedmonth", selectedmonth);
+		themodel.addAttribute("totalnet", totalnet.get(0));
+
 		return "payroll";
 	}
 
-}
+	@GetMapping("attendancereport")
+	public String empattendancereport(Model themodel,
+			@RequestParam(name = "month", required = false, defaultValue="") String selectedmonth) {
 
+		int prdenddate;
+		String monthstr = "";
+		if (!selectedmonth.equalsIgnoreCase("")) {
+			LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+					.with(TemporalAdjusters.lastDayOfMonth());
+		
+			String prd[] = lastDayOfMonth.toString().split("-");
+			prdenddate = Integer.parseInt(prd[2]);
+			monthstr = prd[0] + "-" + prd[1];
+		} else {
+			Date currentdate = new Date();
+			SimpleDateFormat formatterdate = new SimpleDateFormat("yyyy-MM-dd");
+			LocalDate lastDayOfMonth = LocalDate.parse(formatterdate.format(currentdate))
+					.with(TemporalAdjusters.lastDayOfMonth());
+			
+			String prd[] = lastDayOfMonth.toString().split("-");
+			prdenddate = Integer.parseInt(prd[2]);
+			monthstr = prd[0] + "-" + prd[1];
+		}
+
+		List<Map<String, Object>> atm = attendanceMasterService.getatttendancereport(monthstr, prdenddate);
+
+		ArrayList<String> reportarr = new ArrayList<String>();
+
+		atm.forEach(rowMap -> {
+			String reportstr = "";
+			int P = 0;
+			int A = 0;
+			int T = 0;
+			int HL = 0;
+
+			reportstr += rowMap.get("staff_name").toString() + " ~";
+			reportstr += rowMap.get("employeeid").toString() + " ~";
+
+			for (int i = 1; i < 10; i++) {
+				String temp = rowMap.get("0" + i).toString().trim();
+				reportstr += temp + " ~";
+
+				if (temp.equalsIgnoreCase("A")) {
+					A++;
+				}
+				if (temp.equalsIgnoreCase("P")) {
+					P++;
+				}
+				if (temp.equalsIgnoreCase("HL")) {
+					HL++;
+				}
+				if (temp.equalsIgnoreCase("T")) {
+					T++;
+				}
+			}
+			for (int j = 10; j <= prdenddate; j++) {
+				String temp = rowMap.get(String.valueOf(j)).toString().trim();
+				reportstr += temp + " ~";
+
+				if (temp.equalsIgnoreCase("A")) {
+					A++;
+				}
+				if (temp.equalsIgnoreCase("P")) {
+					P++;
+				}
+				if (temp.equalsIgnoreCase("HL")) {
+					HL++;
+				}
+				if (temp.equalsIgnoreCase("T")) {
+					T++;
+				}
+			}
+
+			reportstr += P + " ~" + A + " ~" + HL + " ~" + T + " ~";
+			reportarr.add(reportstr);
+
+		});
+
+		themodel.addAttribute("reportarr", reportarr);
+		themodel.addAttribute("prdenddate", prdenddate);
+
+		return "empattendancereport";
+	}
+
+}

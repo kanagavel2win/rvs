@@ -13,5 +13,6 @@ public interface AttendanceMasterService {
 	public List<AttendanceMaster>  findByattendanceDate(String date);
 	public List<Map<String, Object>> getpayrolldetails(String selectedmonth);
 	
+	public List<Map<String, Object>> getatttendancereport(String monthstr, int prdenddate);
 	
 }

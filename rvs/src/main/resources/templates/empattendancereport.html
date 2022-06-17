@@ -59,6 +59,32 @@
 <!-- END: Custom CSS-->
 <style>
 	
+		
+.sticky-col {
+	position: -webkit-sticky;
+	position: sticky;
+	background-color: white !important;
+	border-right: 1px solid #ccc;
+}
+
+.first-col {
+	text-align: left;
+	width: 30px;
+	min-width: 30px;
+	max-width: 30px;
+	left: 0px;
+	border-right: 1px solid #ccc;
+}
+
+.second-col {
+	text-align: left;
+	width: 200px;
+	min-width: 200px;
+	max-width: 200px;
+	left: 50px;
+	border-right: 1px solid #ccc;
+}
+
 	.table, .table>tr, .table td
 	{
 		line-height:8px;
@@ -72,31 +98,7 @@
 		text-align: left;
 	}
 	
-	
-.sticky-col {
-	position: -webkit-sticky;
-	position: sticky;
-	background-color: white !important;
-	border-right: 1px solid #ccc;
-}
 
-.first-col {
-	text-align: left;
-	width: 50px;
-	min-width: 50px;
-	max-width: 50px;
-	left: 0px;
-	border-right: 1px solid #ccc;
-}
-
-.second-col {
-	text-align: left;
-	width: 200px;
-	min-width: 200px;
-	max-width: 200px;
-	left: 50px;
-	border-right: 1px solid #ccc;
-}
 .P
 {
 	color:green;
@@ -113,7 +115,27 @@
 {
 	color:#4169E1;
 }
+.sunday
+{
+	background:#FFE4E1;
 	
+}
+
+.holiday
+{
+	background:#EEEEE0;
+	
+}
+
+.reortmonth
+{
+	color:green;
+	font-weight: bold;
+}
+.note{
+	padding:10px;
+	
+}
 </style>
 
 </head>
@@ -143,7 +165,7 @@
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Employee List</h5>
+                            <h5 class="content-header-title float-left pr-1 mb-0">Attendance Report</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
                                     <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
@@ -198,16 +220,25 @@
 											</div>
 										</form>
 										<hr />
-                                        
+                                         <th:block>
+                                         	 <p class="reortmonth" th:text="'Report Month ' +${monthstr}"></p>
+                                         </th:block>
                                         <div class="table-responsive">
                                             <table class="table	 table-hover zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th class="sticky-col first-col">S.No</th>
+                                                        <th class="sticky-col first-col">#</th>
 														<th class="sticky-col second-col">Name</th>
                                                         <th:block th:each="i : ${#numbers.sequence( 1, prdenddate, 1)}">
 														   
-														   <th th:text="${ i }"></th>
+														    <th th:if="${#lists.contains(sundays,'|'+ i +'|')}" class="sunday" th:text="${ i }"></th>
+														   	<th:block th:unless="${#lists.contains(sundays,'|'+ i +'|')}">
+														   		
+														   		<th th:if="${#lists.contains(holidaylist,'|'+ i +'|')}"  class="holiday"  th:text="${ i }"></th>
+														   		<th th:unless="${#lists.contains(holidaylist,'|'+ i +'|')}"  th:text="${ i }"></th>
+														   	
+														   	</th:block>
+														   
 														</th:block>
                                                         <th>Total_P</th>
                                                         <th>Total_A</th>
@@ -223,7 +254,12 @@
 													   <td class="sticky-col second-col" th:text="${#strings.arraySplit(rpt,'~')[0] }"></td>
 													   
 													   <th:block th:each="i : ${#numbers.sequence( 1, prdenddate+4, 1)}">
-														   <td th:text="${#strings.arraySplit(rpt,'~')[i+1] }" th:class="${#strings.arraySplit(rpt,'~')[i+1] }"></td>
+														   <td th:if="${#lists.contains(sundays,'|'+ i +'|')}"   th:text="${#strings.arraySplit(rpt,'~')[i+1] }" th:class="${#strings.arraySplit(rpt,'~')[i+1] } + ' sunday'"></td>
+														   <th:block th:unless="${#lists.contains(sundays,'|'+ i +'|')}">
+															 	<td th:if="${#lists.contains(holidaylist,'|'+ i +'|')}" th:text="${#strings.arraySplit(rpt,'~')[i+1] }" th:class="${#strings.arraySplit(rpt,'~')[i+1] } +' holiday'"></td>
+													   			<td th:unless="${#lists.contains(holidaylist,'|'+ i +'|')}" th:text="${#strings.arraySplit(rpt,'~')[i+1] }" th:class="${#strings.arraySplit(rpt,'~')[i+1] }"></td>
+													   		</th:block>
+														
 														</th:block>
 													    
 													</tr>
@@ -232,16 +268,23 @@
                                                 
                                             </table>
                                         </div>
+                                        <br/>
+                                        <span class="sunday note">Sunday</span> 
+                                        
+                                        <span class="holiday note">Holiday</span> 
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+        	
                 </section>
                 <!--/ Zero configuration table -->               
-
+				
             </div>
+        
         </div>
+        
     </div>
 			<!-- END: Content-->
 

@@ -10,7 +10,10 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,7 +46,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
@@ -1721,8 +1724,39 @@ public class HomeController {
 			payslipserive.deleteByPayperiod(Payperiod);
 		}
 
+		// -------------------------------------------------------
+		// Get all Sunday dates
+		// -------------------------------------------------------
+		int year = Integer.parseInt(prd[0]);
+		int month1 = Integer.parseInt(prd[1]);
+		ArrayList<String> sundays = GetallSundaydates(year, month1);
+
+		// -------------------------------------------------------
+		// Get Holiday details between start and end dates
+		// exclude the Sundays
+		// -------------------------------------------------------
+		ArrayList<String> holidaylist = GetHolidaydetailsbetweenstartandenddates(selectedmonth, sundays);
+
+		String Holidaysql = "";
+		String Holidaysqlstr = "";
+		if (holidaylist.size() > 0) {
+			for (String str : holidaylist) {
+				Holidaysql += "'" + selectedmonth + "-" +  String.format("%02d", Integer.parseInt(str.replace("|", ""))) + " 00:00:00',";
+			}
+			Holidaysql = Holidaysql.substring(0, Holidaysql.length() - 1);
+			//System.out.println("Holidaysql" + Holidaysql);
+		}
+		// --------------------------------------------------------
+		if(Holidaysql.length()>0)
+		{
+			Holidaysqlstr=", sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('T','P')) THEN 1 ELSE 0 END)AS 'HOLIDAYP' ," + 
+			"sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'HOLIDAYHL' ";
+		}else
+		{
+			Holidaysqlstr=",'0' AS 'HOLIDAYP' ,'0' AS 'HOLIDAYHL' ";
+		}
 		ArrayList<String> report = new ArrayList<String>();
-		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth);
+		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth,Holidaysqlstr);
 
 		ArrayList<Double> totalnet = new ArrayList<Double>();
 		totalnet.add(0, 0.0);
@@ -1733,6 +1767,9 @@ public class HomeController {
 			int A = ((BigDecimal) rowMap.get("A")).intValue();
 			int T = ((BigDecimal) rowMap.get("T")).intValue();
 			int HL = ((BigDecimal) rowMap.get("HL")).intValue();
+			int HOLIDAYP=((BigDecimal) rowMap.get("HOLIDAYP")).intValue();
+			int HOLIDAYHL=((BigDecimal) rowMap.get("HOLIDAYHL")).intValue();
+			
 			String staff_name = (String) rowMap.get("staff_name");
 			String AccountNo = (String) rowMap.get("bankacno");
 			String BankName = (String) rowMap.get("bank_name");
@@ -1825,28 +1862,39 @@ public class HomeController {
 
 	@GetMapping("attendancereport")
 	public String empattendancereport(Model themodel,
-			@RequestParam(name = "month", required = false, defaultValue="") String selectedmonth) {
+			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth) {
 
 		int prdenddate;
 		String monthstr = "";
+		int yearstr = 0;
+		int month = 0;
 		if (!selectedmonth.equalsIgnoreCase("")) {
 			LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
 					.with(TemporalAdjusters.lastDayOfMonth());
-		
+
 			String prd[] = lastDayOfMonth.toString().split("-");
 			prdenddate = Integer.parseInt(prd[2]);
-			monthstr = prd[0] + "-" + prd[1];
+			yearstr = Integer.parseInt(prd[0]);
+			month = Integer.parseInt(prd[1]);
+
 		} else {
 			Date currentdate = new Date();
 			SimpleDateFormat formatterdate = new SimpleDateFormat("yyyy-MM-dd");
 			LocalDate lastDayOfMonth = LocalDate.parse(formatterdate.format(currentdate))
 					.with(TemporalAdjusters.lastDayOfMonth());
-			
+
 			String prd[] = lastDayOfMonth.toString().split("-");
 			prdenddate = Integer.parseInt(prd[2]);
 			monthstr = prd[0] + "-" + prd[1];
+			yearstr = Integer.parseInt(prd[0]);
+			month = Integer.parseInt(prd[1]);
 		}
 
+		monthstr = yearstr + "-" + month;
+
+		// -------------------------------------------------------
+		// Get Attendance details for particular month
+		// -------------------------------------------------------
 		List<Map<String, Object>> atm = attendanceMasterService.getatttendancereport(monthstr, prdenddate);
 
 		ArrayList<String> reportarr = new ArrayList<String>();
@@ -1901,10 +1949,89 @@ public class HomeController {
 
 		});
 
+		// -------------------------------------------------------
+		// Get all Sunday dates
+		// -------------------------------------------------------
+		int year = yearstr;
+		int month1 = month;
+		ArrayList<String> sundays = GetallSundaydates(year, month1);
+
+		// -------------------------------------------------------
+		// Get Holiday details between start and end dates
+		// exclude the Sundays
+		// -------------------------------------------------------
+		ArrayList<String> holidaylist = GetHolidaydetailsbetweenstartandenddates(monthstr, sundays);
+
+		// --------------------------------------------------------
+		// Add Models data
+		themodel.addAttribute("holidaylist", holidaylist);
+		themodel.addAttribute("monthstr", monthstr);
+		themodel.addAttribute("sundays", sundays);
 		themodel.addAttribute("reportarr", reportarr);
 		themodel.addAttribute("prdenddate", prdenddate);
 
 		return "empattendancereport";
+	}
+
+	public ArrayList<String> GetallSundaydates(int year, int month1) {
+		// -------------------------------------------------------
+		// Get all Sunday dates
+		// -------------------------------------------------------
+
+		ArrayList<String> sundays = new ArrayList<String>();
+
+		IntStream.rangeClosed(1, YearMonth.of(year, month1).lengthOfMonth())
+				.mapToObj(day -> LocalDate.of(year, month1, day))
+				.filter(date -> date.getDayOfWeek() == DayOfWeek.SUNDAY)
+				.forEach(date -> sundays.add("|" + date.getDayOfMonth() + "|"));
+		return sundays;
+	}
+
+	public ArrayList<String> GetHolidaydetailsbetweenstartandenddates(String monthstr, ArrayList<String> sundays) {
+		// -------------------------------------------------------
+		// Get Holiday details between start and end dates
+		// exclude the Sundays
+		// -------------------------------------------------------
+		ArrayList<String> holidaylist = new ArrayList<String>();
+		List<Map<String, Object>> holidaylistmap = holidayService.getHolidaysforMonth(monthstr + "-01",
+				monthstr + "-31");
+		holidaylistmap.forEach(rowMap -> {
+
+			String hstartdate = rowMap.get("start").toString();
+			String henddate = rowMap.get("end").toString();
+			int hdiff = Integer.parseInt(rowMap.get("diff").toString());
+
+			//System.out.println(hstartdate + " , " + henddate + " , " + hdiff);
+
+			LocalDate lastDayOfMonth = LocalDate.parse(hstartdate, DateTimeFormatter.ofPattern("yyyy-M-dd"))
+					.with(TemporalAdjusters.lastDayOfMonth());
+
+			String prd[] = lastDayOfMonth.toString().split("-");
+			int monthenddate = Integer.parseInt(prd[2]);
+
+			String startddprd[] = hstartdate.toString().split("-");
+			String endddprd[] = henddate.toString().split("-");
+
+			int startdd = Integer.parseInt(startddprd[2]);
+			int enddd = Integer.parseInt(endddprd[2]);
+
+			if (hdiff > 1) {
+				for (int h = startdd; h < enddd; h++) {
+					if (h <= monthenddate) {
+						if (!sundays.contains("|" + h + "|"))
+
+							holidaylist.add("|" + h + "|");
+					}
+				}
+
+			} else {
+				if (!sundays.contains("|" + startdd + "|"))
+					holidaylist.add("|" + startdd + "|");
+			}
+
+		});
+		// --------------------------------------------------------
+		return holidaylist;
 	}
 
 }

@@ -11,7 +11,7 @@ public interface AttendanceMasterService {
 	public AttendanceMaster findById(Integer id);
 	public List<AttendanceMaster> findAll();
 	public List<AttendanceMaster>  findByattendanceDate(String date);
-	public List<Map<String, Object>> getpayrolldetails(String selectedmonth);
+	public List<Map<String, Object>> getpayrolldetails(String selectedmonth, String holidaysql);
 	
 	public List<Map<String, Object>> getatttendancereport(String monthstr, int prdenddate);
 	

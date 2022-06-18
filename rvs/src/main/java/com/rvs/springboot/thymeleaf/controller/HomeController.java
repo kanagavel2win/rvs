@@ -1730,7 +1730,27 @@ public class HomeController {
 		int year = Integer.parseInt(prd[0]);
 		int month1 = Integer.parseInt(prd[1]);
 		ArrayList<String> sundays = GetallSundaydates(year, month1);
-
+		
+		String Sundaysql = "";
+		String Sundaysqlstr = "";
+		if (sundays.size() > 0) {
+			for (String str : sundays) {
+				Sundaysql += "'" + selectedmonth + "-" +  String.format("%02d", Integer.parseInt(str.replace("|", ""))) + " 00:00:00',";
+			}
+			Sundaysql = Sundaysql.substring(0, Sundaysql.length() - 1);
+			//System.out.println("Sundaysql" + Sundaysql);
+		}
+		// --------------------------------------------------------
+		if(Sundaysql.length()>0)
+		{
+			Sundaysqlstr=", sum(CASE WHEN (attendance_date in (" + Sundaysql +") and attstatus in('T','P')) THEN 1 ELSE 0 END)AS 'SUNDAYP' ," + 
+			"sum(CASE WHEN (attendance_date in (" + Sundaysql +") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'SUNDAYHL' ";
+			
+		}else
+		{
+			Sundaysqlstr=",'0' AS 'SUNDAYP' ,'0' AS 'SUNDAYHL' ,'0' AS 'SUNDAYT' ";
+		}
+		
 		// -------------------------------------------------------
 		// Get Holiday details between start and end dates
 		// exclude the Sundays
@@ -1750,11 +1770,15 @@ public class HomeController {
 		if(Holidaysql.length()>0)
 		{
 			Holidaysqlstr=", sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('T','P')) THEN 1 ELSE 0 END)AS 'HOLIDAYP' ," + 
-			"sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'HOLIDAYHL' ";
+			"sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'HOLIDAYHL' , "+
+			"sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('A')) THEN 1 ELSE 0 END)AS 'HOLIDAYA'  ";
 		}else
 		{
-			Holidaysqlstr=",'0' AS 'HOLIDAYP' ,'0' AS 'HOLIDAYHL' ";
+			Holidaysqlstr=",'0' AS 'HOLIDAYP' ,'0' AS 'HOLIDAYHL' ,'0' AS 'HOLIDAYA' ";
 		}
+		
+		Holidaysqlstr = Sundaysqlstr + Holidaysqlstr;
+		
 		ArrayList<String> report = new ArrayList<String>();
 		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth,Holidaysqlstr);
 
@@ -1763,43 +1787,66 @@ public class HomeController {
 		atm.forEach(rowMap -> {
 
 			int employeeid = (int) rowMap.get("employeeid");
-			int P = ((BigDecimal) rowMap.get("P")).intValue();
-			int A = ((BigDecimal) rowMap.get("A")).intValue();
-			int T = ((BigDecimal) rowMap.get("T")).intValue();
-			int HL = ((BigDecimal) rowMap.get("HL")).intValue();
-			int HOLIDAYP=((BigDecimal) rowMap.get("HOLIDAYP")).intValue();
-			int HOLIDAYHL=((BigDecimal) rowMap.get("HOLIDAYHL")).intValue();
+			double P = ((BigDecimal) rowMap.get("P")).doubleValue();
+			double A = ((BigDecimal) rowMap.get("A")).doubleValue();
+			double T = ((BigDecimal) rowMap.get("T")).doubleValue();
+			double HL0 = ((BigDecimal) rowMap.get("HL")).doubleValue();
+			double HOLIDAYP=((BigDecimal) rowMap.get("HOLIDAYP")).doubleValue();
+			double HOLIDAYHL0=((BigDecimal) rowMap.get("HOLIDAYHL")).doubleValue();
+			double SUNDAYP=((BigDecimal) rowMap.get("SUNDAYP")).doubleValue();
+			double SUNDAYHL0=((BigDecimal) rowMap.get("SUNDAYHL")).doubleValue();
+			double HOLIDAYA=((BigDecimal) rowMap.get("HOLIDAYA")).doubleValue();
+			
+			double HL =HL0/2;
+			double HOLIDAYHL =HOLIDAYHL0/2;
+			double SUNDAYHL =SUNDAYHL0/2;
 			
 			String staff_name = (String) rowMap.get("staff_name");
 			String AccountNo = (String) rowMap.get("bankacno");
 			String BankName = (String) rowMap.get("bank_name");
 			String Locationstate = (String) rowMap.get("joblocation");
-			int compayrate = Integer.parseInt(rowMap.get("compayrate").toString());
+			double compayrate = Integer.parseInt(rowMap.get("compayrate").toString());
 
 			double ctc = compayrate;
-			double TotalWorkingDays = 0;
-			double Absent = 0;
-			double WorkingDays = 0;
-			double ExtraWorkingDays = 0;
-			double BasicSalary = 0;
-			double DA = 0;
-			double HRA = 0;
-			double TOTALGROSS = 0;
-			double ESI = 0;
-			double EPF = 0;
-			double Advance = 0;
-			double TOTALDeduction = 0;
-			double Monthlyincentives = 0;
-			double net = 0;
+			double TotalWWorkingDays = 0.00;
+			double TotalCompanywrkdays = 0.00;
+			double Totalholidaywrkdays = 0.00;
+			double Totalsundaywrkdays = 0.00;
+			double Totalholidays = 0.00;
+			
+			double Absent = 0.00;
+			double WorkingDays = 0.00;
+			double ExtraWorkingDays = 0.00;
+			double BasicSalary = 0.00;
+			double DA = 0.00;
+			double HRA = 0.00;
+			double TOTALGROSS = 0.00;
+			double ESI = 0.00;
+			double EPF = 0.00;
+			double Advance = 0.00;
+			double TOTALDeduction = 0.00;
+			double Monthlyincentives = 0.00;
+			double net = 0.00;
 			// ----------------------------------------------------
-			TotalWorkingDays = P + T + (HL / 2);
+			/*System.out.println("HOLIDAYHL0-" + HOLIDAYHL0+ " SUNDAYHL0-" + SUNDAYHL0+ " HL0-" + HL0);
+			System.out.println("P-" + P+ " A-" + A+ " T-" + T +" HL-" + HL);
+			System.out.println("HOLIDAYP-" + HOLIDAYP+ " HOLIDAYHL-" + HOLIDAYHL+ " HOLIDAYA-" + HOLIDAYA);
+			System.out.println("SUNDAYP-" + SUNDAYP+ " SUNDAYHL-" + SUNDAYHL);
+			System.out.println("0.5" + (P-HOLIDAYP-SUNDAYP) + T + (HL-HOLIDAYHL-SUNDAYHL) );
+			*/
+			Totalholidays=holidaylist.size();
+			TotalWWorkingDays = (P-HOLIDAYP-SUNDAYP) + T + (HL-HOLIDAYHL-SUNDAYHL) ;
+			Totalsundaywrkdays=SUNDAYP +SUNDAYHL ;
+			Totalholidaywrkdays=HOLIDAYP +HOLIDAYHL ;
+			ExtraWorkingDays=  Totalsundaywrkdays + Totalholidaywrkdays;
+			
 			Absent = A;
-			WorkingDays = TotalWorkingDays;
-			if (TotalWorkingDays > 26) {
-				ExtraWorkingDays = TotalWorkingDays - 26;
-				WorkingDays = TotalWorkingDays - ExtraWorkingDays;
-			}
-
+			WorkingDays = TotalWWorkingDays+Totalholidays-HOLIDAYA;
+			
+			/*System.out.println("Totalholidays-" + Totalholidays+ " TotalWWorkingDays-" + TotalWWorkingDays+ " Totalsundaywrkdays-" + Totalsundaywrkdays+" Totalholidaywrkdays-" + Totalholidaywrkdays);
+			System.out.println("ExtraWorkingDays-" + ExtraWorkingDays+ " WorkingDays-" + WorkingDays);
+			*/
+			
 			BasicSalary = Math.round((ctc / 26) * WorkingDays * 0.40);
 			DA = Math.round((ctc / 26) * WorkingDays * 0.35);
 			HRA = Math.round((ctc / 26) * WorkingDays * 0.25);
@@ -1810,7 +1857,7 @@ public class HomeController {
 			Monthlyincentives = Math.round(ExtraWorkingDays * (ctc / 26));
 			net = Math.round((TOTALGROSS - TOTALDeduction) + Monthlyincentives);
 
-			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + TotalWorkingDays + "-" + Absent + "-"
+			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + (WorkingDays+ExtraWorkingDays) + "-" + Absent + "-"
 					+ WorkingDays + "-" + ExtraWorkingDays;
 			str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance
 					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net;
@@ -1841,7 +1888,7 @@ public class HomeController {
 				payslipboj.setStaff_name(String.valueOf(staff_name));
 				payslipboj.setTotaldeduction(String.valueOf(TOTALDeduction));
 				payslipboj.setTotalgross(String.valueOf(TOTALGROSS));
-				payslipboj.setTotalWorkingDays(String.valueOf(TotalWorkingDays));
+				payslipboj.setTotalWorkingDays(String.valueOf(WorkingDays+ExtraWorkingDays));
 				payslipboj.setWorkingDays(String.valueOf(WorkingDays));
 
 				payslipserive.save(payslipboj);

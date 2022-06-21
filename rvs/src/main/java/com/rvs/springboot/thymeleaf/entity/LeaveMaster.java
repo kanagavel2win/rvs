@@ -7,9 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.assertj.core.internal.bytebuddy.implementation.bind.annotation.Empty;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,6 +48,7 @@ public class LeaveMaster implements Comparable<LeaveMaster> {
 	
 	@Column
 	String approver;
+	
 	@Column
 	String approvercomments;
 	@Column

@@ -85,10 +85,8 @@ public class HomeController {
 
 	@Autowired
 	BranchMasterService branchMasterService;
-
 	@Autowired
 	EmployeeMasterService employeeMasterService;
-
 	@Autowired
 	EmployeeJobcompensationService employeeJobcompensationService;
 	@Autowired
@@ -1636,6 +1634,27 @@ public class HomeController {
 
 		Map<Integer, String> emmap = em.stream()
 				.collect(Collectors.toMap(EmployeeMaster::getEmpMasterid, EmployeeMaster::getStaffName));
+		
+		Date date = new Date();
+		SimpleDateFormat formatteryear = new SimpleDateFormat("yyyy");
+		SimpleDateFormat formattermonth = new SimpleDateFormat("MM");
+		SimpleDateFormat formatterdate = new SimpleDateFormat("yyyy-MM-dd");
+		
+		int currentyear = Integer.parseInt(formatteryear.format(date).toString());
+		int currentmonth = Integer.parseInt(formattermonth.format(date).toString());
+
+		Calendar nxtcal = Calendar.getInstance();
+		nxtcal.set(currentyear, currentmonth - 1, 1);
+		nxtcal.add(Calendar.MONTH, 6);
+
+		Calendar precal = Calendar.getInstance();
+		precal.set(currentyear, currentmonth - 1, 1);
+		precal.add(Calendar.MONTH, -6);
+		String preDate = formatterdate.format(precal.getTime()).toString();
+		String nxtDate = formatterdate.format(nxtcal.getTime()).toString();
+				
+			
+		theModel.addAttribute("range", "?sd="+preDate+"&ed="+nxtDate);		
 		theModel.addAttribute("emmap", emmap);
 		theModel.addAttribute("leavemaster", leavemaster);
 		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
@@ -1691,9 +1710,30 @@ public class HomeController {
 			tempstr += rowMap.get("notes").toString() + " ~";
 			tempstr += rowMap.get("permissionstarttime").toString() + " ~";
 			tempstr += rowMap.get("permissionendtime").toString() + " ~";
-			tempstr += rowMap.get("approvername").toString() + " ~";
-			tempstr += rowMap.get("approvercomments").toString() + " ~";
-			tempstr += rowMap.get("approverejectdate").toString() + " ~";
+			
+			if(!(rowMap.get("approvername")== null))
+			{
+				tempstr += rowMap.get("approvername").toString() + " ~";
+			}else
+			{
+				tempstr +=  " ~";
+			}
+			if(!(rowMap.get("approverejectdate")== null))
+			{
+				tempstr += rowMap.get("approverejectdate").toString() + " ~";
+			}else
+			{
+				tempstr +=  " ~";
+			}
+			if(!(rowMap.get("approvercomments")== null))
+			{
+				tempstr += rowMap.get("approvercomments").toString() + " ~";
+			}else
+			{
+				tempstr += " ~";
+			}
+			
+			
 			leavhistorylist.add(tempstr);
 
 		});
@@ -1907,6 +1947,18 @@ public class HomeController {
 		return "payroll";
 	}
 
+	@PostMapping("payrollpdf")
+	public String payrollpdf(@RequestParam(name = "month") String selectedmonth, Model themodel,
+			@RequestParam(value = "report") String report) {
+		//System.out.println(selectedmonth);
+		String Str=this.theMonth(Integer.parseInt(String.valueOf(selectedmonth).substring(5, 7))).toUpperCase() + " " +String.valueOf(selectedmonth).substring(0, 4);
+		themodel.addAttribute("report", report.replace("]", ""));
+		themodel.addAttribute("monthtext", Str);
+		themodel.addAttribute("selectedmonth", selectedmonth);
+		
+		return "payslippdf";
+	}
+	
 	@GetMapping("attendancereport")
 	public String empattendancereport(Model themodel,
 			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth) {
@@ -2081,4 +2133,31 @@ public class HomeController {
 		return holidaylist;
 	}
 
+	public  String theMonth(int month){
+	    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	    return monthNames[month];
+	}
+	
+	@ResponseBody
+	@PostMapping("leavereject")
+	public String leavereject(@RequestParam Map<String, String> param) {
+
+		LeaveMaster obj= leaveMasterService.findById(Integer.parseInt(param.get("calid")));
+		obj.setStatus("Rejected");
+		leaveMasterService.save(obj);
+		return "Rejected";
+
+	}
+	
+	@ResponseBody
+	@PostMapping("leaveapprove")
+	public String leaveapprove(@RequestParam Map<String, String> param) {
+
+		LeaveMaster obj= leaveMasterService.findById(Integer.parseInt(param.get("calid")));
+		obj.setStatus("Approved");
+		leaveMasterService.save(obj);
+		return "Approved";
+
+	}
+	
 }

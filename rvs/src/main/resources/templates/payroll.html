@@ -278,6 +278,7 @@ table tr td{
 										<hr />
 										<div th:if="${save}" class="form-group col-12">
 											<button type="button" class="btn mb-1 btn-outline-success btn-block">PaySlip Generated Successfully</button>
+											
 										</div>
 										<div class="row">
 										
@@ -308,8 +309,16 @@ table tr td{
 												<input type="hidden" th:value="${selectedmonth}" name="month" />
 												<input type="hidden" th:value="${selectedmonth}" name="save"/>
 												<button type="submit"
-													class="e2 position-relative  btn btn-secondary ml-1">Generate Payslips</button>
+													class="e2 position-relative  btn btn-secondary ml-1"  style="float:right">Generate Payslips</button>
 													<!-- <br/><label>Note: This is One Time Generation.</label> -->
+												</form>
+												<form th:action="@{payrollpdf}" target="_blank" method="POST"
+											class="wizard-horizontal" enctype="multipart/form-data">
+												<input type="hidden" th:value="${selectedmonth}" name="month" />
+												<input type="hidden" th:value="${report}" name="report"/>
+												<button type="submit"
+													class="e2   btn btn-secondary ml-1" style="float:right">Print</button>
+													
 												</form>
 											</div>
 

@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
 
 <!-- BEGIN: Head-->
 
 <head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -22,9 +28,6 @@
 <!-- BEGIN: Vendor CSS-->
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/vendors.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/tables/datatable/datatables.min.css}">
-	
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
 <link rel="stylesheet" type="text/css"
@@ -51,150 +54,268 @@
 	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/plugins/extensions/drag-and-drop.css}">
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/fullcalendar/fullcalendar.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/fullcalendar/bootstrap.css}" />
+<script th:src="@{/app-assets/fullcalendar/jquery.min.js}"></script>
+<script th:src="@{/app-assets/fullcalendar/jquery-ui.min.js}"></script>
+<script th:src="@{/app-assets/fullcalendar/moment.min.js}"></script>
+<script th:src="@{/app-assets/fullcalendar/fullcalendar.min.js}"></script>
+
 <style>
-	.card-text
-	{
-		background: #E5E5E5;
-		padding:5px;
-		color:#000;
-	}
-	.halfday
-	{
-		color:red
-	}
-	.leavehistory
-	{
-	 
-	 position:absolute;
-	 right:0px;
-	 top:0px;
-	 cursor:pointer;
-	}
+#calendar {
+	min-width: 450px;
+	margin: 0 auto;
+}
+
+.displayblock
+{
+	display: block;
+}
 </style>
+
+<style>
+/* The Modal (background) */
+.modal {
+	display: none; /* Hidden by default */
+	z-index: 10000; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	border: 1px solid #888;
+	width: 50%;
+}
+
+@media only screen and (min-width: 10px) and (max-width: 700px) {
+	.modal-content {
+		background-color: #fefefe;
+		margin: auto;
+		border: 1px solid #888;
+		width: 80%;
+	}
+}
+/* The Close Button */
+.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#itemalldeletebtn
+{
+	left:10px;
+	position:absolute;
+}
+.leavehistory
+{
+	float:right;
+}
+.tble
+{
+	max-height: 250px;
+	overflow-Y: scroll;
+}
+</style>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
 
 <body
 	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
 	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
-		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
-		<!-- END: Header-->
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
 
 
-		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
-		<!-- END: Main Menu-->
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
 
-			<!-- BEGIN: Content-->
-				<!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                            <h5 class="content-header-title pr-1 mb-0">Leave Approval</h5>
-                           <a href="leavehistory" class="leavehistory"><button type="button" class="btn btn-warning mr-1 mb-1">History</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-body">
-              	<form 
-											method="POST" class="wizard-horizontal"
-											enctype="multipart/form-data">
-	                <!-- Basic Vertical form layout section start -->
-	                <section id="basic-vertical-layouts">
-	                    <div class="row match-height">
-	                        <div class="col-12">
-	                            <div class="card">
-	                                <div class="card-content">
-	                                    <div class="card-body">
-	                                        
-	                                        <div th:if="${save}" class="form-group col-12">
-												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">
-												Leave request has been raised
-												</button>
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+
+							<!--scrolling content Modal -->
+							<!-- The Modal -->
+							<div id="myModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header bg-warning">
+										<h5 class="modal-title white"
+											id="holidayStatusScrollableTitle"></h5>
+										<button type="button" class="close modelclose"
+											data-dismiss="modal" aria-label="Close">
+											<i class="bx bx-x"></i>
+										</button>
+									</div>
+									<div class="modal-body">
+										<div class="col-12">
+											<div class="form-group tble" >
+
+												 <div class="table-responsive">
+				                                    <table class="table table-bordered mb-0 ">
+				                                        
+				                                        <tbody>
+				                                            <tr>
+				                                                <td class="text-bold-500">Employee Name
+				                                                	<input id="eventid" type="hidden" />
+				                                                </td>
+				                                                <td id="StaffName" ></td>
+				                                            </tr>
+				                                            <tr>
+				                                                <td class="text-bold-500">From Date</td>
+				                                                <td id="fromadate" ></td>
+				                                            </tr>
+				                                            <tr>
+				                                                <td class="text-bold-500">To Date</td>
+				                                                <td id="todate" ></td>
+				                                            </tr>
+				                                            <tr>
+				                                                <td class="text-bold-500">Leave Type</td>
+				                                                <td id="leavetype" ></td>
+				                                            </tr>
+				                                            <tr>
+				                                                <td class="text-bold-500">HalfDay</td>
+				                                                <td id="halfday" ></td>
+				                                            </tr>
+				                                             <tr>
+				                                                <td class="text-bold-500">Status</td>
+				                                                <td id="status" ></td>
+				                                            </tr>
+				                                            <tr>
+				                                                <td class="text-bold-500">Permission Start Time</td>
+				                                                <td id="permissionstarttime" ></td>
+				                                            </tr>
+				                                            <tr>
+				                                                <td class="text-bold-500">Permission End Time</td>
+				                                                <td id="permissionendtime" ></td>
+				                                            </tr>
+				                                            <tr>
+				                                                <td class="text-bold-500">Note</td>
+				                                                <td id="notes" ></td>
+				                                            </tr>
+				                                           
+				                                        </tbody>
+				                                    </table>
+				                                </div>
 											</div>
-							            
-	                                        
-	                                    
-	                                    	<hr/>
-	                                    	<div class="table-responsive">
+										</div>
 
-      										
-                                            <table class="table zero-configuration table-hover">
-                                            	<thead>
-                                                    <tr>
-                                                    	<th rowspan="1" colspan="1">S.No</th>
-                                                    	<th rowspan="1" colspan="1">Name</th>
-                                                    	<th rowspan="1" colspan="1">FromDate</th>
-                                                    	<th rowspan="1" colspan="1">ToDate</th>
-                                                    	<th rowspan="1" colspan="1">Leave Type</th>
-                                                    	<th rowspan="1" colspan="1">Time</th>
-                                                    	<th rowspan="1" colspan="1">Note</th>
-                                                    	
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                 	<tr th:each="obj,stat : ${leaveMasterlist}" role="row" class="odd">
-                                                        <td class="sorting_1" th:text="${stat.index +1}"></td>
-                                                        <td>
-                                                        	<a th:href="'leavereview?id='+ ${obj.id}"><span th:text="${emmap.get(obj.empid)}"></span></a>
-                                                        </td>
-                                                       <td>
-                                                       	<span th:text="${#strings.arraySplit(obj.fromadate,'-')[2] +'-'+ #strings.arraySplit(obj.fromadate,'-')[1] +'-'+ #strings.arraySplit(obj.fromadate,'-')[0] }"></span>
-                                                       	<span th:if="${obj.halfday}" class="halfday">Halfday</span>
-                                                       </td>
-                                                        <td th:text="${#strings.arraySplit(obj.todate,'-')[2] +'-'+ #strings.arraySplit(obj.todate,'-')[1] +'-'+ #strings.arraySplit(obj.todate,'-')[0] }"></td>
-                                                        <td th:text="${obj.leavetype}"></td>
-                                                        <td th:text="${obj.permissionstarttime} +'-' + ${obj.permissionendtime}"></td>
-                                                        <td th:text="${obj.notes}"></td>
-                                                        
-                                                    </tr>
-                                                    
-                                                 </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                    	<th rowspan="1" colspan="1">S.No</th>
-                                                    	<th rowspan="1" colspan="1">Name</th>
-                                                    	<th rowspan="1" colspan="1">FromDate</th>
-                                                    	<th rowspan="1" colspan="1">ToDate</th>
-                                                    	<th rowspan="1" colspan="1">Leave Type</th>
-                                                    	<th rowspan="1" colspan="1">Time</th>
-                                                    	<th rowspan="1" colspan="1">Note</th>
-                                                    	
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        	</div>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </section>
-	                <!-- // Basic Vertical form layout section end -->
-				</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-light-danger"
+											id="itemalldeletebtn" >
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Reject</span>
+										</button>
 
-            </div>
-        </div>
-    </div>
-			<!-- END: Content-->
+										<button type="button" class="btn btn-primary ml-1"
+											id="additemallsavebtn">
+											<i class="bx bx-check d-block d-sm-none"></i> <span
+												class="d-none d-sm-block text-white">Approve</span>
+										</button>
+										<button type="button"
+											class="btn btn-light-secondary modelclose">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Close</span>
+										</button>
+
+										
+									</div>
+								</div>
+							</div>
 
 
-		
-		<div class="sidenav-overlay"></div>
-		<div class="drag-target"></div>
+							<!--scrolling content Modal -->
+							<p></p>
+							<h5 class="content-header-title pr-1 mb-0" style="border-right:none;">Leave Approval
+                            <a href="leavehistory" class="leavehistory"><button type="button" class="btn btn-warning mr-1 mb-1">History</button></a>
+                            </h5>
+						</div>
 
-		<!-- BEGIN: Footer-->
-		<footer class="footer footer-static footer-light">
+					</div>
+				</div>
+
+			</div>
+
+
+			<!-- Trigger/Open The Modal -->
+			<button id="myBtn" style="display: none">Open Modal</button>
+
+			<div class="content-body">
+
+				<!-- Zero configuration table -->
+				<section id="basic-datatable">
+					<div class="row">
+						<div class="card">
+							<p></p>
+
+
+							<div class="col-md-12">
+								<!-- ---------------------- -- ---------------------- -->
+								<!-- ---------------------- -- ---------------------- -->
+								<div class="table-responsive">
+									<div id='calendar'></div>
+								</div>
+								<!-- ---------------------- -- ---------------------- -->
+								<!-- ---------------------- -- ---------------------- -->
+							</div>
+						</div>
+					</div>
+				</section>
+				<!--/ Zero configuration table -->
+
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"
+		style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+	<div class="drag-target"
+		style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
 		<p class="clearfix mb-0">
 			<span class="float-left d-inline-block"></span><span
 				class="float-right d-sm-inline-block d-none"></span>
@@ -202,52 +323,250 @@
 				<i class="bx bx-up-arrow-alt"></i>
 			</button>
 		</p>
-		</footer>
-		<!-- END: Footer-->
+	</footer>
+	<input type="hidden" id="range" th:value="${range}"/>
+	<!-- END: Footer-->
 
 
-		<!-- BEGIN: Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-		<!-- BEGIN Vendor JS-->
 
-		<!-- BEGIN: Page Vendor JS-->
-		<script th:src="@{app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
-    	<script th:src="@{app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
-    	<script th:src="@{app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
-    	<script th:src="@{app-assets/vendors/js/tables/datatable/buttons.html5.min.js}"></script>
-    	<script th:src="@{app-assets/vendors/js/tables/datatable/buttons.print.min.js}"></script>
-    	<script th:src="@{app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js}"></script>
-    	<script th:src="@{app-assets/vendors/js/tables/datatable/pdfmake.min.js}"></script>
-    	<script th:src="@{app-assets/vendors/js/tables/datatable/vfs_fonts.js}"></script>
-    	
-		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-		<!-- END: Page Vendor JS-->
+	<!-- BEGIN: Page Vendor JS-->
 
-		<!-- BEGIN: Theme JS-->
-		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-		<script th:src="@{/app-assets/js/core/app.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-		<!-- END: Theme JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
 
-		<!-- BEGIN: Page JS-->
-		
-		<script
-			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
-			<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
-		<!-- END: Page JS-->
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+
+	<!-- END: Page JS-->
 </body>
 <!-- END: Body-->
+<script>
+		var modal = document.getElementById("myModal");
+		var btn = document.getElementById("myBtn");
+		var span = document.getElementsByClassName("modelclose")[0];
+		btn.onclick = function() {
+		  modal.style.display = "block";
+		}
+		span.onclick = function() {
+		  modal.style.display = "none";
+		}
+		window.onclick = function(event) {
+		  if (event.target == modal) {
+		    modal.style.display = "none";
+		  }
+		}
+		$(document).ready(function() {  
+			$('.modelclose').click(function(){
+				$('#myModal').css("display","none");
+			});
+		
+
+			 
+			 
+		});
+		
+</script>
+<script>  
+  
+ $(document).ready(function() {  
+	 		  var calid=1;
+			  var date = new Date();  
+			  var d = date.getDate();  
+			  var m = date.getMonth();  
+			  var y = date.getFullYear();  
+			  var range=$("#range").val();
+			  
+			  var calendar = $('#calendar').fullCalendar({  
+			   editable: true,  
+			   header: {  
+			    left: 'prev,next today',  
+			    center: 'title',  
+			    right: ''  
+			   },  
+			  
+			   eventSources: [
+				    {
+				      url: 'eventsandleave'+ range,
+				      type: 'GET',
+				      
+				      error: function() {
+				        alert('there was an error while fetching events!');
+				      }
+				    }
+				  ],    
+			  
+			   eventRender: function(event, element, view) {  
+			    if (event.allDay === 'true') {  
+			     event.allDay = true;  
+			    } else {  
+			     event.allDay = false;  
+			    }  
+			   },  
+			   selectable: false,  
+			   selectHelper: false,  
+			   displayEventTime : false,
+			   editable: false,  
+			   
+			   eventClick: function(event) {  
+				   
+				   var start = $.fullCalendar.formatDate(event.start, "DD-MM-Y");  
+			       endtemp=new Date(event.end-(1*24*60*60*1000));
+				   var end= moment(endtemp).format('DD-MM-Y');
+			       
+				   $('#eventid').val(event.id);
+			        $('#StaffName').text(event.title);
+			        $('#fromadate').text(start);
+			        $('#todate').text(end);
+			        
+			        var input = '' + event.description;
+
+			        var fields = input.split('~');
+
+			        console.log(fields);
+			        $('#leavetype').text(fields[0]);
+			        $('#status').text(fields[1]);
+			        $('#halfday').text(fields[5]);
+			        $('#permissionstarttime').text(fields[3]);
+			        $('#permissionendtime').text(fields[4]);
+			        $('#notes').text(fields[2]);
+			        
+			        $('#additemallsavebtn').hide();
+			        $('#itemalldeletebtn').hide();
+			        if(fields[1] == "Pending ")
+				   	{
+			        	$('#additemallsavebtn').show();    	
+			        	$('#itemalldeletebtn').show();
+				   	} 
+			       $('#myModal').css("display","block");
+				
+			    }  
+			   
+			     
+			  }); 
+			  
+			//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+				$(function() {
+					var token = $("meta[name='_csrf']").attr("content");
+					var header = $("meta[name='_csrf_header']").attr("content");
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(header, token);
+					});
+				});
+				//--------------------------------------------------------------------------------------------------------------------------------------		 
+				
+			 //----------------------------------------------------
+			 
+			 $('#itemalldeletebtn').click(function(){
+				 var decision = confirm("Do you really want to do Reject it?");   
+				 if (decision) {  
+				  	
+					 if($('#eventid').val()!='')
+					   {
+						 //----------------------------------------------------
+						   var formData = { calid : $('#eventid').val() }
+							$.ajax({
+								type : "POST",url : "leavereject",
+								data : formData,success : function(result) {
+											   $('#calendar').fullCalendar('refetchEvents');
+								},
+								error : function(e) {
+									alert("Error" + e);
+								}
+							});
+						//----------------------------------------------------					   
+					   }
+					 
+					 
+				  	
+				 }
+				 $('#myModal').css("display","none");
+			 });
+			 //----------------------------------------------------
+			  $('#additemallsavebtn').click(function(){  
+				   
+				   
+				  
+			       //----------------------------------------------------
+				    var formData = { calid : $('#eventid').val() }
+			       
+					$.ajax({
+						type : "POST",url : "leaveapprove",
+						data : formData,success : function(result) {
+									   $('#calendar').fullCalendar('refetchEvents');
+						},
+						error : function(e) {
+							alert("Error" + e);
+						}
+					});
+				    $('#myModal').css("display","none");
+					//----------------------------------------------------
+				});
+			  
+			function holidaycolorfunction(popholidaytype){
+					holidaycolor="#87CEFF";
+				  if(popholidaytype=="National holiday")
+					{
+						holidaycolor="#48D1CC";	
+					}
+					if(popholidaytype=="State holiday")
+					{
+						holidaycolor="#9ACD32";	
+					}
+					if(popholidaytype=="Local Holiday")
+					{
+						holidaycolor="#FFEFDB";
+					}
+					if(popholidaytype=="Others")
+					{
+						holidaycolor="#87CEFF";
+					}
+					return holidaycolor;
+			}
+			
+			 //----------------------------------------------------
+			 $('.mobile-menu').click(function(){
+				
+				 $('.vertical-layout').addClass('vertical-overlay-menu pace-done menu-open');
+				 $('.vertical-layout').removeClass('vertical-menu-modern');
+				 $('.main-menu').addClass('expanded');
+				 $('.main-menu').css('touch-action','none');
+				 $('.main-menu').css('user-select','none'); 
+				 $('.main-menu').css('-webkit-user-drag','none'); 
+				 $('.main-menu').css('-webkit-tap-highlight-color','rgba(0, 0, 0, 0)');
+				 $('.navbar-header').addClass('expanded');
+				 $('.main-menu-content').addClass('ps');
+				$('.sidenav-overlay').addClass('d-block');
+			 });
+			 
+			 $('.sidenav-overlay').click(function(){
+					
+				 $('.vertical-layout').removeClass('vertical-overlay-menu pace-done menu-open');
+				 $('.vertical-layout').addClass('vertical-menu-modern');
+				 $('.main-menu').removeClass('expanded');
+				 $('.main-menu').css('touch-action','none');
+				 $('.main-menu').css('user-select','none'); 
+				 $('.main-menu').css('-webkit-user-drag','none'); 
+				 $('.main-menu').css('-webkit-tap-highlight-color','rgba(0, 0, 0, 0)');
+				 $('.navbar-header').removeClass('expanded');
+				 $('.main-menu-content').removeClass('ps');
+				$('.sidenav-overlay').removeClass('d-block');
+			 });
+			 
+			
+ 
+ });  
+  
+</script>
+
+
 
 </html>
-
-
-
-

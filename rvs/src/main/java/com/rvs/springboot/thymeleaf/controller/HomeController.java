@@ -2,7 +2,6 @@ package com.rvs.springboot.thymeleaf.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
@@ -47,8 +45,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.rvs.springboot.thymeleaf.entity.AssetMaster;
+import com.rvs.springboot.thymeleaf.entity.AssetMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
+import com.rvs.springboot.thymeleaf.entity.CheckIn;
+import com.rvs.springboot.thymeleaf.entity.CheckInFiles;
+import com.rvs.springboot.thymeleaf.entity.CheckOut;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
@@ -65,9 +68,15 @@ import com.rvs.springboot.thymeleaf.entity.Holiday;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
+import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
+import com.rvs.springboot.thymeleaf.entity.VendorFiles;
+import com.rvs.springboot.thymeleaf.entity.VendorMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
+import com.rvs.springboot.thymeleaf.service.AssetMasterService;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
+import com.rvs.springboot.thymeleaf.service.CheckInService;
+import com.rvs.springboot.thymeleaf.service.CheckOutService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobcompensationService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
@@ -78,6 +87,7 @@ import com.rvs.springboot.thymeleaf.service.HolidayService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 import com.rvs.springboot.thymeleaf.service.LoginService;
 import com.rvs.springboot.thymeleaf.service.PaySlipService;
+import com.rvs.springboot.thymeleaf.service.VendorMasterService;
 
 @Controller
 
@@ -107,6 +117,15 @@ public class HomeController {
 	private LoginService loginService;
 	@Autowired
 	private PaySlipService payslipserive;
+
+	@Autowired
+	VendorMasterService vendorMasterService;
+	@Autowired
+	AssetMasterService assetMasterService;
+	@Autowired
+	CheckOutService checkoutService;
+	@Autowired
+	CheckInService checkinService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -1634,12 +1653,12 @@ public class HomeController {
 
 		Map<Integer, String> emmap = em.stream()
 				.collect(Collectors.toMap(EmployeeMaster::getEmpMasterid, EmployeeMaster::getStaffName));
-		
+
 		Date date = new Date();
 		SimpleDateFormat formatteryear = new SimpleDateFormat("yyyy");
 		SimpleDateFormat formattermonth = new SimpleDateFormat("MM");
 		SimpleDateFormat formatterdate = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		int currentyear = Integer.parseInt(formatteryear.format(date).toString());
 		int currentmonth = Integer.parseInt(formattermonth.format(date).toString());
 
@@ -1652,9 +1671,8 @@ public class HomeController {
 		precal.add(Calendar.MONTH, -6);
 		String preDate = formatterdate.format(precal.getTime()).toString();
 		String nxtDate = formatterdate.format(nxtcal.getTime()).toString();
-				
-			
-		theModel.addAttribute("range", "?sd="+preDate+"&ed="+nxtDate);		
+
+		theModel.addAttribute("range", "?sd=" + preDate + "&ed=" + nxtDate);
 		theModel.addAttribute("emmap", emmap);
 		theModel.addAttribute("leavemaster", leavemaster);
 		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
@@ -1710,30 +1728,23 @@ public class HomeController {
 			tempstr += rowMap.get("notes").toString() + " ~";
 			tempstr += rowMap.get("permissionstarttime").toString() + " ~";
 			tempstr += rowMap.get("permissionendtime").toString() + " ~";
-			
-			if(!(rowMap.get("approvername")== null))
-			{
+
+			if (!(rowMap.get("approvername") == null)) {
 				tempstr += rowMap.get("approvername").toString() + " ~";
-			}else
-			{
-				tempstr +=  " ~";
-			}
-			if(!(rowMap.get("approverejectdate")== null))
-			{
-				tempstr += rowMap.get("approverejectdate").toString() + " ~";
-			}else
-			{
-				tempstr +=  " ~";
-			}
-			if(!(rowMap.get("approvercomments")== null))
-			{
-				tempstr += rowMap.get("approvercomments").toString() + " ~";
-			}else
-			{
+			} else {
 				tempstr += " ~";
 			}
-			
-			
+			if (!(rowMap.get("approverejectdate") == null)) {
+				tempstr += rowMap.get("approverejectdate").toString() + " ~";
+			} else {
+				tempstr += " ~";
+			}
+			if (!(rowMap.get("approvercomments") == null)) {
+				tempstr += rowMap.get("approvercomments").toString() + " ~";
+			} else {
+				tempstr += " ~";
+			}
+
 			leavhistorylist.add(tempstr);
 
 		});
@@ -1770,27 +1781,28 @@ public class HomeController {
 		int year = Integer.parseInt(prd[0]);
 		int month1 = Integer.parseInt(prd[1]);
 		ArrayList<String> sundays = GetallSundaydates(year, month1);
-		
+
 		String Sundaysql = "";
 		String Sundaysqlstr = "";
 		if (sundays.size() > 0) {
 			for (String str : sundays) {
-				Sundaysql += "'" + selectedmonth + "-" +  String.format("%02d", Integer.parseInt(str.replace("|", ""))) + " 00:00:00',";
+				Sundaysql += "'" + selectedmonth + "-" + String.format("%02d", Integer.parseInt(str.replace("|", "")))
+						+ " 00:00:00',";
 			}
 			Sundaysql = Sundaysql.substring(0, Sundaysql.length() - 1);
-			//System.out.println("Sundaysql" + Sundaysql);
+			// System.out.println("Sundaysql" + Sundaysql);
 		}
 		// --------------------------------------------------------
-		if(Sundaysql.length()>0)
-		{
-			Sundaysqlstr=", sum(CASE WHEN (attendance_date in (" + Sundaysql +") and attstatus in('T','P')) THEN 1 ELSE 0 END)AS 'SUNDAYP' ," + 
-			"sum(CASE WHEN (attendance_date in (" + Sundaysql +") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'SUNDAYHL' ";
-			
-		}else
-		{
-			Sundaysqlstr=",'0' AS 'SUNDAYP' ,'0' AS 'SUNDAYHL' ,'0' AS 'SUNDAYT' ";
+		if (Sundaysql.length() > 0) {
+			Sundaysqlstr = ", sum(CASE WHEN (attendance_date in (" + Sundaysql
+					+ ") and attstatus in('T','P')) THEN 1 ELSE 0 END)AS 'SUNDAYP' ,"
+					+ "sum(CASE WHEN (attendance_date in (" + Sundaysql
+					+ ") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'SUNDAYHL' ";
+
+		} else {
+			Sundaysqlstr = ",0 AS 'SUNDAYP' ,0 AS 'SUNDAYHL' ,0 AS 'SUNDAYT' ";
 		}
-		
+
 		// -------------------------------------------------------
 		// Get Holiday details between start and end dates
 		// exclude the Sundays
@@ -1801,46 +1813,48 @@ public class HomeController {
 		String Holidaysqlstr = "";
 		if (holidaylist.size() > 0) {
 			for (String str : holidaylist) {
-				Holidaysql += "'" + selectedmonth + "-" +  String.format("%02d", Integer.parseInt(str.replace("|", ""))) + " 00:00:00',";
+				Holidaysql += "'" + selectedmonth + "-" + String.format("%02d", Integer.parseInt(str.replace("|", "")))
+						+ " 00:00:00',";
 			}
 			Holidaysql = Holidaysql.substring(0, Holidaysql.length() - 1);
-			//System.out.println("Holidaysql" + Holidaysql);
+			// System.out.println("Holidaysql" + Holidaysql);
 		}
 		// --------------------------------------------------------
-		if(Holidaysql.length()>0)
-		{
-			Holidaysqlstr=", sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('T','P')) THEN 1 ELSE 0 END)AS 'HOLIDAYP' ," + 
-			"sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'HOLIDAYHL' , "+
-			"sum(CASE WHEN (attendance_date in (" + Holidaysql +") and attstatus in('A')) THEN 1 ELSE 0 END)AS 'HOLIDAYA'  ";
-		}else
-		{
-			Holidaysqlstr=",'0' AS 'HOLIDAYP' ,'0' AS 'HOLIDAYHL' ,'0' AS 'HOLIDAYA' ";
+		if (Holidaysql.length() > 0) {
+			Holidaysqlstr = ", sum(CASE WHEN (attendance_date in (" + Holidaysql
+					+ ") and attstatus in('T','P')) THEN 1 ELSE 0 END)AS 'HOLIDAYP' ,"
+					+ "sum(CASE WHEN (attendance_date in (" + Holidaysql
+					+ ") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'HOLIDAYHL' , "
+					+ "sum(CASE WHEN (attendance_date in (" + Holidaysql
+					+ ") and attstatus in('A')) THEN 1 ELSE 0 END)AS 'HOLIDAYA'  ";
+		} else {
+			Holidaysqlstr = ",0 AS 'HOLIDAYP' ,0 AS 'HOLIDAYHL' ,0 AS 'HOLIDAYA' ";
 		}
-		
+
 		Holidaysqlstr = Sundaysqlstr + Holidaysqlstr;
-		
+
 		ArrayList<String> report = new ArrayList<String>();
-		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth,Holidaysqlstr);
+		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth, Holidaysqlstr);
 
 		ArrayList<Double> totalnet = new ArrayList<Double>();
 		totalnet.add(0, 0.0);
 		atm.forEach(rowMap -> {
 
 			int employeeid = (int) rowMap.get("employeeid");
-			double P = ((BigDecimal) rowMap.get("P")).doubleValue();
-			double A = ((BigDecimal) rowMap.get("A")).doubleValue();
-			double T = ((BigDecimal) rowMap.get("T")).doubleValue();
-			double HL0 = ((BigDecimal) rowMap.get("HL")).doubleValue();
-			double HOLIDAYP=((BigDecimal) rowMap.get("HOLIDAYP")).doubleValue();
-			double HOLIDAYHL0=((BigDecimal) rowMap.get("HOLIDAYHL")).doubleValue();
-			double SUNDAYP=((BigDecimal) rowMap.get("SUNDAYP")).doubleValue();
-			double SUNDAYHL0=((BigDecimal) rowMap.get("SUNDAYHL")).doubleValue();
-			double HOLIDAYA=((BigDecimal) rowMap.get("HOLIDAYA")).doubleValue();
-			
-			double HL =HL0/2;
-			double HOLIDAYHL =HOLIDAYHL0/2;
-			double SUNDAYHL =SUNDAYHL0/2;
-			
+			double P = Double.parseDouble(rowMap.get("P").toString());
+			double A = Double.parseDouble(rowMap.get("A").toString());
+			double T = Double.parseDouble(rowMap.get("T").toString());
+			double HL0 = Double.parseDouble(rowMap.get("HL").toString());
+			double HOLIDAYP = Double.parseDouble(rowMap.get("HOLIDAYP").toString());
+			double HOLIDAYHL0 = Double.parseDouble(rowMap.get("HOLIDAYHL").toString());
+			double SUNDAYP = Double.parseDouble(rowMap.get("SUNDAYP").toString());
+			double SUNDAYHL0 = Double.parseDouble(rowMap.get("SUNDAYHL").toString());
+			double HOLIDAYA = Double.parseDouble(rowMap.get("HOLIDAYA").toString());
+
+			double HL = HL0 / 2;
+			double HOLIDAYHL = HOLIDAYHL0 / 2;
+			double SUNDAYHL = SUNDAYHL0 / 2;
+
 			String staff_name = (String) rowMap.get("staff_name");
 			String AccountNo = (String) rowMap.get("bankacno");
 			String BankName = (String) rowMap.get("bank_name");
@@ -1853,7 +1867,7 @@ public class HomeController {
 			double Totalholidaywrkdays = 0.00;
 			double Totalsundaywrkdays = 0.00;
 			double Totalholidays = 0.00;
-			
+
 			double Absent = 0.00;
 			double WorkingDays = 0.00;
 			double ExtraWorkingDays = 0.00;
@@ -1868,25 +1882,31 @@ public class HomeController {
 			double Monthlyincentives = 0.00;
 			double net = 0.00;
 			// ----------------------------------------------------
-			/*System.out.println("HOLIDAYHL0-" + HOLIDAYHL0+ " SUNDAYHL0-" + SUNDAYHL0+ " HL0-" + HL0);
-			System.out.println("P-" + P+ " A-" + A+ " T-" + T +" HL-" + HL);
-			System.out.println("HOLIDAYP-" + HOLIDAYP+ " HOLIDAYHL-" + HOLIDAYHL+ " HOLIDAYA-" + HOLIDAYA);
-			System.out.println("SUNDAYP-" + SUNDAYP+ " SUNDAYHL-" + SUNDAYHL);
-			System.out.println("0.5" + (P-HOLIDAYP-SUNDAYP) + T + (HL-HOLIDAYHL-SUNDAYHL) );
-			*/
-			Totalholidays=holidaylist.size();
-			TotalWWorkingDays = (P-HOLIDAYP-SUNDAYP) + T + (HL-HOLIDAYHL-SUNDAYHL) ;
-			Totalsundaywrkdays=SUNDAYP +SUNDAYHL ;
-			Totalholidaywrkdays=HOLIDAYP +HOLIDAYHL ;
-			ExtraWorkingDays=  Totalsundaywrkdays + Totalholidaywrkdays;
-			
+			/*
+			 * System.out.println("HOLIDAYHL0-" + HOLIDAYHL0+ " SUNDAYHL0-" + SUNDAYHL0+
+			 * " HL0-" + HL0); System.out.println("P-" + P+ " A-" + A+ " T-" + T +" HL-" +
+			 * HL); System.out.println("HOLIDAYP-" + HOLIDAYP+ " HOLIDAYHL-" + HOLIDAYHL+
+			 * " HOLIDAYA-" + HOLIDAYA); System.out.println("SUNDAYP-" + SUNDAYP+
+			 * " SUNDAYHL-" + SUNDAYHL); System.out.println("0.5" + (P-HOLIDAYP-SUNDAYP) + T
+			 * + (HL-HOLIDAYHL-SUNDAYHL) );
+			 */
+			Totalholidays = holidaylist.size();
+			TotalWWorkingDays = (P - HOLIDAYP - SUNDAYP) + T + (HL - HOLIDAYHL - SUNDAYHL);
+			Totalsundaywrkdays = SUNDAYP + SUNDAYHL;
+			Totalholidaywrkdays = HOLIDAYP + HOLIDAYHL;
+			ExtraWorkingDays = Totalsundaywrkdays + Totalholidaywrkdays;
+
 			Absent = A;
-			WorkingDays = TotalWWorkingDays+Totalholidays-HOLIDAYA;
-			
-			/*System.out.println("Totalholidays-" + Totalholidays+ " TotalWWorkingDays-" + TotalWWorkingDays+ " Totalsundaywrkdays-" + Totalsundaywrkdays+" Totalholidaywrkdays-" + Totalholidaywrkdays);
-			System.out.println("ExtraWorkingDays-" + ExtraWorkingDays+ " WorkingDays-" + WorkingDays);
-			*/
-			
+			WorkingDays = TotalWWorkingDays + Totalholidays - HOLIDAYA;
+
+			/*
+			 * System.out.println("Totalholidays-" + Totalholidays+ " TotalWWorkingDays-" +
+			 * TotalWWorkingDays+ " Totalsundaywrkdays-" +
+			 * Totalsundaywrkdays+" Totalholidaywrkdays-" + Totalholidaywrkdays);
+			 * System.out.println("ExtraWorkingDays-" + ExtraWorkingDays+ " WorkingDays-" +
+			 * WorkingDays);
+			 */
+
 			BasicSalary = Math.round((ctc / 26) * WorkingDays * 0.40);
 			DA = Math.round((ctc / 26) * WorkingDays * 0.35);
 			HRA = Math.round((ctc / 26) * WorkingDays * 0.25);
@@ -1897,8 +1917,8 @@ public class HomeController {
 			Monthlyincentives = Math.round(ExtraWorkingDays * (ctc / 26));
 			net = Math.round((TOTALGROSS - TOTALDeduction) + Monthlyincentives);
 
-			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + (WorkingDays+ExtraWorkingDays) + "-" + Absent + "-"
-					+ WorkingDays + "-" + ExtraWorkingDays;
+			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + (WorkingDays + ExtraWorkingDays) + "-"
+					+ Absent + "-" + WorkingDays + "-" + ExtraWorkingDays;
 			str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance
 					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net;
 
@@ -1928,7 +1948,7 @@ public class HomeController {
 				payslipboj.setStaff_name(String.valueOf(staff_name));
 				payslipboj.setTotaldeduction(String.valueOf(TOTALDeduction));
 				payslipboj.setTotalgross(String.valueOf(TOTALGROSS));
-				payslipboj.setTotalWorkingDays(String.valueOf(WorkingDays+ExtraWorkingDays));
+				payslipboj.setTotalWorkingDays(String.valueOf(WorkingDays + ExtraWorkingDays));
 				payslipboj.setWorkingDays(String.valueOf(WorkingDays));
 
 				payslipserive.save(payslipboj);
@@ -1950,15 +1970,16 @@ public class HomeController {
 	@PostMapping("payrollpdf")
 	public String payrollpdf(@RequestParam(name = "month") String selectedmonth, Model themodel,
 			@RequestParam(value = "report") String report) {
-		//System.out.println(selectedmonth);
-		String Str=this.theMonth(Integer.parseInt(String.valueOf(selectedmonth).substring(5, 7))).toUpperCase() + " " +String.valueOf(selectedmonth).substring(0, 4);
+		// System.out.println(selectedmonth);
+		String Str = this.theMonth(Integer.parseInt(String.valueOf(selectedmonth).substring(5, 7)) - 1).toUpperCase()
+				+ " " + String.valueOf(selectedmonth).substring(0, 4);
 		themodel.addAttribute("report", report.replace("]", ""));
 		themodel.addAttribute("monthtext", Str);
 		themodel.addAttribute("selectedmonth", selectedmonth);
-		
+
 		return "payslippdf";
 	}
-	
+
 	@GetMapping("attendancereport")
 	public String empattendancereport(Model themodel,
 			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth) {
@@ -2100,7 +2121,7 @@ public class HomeController {
 			String henddate = rowMap.get("end").toString();
 			int hdiff = Integer.parseInt(rowMap.get("diff").toString());
 
-			//System.out.println(hstartdate + " , " + henddate + " , " + hdiff);
+			// System.out.println(hstartdate + " , " + henddate + " , " + hdiff);
 
 			LocalDate lastDayOfMonth = LocalDate.parse(hstartdate, DateTimeFormatter.ofPattern("yyyy-M-dd"))
 					.with(TemporalAdjusters.lastDayOfMonth());
@@ -2133,31 +2154,640 @@ public class HomeController {
 		return holidaylist;
 	}
 
-	public  String theMonth(int month){
-	    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-	    return monthNames[month];
+	public String theMonth(int month) {
+		String[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+				"October", "November", "December" };
+		return monthNames[month];
 	}
-	
+
 	@ResponseBody
 	@PostMapping("leavereject")
 	public String leavereject(@RequestParam Map<String, String> param) {
 
-		LeaveMaster obj= leaveMasterService.findById(Integer.parseInt(param.get("calid")));
+		LeaveMaster obj = leaveMasterService.findById(Integer.parseInt(param.get("calid")));
 		obj.setStatus("Rejected");
 		leaveMasterService.save(obj);
 		return "Rejected";
 
 	}
-	
+
 	@ResponseBody
 	@PostMapping("leaveapprove")
 	public String leaveapprove(@RequestParam Map<String, String> param) {
 
-		LeaveMaster obj= leaveMasterService.findById(Integer.parseInt(param.get("calid")));
+		LeaveMaster obj = leaveMasterService.findById(Integer.parseInt(param.get("calid")));
 		obj.setStatus("Approved");
 		leaveMasterService.save(obj);
 		return "Approved";
 
 	}
-	
+
+	@GetMapping("vendorlist")
+	public String vendorlist(Model theModel) {
+		List<String> data = new ArrayList<String>();
+
+		List<VendorMaster> ls = new ArrayList<VendorMaster>();
+		ls = vendorMasterService.findAll();
+
+		for (VendorMaster obj : ls) {
+			String str = "";
+			List<VendorFiles> validProfilephoto = obj.getVendorFiles().stream().filter(c -> c.getPhoto_Attach() != null)
+					.collect(Collectors.toList());
+
+			str += obj.getName() + "|";
+
+			if (validProfilephoto.size() > 0) {
+				str += validProfilephoto.get(0).getPhoto_Attach() + "|";
+			} else {
+				str += " |";
+			}
+
+			str += obj.getVendormasterid() + "|";
+			str += obj.getAssetType() + "|";
+			str += obj.getContact_WorkPhone() + " <br/>" + obj.getContact_EmailID() + "|";
+			str += obj.getAddress_Village() + " <br/>" + obj.getAddress_Taluk() + " <br/>" + obj.getAddress_City()
+					+ "|";
+
+			data.add(str);
+		}
+
+		theModel.addAttribute("venlist", data);
+		return "vendorlist";
+
+	}
+
+	@GetMapping("vendor")
+	public String vendornew(Model themodel, ModelAndView themodelandview) {
+
+		VendorMaster venobj = new VendorMaster();
+
+		VendorEmgContact vencont = new VendorEmgContact();
+		ArrayList<VendorEmgContact> emgls = new ArrayList<VendorEmgContact>();
+		emgls.add(vencont);
+
+		VendorFiles venfiles = new VendorFiles();
+		ArrayList<VendorFiles> filels = new ArrayList<VendorFiles>();
+		filels.add(venfiles);
+
+		themodel.addAttribute("vendorEmgContact", emgls);
+		themodel.addAttribute("vendorFiles", venfiles);
+		themodel.addAttribute("vendormaster", venobj);
+		return "vendoradd";
+	}
+
+	@GetMapping("ven")
+	public String vendordetails(Model themodel, @RequestParam("id") int id) {
+
+		VendorMaster vendormasternew = new VendorMaster();
+		vendormasternew = vendorMasterService.findById(id);
+
+		Set<VendorEmgContact> emglsnew = new LinkedHashSet<VendorEmgContact>();
+		Set<VendorFiles> filelsnew = new LinkedHashSet<VendorFiles>();
+
+		if (vendormasternew.getVendorEmgContact().size() > 0) {
+			emglsnew.addAll(vendormasternew.getVendorEmgContact());
+		} else {
+			VendorEmgContact empcont = new VendorEmgContact();
+			emglsnew.add(empcont);
+
+		}
+
+		if (vendormasternew.getVendorFiles().size() > 0) {
+			filelsnew.addAll(vendormasternew.getVendorFiles());
+		} else {
+			VendorFiles empfiles1 = new VendorFiles();
+			filelsnew.add(empfiles1);
+		}
+
+		themodel.addAttribute("vendorEmgContact", emglsnew);
+		themodel.addAttribute("vendorFiles", filelsnew);
+		themodel.addAttribute("vendormaster", vendormasternew);
+		return "vendoradd";
+	}
+
+	@PostMapping("Vendorsave")
+	public String Vendorsave(HttpServletRequest req, Model themodel,
+			@ModelAttribute("vendormaster") VendorMaster vendormaster,
+			@RequestParam(name = "photoempFileid", required = false) String[] photoempFileid,
+			@RequestParam(name = "filesempFileid", required = false) String[] filesempFileid,
+			@RequestParam(name = "photoempFileidstr", required = false) String[] photoempFileidstr,
+			@RequestParam(name = "filesempFileidstr", required = false) String[] filesempFileidstr,
+
+			@RequestParam(name = "Photo_Attach", required = false) MultipartFile Photo_Attach,
+			@RequestParam(name = "Files_Attach", required = false) MultipartFile Files_Attach,
+
+			@RequestParam(name = "venEmgContactid", required = false) String[] venEmgContactid,
+			@RequestParam(name = "emgid", required = false) String[] emgid,
+			@RequestParam(name = "Emg_Name", required = false) String[] Emg_Name,
+			@RequestParam(name = "Designation", required = false) String[] Designation,
+			@RequestParam(name = "Emg_PersonalPhone", required = false) String[] Emg_PersonalPhone,
+			@RequestParam(name = "Emg_OtherPhone", required = false) String[] Emg_OtherPhone,
+			@RequestParam(name = "Emg_EmailID", required = false) String[] Emg_EmailID,
+			@RequestParam(name = "Landlineno", required = false) String[] Landlineno,
+			@RequestParam Map<String, String> params, HttpServletRequest request) {
+
+		// Systven.out.println("--------------Step 1 end----------------------");
+
+		Set<VendorEmgContact> vengls = new LinkedHashSet<VendorEmgContact>();
+		for (int farr = 0; farr < Emg_Name.length; farr++) {
+			VendorEmgContact venpcont = new VendorEmgContact();
+
+			String tvenplangurow = emgid[farr];
+			if (params.get("Emg_primarycontact" + tvenplangurow) != null) {
+				venpcont.setEmg_primarycontact(true);
+			} else {
+				venpcont.setEmg_primarycontact(false);
+			}
+
+			if (!venEmgContactid[farr].isEmpty()) {
+				venpcont.setVenEmgContactid(Integer.parseInt(venEmgContactid[farr]));
+			}
+			if (Emg_Name.length > 0)
+				venpcont.setEmg_Name(Emg_Name[farr]);
+			if (Designation.length > 0)
+				venpcont.setDesignation(Designation[farr]);
+			if (Emg_PersonalPhone.length > 0)
+				venpcont.setEmg_PersonalPhone(Emg_PersonalPhone[farr]);
+			if (Emg_OtherPhone.length > 0)
+				venpcont.setEmg_OtherPhone(Emg_OtherPhone[farr]);
+			if (Emg_EmailID.length > 0)
+				venpcont.setEmg_EmailID(Emg_EmailID[farr]);
+
+			if (Landlineno.length > 0)
+				venpcont.setLandlineno(Landlineno[farr]);
+
+			vengls.add(venpcont);
+		}
+		vendormaster.setVendorEmgContact(vengls);
+		// Systven.out.println("--------------Step 2 End----------------------");
+
+		Set<VendorFiles> filels = new LinkedHashSet<VendorFiles>();
+
+		if (photoempFileid != null)
+			for (int farr = 0; farr < photoempFileid.length; farr++) {
+				VendorFiles obj = new VendorFiles();
+
+				if (photoempFileid[farr] != null) {
+					obj.setVenFileid(Integer.parseInt(photoempFileid[farr]));
+				}
+				obj.setPhoto_Attach(photoempFileidstr[farr]);
+				filels.add(obj);
+			}
+
+		if (filesempFileid != null)
+			for (int farr = 0; farr < filesempFileid.length; farr++) {
+				VendorFiles obj = new VendorFiles();
+
+				if (filesempFileid[farr] != null) {
+					obj.setVenFileid(Integer.parseInt(filesempFileid[farr]));
+				}
+				obj.setFiles_Attach(filesempFileidstr[farr]);
+				filels.add(obj);
+			}
+
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("vendorprofilephoto");
+
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+
+		String certificateuploadRootPath = request.getServletContext().getRealPath("vendorfiles");
+		// Systven.out.println("uploadRootPath=" + certificateuploadRootPath);
+
+		File uploadRootDircertificate = new File(certificateuploadRootPath);
+		if (!uploadRootDircertificate.exists()) {
+			uploadRootDircertificate.mkdirs();
+		}
+
+		if (Photo_Attach.getOriginalFilename().toString().length() > 0) {
+			VendorFiles venpfiles = new VendorFiles();
+			StringBuilder filename = new StringBuilder();
+			String tvenpfilename = stringdatetime() + Photo_Attach.getOriginalFilename();
+			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tvenpfilename);
+			filename.append(tvenpfilename);
+			venpfiles.setPhoto_Attach("vendorprofilephoto/" + filename);
+			try {
+				Files.write(fileNameandPath, Photo_Attach.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			filels.add(venpfiles);
+		}
+
+		if (Files_Attach.getOriginalFilename().toString().length() > 0) {
+			VendorFiles venpfiles = new VendorFiles();
+			StringBuilder filename = new StringBuilder();
+			String tvenpfilename = stringdatetime() + Files_Attach.getOriginalFilename();
+			Path fileNameandPath = Paths.get(certificateuploadRootPath, tvenpfilename);
+			filename.append(tvenpfilename);
+			venpfiles.setFiles_Attach("vendorfiles/" + filename);
+			try {
+				Files.write(fileNameandPath, Files_Attach.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			filels.add(venpfiles);
+		}
+		vendormaster.setVendorFiles(filels);
+		// Systven.out.println("--------------Step 5 end----------------------");
+		VendorMaster vendormasternew = new VendorMaster();
+		vendormasternew = vendorMasterService.save(vendormaster);
+
+		Set<VendorEmgContact> venglsnew = new LinkedHashSet<VendorEmgContact>();
+		Set<VendorFiles> filelsnew = new LinkedHashSet<VendorFiles>();
+
+		// Systven.out.println(vendormasternew.getVendorEmgContact().size());
+		if (vendormasternew.getVendorEmgContact().size() > 0) {
+			venglsnew.addAll(vendormasternew.getVendorEmgContact());
+		} else {
+			VendorEmgContact venpcont = new VendorEmgContact();
+			venglsnew.add(venpcont);
+
+		}
+
+		if (vendormasternew.getVendorFiles().size() > 0) {
+			filelsnew.addAll(vendormasternew.getVendorFiles());
+		} else {
+			VendorFiles venpfiles1 = new VendorFiles();
+			filelsnew.add(venpfiles1);
+		}
+
+		themodel.addAttribute("vendorEmgContact", venglsnew);
+		themodel.addAttribute("vendorFiles", filelsnew);
+		themodel.addAttribute("vendormaster", vendormaster);
+		return "vendoradd";
+	}
+
+	@GetMapping("assetlist")
+	public String assetlist(Model theModel) {
+		List<String> data = new ArrayList<String>();
+
+		List<AssetMaster> ls = new ArrayList<AssetMaster>();
+		ls = assetMasterService.findAll();
+
+		for (AssetMaster obj : ls) {
+			String str = "";
+			List<AssetMasterFiles> validProfilephoto = obj.getAssetMasterFiles().stream()
+					.filter(c -> c.getPhoto_Attach() != null).collect(Collectors.toList());
+
+			str += obj.getAssetName() + "|";
+
+			if (validProfilephoto.size() > 0) {
+				str += validProfilephoto.get(0).getPhoto_Attach() + "|";
+			} else {
+				str += " |";
+			}
+
+			str += obj.getAssetId() + "|";
+			str += obj.getAssetType() + "|";
+			str += obj.getBrand() + " <br/>" + obj.getManufacturer() + "|";
+			str += obj.getACondition() + " <br/>" + obj.getStatus();
+
+			data.add(str);
+		}
+
+		theModel.addAttribute("assetlist", data);
+		return "assetlist";
+
+	}
+
+	@GetMapping("assetnew")
+	public String assetnew(Model themodel, ModelAndView themodelandview) {
+
+		AssetMaster assetobj = new AssetMaster();
+
+		AssetMasterFiles assetfiles = new AssetMasterFiles();
+		ArrayList<AssetMasterFiles> filels = new ArrayList<AssetMasterFiles>();
+		filels.add(assetfiles);
+
+		themodel.addAttribute("assetFiles", assetfiles);
+		themodel.addAttribute("assetmaster", assetobj);
+		return "asset";
+	}
+
+	@GetMapping("asset")
+	public String assetdetails(Model themodel, @RequestParam("id") int id) {
+
+		AssetMaster assetmasternew = new AssetMaster();
+		assetmasternew = assetMasterService.findById(id);
+
+		Set<AssetMasterFiles> filelsnew = new LinkedHashSet<AssetMasterFiles>();
+
+		if (assetmasternew.getAssetMasterFiles().size() > 0) {
+			filelsnew.addAll(assetmasternew.getAssetMasterFiles());
+		} else {
+			AssetMasterFiles empfiles1 = new AssetMasterFiles();
+			filelsnew.add(empfiles1);
+		}
+
+		themodel.addAttribute("assetFiles", filelsnew);
+		themodel.addAttribute("assetmaster", assetmasternew);
+		return "asset";
+	}
+
+	@PostMapping("assetsave")
+	public String Assetsave(HttpServletRequest req, Model themodel,
+			@ModelAttribute("assetmaster") AssetMaster assetmaster,
+			@RequestParam(name = "photoempFileid", required = false) String[] photoempFileid,
+			@RequestParam(name = "filesempFileid", required = false) String[] filesempFileid,
+			@RequestParam(name = "photoempFileidstr", required = false) String[] photoempFileidstr,
+			@RequestParam(name = "filesempFileidstr", required = false) String[] filesempFileidstr,
+
+			@RequestParam(name = "Photo_Attach", required = false) MultipartFile Photo_Attach,
+			@RequestParam(name = "Files_Attach", required = false) MultipartFile Files_Attach,
+
+			HttpServletRequest request) {
+
+		// Systasset.out.println("--------------Step 1 end----------------------");
+
+		Set<AssetMasterFiles> filels = new LinkedHashSet<AssetMasterFiles>();
+
+		if (photoempFileid != null)
+			for (int farr = 0; farr < photoempFileid.length; farr++) {
+				AssetMasterFiles obj = new AssetMasterFiles();
+
+				if (photoempFileid[farr] != null) {
+					obj.setAssetFileid(Integer.parseInt(photoempFileid[farr]));
+				}
+				obj.setPhoto_Attach(photoempFileidstr[farr]);
+				filels.add(obj);
+			}
+
+		if (filesempFileid != null)
+			for (int farr = 0; farr < filesempFileid.length; farr++) {
+				AssetMasterFiles obj = new AssetMasterFiles();
+
+				if (filesempFileid[farr] != null) {
+					obj.setAssetFileid(Integer.parseInt(filesempFileid[farr]));
+				}
+				obj.setFiles_Attach(filesempFileidstr[farr]);
+				filels.add(obj);
+			}
+
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("assetprofilephoto");
+
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+
+		String certificateuploadRootPath = request.getServletContext().getRealPath("assetfiles");
+		// Systasset.out.println("uploadRootPath=" + certificateuploadRootPath);
+
+		File uploadRootDircertificate = new File(certificateuploadRootPath);
+		if (!uploadRootDircertificate.exists()) {
+			uploadRootDircertificate.mkdirs();
+		}
+
+		if (Photo_Attach.getOriginalFilename().toString().length() > 0) {
+			AssetMasterFiles assetpfiles = new AssetMasterFiles();
+			StringBuilder filename = new StringBuilder();
+			String tassetpfilename = stringdatetime() + Photo_Attach.getOriginalFilename();
+			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tassetpfilename);
+			filename.append(tassetpfilename);
+			assetpfiles.setPhoto_Attach("assetprofilephoto/" + filename);
+			try {
+				Files.write(fileNameandPath, Photo_Attach.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			filels.add(assetpfiles);
+		}
+
+		if (Files_Attach.getOriginalFilename().toString().length() > 0) {
+			AssetMasterFiles assetpfiles = new AssetMasterFiles();
+			StringBuilder filename = new StringBuilder();
+			String tassetpfilename = stringdatetime() + Files_Attach.getOriginalFilename();
+			Path fileNameandPath = Paths.get(certificateuploadRootPath, tassetpfilename);
+			filename.append(tassetpfilename);
+			assetpfiles.setFiles_Attach("assetfiles/" + filename);
+			try {
+				Files.write(fileNameandPath, Files_Attach.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			filels.add(assetpfiles);
+		}
+		assetmaster.setAssetMasterFiles(filels);
+		// Systasset.out.println("--------------Step 5 end----------------------");
+		AssetMaster assetmasternew = new AssetMaster();
+		assetmasternew = assetMasterService.save(assetmaster);
+
+		Set<AssetMasterFiles> filelsnew = new LinkedHashSet<AssetMasterFiles>();
+
+		if (assetmasternew.getAssetMasterFiles().size() > 0) {
+			filelsnew.addAll(assetmasternew.getAssetMasterFiles());
+		} else {
+			AssetMasterFiles assetpfiles1 = new AssetMasterFiles();
+			filelsnew.add(assetpfiles1);
+		}
+
+		themodel.addAttribute("assetFiles", filelsnew);
+		themodel.addAttribute("assetmaster", assetmaster);
+		return "asset";
+	}
+
+	@GetMapping("checkout")
+	public String checkout(Model themodel, ModelAndView themodelandview) {
+
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
+		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		return "checkout";
+	}
+
+	@PostMapping("checkoutsave")
+	public String checkoutsave(Model themodel, ModelAndView themodelandview,
+			@RequestParam(name = "StaffID") String[] StaffID,
+			@RequestParam(name = "CheckOutDate") String[] CheckOutDate,
+			@RequestParam(name = "AssetId") String[] AssetId, @RequestParam(name = "Statusx") String[] Status,
+			@RequestParam(name = "Location") String[] Location, @RequestParam(name = "Comments") String[] Comments,
+			HttpSession session, HttpServletRequest request) {
+
+		List<CheckOut> objList = new ArrayList<CheckOut>();
+
+		for (int i = 0; i < StaffID.length; i++) {
+			CheckOut obj = new CheckOut();
+			obj.setAssetId(AssetId[i]);
+			obj.setStaffID(StaffID[i]);
+			obj.setCheckOutDate(CheckOutDate[i]);
+			obj.setStatus(Status[i]);
+			obj.setLocation(Location[i]);
+			if (Comments.length > 0) {
+				obj.setComments(Comments[i]);
+			}
+			objList.add(obj);
+			assetMasterService.updatetheAssetStatus(Status[i], Integer.parseInt(AssetId[i]));
+		}
+		ArrayList<String> printstr = new ArrayList<String>();
+
+		List<CheckOut> CheckOutobj = checkoutService.saveall(objList);
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+
+		for (CheckOut obj : CheckOutobj) {
+			String str = "";
+
+			int staffid = Integer.parseInt(obj.getStaffID());
+			int assetid = Integer.parseInt(obj.getAssetId());
+			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
+					.collect(Collectors.toList()).get(0);
+
+			EmployeeMaster empobj = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffid)
+					.collect(Collectors.toList()).get(0);
+
+			str += empobj.getStaffName() + " |";
+			str += assobj.getAssetName() + " |";
+			str += assobj.getBrand() + " |";
+			str += assobj.getModel() + " |";
+			str += assobj.getSerialNumber() + " |";
+			str += assobj.getACondition() + " |";
+			str += obj.getComments() + " |";
+
+			printstr.add(str);
+		}
+		themodel.addAttribute("printstr", printstr);
+
+		request.getSession().setAttribute("printcheckoutstr", printstr);
+
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
+		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		return "checkout";
+	}
+
+	@PostMapping("checkoutprint")
+	public String checkoutprint(Model themodel, ModelAndView themodelandview, HttpSession session,
+			HttpServletRequest request) {
+
+		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckoutstr");
+		themodel.addAttribute("printstr", printstr);
+
+		return "checkoutprint";
+	}
+
+	@GetMapping("checkin")
+	public String checkin(Model themodel, ModelAndView themodelandview) {
+
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
+		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		return "checkin";
+	}
+
+	@PostMapping("checkinsave")
+	public String checkinsave(Model themodel, ModelAndView themodelandview,
+			@RequestParam(name = "StaffID") String[] StaffID, @RequestParam(name = "CheckInDate") String[] CheckInDate,
+			@RequestParam(name = "AssetId") String[] AssetId, @RequestParam(name = "Statusx") String[] Status,
+			@RequestParam(name = "Location") String[] Location, @RequestParam(name = "aCondition") String[] Condition,
+			@RequestParam(name = "Comments") String[] Comments,
+			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
+			HttpServletRequest request) {
+
+		List<CheckIn> objList = new ArrayList<CheckIn>();
+
+		// -----------------------------------------
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("checkinphoto");
+
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+		// -----------------------------------------
+
+		for (int i = 0; i < StaffID.length; i++) {
+			CheckIn obj = new CheckIn();
+			obj.setAssetId(AssetId[i]);
+			obj.setStaffID(StaffID[i]);
+			obj.setCheckInDate(CheckInDate[i]);
+			obj.setStatus(Status[i]);
+			obj.setLocation(Location[i]);
+			obj.setACondition(Condition[i]);
+			if (Comments.length > 0) {
+				obj.setComments(Comments[i]);
+			}
+			assetMasterService.updatetheAssetStatus(Status[i], Integer.parseInt(AssetId[i]));
+			
+			if (Photo_Attach.length > 0) {
+				if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
+					Set<CheckInFiles> checkMasterfiles=new LinkedHashSet<CheckInFiles>();
+					CheckInFiles chekinfiles = new CheckInFiles();
+					StringBuilder filename = new StringBuilder();
+					String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
+					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+					filename.append(tempfilename);
+					chekinfiles.setPhoto_Attach("checkinphoto/" + filename);
+					try {
+						Files.write(fileNameandPath, Photo_Attach[i].getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					checkMasterfiles.add(chekinfiles);
+					obj.setCheckInFiles(checkMasterfiles);
+				}
+			}
+
+			objList.add(obj);
+
+		}
+		ArrayList<String> printstr = new ArrayList<String>();
+
+		List<CheckIn> CheckInobj = checkinService.saveall(objList);
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+
+		for (CheckIn obj : CheckInobj) {
+			String str = "";
+
+			int staffid = Integer.parseInt(obj.getStaffID());
+			int assetid = Integer.parseInt(obj.getAssetId());
+			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
+					.collect(Collectors.toList()).get(0);
+
+			EmployeeMaster empobj = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffid)
+					.collect(Collectors.toList()).get(0);
+
+			str += empobj.getStaffName() + " |";
+			str += assobj.getAssetName() + " |";
+			str += assobj.getBrand() + " |";
+			str += assobj.getModel() + " |";
+			str += assobj.getSerialNumber() + " |";
+			str += obj.getACondition() + " |";
+			str += obj.getComments() + " |";
+
+			printstr.add(str);
+		}
+		themodel.addAttribute("printstr", printstr);
+
+		request.getSession().setAttribute("printcheckinstr", printstr);
+
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
+		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		return "checkin";
+	}
+
+	@PostMapping("checkinprint")
+	public String checkinprint(Model themodel, ModelAndView themodelandview, HttpSession session,
+			HttpServletRequest request) {
+
+		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckinstr");
+		themodel.addAttribute("printstr", printstr);
+
+		return "checkinprint";
+	}
+
 }

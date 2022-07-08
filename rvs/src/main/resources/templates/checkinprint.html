@@ -16,7 +16,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="ICC">
-<title th:text="'Pay - '+ ${monthtext}"></title>
+<title>Check In Receipt</title>
 <link rel="apple-touch-icon"
 	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
 <link rel="shortcut icon" type="image/x-icon"
@@ -60,10 +60,10 @@
 	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
-body, td {
+body, td,table {
 	font-family: verdana;
 	color:#000;
-	text-align:right;
+	
 }
 
 .title {
@@ -82,21 +82,20 @@ body, td {
  
  padding: .5rem 0.5rem;
 }
-.td16{
-	background:#F4A460;
-	font-weight:bold;
-	color:#000;
-	
-}
+
 .table thead th 
 {
-	background: #483D8B;
-	color:#fff;
+	background-color: #ebebeb;
+	border-color: transparent;
+	color: #555;
+	font-weight: 700;
+	
+	transition: background-color .15s ease-in-out;
 }
 .table td,.table tr, .table thead th{
-font-family: verdana;
 border: solid 1px #000;
 border-bottom: solid 1px #000;
+font-family: verdana;
 }
 
 .td1{
@@ -105,7 +104,7 @@ text-align:left;
 
 .td2{
 text-align:center;
-
+border: solid 1px #fff;
 }
 </style>
 </head>
@@ -125,12 +124,12 @@ text-align:center;
 						th:src="@{/app-assets/images/logo/rvslogo1.png}"
 						alt="branding logo"> 	<b>RVS Land Surveyors</b>
 					</p>
-				<div class="col-md-12">
+				<div class="col-md-12" style="text-align: center" >
 
 					
 			<hr/>
 					<b>
-						<p align="center" class="monthtitle" th:text="'SALARY '+ ${monthtext} "></p>
+						Asset - Check In Receipt<br/>
 					</b>
 				</div>
 	
@@ -141,39 +140,35 @@ text-align:center;
 															<tr>
 																<th class="sticky-col first-col td1">S.No</th>
 																<th class="sticky-col second-col td1">Name</th>
-																<th>Working Days</th>
-																<th>Ex.Working Days</th>
-																<th>Basic Salary</th>
-																<th>DA</th>
-																<th>HRA</th>
-																<th>TOTAL GROSS</th>
-																<th>TOTAL Deduction</th>
-																<th>Monthly incentives</th>
-																<th>Net salary</th>
+																<th>Asset</th>
+																<th>Brand</th>
+																<th>Model</th>
+																<th>Serial No</th>
+																<th>Condition</th>
+																<th>Comments</th>
+																
 
 															</tr>
 														</thead>
 														<tbody>
-															<tr th:each="str,i : ${#strings.arraySplit(report,',')}">
-																<td class="sticky-col first-col td1" th:text="${i.index+1}"></td>
-																<td class="sticky-col second-col td1"  th:text="${#strings.arraySplit(str,'-')[1]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[5]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[6]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[7]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[8]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[9]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[10]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[14]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[15]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[16]}" class="td16"></td>
+															<tr th:each="str,i : ${printstr}">
+																<td  th:text="${i.index+1}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[0]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[1]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[2]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[3]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[4]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[5]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[6]}"></td>
 																
 																
 															</tr>
-															<tr>
-																<td colspan="2" class="td2">Prepard<br/><br/><br/><br/><br/></td>
-																<td colspan="4" class="td2">Verified<br/><br/><br/><br/><br/></td>
-																<td colspan="3" class="td2">Authorized Sign <br/><br/><br/><br/><br/></td>
-																<td colspan="2" class="td2">Authorized Sign<br/><br/><br/> <br/><br/></td>
+															
+															<tr style="border: none;">
+																<td style="border: none;" colspan="2" class="td2"><br/><br/><br/><br/><br/>Custodian </td>
+																<td style="border: none;" colspan="2" class="td2"><br/><br/><br/><br/><br/>Date</td>
+																<td style="border: none;" colspan="2" class="td2"><br/><br/><br/><br/><br/>Asset Controller Officer</td>
+																<td style="border: none;" colspan="2" class="td2"><br/><br/><br/><br/><br/>Date</td>
 															</tr>
 														</tbody>
 													</table>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Add Asset</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+	
+	.uppercase{
+		text-transform:uppercase;
+	}
+	.capitalize{
+		text-transform:capitalize;
+	}
+	.bxs-file-pdf
+{
+	color:#FF0000;
+	font-size:50px;
+}
+	
+</style>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class="content-header-title float-left pr-1 mb-0">Asset</h5>
+                            <div class="breadcrumb-wrapper col-12">
+                                <ol class="breadcrumb p-0 mb-0">
+                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="#">Asset</a>
+                                    </li>
+                                    
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+            
+            	<div th:if="${save}" class="form-group col-12">
+					<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Asset
+						Info Updated Successfully</button>
+				</div>
+            
+              	<form th:action="@{/assetsave}" th:object="${assetmaster}"
+											method="POST" class="wizard-horizontal"
+											enctype="multipart/form-data">
+	                <!-- Basic Vertical form layout section start -->
+	                <section id="basic-vertical-layouts">
+	                    <div class="row match-height">
+	                        <div class="col-12">
+	                            <div class="card">
+	                                <div class="card-content">
+	                                    <div class="card-body">
+	                                        
+	                                            <div class="form-body">
+	                                                <div class="row">
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="first-name-icon">Asset Name</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                               	<input type="hidden" th:value="${assetmaster['AssetId']}" th:field="*{AssetId}"/>
+	                                                                <input type="text"  class="form-control capitalize" th:value="${assetmaster['AssetName']}" th:field="*{AssetName}"  placeholder="Asset Name"  required>
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-user"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="email-id-icon">Type</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control"  th:field="*{AssetType}" required>
+					                                                        <option value="">-</option>
+					                                                        <option value="Machinery">Machinery</option>
+																			<option value="Vehicles">Vehicles</option>
+																			<option value="Laptops">Laptops</option>
+																			<option value="Smart Phones">Smart Phones</option>
+																			<option value="Desktop">Desktop</option>
+																			<option value="Tablets">Tablets</option>
+																			<option value="Software">Software</option>
+																			<option value="Electronics">Electronics</option>
+																			<option value="Furniture">Furniture</option>
+																			<option value="Hardware">Hardware</option>
+
+					                                                    </select>
+					                                                     <div class="form-control-position">
+	                                                                    <i class="bx bx-git-merge"></i>
+	                                                                </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Manufacturer</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text" id="password-icon" class="form-control capitalize" th:value="${assetmaster['Manufacturer']}" th:field="*{Manufacturer}"    placeholder="Manufacturer" onkeypress="return onlyAlphanumeric(event,this);" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-cog"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Brand</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control capitalize" th:value="${assetmaster['Brand']}" th:field="*{Brand}"   placeholder="Brand" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-building-house"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Model</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control capitalize" th:value="${assetmaster['Model']}" th:field="*{Model}"    placeholder="Model" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-stats"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Serial Number</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control capitalize" th:value="${assetmaster['SerialNumber']}" th:field="*{SerialNumber}"   placeholder="Serial Number" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-flag-alt"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Condition</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control"  th:field="*{ACondition}" required>
+					                                                        <option value="">-</option>
+					                                                        <option value="Fair">Fair</option>
+																			<option value="Good">Good</option>
+																			<option value="New">New</option>
+																			<option value="Poor">Poor</option>
+					                                                    </select>
+					                                                     <div class="form-control-position">
+			                                                                  <i class="bx bx-pulse"></i>
+			                                                             </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Status</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control"  th:field="*{Status}" required>
+					                                                        <option value="">-</option>
+					                                                        <option value="In Stock">In Stock</option>
+																			<option value="In Use">In Use</option>
+																			<option value="Out For Repair">Out For Repair</option>
+																			<option value="Checked Out">Checked Out</option>
+					                                                    </select>
+					                                                     <div class="form-control-position">
+		                                                                    <i class="bx bx-show-alt"></i>
+		                                                                 </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Location</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control"  th:field="*{Location}" required>
+					                                                        <option value="">-</option>
+					                                                        <option value="Office">Office</option>
+																			<option value="Field">Field</option>
+																		</select>
+																		 <div class="form-control-position">
+		                                                                    <i class="bx bxs-compass"></i>
+		                                                                 </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Vendor</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control capitalize" th:value="${assetmaster['Vendor']}" th:field="*{Vendor}"   placeholder="Vendor"   />
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-user-circle"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Purchase Price</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control" th:value="${assetmaster['PurchasePrice']}" th:field="*{PurchasePrice}"  maxlength="10"  placeholder="PurchasePrice"  >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-dollar-circle"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Purchased</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control" th:value="${assetmaster['Purchased']}" th:field="*{Purchased}"     placeholder="Purchased"   >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-cart"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">Purchase Order No</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control" th:value="${assetmaster['PurchaseOrderNo']}" th:field="*{PurchaseOrderNo}"    placeholder="PurchaseOrderNo"  />
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-purchase-tag"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="contact-info-icon">WarrantyEnd</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="date"  class="form-control" th:value="${assetmaster['WarrantyEnd']}" th:field="*{WarrantyEnd}"    placeholder="WarrantyEnd"  >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-calendar"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   
+	                                                    <div class="col-md-12">
+													<div class="form-group">
+														<hr />
+														<label class="emptitle">Files</label>
+													</div>
+												</div>
+												<div class=" col-md-12 table-responsive">
+												<table class="table zero-configuration">
+													<tr>
+
+														<th>Attachment</th>
+														<th>Name</th>
+														<th></th>
+													</tr>
+													<th:block th:each="Files,stat : ${assetFiles}">
+														<tr th:if="${Files['Photo_Attach']}  !=null">
+															<td><img th:src="${Files['Photo_Attach']}"
+																style="width: 100px; height: 100px;" />
+																<input type="hidden" th:value="${Files['assetFileid']}" name="photoassetFileid"/>
+																<input type="hidden" th:value="${Files['Photo_Attach']}" th:name="photoempFileidstr"/>
+																</td>
+															<td>Photo <br/> <a th:href="${Files['Photo_Attach']}" target="_blank">View & Download</a></td>
+															<td><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span></td>
+														</tr>
+														<tr th:if="${Files['Files_Attach']}  !=null">
+															<td><i class="bx bxs-file-pdf"></i>
+																<input type="hidden" th:value="${Files['assetFileid']}" name="filesempFileid"/>
+																<input type="hidden" th:value="${Files['Files_Attach']}" th:name="filesempFileidstr"/>
+															</td>
+															<td>Files <br/><a th:href="${Files['Files_Attach']}"  target="_blank">View & Download</a></td>
+															<td><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span></td>
+														</tr>
+														
+													</th:block>
+												</table>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="contact-info-icon">Photo</label>
+														<div class="position-relative">
+															<input type="file" class="form-control capitalize"
+																name="Photo_Attach" accept="image/*" />
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="contact-info-icon">Files</label>
+														<div class="position-relative">
+															<input type="file" class="form-control capitalize"
+																name="Files_Attach" accept=".pdf" />
+														</div>
+													</div>
+												</div>
+												
+	                                                    <div class="col-12 d-flex justify-content-end">
+	                                                    	    
+	                                                        <button type="submit" class="btn btn-primary mr-1 mb-1">Save</button>
+	                                                        <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+	                                                        <a href="assetlist"><button type="button" class="btn btn-warning mr-1 mb-1">Cancel</button></a>
+	                                                    </div>
+	                                                    
+	                                                </div>
+	                                            </div>
+	                                        
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </section>
+	                <!-- // Basic Vertical form layout section end -->
+				</form>
+
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		<!-- END: Footer-->
+		
+		<!-- Custom Java script validations -->
+		<script th:src="@{/js/customvalidation.js}"></script>
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		<script
+			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+		<!-- END: Page JS-->
+		
+	<script>
+			$(document).ready(function(){
+				
+				$(document).on("click", ".filedivdelete", function() {
+					$(this).closest("tr").remove();
+				});
+			});
+			
+			
+			
+		</script>
+		
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

@@ -82,6 +82,13 @@
 	 font-size:20px;
 	 width: 100px;
 	}
+	.alerm{
+		padding-top:1%;
+		float:right;
+		
+	}
+	.bxs-bell-ring{font-size:25px;}
+	
 </style>
 
 </head>
@@ -158,9 +165,16 @@
                                                 	<tr th:each="asset,stat : ${assetlist}">
 													  
 													   <td th:text="${stat.index+1}"></td>
-													   <td><a th:href="'asset?id=' + ${#strings.arraySplit(asset,'|')[2]}" th:text="${#strings.arraySplit(asset,'|')[0] }" title="Edit Profile"></a></td>
+													   <td><a th:href="'asset?id=' + ${#strings.arraySplit(asset,'|')[2]}" th:text="${#strings.arraySplit(asset,'|')[0] }" title="Edit Asset"></a>
+													   	
+													   </td>
 													   
-													   <td th:text="${#strings.arraySplit(asset,'|')[3] }"></td>
+													   <td>
+													   	<span th:text="${#strings.arraySplit(asset,'|')[3] }"></span>
+														   	<a th:href="'assetservice?id=' + ${#strings.arraySplit(asset,'|')[2]}"  title="Service Log" class="alerm">
+													   			<i class="bx bxs-bell-ring"></i>
+													   		</a>
+													   </td>
 													   <td th:utext="${#strings.arraySplit(asset,'|')[4] }"></td>
 													   <td th:utext="${#strings.arraySplit(asset,'|')[5] }"></td>
 													</tr> 

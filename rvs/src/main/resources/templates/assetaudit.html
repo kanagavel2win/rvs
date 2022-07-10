@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Asset Audit</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
+	
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+
+
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+.emptitle {
+	color: #527a00;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+	cursor: pointer;
+}
+
+thead {
+	background-color: #ebebeb;
+	border-color: transparent;
+	color: #555;
+	font-weight: 700;
+	
+	transition: background-color .15s ease-in-out;
+}
+
+tbody {
+	color: #222;
+}
+
+
+tbody>tr:hover .iconalign {
+	color: #527a00;
+	cursor: pointer;
+}
+
+
+
+.view {
+	margin: auto;
+	
+}
+
+.wrapper {
+	position: relative;
+	overflow: auto;
+	border: 1px solid #ccc;
+	white-space: nowrap;
+}
+
+
+table tr td{
+	
+	border-right: 1px solid #ccc;
+}
+
+
+.table tr, table ,table td
+	{
+	
+	line-height:5px;
+		
+	}
+.red
+{
+	color:red;
+	font-size:20px;
+}
+
+.fileimage{
+	min-width:250px;
+}
+
+</style>
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class="content-header-title pr-1 mb-0">Asset Audit</h5>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+              	
+              
+											
+	                <!-- Basic Vertical form layout section start -->
+	                <section id="basic-vertical-layouts">
+	                    <div class="row match-height">
+	                        <div class="col-12">
+	                            <div class="card">
+	                                <div class="card-content">
+	                                    <div class="card-body">
+                                        	<div th:if="${printstr}" class="form-group col-12">
+												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Asset Audit details are saved successfully</button>
+												<!-- <form th:action="@{/assetauditprint}" target="blank" method="POST" class="wizard-horizontal" enctype="multipart/form-data">
+													
+													<center><button type="submit"  class="btn btn-primary mr-1 mb-1" style="width:200px">Print Receipt</button>
+													</center>
+                                                 </form> -->
+											</div>
+	                                        	
+											<div class="row">
+												 <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Custodian <span class="red">*</span></label>
+                                                           <div class="position-relative">
+                                                               
+			                                                     <select class="select2 form-control" id="StaffID">
+			                                                        <th:block th:each="emp : ${EmployeeMasterobj}">
+			                                                        	<option th:value="${emp.empMasterid}" th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
+			                                                        </th:block>
+			                                                    </select>
+                                                
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Asset Audit Date<span class="red">*</span></label>
+                                                           <div class="position-relative">
+                                                               <input type="date"  class="form-control" id="AssetAuditDate" >
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-6">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Asset<span class="red">*</span></label>
+                                                           <div class="position-relative">
+                                                                 <select class="select2 form-control" id="AssetId">
+			                                                        <th:block th:each="ass : ${AssetMasterobj}">
+			                                                        	<option th:value="${ass.AssetId}" th:text="${ass.AssetName} + '-' + ${ass.Model} + '-' + ${ass.ACondition}+ '-' + ${ass.Status}"></option>
+			                                                        </th:block>
+			                                                    </select>
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                 </div>
+                                                 <div class="row">
+												 <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Status<span class="red">*</span></label>
+                                                           <div class="position-relative">
+                                                               <select class="form-control" id="Status">
+			                                                        <option value="In Stock">In Stock</option>
+			                                                        <option value="Demaged">Demaged</option>
+			                                                        <option value="Missing">Missing</option>
+			                                                        <option value="Repair">Repair</option>			                                                        
+			                                                        <option value="">-</option>
+			                                                        <option value="Scrap">Scrap</option>
+																	
+			                                                    </select>
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   
+                                                   <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Condition<span class="red">*</span></label>
+                                                           <div class="position-relative">
+                                                               <select class="form-control" id="aCondition">
+			                                                       <option value="Fair">Fair</option>
+																	<option value="Good">Good</option>
+																	<option value="New">New</option>
+																	<option value="Poor">Poor</option>
+																	
+																</select>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Comments<span class="red"></span></label>
+                                                           <div class="position-relative">
+                                                               <input type="text"  class="form-control" id="Comments" >
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-12" align="center">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">&nbsp;<span class="red"></span></label>
+                                                           <div class="position-relative">
+                                                               <button type="button" id="save" class="btn btn-primary mr-1 mb-1">ADD</button>
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                 </div>
+											
+                                    		
+	                                    	<hr/>
+	                                    	<form th:action="@{/assetauditsave}" 
+											method="POST" class="wizard-horizontal"
+											enctype="multipart/form-data">
+	                                    	<div class="view">
+												<div class="wrapper">
+													
+													<table class="table">
+														<thead>
+															<tr>
+																<th width="5%">S.No</th>
+																<th>CUSTODIAN</th>
+																<th>DATE</th>
+																<th>ASSET</th>
+																<th>Photo</th>
+																<th>STATUS</th>
+																<th>Condition</th>
+																<th>COMMENTS</th>
+																<th></th>
+
+															</tr>
+														</thead>
+														<tbody>
+															
+															
+														</tbody>
+													</table>
+													
+												</div>
+											</div>
+	                                    	<div align="center">
+	                                    	<br/>	<input type="checkbox" id="receipt" name="receipt" required>
+<label for="receipt"  style="color:red; font-weight:bold"> Show Receipt After Check In</label>
+	                                    		
+	                                    	<br/>
+	                                    		<button type="submit" class="btn btn-primary mr-1 mb-1">Asset Audit</button>
+	                                    	</div>
+	                                    	</form>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </section>
+	                <!-- // Basic Vertical form layout section end -->
+				
+
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		<!-- END: Footer-->
+
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		
+		<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
+		<!-- END: Page JS-->
+		
+			<script>
+			$(document).ready(function(){
+				$(document).on("click", ".filedivdelete", function() {
+					id= $(this).attr("id");
+					var AssetId=$('#AssetId'+id).val();
+					var AssetName= $("#AssetName"+id).text();
+					$('#AssetId').append("<option value='"+ AssetId +"'>"+ AssetName +"</option>");
+					$(this).closest("tr").remove();
+					
+				});
+				
+				
+				var sno=1;
+				
+				
+				
+				$("#save").click(function(){
+					
+					
+					var StaffID= $('#StaffID').val();
+					var StaffName= $('#StaffID  option:selected').text();
+					var AssetAuditDate= $('#AssetAuditDate').val();
+					var AssetId= $('#AssetId').val();
+					var AssetName= $('#AssetId  option:selected').text();
+					var Status= $('#Status').val();
+					
+					var aCondition=$('#aCondition').val();
+					var Comments= $('#Comments').val();
+					
+					if(StaffID !="" && StaffName !="" && AssetAuditDate !="" && AssetId !="" && AssetName !="" && Status !="" )
+					{
+						tempstr="<input type='hidden' id='StaffID"+ sno +"' name='StaffID' value='"+ StaffID +"'  />";
+						tempstr+="<input type='hidden' id='AssetAuditDate"+ sno +"'  name='AssetAuditDate' value='"+ AssetAuditDate +"'  />";
+						tempstr+="<input type='hidden' id='AssetId"+ sno +"'  name='AssetId' value='"+ AssetId +"'  />";
+						tempstr+="<input type='hidden' id='Status"+ sno +"'  name='Statusx' value='"+ Status +"'  />";
+						tempstr+="<input type='hidden' id='aCondition"+ sno +"'  name='aCondition' value='"+ aCondition +"'  />";
+						tempstr+="<input type='hidden' id='Comments"+ sno +"'  name='Comments' value='"+ Comments +"'  />";
+						
+						filestr="<input type='file' class='form-control fileimage'	name='Photo_Attach' accept='image/*' />";
+						
+						html="<tr><td>"+ sno +"</td><td>"+ StaffName +"</td><td>"+ AssetAuditDate +"</td><td id='AssetName"+ sno +"'>"+ AssetName +"  </td><td > "+ filestr + "  </td><td>"+ Status +"</td><td>"+ aCondition +"</td><td>"+ Comments +"</td><td><span id='"+ sno +"' class='cursor-pointer filedivdelete' style='float:right'>  <i class='bx bx-trash-alt'></i>   </span>"+ tempstr +"</td></tr>";
+												
+						$('.table').append(html);
+						$("#AssetId option[value='"+ AssetId +"']").remove();
+						sno=sno+1;
+					}else
+					{
+						alert("Please fill all mandatory fields");	
+					}
+				});
+			
+			});
+			
+			
+		</script>
+	
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

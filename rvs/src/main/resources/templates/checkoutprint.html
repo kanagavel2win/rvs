@@ -124,22 +124,22 @@ border: solid 1px #fff;
 						th:src="@{/app-assets/images/logo/rvslogo1.png}"
 						alt="branding logo"> 	<b>RVS Land Surveyors</b>
 					</p>
-				<div class="col-md-12" style="text-align: center" >
-
 					
-			<hr/>
-					<b>
-						Asset - Check Out Receipt<br/>
-					</b>
+				<div class="col-md-12" >
+				<b>Check Out Receipt</b><br/><br/>
+			Name : <span th:text="${staffname}"></span><br/>
+						Assets List:<br/>
+					
 				</div>
 	
 
 				<div class="col-md-12">
+				
 					<table class="table">
 														<thead>
 															<tr>
 																<th class="sticky-col first-col td1">S.No</th>
-																<th class="sticky-col second-col td1">Name</th>
+																
 																<th>Asset</th>
 																<th>Brand</th>
 																<th>Model</th>
@@ -153,7 +153,6 @@ border: solid 1px #fff;
 														<tbody>
 															<tr th:each="str,i : ${printstr}">
 																<td  th:text="${i.index+1}"></td>
-																<td  th:text="${#strings.arraySplit(str,'|')[0]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[1]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[2]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[3]}"></td>
@@ -165,7 +164,7 @@ border: solid 1px #fff;
 															</tr>
 															<tr style="border: none;" >
 																<td colspan="8" style="border: none;" >
-																	<br/><b>Loan Agreements:</b><br/>
+																	<br/><b>Agreement:</b><br/>
 																	 I understand that I am responsible for all items checked out to me. and I will take precautions to Protect the items from loss or damage. In the event of any loss or damage. I will 
 report the details to the Asset Control Officer as soon as possible and assist with any follow-up investigations and countermeasures as needed. 
 																</td>

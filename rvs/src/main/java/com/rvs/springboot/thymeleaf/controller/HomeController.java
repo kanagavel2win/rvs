@@ -15,6 +15,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,8 +46,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.rvs.springboot.thymeleaf.entity.AssetAudit;
+import com.rvs.springboot.thymeleaf.entity.AssetAuditFiles;
 import com.rvs.springboot.thymeleaf.entity.AssetMaster;
 import com.rvs.springboot.thymeleaf.entity.AssetMasterFiles;
+import com.rvs.springboot.thymeleaf.entity.AssetService;
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckIn;
@@ -72,7 +76,9 @@ import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
 import com.rvs.springboot.thymeleaf.entity.VendorFiles;
 import com.rvs.springboot.thymeleaf.entity.VendorMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
+import com.rvs.springboot.thymeleaf.service.AssetAuditService;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
+import com.rvs.springboot.thymeleaf.service.AssetServiceService;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
 import com.rvs.springboot.thymeleaf.service.CheckInService;
@@ -126,6 +132,10 @@ public class HomeController {
 	CheckOutService checkoutService;
 	@Autowired
 	CheckInService checkinService;
+	@Autowired
+	AssetAuditService assetauditService;
+	@Autowired
+	AssetServiceService assetserviceService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -2596,11 +2606,65 @@ public class HomeController {
 		return "asset";
 	}
 
+	public List<EmployeeMaster> EffectiveEmployee(List<EmployeeMaster> employeeMasterls) {
+
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateforeffectemp = date;
+		List<EmployeeMaster> output= new ArrayList<EmployeeMaster>();
+		// ------------------------------------------------------------------------------------
+		// Find out Effective location Employee filter with selected branch
+		for (EmployeeMaster obj : employeeMasterls) {
+			List<EmployeeJobempstatus> empstatusobj = new ArrayList<>();
+			empstatusobj= employeeJobempstatusService.findByEmployeeid(obj.getEmpMasterid());
+
+			if (empstatusobj.size() > 0) {
+				
+				List<EmployeeJobempstatus> empstatusobjgreen = empstatusobj.stream().filter(
+						c -> dateFormat.format(dateforeffectemp).compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
+						.collect(Collectors.toList());
+				empstatusobjgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
+				
+				
+				
+				if (empstatusobjgreen.size() > 0 && !(empstatusobjgreen.get(empstatusobjgreen.size() - 1).getEmpstatus_employmentstatus().equalsIgnoreCase("Terminated"))) {
+					
+			
+				List<EmployeeJobinfo> infoobj = new ArrayList<>();
+				infoobj = employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
+	
+				if (infoobj.size() > 0) {
+					List<EmployeeJobinfo> infoobjgreen = infoobj.stream().filter(
+							c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0)
+							.collect(Collectors.toList());
+					infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+	
+					if (infoobjgreen.size() > 0) {
+						
+						output.add(obj);
+						
+						/*if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation()
+								.equalsIgnoreCase(targetedbranchName)) {
+	
+							if (!calculateTerminatedstatus(obj.getEmpMasterid(), date)) {
+								employeeMasterlswitheffectivelocation.add(obj);
+							}
+						}*/
+					}
+				}
+			}
+		}
+		}
+		return output;
+
+		// ------------------------------------------------------------------------------------
+	}
+
 	@GetMapping("checkout")
 	public String checkout(Model themodel, ModelAndView themodelandview) {
 
-		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
-		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+		List<EmployeeMaster> EmployeeMasterobj = EffectiveEmployee(employeeMasterService.findAll());
 
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
@@ -2647,22 +2711,30 @@ public class HomeController {
 			EmployeeMaster empobj = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffid)
 					.collect(Collectors.toList()).get(0);
 
+			String tempstr = obj.getComments();
+			if(obj.getComments()==null)
+			{
+				tempstr="";
+			}
+						
 			str += empobj.getStaffName() + " |";
 			str += assobj.getAssetName() + " |";
 			str += assobj.getBrand() + " |";
 			str += assobj.getModel() + " |";
 			str += assobj.getSerialNumber() + " |";
 			str += assobj.getACondition() + " |";
-			str += obj.getComments() + " |";
+			str += tempstr + " |";
 
 			printstr.add(str);
 		}
+		
+		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+		
+		
 		themodel.addAttribute("printstr", printstr);
-
 		request.getSession().setAttribute("printcheckoutstr", printstr);
-
-		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
-		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
+		themodel.addAttribute("EmployeeMasterobj",EffectiveEmployee( EmployeeMasterobj));
 		return "checkout";
 	}
 
@@ -2671,6 +2743,9 @@ public class HomeController {
 			HttpServletRequest request) {
 
 		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckoutstr");
+		String temp[] =String.valueOf(printstr.get(0)).split("\\|");
+		
+		themodel.addAttribute("staffname",temp[0]);
 		themodel.addAttribute("printstr", printstr);
 
 		return "checkoutprint";
@@ -2679,8 +2754,8 @@ public class HomeController {
 	@GetMapping("checkin")
 	public String checkin(Model themodel, ModelAndView themodelandview) {
 
-		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
-		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream().filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
+		List<EmployeeMaster> EmployeeMasterobj = EffectiveEmployee(employeeMasterService.findAll());
 
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
@@ -2721,10 +2796,10 @@ public class HomeController {
 				obj.setComments(Comments[i]);
 			}
 			assetMasterService.updatetheAssetStatus(Status[i], Integer.parseInt(AssetId[i]));
-			
+
 			if (Photo_Attach.length > 0) {
 				if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
-					Set<CheckInFiles> checkMasterfiles=new LinkedHashSet<CheckInFiles>();
+					Set<CheckInFiles> checkMasterfiles = new LinkedHashSet<CheckInFiles>();
 					CheckInFiles chekinfiles = new CheckInFiles();
 					StringBuilder filename = new StringBuilder();
 					String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
@@ -2761,22 +2836,31 @@ public class HomeController {
 			EmployeeMaster empobj = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffid)
 					.collect(Collectors.toList()).get(0);
 
+			String tempstr = obj.getComments();
+			if(obj.getComments()==null)
+			{
+				tempstr="";
+			}
+			
 			str += empobj.getStaffName() + " |";
 			str += assobj.getAssetName() + " |";
 			str += assobj.getBrand() + " |";
 			str += assobj.getModel() + " |";
 			str += assobj.getSerialNumber() + " |";
 			str += obj.getACondition() + " |";
-			str += obj.getComments() + " |";
+			str += tempstr + " |";
 
 			printstr.add(str);
 		}
+		
+		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream().filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
+		
 		themodel.addAttribute("printstr", printstr);
 
 		request.getSession().setAttribute("printcheckinstr", printstr);
 
-		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
-		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
+		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		return "checkin";
 	}
 
@@ -2790,4 +2874,139 @@ public class HomeController {
 		return "checkinprint";
 	}
 
+	@GetMapping("assetaudit")
+	public String assetaudit(Model themodel, ModelAndView themodelandview) {
+
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		List<EmployeeMaster> EmployeeMasterobj = EffectiveEmployee(employeeMasterService.findAll());
+
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
+		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		return "assetaudit";
+	}
+
+	@PostMapping("assetauditsave")
+	public String assetauditsave(Model themodel, ModelAndView themodelandview,
+			@RequestParam(name = "StaffID") String[] StaffID,
+			@RequestParam(name = "AssetAuditDate") String[] AssetAuditDate,
+			@RequestParam(name = "AssetId") String[] AssetId, @RequestParam(name = "Statusx") String[] Status,
+			@RequestParam(name = "aCondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
+			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
+			HttpServletRequest request) {
+
+		List<AssetAudit> objList = new ArrayList<AssetAudit>();
+
+		// -----------------------------------------
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("assetauditphoto");
+
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+		// -----------------------------------------
+
+		for (int i = 0; i < StaffID.length; i++) {
+			AssetAudit obj = new AssetAudit();
+			obj.setAssetId(AssetId[i]);
+			obj.setStaffID(StaffID[i]);
+			obj.setAssetAuditDate(AssetAuditDate[i]);
+			obj.setStatus(Status[i]);
+			obj.setACondition(Condition[i]);
+			if (Comments.length > 0) {
+				obj.setComments(Comments[i]);
+			}
+			assetMasterService.updatetheAssetStatus(Status[i], Integer.parseInt(AssetId[i]));
+
+			if (Photo_Attach.length > 0) {
+				if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
+					Set<AssetAuditFiles> assetauditMasterfiles = new LinkedHashSet<AssetAuditFiles>();
+					AssetAuditFiles assetauditfiles = new AssetAuditFiles();
+					StringBuilder filename = new StringBuilder();
+					String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
+					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+					filename.append(tempfilename);
+					assetauditfiles.setPhoto_Attach("assetauditphoto/" + filename);
+					try {
+						Files.write(fileNameandPath, Photo_Attach[i].getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					assetauditMasterfiles.add(assetauditfiles);
+					obj.setAssetauditFiles(assetauditMasterfiles);
+				}
+			}
+
+			objList.add(obj);
+
+		}
+		ArrayList<String> printstr = new ArrayList<String>();
+
+		List<AssetAudit> AssetAuditobj = assetauditService.saveall(objList);
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+
+		for (AssetAudit obj : AssetAuditobj) {
+			String str = "";
+
+			int staffid = Integer.parseInt(obj.getStaffID());
+			int assetid = Integer.parseInt(obj.getAssetId());
+			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
+					.collect(Collectors.toList()).get(0);
+
+			EmployeeMaster empobj = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffid)
+					.collect(Collectors.toList()).get(0);
+
+			str += empobj.getStaffName() + " |";
+			str += assobj.getAssetName() + " |";
+			str += assobj.getBrand() + " |";
+			str += assobj.getModel() + " |";
+			str += assobj.getSerialNumber() + " |";
+			str += obj.getACondition() + " |";
+			str += obj.getComments() + " |";
+
+			printstr.add(str);
+		}
+		themodel.addAttribute("printstr", printstr);
+
+		request.getSession().setAttribute("printassetauditstr", printstr);
+
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
+		themodel.addAttribute("EmployeeMasterobj",EffectiveEmployee(EmployeeMasterobj));
+		return "assetaudit";
+	}
+
+	@GetMapping("assetservice")
+	public String assetservice(@RequestParam("id") int id, Model themodel, ModelAndView themodelandview) {
+
+		AssetMaster AssetMasterobj = assetMasterService.findById(id);
+		List<AssetService> AssetServiceobjlist = assetserviceService.findByAssetId(String.valueOf(id));
+		AssetService AssetServiceobj = new AssetService();
+		if (AssetServiceobjlist.size() > 0) {
+			AssetServiceobj = AssetServiceobjlist.get(0);
+		}else
+		{
+			AssetServiceobj.setAssetId(String.valueOf(AssetMasterobj.getAssetId()));
+		}
+
+		themodel.addAttribute("AssetServiceobj", AssetServiceobj);
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
+
+		return "assetservice";
+	}
+	
+	@PostMapping("assetservicesave")
+	public String assetservicesave(Model themodel,  @ModelAttribute("AssetServiceobj") AssetService AssetServiceobj)
+	{
+		
+		AssetService AssetServicesave= assetserviceService.save(AssetServiceobj);
+		AssetMaster AssetMasterobj = assetMasterService.findById(Integer.parseInt(AssetServiceobj.getAssetId()));
+		themodel.addAttribute("AssetServiceobj", AssetServicesave);
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
+		themodel.addAttribute("save", true);
+		return "assetservice";
+	}
+	
 }
+

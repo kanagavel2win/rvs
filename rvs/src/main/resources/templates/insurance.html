@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Insurance</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+	
+	.uppercase{
+		text-transform:uppercase;
+	}
+	.capitalize{
+		text-transform:capitalize;
+	}
+	.bxs-file-pdf
+{
+	color:#FF0000;
+	font-size:50px;
+}
+.addnewVendor{
+	float:right;
+}
+	
+</style>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+		<!-- BEGIN: Header-->
+		 <div th:insert="header">  </div>
+		<!-- END: Header-->
+
+
+		<!-- BEGIN: Main Menu-->
+		<div th:insert="menu">  </div>
+		<!-- END: Main Menu-->
+
+			<!-- BEGIN: Content-->
+				<!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class="content-header-title float-left pr-1 mb-0">Insurance</h5>
+                            <div class="breadcrumb-wrapper col-12">
+                            <a href="insurancenew" class="addnewVendor"><button type="button" class="btn btn-warning mr-1 mb-1">Add Insurance</button></a>
+                                <ol class="breadcrumb p-0 mb-0">
+                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="#">Insurance</a>
+                                    </li>
+                                    
+                                </ol>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+            
+            	<div th:if="${save}" class="form-group col-12">
+					<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Insurance
+						Info Updated Successfully</button>
+				</div>
+            
+              	<form th:action="@{/insurancesave}" th:object="${insurancemaster}"
+											method="POST" class="wizard-horizontal"
+											enctype="multipart/form-data">
+	                <!-- Basic Vertical form layout section start -->
+	                <section id="basic-vertical-layouts">
+	                    <div class="row match-height">
+	                        <div class="col-12">
+	                            <div class="card">
+	                                <div class="card-content">
+	                                    <div class="card-body">
+	                                        
+	                                            <div class="form-body">
+	                                                <div class="row">
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="first-name-icon">Insurance Name</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                               	<input type="hidden" th:value="${insurancemaster['Insuranceid']}" th:field="*{Insuranceid}"/>
+	                                                                <fieldset class="form-group">
+					                                                     <select class="form-control"  th:field="*{VendorName}" >
+					                                                        <option value="">-</option>
+					                                                        <th:block th:each="vmobj :${vm}">
+					                                                        	<option th:value="${vmobj.vendormasterid}" th:text="${vmobj.Name}"></option>
+					                                                        </th:block>
+					                                                        
+					                                                     </select>
+					                                                     <div class="form-control-position">
+	                                                                    <i class="bx bx-first-aid"></i>
+	                                                                </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="email-id-icon">Insurance To</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control" id='InsuranceTo' th:field="*{InsuranceTo}" >
+					                                                        <option value="">-</option>
+					                                                        <option value="Staff">Staff</option>
+					                                                        <option value="Asset">Asset</option>
+																			
+					                                                    </select>
+					                                                     <div class="form-control-position">
+	                                                                    <i class="bx bx-slider-alt"></i>
+	                                                                </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                     <div class="col-md-6 staffblock">
+	                                                        <div class="form-group">
+	                                                            <label for="email-id-icon">Staff</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control StaffName"  th:field="*{StaffID}" >
+					                                                        <option value="">-</option>
+					                                                       	<th:block th:each="emobj :${em}">
+					                                                        	<option th:value="${emobj.empMasterid}" th:text="${emobj.StaffName}"></option>
+					                                                        </th:block>
+					                                                    </select>
+					                                                     <div class="form-control-position">
+	                                                                    <i class="bx bx-street-view"></i>
+	                                                                </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                     <div class="col-md-6 assetblock">
+	                                                        <div class="form-group">
+	                                                            <label for="email-id-icon">Asset</label>
+	                                                           	<div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control"  th:field="*{AssetNameID}" >
+					                                                        <option value="">-</option>
+					                                                        <th:block th:each="amobj :${am}">
+					                                                        	<option th:value="${amobj.AssetId}" th:text="${amobj.AssetName}"></option>
+					                                                        </th:block>
+					                                                    </select>
+					                                                     <div class="form-control-position">
+	                                                                    <i class="bx bxs-navigation"></i>
+	                                                                </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Policy Name</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['PolicyName']}" th:field="*{PolicyName}"    placeholder="Policy Name" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-cog"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Policy No</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['PolicyNo']}" th:field="*{PolicyNo}"    placeholder="Policy No" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-detail"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">From</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="date"  class="form-control " th:value="${insurancemaster['PFrom']}" th:field="*{PFrom}"    placeholder="From" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-calendar"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">To</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="date"  class="form-control " th:value="${insurancemaster['PTo']}" th:field="*{PTo}"    placeholder="To" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-calendar-event"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Premium</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['Premium']}" th:field="*{Premium}"    placeholder="Premium" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-dollar-circle"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">GST</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['GST']}" th:field="*{GST}"    placeholder="GST" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-cog"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Total</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['Total']}" th:field="*{Total}"    placeholder="Total" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-plus-medical"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">PA Cover</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['PACover']}" th:field="*{PACover}"    placeholder="PA Cover" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-test-tube"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Hospital Cover</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['HospitalCover']}" th:field="*{HospitalCover}"    placeholder="Hospital Cover" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-pulse"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Insured Value</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['InsuredValue']}" th:field="*{InsuredValue}"    placeholder="Insured Value" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-dna"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">IDV</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['IDV']}" th:field="*{IDV}"    placeholder="IDV" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-heart"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">NCB</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['NCB']}" th:field="*{NCB}"    placeholder="NCB" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-flask"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Notes</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['Notes']}" th:field="*{Notes}"    placeholder="Notes" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-notepad"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Nominee</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <fieldset class="form-group">
+					                                                    <select class="form-control employeenomineedetails"  th:field="*{Nominee}">
+					                                                        <option value="">-</option>
+					                                                        <th:block th:each="emglsnewobj :${emglsnew}">
+					                                                        	<option th:value="${emglsnewobj.empEmgContactid}" th:text="${emglsnewobj.Emg_Name} + '(' + ${emglsnewobj.Emg_Relation} +')'"></option>
+					                                                         </th:block>
+					                                                    </select>
+					                                                     <div class="form-control-position">
+	                                                                    <i class="bx bxs-bookmark-plus"></i>
+	                                                                </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                   
+												
+	                                                    <div class="col-12 d-flex justify-content-end">
+	                                                    	    
+	                                                        <button type="submit" class="btn btn-primary mr-1 mb-1">Save</button>
+	                                                        <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+	                                                        <a href="insurancelist"><button type="button" class="btn btn-warning mr-1 mb-1">Cancel</button></a>
+	                                                    </div>
+	                                                    
+	                                                </div>
+	                                            </div>
+	                                        
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </section>
+	                <!-- // Basic Vertical form layout section end -->
+				</form>
+
+            </div>
+        </div>
+    </div>
+			<!-- END: Content-->
+
+
+		
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+		<!-- BEGIN: Footer-->
+		<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+		</footer>
+		<!-- END: Footer-->
+		
+		<!-- Custom Java script validations -->
+		<script th:src="@{/js/customvalidation.js}"></script>
+
+		<!-- BEGIN: Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+		<script
+			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+		<!-- BEGIN Vendor JS-->
+
+		<!-- BEGIN: Page Vendor JS-->
+		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+		<!-- END: Page Vendor JS-->
+
+		<!-- BEGIN: Theme JS-->
+		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+		<script th:src="@{/app-assets/js/core/app.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+		<!-- END: Theme JS-->
+
+		<!-- BEGIN: Page JS-->
+		<script
+			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+		<!-- END: Page JS-->
+		
+	<script>
+			$(document).ready(function(){
+				//--------------------------------------------------------
+				$(function() {
+					var token = $("meta[name='_csrf']").attr("content");
+					var header = $("meta[name='_csrf_header']").attr("content");
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(header, token);
+					});
+				});
+				//--------------------------------------------------------
+				
+				$('.StaffName').change(function(){
+					
+						var staffid=$('.StaffName').val();
+						
+					 	var formData = {
+					 			staffid : staffid					
+						}
+						$.ajax({
+							type : "POST",url : "employeenomineedetails",
+							data : formData,success : function(result) {
+								$(".employeenomineedetails option").remove();
+								$('.employeenomineedetails').append(result);
+							},
+							error : function(e) {
+							}
+						});
+				});
+				
+				$(document).on("click", ".filedivdelete", function() {
+					$(this).closest("tr").remove();
+				});
+				
+				$('#InsuranceTo').change(function(){
+					var InsuranceTo= $('#InsuranceTo').val();
+					if(InsuranceTo =='Staff')
+					{
+						$(".staffblock").show();
+						$(".assetblock").hide();
+					}
+					if(InsuranceTo =='Asset')
+					{
+						$(".staffblock").hide();
+						$(".assetblock").show();
+					}
+					
+				});
+				
+				$('#InsuranceTo').change();
+			});
+			
+			
+			
+		</script>
+		
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

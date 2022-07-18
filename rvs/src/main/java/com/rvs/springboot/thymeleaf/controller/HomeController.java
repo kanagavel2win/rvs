@@ -15,7 +15,6 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -69,6 +68,7 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
+import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
@@ -90,6 +90,7 @@ import com.rvs.springboot.thymeleaf.service.EmployeeJobinfoService;
 import com.rvs.springboot.thymeleaf.service.EmployeeMasterService;
 import com.rvs.springboot.thymeleaf.service.HireMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
+import com.rvs.springboot.thymeleaf.service.InsuranceMasterService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 import com.rvs.springboot.thymeleaf.service.LoginService;
 import com.rvs.springboot.thymeleaf.service.PaySlipService;
@@ -136,6 +137,9 @@ public class HomeController {
 	AssetAuditService assetauditService;
 	@Autowired
 	AssetServiceService assetserviceService;
+
+	@Autowired
+	InsuranceMasterService insuranceMasterService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -2611,49 +2615,49 @@ public class HomeController {
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date dateforeffectemp = date;
-		List<EmployeeMaster> output= new ArrayList<EmployeeMaster>();
+		List<EmployeeMaster> output = new ArrayList<EmployeeMaster>();
 		// ------------------------------------------------------------------------------------
 		// Find out Effective location Employee filter with selected branch
 		for (EmployeeMaster obj : employeeMasterls) {
 			List<EmployeeJobempstatus> empstatusobj = new ArrayList<>();
-			empstatusobj= employeeJobempstatusService.findByEmployeeid(obj.getEmpMasterid());
+			empstatusobj = employeeJobempstatusService.findByEmployeeid(obj.getEmpMasterid());
 
 			if (empstatusobj.size() > 0) {
-				
-				List<EmployeeJobempstatus> empstatusobjgreen = empstatusobj.stream().filter(
-						c -> dateFormat.format(dateforeffectemp).compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
+
+				List<EmployeeJobempstatus> empstatusobjgreen = empstatusobj.stream()
+						.filter(c -> dateFormat.format(dateforeffectemp)
+								.compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
 						.collect(Collectors.toList());
 				empstatusobjgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
-				
-				
-				
-				if (empstatusobjgreen.size() > 0 && !(empstatusobjgreen.get(empstatusobjgreen.size() - 1).getEmpstatus_employmentstatus().equalsIgnoreCase("Terminated"))) {
-					
-			
-				List<EmployeeJobinfo> infoobj = new ArrayList<>();
-				infoobj = employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
-	
-				if (infoobj.size() > 0) {
-					List<EmployeeJobinfo> infoobjgreen = infoobj.stream().filter(
-							c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0)
-							.collect(Collectors.toList());
-					infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
-	
-					if (infoobjgreen.size() > 0) {
-						
-						output.add(obj);
-						
-						/*if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation()
-								.equalsIgnoreCase(targetedbranchName)) {
-	
-							if (!calculateTerminatedstatus(obj.getEmpMasterid(), date)) {
-								employeeMasterlswitheffectivelocation.add(obj);
-							}
-						}*/
+
+				if (empstatusobjgreen.size() > 0 && !(empstatusobjgreen.get(empstatusobjgreen.size() - 1)
+						.getEmpstatus_employmentstatus().equalsIgnoreCase("Terminated"))) {
+
+					List<EmployeeJobinfo> infoobj = new ArrayList<>();
+					infoobj = employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
+
+					if (infoobj.size() > 0) {
+						List<EmployeeJobinfo> infoobjgreen = infoobj.stream()
+								.filter(c -> dateFormat.format(dateforeffectemp)
+										.compareTo(c.getJobeffectivedate().toString()) >= 0)
+								.collect(Collectors.toList());
+						infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+
+						if (infoobjgreen.size() > 0) {
+
+							output.add(obj);
+
+							/*
+							 * if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation()
+							 * .equalsIgnoreCase(targetedbranchName)) {
+							 * 
+							 * if (!calculateTerminatedstatus(obj.getEmpMasterid(), date)) {
+							 * employeeMasterlswitheffectivelocation.add(obj); } }
+							 */
+						}
 					}
 				}
 			}
-		}
 		}
 		return output;
 
@@ -2663,7 +2667,8 @@ public class HomeController {
 	@GetMapping("checkout")
 	public String checkout(Model themodel, ModelAndView themodelandview) {
 
-		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
+				.filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
 		List<EmployeeMaster> EmployeeMasterobj = EffectiveEmployee(employeeMasterService.findAll());
 
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
@@ -2712,11 +2717,10 @@ public class HomeController {
 					.collect(Collectors.toList()).get(0);
 
 			String tempstr = obj.getComments();
-			if(obj.getComments()==null)
-			{
-				tempstr="";
+			if (obj.getComments() == null) {
+				tempstr = "";
 			}
-						
+
 			str += empobj.getStaffName() + " |";
 			str += assobj.getAssetName() + " |";
 			str += assobj.getBrand() + " |";
@@ -2727,14 +2731,14 @@ public class HomeController {
 
 			printstr.add(str);
 		}
-		
-		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
-		
-		
+
+		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
+				.filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+
 		themodel.addAttribute("printstr", printstr);
 		request.getSession().setAttribute("printcheckoutstr", printstr);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
-		themodel.addAttribute("EmployeeMasterobj",EffectiveEmployee( EmployeeMasterobj));
+		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		return "checkout";
 	}
 
@@ -2743,9 +2747,9 @@ public class HomeController {
 			HttpServletRequest request) {
 
 		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckoutstr");
-		String temp[] =String.valueOf(printstr.get(0)).split("\\|");
-		
-		themodel.addAttribute("staffname",temp[0]);
+		String temp[] = String.valueOf(printstr.get(0)).split("\\|");
+
+		themodel.addAttribute("staffname", temp[0]);
 		themodel.addAttribute("printstr", printstr);
 
 		return "checkoutprint";
@@ -2754,7 +2758,8 @@ public class HomeController {
 	@GetMapping("checkin")
 	public String checkin(Model themodel, ModelAndView themodelandview) {
 
-		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream().filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
+				.filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
 		List<EmployeeMaster> EmployeeMasterobj = EffectiveEmployee(employeeMasterService.findAll());
 
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
@@ -2837,11 +2842,10 @@ public class HomeController {
 					.collect(Collectors.toList()).get(0);
 
 			String tempstr = obj.getComments();
-			if(obj.getComments()==null)
-			{
-				tempstr="";
+			if (obj.getComments() == null) {
+				tempstr = "";
 			}
-			
+
 			str += empobj.getStaffName() + " |";
 			str += assobj.getAssetName() + " |";
 			str += assobj.getBrand() + " |";
@@ -2852,9 +2856,10 @@ public class HomeController {
 
 			printstr.add(str);
 		}
-		
-		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream().filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
-		
+
+		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
+				.filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
+
 		themodel.addAttribute("printstr", printstr);
 
 		request.getSession().setAttribute("printcheckinstr", printstr);
@@ -2973,7 +2978,7 @@ public class HomeController {
 		request.getSession().setAttribute("printassetauditstr", printstr);
 
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
-		themodel.addAttribute("EmployeeMasterobj",EffectiveEmployee(EmployeeMasterobj));
+		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		return "assetaudit";
 	}
 
@@ -2985,8 +2990,7 @@ public class HomeController {
 		AssetService AssetServiceobj = new AssetService();
 		if (AssetServiceobjlist.size() > 0) {
 			AssetServiceobj = AssetServiceobjlist.get(0);
-		}else
-		{
+		} else {
 			AssetServiceobj.setAssetId(String.valueOf(AssetMasterobj.getAssetId()));
 		}
 
@@ -2995,18 +2999,159 @@ public class HomeController {
 
 		return "assetservice";
 	}
-	
+
 	@PostMapping("assetservicesave")
-	public String assetservicesave(Model themodel,  @ModelAttribute("AssetServiceobj") AssetService AssetServiceobj)
-	{
-		
-		AssetService AssetServicesave= assetserviceService.save(AssetServiceobj);
+	public String assetservicesave(Model themodel, @ModelAttribute("AssetServiceobj") AssetService AssetServiceobj) {
+
+		AssetService AssetServicesave = assetserviceService.save(AssetServiceobj);
 		AssetMaster AssetMasterobj = assetMasterService.findById(Integer.parseInt(AssetServiceobj.getAssetId()));
 		themodel.addAttribute("AssetServiceobj", AssetServicesave);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("save", true);
 		return "assetservice";
 	}
-	
-}
 
+	@GetMapping("insurancelist")
+	public String insurancelist(Model theModel) {
+		List<String> data = new ArrayList<String>();
+
+		List<InsuranceMaster> ls = new ArrayList<InsuranceMaster>();
+		ls = insuranceMasterService.findAll();
+
+		for (InsuranceMaster obj : ls) {
+
+			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(obj.getVendorName()));
+
+			String namestr = "";
+			String nominenamestr = "-";
+			
+			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
+				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
+				namestr=asset.getAssetName();
+			} else {
+				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
+				
+				namestr=employee.getStaffName();
+				
+				EmployeeEmgContact emglsnew = new EmployeeEmgContact();
+
+				if(!obj.getNominee().equals(""))
+				{
+					if (employee.getEmployeeEmgContact().size() > 0) {
+						emglsnew = employee.getEmployeeEmgContact().stream()
+								.filter(C -> C.getEmpEmgContactid() == Integer.parseInt(obj.getNominee()))
+								.collect(Collectors.toList()).get(0);
+						nominenamestr=emglsnew.getEmg_Name() + " (" + emglsnew.getEmg_Relation() +")";
+					}
+				}
+			}
+			String str = "";
+
+			str += obj.getInsuranceid() + "|";
+			str += vendor.getName() + "|";
+			str += obj.getInsuranceTo() + "|";
+			str += namestr + "|";
+			str += obj.getPolicyName() + "|";
+			str += nominenamestr ;
+			data.add(str);
+		}
+
+		theModel.addAttribute("insurancelist", data);
+		return "insurancelist";
+
+	}
+
+	@GetMapping("insurancenew")
+	public String insurancenew(Model themodel, ModelAndView themodelandview) {
+
+		InsuranceMaster insuranceobj = new InsuranceMaster();
+		List<VendorMaster> vm =vendorMasterService.findAll();
+		List<AssetMaster> am =assetMasterService.findAll();
+		List<EmployeeMaster> em =EffectiveEmployee(employeeMasterService.findAll());
+	
+		themodel.addAttribute("insurancemaster", insuranceobj);
+		themodel.addAttribute("vm", vm);
+		themodel.addAttribute("em", em);
+		themodel.addAttribute("am", am);
+		return "insurance";
+	}
+
+	@GetMapping("insurance")
+	public String insurancedetails(Model themodel, @RequestParam("id") int id) {
+
+		InsuranceMaster insurancemasternew = new InsuranceMaster();
+		insurancemasternew = insuranceMasterService.findById(id);
+
+		List<VendorMaster> vm =vendorMasterService.findAll();
+		List<AssetMaster> am =assetMasterService.findAll();
+		List<EmployeeMaster> em =EffectiveEmployee(employeeMasterService.findAll());
+		
+		Set<EmployeeEmgContact> emglsnew = new HashSet<EmployeeEmgContact>();
+		
+		final String getStaffID=insurancemasternew.getStaffID();
+				
+		if(!getStaffID.equalsIgnoreCase(""))
+		{
+		emglsnew =  em.stream()
+				.filter(C -> C.getEmpMasterid() == Integer.parseInt(getStaffID))
+				.collect(Collectors.toList()).get(0).getEmployeeEmgContact();
+		}		
+		
+		
+		themodel.addAttribute("insurancemaster", insurancemasternew);
+		themodel.addAttribute("vm", vm);
+		themodel.addAttribute("em", em);
+		themodel.addAttribute("am", am);
+		themodel.addAttribute("emglsnew", emglsnew);
+		
+		return "insurance";
+	}
+
+	@PostMapping("insurancesave")
+	public String Assetsave(HttpServletRequest req, Model themodel,
+			@ModelAttribute("insurancemaster") InsuranceMaster insurancemaster, HttpServletRequest request) {
+
+		InsuranceMaster insurancemasternew = new InsuranceMaster();
+		insurancemasternew = insuranceMasterService.save(insurancemaster);
+		
+		List<VendorMaster> vm =vendorMasterService.findAll();
+		List<AssetMaster> am =assetMasterService.findAll();
+		List<EmployeeMaster> em =EffectiveEmployee(employeeMasterService.findAll());
+		
+		Set<EmployeeEmgContact> emglsnew = new HashSet<EmployeeEmgContact>();
+		
+		final String getStaffID=insurancemasternew.getStaffID();
+				
+		if(!getStaffID.equalsIgnoreCase(""))
+		{
+		emglsnew =  em.stream()
+				.filter(C -> C.getEmpMasterid() == Integer.parseInt(getStaffID))
+				.collect(Collectors.toList()).get(0).getEmployeeEmgContact();
+		}		
+		
+		
+		themodel.addAttribute("vm", vm);
+		themodel.addAttribute("em", em);
+		themodel.addAttribute("am", am);
+		themodel.addAttribute("save", true);
+		themodel.addAttribute("insurancemaster", insurancemasternew);
+		themodel.addAttribute("emglsnew", emglsnew);
+		
+		return "insurance";
+	}
+	
+	@ResponseBody
+	@PostMapping("employeenomineedetails")
+	public String employeeattendancesave(@RequestParam("staffid") int staffid) {
+
+		EmployeeMaster employee = employeeMasterService.findById(staffid);
+		String output="<option value=''>-</option>";
+		for(EmployeeEmgContact emglsnew :employee.getEmployeeEmgContact())
+		{
+			output =output + "<option value='"+ emglsnew.getEmpEmgContactid() +"'>"+ emglsnew.getEmg_Name() + " ("+ emglsnew.getEmg_Relation() + ")</option>";
+		}
+		
+		
+		return output;
+	}
+}

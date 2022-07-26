@@ -3024,24 +3024,23 @@ public class HomeController {
 
 			String namestr = "";
 			String nominenamestr = "-";
-			
+
 			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
 				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
-				namestr=asset.getAssetName();
+				namestr = asset.getAssetName();
 			} else {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
-				
-				namestr=employee.getStaffName();
-				
+
+				namestr = employee.getStaffName();
+
 				EmployeeEmgContact emglsnew = new EmployeeEmgContact();
 
-				if(!obj.getNominee().equals(""))
-				{
+				if (!obj.getNominee().equals("")) {
 					if (employee.getEmployeeEmgContact().size() > 0) {
 						emglsnew = employee.getEmployeeEmgContact().stream()
 								.filter(C -> C.getEmpEmgContactid() == Integer.parseInt(obj.getNominee()))
 								.collect(Collectors.toList()).get(0);
-						nominenamestr=emglsnew.getEmg_Name() + " (" + emglsnew.getEmg_Relation() +")";
+						nominenamestr = emglsnew.getEmg_Name() + " (" + emglsnew.getEmg_Relation() + ")";
 					}
 				}
 			}
@@ -3052,7 +3051,7 @@ public class HomeController {
 			str += obj.getInsuranceTo() + "|";
 			str += namestr + "|";
 			str += obj.getPolicyName() + "|";
-			str += nominenamestr ;
+			str += nominenamestr;
 			data.add(str);
 		}
 
@@ -3065,10 +3064,10 @@ public class HomeController {
 	public String insurancenew(Model themodel, ModelAndView themodelandview) {
 
 		InsuranceMaster insuranceobj = new InsuranceMaster();
-		List<VendorMaster> vm =vendorMasterService.findAll();
-		List<AssetMaster> am =assetMasterService.findAll();
-		List<EmployeeMaster> em =EffectiveEmployee(employeeMasterService.findAll());
-	
+		List<VendorMaster> vm = vendorMasterService.findAll();
+		List<AssetMaster> am = assetMasterService.findAll();
+		List<EmployeeMaster> em = EffectiveEmployee(employeeMasterService.findAll());
+
 		themodel.addAttribute("insurancemaster", insuranceobj);
 		themodel.addAttribute("vm", vm);
 		themodel.addAttribute("em", em);
@@ -3082,28 +3081,25 @@ public class HomeController {
 		InsuranceMaster insurancemasternew = new InsuranceMaster();
 		insurancemasternew = insuranceMasterService.findById(id);
 
-		List<VendorMaster> vm =vendorMasterService.findAll();
-		List<AssetMaster> am =assetMasterService.findAll();
-		List<EmployeeMaster> em =EffectiveEmployee(employeeMasterService.findAll());
-		
+		List<VendorMaster> vm = vendorMasterService.findAll();
+		List<AssetMaster> am = assetMasterService.findAll();
+		List<EmployeeMaster> em = EffectiveEmployee(employeeMasterService.findAll());
+
 		Set<EmployeeEmgContact> emglsnew = new HashSet<EmployeeEmgContact>();
-		
-		final String getStaffID=insurancemasternew.getStaffID();
-				
-		if(!getStaffID.equalsIgnoreCase(""))
-		{
-		emglsnew =  em.stream()
-				.filter(C -> C.getEmpMasterid() == Integer.parseInt(getStaffID))
-				.collect(Collectors.toList()).get(0).getEmployeeEmgContact();
-		}		
-		
-		
+
+		final String getStaffID = insurancemasternew.getStaffID();
+
+		if (!getStaffID.equalsIgnoreCase("")) {
+			emglsnew = em.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(getStaffID))
+					.collect(Collectors.toList()).get(0).getEmployeeEmgContact();
+		}
+
 		themodel.addAttribute("insurancemaster", insurancemasternew);
 		themodel.addAttribute("vm", vm);
 		themodel.addAttribute("em", em);
 		themodel.addAttribute("am", am);
 		themodel.addAttribute("emglsnew", emglsnew);
-		
+
 		return "insurance";
 	}
 
@@ -3113,45 +3109,84 @@ public class HomeController {
 
 		InsuranceMaster insurancemasternew = new InsuranceMaster();
 		insurancemasternew = insuranceMasterService.save(insurancemaster);
-		
-		List<VendorMaster> vm =vendorMasterService.findAll();
-		List<AssetMaster> am =assetMasterService.findAll();
-		List<EmployeeMaster> em =EffectiveEmployee(employeeMasterService.findAll());
-		
+
+		List<VendorMaster> vm = vendorMasterService.findAll();
+		List<AssetMaster> am = assetMasterService.findAll();
+		List<EmployeeMaster> em = EffectiveEmployee(employeeMasterService.findAll());
+
 		Set<EmployeeEmgContact> emglsnew = new HashSet<EmployeeEmgContact>();
-		
-		final String getStaffID=insurancemasternew.getStaffID();
-				
-		if(!getStaffID.equalsIgnoreCase(""))
-		{
-		emglsnew =  em.stream()
-				.filter(C -> C.getEmpMasterid() == Integer.parseInt(getStaffID))
-				.collect(Collectors.toList()).get(0).getEmployeeEmgContact();
-		}		
-		
-		
+
+		final String getStaffID = insurancemasternew.getStaffID();
+
+		if (!getStaffID.equalsIgnoreCase("")) {
+			emglsnew = em.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(getStaffID))
+					.collect(Collectors.toList()).get(0).getEmployeeEmgContact();
+		}
+
 		themodel.addAttribute("vm", vm);
 		themodel.addAttribute("em", em);
 		themodel.addAttribute("am", am);
 		themodel.addAttribute("save", true);
 		themodel.addAttribute("insurancemaster", insurancemasternew);
 		themodel.addAttribute("emglsnew", emglsnew);
-		
+
 		return "insurance";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("employeenomineedetails")
 	public String employeeattendancesave(@RequestParam("staffid") int staffid) {
 
 		EmployeeMaster employee = employeeMasterService.findById(staffid);
-		String output="<option value=''>-</option>";
-		for(EmployeeEmgContact emglsnew :employee.getEmployeeEmgContact())
-		{
-			output =output + "<option value='"+ emglsnew.getEmpEmgContactid() +"'>"+ emglsnew.getEmg_Name() + " ("+ emglsnew.getEmg_Relation() + ")</option>";
+		String output = "<option value=''>-</option>";
+		for (EmployeeEmgContact emglsnew : employee.getEmployeeEmgContact()) {
+			output = output + "<option value='" + emglsnew.getEmpEmgContactid() + "'>" + emglsnew.getEmg_Name() + " ("
+					+ emglsnew.getEmg_Relation() + ")</option>";
 		}
-		
-		
+
 		return output;
 	}
+
+	@GetMapping("lead")
+	public String lead() {
+
+		return "lead";
+	}
+
+	@GetMapping("leadfollowupls")
+	public String leadfollowuplist() {
+
+		return "leadfollowuplist";
+	}
+
+	@GetMapping("leadfollowup")
+	public String leadfollowup() {
+		return "leadfollowup";
+	}
+
+	@GetMapping("projectls")
+	public String projectls() {
+		return "projectlist";
+	}
+
+	@GetMapping("project")
+	public String project() {
+		return "project";
+	}
+
+	@GetMapping("projectschedule")
+	public String projectschedule() {
+		return "projectschedule";
+	}
+	
+	@GetMapping("drawingactivity")
+	public String drawingactivity() {
+		return "drawingactivity";
+	}
+
+	@GetMapping("fieldactivity")
+	public String fieldactivity() {
+		return "fieldactivity";
+	}
+
 }

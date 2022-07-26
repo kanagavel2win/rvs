@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Lead Followup</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+	<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/plugins/forms/wizard.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+.emptitle {
+	color: #527a00;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+	cursor: pointer;
+}
+.bxs-file-pdf
+{
+	color:#FF0000;
+	font-size:50px;
+}
+.m2
+{
+	vertical-align:middle;
+	line-height: 20px;
+}
+	
+	.uppercase{
+		text-transform:uppercase;
+	}
+	.capitalize{
+		text-transform:capitalize;
+	}
+		
+	.highlight-error {
+  border-color: red;
+}	
+.error
+{
+	color:red;
+}
+
+</style>
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
+
+
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
+
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+							<a href="Lead Followup" style="float:right"><button type="button" class="btn btn-primary mr-1 mb-1">+ New</button></a>
+							<h5 class="content-header-title float-left pr-1 mb-0">
+								Lead Followup</h5>
+							
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+								</ol>
+								
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-body">
+
+				<!-- Basic Vertical form layout section start -->
+				<section id="basic-vertical-layouts">
+					<div class="row match-height">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-content">
+									<div class="card-body">
+									<form
+											 method="POST"
+											class="wizard-horizontal" id="formId" enctype="multipart/form-data">
+									
+										<div th:if="${save}" class="form-group col-12">
+											<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Lead Followup
+												Info Updated Successfully</button>
+										</div>
+					           		 	       
+			                                    
+								            <div class="row">
+											
+											
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="emptitle">Basic Information</label>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<!--scrolling content Modal -->
+													<div class="modal fade" id="Lead FollowupStatusScrollable"
+														tabindex="-1" role="dialog"
+														aria-labelledby="Lead FollowupStatusScrollableTitle"
+														aria-hidden="true">
+														<div class="modal-dialog modal-dialog-scrollable"
+															role="document">
+															<div class="modal-content">
+																<div class="modal-header bg-warning">
+																	<h5 class="modal-title white"
+																		id="Lead FollowupStatusScrollableTitle"></h5>
+																	<button type="button" class="close"
+																		data-dismiss="modal" aria-label="Close">
+																		<i class="bx bx-x"></i>
+																	</button>
+																</div>
+																<div class="modal-body">
+																	<div class="col-md-12">
+																		<div class="form-group">
+																			<label for="addmodel" id="additemalltxt"></label>
+																			<div class="position-relative">
+																				<fieldset class="form-group">
+																					<input type="text" id="additemall" name="addmodel"
+																						class="form-control ">
+																				</fieldset>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-light-secondary"
+																		data-dismiss="modal">
+																		<i class="bx bx-x d-block d-sm-none"></i> <span
+																			class="d-none d-sm-block">Close</span>
+																	</button>
+																	<button type="button" class="btn btn-primary ml-1"
+																		id="additemallsavebtn">
+																		<i class="bx bx-check d-block d-sm-none"></i> <span
+																			class="d-none d-sm-block">ADD</span>
+																	</button>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!--scrolling content Modal -->
+													<div class="form-group">
+														<label for="first-name-icon">Lead No</label>
+														<div class="position-relative has-icon-left">
+															<input type="text" 	class="form-control" 
+																placeholder="Lead No"/>
+															<div class="form-control-position">
+																<i class="bx bxs-bookmark-star"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Lead Title</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<input type="text" 
+																	class="form-control " 
+																placeholder="Lead Title" />
+															
+																<div class="form-control-position">
+																	<i class="bx bxs-tree"></i>
+																</div>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Stage</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<select class="form-control">
+																	<option value="">-</option>
+																	<option value="Lead In">Lead In</option>
+																	<option value="Evalutions">Evalutions</option>
+																	<option value="Contact Made">Contact Made</option>
+																	<option value="Quotation Given">Quotation Given</option>
+																	<option value="Negotiation">Negotiation</option>
+																	<option value="Negotiation">Converted</option>
+																	<option value="Negotiation">Loss</option>
+																</select>
+																<div class="form-control-position">
+																	<i class="bx bx-traffic-barrier"></i>
+																</div>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												
+												
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="emptitle">Schedule an Activity</label>
+														<button class="btn btn-light-primary btn-sm"
+															id="econtactdivadd" type="button" title="Add new Contact">
+															<i class="bx bx-plus"></i>
+														</button>
+													</div>
+												</div>
+												
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Activity</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<select class="form-control">
+																	<option value="">-</option>
+																	<option value="Call">Call</option>
+																	<option value="Meeting">Meeting</option>
+																	<option value="Site Visit">Site Visit</option>
+																	<option value="Document Collection">Document Collection</option>
+																	<option value="Send the Qutation">Send the Qutation</option>
+																	
+																	
+																</select>
+																<div class="form-control-position">
+																	<i class="bx bxs-flag-alt"></i>
+																</div>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Date</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<input type="date" 
+																	class="form-control " 
+																/>
+															
+																<div class="form-control-position">
+																	<i class="bx bxs-calendar"></i>
+																</div>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Timing</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<input type="time" 
+																	class="form-control " 
+																>
+															
+																<div class="form-control-position">
+																	<i class="bx bx-time"></i>
+																</div>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3"></div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="contact-info-icon">Location </label>
+														<div class="position-relative has-icon-left">
+															<input type="text" class="form-control "
+																placeholder="Project Location "  />
+															<div class="form-control-position">
+																<i class="bx bxs-compass"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="contact-info-icon">Note</label>
+														<div class="position-relative has-icon-left">
+															<input type="number" class="form-control "
+																placeholder="Note"  />
+															<div class="form-control-position">
+																<i class="bx bx-navigation"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												
+												<span id="econtactdivlast"></span>
+												
+												
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="emptitle">Files & Notes</label>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="first-name-icon">Files </label>
+														<div class="position-relative">
+															<input type="file" 	class="form-control" 
+																/>
+															
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="first-name-icon">Note</label>
+														<div class="position-relative has-icon-left">
+															<input type="text" 	class="form-control" 
+																/>
+															<div class="form-control-position">
+																<i class="bx bxs-bookmark-star"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="col-12 d-flex justify-content-end">
+													
+													<button type="submit" id="submit" style="visibility: hidden;" class="btn btn-primary mr-1 mb-1">Save</button>
+													<button type="button" id="submit_validation"  class="btn btn-primary mr-1 mb-1">Save</button>
+													<button type="reset"
+														class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+													<a href="emplist"><button type="button"
+															class="btn btn-warning mr-1 mb-1">Cancel</button></a>
+												</div>
+										
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- // Basic Vertical form layout section end -->
+
+
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+	</footer>
+	<!-- END: Footer-->
+
+	
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+	<!-- BEGIN Vendor JS-->
+
+	<!-- BEGIN: Page Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/forms/validation/jquery.validate.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/forms/wizard-steps.js}"></script>
+	<!-- END: Page JS-->
+	<!-- Custom Java script validations -->
+	<script th:src="@{/js/customvalidation.js}"></script>
+
+	<script>
+		$(document).ready(
+				function() {
+					$("#submit_validation").click(function(){
+						
+						var StaffName= $('#StaffName').val();
+						var Work_Phone= $('#Work_Phone').val();
+						
+						if(StaffName =="")
+						{
+							alert("Staff Name should not be empty");
+						}else if(Work_Phone.length < 10)
+						{
+							alert("Work Phone is not valid");
+						}else
+						{
+							$("#submit").click();
+						}
+					});
+				});
+
+	
+
+		
+		var econtactdivadd = 200;
+		$("#econtactdivadd")
+				.click(
+						function() {
+							econtactdivadd = econtactdivadd + 1;
+							$("#econtactdivlast")
+									.before('<div class="col-md-12 tecontactdiv'+ econtactdivadd +'"> <hr/> </div>  <div class=" col-md-12  tecontactdiv'+ econtactdivadd +'"> 	<span class="cursor-pointer econtactdivdelete" name="'+ econtactdivadd +'" style="float:right"> 																<i class="bx bx-x"></i> </span>		</div><div class="col-md-3 tecontactdiv'+ econtactdivadd +'"> 		<div class="form-group"> <label for="email-id-icon">Activity</label> <div class="position-relative has-icon-left"> <fieldset class="form-group"> <select class="form-control"> <option value="">-</option> <option value="Call">Call</option> <option value="Meeting">Meeting</option> <option value="Site Visit">Site Visit</option> <option value="Document Collection">Document Collection</option> <option value="Send the Qutation">Send the Qutation</option>   </select> <div class="form-control-position"> <i class="bx bxs-flag-alt"></i> </div>  </fieldset> </div> </div> </div> <div class="col-md-3 tecontactdiv'+ econtactdivadd +'"> <div class="form-group"> <label for="email-id-icon">Date</label> <div class="position-relative has-icon-left"> <fieldset class="form-group"> <input type="date" class="form-control " />  <div class="form-control-position"> <i class="bx bxs-tree"></i> </div>  </fieldset> </div> </div> </div> <div class="col-md-3 tecontactdiv'+ econtactdivadd +'"> <div class="form-group"> <label for="email-id-icon">Timing</label> <div class="position-relative has-icon-left"> <fieldset class="form-group"> <input type="time" class="form-control " >  <div class="form-control-position"> <i class="bx bx-user-circle"></i> </div>  </fieldset> </div> </div> </div> <div class="col-md-3 tecontactdiv'+ econtactdivadd +'"></div> <div class="col-md-3 tecontactdiv'+ econtactdivadd +'"> <div class="form-group"> <label for="contact-info-icon">Location </label> <div class="position-relative has-icon-left"> <input type="text" class="form-control " placeholder="Project Location "  /> <div class="form-control-position"> <i class="bx bxs-compass"></i> </div> </div> </div> </div> <div class="col-md-3 tecontactdiv'+ econtactdivadd +'"> <div class="form-group"> <label for="contact-info-icon">Note</label> <div class="position-relative has-icon-left"> <input type="number" class="form-control " placeholder="Note"  /> <div class="form-control-position"> <i class="bx bx-navigation"></i> </div> </div> </div> </div> ');
+							
+						});
+
+		$(document).on("click", ".econtactdivdelete", function() {
+			var id = $(this).attr('name');
+			$('.tecontactdiv' + id).hide();
+		});
+		
+		
+		
+		$('.hometabclick').click(function(){$('#home-tab').click();});
+		$('.profiletabclick').click(function(){$('#profile-tab').click();});
+		$('.abouttabclick').click(function(){$('#about-tab').click();});
+		$('.about1tabclick').click(function(){$('#about1-tab').click();});
+		$('.about2tabclick').click(function(){$('#about2-tab').click();});
+		
+		
+	</script>
+
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+
+ 

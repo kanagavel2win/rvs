@@ -13,30 +13,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Table
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "checkout")
-
-public class CheckOut {
+public class ItemList {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int CheckOutID;
-	@Column
-	private String StaffID;
-	@Column
-	private String CheckOutDate;
-	@Column
-	private String AssetId;
-	@Column
-	private String Status;
-	@Column
-	private String Comments;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	int itemlistid;	
 	
-	
-	
+	@Column
+	String fieldName;
+	@Column
+	String itemsvalue;
 }

@@ -27,8 +27,6 @@ public class VendorFiles {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int venFileid;
 
-	@Column  
-	private String Photo_Attach;
 	
 	@Column  
 	private String Files_Attach;

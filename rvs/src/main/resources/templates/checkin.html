@@ -224,19 +224,7 @@ table tr td{
                                                            </div>
                                                        </div>
                                                    </div>
-                                                   <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Location<span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               <select class="form-control" id="Location">
-			                                                        <option value="Field">Field</option>
-			                                                        <option value="Office">Office</option>
-																	<option value="">-</option>
-																	
-																</select>
-                                                           </div>
-                                                       </div>
-                                                   </div>
+                                                   
                                                    <div class="col-3">
                                                        <div class="form-group">
                                                            <label for="first-name-icon">Condition<span class="red">*</span></label>
@@ -288,7 +276,7 @@ table tr td{
 																<th>ASSET</th>
 																<th>Photo</th>
 																<th>STATUS/Condition</th>
-																<th>LOCATION</th>
+																
 																<th>COMMENTS</th>
 																<th></th>
 
@@ -388,23 +376,23 @@ table tr td{
 					var AssetId= $('#AssetId').val();
 					var AssetName= $('#AssetId  option:selected').text();
 					var Status= $('#Status').val();
-					var Location= $('#Location').val();
+					
 					var aCondition=$('#aCondition').val();
 					var Comments= $('#Comments').val();
 					
-					if(StaffID !="" && StaffName !="" && CheckInDate !="" && AssetId !="" && AssetName !="" && Status !="" && Location !="")
+					if(StaffID !="" && StaffName !="" && CheckInDate !="" && AssetId !="" && AssetName !="" && Status !="" )
 					{
 						tempstr="<input type='hidden' id='StaffID"+ sno +"' name='StaffID' value='"+ StaffID +"'  />";
 						tempstr+="<input type='hidden' id='CheckInDate"+ sno +"'  name='CheckInDate' value='"+ CheckInDate +"'  />";
 						tempstr+="<input type='hidden' id='AssetId"+ sno +"'  name='AssetId' value='"+ AssetId +"'  />";
 						tempstr+="<input type='hidden' id='Status"+ sno +"'  name='Statusx' value='"+ Status +"'  />";
-						tempstr+="<input type='hidden' id='Location"+ sno +"'  name='Location' value='"+ Location +"'  />";
+						
 						tempstr+="<input type='hidden' id='aCondition"+ sno +"'  name='aCondition' value='"+ aCondition +"'  />";
 						tempstr+="<input type='hidden' id='Comments"+ sno +"'  name='Comments' value='"+ Comments +"'  />";
 						
 						filestr="<input type='file' class='form-control fileimage'	name='Photo_Attach' accept='image/*' />";
 						
-						html="<tr><td>"+ sno +"</td><td>"+ StaffName +"</td><td>"+ CheckInDate +"</td><td id='AssetName"+ sno +"'>"+ AssetName +"  </td><td > "+ filestr + "  </td><td>"+ Status +" / "+ aCondition +"</td><td>"+ Location +"</td><td>"+ Comments +"</td><td><span id='"+ sno +"' class='cursor-pointer filedivdelete' style='float:right'>  <i class='bx bx-trash-alt'></i>   </span>"+ tempstr +"</td></tr>";
+						html="<tr><td>"+ sno +"</td><td>"+ StaffName +"</td><td>"+ CheckInDate +"</td><td id='AssetName"+ sno +"'>"+ AssetName +"  </td><td > "+ filestr + "  </td><td>"+ Status +" / "+ aCondition +"</td><td>"+ Comments +"</td><td><span id='"+ sno +"' class='cursor-pointer filedivdelete' style='float:right'>  <i class='bx bx-trash-alt'></i>   </span>"+ tempstr +"</td></tr>";
 												
 						$('.table').append(html);
 						$("#AssetId option[value='"+ AssetId +"']").remove();

@@ -55,18 +55,40 @@
 <!-- END: Custom CSS-->
 <style>
 	
+.emptitle {
+	color: #527a00;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+	cursor: pointer;
+}
+.bxs-file-pdf
+{
+	color:#FF0000;
+	font-size:50px;
+}
+.m2
+{
+	vertical-align:middle;
+	line-height: 20px;
+}
+	
 	.uppercase{
 		text-transform:uppercase;
 	}
 	.capitalize{
 		text-transform:capitalize;
 	}
-	.bxs-file-pdf
+		
+	.highlight-error {
+  border-color: red;
+}	
+.error
 {
-	color:#FF0000;
-	font-size:50px;
+	color:red;
 }
-	
+
 </style>
 </head>
 <!-- END: Head-->
@@ -130,6 +152,52 @@
 	                                            <div class="form-body">
 	                                                <div class="row">
 	                                                    <div class="col-md-6">
+	                                                    	<!--scrolling content Modal -->
+													<div class="modal fade" id="VendorStatusScrollable"
+														tabindex="-1" role="dialog"
+														aria-labelledby="VendorStatusScrollableTitle"
+														aria-hidden="true">
+														<div class="modal-dialog modal-dialog-scrollable"
+															role="document">
+															<div class="modal-content">
+																<div class="modal-header bg-warning">
+																	<h5 class="modal-title white"
+																		id="VendorStatusScrollableTitle"></h5>
+																	<button type="button" class="close"
+																		data-dismiss="modal" aria-label="Close">
+																		<i class="bx bx-x"></i>
+																	</button>
+																</div>
+																<div class="modal-body">
+																	<div class="col-md-12">
+																		<div class="form-group">
+																			<label for="addmodel" id="additemalltxt"></label>
+																			<div class="position-relative">
+																				<fieldset class="form-group">
+																					<input type="text" id="additemall" name="addmodel"
+																						class="form-control capitalize">
+																				</fieldset>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-light-secondary"
+																		data-dismiss="modal">
+																		<i class="bx bx-x d-block d-sm-none"></i> <span
+																			class="d-none d-sm-block">Close</span>
+																	</button>
+																	<button type="button" class="btn btn-primary ml-1"
+																		id="additemallsavebtn">
+																		<i class="bx bx-check d-block d-sm-none"></i> <span
+																			class="d-none d-sm-block">ADD</span>
+																	</button>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!--scrolling content Modal -->
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">Asset Name</label>
 	                                                            <div class="position-relative has-icon-left">
@@ -143,21 +211,18 @@
 	                                                    </div>
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
-	                                                            <label for="email-id-icon">Type</label>
+	                                                            <label for="email-id-icon">Type
+	                                                            	<label
+															class="emptitle additem" name="addAssetTypedata"><i
+																class="bx bxs-plus-circle ownstyle1"></i></label>
+	                                                            </label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control"  th:field="*{AssetType}" required>
+					                                                    <select class="form-control addAssetTypedata"  th:field="*{AssetType}" required>
 					                                                        <option value="">-</option>
-					                                                        <option value="Machinery">Machinery</option>
-																			<option value="Vehicles">Vehicles</option>
-																			<option value="Laptops">Laptops</option>
-																			<option value="Smart Phones">Smart Phones</option>
-																			<option value="Desktop">Desktop</option>
-																			<option value="Tablets">Tablets</option>
-																			<option value="Software">Software</option>
-																			<option value="Electronics">Electronics</option>
-																			<option value="Furniture">Furniture</option>
-																			<option value="Hardware">Hardware</option>
+					                                                       <th:block th:each="str :${ASSETTYPE}">
+																				<option  th:value="${str}"  th:text="${str}"></option>
+																			</th:block>
 
 					                                                    </select>
 					                                                     <div class="form-control-position">
@@ -233,34 +298,19 @@
 	                                                        </div>
 	                                                    </div>
 	                                                   
+	                                                    
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
-	                                                            <label for="contact-info-icon">Status</label>
+	                                                            <label for="contact-info-icon">Branch</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control"  th:field="*{Status}" required>
+	                                                                	<input type="hidden"  class="form-control capitalize" th:value="${assetmaster['Status']}" th:field="*{Status}"   placeholder="Status"   />
+	                                                                
+					                                                    <select class="form-control"  th:field="*{Branch}" required>
 					                                                        <option value="">-</option>
-					                                                        <option value="In Stock">In Stock</option>
-																			<option value="In Use">In Use</option>
-																			<option value="Out For Repair">Out For Repair</option>
-																			<option value="Checked Out">Checked Out</option>
-					                                                    </select>
-					                                                     <div class="form-control-position">
-		                                                                    <i class="bx bx-show-alt"></i>
-		                                                                 </div>
-					                                                </fieldset>
-	                                                            </div>
-	                                                        </div>
-	                                                    </div>
-	                                                    <div class="col-md-6">
-	                                                        <div class="form-group">
-	                                                            <label for="contact-info-icon">Location</label>
-	                                                            <div class="position-relative has-icon-left">
-	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control"  th:field="*{Location}" required>
-					                                                        <option value="">-</option>
-					                                                        <option value="Office">Office</option>
-																			<option value="Field">Field</option>
+					                                                        <th:block th:each="obj : ${branchls}">
+					                                                        	<option value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+																			</th:block>
 																		</select>
 																		 <div class="form-control-position">
 		                                                                    <i class="bx bxs-compass"></i>
@@ -272,8 +322,20 @@
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Vendor</label>
+	                                                           	<a href="vendor" target="_blank">
+	                                                           		<label
+															class="emptitle"><i
+																class="bx bxs-plus-circle ownstyle1"></i></label>
+																</a>
+	                                                            </label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control capitalize" th:value="${assetmaster['Vendor']}" th:field="*{Vendor}"   placeholder="Vendor"   />
+	                                                                
+	                                                                 <select class="form-control"  th:field="*{Vendor}" required>
+					                                                        <option value="">-</option>
+					                                                        <th:block th:each="obj :${vendorls}">
+					                                                        	<option value="${obj.vendormasterid}" th:text="${obj.Name +' - '+ obj.AssetType}"></option>
+																			</th:block>
+																		</select>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-user-circle"></i>
 	                                                                </div>
@@ -295,7 +357,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Purchased</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control" th:value="${assetmaster['Purchased']}" th:field="*{Purchased}"     placeholder="Purchased"   >
+	                                                                <input type="date"  class="form-control" th:value="${assetmaster['Purchased']}" th:field="*{Purchased}"     placeholder="Purchased"   >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-cart"></i>
 	                                                                </div>
@@ -340,15 +402,7 @@
 														<th></th>
 													</tr>
 													<th:block th:each="Files,stat : ${assetFiles}">
-														<tr th:if="${Files['Photo_Attach']}  !=null">
-															<td><img th:src="${Files['Photo_Attach']}"
-																style="width: 100px; height: 100px;" />
-																<input type="hidden" th:value="${Files['assetFileid']}" name="photoassetFileid"/>
-																<input type="hidden" th:value="${Files['Photo_Attach']}" th:name="photoempFileidstr"/>
-																</td>
-															<td>Photo <br/> <a th:href="${Files['Photo_Attach']}" target="_blank">View & Download</a></td>
-															<td><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span></td>
-														</tr>
+														
 														<tr th:if="${Files['Files_Attach']}  !=null">
 															<td><i class="bx bxs-file-pdf"></i>
 																<input type="hidden" th:value="${Files['assetFileid']}" name="filesempFileid"/>
@@ -361,15 +415,7 @@
 													</th:block>
 												</table>
 												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label for="contact-info-icon">Photo</label>
-														<div class="position-relative">
-															<input type="file" class="form-control capitalize"
-																name="Photo_Attach" accept="image/*" />
-														</div>
-													</div>
-												</div>
+												
 												<div class="col-md-6">
 													<div class="form-group">
 														<label for="contact-info-icon">Files</label>
@@ -457,6 +503,44 @@
 				$(document).on("click", ".filedivdelete", function() {
 					$(this).closest("tr").remove();
 				});
+				
+				$(".additem").click(function() {
+					var name = $(this).attr('name');
+					var labeltext = "";
+					if (name == "addAssetTypedata") {
+						labeltext = "New Asster Type";
+					}
+					
+					$('#additemalltxt').text(labeltext);
+					$('#VendorStatusScrollable').modal('toggle');
+
+				});
+
+				$("#additemallsavebtn").click(
+				function() {
+					if ($("#additemall").val() != '') {
+						var name = $('#additemalltxt').text();
+						var labeltext = "";
+						if (name == "New Asster Type") {
+							labeltext = "addAssetTypedata";
+						}
+						
+						$('.' + labeltext).append(
+								"<option value='"
+										+ $("#additemall").val()
+										+ "'>"
+										+ $("#additemall").val()
+										+ "</option>");
+						//$('.' + labeltext).val($("#additemall").val());
+						$("#additemall").val('');
+						$('#VendorStatusScrollable').modal(
+								'toggle');
+					}
+				});
+				
+				
+				
+				
 			});
 			
 			

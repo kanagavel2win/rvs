@@ -297,11 +297,9 @@ var tblemployeecompensationid=0;
 							                                                    <input type="hidden"  id="employeeJobempstatusidrow"/>
 							                                                    <select class="form-control addemployeestatusdata" id="empstatus_employmentstatus">
 							                                                        <option>-</option>
-							                                                        <option>Full-Time</option>
-							                                                        <option>Part-Time</option>
-							                                                        <option>Intern</option>
-							                                                        <option>Contractor</option>
-							                                                        <option>Terminated</option>
+							                                                        <th:block th:each="str :${EmploymentStatus}">
+																						<option  th:value="${str}"  th:text="${str}"></option>
+																					</th:block>
 							                                                      </select>
 							                                                </fieldset>
 			                                                            </div>
@@ -317,9 +315,9 @@ var tblemployeecompensationid=0;
 			                                                                <fieldset class="form-group">
 							                                                    <select class="form-control addterminationtypedata" id="empstatus_terminationtype">
 							                                                        <option>-</option>
-							                                                        <option>Death</option>
-							                                                        <option>Involuntary</option>
-							                                                        <option>Voluntary</option>
+							                                                        <th:block th:each="str :${TerminationType}">
+																						<option  th:value="${str}"  th:text="${str}"></option>
+																					</th:block>
 							                                                        
 							                                                      </select>
 							                                                </fieldset>
@@ -336,13 +334,10 @@ var tblemployeecompensationid=0;
 			                                                                	
 							                                                    <select class="form-control addterminationreasondata" id="empstatus_terminationreason">
 							                                                        <option>-</option>
-							                                                        <option>Attendance</option>
-							                                                        <option>Life Happens</option>
-							                                                        <option>Not a Fit</option>
-							                                                        <option>Other</option>
-							                                                        <option>Other employment</option>
-							                                                        <option>Performance</option>
-							                                                        <option>Relocation</option>
+							                                                        <th:block th:each="str :${TerminationReason}">
+																						<option  th:value="${str}"  th:text="${str}"></option>
+																					</th:block>
+							                                                        
 							                                                      </select>
 							                                                </fieldset>
 			                                                            </div>
@@ -513,11 +508,9 @@ var tblemployeecompensationid=0;
 		                                                                <fieldset class="form-group">
 						                                                    <select class="form-control adddepartmentdata"  id="jobdeparment">
 						                                                        <option>-</option>
-						                                                        <option>Survey</option>
-						                                                        <option>Drafting</option>
-						                                                        <option>Accounts</option>
-						                                                        <option>Marketing</option>
-						                                                        <option>BD</option>
+						                                                       <th:block th:each="str :${Department}">
+																					<option  th:value="${str}"  th:text="${str}"></option>
+																				</th:block>
 						                                                      </select>
 						                                                </fieldset>
 		                                                            </div>
@@ -532,10 +525,10 @@ var tblemployeecompensationid=0;
 		                                                                <fieldset class="form-group">
 						                                                    <select class="form-control addjobtitledata"  id="jobtitle">
 						                                                        <option>-</option>
-						                                                        <option>Surveyor</option>
-						                                                        <option>Survey Assistant</option>
-						                                                        <option>Draftman</option>
-						                                                        <option>Accountant</option>
+						                                                        <th:block th:each="str :${JobTitle}">
+																					<option  th:value="${str}"  th:text="${str}"></option>
+																				</th:block>
+						                                                        
 						                                                        
 						                                                      </select>
 						                                                </fieldset>
@@ -684,7 +677,7 @@ var tblemployeecompensationid=0;
 		                                                    <div class="col-md-12">
 		                                                        <div class="form-group">
 		                                                            <label for="email-id-icon">Pay Rate
-		                                                            	<label class="emptitle additem" name="addpayratedata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+		                                                            	<!-- <label class="emptitle additem" name="addpayratedata"><i class="bx bxs-plus-circle ownstyle1"></i></label> -->
 		                                                            </label>
 		                                                            <div class="position-relative has-icon-left">
 		                                                                <fieldset class="form-group">
@@ -712,12 +705,9 @@ var tblemployeecompensationid=0;
 		                                                                <fieldset class="form-group">
 						                                                    <select class="form-control addchangereasondata"  id="comchangereason">
 						                                                        <option>-</option>
-						                                                        <option>Annual Pay increase</option>
-						                                                        <option>NA</option>
-						                                                        <option>Pay increase</option>
-						                                                        <option>Promotion</option>
-						                                                        <option>Relocated</option>
-						                                                        <option>Title Change</option>
+						                                                        <th:block th:each="str :${PAYCHANGEREASON}">
+																					<option  th:value="${str}"  th:text="${str}"></option>
+																				</th:block>
 						                                                        
 						                                                       </select>
 						                                                </fieldset>

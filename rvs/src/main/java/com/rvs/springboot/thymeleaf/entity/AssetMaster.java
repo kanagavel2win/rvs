@@ -51,7 +51,7 @@ public class AssetMaster {
 	@Column
 	private String Status;
 	@Column
-	private String Location;
+	private String Branch;
 	@Column
 	private String Vendor;
 	@Column

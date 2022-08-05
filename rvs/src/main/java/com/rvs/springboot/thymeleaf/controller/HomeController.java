@@ -91,6 +91,7 @@ import com.rvs.springboot.thymeleaf.service.EmployeeMasterService;
 import com.rvs.springboot.thymeleaf.service.HireMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
 import com.rvs.springboot.thymeleaf.service.InsuranceMasterService;
+import com.rvs.springboot.thymeleaf.service.ItemListService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 import com.rvs.springboot.thymeleaf.service.LoginService;
 import com.rvs.springboot.thymeleaf.service.PaySlipService;
@@ -137,6 +138,8 @@ public class HomeController {
 	AssetAuditService assetauditService;
 	@Autowired
 	AssetServiceService assetserviceService;
+	@Autowired
+	ItemListService itemlistService;
 
 	@Autowired
 	InsuranceMasterService insuranceMasterService;
@@ -459,8 +462,16 @@ public class HomeController {
 		ArrayList<EmployeeFiles> filels = new ArrayList<EmployeeFiles>();
 		filels.add(empfiles);
 
-		// System.out.println(empobj);
-
+		List<String> MARITALSTATUS = itemlistService.findByFieldName("MARITAL STATUS");
+		themodel.addAttribute("MARITALSTATUS", MARITALSTATUS);
+		List<String> DEGREE = itemlistService.findByFieldName("DEGREE");
+		themodel.addAttribute("DEGREE", DEGREE);
+		List<String> RELATION = itemlistService.findByFieldName("RELATION");
+		themodel.addAttribute("RELATION", RELATION);
+		List<String> LANGUAGE = itemlistService.findByFieldName("LANGUAGE");
+		themodel.addAttribute("LANGUAGE", LANGUAGE);
+		
+		
 		themodel.addAttribute("employeeEducation", eduls);
 		themodel.addAttribute("employeeEmgContact", emgls);
 		themodel.addAttribute("employeeExperience", exptrls);
@@ -601,6 +612,7 @@ public class HomeController {
 				empedu.setPercentage_GPA(Percentage_GPA[farr]);
 			if (ToYear.length > 0)
 				empedu.setToYear(ToYear[farr]);
+			itemlistService.savesingletxt(empedu.getDegree(), "DEGREE");
 			eduls.add(empedu);
 		}
 		employeemaster.setEmployeeEducation(eduls);
@@ -639,7 +651,10 @@ public class HomeController {
 			if (Emg_PersonalPhone.length > 0)
 				empcont.setEmg_PersonalPhone(Emg_PersonalPhone[farr]);
 			if (Emg_Relation.length > 0)
+			{
 				empcont.setEmg_Relation(Emg_Relation[farr]);
+				itemlistService.savesingletxt(empcont.getEmg_Relation(), "RELATION");
+			}
 			if (Emg_State.length > 0)
 				empcont.setEmg_State(Emg_State[farr]);
 			if (Emg_Street1.length > 0)
@@ -711,9 +726,11 @@ public class HomeController {
 				emplang.setEmpLanguid((Integer) Integer.parseInt(empLanguid[farr]));
 			}
 			if (language.length > 0)
+			{
 				emplang.setLanguage(language[farr]);
-
-			langls.add(emplang);
+				itemlistService.savesingletxt(emplang.getLanguage(), "LANGUAGE");
+			}
+				langls.add(emplang);
 
 		}
 		employeemaster.setEmployeeLanguage(langls);
@@ -841,6 +858,8 @@ public class HomeController {
 		// System.out.println(employeemaster);
 
 		EmployeeMaster employeemasternew = new EmployeeMaster();
+		
+		itemlistService.savesingletxt(employeemaster.getMaritalStatus(), "MARITAL STATUS");
 		employeemasternew = employeeMasterService.save(employeemaster);
 		// System.out.println(employeemasternew);
 
@@ -892,12 +911,18 @@ public class HomeController {
 			filelsnew.add(empfiles1);
 		}
 
-		// System.out.println(edulsnew);
-		// System.out.println(emglsnew);
-		// System.out.println(exptrlsnew);
-		// System.out.println(langlsnew);
-		// System.out.println(filelsnew);
-
+		List<String> MARITALSTATUS = itemlistService.findByFieldName("MARITAL STATUS");
+		themodel.addAttribute("MARITALSTATUS", MARITALSTATUS);
+		List<String> DEGREE = itemlistService.findByFieldName("DEGREE");
+		themodel.addAttribute("DEGREE", DEGREE);
+		List<String> RELATION = itemlistService.findByFieldName("RELATION");
+		themodel.addAttribute("RELATION", RELATION);
+		List<String> LANGUAGE = itemlistService.findByFieldName("LANGUAGE");
+		themodel.addAttribute("LANGUAGE", LANGUAGE);
+		
+		
+		
+		
 		themodel.addAttribute("employeeEducation", edulsnew);
 		themodel.addAttribute("employeeEmgContact", emglsnew);
 		themodel.addAttribute("employeeExperience", exptrlsnew);
@@ -964,12 +989,17 @@ public class HomeController {
 			filelsnew.add(empfiles1);
 		}
 
-		// System.out.println(edulsnew);
-		// System.out.println(emglsnew);
-		// System.out.println(exptrlsnew);
-		// System.out.println(langlsnew);
-		// System.out.println(filelsnew);
-
+		List<String> MARITALSTATUS = itemlistService.findByFieldName("MARITAL STATUS");
+		themodel.addAttribute("MARITALSTATUS", MARITALSTATUS);
+		List<String> DEGREE = itemlistService.findByFieldName("DEGREE");
+		themodel.addAttribute("DEGREE", DEGREE);
+		List<String> RELATION = itemlistService.findByFieldName("RELATION");
+		themodel.addAttribute("RELATION", RELATION);
+		List<String> LANGUAGE = itemlistService.findByFieldName("LANGUAGE");
+		themodel.addAttribute("LANGUAGE", LANGUAGE);
+		
+		
+		
 		themodel.addAttribute("employeeEducation", edulsnew);
 		themodel.addAttribute("employeeEmgContact", emglsnew);
 		themodel.addAttribute("employeeExperience", exptrlsnew);
@@ -1043,6 +1073,21 @@ public class HomeController {
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
 
+		List<String> EmploymentStatus = itemlistService.findByFieldName("EmploymentStatus");
+		theModel.addAttribute("EmploymentStatus", EmploymentStatus);
+		List<String> TerminationType = itemlistService.findByFieldName("TerminationType");
+		theModel.addAttribute("TerminationType", TerminationType);
+		List<String> TerminationReason = itemlistService.findByFieldName("TerminationReason");
+		theModel.addAttribute("TerminationReason", TerminationReason);
+		List<String> Department = itemlistService.findByFieldName("Department");
+		theModel.addAttribute("Department", Department);
+		List<String> JobTitle = itemlistService.findByFieldName("JobTitle");
+		theModel.addAttribute("JobTitle", JobTitle);
+		List<String> PAYCHANGEREASON = itemlistService.findByFieldName("PAYCHANGEREASON");
+		theModel.addAttribute("PAYCHANGEREASON", PAYCHANGEREASON);
+		
+		
+		
 		theModel.addAttribute("greenpointemployementstatus", greenpointemployementstatus);
 		theModel.addAttribute("greenpointjobstatus", greenpointjobstatus);
 		theModel.addAttribute("greenpointcompensationstatus", greenpointcompensationstatus);
@@ -1091,6 +1136,10 @@ public class HomeController {
 			obj.setEmployeejobempstatusid(Integer.parseInt(params.get("employeeJobempstatusid")));
 		}
 
+		itemlistService.savesingletxt(obj.getEmpstatus_employmentstatus(), "EmploymentStatus");
+		itemlistService.savesingletxt(obj.getEmpstatus_terminationreason(), "TerminationReason");
+		itemlistService.savesingletxt(obj.getEmpstatus_terminationtype(), "TerminationType");
+		
 		employeeJobempstatusService.save(obj);
 		return "Success" + obj.getEmployeejobempstatusid();
 	}
@@ -1111,6 +1160,8 @@ public class HomeController {
 			obj.setEmployeejobinfoid(Integer.parseInt(params.get("employeejobinfoid")));
 		}
 		// System.out.println(obj);
+		itemlistService.savesingletxt(obj.getJobdeparment(), "Department");
+		itemlistService.savesingletxt(obj.getJobtitle(), "JobTitle");
 		employeeJobinfoService.save(obj);
 		return "Success" + obj.getEmployeejobinfoid();
 	}
@@ -1132,7 +1183,8 @@ public class HomeController {
 		if (params.get("employeejobcompensationid") != null && params.get("employeejobcompensationid") != "") {
 			obj.setEmployeejobcompensationid(Integer.parseInt(params.get("employeejobcompensationid")));
 		}
-		// System.out.println(obj);
+		itemlistService.savesingletxt(obj.getComchangereason(), "PAYCHANGEREASON");
+		
 		employeeJobcompensationService.save(obj);
 		return "Success" + obj.getEmployeejobcompensationid();
 	}
@@ -2205,20 +2257,16 @@ public class HomeController {
 
 		for (VendorMaster obj : ls) {
 			String str = "";
-			List<VendorFiles> validProfilephoto = obj.getVendorFiles().stream().filter(c -> c.getPhoto_Attach() != null)
-					.collect(Collectors.toList());
-
+			
 			str += obj.getName() + "|";
 
-			if (validProfilephoto.size() > 0) {
-				str += validProfilephoto.get(0).getPhoto_Attach() + "|";
-			} else {
+			
 				str += " |";
-			}
+			
 
 			str += obj.getVendormasterid() + "|";
 			str += obj.getAssetType() + "|";
-			str += obj.getContact_WorkPhone() + " <br/>" + obj.getContact_EmailID() + "|";
+			str += "- |";
 			str += obj.getAddress_Village() + " <br/>" + obj.getAddress_Taluk() + " <br/>" + obj.getAddress_City()
 					+ "|";
 
@@ -2242,7 +2290,10 @@ public class HomeController {
 		VendorFiles venfiles = new VendorFiles();
 		ArrayList<VendorFiles> filels = new ArrayList<VendorFiles>();
 		filels.add(venfiles);
-
+		
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
+		
 		themodel.addAttribute("vendorEmgContact", emgls);
 		themodel.addAttribute("vendorFiles", venfiles);
 		themodel.addAttribute("vendormaster", venobj);
@@ -2272,7 +2323,10 @@ public class HomeController {
 			VendorFiles empfiles1 = new VendorFiles();
 			filelsnew.add(empfiles1);
 		}
-
+		
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
+		
 		themodel.addAttribute("vendorEmgContact", emglsnew);
 		themodel.addAttribute("vendorFiles", filelsnew);
 		themodel.addAttribute("vendormaster", vendormasternew);
@@ -2282,14 +2336,9 @@ public class HomeController {
 	@PostMapping("Vendorsave")
 	public String Vendorsave(HttpServletRequest req, Model themodel,
 			@ModelAttribute("vendormaster") VendorMaster vendormaster,
-			@RequestParam(name = "photoempFileid", required = false) String[] photoempFileid,
 			@RequestParam(name = "filesempFileid", required = false) String[] filesempFileid,
-			@RequestParam(name = "photoempFileidstr", required = false) String[] photoempFileidstr,
 			@RequestParam(name = "filesempFileidstr", required = false) String[] filesempFileidstr,
-
-			@RequestParam(name = "Photo_Attach", required = false) MultipartFile Photo_Attach,
 			@RequestParam(name = "Files_Attach", required = false) MultipartFile Files_Attach,
-
 			@RequestParam(name = "venEmgContactid", required = false) String[] venEmgContactid,
 			@RequestParam(name = "emgid", required = false) String[] emgid,
 			@RequestParam(name = "Emg_Name", required = false) String[] Emg_Name,
@@ -2337,16 +2386,7 @@ public class HomeController {
 
 		Set<VendorFiles> filels = new LinkedHashSet<VendorFiles>();
 
-		if (photoempFileid != null)
-			for (int farr = 0; farr < photoempFileid.length; farr++) {
-				VendorFiles obj = new VendorFiles();
-
-				if (photoempFileid[farr] != null) {
-					obj.setVenFileid(Integer.parseInt(photoempFileid[farr]));
-				}
-				obj.setPhoto_Attach(photoempFileidstr[farr]);
-				filels.add(obj);
-			}
+		
 
 		if (filesempFileid != null)
 			for (int farr = 0; farr < filesempFileid.length; farr++) {
@@ -2376,22 +2416,7 @@ public class HomeController {
 			uploadRootDircertificate.mkdirs();
 		}
 
-		if (Photo_Attach.getOriginalFilename().toString().length() > 0) {
-			VendorFiles venpfiles = new VendorFiles();
-			StringBuilder filename = new StringBuilder();
-			String tvenpfilename = stringdatetime() + Photo_Attach.getOriginalFilename();
-			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tvenpfilename);
-			filename.append(tvenpfilename);
-			venpfiles.setPhoto_Attach("vendorprofilephoto/" + filename);
-			try {
-				Files.write(fileNameandPath, Photo_Attach.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			filels.add(venpfiles);
-		}
-
+		
 		if (Files_Attach.getOriginalFilename().toString().length() > 0) {
 			VendorFiles venpfiles = new VendorFiles();
 			StringBuilder filename = new StringBuilder();
@@ -2410,6 +2435,7 @@ public class HomeController {
 		vendormaster.setVendorFiles(filels);
 		// Systven.out.println("--------------Step 5 end----------------------");
 		VendorMaster vendormasternew = new VendorMaster();
+		itemlistService.savesingletxt(vendormaster.getAssetType(), "ASSETTYPE");
 		vendormasternew = vendorMasterService.save(vendormaster);
 
 		Set<VendorEmgContact> venglsnew = new LinkedHashSet<VendorEmgContact>();
@@ -2431,6 +2457,9 @@ public class HomeController {
 			filelsnew.add(venpfiles1);
 		}
 
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
+		
 		themodel.addAttribute("vendorEmgContact", venglsnew);
 		themodel.addAttribute("vendorFiles", filelsnew);
 		themodel.addAttribute("vendormaster", vendormaster);
@@ -2446,21 +2475,16 @@ public class HomeController {
 
 		for (AssetMaster obj : ls) {
 			String str = "";
-			List<AssetMasterFiles> validProfilephoto = obj.getAssetMasterFiles().stream()
-					.filter(c -> c.getPhoto_Attach() != null).collect(Collectors.toList());
-
+			
 			str += obj.getAssetName() + "|";
 
-			if (validProfilephoto.size() > 0) {
-				str += validProfilephoto.get(0).getPhoto_Attach() + "|";
-			} else {
+			
 				str += " |";
-			}
-
+			
 			str += obj.getAssetId() + "|";
 			str += obj.getAssetType() + "|";
 			str += obj.getBrand() + " <br/>" + obj.getManufacturer() + "|";
-			str += obj.getACondition() + " <br/>" + obj.getStatus();
+			str += obj.getACondition() ;
 
 			data.add(str);
 		}
@@ -2474,11 +2498,24 @@ public class HomeController {
 	public String assetnew(Model themodel, ModelAndView themodelandview) {
 
 		AssetMaster assetobj = new AssetMaster();
-
+		assetobj.setStatus("In Stock");
 		AssetMasterFiles assetfiles = new AssetMasterFiles();
 		ArrayList<AssetMasterFiles> filels = new ArrayList<AssetMasterFiles>();
 		filels.add(assetfiles);
-
+		
+		
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+		
+		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
+		vendorls = vendorMasterService.findAll();
+		themodel.addAttribute("vendorls", vendorls);
+		
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
+		
+		
 		themodel.addAttribute("assetFiles", assetfiles);
 		themodel.addAttribute("assetmaster", assetobj);
 		return "asset";
@@ -2498,7 +2535,18 @@ public class HomeController {
 			AssetMasterFiles empfiles1 = new AssetMasterFiles();
 			filelsnew.add(empfiles1);
 		}
-
+		
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+		
+		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
+		vendorls = vendorMasterService.findAll();
+		themodel.addAttribute("vendorls", vendorls);
+		
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
+		
 		themodel.addAttribute("assetFiles", filelsnew);
 		themodel.addAttribute("assetmaster", assetmasternew);
 		return "asset";
@@ -2507,12 +2555,9 @@ public class HomeController {
 	@PostMapping("assetsave")
 	public String Assetsave(HttpServletRequest req, Model themodel,
 			@ModelAttribute("assetmaster") AssetMaster assetmaster,
-			@RequestParam(name = "photoempFileid", required = false) String[] photoempFileid,
 			@RequestParam(name = "filesempFileid", required = false) String[] filesempFileid,
-			@RequestParam(name = "photoempFileidstr", required = false) String[] photoempFileidstr,
 			@RequestParam(name = "filesempFileidstr", required = false) String[] filesempFileidstr,
 
-			@RequestParam(name = "Photo_Attach", required = false) MultipartFile Photo_Attach,
 			@RequestParam(name = "Files_Attach", required = false) MultipartFile Files_Attach,
 
 			HttpServletRequest request) {
@@ -2521,16 +2566,7 @@ public class HomeController {
 
 		Set<AssetMasterFiles> filels = new LinkedHashSet<AssetMasterFiles>();
 
-		if (photoempFileid != null)
-			for (int farr = 0; farr < photoempFileid.length; farr++) {
-				AssetMasterFiles obj = new AssetMasterFiles();
-
-				if (photoempFileid[farr] != null) {
-					obj.setAssetFileid(Integer.parseInt(photoempFileid[farr]));
-				}
-				obj.setPhoto_Attach(photoempFileidstr[farr]);
-				filels.add(obj);
-			}
+		
 
 		if (filesempFileid != null)
 			for (int farr = 0; farr < filesempFileid.length; farr++) {
@@ -2560,21 +2596,7 @@ public class HomeController {
 			uploadRootDircertificate.mkdirs();
 		}
 
-		if (Photo_Attach.getOriginalFilename().toString().length() > 0) {
-			AssetMasterFiles assetpfiles = new AssetMasterFiles();
-			StringBuilder filename = new StringBuilder();
-			String tassetpfilename = stringdatetime() + Photo_Attach.getOriginalFilename();
-			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tassetpfilename);
-			filename.append(tassetpfilename);
-			assetpfiles.setPhoto_Attach("assetprofilephoto/" + filename);
-			try {
-				Files.write(fileNameandPath, Photo_Attach.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			filels.add(assetpfiles);
-		}
+		
 
 		if (Files_Attach.getOriginalFilename().toString().length() > 0) {
 			AssetMasterFiles assetpfiles = new AssetMasterFiles();
@@ -2594,6 +2616,8 @@ public class HomeController {
 		assetmaster.setAssetMasterFiles(filels);
 		// Systasset.out.println("--------------Step 5 end----------------------");
 		AssetMaster assetmasternew = new AssetMaster();
+		itemlistService.savesingletxt(assetmaster.getAssetType(), "ASSETTYPE");
+		
 		assetmasternew = assetMasterService.save(assetmaster);
 
 		Set<AssetMasterFiles> filelsnew = new LinkedHashSet<AssetMasterFiles>();
@@ -2604,7 +2628,17 @@ public class HomeController {
 			AssetMasterFiles assetpfiles1 = new AssetMasterFiles();
 			filelsnew.add(assetpfiles1);
 		}
-
+		
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+		
+		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
+		vendorls = vendorMasterService.findAll();
+		themodel.addAttribute("vendorls", vendorls);
+		
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
 		themodel.addAttribute("assetFiles", filelsnew);
 		themodel.addAttribute("assetmaster", assetmaster);
 		return "asset";
@@ -2692,7 +2726,7 @@ public class HomeController {
 			obj.setStaffID(StaffID[i]);
 			obj.setCheckOutDate(CheckOutDate[i]);
 			obj.setStatus(Status[i]);
-			obj.setLocation(Location[i]);
+			
 			if (Comments.length > 0) {
 				obj.setComments(Comments[i]);
 			}
@@ -2795,7 +2829,7 @@ public class HomeController {
 			obj.setStaffID(StaffID[i]);
 			obj.setCheckInDate(CheckInDate[i]);
 			obj.setStatus(Status[i]);
-			obj.setLocation(Location[i]);
+			
 			obj.setACondition(Condition[i]);
 			if (Comments.length > 0) {
 				obj.setComments(Comments[i]);
@@ -2885,6 +2919,10 @@ public class HomeController {
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
 		List<EmployeeMaster> EmployeeMasterobj = EffectiveEmployee(employeeMasterService.findAll());
 
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+		
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
 		return "assetaudit";
@@ -2977,6 +3015,10 @@ public class HomeController {
 
 		request.getSession().setAttribute("printassetauditstr", printstr);
 
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+		
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		return "assetaudit";
@@ -2993,7 +3035,10 @@ public class HomeController {
 		} else {
 			AssetServiceobj.setAssetId(String.valueOf(AssetMasterobj.getAssetId()));
 		}
-
+		
+		List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
+		themodel.addAttribute("ServiceItem", ServiceItem);
+		
 		themodel.addAttribute("AssetServiceobj", AssetServiceobj);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 
@@ -3002,12 +3047,18 @@ public class HomeController {
 
 	@PostMapping("assetservicesave")
 	public String assetservicesave(Model themodel, @ModelAttribute("AssetServiceobj") AssetService AssetServiceobj) {
-
+		
+		itemlistService.savesingletxt(AssetServiceobj.getServiceItem(), "ServiceItem");
+		
 		AssetService AssetServicesave = assetserviceService.save(AssetServiceobj);
 		AssetMaster AssetMasterobj = assetMasterService.findById(Integer.parseInt(AssetServiceobj.getAssetId()));
 		themodel.addAttribute("AssetServiceobj", AssetServicesave);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("save", true);
+		
+		List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
+		themodel.addAttribute("ServiceItem", ServiceItem);
+		
 		return "assetservice";
 	}
 

@@ -27,8 +27,6 @@ public class AssetMasterFiles {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int assetFileid;
 
-	@Column  
-	private String Photo_Attach;
 	
 	@Column  
 	private String Files_Attach;

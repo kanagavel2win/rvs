@@ -173,6 +173,21 @@ table tr td{
 											<div class="row">
 												 <div class="col-3">
                                                        <div class="form-group">
+                                                           <label for="first-name-icon">Branch <span class="red">*</span></label>
+                                                           <div class="position-relative">
+                                                               
+			                                                     <select class="select2 form-control" id="BranchID">
+			                                                        <th:block th:each="obj : ${branchls}">
+			                                                        	<option value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+																	</th:block>
+			                                                    </select>
+                                                
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+												 <div class="col-3">
+                                                       <div class="form-group">
                                                            <label for="first-name-icon">Custodian <span class="red">*</span></label>
                                                            <div class="position-relative">
                                                                
@@ -186,15 +201,7 @@ table tr td{
                                                            </div>
                                                        </div>
                                                    </div>
-                                                   <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Asset Audit Date<span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               <input type="date"  class="form-control" id="AssetAuditDate" >
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
+                                                   
                                                    <div class="col-6">
                                                        <div class="form-group">
                                                            <label for="first-name-icon">Asset<span class="red">*</span></label>
@@ -210,6 +217,15 @@ table tr td{
                                                    </div>
                                                  </div>
                                                  <div class="row">
+                                                 <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Asset Audit Date<span class="red">*</span></label>
+                                                           <div class="position-relative">
+                                                               <input type="date"  class="form-control" id="AssetAuditDate" >
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
 												 <div class="col-3">
                                                        <div class="form-group">
                                                            <label for="first-name-icon">Status<span class="red">*</span></label>

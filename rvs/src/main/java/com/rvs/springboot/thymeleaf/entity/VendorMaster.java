@@ -51,14 +51,7 @@ public class VendorMaster {
 	private String Address_ZIP;
 	@Column
 	private String Address_Country;
-	@Column
-	private String Contact_WorkPhone;
-	@Column
-	private String Contact_PersonalPhone;
-	@Column
-	private String Contact_OtherPhone;
-	@Column
-	private String Contact_EmailID;
+	
 	@Column
 	private String GST;
 	@Column

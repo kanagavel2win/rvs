@@ -93,7 +93,7 @@
 }
 
 </style>
-
+<script th:inline="javascript">emgstat = 0;		</script>
 </head>
 <!-- END: Head-->
 
@@ -162,16 +162,11 @@
 		                                            <span class="align-middle m2">Basic</span>
 		                                        </a>
 		                                    </li>
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="false">
-		                                            <i class="bx bx-home align-middle"></i>
-		                                            <span class="align-middle m2">Contact</span>
-		                                        </a>
-		                                    </li>
+		                                    
 		                                    <li class="nav-item">
 		                                        <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" aria-controls="about" role="tab" aria-selected="false">
 		                                            <i class="bx bxs-graduation align-middle"></i>
-		                                            <span class="align-middle m2">Emergency Contact</span>
+		                                            <span class="align-middle m2">Contact</span>
 		                                        </a>
 		                                    </li>
 		                                    <li class="nav-item">
@@ -199,7 +194,7 @@
 														<label class="emptitle">General</label>
 													</div>
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-6">
 													<!--scrolling content Modal -->
 													<div class="modal fade" id="VendorStatusScrollable"
 														tabindex="-1" role="dialog"
@@ -269,12 +264,13 @@
 												</div>
 												
 												
-												<div class="col-md-3">
+												<div class="col-md-6">
 													<div class="form-group">
-														<label for="email-id-icon">Asset Type<label
+														<label for="email-id-icon">Asset Type
+														</label>
+														<label
 															class="emptitle additem" name="addAssetTypedata"><i
 																class="bx bxs-plus-circle ownstyle1"></i></label>
-														</label>
 														<div class="position-relative has-icon-left">
 															<fieldset class="form-group">
 																<select class="form-control addAssetTypedata"
@@ -282,11 +278,10 @@
 																	th:field="*{AssetType}">
 																	<option th:if="${vendormaster['AssetType']}" th:value="${vendormaster['AssetType']}" th:text="${vendormaster['AssetType']}"></option>
 																	<option value="-">-</option>
-																	<option value="Machinery">Machinery</option>
-																	<option value="Vehicle">Vehicle</option>
-																	<option value="Stationary">Stationary</option>
-																	<option value="Insurance">Insurance</option>
-																	<option value="Other">Other</option>
+																	<th:block th:each="str :${ASSETTYPE}">
+																		<option  th:value="${str}"  th:text="${str}"></option>
+																	</th:block>
+																	
 
 																</select>
 																<div class="form-control-position">
@@ -418,90 +413,11 @@
 														</div>
 													</div>
 												</div>
-											
-												<div class="col-12">
-													<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 profiletabclick"  style="float:right">Next</button>
-													
-												</div>
-												
-												
-												
-												
-											</div>
-											</div>
-                                   			<div class="tab-pane" id="profile" aria-labelledby="profile-tab" role="tabpanel">
-                                   			 <div class="row">
-											
-												
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle">Contact</label>
-													</div>
-												</div>
 												<div class="col-md-3">
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																id="Work_Phone"
-																placeholder="Work Phone"
-																th:value="${vendormaster['Contact_WorkPhone']}"
-																th:field="*{Contact_WorkPhone}"  />
-															<div class="form-control-position">
-																<i class="bx bx-dialpad"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="Personal Phone"
-																th:value="${vendormaster['Contact_PersonalPhone']}"
-																th:field="*{Contact_PersonalPhone}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-phone"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="Other Phone"
-																th:value="${vendormaster['Contact_OtherPhone']}"
-																th:field="*{Contact_OtherPhone}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-phone"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control email"
-																placeholder="Email ID"
-																th:value="${vendormaster['Contact_EmailID']}"
-																th:field="*{Contact_EmailID}"  />
-															<div class="form-control-position">
-																<i class="bx bx-mail-send"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control uppercase"  maxlength="15" onkeypress="return onlyAlphanumeric(event,this);"
+															<input type="text" class="form-control uppercase"  maxlength="15" onkeypress="return onlyAlphanumeric(event,this);"
 																placeholder="GST"
 																th:value="${vendormaster['GST']}"
 																th:field="*{GST}"  />
@@ -515,7 +431,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control uppercase "
+															<input type="text" class="form-control uppercase "
 																placeholder="TIN"
 																th:value="${vendormaster['TIN']}"
 																th:field="*{TIN}"  />
@@ -539,36 +455,38 @@
 														</div>
 													</div>
 												</div>
+											
 												<div class="col-12">
-												<br/>
+													<br/>
 													<button type="button" class="btn btn-primary mr-1 mb-1 abouttabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
+													
 												</div>
 												
 												
 												
 												
-											 </div>	
-											 </div>
+											</div>
+											</div>
+                                   			
                                    			 <div class="tab-pane" id="about" aria-labelledby="about-tab" role="tabpanel">
                                    			 <div class="row">
 											
 												<div class="col-md-12">
 													<div class="form-group">
 														
-														<label class="emptitle">Emergency Contact</label>
-														<!-- <button class="btn btn-light-primary btn-sm"
+														<label class="emptitle"> Contact</label>
+														<button class="btn btn-light-primary btn-sm"
 															id="econtactdivadd" type="button"
 															title="Add new Emergency Contact">
 															<i class="bx bx-plus"></i>
-														</button>-->
+														</button>
 													</div>
 												</div>
 
 												<th:block
 													th:each="vendorEmgContact, emgstat : ${vendorEmgContact}">
 													
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-12'">
+													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-12'  ">
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
@@ -590,13 +508,13 @@
 																	</div>
 																	
 																	
-																	<span class="cursor-pointer srcecontactdivdelete" th:name="'srctemgdiv'+ ${emgstat.index}"  style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 
+																	<span class="cursor-pointer srcecontactdivdelete" th:name="${emgstat.index}"  style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 
 																	
 																</fieldset>
 															</div>
 														</div>
 													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
+													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
@@ -610,7 +528,7 @@
 															</div>
 														</div>
 													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
+													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
@@ -623,7 +541,7 @@
 															</div>
 														</div>
 													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
+													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
@@ -637,7 +555,7 @@
 															</div>
 														</div>
 													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
+													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
@@ -651,12 +569,12 @@
 															</div>
 														</div>
 													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
+													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
 																<input type="email" 
-																	class="form-control capitalize" placeholder="Email ID"
+																	class="form-control " placeholder="Email ID"
 																	th:value="${vendorEmgContact['Emg_EmailID']}"
 																	name="Emg_EmailID"  />
 																<div class="form-control-position">
@@ -665,7 +583,7 @@
 															</div>
 														</div>
 													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
+													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
 														<div class="form-group">
 
 															<div class="position-relative has-icon-left">
@@ -687,7 +605,7 @@
 												<div class="col-12">
 												<br/>
 													<button type="button" class="btn btn-primary mr-1 mb-1 about1tabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 profiletabclick">Previous</button>
+													<button type="button" class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
 												</div>
 												
 
@@ -708,7 +626,7 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
+															<input type="text" class="form-control uppercase"
 																placeholder="A.C.No"
 																th:value="${vendormaster['BankACNo']}"
 																th:field="*{BankACNo}"  />
@@ -785,15 +703,7 @@
 														<th>Remove</th>
 													</tr>
 													<th:block th:each="Files,stat : ${vendorFiles}">
-														<tr th:if="${Files['Photo_Attach']}  !=null">
-															<td><img th:src="${Files['Photo_Attach']}"
-																style="width: 100px; height: 100px;" />
-																<input type="hidden" th:value="${Files['venFileid']}" name="photoempFileid"/>
-																<input type="hidden" th:value="${Files['Photo_Attach']}" th:name="photoempFileidstr"/>
-																</td>
-															<td>Photo <br/> <a th:href="${Files['Photo_Attach']}" target="_blank">View & Download</a></td>
-															<td><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span></td>
-														</tr>
+														
 														
 														<tr th:if="${Files['Files_Attach']}  !=null">
 															<td><i class="bx bxs-file-pdf"></i>
@@ -806,15 +716,7 @@
 													</th:block>
 												</table>
 												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label for="contact-info-icon">Photo</label>
-														<div class="position-relative">
-															<input type="file" class="form-control capitalize"
-																name="Photo_Attach" accept="image/*" />
-														</div>
-													</div>
-												</div>
+												
 												
 												<div class="col-md-6">
 													<div class="form-group">
@@ -840,7 +742,7 @@
 														<div class="position-relative">
 															<input type="text" class="form-control capitalize"
 																th:value="${vendormaster['Notes']}"
-																th:field="*{Notes}">
+																th:field="*{Notes}"  placeholder="Notes"/>
 														</div>
 													</div>
 													<button type="button" class="btn btn-light-secondary mr-1 mb-1 about1tabclick">Previous</button>
@@ -925,33 +827,17 @@
 	<script>
 		$(document).ready(
 				function() {
-		/* 			$('#formId').validate({
-		                ignore: [],
-		                invalidHandler: function (e, validator) {
-		                    if (validator.errorList.length)
-		                    {
-		                        //debugger;
-		                        //$('#shipperConsigneeTabs a[href="#' + jQuery(validator.errorList[0].element).closest(".tab-pane").attr('id') + '"]').tab('show')
-		                    	alert($(validator.errorList[0].element).attr("name") + " Invalid format");
-		                    	//$(validator.errorList[0].element).addClass("highlight-error");
-		                    }
-		                }
-		            });
- */
-		            
+		
 			 	
 					
 					$("#submit_validation").click(function(){
 						
 						var Name= $('#Name').val();
-						var Work_Phone= $('#Work_Phone').val();
+						
 						
 						if(Name =="")
 						{
 							alert("Name should not be empty");
-						}else if(Work_Phone.length < 10)
-						{
-							alert("Work Phone is not valid");
 						}else
 						{
 							$("#submit").click();
@@ -996,23 +882,20 @@
 				});
 
 		
-		var econtactdivadd = 2;
-		var emgstat=0;
+		var econtactdivadd = emgstat;
+		//var emgstat=0;
 		$("#econtactdivadd")
 				.click(
 						function() {
 							econtactdivadd = econtactdivadd + 1;
-							/*$("#econtactdivlast")
-									.before(
-											'<div class="tecontactdiv'+ econtactdivadd +'  col-md-12"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 		  <fieldset> 				<div class="checkbox checkbox-primary checkbox-glow"> <input type="hidden"  th:value="${vendorEmgContact.empEmgContactid}" name="empEmgContactid"> <input type="hidden" value="' + emgstat + '"  name="emgid" /><input type="checkbox" id="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact' + emgstat + '" /> 					<label for="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact">Primary Contact</label> 				</div> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlowt'+ econtactdivadd +'" name="Emg_InsuranceNominee'+  emgstat +'" /> 					<label for="checkboxGlowt'+ econtactdivadd +'">Insurance Nominee </label> 				</div> 				<span class="cursor-pointer econtactdivdelete" name="'+ econtactdivadd +'" style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			</fieldset> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Name" name="Emg_Name"  /> 			<div class="form-control-position"> 				<i class="bx bxs-contact"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			 <select class="form-control addemgrelationdata" name="Designation"> 					<option value="-">-</option>                        <option value="Father">Father</option>						<option value="Mother">Mother</option>						<option value="Husband">Husband</option>						<option value="wife">wife</option>						<option value="Friend">Friend</option>						<option value="Brother">Brother</option>						<option value="Sister">Sister</option>						<option value="Uncle">Uncle</option>						<option value="Daughter">Daughter</option>						<option value="son">son</option>						</select> 			<div class="form-control-position"> 				<i class="bx bx-git-repo-forked"></i> 			</div> 			<label class="emptitle additem" name="addemgrelationdata" style="float:right;"><i class="bx bxs-plus-circle ownstyle1"></i></label> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Personal Phone"  name="Emg_PersonalPhone"  /> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Other Phone" name="Emg_OtherPhone" /> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Email ID" name="Emg_EmailID" /> 			<div class="form-control-position"> 				<i class="bx bx-mail-send"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Street 1" name="Landlineno"  /> 			<div class="form-control-position"> 				<i class="bx bxs-home"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Street 2" name="Emg_Street2"  /> 			<div class="form-control-position"> 				<i class="bx bx-navigation"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Village"  name="Emg_Village" /> 			<div class="form-control-position"> 				<i class="bx bx-directions"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Taluk" name="Emg_Taluk" /> 			<div class="form-control-position"> 				<i class="bx bxs-city"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="City" name="Emg_City" /> 			<div class="form-control-position"> 				<i class="bx bxs-building-house"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="State" name="Emg_State" /> 			<div class="form-control-position"> 				<i class="bx bx-stats"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="number"  class="form-control capitalize"  placeholder="Zip code"  name="Emg_ZIP" /> 			<div class="form-control-position"> 				<i class="bx bx-message-alt-dots"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Country" name="Emg_Country" /> 			<div class="form-control-position"> 				<i class="bx bxs-flag-alt"></i> 			</div> 		</div> 	</div> </div>  ');
-							*/
-							//$("#econtactdivlast").before('<div th:class="srctemgdiv'+ emgstat + ' col-12">														<div class="form-group">															<div class="position-relative has-icon-left">																<fieldset>																	<div class="checkbox checkbox-primary checkbox-glow">																		<input type="hidden"																																					name="venEmgContactid"> 																		<input type="hidden"																			name="emgid">																																				<input type="checkbox" id="checkboxGlow1"																			name="Emg_primarycontact' + emgstat + '" />																		<label for="checkboxGlow1">Primary Contact</label>																	</div>																																																			<span class="cursor-pointer srcecontactdivdelete" name="srctemgdiv'+ emgstat + '"  style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 																																	</fieldset>															</div>														</div>													</div>													<div th:class="srctemgdiv'+ emgstat + ' col-md-3">														<div class="form-group">															<div class="position-relative has-icon-left">																<input type="text"  																	class="form-control capitalize" placeholder="Name"																																		onkeypress="return onlyAlphabets(event,this);"  name="Emg_Name" />																<div class="form-control-position">																	<i class="bx bxs-contact"></i>																</div>															</div>														</div>													</div>													<div th:class="srctemgdiv'+ emgstat + ' col-md-3">														<div class="form-group">															<div class="position-relative has-icon-left">														<input type="text"  																	class="form-control capitalize" placeholder="Designation" 																	name="Designation"																	onkeypress="return onlyAlphabets(event,this);"  />																																															</div>														</div>													</div>													<div th:class="srctemgdiv'+ emgstat + ' col-md-3">														<div class="form-group">															<div class="position-relative has-icon-left">																<input type="number" 																	class="form-control capitalize" placeholder="Personal Phone"																																		name="Emg_PersonalPhone"  />																<div class="form-control-position">																	<i class="bx bx-phone-call"></i>																</div>															</div>														</div>													</div>													<div th:class="srctemgdiv'+ emgstat + ' col-md-3">														<div class="form-group">															<div class="position-relative has-icon-left">																<input type="number" 																	class="form-control capitalize" placeholder="Other Phone"																																		name="Emg_OtherPhone" />																<div class="form-control-position">																	<i class="bx bx-phone-call"></i>																</div>															</div>														</div>													</div>													<div th:class="srctemgdiv'+ emgstat + ' col-md-3">														<div class="form-group">															<div class="position-relative has-icon-left">																<input type="email" 																	class="form-control capitalize" placeholder="Email ID"																																		name="Emg_EmailID"  />																<div class="form-control-position">																	<i class="bx bx-mail-send"></i>																</div>															</div>														</div>													</div>													<div th:class="srctemgdiv'+ emgstat + ' col-md-3">														<div class="form-group">															<div class="position-relative has-icon-left">																<input type="text" 																	class="form-control capitalize" placeholder="Land Line No"																																		name="Landlineno" />																<div class="form-control-position">																	<i class="bx bxs-home"></i>																</div>															</div>														</div>													</div>						');							
+											
+							$("#econtactdivlast").before('<div class="econtactdivadd0 col-md-12 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<fieldset> 			<div class="checkbox checkbox-primary checkbox-glow"> 				<input type="hidden" 					value="" 					name="venEmgContactid"> 				<input type="hidden" 					value="" name="emgid"> 	<input type="checkbox" id="checkboxGlow1" 					name="Emg_primarycontact'+ econtactdivadd +'"  /> 				<label for="checkboxGlow1">Primary Contact</label> 			</div> 			 			 			<span class="cursor-pointer srcecontactdivdelete" name="'+ econtactdivadd +'"  style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			 		</fieldset> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="text"  			class="form-control capitalize" placeholder="Name" 			value="" 			onkeypress="return onlyAlphabets(event,this);"  name="Emg_Name" /> 		<div class="form-control-position"> 			<i class="bx bxs-contact"></i> 		</div> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3  econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> <input type="text"  			class="form-control capitalize" placeholder="Designation" value="" 			name="Designation" 			onkeypress="return onlyAlphabets(event,this);"  /> 		 		 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="number" 			class="form-control capitalize" placeholder="Personal Phone" 			value="" 			name="Emg_PersonalPhone"  /> 		<div class="form-control-position"> 			<i class="bx bx-phone-call"></i> 		</div> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="number" 			class="form-control capitalize" placeholder="Other Phone" 			value="" 			name="Emg_OtherPhone" /> 		<div class="form-control-position"> 			<i class="bx bx-phone-call"></i> 		</div> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="email" 			class="form-control capitalize" placeholder="Email ID" 			value="" 			name="Emg_EmailID"  /> 		<div class="form-control-position"> 			<i class="bx bx-mail-send"></i> 		</div> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="text" 			class="form-control capitalize" placeholder="Land Line No" 			value="" 			name="Landlineno" /> 		<div class="form-control-position"> 			<i class="bx bxs-home"></i> 		</div> 	</div> </div>	</div>');							
 							emgstat = emgstat + 1;
 						});
 
-		$(document).on("click", ".econtactdivdelete", function() {
+		$(document).on("click", ".srcecontactdivdelete", function() {
 			var id = $(this).attr('name');
-			$('.tecontactdiv' + id).hide();
+			$('.econtactdivadd' + id).hide();
 		});
 		
 		$(document).on("click", ".filedivdelete", function() {

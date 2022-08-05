@@ -151,6 +151,52 @@
 											th:object="${employeemaster}" method="POST"
 											class="wizard-horizontal" id="formId" enctype="multipart/form-data">
 									
+										<!--scrolling content Modal -->
+													<div class="modal fade" id="employeeStatusScrollable"
+														tabindex="-1" role="dialog"
+														aria-labelledby="employeeStatusScrollableTitle"
+														aria-hidden="true">
+														<div class="modal-dialog modal-dialog-scrollable"
+															role="document">
+															<div class="modal-content">
+																<div class="modal-header bg-warning">
+																	<h5 class="modal-title white"
+																		id="employeeStatusScrollableTitle"></h5>
+																	<button type="button" class="close"
+																		data-dismiss="modal" aria-label="Close">
+																		<i class="bx bx-x"></i>
+																	</button>
+																</div>
+																<div class="modal-body">
+																	<div class="col-md-12">
+																		<div class="form-group">
+																			<label for="addmodel" id="additemalltxt"></label>
+																			<div class="position-relative">
+																				<fieldset class="form-group">
+																					<input type="text" id="additemall" name="addmodel"
+																						class="form-control capitalize">
+																				</fieldset>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-light-secondary"
+																		data-dismiss="modal">
+																		<i class="bx bx-x d-block d-sm-none"></i> <span
+																			class="d-none d-sm-block">Close</span>
+																	</button>
+																	<button type="button" class="btn btn-primary ml-1"
+																		id="additemallsavebtn">
+																		<i class="bx bx-check d-block d-sm-none"></i> <span
+																			class="d-none d-sm-block">ADD</span>
+																	</button>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!--scrolling content Modal -->
 										<div th:if="${save}" class="form-group col-12">
 											<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Employee
 												Info Updated Successfully</button>
@@ -200,52 +246,7 @@
 													</div>
 												</div>
 												<div class="col-md-3">
-													<!--scrolling content Modal -->
-													<div class="modal fade" id="employeeStatusScrollable"
-														tabindex="-1" role="dialog"
-														aria-labelledby="employeeStatusScrollableTitle"
-														aria-hidden="true">
-														<div class="modal-dialog modal-dialog-scrollable"
-															role="document">
-															<div class="modal-content">
-																<div class="modal-header bg-warning">
-																	<h5 class="modal-title white"
-																		id="employeeStatusScrollableTitle"></h5>
-																	<button type="button" class="close"
-																		data-dismiss="modal" aria-label="Close">
-																		<i class="bx bx-x"></i>
-																	</button>
-																</div>
-																<div class="modal-body">
-																	<div class="col-md-12">
-																		<div class="form-group">
-																			<label for="addmodel" id="additemalltxt"></label>
-																			<div class="position-relative">
-																				<fieldset class="form-group">
-																					<input type="text" id="additemall" name="addmodel"
-																						class="form-control capitalize">
-																				</fieldset>
-																			</div>
-																		</div>
-																	</div>
-
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-light-secondary"
-																		data-dismiss="modal">
-																		<i class="bx bx-x d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">Close</span>
-																	</button>
-																	<button type="button" class="btn btn-primary ml-1"
-																		id="additemallsavebtn">
-																		<i class="bx bx-check d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">ADD</span>
-																	</button>
-																</div>
-															</div>
-														</div>
-													</div>
-													<!--scrolling content Modal -->
+													
 													<div class="form-group">
 														<label for="first-name-icon">Staff Name</label>
 														<div class="position-relative has-icon-left">
@@ -306,8 +307,12 @@
 																	th:value="${employeemaster['MaritalStatus']}"
 																	th:field="*{MaritalStatus}">
 																	<option value="-">-</option>
-																	<option value="Single">Single</option>
-																	<option value="Married">Married</option>
+																	
+																	<th:block th:each="str :${MARITALSTATUS}">
+																		<option  th:value="${str}"  th:text="${str}"></option>
+																	</th:block>
+																	
+																	
 
 																</select>
 																<div class="form-control-position">
@@ -651,7 +656,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control capitalize email"
+															<input type="email" class="form-control  email"
 																placeholder="Email ID"
 																th:value="${employeemaster['Contact_EmailID']}"
 																th:field="*{Contact_EmailID}"  />
@@ -665,7 +670,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control capitalize email"
+															<input type="email" class="form-control  email"
 																placeholder="Work Email"
 																th:value="${employeemaster['Contact_WorkEmail']}"
 																th:field="*{Contact_WorkEmail}"  />
@@ -679,7 +684,7 @@
 													<div class="form-group">
 
 														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control capitalize email"
+															<input type="email" class="form-control  email"
 																placeholder="Personal Email"
 																th:value="${employeemaster['Contact_PersonalEmail']}"
 																th:field="*{Contact_PersonalEmail}"  />
@@ -759,11 +764,10 @@
 																		th:value="${EmployeeEducation.Degree}"
 																		th:text="${EmployeeEducation.Degree}"></option>
 
-																	<option value="Bachelor">Bachelor</option>
-																	<option value="Master">Master</option>
-																	<option value="Delploma">Delploma</option>
-																	<option value="ITI">ITI</option>
-																	<option value="Doctorate">Doctorate</option>
+																	<th:block th:each="str :${DEGREE}">
+																		<option  th:value="${str}"  th:text="${str}"></option>
+																	</th:block>
+																	
 																</select>
 															</div>
 
@@ -869,11 +873,11 @@
 																					<option th:if="${EmployeeLanguage.language} !='' "
 																						th:value="${EmployeeLanguage.language}"
 																						th:text="${EmployeeLanguage.language}"></option>
-
-																					<option value="Tamil">Tamil</option>
-																					<option value="English">English</option>
-																					<option value="Hindi">Hindi</option>
-																					<option value="Telugu">Telugu</option>
+																						
+																						<th:block th:each="str :${LANGUAGE}">
+																							<option  th:value="${str}"  th:text="${str}"></option>
+																						</th:block>
+																					
 																				</select> <input type="hidden"
 																					th:value="${emplanstat.index}" name="languageid">
 																			</div>
@@ -1209,16 +1213,10 @@
 																	th:value="${EmployeeEmgContact.Emg_Relation}"
 																	th:text="${EmployeeEmgContact.Emg_Relation}"></option>
 
-																<option value="Father">Father</option>
-																<option value="Mother">Mother</option>
-																<option value="Husband">Husband</option>
-																<option value="wife">wife</option>
-																<option value="Friend">Friend</option>
-																<option value="Brother">Brother</option>
-																<option value="Sister">Sister</option>
-																<option value="Uncle">Uncle</option>
-																<option value="Daughter">Daughter</option>
-																<option value="son">son</option>
+																	
+																	<th:block th:each="str :${RELATION}">
+																		<option  th:value="${str}"  th:text="${str}"></option>
+																	</th:block>
 																</select>
 																<div class="form-control-position">
 																	<i class="bx bx-git-repo-forked"></i>
@@ -1263,7 +1261,7 @@
 
 															<div class="position-relative has-icon-left">
 																<input type="email" 
-																	class="form-control capitalize" placeholder="Email ID"
+																	class="form-control" placeholder="Email ID"
 																	th:value="${EmployeeEmgContact['Emg_EmailID']}"
 																	name="Emg_EmailID"  />
 																<div class="form-control-position">

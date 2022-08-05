@@ -27,6 +27,7 @@
 	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->
@@ -162,12 +163,7 @@
 		                                            <span class="align-middle m2">General</span>
 		                                        </a>
 		                                    </li>
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="false">
-		                                            <i class="bx bxs-contact align-middle"></i>
-		                                            <span class="align-middle m2">Contact</span>
-		                                        </a>
-		                                    </li>
+		                                    
 		                                    <li class="nav-item">
 		                                        <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" aria-controls="about" role="tab" aria-selected="false">
 		                                            <i class="bx bxs-graduation align-middle"></i>
@@ -247,21 +243,21 @@
 													</div>
 													<!--scrolling content Modal -->
 													<div class="form-group">
-														<label for="first-name-icon">Lead Title</label>
+														<label for="email-id-icon">Contact Person</label>
 														<div class="position-relative has-icon-left">
-																
+															<fieldset class="form-group">
+																<input type="text" 
+																	class="form-control " 
+																placeholder="Contact Person" onkeypress="return onlyAlphabets(event,this);" >
 															
-															<input type="text" 
-																
-																class="form-control " 
-																placeholder="Lead Title" onkeypress="return onlyAlphabets(event,this);" >
-															<div class="form-control-position">
-																<i class="bx bxs-bookmark-star"></i>
-															</div>
+																<div class="form-control-position">
+																	<i class="bx bxs-tree"></i>
+																</div>
+
+															</fieldset>
 														</div>
 													</div>
 												</div>
-												
 												
 												<div class="col-md-3">
 													<div class="form-group">
@@ -281,42 +277,23 @@
 													</div>
 												</div>
 												<div class="col-md-3">
+													
 													<div class="form-group">
-														<label for="email-id-icon">Person Name</label>
+														<label for="first-name-icon">Lead Title</label>
 														<div class="position-relative has-icon-left">
-															<fieldset class="form-group">
-																<input type="text" 
-																	class="form-control " 
-																placeholder="Person Name" onkeypress="return onlyAlphabets(event,this);" >
+																
 															
-																<div class="form-control-position">
-																	<i class="bx bx-user-circle"></i>
-																</div>
-
-															</fieldset>
+															<input type="text" 
+																
+																class="form-control " 
+																placeholder="Lead Title" onkeypress="return onlyAlphabets(event,this);" >
+															<div class="form-control-position">
+																<i class="bx bxs-bookmark-star"></i>
+															</div>
 														</div>
 													</div>
 												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="email-id-icon">Label</label>
-														<div class="position-relative has-icon-left">
-															<fieldset class="form-group">
-																<select class="form-control">
-																	<option value="">-</option>
-																	<option value=Hot>Hot</option>
-																	<option value="Cold">Cold</option>
-																	<option value="Warm">Warm</option>
-
-																</select>
-																<div class="form-control-position">
-																	<i class="bx bxs-flag-alt"></i>
-																</div>
-
-															</fieldset>
-														</div>
-													</div>
-												</div>
+												
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="email-id-icon">Lead Source 
@@ -379,32 +356,92 @@
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Project Location </label>
+														<label for="contact-info-icon">Entry Date</label>
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control "
-																placeholder="Project Location "  />
+															<input type="date" class="form-control "
+																placeholder="Lead quality"  />
 															<div class="form-control-position">
-																<i class="bx bxs-compass"></i>
+																<i class="bx bxs-calendar"></i>
 															</div>
 														</div>
 													</div>
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Geo location</label>
+														<label for="contact-info-icon">Expected Close Date</label>
 														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control "
-																placeholder="Geo location"  />
+															<input type="date" class="form-control "
+																placeholder="Lead quality"  />
 															<div class="form-control-position">
-																<i class="bx bx-navigation"></i>
+																<i class="bx bxs-calendar"></i>
 															</div>
 														</div>
 													</div>
 												</div>
+												<div class="col-md-3">
+                                                       <div class="form-group">
+                                                           <label for="contact-info-icon">Phone Number</label>
+                                                           <div class="position-relative has-icon-left">
+                                                               <input type="number"  class="form-control"    maxlength="10" placeholder="Phone Number"   >
+                                                               <div class="form-control-position">
+                                                                   +91
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-md-3">
+                                                       <div class="form-group">
+                                                           <label for="contact-info-icon">Email ID</label>
+                                                           <div class="position-relative has-icon-left">
+                                                               <input type="email"  class="form-control"     placeholder="Email ID"  />
+                                                               <div class="form-control-position">
+                                                                   <i class="bx bx-mail-send"></i>
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+													
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Follower</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<select class="form-control">
+																	<option value="">-</option>
+																	
+																</select>
+																<div class="form-control-position">
+																	<i class="bx bxs-face"></i>
+																</div>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
 												
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Label</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<select class="form-control">
+																	<option value="">-</option>
+																	<option value=Hot>Hot</option>
+																	<option value="Cold">Cold</option>
+																	<option value="Warm">Warm</option>
+
+																</select>
+																<div class="form-control-position">
+																	<i class="bx bxs-flag-alt"></i>
+																</div>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
 												<div class="col-12">
 													<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 profiletabclick"  style="float:right">Next</button>
+													<button type="button" class="btn btn-primary mr-1 mb-1 abouttabclick"  style="float:right">Next</button>
 													
 												</div>
 												
@@ -413,92 +450,6 @@
 												
 											</div>
 											</div>
-                                   			<div class="tab-pane" id="profile" aria-labelledby="profile-tab" role="tabpanel">
-                                   			 <div class="row">
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle">Contact Details</label>
-														<button class="btn btn-light-primary btn-sm"
-															id="econtactdivadd" type="button" title="Add new Contact">
-															<i class="bx bx-plus"></i>
-														</button>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Name of the Person </label>
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control "
-																placeholder="Name of the Person "  />
-															<div class="form-control-position">
-																<i class="bx bx-user-voice"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Designation </label>
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control "
-																placeholder="Designation "  />
-															<div class="form-control-position">
-																<i class="bx bxs-user-detail"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Mail ID </label>
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control "
-																placeholder="Mail ID"  />
-															<div class="form-control-position">
-																<i class="bx bx-mail-send"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Mobile No </label>
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control "
-																placeholder="Mobile No "  />
-															<div class="form-control-position">
-																<i class="bx bxs-phone-call"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Remarks </label>
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control "
-																placeholder="Remarks "  />
-															<div class="form-control-position">
-																<i class="bx bxs-message-rounded-dots"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												
-												<span id="econtactdivlast"></span>
-												
-												<div class="col-12">
-												<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 abouttabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
-												</div>
-												
-												
-												
-												
-											 </div>	
-											 </div>
                                    			 <div class="tab-pane" id="about" aria-labelledby="about-tab" role="tabpanel">
                                    			 <div class="row">
 											
@@ -521,7 +472,30 @@
 															<i class="bx bx-x"></i> 	
 														</span>
 													</div>
-													
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="contact-info-icon">Project Location </label>
+														<div class="position-relative has-icon-left">
+															<input type="text" class="form-control "
+																placeholder="Project Location "  />
+															<div class="form-control-position">
+																<i class="bx bxs-compass"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="contact-info-icon">Geo location</label>
+														<div class="position-relative has-icon-left">
+															<input type="number" class="form-control "
+																placeholder="Geo location"  />
+															<div class="form-control-position">
+																<i class="bx bx-navigation"></i>
+															</div>
+														</div>
+													</div>
+												</div>
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="contact-info-icon">Nature of Work</label>
@@ -539,10 +513,10 @@
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Area</label>
+														<label for="contact-info-icon">Quantity</label>
 														<div class="position-relative has-icon-left">
 															<input type="text" class="form-control "
-																placeholder="Area"  />
+																placeholder="Quantity"  />
 															<div class="form-control-position">
 																<i class="bx bx-image-alt"></i>
 															</div>
@@ -585,10 +559,10 @@
 												
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Total</label>
+														<label for="contact-info-icon">Total Amount</label>
 														<div class="position-relative has-icon-left">
 															<input type="text" class="form-control "
-																placeholder="Total"  />
+																placeholder="Total Amount"  />
 															<div class="form-control-position">
 																<i class="bx bxs-wallet"></i>
 															</div>
@@ -603,7 +577,7 @@
 												<div class="col-12">
 												<br/>
 													<button type="button" class="btn btn-primary mr-1 mb-1 about1tabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 profiletabclick">Previous</button>
+													<button type="button" class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
 												</div>
 												
 
@@ -641,55 +615,69 @@
 												</div>	
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Lead quality</label>
+														<label for="contact-info-icon">Label</label>
 														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control "
-																placeholder="Lead quality"  />
+															<<select class="form-control">
+																	<option value="">-</option>
+																	<option value="Hot">Hot</option>
+																	<option value="Cold">Cold</option>
+																	<option value="warm">warm</option>
+															</select>
 															<div class="form-control-position">
 																<i class="bx bx-bicycle"></i>
 															</div>
 														</div>
 													</div>
 												</div>	
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Expected Close Date</label>
-														<div class="position-relative has-icon-left">
-															<input type="date" class="form-control "
-																placeholder="Lead quality"  />
-															<div class="form-control-position">
-																<i class="bx bxs-calendar"></i>
-															</div>
-														</div>
-													</div>
-												</div>	
+													
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="contact-info-icon">Site Visit Required</label>
-														<div class="position-relative has-icon-left">
-															<select class="form-control">
-																	<option value="">-</option>
-																	<option value="Yes">Yes</option>
-																	<option value="No">No</option>
-															</select>
-															<div class="form-control-position">
-																<i class="bx bx-show"></i>
-															</div>
+														<div class="position-relative">
+															<ul class="list-unstyled mb-0">
+					                                            <li class="d-inline-block mr-2 mb-1">
+					                                                <fieldset>
+					                                                    <div class="radio">
+					                                                        <input type="radio" name="SiteVisitRequired" id="radio1" checked>
+					                                                        <label for="radio1">Yes</label>
+					                                                    </div>
+					                                                </fieldset>
+					                                            </li>
+					                                            <li class="d-inline-block mr-2 mb-1">
+					                                                <fieldset>
+					                                                    <div class="radio">
+					                                                        <input type="radio" name="SiteVisitRequired" id="radio2">
+					                                                        <label for="radio2">No</label>
+					                                                    </div>
+					                                                </fieldset>
+					                                            </li>
+					                                          </ul>
+															
 														</div>
 													</div>
 												</div>	
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="contact-info-icon">Quotation Required </label>
-														<div class="position-relative has-icon-left">
-															<select class="form-control">
-																	<option value="">-</option>
-																	<option value="Yes">Yes</option>
-																	<option value="No">No</option>
-															</select>
-															<div class="form-control-position">
-																<i class="bx bx-slider-alt"></i>
-															</div>
+														<div class="position-relative">
+															<ul class="list-unstyled mb-0">
+					                                            <li class="d-inline-block mr-2 mb-1">
+					                                                <fieldset>
+					                                                    <div class="radio">
+					                                                        <input type="radio" name="QuotationRequired" id="radio3" checked>
+					                                                        <label for="radio3">Yes</label>
+					                                                    </div>
+					                                                </fieldset>
+					                                            </li>
+					                                            <li class="d-inline-block mr-2 mb-1">
+					                                                <fieldset>
+					                                                    <div class="radio">
+					                                                        <input type="radio" name="QuotationRequired" id="radio4">
+					                                                        <label for="radio4">No</label>
+					                                                    </div>
+					                                                </fieldset>
+					                                            </li>
+					                                          </ul>
 														</div>
 													</div>
 												</div>	
@@ -727,69 +715,61 @@
 														<label class="emptitle">Field Details</label>
 													</div>
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-6">
 													<div class="form-group">
-														<label for="contact-info-icon">Boundaries</label>
-														<div class="position-relative has-icon-left">															
-															<select class="form-control">
+														<label for="contact-info-icon">How the Boundaries are</label>
+														<div class="position-relative has-icon-left">														
+															<select class="form-control select2" multiple="multiple" >
 																	<option value="">-</option>
 																	<option value="Fenced">Fenced</option>
 																	<option value="Compound wall">Compound wall</option>
 																	<option value="Corner stones">Corner stones</option>
 															</select>
-															<div class="form-control-position">
-																<i class="bx bxs-news"></i>
-															</div>
+															
 														</div>
 													</div>
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-6">
 													<div class="form-group">
-														<label for="contact-info-icon">Terrain</label>
+														<label for="contact-info-icon">How the Terrain Profile</label>
 														<div class="position-relative has-icon-left">															
-															<select class="form-control">
+															<select class="form-control select2" multiple="multiple" >
 																	<option value="">-</option>
 																	<option value="Hilly">Hilly</option>
 																	<option value="Undulated terrain">Undulated terrain</option>
 																	<option value="Gradual slope">Gradual slope</option>
 																	<option value="Plain">Plain</option>
 															</select>
-															<div class="form-control-position">
-																<i class="bx bxs-checkbox"></i>
-															</div>
+															
 														</div>
 													</div>
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-6">
 													<div class="form-group">
-														<label for="contact-info-icon">Type</label>
+														<label for="contact-info-icon">Is it covered or open</label>
 														<div class="position-relative has-icon-left">															
-															<select class="form-control">
+															<select class="form-control select2" multiple="multiple" >
 																	<option value="">-</option>
 																	<option value="Cultivation land">Cultivation land </option>
 																	<option value="Open barren land">Open barren land</option>
 																	<option value="Covered with bushes ">Covered with bushes </option>
 															</select>
-															<div class="form-control-position">
-																<i class="bx bx-extension"></i>
-															</div>
+															
 														</div>
 													</div>
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-6">
 													<div class="form-group">
 														<label for="contact-info-icon">Kind of Cultivation</label>
 														<div class="position-relative has-icon-left">															
-															<select class="form-control">
+															<select class="form-control select2" multiple="multiple" >
 																	<option value="">-</option>
 																	<option value="Short coconut trees">Short coconut trees</option>
 																	<option value="banana trees">banana trees</option>
 																	<option value="Tree estate">Tree estate</option>
 																	<option value="Coffee estate">Coffee estate</option>
 															</select>
-															<div class="form-control-position">
-																<i class="bx bxs-collection"></i>
-															</div>
+															
 														</div>
 													</div>
 												</div>
@@ -800,82 +780,58 @@
 														<label class="emptitle">Map Details</label>
 													</div>
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-6">
 													<div class="form-group">
 														<label for="contact-info-icon">FMB</label>
 														<div class="position-relative has-icon-left">															
-															<select class="form-control">
+															<select class="form-control select2" multiple="multiple" >
 																	<option value="">-</option>
 																	<option value="FMB With Ladder">FMB With Ladder</option>
 																	<option value="Online FMB">Online FMB</option>
 																	<option value="FMB Without Ladder">FMB Without Ladder</option>
 															</select>
-															<div class="form-control-position">
-																<i class="bx bx-map-pin"></i>
-															</div>
+															
 														</div>
 													</div>
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Sale Deed</label>
-														<div class="position-relative has-icon-left">															
-															<input type="text" class="form-control "
-																placeholder="Sale Deed"  />
-															<div class="form-control-position">
-																<i class="bx bxs-direction-left"></i>
-															</div>
-														</div>
+														
+														<div class="checkbox">
+	                                                        <input type="checkbox" class="checkbox-input" id="SaleDeed" >
+	                                                        <label for="SaleDeed">Sale Deed</label>
+	                                                    </div><br/><br/>
+	                                                    <div class="checkbox">
+	                                                        <input type="checkbox" class="checkbox-input" id="Patta" >
+	                                                        <label for="Patta">Patta</label>
+	                                                    </div>
+													</div>
+												</div>
+												
+												<div class="col-md-3">
+													<div class="form-group">
+														<div class="checkbox">
+	                                                        <input type="checkbox" class="checkbox-input" id="Adangal" >
+	                                                        <label for="Adangal">Adangal</label>
+	                                                    </div>
+													<br/><br/>
+														<div class="checkbox">
+	                                                        <input type="checkbox" class="checkbox-input" id="Register" >
+	                                                        <label for="Register">A Register</label>
+	                                                    </div>
 													</div>
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="contact-info-icon">Patta </label>
-														<div class="position-relative has-icon-left">															
-															<input type="text" class="form-control "
-																placeholder="Patta"  />
-															<div class="form-control-position">
-																<i class="bx bx-card"></i>
-															</div>
-														</div>
+														
+													
+	                                                    <div class="checkbox">
+	                                                        <input type="checkbox" class="checkbox-input" id="TSLR" >
+	                                                        <label for="TSLR">TSLR</label>
+	                                                    </div>
 													</div>
 												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Adangal</label>
-														<div class="position-relative has-icon-left">															
-															<input type="text" class="form-control "
-																placeholder="Adangal"  />
-															<div class="form-control-position">
-																<i class="bx bx-sidebar"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">A Register</label>
-														<div class="position-relative has-icon-left">															
-															<input type="text" class="form-control "
-																placeholder="A Register"  />
-															<div class="form-control-position">
-																<i class="bx bx-border-top"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">TSLR</label>
-														<div class="position-relative has-icon-left">															
-															<input type="text" class="form-control "
-																placeholder="TSLR"  />
-															<div class="form-control-position">
-																<i class="bx bxs-layer"></i>
-															</div>
-														</div>
-													</div>
-												</div>
+												
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="contact-info-icon">Preferred Technology</label>
@@ -916,10 +872,24 @@
 														</div>
 													</div>
 												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="contact-info-icon">Notes</label>
+														<div class="position-relative has-icon-left">															
+															<input type="text" class="form-control "
+																placeholder="Notes"  />
+															<div class="form-control-position">
+																<i class="bx bx-windows"></i>
+															</div>
+														</div>
+													</div>
+												</div>
 												
 												
 												
-												
+												<div class="col-12 d-flex justify-content-end">	
+													<br/><br/>
+												</div>
 												
 												<div class="col-12 d-flex justify-content-end">
 													
@@ -978,8 +948,7 @@
 	<!-- BEGIN Vendor JS-->
 
 	<!-- BEGIN: Page Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	 <script th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
 	<script th:src="@{/app-assets/vendors/js/forms/validation/jquery.validate.min.js}"></script>
 	<!-- END: Page Vendor JS-->
 
@@ -991,8 +960,8 @@
 	<!-- END: Theme JS-->
 
 	<!-- BEGIN: Page JS-->
-	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/forms/wizard-steps.js}"></script>
+	
+	 <script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
 	<!-- END: Page JS-->
 	<!-- Custom Java script validations -->
 	<script th:src="@{/js/customvalidation.js}"></script>
@@ -1034,7 +1003,7 @@
 							projectdivadd = projectdivadd + 1;
 							$("#projectdivlast")
 									.before(
-											'<div class="col-md-12 srctprojectdiv'+ projectdivadd +'"> <hr/> </div> <div class="col-md-12  srctprojectdiv'+ projectdivadd +'"> 														<span class="cursor-pointer srcprojectdivdelete" name="'+ projectdivadd +'" style="float:right"> 																<i class="bx bx-x"></i> 															</span>													</div>														<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Nature of Work</label>														<div class="position-relative has-icon-left">															<select class="form-control">																	<option value="">-</option>																	<option value="Topographic survey">Topographic survey</option>																	<option value="Drone Survey">Drone Survey</option>															</select>															<div class="form-control-position">																<i class="bx bx-landscape"></i>															</div>														</div>													</div>												</div>												<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Area</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Area"  />															<div class="form-control-position">																<i class="bx bx-image-alt"></i>															</div>														</div>													</div>												</div>													<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Units</label>														<div class="position-relative has-icon-left">															<select class="form-control">																	<option value="">-</option>																	<option value="Acres">Acres</option>																	<option value="Km">Km</option>																	<option value="Day">Day</option>																	<option value="LS">LS</option>																	<option value="Point">Point</option>																	<option value="Cent">Cent</option>																	<option value="Sqft">Sqft</option>																	<option value="Sqm">Sqm</option>															</select>															<div class="form-control-position">																<i class="bx bxs-film"></i>															</div>														</div>													</div>												</div>												<div class="col-md-3">													<div class="form-group">														<label for="contact-info-icon">Price</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Price"  />															<div class="form-control-position">																<i class="bx bx-money"></i>															</div>														</div>													</div>												</div>																									<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Total</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Total"  />															<div class="form-control-position">																<i class="bx bxs-wallet"></i>															</div>														</div>													</div>												</div>	');
+											'<div class="col-md-12 srctprojectdiv'+ projectdivadd +'"> <hr/> </div> <div class="col-md-12  srctprojectdiv'+ projectdivadd +'"> 														<span class="cursor-pointer srcprojectdivdelete" name="'+ projectdivadd +'" style="float:right"> 																<i class="bx bx-x"></i> 															</span>													</div><div class="col-md-3 srctprojectdiv'+ projectdivadd +'"> <div class="form-group"> 	<label for="contact-info-icon">Project Location </label> 	<div class="position-relative has-icon-left"> 		<input type="text" class="form-control " 			placeholder="Project Location "  /> 		<div class="form-control-position"> 			<i class="bx bxs-compass"></i> 		</div> 	</div> </div> 												</div> 												<div class="col-md-3 srctprojectdiv'+ projectdivadd +'"> <div class="form-group"> 	<label for="contact-info-icon">Geo location</label> 	<div class="position-relative has-icon-left"> 		<input type="number" class="form-control " 			placeholder="Geo location"  /> 		<div class="form-control-position"> 			<i class="bx bx-navigation"></i> 		</div> 	</div> </div> 												</div>														<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Nature of Work</label>														<div class="position-relative has-icon-left">															<select class="form-control">																	<option value="">-</option>																	<option value="Topographic survey">Topographic survey</option>																	<option value="Drone Survey">Drone Survey</option>															</select>															<div class="form-control-position">																<i class="bx bx-landscape"></i>															</div>														</div>													</div>												</div>												<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Quantity</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Quantity"  />															<div class="form-control-position">																<i class="bx bx-image-alt"></i>															</div>														</div>													</div>												</div>													<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Units</label>														<div class="position-relative has-icon-left">															<select class="form-control">																	<option value="">-</option>																	<option value="Acres">Acres</option>																	<option value="Km">Km</option>																	<option value="Day">Day</option>																	<option value="LS">LS</option>																	<option value="Point">Point</option>																	<option value="Cent">Cent</option>																	<option value="Sqft">Sqft</option>																	<option value="Sqm">Sqm</option>															</select>															<div class="form-control-position">																<i class="bx bxs-film"></i>															</div>														</div>													</div>												</div>												<div class="col-md-3">													<div class="form-group">														<label for="contact-info-icon">Price</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Price"  />															<div class="form-control-position">																<i class="bx bx-money"></i>															</div>														</div>													</div>												</div>																									<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Total Amount</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Total Amount"  />															<div class="form-control-position">																<i class="bx bxs-wallet"></i>															</div>														</div>													</div>												</div>	');
 						});
 
 		$(document).on("click", ".projectdivdelete", function() {

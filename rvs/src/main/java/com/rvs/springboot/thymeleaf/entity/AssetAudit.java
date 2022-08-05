@@ -32,6 +32,8 @@ public class AssetAudit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int AssetAuditID;
 	@Column
+	private String BranchID;
+	@Column
 	private String StaffID;
 	@Column
 	private String AssetAuditDate;

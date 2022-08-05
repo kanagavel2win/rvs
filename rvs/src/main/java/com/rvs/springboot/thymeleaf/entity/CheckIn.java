@@ -31,13 +31,10 @@ public class CheckIn {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int CheckInID;
-	
 	@Column
 	private String Checkoutid;
-	
 	@Column
 	private String StaffID;
-	
 	@Column
 	private String CheckInDate;
 	@Column
@@ -45,12 +42,9 @@ public class CheckIn {
 	@Column
 	private String Status;
 	@Column
-	private String Location;
-	@Column
 	private String ACondition;
 	@Column
 	private String Comments;
-	
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CheckInID")

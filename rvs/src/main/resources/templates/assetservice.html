@@ -158,7 +158,52 @@
 	                            <div class="card">
 	                                <div class="card-content">
 	                                    <div class="card-body">
-	                                        
+	                                        	<!--scrolling content Modal -->
+												<div class="modal fade" id="employeeStatusScrollable"
+													tabindex="-1" role="dialog"
+													aria-labelledby="employeeStatusScrollableTitle"
+													aria-hidden="true">
+													<div class="modal-dialog modal-dialog-scrollable"
+														role="document">
+														<div class="modal-content">
+															<div class="modal-header bg-warning">
+																<h5 class="modal-title white"
+																	id="employeeStatusScrollableTitle"></h5>
+																<button type="button" class="close"
+																	data-dismiss="modal" aria-label="Close">
+																	<i class="bx bx-x"></i>
+																</button>
+															</div>
+															<div class="modal-body">
+																<div class="col-md-12">
+																	<div class="form-group">
+																		<label for="addmodel" id="additemalltxt"></label>
+																		<div class="position-relative">
+																			<fieldset class="form-group">
+																				<input type="text" id="additemall" name="addmodel"
+																					class="form-control capitalize">
+																			</fieldset>
+																		</div>
+																	</div>
+																</div>
+
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-light-secondary"
+																	data-dismiss="modal">
+																	<i class="bx bx-x d-block d-sm-none"></i> <span
+																		class="d-none d-sm-block">Close</span>
+																</button>
+																<button type="button" class="btn btn-primary ml-1"
+																	id="additemallsavebtn">
+																	<i class="bx bx-check d-block d-sm-none"></i> <span
+																		class="d-none d-sm-block">ADD</span>
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!--scrolling content Modal -->
 	                                            <div class="form-body">
 	                                                <div class="row">
 	                                                    <div class="col-md-12">
@@ -195,17 +240,19 @@
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">Service Item</label>
+	                                                            <label
+															class="emptitle additem" name="addserviceitemsdata"><i
+																class="bx bxs-plus-circle ownstyle1"></i></label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                               	<input type="hidden" th:value="${AssetServiceobj['AssetServiceID']}" th:field="*{AssetServiceID}"/>
 	                                                               	<input type="hidden" th:value="${AssetServiceobj['assetId']}" th:field="*{assetId}"/>
-	                                                                  <datalist id="ServiceItem">
-					                                                        <option value="Check Calibration">
-																			<option value="Service and Inspect">
-																			<option value="Water Service">
-																			<option value="Replace Tire">
-																			<option value="Change Oil">
-					                                                 </datalist>
-	                                                                <input type="text"  class="form-control capitalize" list="ServiceItem" th:value="${AssetServiceobj['ServiceItem']}" th:field="*{ServiceItem}"    >
+	                                                                  
+					                                                  <select class="form-control addserviceitemsdata" th:field="*{ServiceItem}" >
+					                                                       <th:block th:each="str :${ServiceItem}">
+																		<option  th:value="${str}"  th:text="${str}"></option>
+																	</th:block>
+					                                                 </select>
+	                                                               
 	                                                              
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bx-doughnut-chart"></i>
@@ -218,7 +265,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="password-icon">Due One-Time</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control capitalize" th:value="${AssetServiceobj['DueOneTime']}" th:field="*{DueOneTime}"    >
+	                                                                <input type="date"  class="form-control capitalize" th:value="${AssetServiceobj['DueOneTime']}" th:field="*{DueOneTime}"    >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-time"></i>
 	                                                                </div>
@@ -247,7 +294,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="password-icon">Beginning</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control capitalize" th:value="${AssetServiceobj['Beginning']}" th:field="*{Beginning}"    >
+	                                                                <input type="date"  class="form-control capitalize" th:value="${AssetServiceobj['Beginning']}" th:field="*{Beginning}"    >
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-watch-alt"></i>
 	                                                                </div>
@@ -376,6 +423,41 @@
 			
 				closedatecal($('.CURRENT_STATUS').val());
 			
+				
+				$(".additem").click(function() {
+					var name = $(this).attr('name');
+					var labeltext = "";
+					if (name == "addserviceitemsdata") {
+						labeltext = "New Service";
+					}
+					
+					$('#additemalltxt').text(labeltext);
+					$('#employeeStatusScrollable').modal('toggle');
+
+				});
+
+				$("#additemallsavebtn").click(
+						function() {
+							if ($("#additemall").val() != '') {
+								var name = $('#additemalltxt').text();
+								var labeltext = "";
+								if (name == "New Service") {
+									labeltext = "addserviceitemsdata";
+								}
+								
+								$('.' + labeltext).append(
+										"<option value='"
+												+ $("#additemall").val()
+												+ "'>"
+												+ $("#additemall").val()
+												+ "</option>");
+								//$('.' + labeltext).val($("#additemall").val());
+								$("#additemall").val('');
+								$('#employeeStatusScrollable').modal(
+										'toggle');
+							}
+						});
+
 			});
 			
 			

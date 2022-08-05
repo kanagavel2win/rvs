@@ -143,7 +143,6 @@
                                             <table class="table zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th>Vendor photo</th>
                                                         <th>#</th>
                                                         <th>Name</th>
                                                         <th>Asset Type</th>
@@ -157,11 +156,7 @@
                                                 </thead>
                                                 <tbody>
                                                 	<tr th:each="ven,stat : ${venlist}">
-													   <td >
-													         <div class="avatar mr-1 avatar-xl">
-					                                            <img  th:src="${#strings.arraySplit(ven,'|')[1] }" alt="avtar img holder">
-					                                       	 </div>
-									                   </td> 	
+													  	
 													   <td th:text="${stat.index+1}"></td>
 													   <td><a th:href="'ven?id=' + ${#strings.arraySplit(ven,'|')[2]}" th:text="${#strings.arraySplit(ven,'|')[0] }" title="Edit Profile"></a></td>
 													   
@@ -173,7 +168,7 @@
                                                 </tbody>
                                                 <tfoot>
                                                      <tr>
-                                                        <th>Vendor photo</th>
+                                                        
                                                         <th>#</th>
                                                         <th>Name</th>
                                                         <th>Asset Type</th>

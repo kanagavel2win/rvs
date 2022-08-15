@@ -539,7 +539,14 @@ var tblemployeecompensationid=0;
 		                                                        <div class="form-group">
 		                                                            <label for="contact-info-icon">Reports To</label>
 		                                                            <div class="position-relative has-icon-left">
-		                                                                <input type="text"  class="form-control" id="jobreportsto">
+		                                                                
+		                                                                <select class="form-control" id="jobreportsto">
+					                                                        <option>-</option>
+					                                                       <th:block th:each="str :${EffectiveEmployee}">
+																				<option  th:value="${str.StaffName +'-'+ str.empMasterid}"  th:text="${str.StaffName}"></option>
+																			</th:block>
+					                                                      </select>
+		                                                                
 		                                                                <div class="form-control-position">
 		                                                                    <i class="bx bx-comment"></i>
 		                                                                </div>

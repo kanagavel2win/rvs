@@ -63,6 +63,11 @@ public class AssetMaster {
 	@Column
 	private String WarrantyEnd;
 	
+	@Column
+	private String Notes;
+	
+	
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AssetId")
 	private Set<AssetMasterFiles> assetMasterFiles;

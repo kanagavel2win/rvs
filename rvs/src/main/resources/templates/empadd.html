@@ -27,6 +27,9 @@
 	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+	
+<link rel="stylesheet" type="text/css" th:href="@{/app-assets/vendors/css/editors/quill/quill.snow.css}">
+
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->
@@ -42,20 +45,21 @@
 	th:href="@{/app-assets/css/themes/dark-layout.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+
 <!-- END: Theme CSS-->
 
 <!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
-	<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/plugins/forms/wizard.css}">
+
+    
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
 <link rel="stylesheet" type="text/css"
 	th:href="@{/assets/css/style.css}">
+	
+	<link rel="stylesheet" type="text/css" th:href="@{/app-assets/css/pages/app-email.css}">
 <!-- END: Custom CSS-->
 <style>
 .emptitle {
@@ -1473,14 +1477,18 @@
 													<div class="form-group">
 
 														<div class="position-relative">
-															<input type="text" class="form-control capitalize"
+															<textarea type="text" class="form-control capitalize"
 																th:value="${employeemaster['Notes']}"
-																th:field="*{Notes}">
+																th:field="*{Notes}" height="100px">
+																
+																</textarea>
 														</div>
 													</div>
+													
+													
 													<button type="button" class="btn btn-light-secondary mr-1 mb-1 about1tabclick">Previous</button>
 												</div>
-
+												 
 												<div class="col-12 d-flex justify-content-end">
 													
 													<button type="submit" id="submit" style="visibility: hidden;" class="btn btn-primary mr-1 mb-1">Save</button>
@@ -1541,6 +1549,7 @@
 	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
 	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
 	<script th:src="@{/app-assets/vendors/js/forms/validation/jquery.validate.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/editors/quill/quill.min.js}"></script>
 	<!-- END: Page Vendor JS-->
 
 	<!-- BEGIN: Theme JS-->
@@ -1551,9 +1560,8 @@
 	<!-- END: Theme JS-->
 
 	<!-- BEGIN: Page JS-->
-	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/forms/wizard-steps.js}"></script>
-	<!-- END: Page JS-->
+	 <script th:src="@{/app-assets/js/scripts/pages/app-email.js}"></script>
+	 <!-- END: Page JS-->
 	<!-- Custom Java script validations -->
 	<script th:src="@{/js/customvalidation.js}"></script>
 

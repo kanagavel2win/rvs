@@ -1087,6 +1087,7 @@ public class HomeController {
 		theModel.addAttribute("PAYCHANGEREASON", PAYCHANGEREASON);
 		
 		
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		
 		theModel.addAttribute("greenpointemployementstatus", greenpointemployementstatus);
 		theModel.addAttribute("greenpointjobstatus", greenpointjobstatus);

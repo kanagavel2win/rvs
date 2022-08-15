@@ -148,10 +148,60 @@
 							<div class="card">
 								<div class="card-content">
 									<div class="card-body">
+									
+									<!--scrolling content Modal -->
+									<div class="modal fade" id="LeadStatusScrollable"
+										tabindex="-1" role="dialog"
+										aria-labelledby="LeadStatusScrollableTitle"
+										aria-hidden="true">
+										<div class="modal-dialog modal-dialog-scrollable"
+											role="document">
+											<div class="modal-content">
+												<div class="modal-header bg-warning">
+													<h5 class="modal-title white"
+														id="LeadStatusScrollableTitle"></h5>
+													<button type="button" class="close"
+														data-dismiss="modal" aria-label="Close">
+														<i class="bx bx-x"></i>
+													</button>
+												</div>
+												<div class="modal-body">
+													<div class="col-md-12">
+														<div class="form-group">
+															<label for="addmodel" id="additemalltxt"></label>
+															<div class="position-relative">
+																<fieldset class="form-group">
+																	<input type="text" id="additemall" name="addmodel"
+																		class="form-control ">
+																</fieldset>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-light-secondary"
+														data-dismiss="modal">
+														<i class="bx bx-x d-block d-sm-none"></i> <span
+															class="d-none d-sm-block">Close</span>
+													</button>
+													<button type="button" class="btn btn-primary ml-1"
+														id="additemallsavebtn">
+														<i class="bx bx-check d-block d-sm-none"></i> <span
+															class="d-none d-sm-block">ADD</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!--scrolling content Modal -->
+									
 									<form th:action="@{/Leadsave}"
 											th:object="${Leadmaster}" method="POST"
 											class="wizard-horizontal" id="formId" enctype="multipart/form-data">
 									
+									
+                                            
 										<div th:if="${save}" class="form-group col-12">
 											<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Lead
 												Info Updated Successfully</button>
@@ -196,52 +246,7 @@
 													</div>
 												</div>
 												<div class="col-md-3">
-													<!--scrolling content Modal -->
-													<div class="modal fade" id="LeadStatusScrollable"
-														tabindex="-1" role="dialog"
-														aria-labelledby="LeadStatusScrollableTitle"
-														aria-hidden="true">
-														<div class="modal-dialog modal-dialog-scrollable"
-															role="document">
-															<div class="modal-content">
-																<div class="modal-header bg-warning">
-																	<h5 class="modal-title white"
-																		id="LeadStatusScrollableTitle"></h5>
-																	<button type="button" class="close"
-																		data-dismiss="modal" aria-label="Close">
-																		<i class="bx bx-x"></i>
-																	</button>
-																</div>
-																<div class="modal-body">
-																	<div class="col-md-12">
-																		<div class="form-group">
-																			<label for="addmodel" id="additemalltxt"></label>
-																			<div class="position-relative">
-																				<fieldset class="form-group">
-																					<input type="text" id="additemall" name="addmodel"
-																						class="form-control ">
-																				</fieldset>
-																			</div>
-																		</div>
-																	</div>
-
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-light-secondary"
-																		data-dismiss="modal">
-																		<i class="bx bx-x d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">Close</span>
-																	</button>
-																	<button type="button" class="btn btn-primary ml-1"
-																		id="additemallsavebtn">
-																		<i class="bx bx-check d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">ADD</span>
-																	</button>
-																</div>
-															</div>
-														</div>
-													</div>
-													<!--scrolling content Modal -->
+													
 													<div class="form-group">
 														<label for="email-id-icon">Contact Person</label>
 														<div class="position-relative has-icon-left">
@@ -298,9 +303,10 @@
 													<div class="form-group">
 														<label for="email-id-icon">Lead Source 
 														</label>
+														<label class="emptitle additem" name="addleadsourcedata" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i></label>
 														<div class="position-relative has-icon-left">
 															<fieldset class="form-group">
-																<select class="form-control addmaritalstatusdata">
+																<select class="form-control addleadsourcedata">
 																	<option value="">-</option>
 																	<option value="Google">Google</option>
 																	<option value="JD">JD</option>
@@ -336,8 +342,9 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="contact-info-icon">Purpose</label>
+														<label class="emptitle additem" name="addpurposedata" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i></label>
 														<div class="position-relative has-icon-left">
-															<select class="form-control">
+															<select class="form-control addpurposedata">
 																	<option value="">-</option>
 																	<option value="Approval">Approval</option>
 																	<option value="Construction">Construction</option>
@@ -499,8 +506,9 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="contact-info-icon">Nature of Work</label>
+														<label class="emptitle additem" name="addNatureofWorkdata" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i></label>
 														<div class="position-relative has-icon-left">
-															<select class="form-control">
+															<select class="form-control addNatureofWorkdata">
 																	<option value="">-</option>
 																	<option value="Topographic survey">Topographic survey</option>
 																	<option value="Drone Survey">Drone Survey</option>
@@ -526,8 +534,9 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="contact-info-icon">Units</label>
+														<label class="emptitle additem" name="addUnitsdata" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i></label>
 														<div class="position-relative has-icon-left">
-															<select class="form-control">
+															<select class="form-control addUnitsdata">
 																	<option value="">-</option>
 																	<option value="Acres">Acres</option>
 																	<option value="Km">Km</option>
@@ -617,7 +626,7 @@
 													<div class="form-group">
 														<label for="contact-info-icon">Label</label>
 														<div class="position-relative has-icon-left">
-															<<select class="form-control">
+															<select class="form-control">
 																	<option value="">-</option>
 																	<option value="Hot">Hot</option>
 																	<option value="Cold">Cold</option>
@@ -876,8 +885,8 @@
 													<div class="form-group">
 														<label for="contact-info-icon">Notes</label>
 														<div class="position-relative has-icon-left">															
-															<input type="text" class="form-control "
-																placeholder="Notes"  />
+															<textarea type="text" class="form-control "
+																placeholder="Notes"  height="100px"></textarea>
 															<div class="form-control-position">
 																<i class="bx bx-windows"></i>
 															</div>
@@ -991,6 +1000,36 @@
 						
 					});
 					
+					$(document).on('click','.additem', function(){
+						
+						
+						var name=$(this).attr('name');
+						var labeltext="";
+						if(name=="addleadsourcedata"){ labeltext="New Lead Source"; }
+						if(name=="addpurposedata"){ labeltext="New Purpose"; }
+						if(name=="addNatureofWorkdata"){ labeltext="New Nature of Work"; }
+						if(name=="addUnitsdata"){ labeltext="New Units"; }
+						$('#additemalltxt').text(labeltext);
+						$('#LeadStatusScrollable').modal('toggle');
+						
+					});
+					
+					$("#additemallsavebtn").click(function(){
+						if($("#additemall").val()!='')
+						{
+							var name=$('#additemalltxt').text();
+							var labeltext="";
+							if(name=="New Lead Source"){ labeltext="addleadsourcedata"; }
+							if(name=="New Purpose"){ labeltext="addpurposedata"; }
+							if(name=="New Nature of Work"){ labeltext="addNatureofWorkdata"; }
+							if(name=="New Units"){ labeltext="addUnitsdata"; }
+							
+							$('.' + labeltext).append("<option>" + $("#additemall").val() + "</option>");
+							$("#additemall").val('');
+							$('#LeadStatusScrollable').modal('toggle');
+						}
+					});
+					
 					
 				});
 
@@ -1003,7 +1042,7 @@
 							projectdivadd = projectdivadd + 1;
 							$("#projectdivlast")
 									.before(
-											'<div class="col-md-12 srctprojectdiv'+ projectdivadd +'"> <hr/> </div> <div class="col-md-12  srctprojectdiv'+ projectdivadd +'"> 														<span class="cursor-pointer srcprojectdivdelete" name="'+ projectdivadd +'" style="float:right"> 																<i class="bx bx-x"></i> 															</span>													</div><div class="col-md-3 srctprojectdiv'+ projectdivadd +'"> <div class="form-group"> 	<label for="contact-info-icon">Project Location </label> 	<div class="position-relative has-icon-left"> 		<input type="text" class="form-control " 			placeholder="Project Location "  /> 		<div class="form-control-position"> 			<i class="bx bxs-compass"></i> 		</div> 	</div> </div> 												</div> 												<div class="col-md-3 srctprojectdiv'+ projectdivadd +'"> <div class="form-group"> 	<label for="contact-info-icon">Geo location</label> 	<div class="position-relative has-icon-left"> 		<input type="number" class="form-control " 			placeholder="Geo location"  /> 		<div class="form-control-position"> 			<i class="bx bx-navigation"></i> 		</div> 	</div> </div> 												</div>														<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Nature of Work</label>														<div class="position-relative has-icon-left">															<select class="form-control">																	<option value="">-</option>																	<option value="Topographic survey">Topographic survey</option>																	<option value="Drone Survey">Drone Survey</option>															</select>															<div class="form-control-position">																<i class="bx bx-landscape"></i>															</div>														</div>													</div>												</div>												<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Quantity</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Quantity"  />															<div class="form-control-position">																<i class="bx bx-image-alt"></i>															</div>														</div>													</div>												</div>													<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Units</label>														<div class="position-relative has-icon-left">															<select class="form-control">																	<option value="">-</option>																	<option value="Acres">Acres</option>																	<option value="Km">Km</option>																	<option value="Day">Day</option>																	<option value="LS">LS</option>																	<option value="Point">Point</option>																	<option value="Cent">Cent</option>																	<option value="Sqft">Sqft</option>																	<option value="Sqm">Sqm</option>															</select>															<div class="form-control-position">																<i class="bx bxs-film"></i>															</div>														</div>													</div>												</div>												<div class="col-md-3">													<div class="form-group">														<label for="contact-info-icon">Price</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Price"  />															<div class="form-control-position">																<i class="bx bx-money"></i>															</div>														</div>													</div>												</div>																									<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Total Amount</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Total Amount"  />															<div class="form-control-position">																<i class="bx bxs-wallet"></i>															</div>														</div>													</div>												</div>	');
+											'<div class="col-md-12 srctprojectdiv'+ projectdivadd +'"> <hr/> </div> <div class="col-md-12  srctprojectdiv'+ projectdivadd +'"> 														<span class="cursor-pointer srcprojectdivdelete" name="'+ projectdivadd +'" style="float:right"> 																<i class="bx bx-x"></i> 															</span>													</div><div class="col-md-3 srctprojectdiv'+ projectdivadd +'"> <div class="form-group"> 	<label for="contact-info-icon">Project Location </label> 	<div class="position-relative has-icon-left"> 		<input type="text" class="form-control " 			placeholder="Project Location "  /> 		<div class="form-control-position"> 			<i class="bx bxs-compass"></i> 		</div> 	</div> </div> 												</div> 												<div class="col-md-3 srctprojectdiv'+ projectdivadd +'"> <div class="form-group"> 	<label for="contact-info-icon">Geo location</label> 	<div class="position-relative has-icon-left"> 		<input type="number" class="form-control " 			placeholder="Geo location"  /> 		<div class="form-control-position"> 			<i class="bx bx-navigation"></i> 		</div> 	</div> </div> 												</div>														<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Nature of Work</label><label class="emptitle additem" name="addNatureofWorkdata" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i></label>														<div class="position-relative has-icon-left">															<select class="form-control addNatureofWorkdata">																	<option value="">-</option>																	<option value="Topographic survey">Topographic survey</option>																	<option value="Drone Survey">Drone Survey</option>															</select>															<div class="form-control-position">																<i class="bx bx-landscape"></i>															</div>														</div>													</div>												</div>												<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Quantity</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Quantity"  />															<div class="form-control-position">																<i class="bx bx-image-alt"></i>															</div>														</div>													</div>												</div>													<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Units</label><label class="emptitle additem" name="addUnitsdata" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i></label>														<div class="position-relative has-icon-left">															<select class="form-control addUnitsdata">																	<option value="">-</option>																	<option value="Acres">Acres</option>																	<option value="Km">Km</option>																	<option value="Day">Day</option>																	<option value="LS">LS</option>																	<option value="Point">Point</option>																	<option value="Cent">Cent</option>																	<option value="Sqft">Sqft</option>																	<option value="Sqm">Sqm</option>															</select>															<div class="form-control-position">																<i class="bx bxs-film"></i>															</div>														</div>													</div>												</div>												<div class="col-md-3">													<div class="form-group">														<label for="contact-info-icon">Price</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Price"  />															<div class="form-control-position">																<i class="bx bx-money"></i>															</div>														</div>													</div>												</div>																									<div class="col-md-3  srctprojectdiv'+ projectdivadd +'">													<div class="form-group">														<label for="contact-info-icon">Total Amount</label>														<div class="position-relative has-icon-left">															<input type="text" class="form-control "																placeholder="Total Amount"  />															<div class="form-control-position">																<i class="bx bxs-wallet"></i>															</div>														</div>													</div>												</div>	');
 						});
 
 		$(document).on("click", ".projectdivdelete", function() {

@@ -5,11 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rvs.springboot.thymeleaf.dao.AssetServiceRepository;
 import com.rvs.springboot.thymeleaf.entity.AssetService;
 
 @Service
+@Transactional
 public class AssetServiceImp implements AssetServiceService {
 
 	@Autowired
@@ -48,9 +50,12 @@ public class AssetServiceImp implements AssetServiceService {
 	}
 
 	@Override
-	public List<AssetService> findByAssetId(String assetid) {
-		return assetserviceRepo.findByAssetId(assetid);
+	public void deleteByid(int id) {
+		assetserviceRepo.deleteById(id);
+		
 	}
+
+	
 		
 	
 }

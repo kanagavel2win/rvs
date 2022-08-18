@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
 
 <!-- BEGIN: Head-->
 
@@ -26,10 +27,10 @@
 	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
-	
+
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/tables/datatable/datatables.min.css}">
-	
+
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->
@@ -55,40 +56,90 @@
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
-	.addnewVendor
-	{
-	 
-	 position:absolute;
-	 right:-20px;
-	 top:0px;
-	 cursor:pointer;
-	}
-	.bx-edit, .bx-show
-	{
-	 float:right;
-	 padding-top:10%;
-	 padding-right:10%;
-	 font-size:20px;
-	 cursor:pointer;
-	}
-	.iconalign
-	{
-	 float:right;
-	 position:relative;
-	 padding-top:10%;
-	 font-size:20px;
-	 width: 100px;
-	}
-	.alerm{
-		padding-top:1%;
-		float:right;
-		
-	}
-	.bxs-bell-ring{font-size:25px;}
+.addnewVendor {
+	position: absolute;
+	right: -20px;
+	top: 0px;
+	cursor: pointer;
+}
+
+.bx-edit, .bx-show {
+	float: right;
+	padding-top: 10%;
+	padding-right: 10%;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.iconalign {
+	float: right;
+	position: relative;
+	padding-top: 10%;
+	font-size: 20px;
+	width: 100px;
+}
+
+.alerm {
+	padding-top: 1%;
+	float: right;
+}
+
+.bxs-bell-ring {
+	font-size: 25px;
+}
+
+.tth {
+	color: #228B22;
+	background-color: #e1e1e1;
+}
+
+.red {
+	color: #FF0000;
+}
+
+.green {
+	color: #228B22;
+}
+
+.black {
+	color: #000;
+	font-weight: bold;
+}
+
+#cartcount {
+	text-align: center;
+	position: absolute;
 	
+	right: 102px;
+	top: -6px;
+	padding: 20px;
+	width: 70px;
+	z-index: 10;
+	cursor:pointer;
+}
+
+.bx-shopping-bag {
+	font-size: 54px;
+	position: absolute;
+	right: 110px;
+	top: -10px;
+	z-index: 9;
+	cursor:pointer;
+}
+
+.carttotallabelcount {
+	float: left
+}
+.isize
+{
+	font-size:25px;
+	line-height:0px;
+	vertical-align: middle;
+}
 </style>
 
 </head>
@@ -100,120 +151,206 @@
 	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
 	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
-		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
-		<!-- END: Header-->
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
 
 
-		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
-		<!-- END: Main Menu-->
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
 
-			<!-- BEGIN: Content-->
-				<!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Asset List</h5>
-                            <div class="breadcrumb-wrapper col-12">
-                                <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
-                                    </li>
-                                  
-                                	   
-                                </ol>
-                                <a href="assetnew" class="addnewVendor"><button type="button" class="btn btn-warning mr-1 mb-1">Add Asset</button></a>
-                            </div>
-                        </div>
-                   
-                    </div>
-                </div>
-                
-            </div>
-            <div class="content-body">
-              
-				 <!-- Zero configuration table -->
-                <section id="basic-datatable">
-                    <div class="row">
-                        <div class="col-12">
-                        	
-                            <div class="card">
-                                
-                                <div class="card-content">
-                                    <div class="card-body card-dashboard">
-                                        <p class="card-text"></p>
-                                        <div class="table-responsive">
-                                            <table class="table zero-configuration">
-                                                <thead>
-                                                    <tr>
-                                                       <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Asset Type</th>
-                                                        <th>Brand</th>  
-                                                        <th>Status</th>
-                                                        
-                                                        
-                                                        
-	
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                	<tr th:each="asset,stat : ${assetlist}">
-													  
-													   <td th:text="${stat.index+1}"></td>
-													   <td><a th:href="'asset?id=' + ${#strings.arraySplit(asset,'|')[2]}" th:text="${#strings.arraySplit(asset,'|')[0] }" title="Edit Asset"></a>
-													   	
-													   </td>
-													   
-													   <td>
-													   	<span th:text="${#strings.arraySplit(asset,'|')[3] }"></span>
-														   	<a th:href="'assetservice?id=' + ${#strings.arraySplit(asset,'|')[2]}"  title="Service Log" class="alerm">
-													   			<i class="bx bxs-bell-ring"></i>
-													   		</a>
-													   </td>
-													   <td th:utext="${#strings.arraySplit(asset,'|')[4] }"></td>
-													   <td th:utext="${#strings.arraySplit(asset,'|')[5] }"></td>
-													</tr> 
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+							<h5 class="content-header-title float-left pr-1 mb-0">Asset
+								List</h5>
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+
+
+								</ol>
+								<a href="assetnew" class="addnewVendor" style="vertical-align: middle"><button
+										type="button" class="btn btn-warning mr-1 mb-1"><i class="bx bx-plus-circle "></i>  New </button></a>
+										
+										
+
+								<span data-toggle="modal" data-target="#exampleModalScrollable">
+									<i class="bx bx-shopping-bag"></i> <span id="cartcount">
+										0</span>
+								</span>
+								
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+			<div class="content-body">
+
+				<!-- Zero configuration table -->
+				<section id="basic-datatable">
+					<div class="row">
+						<div class="col-12">
+							
+							<div class="col-md-6 col-12">
+
+								<!-- Button trigger for scrolling content modal -->
+
+
+								<!--scrolling content Modal -->
+								<div class="modal fade" id="exampleModalScrollable"
+									tabindex="-1" role="dialog"
+									aria-labelledby="exampleModalScrollableTitle"
+									aria-hidden="true">
+									<div class="modal-dialog modal-dialog-scrollable modal-xl"
+										role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="exampleModalScrollableTitle">Selected
+													Items </h5>
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<i class="bx bx-x"></i>
+												</button>
+											</div>
+											<div class="modal-body">
+												<table class="table table-hover" id="cart">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Asset Type</th>
+															<th>Asset Name</th>
+															<th>Branch</th>
+															<th>Status</th>
+															<th>Custodian</th>
+															<th>Last Update</th>
+														</tr>
+													</thead>
+													<tbody>
+
+													</tbody>
+												</table>
+											</div>
+
+											<div class="modal-footer">
+												<div style="float:left;">
+												<button type="button" class="btn btn-primary mr-1 mb-1" id="checkout"><i class="bx bx-upload  isize"></i>  Check Out</button>
+												<button type="button" class="btn btn-warning mr-1 mb-1" id="checkin"><i class="bx bx-download isize"></i>  Check In</button>
+												<button type="button" class="btn btn-success  mr-1 mb-1" id="aaudit"><i class="bx bx-checkbox-checked isize"></i>  Audit</button>
+												</div>
+												
+												
+												<span class="carttotallabelcount"><b>Total Label
+														Count - <span id="totalcartval"> Nos
+												</b></span> </span>
+
+												<button type="button" class="btn btn-light-secondary"
+													data-dismiss="modal">
+													<i class="bx bx-x d-block d-sm-none"></i> <span
+														class="d-none d-sm-block">Close</span>
+												</button>
+												<!-- <button id="createjobcard"
+													class="btn btn-primary glow invoice-create" role="button"
+													aria-pressed="true" data-dismiss="modal">Next</button> -->
+												
+												
 													
-                                                </tbody>
-                                                <tfoot>
-                                                     <tr>
-                                                        
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Asset Type</th>
-                                                        <th>Brand</th>  
-                                                        <th>Status</th>
-                                                                                                                                                                
-                                                        
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!--/ Zero configuration table -->               
+											</div>
+										</div>
+									</div>
+								</div>
 
-            </div>
-        </div>
-    </div>
-			<!-- END: Content-->
+							</div>
+
+						</div>
+						<div class="col-12">
+
+							<div class="card">
+
+								<div class="card-content">
+									<div class="card-body card-dashboard">
+										<p class="card-text"></p>
+										<div class="table-responsive">
+											<table class="table zero-configuration">
+												<thead>
+													<tr>
+														<th>#</th>
+														<th>Asset Type</th>
+														<th>Asset Name</th>
+														<th>Branch</th>
+														<th>Status</th>
+														<th>Custodian</th>
+														<th>Last Update</th>
+													</tr>
+												</thead>
+												<tbody>
+													<th:block th:each="asset,stat : ${assetlist}">
+														<tr th:class="'srctble' + ${#strings.arraySplit(asset,'|')[0]}">
+	
+															 <td>
+																<button type='button'  class='btn btn-icon btn-light-primary mr-1 mb-1 addtocart' th:id="${#strings.arraySplit(asset,'|')[0]}">ADD</button>
+															</td>
+															<td><span
+																th:text="${#strings.arraySplit(asset,'|')[2] }"></span></td>
+															<td><a
+																th:href="'asset?id=' + ${#strings.arraySplit(asset,'|')[0]}"
+																th:text="${#strings.arraySplit(asset,'|')[1] }"
+																title="Edit Asset"></a></td>
+	
+	
+															<td th:utext="${#strings.arraySplit(asset,'|')[3] }"></td>
+															<td th:utext="${#strings.arraySplit(asset,'|')[4] }"></td>
+															<td></td>
+															<td></td>
+														</tr>
+													</th:block>
+												</tbody>
+												<tfoot>
+													<tr>
+
+														<th>#</th>
+														<th>Asset Type</th>
+														<th>Asset Name</th>
+														<th>Branch</th>
+														<th>Status</th>
+														<th>Custodian</th>
+														<th>Last Update</th>
 
 
-		
-		<div class="sidenav-overlay"></div>
-		<div class="drag-target"></div>
+													</tr>
+												</tfoot>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!--/ Zero configuration table -->
 
-		<!-- BEGIN: Footer-->
-		<footer class="footer footer-static footer-light">
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
 		<p class="clearfix mb-0">
 			<span class="float-left d-inline-block"></span><span
 				class="float-right d-sm-inline-block d-none"></span>
@@ -221,41 +358,135 @@
 				<i class="bx bx-up-arrow-alt"></i>
 			</button>
 		</p>
-		</footer>
-		<!-- END: Footer-->
+	</footer>
+	<!-- END: Footer-->
 
 
-		<!-- BEGIN: Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-		<!-- BEGIN Vendor JS-->
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+	<!-- BEGIN Vendor JS-->
 
-		<!-- BEGIN: Page Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
-		
-		
-		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-		<!-- END: Page Vendor JS-->
+	<!-- BEGIN: Page Vendor JS-->
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
 
-		<!-- BEGIN: Theme JS-->
-		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-		<script th:src="@{/app-assets/js/core/app.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-		<!-- END: Theme JS-->
 
-		<!-- BEGIN: Page JS-->
-		<script
-			th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
-		<!-- END: Page JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
+	<!-- END: Page JS-->
+	<script>
+		$(document).ready(function(){
+			
+			var carid ='';
+			
+			if(carid!="")
+			{
+				var a = carid.split(",");
+				for (i in a) {
+					var currentRow=$('#'+a[i]).closest("tr"); 
+					currentRow.hide();
+				}
+				
+			}	 
+				 
+			$('#checkout').click(function(){ navigationfun("checkout"); });
+			$('#checkin').click(function(){ navigationfun("checkin"); });
+			$('#aaudit').click(function(){ navigationfun("aaudit"); });
+			
+			function navigationfun(root)
+			{
+				var cartid="";
+				
+				$('.removefromcart').each(function(index) {
+					cartid=cartid+","+($(this).attr('name'));
+				  });
+				
+				if(cartid=="")
+				{
+					alert("Cart is Empty");
+				}else
+				{
+					cartid=cartid.substring(1, cartid.length) ;
+					
+					window.location.href =root + '?id='+cartid;
+				}
+			}
+			
+			$(document).on( "click", ".addtocart", function() {
+				
+				$(this).hide();
+				var addcartid=$(this).attr('id');
+				var currentRow=$(this).closest("tr"); 
+				var col1=currentRow.find("td:eq(1)").html();
+				 var col2=currentRow.find("td:eq(2)").html();
+				 var col3=currentRow.find("td:eq(3)").html();
+				 var col4=currentRow.find("td:eq(4)").html();
+				 var col5=currentRow.find("td:eq(5)").html();
+				 var col6=currentRow.find("td:eq(6)").html();
+				 
+				 var data=col1+"\n"+col2+"\n"+col3+"\n"+col4+"\n"+col5;
+				 
+				 $('#cart > tbody:last-child').append("<tr><td><button type='button' name='"+addcartid+"' class='btn btn-icon btn-light-danger mr-1 mb-1 removefromcart'><i class='bx bx-trash'></i></button></td><td>"+col1+"</td><td>"+col2+"</td><td>"+col3+"</td><td>"+col4+"</td><td>"+col5+"</td><td>"+col6+"</td></tr>");
+				 currentRow.fadeTo("slow",0.7, function(){
+					currentRow.fadeOut();
+					currentRow.hide();
+				 });
+				cartcount();
+				
+			});
+			
+			$(document).on( "click", "td > button", function() {
+			  var removecartid=$(this).attr('name');
+			  if(removecartid!=undefined)
+			  {
+				  var currentRow=$(this).closest("tr"); 
+				  currentRow.remove();
+				  $('.srctble'+removecartid).fadeTo("slow",1, function(){
+					$('.srctble'+removecartid).fadeIn();
+					$('.srctble'+removecartid).show();
+					$('#'+removecartid).show();
+				});
+				cartcount();
+			  }
+			  
+			});
+			
+			function cartcount(){
+				var count=0;
+				$('.removefromcart').each(function(index) {
+					count++;
+				  });
+				$('#cartcount').text(count);
+				
+				$('#totalcartval').text(count);
+			}
+			cartcount();
+			
+			 
+		});
+
+
+	</script>
 </body>
 <!-- END: Body-->
 

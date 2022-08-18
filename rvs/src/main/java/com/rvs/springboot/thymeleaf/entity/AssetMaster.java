@@ -1,5 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -58,6 +59,10 @@ public class AssetMaster {
 	private String PurchasePrice;
 	@Column
 	private String Purchased;
+	
+	@Column
+	private String PurchasedType;
+	
 	@Column
 	private String PurchaseOrderNo;
 	@Column
@@ -66,10 +71,13 @@ public class AssetMaster {
 	@Column
 	private String Notes;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "AssetId")
+	private List<AssetService> assetService;
 	
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AssetId")
-	private Set<AssetMasterFiles> assetMasterFiles;
+	private List<AssetMasterFiles> assetMasterFiles;
 	
 }

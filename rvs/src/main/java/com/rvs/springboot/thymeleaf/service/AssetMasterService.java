@@ -10,4 +10,5 @@ public interface AssetMasterService {
 	public AssetMaster findById(Integer id);
 	public List<AssetMaster> findAll();
 	public void updatetheAssetStatus(String status,int rowid);
+	public int getmaxid();
 }

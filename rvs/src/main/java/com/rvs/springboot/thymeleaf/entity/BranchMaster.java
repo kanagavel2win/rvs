@@ -26,6 +26,8 @@ public class BranchMaster {
 	@Column
 	private String BRANCH_NAME;
 	@Column
+	private String BranchCode;
+	@Column
 	private String B_TYPE;
 	@Column
 	private String COMES_UNDER;

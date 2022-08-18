@@ -8,6 +8,6 @@ import com.rvs.springboot.thymeleaf.entity.AssetService;
 
 public interface AssetServiceRepository extends JpaRepository<AssetService,Integer>{
 
-	List<AssetService> findByAssetId(String assetid);
+	//List<AssetService> findByAssetId(String assetid);
 
 }

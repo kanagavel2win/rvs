@@ -55,6 +55,14 @@ public class AssetMasterImp implements AssetMasterService {
 
 		 jdbctemplate.execute(sql);
 	}
+
+	@Override
+	public int getmaxid() {
+		
+		
+		return jdbctemplate.queryForObject("select max(asset_id) maxid from assetmaster", Integer.class);
+		
+	}
 		
 	
 }

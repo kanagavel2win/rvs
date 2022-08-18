@@ -26,10 +26,11 @@ public class AssetService {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int AssetServiceID;
-	@Column
-	private String assetId;
+	
 	@Column
 	private String ServiceItem;
+	@Column
+	private String optionradiobtn;
 	@Column
 	private String DueOneTime;
 	@Column

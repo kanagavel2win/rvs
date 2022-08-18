@@ -10,5 +10,6 @@ public interface AssetServiceService {
 	public AssetService findById(Integer id);
 	public List<AssetService> findAll();
 	public List<AssetService> saveall(List<AssetService> objList);
-	public List<AssetService> findByAssetId(String assetid);
+	public void deleteByid(int id);
+	//public List<AssetService> findByAssetId(String assetid);
 }

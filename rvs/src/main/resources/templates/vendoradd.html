@@ -90,6 +90,7 @@
 .error
 {
 	color:red;
+	
 }
 
 </style>
@@ -242,7 +243,10 @@
 													</div>
 													<!--scrolling content Modal -->
 													<div class="form-group">
-														<label for="first-name-icon">Name</label>
+														<label for="first-name-icon">Name
+															<span  class="error">*</span>
+														</label>
+														
 														<div class="position-relative has-icon-left">
 															<input type="hidden"
 																th:value="${vendormaster['vendormasterid']}"
@@ -255,7 +259,7 @@
 																class="form-control capitalize" 
 																placeholder="Name"
 																th:value="${vendormaster['Name']}"
-																th:field="*{Name}" onkeypress="return onlyAlphabets(event,this);" >
+																th:field="*{Name}" onkeypress="return onlyAlphabets(event,this);" required>
 															<div class="form-control-position">
 																<i class="bx bx-user"></i>
 															</div>
@@ -276,7 +280,6 @@
 																<select class="form-control addAssetTypedata"
 																	th:value="${vendormaster['AssetType']}"
 																	th:field="*{AssetType}">
-																	<option th:if="${vendormaster['AssetType']}" th:value="${vendormaster['AssetType']}" th:text="${vendormaster['AssetType']}"></option>
 																	<option value="-">-</option>
 																	<th:block th:each="str :${ASSETTYPE}">
 																		<option  th:value="${str}"  th:text="${str}"></option>

@@ -131,13 +131,13 @@ public class HomeController {
 	@Autowired
 	AssetMasterService assetMasterService;
 	@Autowired
+	AssetServiceService assetserviceService;
+	@Autowired
 	CheckOutService checkoutService;
 	@Autowired
 	CheckInService checkinService;
 	@Autowired
 	AssetAuditService assetauditService;
-	@Autowired
-	AssetServiceService assetserviceService;
 	@Autowired
 	ItemListService itemlistService;
 
@@ -2259,21 +2259,21 @@ public class HomeController {
 		for (VendorMaster obj : ls) {
 			String str = "";
 			
-			str += obj.getName() + "|";
+			str += obj.getName() + " |";
 
 			
 				str += " |";
 			
 
 			str += obj.getVendormasterid() + "|";
-			str += obj.getAssetType() + "|";
+			str += obj.getAssetType() + " |";
 			str += "- |";
 			str += obj.getAddress_Village() + " <br/>" + obj.getAddress_Taluk() + " <br/>" + obj.getAddress_City()
-					+ "|";
+					+ " |";
 
 			data.add(str);
 		}
-
+		
 		theModel.addAttribute("venlist", data);
 		return "vendorlist";
 
@@ -2473,19 +2473,23 @@ public class HomeController {
 
 		List<AssetMaster> ls = new ArrayList<AssetMaster>();
 		ls = assetMasterService.findAll();
+		List<BranchMaster> bm= branchMasterService.findAll(); 
 
 		for (AssetMaster obj : ls) {
 			String str = "";
-			
+			str += obj.getAssetId() + "|";			
 			str += obj.getAssetName() + "|";
-
-			
-				str += " |";
-			
-			str += obj.getAssetId() + "|";
 			str += obj.getAssetType() + "|";
-			str += obj.getBrand() + " <br/>" + obj.getManufacturer() + "|";
-			str += obj.getACondition() ;
+			
+			if(obj.getBranch() != null)
+			{
+				str += bm.stream().filter(C -> C.getId()== Integer.parseInt(obj.getBranch())).collect(Collectors.toList()).get(0).getBRANCH_NAME()  + "|";
+			}else
+			{
+				str += "- |";
+			}
+			
+			str += obj.getStatus()  + "|";
 
 			data.add(str);
 		}
@@ -2500,6 +2504,10 @@ public class HomeController {
 
 		AssetMaster assetobj = new AssetMaster();
 		assetobj.setStatus("In Stock");
+		
+		List<AssetService> setassetSevice= new ArrayList();
+		setassetSevice.add(new AssetService());
+		assetobj.setAssetService(setassetSevice);
 		AssetMasterFiles assetfiles = new AssetMasterFiles();
 		ArrayList<AssetMasterFiles> filels = new ArrayList<AssetMasterFiles>();
 		filels.add(assetfiles);
@@ -2516,22 +2524,35 @@ public class HomeController {
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
 		
-		
+
+		List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
+		themodel.addAttribute("ServiceItem", ServiceItem);
+		//---------------------------------------		
 		themodel.addAttribute("assetFiles", assetfiles);
 		themodel.addAttribute("assetmaster", assetobj);
+		themodel.addAttribute("maxid", assetMasterService.getmaxid());
+		
+		themodel.addAttribute("newasset", true);
+		
 		return "asset";
 	}
 
 	@GetMapping("asset")
 	public String assetdetails(Model themodel, @RequestParam("id") int id) {
 
-		AssetMaster assetmasternew = new AssetMaster();
-		assetmasternew = assetMasterService.findById(id);
-
+		AssetMaster assetmaster = new AssetMaster();
+		assetmaster = assetMasterService.findById(id);
+		
+		if(assetmaster.getAssetService().size()==0)
+		{
+			List<AssetService> setassetSevice= new ArrayList();
+			setassetSevice.add(new AssetService());
+			assetmaster.setAssetService(setassetSevice);
+		}
 		Set<AssetMasterFiles> filelsnew = new LinkedHashSet<AssetMasterFiles>();
 
-		if (assetmasternew.getAssetMasterFiles().size() > 0) {
-			filelsnew.addAll(assetmasternew.getAssetMasterFiles());
+		if (assetmaster.getAssetMasterFiles().size() > 0) {
+			filelsnew.addAll(assetmaster.getAssetMasterFiles());
 		} else {
 			AssetMasterFiles empfiles1 = new AssetMasterFiles();
 			filelsnew.add(empfiles1);
@@ -2548,8 +2569,13 @@ public class HomeController {
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
 		
+		List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
+		themodel.addAttribute("ServiceItem", ServiceItem);
+		
 		themodel.addAttribute("assetFiles", filelsnew);
-		themodel.addAttribute("assetmaster", assetmasternew);
+		themodel.addAttribute("assetmaster", assetmaster);
+		
+		
 		return "asset";
 	}
 
@@ -2565,7 +2591,7 @@ public class HomeController {
 
 		// Systasset.out.println("--------------Step 1 end----------------------");
 
-		Set<AssetMasterFiles> filels = new LinkedHashSet<AssetMasterFiles>();
+		List<AssetMasterFiles> filels = new ArrayList<AssetMasterFiles>();
 
 		
 
@@ -2619,6 +2645,22 @@ public class HomeController {
 		AssetMaster assetmasternew = new AssetMaster();
 		itemlistService.savesingletxt(assetmaster.getAssetType(), "ASSETTYPE");
 		
+		
+		List<AssetService> setassetSevicetemp= new ArrayList();
+		
+		for(AssetService obj:assetmaster.getAssetService())
+		{
+			if(obj.getServiceItem() != null)
+			{
+				itemlistService.savesingletxt(obj.getServiceItem(), "ServiceItem");
+				setassetSevicetemp.add(obj);
+			}
+			
+			
+		}
+		
+		
+		assetmaster.setAssetService(setassetSevicetemp);
 		assetmasternew = assetMasterService.save(assetmaster);
 
 		Set<AssetMasterFiles> filelsnew = new LinkedHashSet<AssetMasterFiles>();
@@ -2640,11 +2682,25 @@ public class HomeController {
 		
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
+		
+		List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
+		themodel.addAttribute("ServiceItem", ServiceItem);
+		
 		themodel.addAttribute("assetFiles", filelsnew);
-		themodel.addAttribute("assetmaster", assetmaster);
+		themodel.addAttribute("assetmaster", assetmasternew);
+		themodel.addAttribute("save", "save");
 		return "asset";
 	}
-
+	
+	@PostMapping("deleteassetService")
+	@ResponseBody
+	public String deleteassetService (@RequestParam("deleteid") int deleteid)
+	{
+		 assetserviceService.deleteByid(deleteid);
+		 return "deleted";
+	}
+	
+	
 	public List<EmployeeMaster> EffectiveEmployee(List<EmployeeMaster> employeeMasterls) {
 
 		Date date = new Date();
@@ -2700,8 +2756,8 @@ public class HomeController {
 	}
 
 	@GetMapping("checkout")
-	public String checkout(Model themodel, ModelAndView themodelandview) {
-
+	public String checkout(Model themodel,@RequestParam(name="id", required=false, defaultValue="") String ids , ModelAndView themodelandview) {
+		
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
 				.filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
 		List<EmployeeMaster> EmployeeMasterobj = EffectiveEmployee(employeeMasterService.findAll());
@@ -3025,7 +3081,7 @@ public class HomeController {
 		return "assetaudit";
 	}
 
-	@GetMapping("assetservice")
+	/*@GetMapping("assetservice")
 	public String assetservice(@RequestParam("id") int id, Model themodel, ModelAndView themodelandview) {
 
 		AssetMaster AssetMasterobj = assetMasterService.findById(id);
@@ -3062,7 +3118,7 @@ public class HomeController {
 		
 		return "assetservice";
 	}
-
+*/
 	@GetMapping("insurancelist")
 	public String insurancelist(Model theModel) {
 		List<String> data = new ArrayList<String>();

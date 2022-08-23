@@ -4,6 +4,10 @@
 <!-- BEGIN: Head-->
 
 <head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -75,6 +79,8 @@ thead {
 
 tbody {
 	color: #222;
+	line-height:10px;
+	
 }
 
 
@@ -122,9 +128,11 @@ tbody>tr:hover .iconalign {
 	border-right: 1px solid #ccc;
 }
 
-table tr td{
+.table tr td{
 	
 	border-right: 1px solid #ccc;
+	padding-top:2px;
+	padding-bottom:2px;
 }
 
 
@@ -139,6 +147,8 @@ table tr td{
 	color:red;
 	font-size:20px;
 }
+
+
 </style>
 
 <body
@@ -188,19 +198,43 @@ table tr td{
 													</center>
                                                  </form>
 											</div>
-	                                        	
+	                                        
+	                                        <form th:action="@{/checkoutsave}" 
+											method="POST" class="wizard-horizontal"
+											enctype="multipart/form-data">	
 											<div class="row">
 												 <div class="col-3">
                                                        <div class="form-group">
-                                                           <label for="first-name-icon">Custodian <span class="red">*</span></label>
+                                                           <label for="first-name-icon">Branch <span class="red">*</span></label>
                                                            <div class="position-relative">
                                                                
-			                                                     <select class="select2 form-control" id="StaffID">
-			                                                        <th:block th:each="emp : ${EmployeeMasterobj}">
-			                                                        	<option th:value="${emp.empMasterid}" th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
+			                                                     <select class="select2 form-control" id="Branch" name="Branch" required>
+			                                                     	<option value="">--Select--</option>
+			                                                        <th:block th:each="emp : ${branchls}">
+			                                                        	<option th:value="${emp.id}" th:text="${emp.BRANCH_NAME}"></option>
 			                                                        </th:block>
 			                                                    </select>
                                                 
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   
+												 <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon">Custodian <span class="red">*</span>
+                                                           		<div class="Custodianloding spinner-border spinner-border-sm" role="status" style="visibility:hidden;">
+					                                              <span class="sr-only">Loading...</span>
+					                                            </div>
+                                                           </label>
+                                                           <div class="position-relative">
+                                                               
+			                                                     <select class="select2 form-control"  id="StaffID" name="StaffID" required>
+			                                                        <!-- <th:block th:each="emp : ${EmployeeMasterobj}">
+			                                                        	<option th:value="${emp.empMasterid}" th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
+			                                                        </th:block> -->
+			                                                    </select>
+                                                				
                                                               
                                                            </div>
                                                        </div>
@@ -209,91 +243,104 @@ table tr td{
                                                        <div class="form-group">
                                                            <label for="first-name-icon">Check Out Date<span class="red">*</span></label>
                                                            <div class="position-relative">
-                                                               <input type="date"  class="form-control" id="CheckOutDate" >
+                                                               <input type="date"  class="form-control" name="CheckOutDate" id="CheckOutDate" required>
                                                               
                                                            </div>
                                                        </div>
                                                    </div>
-                                                   <div class="col-6">
+                                                    <div class="col-3">
                                                        <div class="form-group">
-                                                           <label for="first-name-icon">Asset<span class="red">*</span></label>
+                                                           <label for="first-name-icon">Vendor </label>
                                                            <div class="position-relative">
-                                                                 <select class="select2 form-control" id="AssetId">
-			                                                        <th:block th:each="ass : ${AssetMasterobj}">
-			                                                        	<option th:value="${ass.AssetId}" th:text="${ass.AssetName} + '-' + ${ass.Model} + '-' + ${ass.ACondition}+ '-' + ${ass.Status}"></option>
+                                                               
+			                                                     <select class="select2 form-control" name="vendor" id="vendorls">
+			                                                     	<option value="" >-</option>
+			                                                        <th:block th:each="ven : ${vendorls}">
+			                                                        	<option th:value="${ven.vendormasterid}" th:text="${ven.Name} + ' - '+${ven.AssetType}"></option>
 			                                                        </th:block>
 			                                                    </select>
-                                                              
                                                            </div>
                                                        </div>
                                                    </div>
+                                               
                                                  </div>
                                                  <div class="row">
-												 <div class="col-3">
+												  <div class="col-6">
                                                        <div class="form-group">
                                                            <label for="first-name-icon">Status<span class="red">*</span></label>
                                                            <div class="position-relative">
-                                                               <select class="form-control" id="Status">
-			                                                        <option value="In Use">In Use</option>
-			                                                        <option value="">-</option>
-			                                                        <option value="Out For Repair">Out For Repair</option>
-																	<option value="Checked Out">Checked Out</option>
-			                                                    </select>
-                                                              
+                                                               <input type="radio" name="Status" id="radio1" value="Checked Out" required/> <label for="radio1">Checked Out </label>&nbsp;&nbsp;
+                                                               <input type="radio" name="Status" id="radio2" value="Out for repair" required/> <label for="radio2">  Out for repair</label>&nbsp;&nbsp;
+                                                               <input type="radio" name="Status" id="radio3" value="In office Use" required/> <label for="radio3">  In office Use</label>
                                                            </div>
                                                        </div>
                                                    </div>
                                                    
                                                    <div class="col-3">
                                                        <div class="form-group">
-                                                           <label for="first-name-icon">Comments<span class="red"></span></label>
+                                                           <label for="first-name-icon">Location<span class="red"></span></label>
                                                            <div class="position-relative">
-                                                               <input type="text"  class="form-control" id="Comments" >
+                                                               <input type="text"  class="form-control" id="Location" name="Location" >
                                                               
                                                            </div>
                                                        </div>
                                                    </div>
-                                                   <div>
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">&nbsp;<span class="red"></span></label>
-                                                           <div class="position-relative">
-                                                               <button type="button" id="save" class="btn btn-primary mr-1 mb-1">ADD</button>
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
+                                                   
                                                  </div>
-											
+                                                 <script> var ASSETTYPElist="<option value='' >-</option>"; 
+                                                 var rowsno;
+                                                 </script>
+											 <th:block th:each="str : ${ASSETTYPE}">
+                                               <script>
+                                               ASSETTYPElist += "<option value='[[${str}]]'>[[${str}]]</option>";
+                                               	</script>
+                                               </th:block>
                                     		
 	                                    	<hr/>
-	                                    	<form th:action="@{/checkoutsave}" 
-											method="POST" class="wizard-horizontal"
-											enctype="multipart/form-data">
+	                                    	
 	                                    	<div class="view">
 												<div class="wrapper">
-													
+													<div class="table-responsive">
 													<table class="table">
 														<thead>
 															<tr>
 																<th width="5%">S.No</th>
-																<th>CUSTODIAN</th>
-																<th>DATE</th>
-																<th>ASSET</th>
-																<th>STATUS</th>
-																
-																<th>COMMENTS</th>
+																<th>Asset Type</th>
+																<th>Asset Name</th>
+																<th>Condition</th>
+																<th>Comments</th>
 																<th></th>
 
 															</tr>
 														</thead>
 														<tbody>
-															
+															<tr th:each="selasset, stat: ${selectedasset}">
+																<td th:text="${stat.index+1}"></td>
+																<td><input type="hidden" th:value="${selasset.AssetType}" name="AssetType"/> <span th:text="${selasset.AssetType}"></span></td>
+																<td><input type="hidden" th:value="${selasset.AssetId}" name="AssetName"/> <span th:text="${selasset.AssetName}"></span></td>
+																<td><input type="hidden" th:value="${selasset.ACondition}" name="ACondition"/> <span th:text="${selasset.ACondition}"></span></td>
+																<td><input type='text' name='Comments' />
+																<td>
+																	<span id="1" class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span>
+																</td>
+																<script>  rowsno="[[${stat.index+1}]]"; </script>
+															</tr>
 															
 														</tbody>
 													</table>
-													
+													</div>
 												</div>
 											</div>
+											 <div>
+                                                  <div class="form-group">
+                                                      <label for="first-name-icon">&nbsp;<span class="red"></span></label>
+                                                      <div class="position-relative">
+                                                          <button type="button" id="addrow" class="btn btn-secondary mr-1 mb-1"><i class="bx bx-plus-circle "></i></button>
+                                                         
+                                                      </div>
+                                                  </div>
+                                              </div>  
+                                                   
 	                                    	<div align="center">
 	                                    	<br/>	<input type="checkbox" id="receipt" name="receipt" required>
 <label for="receipt"  style="color:red; font-weight:bold"> Show Receipt After Check Out</label>
@@ -357,52 +404,100 @@ table tr td{
 		
 			<script>
 			$(document).ready(function(){
-				$(document).on("click", ".filedivdelete", function() {
-					id= $(this).attr("id");
-					var AssetId=$('#AssetId'+id).val();
-					var AssetName= $("#AssetName"+id).text();
-					$('#AssetId').append("<option value='"+ AssetId +"'>"+ AssetName +"</option>");
-					$(this).closest("tr").remove();
-					
+				
+				var instockItemlist="";
+				//--------------------------------------------------------
+				$(function() {
+					var token = $("meta[name='_csrf']").attr("content");
+					var header = $("meta[name='_csrf_header']").attr("content");
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(header, token);
+					});
 				});
-				
-				
-				var sno=1;
-				
-				
-				
-				$("#save").click(function(){
+				//--------------------------------------------------------
+				$(document).on("click", ".filedivdelete", function() {
+					$(this).closest("tr").remove();
+				});
+				//--------------------------------------------------------
+				$("#Branch").change(function(){
 					
-					
-					var StaffID= $('#StaffID').val();
-					var StaffName= $('#StaffID  option:selected').text();
-					var CheckOutDate= $('#CheckOutDate').val();
-					var AssetId= $('#AssetId').val();
-					var AssetName= $('#AssetId  option:selected').text();
-					var Status= $('#Status').val();
-					
-					var Comments= $('#Comments').val();
-					
-					if(StaffID !="" && StaffName !="" && CheckOutDate !="" && AssetId !="" && AssetName !="" && Status !="" )
+					var branch = $("#Branch").val();
+					$('#StaffID').html("");
+					$('.AssetType').val("");
+					$('.assetypeinstcokitem').html("");
+					if(branch != "")
 					{
-						tempstr="<input type='hidden' id='StaffID"+ sno +"' name='StaffID' value='"+ StaffID +"'  />";
-						tempstr+="<input type='hidden' id='CheckOutDate"+ sno +"'  name='CheckOutDate' value='"+ CheckOutDate +"'  />";
-						tempstr+="<input type='hidden' id='AssetId"+ sno +"'  name='AssetId' value='"+ AssetId +"'  />";
-						tempstr+="<input type='hidden' id='Status"+ sno +"'  name='Statusx' value='"+ Status +"'  />";
-						
-						tempstr+="<input type='hidden' id='Comments"+ sno +"'  name='Comments' value='"+ Comments +"'  />";
-						
-						html="<tr><td>"+ sno +"</td><td>"+ StaffName +"</td><td>"+ CheckOutDate +"</td><td id='AssetName"+ sno +"'>"+ AssetName +" </td><td>"+ Status +"</td><td>"+ Comments +"</td><td><span id='"+ sno +"' class='cursor-pointer filedivdelete' style='float:right'>  <i class='bx bx-trash-alt'></i>   </span>"+ tempstr +"</td></tr>";
-												
-						$('.table').append(html);
-						$("#AssetId option[value='"+ AssetId +"']").remove();
-						sno=sno+1;
-					}else
-					{
-						alert("Please fill all mandatory fields");	
+						//---------------------------------
+						// Branch Details
+						var branchname = $("#Branch :Selected").text();
+						$(".Custodianloding").css("visibility","visible");
+						$('#StaffID').html("");
+						var formData = {
+								branchname : branchname					
+						}
+						$.ajax({
+							type : "POST",url : "getEmployeelistbasedonbranch",
+							data : formData,success : function(result) {
+								$('#StaffID').append(result);
+								$(".Custodianloding").css("visibility","hidden");
+							},
+							error : function(e) {
+								alert("Error" + e);
+								$(".Custodianloding").css("visibility","hidden");
+							}
+						});
+						//---------------------------------
+						// Asset Details
+						$('.assetdetails').html("");
+						var branchid = $("#Branch :Selected").val();
+						var formData = {
+								branchid : branchid					
+						}
+						$.ajax({
+							type : "POST",url : "getassetlistbasedonbranch",
+							data : formData,success : function(result) {
+								instockItemlist=result;
+							},
+							error : function(e) {
+								alert("Error" + e);
+							}
+						});						
 					}
 				});
-			
+				//-------------------------------
+				
+				$(document).on("change", ".AssetType", function() {	
+					var currid=$(this).attr('id');
+					assetypecat=$(this).val();
+					$("#assetypeinstcokitem"+ currid).html("");
+					var curstr = instockItemlist.split("~|~");
+					
+					var assetypeinstcokitem="<option value=''>-</option>";
+						for(str in curstr)
+					{
+						if(curstr[str].indexOf(assetypecat)>0)
+							{	
+								tempsplit=curstr[str].split("|~|");
+							 	assetypeinstcokitem +="<option value='"+ tempsplit[0] +"'> "+  tempsplit[2] + "</option>"; 
+							}
+					}
+					$("#assetypeinstcokitem"+ currid).append(assetypeinstcokitem);
+				});
+				//------------------------------
+				$(document).on("change", ".assetypeinstcokitem", function() {
+					var currid=$(this).attr('id');
+					var curridstr=currid.replace("assetypeinstcokitem","");
+					var assetypeinstcokitem = $("#"+ currid +" :Selected").text();
+					var tempstra= assetypeinstcokitem.split("-");
+					$(".assetypeselectedCondition" + curridstr).text(tempstra[1]);					
+				});			
+				//------------------------------
+				
+				$("#addrow").click(function(){
+					rowsno= parseInt(rowsno) +1;
+					thtml='<tr> 	<td> '+ rowsno +'	</td> 	<td> 		<select class="select form-control AssetType" id="'+ rowsno +'" name="AssetType">'+ ASSETTYPElist +'  </select> 	</td> 	<td> 		<select class="select form-control assetypeinstcokitem" id="assetypeinstcokitem'+ rowsno +'"  name="AssetName" required><option value="" >-</option></select> 	</td> 	<td> 		<input type="hidden"  name="ACondition" class="assetypeselectedCondition'+ rowsno +'"/> 		<span class="assetypeselectedCondition'+ rowsno +'"></span> 	</td> 	<td><input type="text" name="Comments" /></td> 	<td> 		<span  class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span> 	</td> </tr>';
+					$(".table").append(thtml);
+				});
 			});
 			
 			

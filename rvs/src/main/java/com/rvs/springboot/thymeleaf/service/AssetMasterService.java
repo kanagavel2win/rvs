@@ -9,6 +9,7 @@ public interface AssetMasterService {
 	public AssetMaster save(AssetMaster obj);
 	public AssetMaster findById(Integer id);
 	public List<AssetMaster> findAll();
-	public void updatetheAssetStatus(String status,int rowid);
+	public void updatetheAssetStatus(String status,int rowid, String updatetime, String StaffID);
+	public List<AssetMaster> findbyStaffID(String StaffID);
 	public int getmaxid();
 }

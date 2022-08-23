@@ -127,7 +127,7 @@ border: solid 1px #fff;
 				<div class="col-md-12"  >
 
 					<b>Check In Receipt</b><br/>
-			
+					Name : <span th:text="${printcheckinstrEmpname}" ></span><br/>
 						Assets List:<br/>
 				</div>
 	
@@ -137,7 +137,7 @@ border: solid 1px #fff;
 														<thead>
 															<tr>
 																<th class="sticky-col first-col td1">S.No</th>
-																<th class="sticky-col second-col td1">Name</th>
+																
 																<th>Asset</th>
 																<th>Brand</th>
 																<th>Model</th>
@@ -157,7 +157,7 @@ border: solid 1px #fff;
 																<td  th:text="${#strings.arraySplit(str,'|')[3]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[4]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[5]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'|')[6]}"></td>
+																
 																
 																
 															</tr>

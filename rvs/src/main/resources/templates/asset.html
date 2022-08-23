@@ -852,7 +852,7 @@ var addserviceitemsdatastr="";
 				//--------------------------------------------------------
 				
 				var maxid="[[${maxid}]]";
-				
+			
 				$(document).on("click", ".filedivdelete", function() {
 					$(this).closest("tr").remove();
 				});
@@ -897,13 +897,11 @@ var addserviceitemsdatastr="";
 				});
 				
 				$("#AssetType").change(function(){
-					//alert("2");
 					generateassetName();
 					
 				});
 				
 				$("#Branch").change(function(){
-					
 					generateassetName();
 				});
 				
@@ -913,6 +911,7 @@ var addserviceitemsdatastr="";
 					asset=$("#AssetType").val();
 					branch=$("#Branch :selected").text();
 					branchval="";
+					
 					
 					if(branch !="")
 					{
@@ -924,7 +923,6 @@ var addserviceitemsdatastr="";
 							
 							if(loopval.indexOf(branch) != -1){
 								branchval=loopval.split("/")[1];
-								
 							}
 						} 
 					}

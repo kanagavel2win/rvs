@@ -71,6 +71,12 @@ public class AssetMaster {
 	@Column
 	private String Notes;
 	
+	@Column
+	private String lastupdate;
+	
+	@Column
+	private String staffID;
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AssetId")
 	private List<AssetService> assetService;

@@ -31,8 +31,7 @@ public class CheckIn {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int CheckInID;
-	@Column
-	private String Checkoutid;
+	
 	@Column
 	private String StaffID;
 	@Column

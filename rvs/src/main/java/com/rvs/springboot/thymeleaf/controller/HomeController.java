@@ -2789,6 +2789,21 @@ public class HomeController {
 		}
 		return result;
 	}
+	
+	@PostMapping("getassetlistbasedonbranchall")
+	@ResponseBody
+	public String getassetlistbasedonbranchall(@RequestParam("branchid") String branch) {
+		String result = "";
+
+		// ------------------------------------------------------------------------------------
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		// ------------------------------------------------------------------------------------
+		for (AssetMaster obj : AssetMasterobj) {
+			result += obj.getAssetId() + "|~|" + obj.getAssetType() + "|~|" + obj.getAssetName() + "-"
+					+ obj.getACondition()+ "-"+ obj.getStatus() + "~|~";
+		}
+		return result;
+	}
 
 	@PostMapping("getEmployeelistbasedonbranch")
 	@ResponseBody
@@ -2915,6 +2930,8 @@ public class HomeController {
 		return "checkoutprint";
 	}
 
+	
+	
 	@GetMapping("checkin")
 	public String checkin(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids) {
 
@@ -2943,13 +2960,43 @@ public class HomeController {
 
 		return "checkin";
 	}
+	
+	@GetMapping("assettransfer")
+	public String assettransfer(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids) {
+
+		List<AssetMaster> assetMaster = assetMasterService.findAll();
+		List<AssetMaster> selectedasset = new ArrayList<AssetMaster>();
+		if (!ids.equalsIgnoreCase("")) {
+			String[] strarr = ids.split(",");
+
+			for (String ai : strarr) {
+				selectedasset.add(assetMaster.stream().filter(C -> C.getAssetId() == Integer.parseInt(ai))
+						.collect(Collectors.toList()).get(0));
+			}
+		}
+
+		List<AssetMaster> aobjls = selectedasset.stream().filter(C -> !(String.valueOf(C.getStaffID())).equalsIgnoreCase("null") && !(String.valueOf(C.getStaffID())).equalsIgnoreCase("")).collect(Collectors.toList());
+		EmployeeMaster emp = new EmployeeMaster();
+
+		if (aobjls.size() > 0) {
+			emp = employeeMasterService.findById(Integer.parseInt(aobjls.get(0).getStaffID()));
+
+		}
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+		themodel.addAttribute("emp", emp);
+		themodel.addAttribute("selectedasset", selectedasset);
+
+		return "assettransfer";
+	}
 
 	@ResponseBody
 	@PostMapping("getCheckoutlistfromassetMaster")
 	public String getCheckoutlistfromassetMaster(@RequestParam("StaffID") String StaffID) {
 
 		List<AssetMaster> amls = assetMasterService.findbyStaffID(StaffID);
-		System.out.println(amls);
+		
 
 		String res = "";
 		int i = 0;
@@ -3085,10 +3132,144 @@ public class HomeController {
 
 		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckinstr");
 		String printcheckinstrEmpname =  (String) request.getSession().getAttribute("printcheckinstrEmpname");
+		
 		themodel.addAttribute("printstr", printstr);
 		themodel.addAttribute("printcheckinstrEmpname", printcheckinstrEmpname);
+		
 		return "checkinprint";
 	}
+	
+	@PostMapping("assettranferprint")
+	public String assettranferprint(Model themodel, HttpSession session,
+			HttpServletRequest request) {
+
+		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckinstr");
+		String printcheckinstrEmpname =  (String) request.getSession().getAttribute("printcheckinstrEmpname");
+		String printcheckinstrEmpnameto =  (String) request.getSession().getAttribute("printcheckinstrEmpnameto");
+		themodel.addAttribute("printstr", printstr);
+		themodel.addAttribute("printcheckinstrEmpname", printcheckinstrEmpname);
+		themodel.addAttribute("printcheckinstrEmpnameto", printcheckinstrEmpnameto);
+		return "assettranferprint";
+	}
+	
+	
+	@PostMapping("assettransfersave")
+	public String assettransfersave(Model themodel, 
+			@RequestParam(name = "StaffID") String StaffID,
+			@RequestParam(name = "StaffIDto") String StaffIDto
+			, @RequestParam(name = "CheckInDate") String CheckInDate,
+			@RequestParam(name = "checkbox") boolean[] checkbox, @RequestParam(name = "AssetName") String[] AssetId,
+			@RequestParam(name = "Status") String[] Status, @RequestParam(name = "ACondition") String[] Condition,
+			@RequestParam(name = "Comments") String[] Comments,
+			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
+			HttpServletRequest request) {
+
+		List<CheckIn> objList = new ArrayList<CheckIn>();
+
+		// -----------------------------------------
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("checkinphoto");
+
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+		// -----------------------------------------
+		String sysdate = displaydatetimeFormat.format(new Date());
+		for (int i = 0; i < AssetId.length; i++) {
+			if (checkbox[i] == true) {
+				
+				CheckIn obj = new CheckIn();
+				obj.setAssetId(AssetId[i]);
+				obj.setStaffID(StaffID);
+				obj.setCheckInDate(CheckInDate);
+				obj.setStatus(Status[i]);
+				obj.setACondition(Condition[i]);
+				obj.setStaffIDto(StaffIDto);
+				obj.setStaffIDtoapproved("No");
+				
+				if (Comments.length > 0) {
+					obj.setComments(Comments[i]);
+				}
+				//assetMasterService.updatetheAssetStatus(Status[i], Integer.parseInt(AssetId[i]), sysdate, "");
+
+				if (Photo_Attach.length > 0) {
+					if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
+						Set<CheckInFiles> checkMasterfiles = new LinkedHashSet<CheckInFiles>();
+						CheckInFiles chekinfiles = new CheckInFiles();
+						StringBuilder filename = new StringBuilder();
+						String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
+						Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+						filename.append(tempfilename);
+						chekinfiles.setPhoto_Attach("checkinphoto/" + filename);
+						try {
+							Files.write(fileNameandPath, Photo_Attach[i].getBytes());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						checkMasterfiles.add(chekinfiles);
+						obj.setCheckInFiles(checkMasterfiles);
+					}
+				}
+
+				objList.add(obj);
+			}
+		}
+		ArrayList<String> printstr = new ArrayList<String>();
+
+		List<CheckIn> CheckInobj = checkinService.saveall(objList);
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+		String Empname="";
+		String Empnameto="";
+		for (CheckIn obj : CheckInobj) {
+			String str = "";
+
+			int staffid = Integer.parseInt(obj.getStaffID());
+			int assetid = Integer.parseInt(obj.getAssetId());
+			int staffidto= Integer.parseInt(obj.getStaffIDto());
+			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
+					.collect(Collectors.toList()).get(0);
+
+			EmployeeMaster empobj = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffid)
+					.collect(Collectors.toList()).get(0);
+
+			EmployeeMaster empobjto = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffidto)
+					.collect(Collectors.toList()).get(0);
+			
+			String tempstr = obj.getComments();
+			if (obj.getComments() == null) {
+				tempstr = "";
+			}
+
+			
+			str += assobj.getAssetName() + " |";
+			str += assobj.getBrand() + " |";
+			str += assobj.getModel() + " |";
+			str += assobj.getSerialNumber() + " |";
+			str += obj.getACondition() + " |";
+			str += tempstr + " |";
+
+			printstr.add(str);
+			Empname =empobj.getStaffName();
+			Empnameto =empobjto.getStaffName();
+		}
+
+		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
+				.filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
+
+		themodel.addAttribute("printstr", printstr);
+		request.getSession().setAttribute("printcheckinstrEmpname", Empname);
+		request.getSession().setAttribute("printcheckinstrEmpnameto", Empnameto);
+		request.getSession().setAttribute("printcheckinstr", printstr);
+		
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
+		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
+		return "assettransfer";
+	}
+
+
 
 	@GetMapping("assetaudit")
 	public String assetaudit(Model themodel) {

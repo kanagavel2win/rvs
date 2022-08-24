@@ -16,7 +16,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="ICC">
-<title>Check In Receipt</title>
+<title>Asset Transfer Receipt</title>
 <link rel="apple-touch-icon"
 	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
 <link rel="shortcut icon" type="image/x-icon"
@@ -125,9 +125,10 @@ border: solid 1px #fff;
 						alt="branding logo"> 	<b>RVS Land Surveyors</b>
 					</p>
 				<div class="col-md-12"  >
-						<b>Check In Receipt</b><br/>
-						Name : <span th:text="${printcheckinstrEmpname}" ></span><br/>
 					
+						<b>Asset Transfer Receipt</b><br/>
+						Name : <span th:text="${printcheckinstrEmpname}" ></span><br/>
+						Transfer To : <span th:text="${printcheckinstrEmpnameto}" ></span><br/>
 					
 					
 					

@@ -246,7 +246,7 @@
 												<div style="float:left;">
 												<button type="button" class="btn btn-primary mr-1 mb-1" id="checkout"><i class="bx bx-upload  isize"></i>  Check Out</button>
 												<button type="button" class="btn btn-warning mr-1 mb-1" id="checkin"><i class="bx bx-download isize"></i>  Check In</button>
-												<button type="button" class="btn btn-success  mr-1 mb-1" id="aaudit"><i class="bx bx-checkbox-checked isize"></i>  Audit</button>
+												<button type="button" class="btn btn-success  mr-1 mb-1" id="assettransfer"><i class="bx bx-transfer isize"></i>  Asset Transfer</button> 
 												</div>
 												
 												
@@ -411,7 +411,7 @@
 				 
 			$('#checkout').click(function(){ navigationfun("checkout"); });
 			$('#checkin').click(function(){ navigationfun("checkin"); });
-			$('#aaudit').click(function(){ navigationfun("aaudit"); });
+			$('#assettransfer').click(function(){ navigationfun("assettransfer"); });
 			
 			function navigationfun(root)
 			{
@@ -426,9 +426,57 @@
 					alert("Cart is Empty");
 				}else
 				{
-					cartid=cartid.substring(1, cartid.length) ;
+					if(root == 'checkout')
+					{
+						let allow=true;
+						var table = document.getElementById("cart");
+						for (var i = 1, row; row = table.rows[i]; i++) {
+							if(row.cells[4].innerText.trim() != "In Stock")
+							{
+								allow=false;
+							}
+						}
+						
+						if(allow)
+						{
+							cartid=cartid.substring(1, cartid.length) ;
+							window.location.href =root + '?id='+cartid;
+						}
+						else
+						{
+							alert('Selected Items should be in "In Stock".');
+						}
+						
+					}
+					else if(root == 'checkin')
+					{
+						let allow=true;
+						var table = document.getElementById("cart");
+						for (var i = 1, row; row = table.rows[i]; i++) {
+							if(row.cells[4].innerText.trim() == "In Stock")
+							{
+								allow=false;
+							}
+						}
+						
+						if(allow)
+						{
+							cartid=cartid.substring(1, cartid.length) ;
+							window.location.href =root + '?id='+cartid;
+						}
+						else
+						{
+							alert('Selected Items should be in not "In Stock".');
+						}
+						
+					}
+					else
+						{
+							cartid=cartid.substring(1, cartid.length) ;
+							window.location.href =root + '?id='+cartid;
+						}
 					
-					window.location.href =root + '?id='+cartid;
+					
 				}
 			}
 			

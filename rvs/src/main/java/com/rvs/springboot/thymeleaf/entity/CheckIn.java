@@ -44,6 +44,10 @@ public class CheckIn {
 	private String ACondition;
 	@Column
 	private String Comments;
+	@Column
+	private String StaffIDto;
+	@Column
+	private String StaffIDtoapproved;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CheckInID")

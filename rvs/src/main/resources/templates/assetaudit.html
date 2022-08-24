@@ -4,6 +4,10 @@
 <!-- BEGIN: Head-->
 
 <head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -144,8 +148,18 @@ table tr td{
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h5 class="content-header-title pr-1 mb-0">Asset Audit</h5>
-                           
+                            
+                           <h5 class="content-header-title float-left pr-1 mb-0">Asset Audit</h5>
+                            <div class="breadcrumb-wrapper col-12">
+                                <ol class="breadcrumb p-0 mb-0">
+                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="assetlist">Asset List</a>
+                                    </li>
+                                	   
+                                </ol>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -177,8 +191,9 @@ table tr td{
                                                            <div class="position-relative">
                                                                
 			                                                     <select class="select2 form-control" id="BranchID">
+			                                                     	<option value="" >-</option>
 			                                                        <th:block th:each="obj : ${branchls}">
-			                                                        	<option value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+			                                                        	<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
 																	</th:block>
 			                                                    </select>
                                                 
@@ -188,13 +203,18 @@ table tr td{
                                                    </div>
 												 <div class="col-3">
                                                        <div class="form-group">
-                                                           <label for="first-name-icon">Custodian <span class="red">*</span></label>
+                                                           <label for="first-name-icon">Custodian <span class="red">*</span>
+                                                           
+                                                           	<div class="Custodianloding spinner-border spinner-border-sm" role="status" style="visibility:hidden;">
+					                                              <span class="sr-only">Loading...</span>
+					                                            </div>
+                                                           </label>
                                                            <div class="position-relative">
                                                                
 			                                                     <select class="select2 form-control" id="StaffID">
-			                                                        <th:block th:each="emp : ${EmployeeMasterobj}">
+			                                                       <!--  <th:block th:each="emp : ${EmployeeMasterobj}">
 			                                                        	<option th:value="${emp.empMasterid}" th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
-			                                                        </th:block>
+			                                                        </th:block> -->
 			                                                    </select>
                                                 
                                                               
@@ -207,9 +227,9 @@ table tr td{
                                                            <label for="first-name-icon">Asset<span class="red">*</span></label>
                                                            <div class="position-relative">
                                                                  <select class="select2 form-control" id="AssetId">
-			                                                        <th:block th:each="ass : ${AssetMasterobj}">
+			                                                        <!-- <th:block th:each="ass : ${AssetMasterobj}">
 			                                                        	<option th:value="${ass.AssetId}" th:text="${ass.AssetName} + '-' + ${ass.Model} + '-' + ${ass.ACondition}+ '-' + ${ass.Status}"></option>
-			                                                        </th:block>
+			                                                        </th:block> -->
 			                                                    </select>
                                                               
                                                            </div>
@@ -230,8 +250,11 @@ table tr td{
                                                        <div class="form-group">
                                                            <label for="first-name-icon">Status<span class="red">*</span></label>
                                                            <div class="position-relative">
-                                                               <select class="form-control" id="Status">
+                                                               <select class="form-control Statusv1" id="Status">
 			                                                        <option value="In Stock">In Stock</option>
+			                                                        <option value="Checked Out">Checked Out</option>
+			                                                        <option value="Out for repair">Out for repair</option>
+			                                                        <option value="In office Use">In office Use</option>
 			                                                        <option value="Demaged">Demaged</option>
 			                                                        <option value="Missing">Missing</option>
 			                                                        <option value="Repair">Repair</option>			                                                        
@@ -248,7 +271,7 @@ table tr td{
                                                        <div class="form-group">
                                                            <label for="first-name-icon">Condition<span class="red">*</span></label>
                                                            <div class="position-relative">
-                                                               <select class="form-control" id="aCondition">
+                                                               <select class="form-control aConditionv2" id="aCondition">
 			                                                       <option value="Fair">Fair</option>
 																	<option value="Good">Good</option>
 																	<option value="New">New</option>
@@ -372,6 +395,7 @@ table tr td{
 		
 			<script>
 			$(document).ready(function(){
+				//--------------------------------------------------------
 				$(document).on("click", ".filedivdelete", function() {
 					id= $(this).attr("id");
 					var AssetId=$('#AssetId'+id).val();
@@ -380,8 +404,86 @@ table tr td{
 					$(this).closest("tr").remove();
 					
 				});
+				//--------------------------------------------------------
+				$(function() {
+					var token = $("meta[name='_csrf']").attr("content");
+					var header = $("meta[name='_csrf_header']").attr("content");
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(header, token);
+					});
+				});
+				//--------------------------------------------------------
+				$("#BranchID").change(function(){
+					
+					var branch = $("#BranchID").val();
+					$('#StaffID').html("");
+					$('#AssetId').html("");
+					if(branch != "")
+					{
+						//---------------------------------
+						// BranchID Details
+						var BranchIDname = $("#BranchID :Selected").text();
+						$(".Custodianloding").css("visibility","visible");
+						$('#StaffID').html("");
+						var formData = {
+								branchname : BranchIDname					
+						}
+						$.ajax({
+							type : "POST",url : "getEmployeelistbasedonbranch",
+							data : formData,success : function(result) {
+								$('#StaffID').append(result);
+								$(".Custodianloding").css("visibility","hidden");
+							},
+							error : function(e) {
+								alert("Error" + e);
+								$(".Custodianloding").css("visibility","hidden");
+							}
+						});
+						//---------------------------------
+						// Asset Details
+						 $('#AssetId').html("");
+						var BranchIDid = $("#BranchID :Selected").val();
+						var formData = {
+								branchid : BranchIDid					
+						}
+						$.ajax({
+							type : "POST",url : "getassetlistbasedonbranchall",
+							data : formData,success : function(result) {
+								
+								var curstr = result.split("~|~");
+								var assetypeinstcokitem="<option value=''>-</option>";
+								for(str in curstr)
+								{
+									tempsplit=curstr[str].split("|~|");
+									if( tempsplit != '')
+									{
+										assetypeinstcokitem +="<option value='"+ tempsplit[0] +"'> "+  tempsplit[1] + "- "+  tempsplit[2] + "</option>";	
+									}
+								 	 
+								} 
+								$("#AssetId").append(assetypeinstcokitem);
+								
+							},
+							error : function(e) {
+								alert("Error" + e);
+							}
+						});	 
+						//---------------------------------				
+					}
+				});
 				
-				
+				//--------------------------------------------------------
+				$(document).on("change", "#AssetId", function() {
+					
+					var assetname = $("#AssetId :Selected").text();
+					tempsplit=assetname.split("-");
+					var v1 =tempsplit[tempsplit.length-1].trim();
+					var v2 =tempsplit[tempsplit.length-2].trim();
+					
+					$('#aCondition').val(v2);
+					$('#Status').val(v1);
+				});
+				//--------------------------------------------------------
 				var sno=1;
 				
 				

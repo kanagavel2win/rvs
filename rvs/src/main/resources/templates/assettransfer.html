@@ -15,7 +15,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="ICC">
-<title>Check In</title>
+<title>Asset Transfer</title>
 <link rel="apple-touch-icon"
 	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
 <link rel="shortcut icon" type="image/x-icon"
@@ -141,8 +141,7 @@ tbody>tr:hover .iconalign {
 					<div class="row breadcrumbs-top">
 						<div class="col-12">
 
-							<h5 class="content-header-title float-left pr-1 mb-0">Check
-								In</h5>
+							<h5 class="content-header-title float-left pr-1 mb-0">Asset Transfer</h5>
 							<div class="breadcrumb-wrapper col-12">
 								<ol class="breadcrumb p-0 mb-0">
 									<li class="breadcrumb-item"><a href="index"><i
@@ -170,9 +169,8 @@ tbody>tr:hover .iconalign {
 									<div class="card-body">
 										<div th:if="${printstr}" class="form-group col-12">
 											<button type="button"
-												class="btn mb-1 btn-success btn-lg btn-block">Check
-												In details are saved successfully</button>
-											<form th:action="@{/checkinprint}" target="blank"
+												class="btn mb-1 btn-success btn-lg btn-block">Asset Transfer details are saved successfully</button>
+											<form th:action="@{/assettranferprint}" target="blank"
 												method="POST" class="wizard-horizontal"
 												enctype="multipart/form-data">
 
@@ -182,12 +180,12 @@ tbody>tr:hover .iconalign {
 												</center>
 											</form>
 										</div>
-										<form th:action="@{/checkinsave}" method="POST"
+										<form th:action="@{/assettransfersave}" method="POST"
 											class="wizard-horizontal" enctype="multipart/form-data">
 											<div class="row">
 												<div class="col-3">
 													<div class="form-group">
-														<label for="first-name-icon">Branch <span
+														<label for="first-name-icon">From Branch <span
 															class="red"></span></label>
 														<div class="position-relative">
 
@@ -207,7 +205,7 @@ tbody>tr:hover .iconalign {
 
 												<div class="col-3">
 													<div class="form-group">
-														<label for="first-name-icon">Custodian <span
+														<label for="first-name-icon">From Custodian <span
 															class="red">*</span>
 															<div
 																class="Custodianloding spinner-border spinner-border-sm"
@@ -225,7 +223,6 @@ tbody>tr:hover .iconalign {
 																			th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
 																	</th:block>
 																</th:block>
-
 															</select>
 
 
@@ -312,13 +309,58 @@ tbody>tr:hover .iconalign {
 													</div>
 												</div>
 											</div>
+											
+											<div class="row">
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">To Branch <span
+															class="red"></span></label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" id="Branchto"
+																name="Branchto">
+																<option value="">--Select--</option>
+																<th:block th:each="emp : ${branchls}">
+																	<option th:value="${emp.id}"
+																		th:text="${emp.BRANCH_NAME}"></option>
+																</th:block>
+															</select>
+
+
+														</div>
+													</div>
+												</div>
+
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">To Custodian <span
+															class="red">*</span>
+															<div
+																class="Custodianlodingto spinner-border spinner-border-sm"
+																role="status" style="visibility: hidden;">
+																<span class="sr-only">Loading...</span>
+															</div>
+														</label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" id="StaffIDto"
+																name="StaffIDto" required>
+																
+															</select>
+
+
+														</div>
+													</div>
+												</div>
+											</div>
 											<div align="center">
+											
+											
 												<br /> <input type="checkbox" id="receipt" name="receipt"
 													required> <label for="receipt"
 													style="color: red; font-weight: bold"> Show Receipt
-													After Check In</label> <br />
-												<button type="submit" class="btn btn-primary mr-1 mb-1">Check
-													In</button>
+													After Asset Transfer</label> <br />
+												<button type="submit" class="btn btn-primary mr-1 mb-1">Transfer</button>
 											</div>
 										</form>
 									</div>
@@ -493,6 +535,60 @@ tbody>tr:hover .iconalign {
 												}
 												//---------------------------------
 
+											});
+							//--------------------------------------------------------
+							$("#Branchto")
+									.change(
+											function() {
+
+												var branch = $("#Branchto").val();
+												$('#StaffIDto').html("");
+
+												if (branch != "") {
+													//---------------------------------
+													// Branch Details
+													var branchname = $(
+															"#Branchto :Selected")
+															.text();
+													$(".Custodianlodingto").css(
+															"visibility",
+															"visible");
+													$('#StaffIDto').html("");
+													var formData = {
+														branchname : branchname
+													}
+													$
+															.ajax({
+																type : "POST",
+																url : "getEmployeelistbasedonbranch",
+																data : formData,
+																success : function(
+																		result) {
+
+																	$(
+																			'#StaffIDto')
+																			.append(
+																					result);
+																	$(
+																			".Custodianlodingto")
+																			.css(
+																					"visibility",
+																					"hidden");
+																},
+																error : function(
+																		e) {
+																	alert("Error"
+																			+ e);
+																	$(
+																			".Custodianlodingto")
+																			.css(
+																					"visibility",
+																					"hidden");
+																}
+															});
+													//---------------------------------
+													
+												}
 											});
 							//-------------------------------
 						});

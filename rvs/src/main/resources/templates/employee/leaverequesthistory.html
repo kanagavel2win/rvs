@@ -4,6 +4,10 @@
 <!-- BEGIN: Head-->
 
 <head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -81,6 +85,10 @@
 	 padding-top:10%;
 	 font-size:20px;
 	 width: 100px;
+	}
+	.canceltherequest
+	{
+		cursor:pointer;
 	}
 </style>
 
@@ -176,11 +184,26 @@
 		                                                            <span class="chip-text">Rejected</span>
 		                                                        </div>
 		                                                    </div>
-		                                                    <div th:if="${obj.status == 'Pending'}" class="chip chip-warning mr-1">
+		                                                    <div th:if="${obj.status == 'Pending'}" th:class="'canceltherequestdiv' + ${obj.id} + ' chip chip-warning mr-1'">
 		                                                        <div class="chip-body">
 		                                                            <span class="chip-text">Pending</span>
 		                                                        </div>
+		                                                        
 		                                                    </div>
+		                                                    <div th:if="${obj.status == 'Pending'}" th:class="'canceltherequestdiv1' + ${obj.id} + ' chip chip-secondary mr-1'">
+		                                                        <div class="chip-body canceltherequest" th:id="${obj.id}">
+		                                                            <span class="chip-text">Cancel the Request</span>
+		                                                        </div>
+		                                                        
+		                                                    </div>
+		                                                    
+		                                                    <div th:if="${obj.status == 'Cancelled'}" class="chip chip-secondary mr-1">
+		                                                        <div class="chip-body">
+		                                                            <span class="chip-text">Cancelled</span>
+		                                                        </div>
+		                                                        
+		                                                    </div>
+		                                                    
                                                         	  <span class="chip-text" th:text="${obj.approvercomments}"></span>
 		                                                          
                                                         </td>
@@ -263,6 +286,43 @@
 		<script
 			th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
 		<!-- END: Page JS-->
+		<script>
+		$(document).ready(
+				function() {
+					//--------------------------------------------------------
+					$(function() {
+						var token = $("meta[name='_csrf']").attr("content");
+						var header = $("meta[name='_csrf_header']").attr("content");
+						$(document).ajaxSend(function(e, xhr, options) {
+							xhr.setRequestHeader(header, token);
+						});
+					});
+					//--------------------------------------------------------
+					$('.canceltherequest').click(function(){
+						if(confirm("Are you sure to cancel this request?"))
+							{
+								var cancelid = $(this).attr("id");
+								
+								var formData = {
+										cancelid : cancelid										
+								}
+								$.ajax({
+									type : "POST",url : "requestcancelled",
+									data : formData,success : function(result) {
+										$(".canceltherequestdiv1"+cancelid).hide();
+										$(".canceltherequestdiv"+cancelid).html(' <div class="chip-body"><span class="chip-text">Cancelled</span></div>');
+										
+									},
+									error : function(e) {
+										$('#modeljqueryresult').text("Error" + e);
+									}
+								});
+								
+							}
+					});
+					
+				});
+		</script>
 </body>
 <!-- END: Body-->
 

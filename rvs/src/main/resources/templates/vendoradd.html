@@ -270,7 +270,7 @@
 												
 												<div class="col-md-6">
 													<div class="form-group">
-														<label for="email-id-icon">Asset Type
+														<label for="email-id-icon">Vendor Type
 														</label>
 														<label
 															class="emptitle additem" name="addAssetTypedata"><i
@@ -435,9 +435,23 @@
 
 														<div class="position-relative has-icon-left">
 															<input type="text" class="form-control uppercase "
-																placeholder="TIN"
-																th:value="${vendormaster['TIN']}"
-																th:field="*{TIN}"  />
+																placeholder="TAN"
+																th:value="${vendormaster['TAN']}"
+																th:field="*{TAN}"  />
+															<div class="form-control-position">
+																<i class="bx bxs-bookmark-star"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="text" class="form-control uppercase "
+																placeholder="PAN"
+																th:value="${vendormaster['PAN']}"
+																th:field="*{PAN}"  />
 															<div class="form-control-position">
 																<i class="bx bxs-bookmark-star"></i>
 															</div>

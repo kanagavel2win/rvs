@@ -10,6 +10,7 @@ public interface AssetMasterService {
 	public AssetMaster findById(Integer id);
 	public List<AssetMaster> findAll();
 	public void updatetheAssetStatus(String status,int rowid, String updatetime, String StaffID);
+	public void updatetheAssetStatus(String status,int rowid, String updatetime, String StaffID,String Condition);
 	public List<AssetMaster> findbyStaffID(String StaffID);
 	public int getmaxid();
 }

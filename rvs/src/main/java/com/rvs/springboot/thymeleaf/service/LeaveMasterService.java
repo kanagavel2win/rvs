@@ -14,4 +14,5 @@ public interface LeaveMasterService {
 	public List<LeaveMaster> findAll();
 	public void deleteByid(int id);
 	public List<Map<String, Object>> findByDates(String startdate, String enddate);
+	public List<Map<String, Object>> findByDatesEmpid(int empid,String startdate, String enddate);
 }

@@ -144,7 +144,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Employee photo</th>
-                                                        <th>#</th>
+                                                        <th>ID</th>
                                                         <th>Name</th>
                                                         <th>Job Title</th>
                                                         <th>Employment Status</th>  
@@ -156,13 +156,14 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                	<tr th:each="emp,stat : ${emplist}">
+                                                <th:block th:each="emp,stat : ${emplist}">
+                                                	<tr th:unless="${#strings.arraySplit(emp,'|')[3]} == 'Terminated'">
 													   <td >
 													         <div class="avatar mr-1 avatar-xl">
 					                                            <img  th:src="${#strings.arraySplit(emp,'|')[1] }" alt="avtar img holder">
 					                                       	 </div>
 									                   </td> 	
-													   <td><a th:href="'createpwd?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${stat.index+1}"></a></td>
+													   <td><a th:href="'createpwd?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text=" ${#strings.arraySplit(emp,'|')[2]}"></a></td>
 													   <td><a th:href="'emp?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${#strings.arraySplit(emp,'|')[0] }" title="Edit Profile"></a></td>
 													   <td th:if="${#strings.arraySplit(emp,'|')[4] }==' '"><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}" title="Edit Job details">Empty</a></td>
 													   <td th:unless="${#strings.arraySplit(emp,'|')[4] }==' '"><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${#strings.arraySplit(emp,'|')[4] }"  title="Edit Job details"></a></td>
@@ -172,12 +173,81 @@
 													   <td th:text="${#strings.arraySplit(emp,'|')[6] }"></td>
 													   
 													</tr>
-													
+												</th:block>		
                                                 </tbody>
                                                 <tfoot>
                                                      <tr>
                                                         <th>Employee photo</th>
-                                                        <th>#</th>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Job Title</th>
+                                                        <th>Employment Status</th>  
+                                                        <th>Location</th>
+                                                        <th>Hire Date</th>                                                                                                        
+                                                        
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!--/ Zero configuration table -->               
+
+ <!-- Zero configuration table -->
+ 				<button type="button" class="btn btn-primary mr-1 mb-1 showterminatedemplist">Show Terminated Employee List</button>
+                <section id="basic-datatable " >
+                    <div class="row showterminatedemplistdiv" style="visibility:hidden">
+                        <div class="col-12">
+                        	
+                            <div class="card">
+                                
+                                <div class="card-content">
+                                    <div class="card-body card-dashboard">
+                                        <button type="button" class="btn btn-light-secondary mr-1 mb-1 showterminatedemplistclose" style="float:right"><i class="bx bx-x-circle"></i></button>
+                                        <div class="table-responsive">
+                                            <table class="table zero-configuration">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Employee photo</th>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Job Title</th>
+                                                        <th>Employment Status</th>  
+                                                        <th>Location</th>
+                                                        <th width="15%">Hire_Date</th>
+                                                        
+                                                        
+	
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <th:block th:each="emp,stat : ${emplist}">
+                                                	<tr th:if="${#strings.arraySplit(emp,'|')[3]} == 'Terminated'">
+													   <td >
+													         <div class="avatar mr-1 avatar-xl">
+					                                            <img  th:src="${#strings.arraySplit(emp,'|')[1] }" alt="avtar img holder">
+					                                       	 </div>
+									                   </td> 	
+													   <td><a th:href="'createpwd?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text=" ${#strings.arraySplit(emp,'|')[2]}"></a></td>
+													   <td><a th:href="'emp?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${#strings.arraySplit(emp,'|')[0] }" title="Edit Profile"></a></td>
+													   <td th:if="${#strings.arraySplit(emp,'|')[4] }==' '"><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}" title="Edit Job details">Empty</a></td>
+													   <td th:unless="${#strings.arraySplit(emp,'|')[4] }==' '"><a th:href="'empjob?id=' + ${#strings.arraySplit(emp,'|')[2]}" th:text="${#strings.arraySplit(emp,'|')[4] }"  title="Edit Job details"></a></td>
+													   
+													   <td th:text="${#strings.arraySplit(emp,'|')[3] }"></td>
+													   <td th:text="${#strings.arraySplit(emp,'|')[5] }"></td>
+													   <td th:text="${#strings.arraySplit(emp,'|')[6] }"></td>
+													   
+													</tr>
+												</th:block>		
+                                                </tbody>
+                                                <tfoot>
+                                                     <tr>
+                                                        <th>Employee photo</th>
+                                                        <th>ID</th>
                                                         <th>Name</th>
                                                         <th>Job Title</th>
                                                         <th>Employment Status</th>  
@@ -250,6 +320,20 @@
 		<script
 			th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
 		<!-- END: Page JS-->
+		
+		<script>
+		$(document).ready(function(){
+			$(".showterminatedemplist").click(function(){
+				$(".showterminatedemplistdiv").css("visibility","visible");
+			});
+			$(".showterminatedemplistclose").click(function(){
+				$(".showterminatedemplistdiv").css("visibility","hidden");
+			});
+			
+		});
+			
+		
+		</script>
 </body>
 <!-- END: Body-->
 

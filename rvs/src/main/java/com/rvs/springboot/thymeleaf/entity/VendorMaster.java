@@ -55,7 +55,10 @@ public class VendorMaster {
 	@Column
 	private String GST;
 	@Column
-	private String TIN;
+	private String TAN;
+	@Column
+	private String PAN;
+	
 	@Column
 	private String Website;
 	

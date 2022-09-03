@@ -2,14 +2,12 @@ package com.rvs.springboot.thymeleaf.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
@@ -115,19 +114,58 @@ public class EmployeeController {
 			HttpSession session, HttpServletRequest request) {
 
 		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
-		leaveMasterobj.setStatus("Pending");
-		leaveMasterobj.setEmpid(empid);
-		LeaveMaster leaveMasterobjtemp = leaveMasterService.save(leaveMasterobj);
+		List<Map<String, Object>> history = leaveMasterService.findByDatesEmpid(empid, leaveMasterobj.getFromadate(),
+				leaveMasterobj.getTodate());
 
+		if (history.size() == 0) {
+			leaveMasterobj.setStatus("Pending");
+			leaveMasterobj.setEmpid(empid);
+			LeaveMaster leaveMasterobjtemp = leaveMasterService.save(leaveMasterobj);
+			theModel.addAttribute("leavemaster", leaveMasterobjtemp);
+			theModel.addAttribute("save", "save");
+		}else
+		{
+			if(leaveMasterobj.isHalfday())
+			{
+				if (history.size() == 1) {
+					leaveMasterobj.setStatus("Pending");
+					leaveMasterobj.setEmpid(empid);
+					LeaveMaster leaveMasterobjtemp = leaveMasterService.save(leaveMasterobj);
+					theModel.addAttribute("leavemaster", leaveMasterobjtemp);
+					theModel.addAttribute("save", "save");
+				}else
+				{
+					theModel.addAttribute("leavemaster", leaveMasterobj);
+					theModel.addAttribute("historyerror", "historyerror");	
+				}
+								
+			}else
+			{
+				theModel.addAttribute("leavemaster", leaveMasterobj);
+				theModel.addAttribute("historyerror", "historyerror");	
+			}
+			
+			
+		}
 		List<LeaveMaster> leaveMasterlist = leaveMasterService.findByEmpid(empid);
 		Collections.sort(leaveMasterlist, Collections.reverseOrder());
 
-		theModel.addAttribute("leavemaster", leaveMasterobjtemp);
+		
 		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
-		theModel.addAttribute("save", "save");
+		
 		return "employee/leaverequest";
 	}
-
+	
+	@PostMapping("requestcancelled")
+	@ResponseBody
+	public String requestcancelled(@RequestParam("cancelid") int id)
+	{
+		LeaveMaster obj = leaveMasterService.findById(id);
+		obj.setStatus("Cancelled");
+		leaveMasterService.save(obj);
+		
+		return "Success";
+	}
 	@GetMapping("leavereqlist")
 	public String leavereqlist(Model theModel, HttpSession session, HttpServletRequest request) {
 
@@ -284,16 +322,18 @@ public class EmployeeController {
 	public String payslipview(Model themodel, @RequestParam("p") int payid) {
 
 		payslip payslip = paySlipService.findById(payid);
-		
-		String Str=this.theMonth(Integer.parseInt(String.valueOf(payslip.getPaymonth()).substring(4, 6))).toUpperCase() + " " +String.valueOf(payslip.getPaymonth()).substring(0, 4);
-			
+
+		String Str = this.theMonth(Integer.parseInt(String.valueOf(payslip.getPaymonth()).substring(4, 6)))
+				.toUpperCase() + " " + String.valueOf(payslip.getPaymonth()).substring(0, 4);
+
 		themodel.addAttribute("payslip", payslip);
 		themodel.addAttribute("monthtext", Str);
 		return "employee/payslipview";
 	}
 
-	public  String theMonth(int month){
-	    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-	    return monthNames[month-1];
+	public String theMonth(int month) {
+		String[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+				"October", "November", "December" };
+		return monthNames[month - 1];
 	}
 }

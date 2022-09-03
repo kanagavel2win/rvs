@@ -64,10 +64,20 @@ public class LeaveMasterImp implements LeaveMasterService {
 	@Override
 	public List<Map<String, Object>> findByDates(String startdate, String enddate) {
 
-		String sql = "SELECT lm.*,COALESCE(em.staff_name,'') as empname ,COALESCE(appem.staff_name,'') as approvername FROM leavemaster as lm  left  join employeemaster as em on em.emp_masterid = lm.empid left join  employeemaster  as appem on appem.emp_masterid = lm.approver WHERE "
+		String sql = "SELECT lm.*,COALESCE(em.staff_name,'') as empname ,COALESCE(appem.staff_name,'') as approvername FROM leavemaster as lm  left  join employeemaster as em on em.emp_masterid = lm.empid left join  employeemaster  as appem on appem.emp_masterid = lm.approver WHERE lm.status not in ('Cancelled') and "
 				+ "STR_TO_DATE(lm.fromadate,'%Y-%m-%d') >= '" + startdate
 				+ "' and  STR_TO_DATE(lm.todate,'%Y-%m-%d') <= '" + enddate + "'";
 
+		List<Map<String, Object>> lmhs = jdbctemplate.queryForList(sql);
+
+		return lmhs;
+	}
+
+	@Override
+	public List<Map<String, Object>> findByDatesEmpid(int empid, String startdate, String enddate) {
+		
+		String sql ="SELECT lm.* FROM leavemaster as lm  WHERE lm.empid="+ empid + " and lm.status in ('Pending','Approved') and (( STR_TO_DATE(lm.fromadate,'%Y-%m-%d') <= '"+ startdate +"' and  STR_TO_DATE(lm.todate,'%Y-%m-%d') >= '"+ startdate + "') or ( STR_TO_DATE(lm.fromadate,'%Y-%m-%d') <= '"+ enddate +"' and  STR_TO_DATE(lm.todate,'%Y-%m-%d') >= '"+ enddate +"'))";
+		
 		List<Map<String, Object>> lmhs = jdbctemplate.queryForList(sql);
 
 		return lmhs;

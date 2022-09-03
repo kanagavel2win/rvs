@@ -57,10 +57,18 @@ public class AssetMasterImp implements AssetMasterService {
 	}
 
 	@Override
+	public void updatetheAssetStatus(String status, int rowid, String updatetime,String StaffID, String acondition) {
+
+		String sql = "UPDATE `assetmaster` SET status='" + status +"' , lastupdate='"+ updatetime + "',StaffID='"+ StaffID +"',acondition='"+ acondition +"' WHERE asset_id="+rowid;
+
+		 jdbctemplate.execute(sql);
+	}
+
+	@Override
 	public int getmaxid() {
 		
 		
-		return jdbctemplate.queryForObject("select max(asset_id) maxid from assetmaster", Integer.class);
+		return jdbctemplate.queryForObject("select IFNULL(max(asset_id),1) maxid from assetmaster", Integer.class);
 		
 	}
 

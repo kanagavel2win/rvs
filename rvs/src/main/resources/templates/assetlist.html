@@ -113,13 +113,12 @@
 #cartcount {
 	text-align: center;
 	position: absolute;
-	
 	right: 102px;
 	top: -6px;
 	padding: 20px;
 	width: 70px;
 	z-index: 10;
-	cursor:pointer;
+	cursor: pointer;
 }
 
 .bx-shopping-bag {
@@ -128,16 +127,16 @@
 	right: 110px;
 	top: -10px;
 	z-index: 9;
-	cursor:pointer;
+	cursor: pointer;
 }
 
 .carttotallabelcount {
 	float: left
 }
-.isize
-{
-	font-size:25px;
-	line-height:0px;
+
+.isize {
+	font-size: 25px;
+	line-height: 0px;
 	vertical-align: middle;
 }
 </style>
@@ -178,16 +177,15 @@
 
 
 								</ol>
-								<a href="assetnew" class="addnewVendor" style="vertical-align: middle"><button
-										type="button" class="btn btn-warning mr-1 mb-1"><i class="bx bx-plus-circle "></i>  New </button></a>
-										
-										
-
-								<span data-toggle="modal" data-target="#exampleModalScrollable">
-									<i class="bx bx-shopping-bag"></i> <span id="cartcount">
-										0</span>
+								<a href="assetnew" class="addnewVendor"
+									style="vertical-align: middle"><button type="button"
+										class="btn btn-warning mr-1 mb-1">
+										<i class="bx bx-plus-circle "></i> New
+									</button></a> <span data-toggle="modal"
+									data-target="#exampleModalScrollable"> <i
+									class="bx bx-shopping-bag"></i> <span id="cartcount"> 0</span>
 								</span>
-								
+
 							</div>
 						</div>
 
@@ -201,7 +199,7 @@
 				<section id="basic-datatable">
 					<div class="row">
 						<div class="col-12">
-							
+
 							<div class="col-md-6 col-12">
 
 								<!-- Button trigger for scrolling content modal -->
@@ -217,7 +215,7 @@
 										<div class="modal-content">
 											<div class="modal-header">
 												<h5 class="modal-title" id="exampleModalScrollableTitle">Selected
-													Items </h5>
+													Items</h5>
 												<button type="button" class="close" data-dismiss="modal"
 													aria-label="Close">
 													<i class="bx bx-x"></i>
@@ -243,15 +241,24 @@
 											</div>
 
 											<div class="modal-footer">
-												<div style="float:left;">
-												<button type="button" class="btn btn-primary mr-1 mb-1" id="checkout"><i class="bx bx-upload  isize"></i>  Check Out</button>
-												<button type="button" class="btn btn-warning mr-1 mb-1" id="checkin"><i class="bx bx-download isize"></i>  Check In</button>
-												<button type="button" class="btn btn-success  mr-1 mb-1" id="assettransfer"><i class="bx bx-transfer isize"></i>  Asset Transfer</button> 
+												<div style="float: left;">
+													<button type="button" class="btn btn-primary mr-1 mb-1"
+														id="checkout">
+														<i class="bx bx-upload  isize"></i> Check Out
+													</button>
+													<button type="button" class="btn btn-warning mr-1 mb-1"
+														id="checkin">
+														<i class="bx bx-download isize"></i> Check In
+													</button>
+													<button type="button" class="btn btn-success  mr-1 mb-1"
+														id="assettransfer">
+														<i class="bx bx-transfer isize"></i> Asset Transfer
+													</button>
 												</div>
-												
-												
-												<span class="carttotallabelcount"><b>Total Label
-														Count - <span id="totalcartval"> Nos
+
+
+												<span class="carttotallabelcount"><b>Total Item
+														Count - <span id="totalcartval"> Nos 
 												</b></span> </span>
 
 												<button type="button" class="btn btn-light-secondary"
@@ -262,9 +269,9 @@
 												<!-- <button id="createjobcard"
 													class="btn btn-primary glow invoice-create" role="button"
 													aria-pressed="true" data-dismiss="modal">Next</button> -->
-												
-												
-													
+
+
+
 											</div>
 										</div>
 									</div>
@@ -295,10 +302,13 @@
 												</thead>
 												<tbody>
 													<th:block th:each="asset,stat : ${assetlist}">
-														<tr th:class="'srctble' + ${#strings.arraySplit(asset,'|')[0]}">
-	
-															 <td>
-																<button type='button'  class='btn btn-icon btn-light-primary mr-1 mb-1 addtocart' th:id="${#strings.arraySplit(asset,'|')[0]}">ADD</button>
+														<tr
+															th:class="'srctble' + ${#strings.arraySplit(asset,'|')[0]}">
+
+															<td>
+																<button type='button'
+																	class='btn btn-icon btn-light-primary mr-1 mb-1 addtocart'
+																	th:id="${#strings.arraySplit(asset,'|')[0]}">ADD</button>
 															</td>
 															<td><span
 																th:text="${#strings.arraySplit(asset,'|')[2] }"></span></td>
@@ -306,8 +316,8 @@
 																th:href="'asset?id=' + ${#strings.arraySplit(asset,'|')[0]}"
 																th:text="${#strings.arraySplit(asset,'|')[1] }"
 																title="Edit Asset"></a></td>
-	
-	
+
+
 															<td th:utext="${#strings.arraySplit(asset,'|')[3] }"></td>
 															<td th:utext="${#strings.arraySplit(asset,'|')[4] }"></td>
 															<td th:utext="${#strings.arraySplit(asset,'|')[5] }"></td>
@@ -395,145 +405,209 @@
 	<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
 	<!-- END: Page JS-->
 	<script>
-		$(document).ready(function(){
-			
-			var carid ='';
-			
-			if(carid!="")
-			{
-				var a = carid.split(",");
-				for (i in a) {
-					var currentRow=$('#'+a[i]).closest("tr"); 
-					currentRow.hide();
-				}
-				
-			}	 
-				 
-			$('#checkout').click(function(){ navigationfun("checkout"); });
-			$('#checkin').click(function(){ navigationfun("checkin"); });
-			$('#assettransfer').click(function(){ navigationfun("assettransfer"); });
-			
-			function navigationfun(root)
-			{
-				var cartid="";
-				
-				$('.removefromcart').each(function(index) {
-					cartid=cartid+","+($(this).attr('name'));
-				  });
-				
-				if(cartid=="")
-				{
-					alert("Cart is Empty");
-				}else
-				{
-					if(root == 'checkout')
-					{
-						let allow=true;
-						var table = document.getElementById("cart");
-						for (var i = 1, row; row = table.rows[i]; i++) {
-							if(row.cells[4].innerText.trim() != "In Stock")
-							{
-								allow=false;
-							}
-						}
-						
-						if(allow)
-						{
-							cartid=cartid.substring(1, cartid.length) ;
-							window.location.href =root + '?id='+cartid;
-						}
-						else
-						{
-							alert('Selected Items should be in "In Stock".');
-						}
-						
-					}
-					else if(root == 'checkin')
-					{
-						let allow=true;
-						var table = document.getElementById("cart");
-						for (var i = 1, row; row = table.rows[i]; i++) {
-							if(row.cells[4].innerText.trim() == "In Stock")
-							{
-								allow=false;
-							}
-						}
-						
-						if(allow)
-						{
-							cartid=cartid.substring(1, cartid.length) ;
-							window.location.href =root + '?id='+cartid;
-						}
-						else
-						{
-							alert('Selected Items should be in not "In Stock".');
-						}
-						
-					}
-					else
-						{
-							cartid=cartid.substring(1, cartid.length) ;
-							window.location.href =root + '?id='+cartid;
-						}
-					
-					
-				}
-			}
-			
-			$(document).on( "click", ".addtocart", function() {
-				
-				$(this).hide();
-				var addcartid=$(this).attr('id');
-				var currentRow=$(this).closest("tr"); 
-				var col1=currentRow.find("td:eq(1)").html();
-				 var col2=currentRow.find("td:eq(2)").html();
-				 var col3=currentRow.find("td:eq(3)").html();
-				 var col4=currentRow.find("td:eq(4)").html();
-				 var col5=currentRow.find("td:eq(5)").html();
-				 var col6=currentRow.find("td:eq(6)").html();
-				 
-				 var data=col1+"\n"+col2+"\n"+col3+"\n"+col4+"\n"+col5;
-				 
-				 $('#cart > tbody:last-child').append("<tr><td><button type='button' name='"+addcartid+"' class='btn btn-icon btn-light-danger mr-1 mb-1 removefromcart'><i class='bx bx-trash'></i></button></td><td>"+col1+"</td><td>"+col2+"</td><td>"+col3+"</td><td>"+col4+"</td><td>"+col5+"</td><td>"+col6+"</td></tr>");
-				 currentRow.fadeTo("slow",0.7, function(){
-					currentRow.fadeOut();
-					currentRow.hide();
-				 });
-				cartcount();
-				
-			});
-			
-			$(document).on( "click", "td > button", function() {
-			  var removecartid=$(this).attr('name');
-			  if(removecartid!=undefined)
-			  {
-				  var currentRow=$(this).closest("tr"); 
-				  currentRow.remove();
-				  $('.srctble'+removecartid).fadeTo("slow",1, function(){
-					$('.srctble'+removecartid).fadeIn();
-					$('.srctble'+removecartid).show();
-					$('#'+removecartid).show();
-				});
-				cartcount();
-			  }
-			  
-			});
-			
-			function cartcount(){
-				var count=0;
-				$('.removefromcart').each(function(index) {
-					count++;
-				  });
-				$('#cartcount').text(count);
-				
-				$('#totalcartval').text(count);
-			}
-			cartcount();
-			
-			 
-		});
+		$(document)
+				.ready(
+						function() {
 
+							var carid = '';
 
+							if (carid != "") {
+								var a = carid.split(",");
+								for (i in a) {
+									var currentRow = $('#' + a[i])
+											.closest("tr");
+									currentRow.hide();
+								}
+
+							}
+
+							$('#checkout').click(function() {
+								navigationfun("checkout");
+							});
+							$('#checkin').click(function() {
+								navigationfun("checkin");
+							});
+							$('#assettransfer').click(function() {
+								navigationfun("assettransfer");
+							});
+
+							function navigationfun(root) {
+								var cartid = "";
+
+								$('.removefromcart').each(
+										function(index) {
+											cartid = cartid + ","
+													+ ($(this).attr('name'));
+										});
+
+								if (cartid == "") {
+									alert("Cart is Empty");
+								} else {
+									if (root == 'checkout') {
+										let allow = true;
+										var table = document
+												.getElementById("cart");
+										for (var i = 1, row; row = table.rows[i]; i++) {
+											if (row.cells[4].innerText.trim() != "In Stock") {
+												allow = false;
+											}
+										}
+
+										if (allow) {
+											cartid = cartid.substring(1,
+													cartid.length);
+											window.location.href = root
+													+ '?id=' + cartid;
+										} else {
+											alert('Selected Items should be in "In Stock".');
+										}
+
+									} else if (root == 'checkin') {
+										let allow = true;
+										let callow = true;
+										oldval = "";
+										var table = document
+												.getElementById("cart");
+										for (var i = 1, row; row = table.rows[i]; i++) {
+											if (i == 1) {
+												oldval = row.cells[5].innerText
+														.trim();
+											}
+											if (row.cells[4].innerText.trim() == "In Stock") {
+												allow = false;
+											}
+											
+												if (oldval == row.cells[5].innerText.trim()) {
+													oldval = row.cells[5].innerText.trim();
+												}else
+												{
+													callow = false;
+												}
+											
+										}
+
+										if (allow) {
+											if (callow) {
+											cartid = cartid.substring(1,
+													cartid.length);
+											window.location.href = root
+													+ '?id=' + cartid;
+											} else {
+												alert('Custodian getting differ please check it');
+											}
+										} else {
+											alert('Selected Items should be in not "In Stock".');
+										}
+
+									} else {
+										cartid = cartid.substring(1,
+												cartid.length);
+										window.location.href = root + '?id='
+												+ cartid;
+									}
+
+								}
+							}
+
+							$(document)
+									.on(
+											"click",
+											".addtocart",
+											function() {
+
+												$(this).hide();
+												var addcartid = $(this).attr(
+														'id');
+												var currentRow = $(this)
+														.closest("tr");
+												var col1 = currentRow.find(
+														"td:eq(1)").html();
+												var col2 = currentRow.find(
+														"td:eq(2)").html();
+												var col3 = currentRow.find(
+														"td:eq(3)").html();
+												var col4 = currentRow.find(
+														"td:eq(4)").html();
+												var col5 = currentRow.find(
+														"td:eq(5)").html();
+												var col6 = currentRow.find(
+														"td:eq(6)").html();
+
+												var data = col1 + "\n" + col2
+														+ "\n" + col3 + "\n"
+														+ col4 + "\n" + col5;
+
+												$('#cart > tbody:last-child')
+														.append(
+																"<tr><td><button type='button' name='"+addcartid+"' class='btn btn-icon btn-light-danger mr-1 mb-1 removefromcart'><i class='bx bx-trash'></i></button></td><td>"
+																		+ col1
+																		+ "</td><td>"
+																		+ col2
+																		+ "</td><td>"
+																		+ col3
+																		+ "</td><td>"
+																		+ col4
+																		+ "</td><td>"
+																		+ col5
+																		+ "</td><td>"
+																		+ col6
+																		+ "</td></tr>");
+												currentRow.fadeTo("slow", 0.7,
+														function() {
+															currentRow
+																	.fadeOut();
+															currentRow.hide();
+														});
+												cartcount();
+
+											});
+
+							$(document)
+									.on(
+											"click",
+											"td > button",
+											function() {
+												var removecartid = $(this)
+														.attr('name');
+												if (removecartid != undefined) {
+													var currentRow = $(this)
+															.closest("tr");
+													currentRow.remove();
+													$('.srctble' + removecartid)
+															.fadeTo(
+																	"slow",
+																	1,
+																	function() {
+																		$(
+																				'.srctble'
+																						+ removecartid)
+																				.fadeIn();
+																		$(
+																				'.srctble'
+																						+ removecartid)
+																				.show();
+																		$(
+																				'#'
+																						+ removecartid)
+																				.show();
+																	});
+													cartcount();
+												}
+
+											});
+
+							function cartcount() {
+								var count = 0;
+								$('.removefromcart').each(function(index) {
+									count++;
+								});
+								$('#cartcount').text(count);
+
+								$('#totalcartval').text(count);
+							}
+							cartcount();
+
+						});
 	</script>
 </body>
 <!-- END: Body-->

@@ -111,8 +111,13 @@
 												Leave request has been raised
 												</button>
 											</div>
+											<div th:if="${historyerror}" class="form-group col-12">
+												<button type="button" class="btn mb-1 btn-danger btn-lg btn-block">
+												Already Leave request has been raised. Please check it 
+												</button>
+											</div>
 							            
-	                                        <form th:unless="${save}" th:action="@{leaverequest}" th:object="${leavemaster}" method="POST" class="form form-vertical"
+	                                        <form th:unless="${save}" th:action="@{leaverequest}" th:object="${leavemaster}" id="leavemasterform" method="POST" class="form form-vertical"
 											enctype="multipart/form-data">
 	                                            <div class="form-body">
 	                                                <div class="row">
@@ -133,7 +138,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">From Date</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="date"  th:field="*{fromadate}" class="form-control"  required/>
+	                                                                <input type="date" id="fromadate"  th:field="*{fromadate}" class="form-control"  required/>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-calendar-plus"></i>
 	                                                                </div>
@@ -145,7 +150,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="first-name-icon">To Date</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="date"  th:field="*{todate}" class="form-control" required/>
+	                                                                <input type="date"  id="todate" th:field="*{todate}" class="form-control" required/>
 	                                                                <div class="form-control-position">
 	                                                                    <i class="bx bxs-calendar-minus"></i>
 	                                                                </div>
@@ -220,8 +225,8 @@
 	                                                    <div class="col-md-12"></div>
 	                                                    <div class="col-6">
 	                                                    	    
-	                                                        <button type="submit" class="btn btn-warning mr-1 mb-1">Raise Request</button>
-	                                                        
+	                                                        <button type="button" class="btn btn-warning mr-1 mb-1 validateleave">Raise Request</button>
+	                                                        <button type="submit" id="finalsubmit" style="visibility:hidden"></button>
 	                                                    </div>
 	                                                    
 	                                                </div>
@@ -260,7 +265,7 @@
 		</p>
 		</footer>
 		<!-- END: Footer-->
-
+		
 
 		<!-- BEGIN: Vendor JS-->
 		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
@@ -299,6 +304,30 @@
 			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
 			<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
 		<!-- END: Page JS-->
+
+		<script>
+				$(document).ready(function(){
+					$('.validateleave').click(function(){
+						
+						if($("#halfday").is(':checked'))
+						{
+							if($("#fromadate").val()==$("#todate").val())
+							{
+								$('#finalsubmit').click();
+							}else
+							{
+								alert("If you select the Halfday. from date and to date should be same.");
+							}
+						
+						}else
+						{
+							$('#finalsubmit').click();
+						}
+					});
+				
+			});
+			
+		</script>
 </body>
 <!-- END: Body-->
 

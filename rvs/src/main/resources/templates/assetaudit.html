@@ -201,7 +201,36 @@ table tr td{
                                                            </div>
                                                        </div>
                                                    </div>
-												 <div class="col-3">
+                                                   <div class="col-3">
+                                                       <div class="form-group">
+                                                           <label for="first-name-icon"> Type</label>
+                                                           <div class="position-relative">
+                                                               <input type="radio" name="Status" id="radio1"
+																value="InStock" checked="" required /> 
+																<label
+																for="radio1">InStock </label>&nbsp;&nbsp; 
+																<input
+																type="radio" name="Status" id="radio2"
+																value="Custodian" required /> <label for="radio2">
+																Custodian</label>&nbsp;&nbsp; 
+                                                              
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-6">
+														<div class="form-group">
+															<label for="first-name-icon">&nbsp;</label>
+															<div class="position-relative">
+																<button type="button" id="Search"
+																	class="btn btn-primary mr-1 mb-1">Search</button>
+	
+															</div>
+														</div>
+													</div>
+												<div class="col-12">
+													<hr/>
+												</div>
+												 <div class="col-3 Custodiandiv">
                                                        <div class="form-group">
                                                            <label for="first-name-icon">Custodian <span class="red">*</span>
                                                            
@@ -255,7 +284,7 @@ table tr td{
 			                                                        <option value="Checked Out">Checked Out</option>
 			                                                        <option value="Out for repair">Out for repair</option>
 			                                                        <option value="In office Use">In office Use</option>
-			                                                        <option value="Demaged">Demaged</option>
+			                                                        <option value="Damaged">Damaged</option>
 			                                                        <option value="Missing">Missing</option>
 			                                                        <option value="Repair">Repair</option>			                                                        
 			                                                        <option value="">-</option>
@@ -276,6 +305,7 @@ table tr td{
 																	<option value="Good">Good</option>
 																	<option value="New">New</option>
 																	<option value="Poor">Poor</option>
+																	<option value="Damaged">Damaged</option>
 																	
 																</select>
                                                            </div>
@@ -413,65 +443,112 @@ table tr td{
 					});
 				});
 				//--------------------------------------------------------
-				$("#BranchID").change(function(){
-					
+				$("#Search").click(function(){
+					var Statussr=$("input[name='Status']:checked").val();
 					var branch = $("#BranchID").val();
 					$('#StaffID').html("");
 					$('#AssetId').html("");
 					if(branch != "")
 					{
-						//---------------------------------
-						// BranchID Details
-						var BranchIDname = $("#BranchID :Selected").text();
-						$(".Custodianloding").css("visibility","visible");
-						$('#StaffID').html("");
-						var formData = {
-								branchname : BranchIDname					
-						}
-						$.ajax({
-							type : "POST",url : "getEmployeelistbasedonbranch",
-							data : formData,success : function(result) {
-								$('#StaffID').append(result);
-								$(".Custodianloding").css("visibility","hidden");
-							},
-							error : function(e) {
-								alert("Error" + e);
-								$(".Custodianloding").css("visibility","hidden");
+						
+						if(Statussr =='InStock')
+						{
+							$('.Custodiandiv').hide();
+							$('#StaffID').html("");
+							//--------------------------------------------------------
+							// Asset Details
+							 $('#AssetId').html("");
+							var BranchIDid = $("#BranchID :Selected").val();
+							var formData = {
+									branchid : BranchIDid					
 							}
-						});
-						//---------------------------------
-						// Asset Details
-						 $('#AssetId').html("");
-						var BranchIDid = $("#BranchID :Selected").val();
-						var formData = {
-								branchid : BranchIDid					
-						}
-						$.ajax({
-							type : "POST",url : "getassetlistbasedonbranchall",
-							data : formData,success : function(result) {
-								
-								var curstr = result.split("~|~");
-								var assetypeinstcokitem="<option value=''>-</option>";
-								for(str in curstr)
-								{
-									tempsplit=curstr[str].split("|~|");
-									if( tempsplit != '')
+							$.ajax({
+								type : "POST",url : "getassetlistbasedonbranchallinstock",
+								data : formData,success : function(result) {
+									
+									var curstr = result.split("~|~");
+									var assetypeinstcokitem="<option value=''>-</option>";
+									for(str in curstr)
 									{
-										assetypeinstcokitem +="<option value='"+ tempsplit[0] +"'> "+  tempsplit[1] + "- "+  tempsplit[2] + "</option>";	
-									}
-								 	 
-								} 
-								$("#AssetId").append(assetypeinstcokitem);
-								
-							},
-							error : function(e) {
-								alert("Error" + e);
+										tempsplit=curstr[str].split("|~|");
+										if( tempsplit != '')
+										{
+											assetypeinstcokitem +="<option value='"+ tempsplit[0] +"'> "+  tempsplit[1] + "- "+  tempsplit[2] + "</option>";	
+										}
+									 	 
+									} 
+									$("#AssetId").append(assetypeinstcokitem);
+									
+								},
+								error : function(e) {
+									alert("Error" + e);
+								}
+							});	 
+							//---------------------------------		
+							
+						}else
+						{
+							$('.Custodiandiv').show();
+							//---------------------------------
+							// BranchID Details
+							var BranchIDname = $("#BranchID :Selected").text();
+							$(".Custodianloding").css("visibility","visible");
+							$('#StaffID').html("");
+							var formData = {
+									branchname : BranchIDname					
 							}
-						});	 
-						//---------------------------------				
+							$.ajax({
+								type : "POST",url : "getEmployeelistbasedonbranch",
+								data : formData,success : function(result) {
+									$('#StaffID').append(result);
+									$(".Custodianloding").css("visibility","hidden");
+									 $("#StaffID").change();
+								},
+								error : function(e) {
+									alert("Error" + e);
+									$(".Custodianloding").css("visibility","hidden");
+								}
+							});
+							//---------------------------------
+						}
+						
+								
 					}
 				});
-				
+				//--------------------------------------------------------
+				$(document).on("change", "#StaffID", function() {
+					
+					//--------------------------------------------------------
+					// Asset Details
+					 $('#AssetId').html("");
+					var StaffID = $("#StaffID :Selected").val();
+					var formData = {
+							StaffID : StaffID					
+					}
+					$.ajax({
+						type : "POST",url : "getassetlistbasedonbranchallstaff",
+						data : formData,success : function(result) {
+							
+							var curstr = result.split("~|~");
+							var assetypeinstcokitem="<option value=''>-</option>";
+							for(str in curstr)
+							{
+								tempsplit=curstr[str].split("|~|");
+								if( tempsplit != '')
+								{
+									assetypeinstcokitem +="<option value='"+ tempsplit[0] +"'> "+  tempsplit[1] + "- "+  tempsplit[2] + "</option>";	
+								}
+							 	 
+							} 
+							$("#AssetId").append(assetypeinstcokitem);
+							
+						},
+						error : function(e) {
+							alert("Error" + e);
+						}
+					});	 
+					//---------------------------------	
+				});
 				//--------------------------------------------------------
 				$(document).on("change", "#AssetId", function() {
 					
@@ -501,7 +578,7 @@ table tr td{
 					var aCondition=$('#aCondition').val();
 					var Comments= $('#Comments').val();
 					
-					if(StaffID !="" && StaffName !="" && AssetAuditDate !="" && AssetId !="" && AssetName !="" && Status !="" )
+					if( AssetAuditDate !="" && AssetId !="" && AssetName !="" && Status !="" )
 					{
 						tempstr="<input type='hidden' id='StaffID"+ sno +"' name='StaffID' value='"+ StaffID +"'  />";
 						tempstr+="<input type='hidden' id='AssetAuditDate"+ sno +"'  name='AssetAuditDate' value='"+ AssetAuditDate +"'  />";

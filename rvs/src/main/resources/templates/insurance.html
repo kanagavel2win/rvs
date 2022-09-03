@@ -57,7 +57,14 @@
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
-	
+	.emptitle {
+	color: #527a00;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+	cursor: pointer;
+}
 	.uppercase{
 		text-transform:uppercase;
 	}
@@ -123,7 +130,49 @@
 					<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Insurance
 						Info Updated Successfully</button>
 				</div>
-            
+	            <!--scrolling content Modal -->
+					<div class="modal fade" id="VendorStatusScrollable" tabindex="-1"
+						role="dialog" aria-labelledby="VendorStatusScrollableTitle"
+						aria-hidden="true">
+						<div class="modal-dialog modal-dialog-scrollable" role="document">
+							<div class="modal-content">
+								<div class="modal-header bg-warning">
+									<h5 class="modal-title white" id="VendorStatusScrollableTitle"></h5>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<i class="bx bx-x"></i>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="addmodel" id="additemalltxt"></label>
+											<div class="position-relative">
+												<fieldset class="form-group">
+													<input type="text" id="additemall" name="addmodel"
+														class="form-control capitalize">
+												</fieldset>
+											</div>
+										</div>
+									</div>
+	
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-light-secondary"
+										data-dismiss="modal">
+										<i class="bx bx-x d-block d-sm-none"></i> <span
+											class="d-none d-sm-block">Close</span>
+									</button>
+									<button type="button" class="btn btn-primary ml-1"
+										id="additemallsavebtn">
+										<i class="bx bx-check d-block d-sm-none"></i> <span
+											class="d-none d-sm-block">ADD</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--scrolling content Modal -->
               	<form th:action="@{/insurancesave}" th:object="${insurancemaster}"
 											method="POST" class="wizard-horizontal"
 											enctype="multipart/form-data">
@@ -137,27 +186,29 @@
 	                                        
 	                                            <div class="form-body">
 	                                                <div class="row">
-	                                                    <div class="col-md-6">
-	                                                        <div class="form-group">
-	                                                            <label for="first-name-icon">Insurance Name</label>
-	                                                            <div class="position-relative has-icon-left">
-	                                                               	<input type="hidden" th:value="${insurancemaster['Insuranceid']}" th:field="*{Insuranceid}"/>
-	                                                                <fieldset class="form-group">
-					                                                     <select class="form-control"  th:field="*{VendorName}" >
-					                                                        <option value="">-</option>
-					                                                        <th:block th:each="vmobj :${vm}">
-					                                                        	<option th:value="${vmobj.vendormasterid}" th:text="${vmobj.Name}"></option>
-					                                                        </th:block>
-					                                                        
-					                                                     </select>
-					                                                     <div class="form-control-position">
-	                                                                    <i class="bx bx-first-aid"></i>
-	                                                                </div>
-					                                                </fieldset>
-	                                                            </div>
-	                                                        </div>
-	                                                    </div>
-	                                                    <div class="col-md-6">
+	                                                	<div class="col-md-12">
+															<div class="form-group">
+
+																<label class="emptitle">General</label>
+															</div>
+														</div>
+	                                                	<div class="col-6">
+	                                                       <div class="form-group">
+	                                                           <label for="first-name-icon">Branch <span class="red">*</span></label>
+	                                                           <div class="position-relative">
+	                                                               
+				                                                     <select class="select2 form-control" id="Branch" name="Branch" required>
+				                                                     	<option value="">--Select--</option>
+				                                                        <th:block th:each="emp : ${branchls}">
+				                                                        	<option th:value="${emp.id}" th:text="${emp.BRANCH_NAME}"></option>
+				                                                        </th:block>
+				                                                    </select>
+	                                                
+	                                                              
+	                                                           </div>
+	                                                       </div>
+	                                                   </div>
+	                                                   <div class="col-md-6">
 	                                                        <div class="form-group">
 	                                                            <label for="email-id-icon">Insurance To</label>
 	                                                            <div class="position-relative has-icon-left">
@@ -175,16 +226,21 @@
 	                                                            </div>
 	                                                        </div>
 	                                                    </div>
+	                                                    
+	                                                    
+	                                                   
 	                                                     <div class="col-md-6 staffblock">
 	                                                        <div class="form-group">
-	                                                            <label for="email-id-icon">Staff</label>
+	                                                            <label for="email-id-icon">Staff
+	                                                            	<div class="Custodianloding spinner-border spinner-border-sm" role="status" style="visibility:hidden;">
+						                                              <span class="sr-only">Loading...</span>
+						                                            </div>
+	                                                            </label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control StaffName"  th:field="*{StaffID}" >
+					                                                    <select class="form-control StaffName" id="StaffID" th:field="*{StaffID}" >
 					                                                        <option value="">-</option>
-					                                                       	<th:block th:each="emobj :${em}">
-					                                                        	<option th:value="${emobj.empMasterid}" th:text="${emobj.StaffName}"></option>
-					                                                        </th:block>
+					                                                       	
 					                                                    </select>
 					                                                     <div class="form-control-position">
 	                                                                    <i class="bx bx-street-view"></i>
@@ -195,14 +251,16 @@
 	                                                    </div>
 	                                                     <div class="col-md-6 assetblock">
 	                                                        <div class="form-group">
-	                                                            <label for="email-id-icon">Asset</label>
+	                                                            <label for="email-id-icon">Asset
+	                                                            	<div class="Custodianlodingb spinner-border spinner-border-sm" role="status" style="visibility:hidden;">
+						                                              <span class="sr-only">Loading...</span>
+						                                            </div>
+	                                                            </label>
 	                                                           	<div class="position-relative has-icon-left">
 	                                                                <fieldset class="form-group">
-					                                                    <select class="form-control"  th:field="*{AssetNameID}" >
+					                                                    <select class="form-control" id="AssetName"  th:field="*{AssetNameID}" >
 					                                                        <option value="">-</option>
-					                                                        <th:block th:each="amobj :${am}">
-					                                                        	<option th:value="${amobj.AssetId}" th:text="${amobj.AssetName}"></option>
-					                                                        </th:block>
+					                                                       
 					                                                    </select>
 					                                                     <div class="form-control-position">
 	                                                                    <i class="bx bxs-navigation"></i>
@@ -211,6 +269,32 @@
 	                                                            </div>
 	                                                        </div>
 	                                                    </div>
+	                                                     <div class="col-md-6">
+	                                                        <div class="form-group">
+	                                                            <label for="first-name-icon">Vendor Name</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                               	<input type="hidden" th:value="${insurancemaster['Insuranceid']}" th:field="*{Insuranceid}"/>
+	                                                                <fieldset class="form-group">
+					                                                     <select class="form-control"  th:field="*{VendorName}" >
+					                                                        <option value="">-</option>
+					                                                        <th:block th:each="vmobj :${vm}">
+					                                                        	<option th:value="${vmobj.vendormasterid}" th:text="${vmobj.Name}"></option>
+					                                                        </th:block>
+					                                                        
+					                                                     </select>
+					                                                     <div class="form-control-position">
+	                                                                    <i class="bx bx-first-aid"></i>
+	                                                                </div>
+					                                                </fieldset>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-12">
+																<div class="form-group">
+
+																	<label class="emptitle">Details</label>
+																</div>
+															</div>
 	                                                   
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
@@ -236,6 +320,23 @@
 	                                                    </div>
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Premium</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['Premium']}" th:field="*{Premium}"    placeholder="Premium" >
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bxs-dollar-circle"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                    <div class="col-md-12">
+															<div class="form-group">
+
+																<label class="emptitle">Period of Insurance</label>
+															</div>
+														</div>
+	                                                    <div class="col-md-6">
+	                                                        <div class="form-group">
 	                                                            <label for="password-icon">From</label>
 	                                                            <div class="position-relative has-icon-left">
 	                                                                <input type="date"  class="form-control " th:value="${insurancemaster['PFrom']}" th:field="*{PFrom}"    placeholder="From" >
@@ -256,28 +357,8 @@
 	                                                            </div>
 	                                                        </div>
 	                                                    </div>
-	                                                    <div class="col-md-6">
-	                                                        <div class="form-group">
-	                                                            <label for="password-icon">Premium</label>
-	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['Premium']}" th:field="*{Premium}"    placeholder="Premium" >
-	                                                                <div class="form-control-position">
-	                                                                    <i class="bx bxs-dollar-circle"></i>
-	                                                                </div>
-	                                                            </div>
-	                                                        </div>
-	                                                    </div>
-	                                                    <div class="col-md-6">
-	                                                        <div class="form-group">
-	                                                            <label for="password-icon">GST</label>
-	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['GST']}" th:field="*{GST}"    placeholder="GST" >
-	                                                                <div class="form-control-position">
-	                                                                    <i class="bx bxs-cog"></i>
-	                                                                </div>
-	                                                            </div>
-	                                                        </div>
-	                                                    </div>
+	                                                    
+	                                                   
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
 	                                                            <label for="password-icon">Total</label>
@@ -289,6 +370,12 @@
 	                                                            </div>
 	                                                        </div>
 	                                                    </div>
+	                                                    <div class="col-md-12">
+															<div class="form-group">
+
+																<label class="emptitle">Cover</label>
+															</div>
+														</div>
 	                                                    <div class="col-md-6">
 	                                                        <div class="form-group">
 	                                                            <label for="password-icon">PA Cover</label>
@@ -311,50 +398,14 @@
 	                                                            </div>
 	                                                        </div>
 	                                                    </div>
-	                                                    <div class="col-md-6">
-	                                                        <div class="form-group">
-	                                                            <label for="password-icon">Insured Value</label>
-	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['InsuredValue']}" th:field="*{InsuredValue}"    placeholder="Insured Value" >
-	                                                                <div class="form-control-position">
-	                                                                    <i class="bx bx-dna"></i>
-	                                                                </div>
-	                                                            </div>
-	                                                        </div>
-	                                                    </div>
-	                                                   <div class="col-md-6">
-	                                                        <div class="form-group">
-	                                                            <label for="password-icon">IDV</label>
-	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['IDV']}" th:field="*{IDV}"    placeholder="IDV" >
-	                                                                <div class="form-control-position">
-	                                                                    <i class="bx bxs-heart"></i>
-	                                                                </div>
-	                                                            </div>
-	                                                        </div>
-	                                                    </div>
-	                                                   <div class="col-md-6">
-	                                                        <div class="form-group">
-	                                                            <label for="password-icon">NCB</label>
-	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['NCB']}" th:field="*{NCB}"    placeholder="NCB" >
-	                                                                <div class="form-control-position">
-	                                                                    <i class="bx bxs-flask"></i>
-	                                                                </div>
-	                                                            </div>
-	                                                        </div>
-	                                                    </div>
-	                                                   <div class="col-md-6">
-	                                                        <div class="form-group">
-	                                                            <label for="password-icon">Notes</label>
-	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="text"  class="form-control " th:value="${insurancemaster['Notes']}" th:field="*{Notes}"    placeholder="Notes" >
-	                                                                <div class="form-control-position">
-	                                                                    <i class="bx bx-notepad"></i>
-	                                                                </div>
-	                                                            </div>
-	                                                        </div>
-	                                                    </div>
+	                                                    
+	                                                  
+	                                                    <div class="col-md-12">
+															<div class="form-group">
+
+																<label class="emptitle">Nominee</label>
+															</div>
+														</div>
 	                                                   <div class="col-md-6">
 	                                                        <div class="form-group">
 	                                                            <label for="password-icon">Nominee</label>
@@ -373,8 +424,26 @@
 	                                                            </div>
 	                                                        </div>
 	                                                    </div>
-	                                                   
-												
+	                                                   	 <div class="col-md-12">
+	                                                        <div class="form-group">
+	                                                            <label for="password-icon">Notes</label>
+	                                                            <div class="position-relative has-icon-left">
+	                                                               
+	                                                               <textarea class="form-control" th:value="${insurancemaster['Notes']}" th:field="*{Notes}"    placeholder="Notes" 
+																			height="100px"></textarea>
+	                                                                
+	                                                                <div class="form-control-position">
+	                                                                    <i class="bx bx-notepad"></i>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+														<div class="col-md-12">
+															<div class="form-group">
+
+																<label class="emptitle">Files</label>
+															</div>
+														</div>
 	                                                    <div class="col-12 d-flex justify-content-end">
 	                                                    	    
 	                                                        <button type="submit" class="btn btn-primary mr-1 mb-1">Save</button>
@@ -496,6 +565,58 @@
 				});
 				
 				$('#InsuranceTo').change();
+				
+				
+				//--------------------------------------------------------
+				$("#Branch").change(function(){
+					
+					var branch = $("#Branch").val();
+					$('#StaffID').html("");
+					$('#AssetName').html("");
+					
+					if(branch != "")
+					{
+						//---------------------------------
+						// Branch Details
+						var branchname = $("#Branch :Selected").text();
+						$(".Custodianloding").css("visibility","visible");
+						$('#StaffID').html("");
+						var formData = {
+								branchname : branchname					
+						}
+						$.ajax({
+							type : "POST",url : "getEmployeelistbasedonbranch",
+							data : formData,success : function(result) {
+								$('#StaffID').append(result);
+								$(".Custodianloding").css("visibility","hidden");
+							},
+							error : function(e) {
+								alert("Error" + e);
+								$(".Custodianloding").css("visibility","hidden");
+							}
+						});
+						//---------------------------------
+						// Asset Details
+						$(".Custodianlodingb").css("visibility","visible");
+						var branchid = $("#Branch :Selected").val();
+						var formData = {
+								branchid : branchid					
+						}
+						$.ajax({
+							type : "POST",url : "getassetlistbasedonbranchselect",
+							data : formData,success : function(result) {
+								alert(result);
+								$('#AssetName').append(result);
+								$(".Custodianlodingb").css("visibility","hidden");
+							},
+							error : function(e) {
+								alert("Error" + e);
+								$(".Custodianlodingb").css("visibility","hidden");
+							}
+						});						
+					}
+				});
+				//-------------------------------
 			});
 			
 			

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
 
 <!-- BEGIN: Head-->
 
 <head>
-<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf" th:content="${_csrf.token}" />
 <!-- default header name is X-CSRF-TOKEN -->
-<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,7 +31,7 @@
 
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
-	
+
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->
@@ -56,7 +57,8 @@
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
 .emptitle {
@@ -73,27 +75,21 @@ thead {
 	border-color: transparent;
 	color: #555;
 	font-weight: 700;
-	
 	transition: background-color .15s ease-in-out;
 }
 
 tbody {
 	color: #222;
-	line-height:10px;
-	
+	line-height: 10px;
 }
-
 
 tbody>tr:hover .iconalign {
 	color: #527a00;
 	cursor: pointer;
 }
 
-
-
 .view {
 	margin: auto;
-	
 }
 
 .wrapper {
@@ -128,257 +124,294 @@ tbody>tr:hover .iconalign {
 	border-right: 1px solid #ccc;
 }
 
-.table tr td{
-	
+.table tr td {
 	border-right: 1px solid #ccc;
-	padding-top:2px;
-	padding-bottom:2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 
-
-.table tr, table ,table td
-	{
+.table tr, table, table td {
 	padding: .5rem 0.5rem;
-	line-height:5px;
-		
-	}
-.red
-{
-	color:red;
-	font-size:20px;
+	line-height: 5px;
 }
 
-
+.red {
+	color: red;
+	font-size: 20px;
+}
+.Photo_Attach {
+	min-width: 200px;
+}
 </style>
-
 <body
 	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
 	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
-		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
-		<!-- END: Header-->
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
 
 
-		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
-		<!-- END: Main Menu-->
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
 
-			<!-- BEGIN: Content-->
-				<!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                           <h5 class="content-header-title float-left pr-1 mb-0">Check Out</h5>
-                            <div class="breadcrumb-wrapper col-12">
-                                <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
-                                    </li>
-                                    <li class="breadcrumb-item"><a href="assetlist">Asset List</a>
-                                    </li>
-                                	   
-                                </ol>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-body">
-              	
-              
-											
-	                <!-- Basic Vertical form layout section start -->
-	                <section id="basic-vertical-layouts">
-	                    <div class="row match-height">
-	                        <div class="col-12">
-	                            <div class="card">
-	                                <div class="card-content">
-	                                    <div class="card-body">
-                                        	<div th:if="${printstr}" class="form-group col-12">
-												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Check Out details are saved successfully</button>
-												<form th:action="@{/checkoutprint}" target="blank" method="POST" class="wizard-horizontal" enctype="multipart/form-data">
-													
-													<center><button type="submit"  class="btn btn-primary mr-1 mb-1" style="width:200px">Print Receipt</button>
-													</center>
-                                                 </form>
-											</div>
-	                                        
-	                                        <form th:action="@{/checkoutsave}" 
-											method="POST" class="wizard-horizontal"
-											enctype="multipart/form-data">	
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+							<h5 class="content-header-title float-left pr-1 mb-0">Check
+								Out</h5>
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+									<li class="breadcrumb-item"><a href="assetlist">Asset
+											List</a></li>
+
+								</ol>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-body">
+
+
+
+				<!-- Basic Vertical form layout section start -->
+				<section id="basic-vertical-layouts">
+					<div class="row match-height">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-content">
+									<div class="card-body">
+										<div th:if="${printstr}" class="form-group col-12">
+											<button type="button"
+												class="btn mb-1 btn-success btn-lg btn-block">Check
+												Out details are saved successfully</button>
+											<form th:action="@{/checkoutprint}" target="blank"
+												method="POST" class="wizard-horizontal"
+												enctype="multipart/form-data">
+
+												<center>
+													<button type="submit" class="btn btn-primary mr-1 mb-1"
+														style="width: 200px">Print Receipt</button>
+												</center>
+											</form>
+										</div>
+
+										<form th:action="@{/checkoutsave}" method="POST"
+											class="wizard-horizontal" enctype="multipart/form-data">
 											<div class="row">
-												 <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Branch <span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               
-			                                                     <select class="select2 form-control" id="Branch" name="Branch" required>
-			                                                     	<option value="">--Select--</option>
-			                                                        <th:block th:each="emp : ${branchls}">
-			                                                        	<option th:value="${emp.id}" th:text="${emp.BRANCH_NAME}"></option>
-			                                                        </th:block>
-			                                                    </select>
-                                                
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   
-												 <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Custodian <span class="red">*</span>
-                                                           		<div class="Custodianloding spinner-border spinner-border-sm" role="status" style="visibility:hidden;">
-					                                              <span class="sr-only">Loading...</span>
-					                                            </div>
-                                                           </label>
-                                                           <div class="position-relative">
-                                                               
-			                                                     <select class="select2 form-control"  id="StaffID" name="StaffID" required>
-			                                                        <!-- <th:block th:each="emp : ${EmployeeMasterobj}">
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">Branch <span
+															class="red">*</span></label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" id="Branch"
+																name="Branch" required>
+																<option value="">--Select--</option>
+																<th:block th:each="emp : ${branchls}">
+																	<option th:value="${emp.id}"
+																		th:text="${emp.BRANCH_NAME}"></option>
+																</th:block>
+															</select>
+
+
+														</div>
+													</div>
+												</div>
+
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">Custodian <span
+															class="red">*</span>
+															<div
+																class="Custodianloding spinner-border spinner-border-sm"
+																role="status" style="visibility: hidden;">
+																<span class="sr-only">Loading...</span>
+															</div>
+														</label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" id="StaffID"
+																name="StaffID" required>
+																<!-- <th:block th:each="emp : ${EmployeeMasterobj}">
 			                                                        	<option th:value="${emp.empMasterid}" th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
 			                                                        </th:block> -->
-			                                                    </select>
-                                                				
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Check Out Date<span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               <input type="date"  class="form-control" name="CheckOutDate" id="CheckOutDate" required>
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                    <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Vendor </label>
-                                                           <div class="position-relative">
-                                                               
-			                                                     <select class="select2 form-control" name="vendor" id="vendorls">
-			                                                     	<option value="" >-</option>
-			                                                        <th:block th:each="ven : ${vendorls}">
-			                                                        	<option th:value="${ven.vendormasterid}" th:text="${ven.Name} + ' - '+${ven.AssetType}"></option>
-			                                                        </th:block>
-			                                                    </select>
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                               
-                                                 </div>
-                                                 <div class="row">
-												  <div class="col-6">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Status<span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               <input type="radio" name="Status" id="radio1" value="Checked Out" required/> <label for="radio1">Checked Out </label>&nbsp;&nbsp;
-                                                               <input type="radio" name="Status" id="radio2" value="Out for repair" required/> <label for="radio2">  Out for repair</label>&nbsp;&nbsp;
-                                                               <input type="radio" name="Status" id="radio3" value="In office Use" required/> <label for="radio3">  In office Use</label>
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   
-                                                   <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Location<span class="red"></span></label>
-                                                           <div class="position-relative">
-                                                               <input type="text"  class="form-control" id="Location" name="Location" >
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   
-                                                 </div>
-                                                 <script> var ASSETTYPElist="<option value='' >-</option>"; 
-                                                 var rowsno;
+															</select>
+
+
+														</div>
+													</div>
+												</div>
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">Check Out Date<span
+															class="red">*</span></label>
+														<div class="position-relative">
+															<input type="date" class="form-control"
+																name="CheckOutDate" id="CheckOutDate" required>
+
+														</div>
+													</div>
+												</div>
+												<div class="col-3 vendordiv" style="visibility: hidden">
+													<div class="form-group">
+														<label for="first-name-icon">Vendor </label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" name="vendor"
+																id="vendorls">
+																<option value="">-</option>
+																<th:block th:each="ven : ${vendorls}">
+																	<option th:value="${ven.vendormasterid}"
+																		th:text="${ven.Name} + ' - '+${ven.AssetType}"></option>
+																</th:block>
+															</select>
+														</div>
+													</div>
+												</div>
+
+											</div>
+											<div class="row">
+												<div class="col-6">
+													<div class="form-group">
+														<label for="first-name-icon">Status<span
+															class="red">*</span></label>
+														<div class="position-relative">
+															<input type="radio" name="Status" id="radio1"
+																value="Checked Out" checked="" required /> <label
+																for="radio1">Checked Out </label>&nbsp;&nbsp; <input
+																type="radio" name="Status" id="radio2"
+																value="Out for repair" required /> <label for="radio2">
+																Out for repair</label>&nbsp;&nbsp; <input type="radio"
+																name="Status" id="radio3" value="In office Use" required />
+															<label for="radio3"> In office Use</label>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-3 locationdiv" style="visibility: hidden">
+													<div class="form-group">
+														<label for="first-name-icon">Which Location<span
+															class="red"></span></label>
+														<div class="position-relative">
+															<input type="text" class="form-control"
+																id="WhichLocation" name="WhichLocation">
+
+														</div>
+													</div>
+												</div>
+
+											</div>
+											<script> var ASSETTYPElist="<option value='' >-</option>"; 
+                                                 var rowsno=0;
                                                  </script>
-											 <th:block th:each="str : ${ASSETTYPE}">
-                                               <script>
+											<th:block th:each="str : ${ASSETTYPE}">
+												<script>
                                                ASSETTYPElist += "<option value='[[${str}]]'>[[${str}]]</option>";
                                                	</script>
-                                               </th:block>
-                                    		
-	                                    	<hr/>
-	                                    	
-	                                    	<div class="view">
+											</th:block>
+
+											<hr />
+
+											<div class="view">
 												<div class="wrapper">
 													<div class="table-responsive">
-													<table class="table">
-														<thead>
-															<tr>
-																<th width="5%">S.No</th>
-																<th>Asset Type</th>
-																<th>Asset Name</th>
-																<th>Condition</th>
-																<th>Comments</th>
-																<th></th>
+														<table class="table">
+															<thead>
+																<tr>
+																	<th width="5%">S.No</th>
+																	<th>Asset Type</th>
+																	<th>Asset Name</th>
+																	<th>Condition</th>
+																	<th>Photo</th>
+																	<th>Comments</th>
+																	<th></th>
 
-															</tr>
-														</thead>
-														<tbody>
-															<tr th:each="selasset, stat: ${selectedasset}">
-																<td th:text="${stat.index+1}"></td>
-																<td><input type="hidden" th:value="${selasset.AssetType}" name="AssetType"/> <span th:text="${selasset.AssetType}"></span></td>
-																<td><input type="hidden" th:value="${selasset.AssetId}" name="AssetName"/> <span th:text="${selasset.AssetName}"></span></td>
-																<td><input type="hidden" th:value="${selasset.ACondition}" name="ACondition"/> <span th:text="${selasset.ACondition}"></span></td>
-																<td><input type='text' name='Comments' />
-																<td>
-																	<span id="1" class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span>
-																</td>
-																<script>  rowsno="[[${stat.index+1}]]"; </script>
-															</tr>
-															
-														</tbody>
-													</table>
+																</tr>
+															</thead>
+															<tbody>
+																<tr th:each="selasset, stat: ${selectedasset}">
+																	<td th:text="${stat.index+1}"></td>
+																	<td><input type="hidden"
+																		th:value="${selasset.AssetType}" name="AssetType" /> <span
+																		th:text="${selasset.AssetType}"></span></td>
+																	<td><input type="hidden"
+																		th:value="${selasset.AssetId}" name="AssetName" /> <span
+																		th:text="${selasset.AssetName}"></span></td>
+																	<td><input type="hidden"
+																		th:value="${selasset.ACondition}" name="ACondition" />
+																		<span th:text="${selasset.ACondition}"></span></td>
+																	<td class="Photo_Attach"><input type='file'
+																		name='Photo_Attach' class="form-control Photo_Attach" /></td>
+																	<td><input type='text' name='Comments' />
+																	<td><span id="1"
+																		class="cursor-pointer filedivdelete"
+																		style="float: right"> <i
+																			class="bx bx-trash-alt"></i>
+																	</span></td>
+																	<script>  rowsno="[[${stat.index+1}]]"; </script>
+																</tr>
+
+															</tbody>
+														</table>
 													</div>
 												</div>
 											</div>
-											 <div>
-                                                  <div class="form-group">
-                                                      <label for="first-name-icon">&nbsp;<span class="red"></span></label>
-                                                      <div class="position-relative">
-                                                          <button type="button" id="addrow" class="btn btn-secondary mr-1 mb-1"><i class="bx bx-plus-circle "></i></button>
-                                                         
-                                                      </div>
-                                                  </div>
-                                              </div>  
-                                                   
-	                                    	<div align="center">
-	                                    	<br/>	<input type="checkbox" id="receipt" name="receipt" required>
-<label for="receipt"  style="color:red; font-weight:bold"> Show Receipt After Check Out</label>
-	                                    		
-	                                    	<br/>
-	                                    		<button type="submit" class="btn btn-primary mr-1 mb-1">Check Out</button>
-	                                    	</div>
-	                                    	</form>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </section>
-	                <!-- // Basic Vertical form layout section end -->
-				
+											<div>
+												<div class="form-group">
+													<label for="first-name-icon">&nbsp;<span
+														class="red"></span></label>
+													<div class="position-relative">
+														<button type="button" id="addrow"
+															class="btn btn-secondary mr-1 mb-1">
+															<i class="bx bx-plus-circle "></i>
+														</button>
 
-            </div>
-        </div>
-    </div>
-			<!-- END: Content-->
+													</div>
+												</div>
+											</div>
+
+											<div align="center">
+												<br /> <input type="checkbox" id="receipt" name="receipt"
+													required> <label for="receipt"
+													style="color: red; font-weight: bold"> Show Receipt
+													After Check Out</label> <br />
+												<button type="submit" class="btn btn-primary mr-1 mb-1">Check
+													Out</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- // Basic Vertical form layout section end -->
 
 
-		
-		<div class="sidenav-overlay"></div>
-		<div class="drag-target"></div>
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
 
-		<!-- BEGIN: Footer-->
-		<footer class="footer footer-static footer-light">
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
 		<p class="clearfix mb-0">
 			<span class="float-left d-inline-block"></span><span
 				class="float-right d-sm-inline-block d-none"></span>
@@ -386,32 +419,33 @@ tbody>tr:hover .iconalign {
 				<i class="bx bx-up-arrow-alt"></i>
 			</button>
 		</p>
-		</footer>
-		<!-- END: Footer-->
+	</footer>
+	<!-- END: Footer-->
 
 
-		<!-- BEGIN: Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-	
-		<!-- BEGIN Vendor JS-->
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
 
-		<!-- BEGIN: Page Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
-		<!-- END: Page Vendor JS-->
+	<!-- BEGIN Vendor JS-->
 
-		<!-- BEGIN: Theme JS-->
-		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-		<script th:src="@{/app-assets/js/core/app.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-		<!-- END: Theme JS-->
+	<!-- BEGIN: Page Vendor JS-->
+	<script
+		th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+	<!-- END: Page Vendor JS-->
 
-		<!-- BEGIN: Page JS-->
-		
-		<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
-		<!-- END: Page JS-->
-		
-			<script>
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+
+	<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
+	<!-- END: Page JS-->
+
+	<script>
 			$(document).ready(function(){
 				
 				var instockItemlist="";
@@ -504,14 +538,33 @@ tbody>tr:hover .iconalign {
 				
 				$("#addrow").click(function(){
 					rowsno= parseInt(rowsno) +1;
-					thtml='<tr> 	<td> '+ rowsno +'	</td> 	<td> 		<select class="select form-control AssetType" id="'+ rowsno +'" name="AssetType">'+ ASSETTYPElist +'  </select> 	</td> 	<td> 		<select class="select form-control assetypeinstcokitem" id="assetypeinstcokitem'+ rowsno +'"  name="AssetName" required><option value="" >-</option></select> 	</td> 	<td> 		<input type="hidden"  name="ACondition" class="assetypeselectedCondition'+ rowsno +'"/> 		<span class="assetypeselectedCondition'+ rowsno +'"></span> 	</td> 	<td><input type="text" name="Comments" /></td> 	<td> 		<span  class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span> 	</td> </tr>';
+					thtml='<tr> 	<td> '+ rowsno +'	</td> 	<td> 		<select class="select form-control AssetType" id="'+ rowsno +'" name="AssetType">'+ ASSETTYPElist +'  </select> 	</td> 	<td> 		<select class="select form-control assetypeinstcokitem" id="assetypeinstcokitem'+ rowsno +'"  name="AssetName" required><option value="" >-</option></select> 	</td> 	<td> 		<input type="hidden"  name="ACondition" class="assetypeselectedCondition'+ rowsno +'"/> 		<span class="assetypeselectedCondition'+ rowsno +'"></span> 	</td> 	<td class="Photo_Attach"><input type="file" name="Photo_Attach" class="form-control Photo_Attach" /></td><td><input type="text" name="Comments" /></td> 	<td> 		<span  class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span> 	</td> </tr>';
 					$(".table").append(thtml);
 				});
+				
+				
+				$(document).on("change", "[name='Status']", function() {
+					var curstatus = $(this).val();
+					
+					
+					if(curstatus == 'Out for repair')
+					{
+						$(".locationdiv").css("visibility","hidden");
+						$(".vendordiv").css("visibility","visible");
+					}
+					if(curstatus == 'In office Use')
+					{
+						$(".locationdiv").css("visibility","visible");
+						$(".vendordiv").css("visibility","hidden");
+					}
+					
+				});
+				
 			});
 			
 			
 		</script>
-	
+
 </body>
 <!-- END: Body-->
 

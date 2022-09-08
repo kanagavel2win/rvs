@@ -727,7 +727,9 @@
 																<input type="hidden" th:value="${Files['venFileid']}" name="filesempFileid"/>
 																<input type="hidden" th:value="${Files['Files_Attach']}" th:name="filesempFileidstr"/>
 															</td>
-															<td>Files <br/><a th:href="${Files['Files_Attach']}" target="_blank">View & Download</a></td>
+															<td>
+																<span th:text=" ${ #strings.substring(#strings.arraySplit(Files['Files_Attach'],'/')[1],15) } " ></span>
+																 <br/><a th:href="${Files['Files_Attach']}" target="_blank">View & Download</a></td>
 															<td align="center"><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span></td>
 														</tr>
 													</th:block>

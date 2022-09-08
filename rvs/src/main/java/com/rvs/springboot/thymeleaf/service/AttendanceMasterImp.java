@@ -1,8 +1,5 @@
 package com.rvs.springboot.thymeleaf.service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,11 +7,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rvs.springboot.thymeleaf.dao.AttendanceMasterRepository;
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
 
 @Service
+@Transactional
 public class AttendanceMasterImp implements AttendanceMasterService {
 	
 	@Autowired
@@ -114,6 +113,19 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 		//System.out.println(sql);
 		List<Map<String, Object>> atm = JdbcTemplate.queryForList(sql);
 		return atm;
+	}
+
+	@Override
+	public void deleteById(int attendid) {
+		
+		try
+		{
+			attendanceMasterRepository.deleteById(attendid);
+		}catch(Exception ex)
+		{
+			
+		}
+		
 	}
 
 }

@@ -234,7 +234,11 @@
 		padding:5px;
 		border: none;
 		color:#ccc;
-	}				  
+	}	
+	.bx-trash
+	{
+		cursor:pointer;
+	}			  
 	
 </style>
 </head>
@@ -413,7 +417,10 @@
 				                                             	<input type="hidden"  th:id="emp +${stat.index}" th:value="${#strings.arraySplit(emp,'||')[0]}"/>
 				                                             	<input type="hidden"  th:id="attid +${stat.index}" th:value="${#strings.arraySplit(emp,'||')[2]}"/>
 				                                             <i class="bx bx-notepad"></i></label></td>
-				                                             <td width="50%" th:text="${#strings.arraySplit(emp,'||')[1]}"></td>
+				                                             <td width="50%">
+				                                             	<span th:text="${#strings.arraySplit(emp,'||')[1]}"></span>
+				                                             	
+				                                             </td>
 				                                             
 				                                             
 				                                             <td th:if="${#strings.arraySplit(emp,'||')[3]}=='P'" width="15%"><button type="button" th:name=" ${stat.index}" class="btn btnp cp btn-success text-white ">P</button></td>
@@ -427,6 +434,9 @@
 				                                             
 				                                             <td th:if="${#strings.arraySplit(emp,'||')[3]}=='HL'" width="15%"><button type="button" th:name="${stat.index}" class="btn btnhl chl btn-light text-white">HL</button></td>
 				                                             <td th:unless="${#strings.arraySplit(emp,'||')[3]}=='HL'" width="15%"><button type="button" th:name="${stat.index}" class="btn btnhl ">HL</button></td>
+				                                             <td>
+				                                             	<i class="bx bx-trash" th:name="${stat.index}"></i>
+				                                             </td>
 				                                      	  </tr>
 				                                      	    	   
 				                                      	   
@@ -617,6 +627,35 @@
 		});
 		
 		//--------------------------------------------------------
+		$(".bx-trash").click(function(){
+					var name=$(this).attr('name');
+					var attendid=$('#attid'+ name).val();
+					if(attendid >0)
+					{
+						 var formData = {
+								 attendid : attendid					
+							}
+						 
+						$.ajax({
+							type : "POST",url : "employeeattendancedelete",
+							data : formData,success : function(result) {
+								
+								remover_atten_status(name);
+							},
+							error : function(e) {
+								$('#modeljqueryresult').text("Error" + e);
+							}
+						});
+						
+					}
+					else
+					{
+						remover_atten_status(name);	
+					}
+					
+					
+					
+				});
 		//--------------------------------------------------------
 
 		function remover_atten_status(empid_name)
@@ -752,6 +791,10 @@
 						$('#employeeStatusScrollable').modal('toggle');
 					}
 				});
+				
+				
+				
+				
 			});
 		
 		</script>

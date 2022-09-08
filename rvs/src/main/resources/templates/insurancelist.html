@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
 
 <!-- BEGIN: Head-->
 
@@ -26,10 +27,10 @@
 	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
-	
+
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/tables/datatable/datatables.min.css}">
-	
+
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->
@@ -55,40 +56,41 @@
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
-	.addnewVendor
-	{
-	 
-	 position:absolute;
-	 right:-20px;
-	 top:0px;
-	 cursor:pointer;
-	}
-	.bx-edit, .bx-show
-	{
-	 float:right;
-	 padding-top:10%;
-	 padding-right:10%;
-	 font-size:20px;
-	 cursor:pointer;
-	}
-	.iconalign
-	{
-	 float:right;
-	 position:relative;
-	 padding-top:10%;
-	 font-size:20px;
-	 width: 100px;
-	}
-	.alerm{
-		padding-top:1%;
-		float:right;
-		
-	}
-	.bxs-bell-ring{font-size:25px;}
-	
+.addnewVendor {
+	position: absolute;
+	right: -20px;
+	top: 0px;
+	cursor: pointer;
+}
+
+.bx-edit, .bx-show {
+	float: right;
+	padding-top: 10%;
+	padding-right: 10%;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.iconalign {
+	float: right;
+	position: relative;
+	padding-top: 10%;
+	font-size: 20px;
+	width: 100px;
+}
+
+.alerm {
+	padding-top: 1%;
+	float: right;
+}
+
+.bxs-bell-ring {
+	font-size: 25px;
+}
 </style>
 
 </head>
@@ -100,114 +102,236 @@
 	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
 	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
-		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
-		<!-- END: Header-->
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
 
 
-		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
-		<!-- END: Main Menu-->
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
 
-			<!-- BEGIN: Content-->
-				<!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Insurance List</h5>
-                            <div class="breadcrumb-wrapper col-12">
-                                <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
-                                    </li>
-                                  
-                                	   
-                                </ol>
-                                <a href="insurancenew" class="addnewVendor"><button type="button" class="btn btn-warning mr-1 mb-1">Add Insurance</button></a>
-                            </div>
-                        </div>
-                   
-                    </div>
-                </div>
-                
-            </div>
-            <div class="content-body">
-              
-				 <!-- Zero configuration table -->
-                <section id="basic-datatable">
-                    <div class="row">
-                        <div class="col-12">
-                        	
-                            <div class="card">
-                                
-                                <div class="card-content">
-                                    <div class="card-body card-dashboard">
-                                        <p class="card-text"></p>
-                                        <div class="table-responsive">
-                                            <table class="table zero-configuration">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Vendor Name</th>
-                                                        <th>Name</th>
-                                                        <th>Insurance Type</th>
-                                                        <th>Policy </th>  
-                                                        <th>Nominee</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                	<tr th:each="insurance,stat : ${insurancelist}">
-													  
-													   <td th:text="${stat.index+1}"></td>
-													   <td><a th:href="'insurance?id=' + ${#strings.arraySplit(insurance,'|')[0]}" th:text="${#strings.arraySplit(insurance,'|')[1] }" title="Edit Insurance"></a>
-													   	
-													   </td>
-													   <td th:utext="${#strings.arraySplit(insurance,'|')[3] }"></td>
-													   
-													   <td th:utext="${#strings.arraySplit(insurance,'|')[2] }"></td>
-													   <td th:utext="${#strings.arraySplit(insurance,'|')[4] }"></td>
-													   <td th:utext="${#strings.arraySplit(insurance,'|')[5] }"></td>
-													</tr> 
-													
-                                                </tbody>
-                                                <tfoot>
-                                                     <tr>
-                                                        
-                                                        <th>#</th>
-                                                        <th>Vendor Name</th>
-                                                        <th>Name</th>
-                                                        <th>Insurance Type</th>
-                                                        <th>Policy </th>  
-                                                        <th>Nominee</th>
-                                                                                                                                                                
-                                                        
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!--/ Zero configuration table -->               
-
-            </div>
-        </div>
-    </div>
-			<!-- END: Content-->
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+							<h5 class="content-header-title float-left pr-1 mb-0">Insurance
+								List</h5>
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
 
 
-		
-		<div class="sidenav-overlay"></div>
-		<div class="drag-target"></div>
+								</ol>
+								<a href="insurancenew" class="addnewVendor"><button
+										type="button" class="btn btn-warning mr-1 mb-1">Add
+										Insurance</button></a>
+							</div>
+						</div>
 
-		<!-- BEGIN: Footer-->
-		<footer class="footer footer-static footer-light">
+					</div>
+				</div>
+
+			</div>
+			<div class="content-body">
+
+				<!-- Zero configuration table -->
+				<section id="basic-datatable">
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card">
+
+								<div class="card-content">
+									<div class="card-body card-dashboard">
+										<p class="card-text"></p>
+
+										<ul class="nav nav-tabs" role="tablist">
+											<li class="nav-item"><a class="nav-link active"
+												id="home-tab" data-toggle="tab" href="#home"
+												aria-controls="home" role="tab" aria-selected="true"> <i
+													class="bx bx-user align-middle"></i> <span
+													class="align-middle m2">Staff</span>
+											</a></li>
+											<li class="nav-item"><a class="nav-link"
+												id="profile-tab" data-toggle="tab" href="#profile"
+												aria-controls="profile" role="tab" aria-selected="false">
+													<i class="bx bxs-chip align-middle"></i> <span
+													class="align-middle m2">Asset</span>
+											</a></li>
+
+										</ul>
+
+										<div class="tab-content">
+											<div class="tab-pane active " id="home"
+												aria-labelledby="home-tab" role="tabpanel">
+
+												<div class="row">
+
+													<div class="table-responsive">
+														<table class="table zero-configuration">
+															<thead>
+																<tr>
+																	<th>#</th>
+																	<th>Vendor Name</th>
+																	<th>Name</th>
+																	<th>Policy</th>
+																	<th>Expire Date</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr th:each="insurance,stat : ${datastaff}">
+
+																	<td th:text="${stat.index+1}"></td>
+																	<td><a
+																		th:href="'insurance?id=' + ${#strings.arraySplit(insurance,'|')[0]}"
+																		th:text="${#strings.arraySplit(insurance,'|')[1] }"
+																		title="Edit Insurance"></a></td>
+																	<td
+																		th:utext="${#strings.arraySplit(insurance,'|')[2] }"></td>
+																	<td
+																		th:utext="${#strings.arraySplit(insurance,'|')[3] }"></td>
+																	<!-- <td
+																		th:utext="${#strings.arraySplit(insurance,'|')[4] }"></td> -->
+																	<td>
+																	<b>
+																	<span
+																		th:if="${#strings.arraySplit(insurance,'|')[5] } == 'R '"
+																		style="color: red"
+																		th:utext="${#strings.arraySplit(insurance,'|')[4] }"></span>
+																		
+																			
+																		<span
+																		th:if="${#strings.arraySplit(insurance,'|')[5] } == 'Y '"
+																		style="color: #DAA520"
+																		th:utext="${#strings.arraySplit(insurance,'|')[4] }"></span>
+																		
+																		<span
+																		th:if="${#strings.arraySplit(insurance,'|')[5] } == 'G '"
+																		style="color: #228B22"
+																		th:utext="${#strings.arraySplit(insurance,'|')[4] }"></span>
+																	</b>	
+
+																	</td>
+
+
+
+																</tr>
+
+															</tbody>
+															<tfoot>
+																<tr>
+
+																	<th>#</th>
+																	<th>Vendor Name</th>
+																	<th>Name</th>
+																	<th>Policy</th>
+																	<th>Expire Date</th>
+
+
+																</tr>
+															</tfoot>
+														</table>
+													</div>
+
+
+												</div>
+											</div>
+											<div class="tab-pane" id="profile"
+												aria-labelledby="profile-tab" role="tabpanel">
+												<div class="row">
+
+													<div class="table-responsive">
+														<table class="table zero-configuration">
+															<thead>
+																<tr>
+																	<th>#</th>
+																	<th>Vendor Name</th>
+																	<th>Asset Name</th>
+																	<th>Policy</th>
+																	<th>Expire Date</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr th:each="insurance,stat : ${dataasset}">
+
+																	<td th:text="${stat.index+1}"></td>
+																	<td><a
+																		th:href="'insurance?id=' + ${#strings.arraySplit(insurance,'|')[0]}"
+																		th:text="${#strings.arraySplit(insurance,'|')[1] }"
+																		title="Edit Insurance"></a></td>
+																	<td
+																		th:utext="${#strings.arraySplit(insurance,'|')[2] }"></td>
+																	<td
+																		th:utext="${#strings.arraySplit(insurance,'|')[3] }"></td>
+																	<td>
+																	<b>
+																	<span
+																		th:if="${#strings.arraySplit(insurance,'|')[5] } == 'R '"
+																		style="color: red"
+																		th:utext="${#strings.arraySplit(insurance,'|')[4] }"></span>
+																		
+																		<span
+																		th:if="${#strings.arraySplit(insurance,'|')[5] } == 'Y '"
+																		style="color: #DAA520"
+																		th:utext="${#strings.arraySplit(insurance,'|')[4] }"></span>
+																		
+																		<span
+																		th:if="${#strings.arraySplit(insurance,'|')[5] } == 'G '"
+																		style="color: #228B22"
+																		th:utext="${#strings.arraySplit(insurance,'|')[4] }"></span>
+																	</b>
+
+																	</td>
+
+
+																</tr>
+
+															</tbody>
+															<tfoot>
+																<tr>
+
+																	<th>#</th>
+																	<th>Vendor Name</th>
+																	<th>Asset Name</th>
+																	<th>Policy</th>
+																	<th>Expire Date</th>
+
+
+																</tr>
+															</tfoot>
+														</table>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!--/ Zero configuration table -->
+
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
 		<p class="clearfix mb-0">
 			<span class="float-left d-inline-block"></span><span
 				class="float-right d-sm-inline-block d-none"></span>
@@ -215,41 +339,42 @@
 				<i class="bx bx-up-arrow-alt"></i>
 			</button>
 		</p>
-		</footer>
-		<!-- END: Footer-->
+	</footer>
+	<!-- END: Footer-->
 
 
-		<!-- BEGIN: Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-		<!-- BEGIN Vendor JS-->
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+	<!-- BEGIN Vendor JS-->
 
-		<!-- BEGIN: Page Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
-		
-		
-		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-		<!-- END: Page Vendor JS-->
+	<!-- BEGIN: Page Vendor JS-->
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
 
-		<!-- BEGIN: Theme JS-->
-		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-		<script th:src="@{/app-assets/js/core/app.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-		<!-- END: Theme JS-->
 
-		<!-- BEGIN: Page JS-->
-		<script
-			th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
-		<!-- END: Page JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
+	<!-- END: Page JS-->
 </body>
 <!-- END: Body-->
 

@@ -43,7 +43,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.rvs.springboot.thymeleaf.entity.AssetAudit;
 import com.rvs.springboot.thymeleaf.entity.AssetAuditFiles;
@@ -69,6 +68,7 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
+import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
@@ -805,7 +805,7 @@ public class HomeController {
 		if (Photo_Attach.getOriginalFilename().toString().length() > 0) {
 			EmployeeFiles empfiles = new EmployeeFiles();
 			StringBuilder filename = new StringBuilder();
-			String tempfilename = Photo_Attach.getOriginalFilename() + stringdatetime() ;
+			String tempfilename = stringdatetime() + Photo_Attach.getOriginalFilename();
 			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
 			filename.append(tempfilename);
 			empfiles.setPhoto_Attach("employeeprofilephoto/" + filename);
@@ -821,7 +821,7 @@ public class HomeController {
 		if (Resume_Attach.getOriginalFilename().toString().length() > 0) {
 			EmployeeFiles empfiles = new EmployeeFiles();
 			StringBuilder filename = new StringBuilder();
-			String tempfilename = Resume_Attach.getOriginalFilename() + stringdatetime() ;
+			String tempfilename = stringdatetime() + Resume_Attach.getOriginalFilename();
 			Path fileNameandPath = Paths.get(resumeuploadRootPath, tempfilename);
 			filename.append(tempfilename);
 			empfiles.setResume_Attach("employeeresume/" + filename);
@@ -837,7 +837,7 @@ public class HomeController {
 		if (Certificates_Attach.getOriginalFilename().toString().length() > 0) {
 			EmployeeFiles empfiles = new EmployeeFiles();
 			StringBuilder filename = new StringBuilder();
-			String tempfilename = Certificates_Attach.getOriginalFilename() + stringdatetime() ;
+			String tempfilename = stringdatetime() + Certificates_Attach.getOriginalFilename();
 			Path fileNameandPath = Paths.get(certificateuploadRootPath, tempfilename);
 			filename.append(tempfilename);
 			empfiles.setCertificates_Attach("employeecertification/" + filename);
@@ -1483,6 +1483,15 @@ public class HomeController {
 			attendanceMasterService.save(attdmast);
 		}
 		return attendancestr;
+	}
+
+	@ResponseBody
+	@PostMapping("employeeattendancedelete")
+	public String employeeattendancedelete(@RequestParam("attendid") int attendid) {
+
+		attendanceMasterService.deleteById(attendid);
+		return "";
+
 	}
 
 	@ResponseBody
@@ -2258,26 +2267,22 @@ public class HomeController {
 
 			str += obj.getVendormasterid() + "|";
 			str += obj.getAssetType() + " |";
-			
-			if(obj.getVendorEmgContact().size() > 0 )
-			{
-				  List<VendorEmgContact> venec= obj.getVendorEmgContact().stream().filter(C -> !String.valueOf(C.getEmg_PersonalPhone()).equalsIgnoreCase("")).collect(Collectors.toList()) ;
-				  
-				  if(venec.size() >0 )
-				  {
-					  str += venec.get(0).getEmg_PersonalPhone()+ " |";					  
-				  }else
-				  {
-					  str += "- |";
-				  }
-			
-				  
-			}else
-			{
+
+			if (obj.getVendorEmgContact().size() > 0) {
+				List<VendorEmgContact> venec = obj.getVendorEmgContact().stream()
+						.filter(C -> !String.valueOf(C.getEmg_PersonalPhone()).equalsIgnoreCase(""))
+						.collect(Collectors.toList());
+
+				if (venec.size() > 0) {
+					str += venec.get(0).getEmg_PersonalPhone() + " |";
+				} else {
+					str += "- |";
+				}
+
+			} else {
 				str += "- |";
 			}
-			str +=  obj.getAddress_City()
-					+ " |";
+			str += obj.getAddress_City() + " |";
 
 			data.add(str);
 		}
@@ -2426,7 +2431,7 @@ public class HomeController {
 		if (Files_Attach.getOriginalFilename().toString().length() > 0) {
 			VendorFiles venpfiles = new VendorFiles();
 			StringBuilder filename = new StringBuilder();
-			String tvenpfilename =  Files_Attach.getOriginalFilename() + stringdatetime() ;
+			String tvenpfilename = stringdatetime() + Files_Attach.getOriginalFilename();
 			Path fileNameandPath = Paths.get(certificateuploadRootPath, tvenpfilename);
 			filename.append(tvenpfilename);
 			venpfiles.setFiles_Attach("vendorfiles/" + filename);
@@ -2633,7 +2638,7 @@ public class HomeController {
 		if (Files_Attach.getOriginalFilename().toString().length() > 0) {
 			AssetMasterFiles assetpfiles = new AssetMasterFiles();
 			StringBuilder filename = new StringBuilder();
-			String tassetpfilename =  Files_Attach.getOriginalFilename() + stringdatetime() ;
+			String tassetpfilename = stringdatetime() + Files_Attach.getOriginalFilename();
 			Path fileNameandPath = Paths.get(certificateuploadRootPath, tassetpfilename);
 			filename.append(tassetpfilename);
 			assetpfiles.setFiles_Attach("assetfiles/" + filename);
@@ -2807,16 +2812,15 @@ public class HomeController {
 		}
 		return result;
 	}
-	
+
 	@PostMapping("getassetlistbasedonbranchselect")
 	@ResponseBody
 	public String getassetlistbasedonbranchselect(@RequestParam("branchid") String branch) {
-		String result = "";
+		String result = "<option value=''>-</option>";
 
 		// ------------------------------------------------------------------------------------
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
-				.filter(C ->  String.valueOf(C.getBranch()).equalsIgnoreCase(branch))
-				.collect(Collectors.toList());
+				.filter(C -> String.valueOf(C.getBranch()).equalsIgnoreCase(branch)).collect(Collectors.toList());
 		// ------------------------------------------------------------------------------------
 		for (AssetMaster obj : AssetMasterobj) {
 			result += "<option value='" + obj.getAssetId() + "'>" + obj.getAssetType() + "-" + obj.getAssetName() + "-"
@@ -2824,7 +2828,7 @@ public class HomeController {
 		}
 		return result;
 	}
-	
+
 	@PostMapping("getassetlistbasedonbranchall")
 	@ResponseBody
 	public String getassetlistbasedonbranchall(@RequestParam("branchid") String branch) {
@@ -2835,37 +2839,39 @@ public class HomeController {
 		// ------------------------------------------------------------------------------------
 		for (AssetMaster obj : AssetMasterobj) {
 			result += obj.getAssetId() + "|~|" + obj.getAssetType() + "|~|" + obj.getAssetName() + "-"
-					+ obj.getACondition()+ "-"+ obj.getStatus() + "~|~";
+					+ obj.getACondition() + "-" + obj.getStatus() + "~|~";
 		}
 		return result;
 	}
-	
+
 	@PostMapping("getassetlistbasedonbranchallinstock")
 	@ResponseBody
 	public String getassetlistbasedonbranchallinstock(@RequestParam("branchid") String branch) {
 		String result = "";
 
 		// ------------------------------------------------------------------------------------
-		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
+				.filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
 		// ------------------------------------------------------------------------------------
 		for (AssetMaster obj : AssetMasterobj) {
 			result += obj.getAssetId() + "|~|" + obj.getAssetType() + "|~|" + obj.getAssetName() + "-"
-					+ obj.getACondition()+ "-"+ obj.getStatus() + "~|~";
+					+ obj.getACondition() + "-" + obj.getStatus() + "~|~";
 		}
 		return result;
 	}
-	
+
 	@PostMapping("getassetlistbasedonbranchallstaff")
 	@ResponseBody
 	public String getassetlistbasedonbranchallstaff(@RequestParam("StaffID") String StaffID) {
 		String result = "";
 
 		// ------------------------------------------------------------------------------------
-		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream().filter(C -> String.valueOf(C.getStaffID()).equalsIgnoreCase(StaffID)).collect(Collectors.toList());
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
+				.filter(C -> String.valueOf(C.getStaffID()).equalsIgnoreCase(StaffID)).collect(Collectors.toList());
 		// ------------------------------------------------------------------------------------
 		for (AssetMaster obj : AssetMasterobj) {
 			result += obj.getAssetId() + "|~|" + obj.getAssetType() + "|~|" + obj.getAssetName() + "-"
-					+ obj.getACondition()+ "-"+ obj.getStatus() + "~|~";
+					+ obj.getACondition() + "-" + obj.getStatus() + "~|~";
 		}
 		return result;
 	}
@@ -2874,7 +2880,7 @@ public class HomeController {
 	@ResponseBody
 	public String getEmployeelistbasedonbranch(@RequestParam("branchname") String branch) {
 		List<EmployeeMaster> emls = employeeMasterService.findAll();
-		String result = "";
+		String result = "<option value=''>-</option>";
 
 		// ------------------------------------------------------------------------------------
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -2916,12 +2922,13 @@ public class HomeController {
 			@RequestParam(name = "ACondition") String[] ACondition,
 			@RequestParam(name = "AssetName") String[] assetypeinstcokitem,
 			@RequestParam(name = "Comments") String[] Comments,
-			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session, HttpServletRequest request) {
+			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
+			HttpServletRequest request) {
 
 		// -----------------------------------------
 		// File Uploading
 		String profilephotouploadRootPath = request.getServletContext().getRealPath("checkoutphoto");
-	
+
 		File uploadRootDir = new File(profilephotouploadRootPath);
 		// Create directory if it not exists.
 		if (!uploadRootDir.exists()) {
@@ -2940,22 +2947,22 @@ public class HomeController {
 			obj.setWhichLocation(WhichLocation);
 
 			if (ACondition.length > 0) {
-			obj.setAcondition(ACondition[i]);
+				obj.setAcondition(ACondition[i]);
 			}
 			obj.setAssetId(assetypeinstcokitem[i]);
 			obj.setSysdate(sysdate);
-			
+
 			if (Comments.length > 0) {
 				obj.setComments(Comments[i]);
 			}
-			
-			//-----------------------------------------------------
+
+			// -----------------------------------------------------
 			if (Photo_Attach.length > 0) {
 				if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
 					Set<CheckOutFiles> checkMasterfiles = new LinkedHashSet<CheckOutFiles>();
 					CheckOutFiles chekinfiles = new CheckOutFiles();
 					StringBuilder filename = new StringBuilder();
-					String tempfilename = Photo_Attach[i].getOriginalFilename() +  stringdatetime();
+					String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
 					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
 					filename.append(tempfilename);
 					chekinfiles.setPhoto_Attach("checkoutphoto/" + filename);
@@ -2968,8 +2975,8 @@ public class HomeController {
 					obj.setCheckoutFiles(checkMasterfiles);
 				}
 			}
-			//-----------------------------------------------------
-			
+			// -----------------------------------------------------
+
 			objList.add(obj);
 			assetMasterService.updatetheAssetStatus(Status, Integer.parseInt(assetypeinstcokitem[i]), sysdate, StaffID);
 		}
@@ -3017,8 +3024,7 @@ public class HomeController {
 	}
 
 	@PostMapping("checkoutprint")
-	public String checkoutprint(Model themodel, HttpSession session,
-			HttpServletRequest request) {
+	public String checkoutprint(Model themodel, HttpSession session, HttpServletRequest request) {
 
 		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckoutstr");
 		String temp[] = String.valueOf(printstr.get(0)).split("\\|");
@@ -3029,8 +3035,6 @@ public class HomeController {
 		return "checkoutprint";
 	}
 
-	
-	
 	@GetMapping("checkin")
 	public String checkin(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids) {
 
@@ -3059,9 +3063,10 @@ public class HomeController {
 
 		return "checkin";
 	}
-	
+
 	@GetMapping("assettransfer")
-	public String assettransfer(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids) {
+	public String assettransfer(Model themodel,
+			@RequestParam(name = "id", required = false, defaultValue = "") String ids) {
 
 		List<AssetMaster> assetMaster = assetMasterService.findAll();
 		List<AssetMaster> selectedasset = new ArrayList<AssetMaster>();
@@ -3074,7 +3079,10 @@ public class HomeController {
 			}
 		}
 
-		List<AssetMaster> aobjls = selectedasset.stream().filter(C -> !(String.valueOf(C.getStaffID())).equalsIgnoreCase("null") && !(String.valueOf(C.getStaffID())).equalsIgnoreCase("")).collect(Collectors.toList());
+		List<AssetMaster> aobjls = selectedasset.stream()
+				.filter(C -> !(String.valueOf(C.getStaffID())).equalsIgnoreCase("null")
+						&& !(String.valueOf(C.getStaffID())).equalsIgnoreCase(""))
+				.collect(Collectors.toList());
 		EmployeeMaster emp = new EmployeeMaster();
 
 		if (aobjls.size() > 0) {
@@ -3095,7 +3103,6 @@ public class HomeController {
 	public String getCheckoutlistfromassetMaster(@RequestParam("StaffID") String StaffID) {
 
 		List<AssetMaster> amls = assetMasterService.findbyStaffID(StaffID);
-		
 
 		String res = "";
 		int i = 0;
@@ -3121,11 +3128,10 @@ public class HomeController {
 	}
 
 	@PostMapping("checkinsave")
-	public String checkinsave(Model themodel, 
-			@RequestParam(name = "StaffID") String StaffID, @RequestParam(name = "CheckInDate") String CheckInDate,
-			@RequestParam(name = "checkbox") boolean[] checkbox, @RequestParam(name = "AssetName") String[] AssetId,
-			@RequestParam(name = "Status") String[] Status, @RequestParam(name = "ACondition") String[] Condition,
-			@RequestParam(name = "Comments") String[] Comments,
+	public String checkinsave(Model themodel, @RequestParam(name = "StaffID") String StaffID,
+			@RequestParam(name = "CheckInDate") String CheckInDate, @RequestParam(name = "checkbox") boolean[] checkbox,
+			@RequestParam(name = "AssetName") String[] AssetId, @RequestParam(name = "Status") String[] Status,
+			@RequestParam(name = "ACondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
 			HttpServletRequest request) {
 
@@ -3144,7 +3150,7 @@ public class HomeController {
 		String sysdate = displaydatetimeFormat.format(new Date());
 		for (int i = 0; i < AssetId.length; i++) {
 			if (checkbox[i] == true) {
-				
+
 				CheckIn obj = new CheckIn();
 				obj.setAssetId(AssetId[i]);
 				obj.setStaffID(StaffID);
@@ -3162,7 +3168,7 @@ public class HomeController {
 						Set<CheckInFiles> checkMasterfiles = new LinkedHashSet<CheckInFiles>();
 						CheckInFiles chekinfiles = new CheckInFiles();
 						StringBuilder filename = new StringBuilder();
-						String tempfilename = Photo_Attach[i].getOriginalFilename() + stringdatetime() ;
+						String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
 						Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
 						filename.append(tempfilename);
 						chekinfiles.setPhoto_Attach("checkinphoto/" + filename);
@@ -3184,7 +3190,7 @@ public class HomeController {
 		List<CheckIn> CheckInobj = checkinService.saveall(objList);
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
 		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
-		String Empname="";
+		String Empname = "";
 		for (CheckIn obj : CheckInobj) {
 			String str = "";
 
@@ -3201,7 +3207,6 @@ public class HomeController {
 				tempstr = "";
 			}
 
-			
 			str += assobj.getAssetName() + " |";
 			str += assobj.getBrand() + " |";
 			str += assobj.getModel() + " |";
@@ -3210,7 +3215,7 @@ public class HomeController {
 			str += tempstr + " |";
 
 			printstr.add(str);
-			Empname =empobj.getStaffName();
+			Empname = empobj.getStaffName();
 		}
 
 		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
@@ -3219,47 +3224,41 @@ public class HomeController {
 		themodel.addAttribute("printstr", printstr);
 		request.getSession().setAttribute("printcheckinstrEmpname", Empname);
 		request.getSession().setAttribute("printcheckinstr", printstr);
-		
+
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		return "checkin";
 	}
 
 	@PostMapping("checkinprint")
-	public String checkinprint(Model themodel, HttpSession session,
-			HttpServletRequest request) {
+	public String checkinprint(Model themodel, HttpSession session, HttpServletRequest request) {
 
 		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckinstr");
-		String printcheckinstrEmpname =  (String) request.getSession().getAttribute("printcheckinstrEmpname");
-		
+		String printcheckinstrEmpname = (String) request.getSession().getAttribute("printcheckinstrEmpname");
+
 		themodel.addAttribute("printstr", printstr);
 		themodel.addAttribute("printcheckinstrEmpname", printcheckinstrEmpname);
-		
+
 		return "checkinprint";
 	}
-	
+
 	@PostMapping("assettranferprint")
-	public String assettranferprint(Model themodel, HttpSession session,
-			HttpServletRequest request) {
+	public String assettranferprint(Model themodel, HttpSession session, HttpServletRequest request) {
 
 		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckinstr");
-		String printcheckinstrEmpname =  (String) request.getSession().getAttribute("printcheckinstrEmpname");
-		String printcheckinstrEmpnameto =  (String) request.getSession().getAttribute("printcheckinstrEmpnameto");
+		String printcheckinstrEmpname = (String) request.getSession().getAttribute("printcheckinstrEmpname");
+		String printcheckinstrEmpnameto = (String) request.getSession().getAttribute("printcheckinstrEmpnameto");
 		themodel.addAttribute("printstr", printstr);
 		themodel.addAttribute("printcheckinstrEmpname", printcheckinstrEmpname);
 		themodel.addAttribute("printcheckinstrEmpnameto", printcheckinstrEmpnameto);
 		return "assettranferprint";
 	}
-	
-	
+
 	@PostMapping("assettransfersave")
-	public String assettransfersave(Model themodel, 
-			@RequestParam(name = "StaffID") String StaffID,
-			@RequestParam(name = "StaffIDto") String StaffIDto
-			, @RequestParam(name = "CheckInDate") String CheckInDate,
+	public String assettransfersave(Model themodel, @RequestParam(name = "StaffID") String StaffID,
+			@RequestParam(name = "StaffIDto") String StaffIDto, @RequestParam(name = "CheckInDate") String CheckInDate,
 			@RequestParam(name = "checkbox") boolean[] checkbox, @RequestParam(name = "AssetName") String[] AssetId,
-			@RequestParam(name = "ACondition") String[] Condition,
-			@RequestParam(name = "Comments") String[] Comments,
+			@RequestParam(name = "ACondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
 			HttpServletRequest request) {
 
@@ -3278,7 +3277,7 @@ public class HomeController {
 		String sysdate = displaydatetimeFormat.format(new Date());
 		for (int i = 0; i < AssetId.length; i++) {
 			if (checkbox[i] == true) {
-				
+
 				CheckIn obj = new CheckIn();
 				obj.setAssetId(AssetId[i]);
 				obj.setStaffID(StaffID);
@@ -3287,18 +3286,19 @@ public class HomeController {
 				obj.setACondition(Condition[i]);
 				obj.setStaffIDto(StaffIDto);
 				obj.setStaffIDtoapproved("No");
-				
+
 				if (Comments.length > 0) {
 					obj.setComments(Comments[i]);
 				}
-				//assetMasterService.updatetheAssetStatus(Status[i], Integer.parseInt(AssetId[i]), sysdate, "");
+				// assetMasterService.updatetheAssetStatus(Status[i],
+				// Integer.parseInt(AssetId[i]), sysdate, "");
 
 				if (Photo_Attach.length > 0) {
 					if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
 						Set<CheckInFiles> checkMasterfiles = new LinkedHashSet<CheckInFiles>();
 						CheckInFiles chekinfiles = new CheckInFiles();
 						StringBuilder filename = new StringBuilder();
-						String tempfilename =  Photo_Attach[i].getOriginalFilename() + stringdatetime() ;
+						String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
 						Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
 						filename.append(tempfilename);
 						chekinfiles.setPhoto_Attach("checkinphoto/" + filename);
@@ -3320,14 +3320,14 @@ public class HomeController {
 		List<CheckIn> CheckInobj = checkinService.saveall(objList);
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
 		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
-		String Empname="";
-		String Empnameto="";
+		String Empname = "";
+		String Empnameto = "";
 		for (CheckIn obj : CheckInobj) {
 			String str = "";
 
 			int staffid = Integer.parseInt(obj.getStaffID());
 			int assetid = Integer.parseInt(obj.getAssetId());
-			int staffidto= Integer.parseInt(obj.getStaffIDto());
+			int staffidto = Integer.parseInt(obj.getStaffIDto());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
 					.collect(Collectors.toList()).get(0);
 
@@ -3336,13 +3336,12 @@ public class HomeController {
 
 			EmployeeMaster empobjto = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffidto)
 					.collect(Collectors.toList()).get(0);
-			
+
 			String tempstr = obj.getComments();
 			if (obj.getComments() == null) {
 				tempstr = "";
 			}
 
-			
 			str += assobj.getAssetName() + " |";
 			str += assobj.getBrand() + " |";
 			str += assobj.getModel() + " |";
@@ -3351,8 +3350,8 @@ public class HomeController {
 			str += tempstr + " |";
 
 			printstr.add(str);
-			Empname =empobj.getStaffName();
-			Empnameto =empobjto.getStaffName();
+			Empname = empobj.getStaffName();
+			Empnameto = empobjto.getStaffName();
 		}
 
 		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
@@ -3362,13 +3361,11 @@ public class HomeController {
 		request.getSession().setAttribute("printcheckinstrEmpname", Empname);
 		request.getSession().setAttribute("printcheckinstrEmpnameto", Empnameto);
 		request.getSession().setAttribute("printcheckinstr", printstr);
-		
+
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		return "assettransfer";
 	}
-
-
 
 	@GetMapping("assetaudit")
 	public String assetaudit(Model themodel) {
@@ -3386,8 +3383,7 @@ public class HomeController {
 	}
 
 	@PostMapping("assetauditsave")
-	public String assetauditsave(Model themodel,
-			@RequestParam(name = "StaffID") String[] StaffID,
+	public String assetauditsave(Model themodel, @RequestParam(name = "StaffID") String[] StaffID,
 			@RequestParam(name = "AssetAuditDate") String[] AssetAuditDate,
 			@RequestParam(name = "AssetId") String[] AssetId, @RequestParam(name = "Statusx") String[] Status,
 			@RequestParam(name = "aCondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
@@ -3417,14 +3413,15 @@ public class HomeController {
 			if (Comments.length > 0) {
 				obj.setComments(Comments[i]);
 			}
-			assetMasterService.updatetheAssetStatus(Status[i], Integer.parseInt(AssetId[i]), sysdate, StaffID[i],Condition[i]);
+			assetMasterService.updatetheAssetStatus(Status[i], Integer.parseInt(AssetId[i]), sysdate, StaffID[i],
+					Condition[i]);
 
 			if (Photo_Attach.length > 0) {
 				if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
 					Set<AssetAuditFiles> assetauditMasterfiles = new LinkedHashSet<AssetAuditFiles>();
 					AssetAuditFiles assetauditfiles = new AssetAuditFiles();
 					StringBuilder filename = new StringBuilder();
-					String tempfilename =  Photo_Attach[i].getOriginalFilename() + stringdatetime() ;
+					String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
 					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
 					filename.append(tempfilename);
 					assetauditfiles.setPhoto_Attach("assetauditphoto/" + filename);
@@ -3453,19 +3450,16 @@ public class HomeController {
 			int assetid = Integer.parseInt(obj.getAssetId());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
 					.collect(Collectors.toList()).get(0);
-			
-			
-			if(!obj.getStaffID().equalsIgnoreCase("null"))
-			{
+
+			if (!obj.getStaffID().equalsIgnoreCase("null")) {
 				int staffid = Integer.parseInt(obj.getStaffID());
 				EmployeeMaster empobj = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffid)
-					.collect(Collectors.toList()).get(0);
-			str += empobj.getStaffName() + " |";
-			}else
-			{
+						.collect(Collectors.toList()).get(0);
+				str += empobj.getStaffName() + " |";
+			} else {
 				str += " |";
 			}
-			
+
 			str += assobj.getAssetName() + " |";
 			str += assobj.getBrand() + " |";
 			str += assobj.getModel() + " |";
@@ -3526,67 +3520,128 @@ public class HomeController {
 	 */
 	@GetMapping("insurancelist")
 	public String insurancelist(Model theModel) {
-		List<String> data = new ArrayList<String>();
-
+		List<String> datastaff = new ArrayList<String>();
+		List<String> dataasset = new ArrayList<String>();
 		List<InsuranceMaster> ls = new ArrayList<InsuranceMaster>();
 		ls = insuranceMasterService.findAll();
 
+		Date todaydate= new Date();
+		
 		for (InsuranceMaster obj : ls) {
 
 			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(obj.getVendorName()));
 
 			String namestr = "";
-			String nominenamestr = "-";
 
 			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
 				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
 				namestr = asset.getAssetName();
+				
+				for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
+					String str = "";
+					str += obj.getInsuranceid() + " |";
+					str += vendor.getName() + " |";
+					str += namestr + " |";
+					str += objindetail.getPolicyName() + " |";
+					
+					if(! String.valueOf(objindetail.getPTo()).equalsIgnoreCase(""))
+					{
+						try {
+							str += displaydateFormat.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()))+ " |";
+							
+							long differ_in_time =todaydate.getTime() -  new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
+							
+							str +=  insuranetimecolor ((differ_in_time)/(1000 * 60 * 60 * 24)) + " |";
+							 
+							 
+							
+						} catch (ParseException e) {
+						}	
+					}else
+					{
+						str +=   objindetail.getPTo() + " |";
+					}
+					 
+					dataasset.add(str);
+				}
+				
 			} else {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
 
 				namestr = employee.getStaffName();
 
 				EmployeeEmgContact emglsnew = new EmployeeEmgContact();
-
-				if (!obj.getNominee().equals("")) {
-					if (employee.getEmployeeEmgContact().size() > 0) {
-						emglsnew = employee.getEmployeeEmgContact().stream()
-								.filter(C -> C.getEmpEmgContactid() == Integer.parseInt(obj.getNominee()))
-								.collect(Collectors.toList()).get(0);
-						nominenamestr = emglsnew.getEmg_Name() + " (" + emglsnew.getEmg_Relation() + ")";
+				
+				for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
+					String str = "";
+					str += obj.getInsuranceid() + " |";
+					str += vendor.getName() + " |";
+					str += namestr + " |";
+					str += objindetail.getPolicyName() + " |";
+					if(! String.valueOf(objindetail.getPTo()).equalsIgnoreCase(""))
+					{
+						try {
+							str += displaydateFormat.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()))+ " |";
+							
+							long differ_in_time =todaydate.getTime() -  new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
+							
+							str +=  insuranetimecolor ((differ_in_time)/(1000 * 60 * 60 * 24)) + " |";
+							
+						} catch (ParseException e) {
+						}	
+					}else
+					{
+						str +=   objindetail.getPTo() + " | |";
 					}
+					 
+					datastaff.add(str);
 				}
-			}
-			String str = "";
 
-			str += obj.getInsuranceid() + "|";
-			str += vendor.getName() + "|";
-			str += obj.getInsuranceTo() + "|";
-			str += namestr + "|";
-			str += obj.getPolicyName() + "|";
-			str += nominenamestr;
-			data.add(str);
+			}
+
+			
 		}
 
-		theModel.addAttribute("insurancelist", data);
+		theModel.addAttribute("datastaff", datastaff);
+		theModel.addAttribute("dataasset", dataasset);
 		return "insurancelist";
 
+	}
+	
+	public String insuranetimecolor(long timr)
+	{
+		String color ="";
+			
+		if(timr <= -45)
+		{
+			color ="G";
+		}else if(timr < 0 && timr > -45)
+		{
+			color ="Y";
+		}else if(timr >= 0)
+		{
+			color ="R";
+		}
+			
+		return color;
 	}
 
 	@GetMapping("insurancenew")
 	public String insurancenew(Model themodel) {
 
 		InsuranceMaster insuranceobj = new InsuranceMaster();
+		List<InsuranceDetails> setinsuranceDetails = new ArrayList<InsuranceDetails>();
+		setinsuranceDetails.add(new InsuranceDetails());
+		insuranceobj.setInsuranceDetails(setinsuranceDetails);
 		List<VendorMaster> vm = vendorMasterService.findAll();
-		
-
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
+
 		themodel.addAttribute("branchls", branchls);
-		
 		themodel.addAttribute("insurancemaster", insuranceobj);
 		themodel.addAttribute("vm", vm);
-		
+		List<String> PolicyCover = itemlistService.findByFieldName("PolicyCover");
+		themodel.addAttribute("PolicyCover", PolicyCover);
 		
 		return "insurance";
 	}
@@ -3598,53 +3653,96 @@ public class HomeController {
 		insurancemasternew = insuranceMasterService.findById(id);
 
 		List<VendorMaster> vm = vendorMasterService.findAll();
-		List<AssetMaster> am = assetMasterService.findAll();
-		List<EmployeeMaster> em = EffectiveEmployee(employeeMasterService.findAll());
 
-		Set<EmployeeEmgContact> emglsnew = new HashSet<EmployeeEmgContact>();
-
-		final String getStaffID = insurancemasternew.getStaffID();
-
-		if (!getStaffID.equalsIgnoreCase("")) {
-			emglsnew = em.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(getStaffID))
-					.collect(Collectors.toList()).get(0).getEmployeeEmgContact();
+		if (!insurancemasternew.getStaffID().equalsIgnoreCase("")) {
+			EmployeeMaster em = employeeMasterService.findById(Integer.parseInt(insurancemasternew.getStaffID()));
+			themodel.addAttribute("em", em);
+			themodel.addAttribute("ememgcontact", em.getEmployeeEmgContact());
+			
+			
 		}
-
+		if (!insurancemasternew.getAssetNameID().equalsIgnoreCase("")) {
+			AssetMaster am = assetMasterService.findById(Integer.parseInt(insurancemasternew.getAssetNameID()));
+			themodel.addAttribute("am", am);
+		}
+		
 		themodel.addAttribute("insurancemaster", insurancemasternew);
 		themodel.addAttribute("vm", vm);
-		themodel.addAttribute("em", em);
-		themodel.addAttribute("am", am);
-		themodel.addAttribute("emglsnew", emglsnew);
-
+		
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+		
+		List<String> PolicyCover = itemlistService.findByFieldName("PolicyCover");
+		themodel.addAttribute("PolicyCover", PolicyCover);
+		
 		return "insurance";
 	}
 
 	@PostMapping("insurancesave")
 	public String Assetsave(HttpServletRequest req, Model themodel,
-			@ModelAttribute("insurancemaster") InsuranceMaster insurancemaster, HttpServletRequest request) {
+			@ModelAttribute("insurancemaster") InsuranceMaster insurancemaster, HttpServletRequest request,
+			@RequestParam(name = "doc_Attach") MultipartFile[] doc_Attach) {
 
-		InsuranceMaster insurancemasternew = new InsuranceMaster();
-		insurancemasternew = insuranceMasterService.save(insurancemaster);
+		List<InsuranceDetails> Insrls = insurancemaster.getInsuranceDetails().stream()
+				.filter(C -> !String.valueOf(C.getPolicyName()).equalsIgnoreCase("null")).collect(Collectors.toList());
 
-		List<VendorMaster> vm = vendorMasterService.findAll();
-		List<AssetMaster> am = assetMasterService.findAll();
-		List<EmployeeMaster> em = EffectiveEmployee(employeeMasterService.findAll());
+		for (InsuranceDetails o : Insrls) {
+			itemlistService.savesingletxt(o.getCover(), "PolicyCover");
+		}
+		// -----------------------------------------
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("insurancephoto");
 
-		Set<EmployeeEmgContact> emglsnew = new HashSet<EmployeeEmgContact>();
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+		// -----------------------------------------
 
-		final String getStaffID = insurancemasternew.getStaffID();
+		if (doc_Attach.length > 0) {
+			for (int i = 0; i < doc_Attach.length; i++) {
+				if (doc_Attach[i].getOriginalFilename().toString().length() > 0) {
 
-		if (!getStaffID.equalsIgnoreCase("")) {
-			emglsnew = em.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(getStaffID))
-					.collect(Collectors.toList()).get(0).getEmployeeEmgContact();
+					StringBuilder filename = new StringBuilder();
+					String tempfilename = stringdatetime() + doc_Attach[i].getOriginalFilename();
+					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+					filename.append(tempfilename);
+					Insrls.get(i).setDoc_Attach("insurancephoto/" + filename);
+					try {
+						Files.write(fileNameandPath, doc_Attach[i].getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 
+		insurancemaster.setInsuranceDetails(Insrls);
+		InsuranceMaster insurancemasternew = new InsuranceMaster();
+		insurancemasternew = insuranceMasterService.save(insurancemaster);
+		List<VendorMaster> vm = vendorMasterService.findAll();
+
+		if (!insurancemaster.getStaffID().equalsIgnoreCase("")) {
+			EmployeeMaster em = employeeMasterService.findById(Integer.parseInt(insurancemaster.getStaffID()));
+			themodel.addAttribute("em", em);
+			themodel.addAttribute("ememgcontact", em.getEmployeeEmgContact());
+		}
+		if (!insurancemaster.getAssetNameID().equalsIgnoreCase("")) {
+			AssetMaster am = assetMasterService.findById(Integer.parseInt(insurancemaster.getAssetNameID()));
+			themodel.addAttribute("am", am);
+		}
+
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
 		themodel.addAttribute("vm", vm);
-		themodel.addAttribute("em", em);
-		themodel.addAttribute("am", am);
 		themodel.addAttribute("save", true);
 		themodel.addAttribute("insurancemaster", insurancemasternew);
-		themodel.addAttribute("emglsnew", emglsnew);
+
+		List<String> PolicyCover = itemlistService.findByFieldName("PolicyCover");
+		themodel.addAttribute("PolicyCover", PolicyCover);
 
 		return "insurance";
 	}

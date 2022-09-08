@@ -1,15 +1,10 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -24,24 +19,35 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "InsuranceMaster")
+@Table(name = "InsuranceDetails")
 
-public class InsuranceMaster {
+public class InsuranceDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int Insuranceid;
-	
+	private int InsuranceDetailsid;
+
 	@Column
-	private String VendorName;
+	private String PolicyName;
 	@Column
-	private String InsuranceTo;
+	private String PolicyNo;
 	@Column
-	private String StaffID;
+	private String Premium;
 	@Column
-	private String AssetNameID;	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "Insuranceid")
-	private List<InsuranceDetails> InsuranceDetails;
+	private String Cover;
+	@Column
+	private String PFrom;
+	@Column
+	private String PTo;
+	@Column
+	private String CoverageAmount;
+	@Column
+	private String Notes;
+	@Column
+	private String Nominee;
+	@Column
+	private String doc_Attach;
+	@Column
+	private String status;
 
 }

@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -142,6 +143,8 @@ public class HomeController {
 	@Autowired
 	ItemListService itemlistService;
 
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	InsuranceMasterService insuranceMasterService;
 
@@ -273,6 +276,7 @@ public class HomeController {
 
 			Login obj = new Login();
 			obj.setId(Long.valueOf(empobj.getEmpMasterid()));
+
 			themodel.addAttribute("login", obj);
 			themodel.addAttribute("empname", empobj.getStaffName());
 		}
@@ -298,6 +302,50 @@ public class HomeController {
 
 		}
 		return "redirect:/createpwd?success";
+	}
+
+	@GetMapping("changerole")
+	public String changeroleget(Model themodel, @RequestParam(name = "id", required = false) Long id) {
+
+		if (!(id == null)) {
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(String.valueOf(id)));
+			Login obj = loginService.findByEmpid(String.valueOf(empobj.getEmpMasterid()));
+			
+			if (obj == null) {
+				return "redirect:/credentialrolechange?error";
+			} else {
+				themodel.addAttribute("login", obj);
+				themodel.addAttribute("empname", empobj.getStaffName());
+			}
+		}
+		return "credentialrolechange";
+	}
+
+	@PostMapping("changerole")
+	public String changerole(@RequestParam(name = "id") int id,
+			@RequestParam(name = "privilege") String privilege,@RequestParam(name = "checkboxresetpwd", defaultValue = "false") boolean checkboxresetpwd) {
+
+		Login existing = loginService.findByEmpid(String.valueOf(id));
+		if (existing != null) {
+			
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(String.valueOf(id)));
+			LoginRegistrationDto loginDto = new LoginRegistrationDto();
+			loginDto.setEmpid(String.valueOf(empobj.getEmpMasterid()));
+			if(checkboxresetpwd)
+			{
+				loginDto.setPassword(passwordEncoder.encode(String.valueOf(empobj.getEmpMasterid())));
+			}else
+			{
+				loginDto.setPassword(existing.getPassword());
+			}
+			
+			loginService.resetall(loginDto, privilege,existing.getId());
+			
+		} else {
+			
+			return "redirect:/changerole?error";
+		}
+		return "redirect:/changerole?success";
 	}
 
 	@GetMapping("addnewbranch")
@@ -3525,8 +3573,8 @@ public class HomeController {
 		List<InsuranceMaster> ls = new ArrayList<InsuranceMaster>();
 		ls = insuranceMasterService.findAll();
 
-		Date todaydate= new Date();
-		
+		Date todaydate = new Date();
+
 		for (InsuranceMaster obj : ls) {
 
 			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(obj.getVendorName()));
@@ -3536,70 +3584,67 @@ public class HomeController {
 			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
 				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
 				namestr = asset.getAssetName();
-				
+
 				for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
 					String str = "";
 					str += obj.getInsuranceid() + " |";
 					str += vendor.getName() + " |";
 					str += namestr + " |";
 					str += objindetail.getPolicyName() + " |";
-					
-					if(! String.valueOf(objindetail.getPTo()).equalsIgnoreCase(""))
-					{
+
+					if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
 						try {
-							str += displaydateFormat.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()))+ " |";
-							
-							long differ_in_time =todaydate.getTime() -  new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
-							
-							str +=  insuranetimecolor ((differ_in_time)/(1000 * 60 * 60 * 24)) + " |";
-							 
-							 
-							
+							str += displaydateFormat
+									.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())) + " |";
+
+							long differ_in_time = todaydate.getTime()
+									- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
+
+							str += insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)) + " |";
+
 						} catch (ParseException e) {
-						}	
-					}else
-					{
-						str +=   objindetail.getPTo() + " |";
+						}
+					} else {
+						str += objindetail.getPTo() + " |";
 					}
-					 
+
 					dataasset.add(str);
 				}
-				
+
 			} else {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
 
 				namestr = employee.getStaffName();
 
 				EmployeeEmgContact emglsnew = new EmployeeEmgContact();
-				
+
 				for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
 					String str = "";
 					str += obj.getInsuranceid() + " |";
 					str += vendor.getName() + " |";
 					str += namestr + " |";
 					str += objindetail.getPolicyName() + " |";
-					if(! String.valueOf(objindetail.getPTo()).equalsIgnoreCase(""))
-					{
+					if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
 						try {
-							str += displaydateFormat.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()))+ " |";
-							
-							long differ_in_time =todaydate.getTime() -  new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
-							
-							str +=  insuranetimecolor ((differ_in_time)/(1000 * 60 * 60 * 24)) + " |";
-							
+							str += displaydateFormat
+									.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())) + " |";
+
+							long differ_in_time = todaydate.getTime()
+									- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
+
+							str += insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)) + " |";
+
 						} catch (ParseException e) {
-						}	
-					}else
-					{
-						str +=   objindetail.getPTo() + " | |";
+						}
+					} else {
+						str += objindetail.getPTo() + " | |";
 					}
-					 
+
 					datastaff.add(str);
 				}
 
 			}
 
-			
 		}
 
 		theModel.addAttribute("datastaff", datastaff);
@@ -3607,22 +3652,18 @@ public class HomeController {
 		return "insurancelist";
 
 	}
-	
-	public String insuranetimecolor(long timr)
-	{
-		String color ="";
-			
-		if(timr <= -45)
-		{
-			color ="G";
-		}else if(timr < 0 && timr > -45)
-		{
-			color ="Y";
-		}else if(timr >= 0)
-		{
-			color ="R";
+
+	public String insuranetimecolor(long timr) {
+		String color = "";
+
+		if (timr <= -45) {
+			color = "G";
+		} else if (timr < 0 && timr > -45) {
+			color = "Y";
+		} else if (timr >= 0) {
+			color = "R";
 		}
-			
+
 		return color;
 	}
 
@@ -3642,7 +3683,7 @@ public class HomeController {
 		themodel.addAttribute("vm", vm);
 		List<String> PolicyCover = itemlistService.findByFieldName("PolicyCover");
 		themodel.addAttribute("PolicyCover", PolicyCover);
-		
+
 		return "insurance";
 	}
 
@@ -3658,24 +3699,23 @@ public class HomeController {
 			EmployeeMaster em = employeeMasterService.findById(Integer.parseInt(insurancemasternew.getStaffID()));
 			themodel.addAttribute("em", em);
 			themodel.addAttribute("ememgcontact", em.getEmployeeEmgContact());
-			
-			
+
 		}
 		if (!insurancemasternew.getAssetNameID().equalsIgnoreCase("")) {
 			AssetMaster am = assetMasterService.findById(Integer.parseInt(insurancemasternew.getAssetNameID()));
 			themodel.addAttribute("am", am);
 		}
-		
+
 		themodel.addAttribute("insurancemaster", insurancemasternew);
 		themodel.addAttribute("vm", vm);
-		
+
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchls", branchls);
-		
+
 		List<String> PolicyCover = itemlistService.findByFieldName("PolicyCover");
 		themodel.addAttribute("PolicyCover", PolicyCover);
-		
+
 		return "insurance";
 	}
 

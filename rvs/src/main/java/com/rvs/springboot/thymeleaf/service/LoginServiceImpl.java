@@ -78,6 +78,18 @@ public class LoginServiceImpl implements LoginService {
 		return userRepository.save(obj);
 	}
 
-	
+	public Login resetall(LoginRegistrationDto registration, String privilege, long id) {
+
+		ArrayList<LoginRole> ls = new ArrayList<LoginRole>();
+		ls.add(userRoleRepository.findByRole(privilege));
+
+		Login user = new Login();
+		user.setId(id);
+		user.setEmpid(registration.getEmpid());
+		user.setPassword(registration.getPassword());
+		user.setRoles(ls);
+		
+		return userRepository.save(user);
+	}
 
 }

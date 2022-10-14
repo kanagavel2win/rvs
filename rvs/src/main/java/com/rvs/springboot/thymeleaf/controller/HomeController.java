@@ -31,6 +31,7 @@ import java.util.stream.IntStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -56,6 +57,8 @@ import com.rvs.springboot.thymeleaf.entity.CheckIn;
 import com.rvs.springboot.thymeleaf.entity.CheckInFiles;
 import com.rvs.springboot.thymeleaf.entity.CheckOut;
 import com.rvs.springboot.thymeleaf.entity.CheckOutFiles;
+import com.rvs.springboot.thymeleaf.entity.ContactOrganization;
+import com.rvs.springboot.thymeleaf.entity.ContactPerson;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
@@ -85,6 +88,8 @@ import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
 import com.rvs.springboot.thymeleaf.service.CheckInService;
 import com.rvs.springboot.thymeleaf.service.CheckOutService;
+import com.rvs.springboot.thymeleaf.service.ContactOrganizationService;
+import com.rvs.springboot.thymeleaf.service.ContactPersonService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobcompensationService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
@@ -148,6 +153,14 @@ public class HomeController {
 	@Autowired
 	InsuranceMasterService insuranceMasterService;
 
+	@Autowired
+	ContactPersonService contactPersonSerivce; 
+	@Autowired
+	ContactOrganizationService contactOrganizationSerivce; 
+	
+	
+	
+	
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -2572,7 +2585,9 @@ public class HomeController {
 		assetobj.setStatus("In Stock");
 
 		List<AssetService> setassetSevice = new ArrayList();
-		setassetSevice.add(new AssetService());
+		AssetService objassetservice =new AssetService();
+		objassetservice.setOptionradiobtn("RepeatEvery"); 
+		setassetSevice.add(objassetservice);
 		assetobj.setAssetService(setassetSevice);
 		AssetMasterFiles assetfiles = new AssetMasterFiles();
 		ArrayList<AssetMasterFiles> filels = new ArrayList<AssetMasterFiles>();
@@ -3801,21 +3816,174 @@ public class HomeController {
 		return output;
 	}
 
-	@GetMapping("lead")
-	public String lead() {
+	@GetMapping("contactspersonlist")
+	public String contactspersonlist(Model themodel) {
+		
+		List<ContactPerson> contactPersonlist = contactPersonSerivce.findAll();
+		themodel.addAttribute("contactPersonlist", contactPersonlist);
+		
+		return "contactpersonlist";
+	}
+	@GetMapping("contactspersonadd")
+	public String contactspersonadd(Model themodel) {
 
-		return "lead";
+		ContactPerson contactperson =new ContactPerson();
+		themodel.addAttribute("contactperson", contactperson) ;
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
+		themodel.addAttribute("organizationlist",contactOrganizationSerivce.findAll()) ;
+		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
+		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
+		
+		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
+		themodel.addAttribute("MEMBERIN", MEMBERIN);
+		return "contactpersonadd";
+	}
+	
+	@GetMapping("contactpersonview")
+	public String contactpersonview(Model themodel, @RequestParam("id") int id) {
+
+		ContactPerson contactperson = contactPersonSerivce.findById(id);
+		
+		themodel.addAttribute("contactperson", contactperson) ;
+		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
+		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
+		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
+		themodel.addAttribute("MEMBERIN", MEMBERIN);
+		themodel.addAttribute("organizationlist",contactOrganizationSerivce.findAll()) ;
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
+		
+		
+		return "contactpersonadd";
+	}
+	
+	@PostMapping("contactpersonsave")
+	public String contactpersonsave(Model themodel, @ModelAttribute("contactperson") ContactPerson contactperson) {
+		
+		String collectorgids="";
+		
+		for(String str:contactperson.getOrganization().split(","))
+		{
+			if(NumberUtils.isParsable(str))
+			{
+				collectorgids +=str+",";
+			}else
+			{
+				ContactOrganization contactOrganization= new ContactOrganization();
+				contactOrganization.setOrgname(str);
+				collectorgids +=contactOrganizationSerivce.save(contactOrganization).getId()+",";
+			}
+		}
+		
+		if(collectorgids.length()>0)
+		{
+			collectorgids=collectorgids.substring(0,collectorgids.length()-1);
+		}
+		contactperson.setOrganization(collectorgids);
+		
+		itemlistService.savesingletxt(contactperson.getTypeofindustry(), "TYPEOFINDUSTRY");
+		itemlistService.savesingletxt(contactperson.getMemberin(), "MEMBERIN");
+		contactperson = contactPersonSerivce.save(contactperson);
+		
+		themodel.addAttribute("contactperson", contactperson) ;
+		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
+		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
+		
+		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
+		themodel.addAttribute("MEMBERIN", MEMBERIN);
+		themodel.addAttribute("save", true);
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
+		themodel.addAttribute("organizationlist",contactOrganizationSerivce.findAll()) ;
+		
+		return "contactpersonadd";
+	}
+	
+	
+	@GetMapping("contactsOrganizationadd")
+	public String contactsOrganizationadd(Model themodel) {
+
+		ContactOrganization contactOrganization =new ContactOrganization();
+		themodel.addAttribute("contactOrganization", contactOrganization) ;
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
+		themodel.addAttribute("personlist", contactPersonSerivce.findAll()) ;
+		return "contactorganizationadd";
+	}
+	
+	@GetMapping("contactOrganizationview")
+	public String contactOrganizationview(Model themodel, @RequestParam("id") int id) {
+
+		ContactOrganization contactOrganization = contactOrganizationSerivce.findById(id);
+		themodel.addAttribute("contactOrganization", contactOrganization) ;
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
+		themodel.addAttribute("personlist", contactPersonSerivce.findAll()) ;
+		
+		return "contactorganizationadd";
+	}
+	
+	@PostMapping("contactOrganizationsave")
+	public String contactOrganizationsave(Model themodel, @ModelAttribute("contactOrganization") ContactOrganization contactOrganization) {
+
+		String collectpeopleids="";
+		
+		for(String str:contactOrganization.getPersonid().split(","))
+		{
+			if(NumberUtils.isParsable(str))
+			{
+				collectpeopleids +=str+",";
+			}else
+			{
+				ContactPerson contactperson= new ContactPerson();
+				contactperson.setPeoplename(str);
+				collectpeopleids +=contactPersonSerivce.save(contactperson).getId()+",";
+			}
+		}
+		
+		if(collectpeopleids.length()>0)
+		{
+			collectpeopleids=collectpeopleids.substring(0,collectpeopleids.length()-1);
+		}
+		contactOrganization.setPersonid(collectpeopleids);
+		
+		contactOrganization = contactOrganizationSerivce.save(contactOrganization);
+		
+		themodel.addAttribute("contactOrganization", contactOrganization) ;
+		themodel.addAttribute("save", true);
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
+		themodel.addAttribute("personlist", contactPersonSerivce.findAll()) ;
+		return "contactorganizationadd";
+	}
+	
+	
+	@GetMapping("contactsorganizationslist")
+	public String contactsorganizationslist(Model themodel) {
+
+		List<ContactOrganization> contactOrganizationlist = contactOrganizationSerivce.findAll();
+		themodel.addAttribute("contactOrganizationlist", contactOrganizationlist);
+		
+		
+		return "contactorganizationlist";
 	}
 
-	@GetMapping("leadfollowupls")
-	public String leadfollowuplist() {
+	
+	@GetMapping("leadlist")
+	public String leadlist() {
 
-		return "leadfollowuplist";
+		return "leadlist";
+	}
+	@GetMapping("deal")
+	public String deal() {
+
+		return "deal";
 	}
 
-	@GetMapping("leadfollowup")
-	public String leadfollowup() {
-		return "leadfollowup";
+	@GetMapping("dealfollowupls")
+	public String dealfollowuplist() {
+
+		return "dealfollowuplist";
+	}
+
+	@GetMapping("dealfollowup")
+	public String dealfollowup() {
+		return "dealfollowup";
 	}
 
 	@GetMapping("projectls")

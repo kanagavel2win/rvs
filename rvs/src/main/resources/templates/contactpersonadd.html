@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>People</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+	
+<link rel="stylesheet" type="text/css" th:href="@{/app-assets/vendors/css/editors/quill/quill.snow.css}">
+ <link rel="stylesheet" type="text/css" th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
+    
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+
+    
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+	
+	<link rel="stylesheet" type="text/css" th:href="@{/app-assets/css/pages/app-email.css}">
+<!-- END: Custom CSS-->
+<style>
+.emptitle {
+	color: #527a00;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+	cursor: pointer;
+}
+.bxs-file-pdf
+{
+	color:#FF0000;
+	font-size:50px;
+}
+.m2
+{
+	vertical-align:middle;
+	line-height: 20px;
+}
+	
+	.uppercase{
+		text-transform:uppercase;
+	}
+	.capitalize{
+		text-transform:capitalize;
+	}
+		
+	.highlight-error {
+  border-color: red;
+}	
+.error
+{
+	color:red;
+}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script th:inline="javascript">
+	var emplanstat = 0;
+	var emgstat = 0;
+	var languagelist = "";
+	var educationdegreelist = "";
+	var Nomineerelationshiplist = "";
+</script>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
+
+
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
+
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+							
+							<h5 class="content-header-title float-left pr-1 mb-0">
+								Person</h5>
+							
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+
+								</ol>
+								
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-body">
+
+				<!-- Basic Vertical form layout section start -->
+				<section id="basic-vertical-layouts">
+					<div class="row match-height">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-content">
+									<div class="card-body">
+									<form th:action="@{/contactpersonsave}"
+											th:object="${contactperson}" method="POST"
+											class="wizard-horizontal" id="formId" enctype="multipart/form-data">
+									
+										<!--scrolling content Modal -->
+													<div class="modal fade" id="personStatusScrollable"
+														tabindex="-1" role="dialog"
+														aria-labelledby="personStatusScrollableTitle"
+														aria-hidden="true">
+														<div class="modal-dialog modal-dialog-scrollable"
+															role="document">
+															<div class="modal-content">
+																<div class="modal-header bg-warning">
+																	<h5 class="modal-title white"
+																		id="personStatusScrollableTitle"></h5>
+																	<button type="button" class="close"
+																		data-dismiss="modal" aria-label="Close">
+																		<i class="bx bx-x"></i>
+																	</button>
+																</div>
+																<div class="modal-body">
+																	<div class="col-md-12">
+																		<div class="form-group">
+																			<label for="addmodel" id="additemalltxt"></label>
+																			<div class="position-relative">
+																				<fieldset class="form-group">
+																					<input type="text" id="additemall" name="addmodel"
+																						class="form-control capitalize">
+																				</fieldset>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-light-secondary"
+																		data-dismiss="modal">
+																		<i class="bx bx-x d-block d-sm-none"></i> <span
+																			class="d-none d-sm-block">Close</span>
+																	</button>
+																	<button type="button" class="btn btn-primary ml-1"
+																		id="additemallsavebtn">
+																		<i class="bx bx-check d-block d-sm-none"></i> <span
+																			class="d-none d-sm-block">ADD</span>
+																	</button>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!--scrolling content Modal -->
+										<div th:if="${save}" class="form-group col-12">
+											<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Person
+												Info Updated Successfully</button>
+										</div>
+					           		 	 <ul class="nav nav-tabs" role="tablist">
+		                                    <li class="nav-item">
+		                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" aria-controls="home" role="tab" aria-selected="true">
+		                                            <i class="bx bx-user align-middle"></i>
+		                                            <span class="align-middle m2">Basic</span>
+		                                        </a>
+		                                    </li>
+		                                    <li class="nav-item">
+		                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="false">
+		                                            <i class="bx bxs-bell-ring align-middle"></i>
+		                                            <span class="align-middle m2">Events & Activities</span>
+		                                        </a>
+		                                    </li>
+		                                    <li class="nav-item">
+		                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="false">
+		                                            <i class="bx bxs-plane-take-off align-middle"></i>
+		                                            <span class="align-middle m2">Deals</span>
+		                                        </a>
+		                                    </li>
+		                                    <li class="nav-item">
+		                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="false">
+		                                            <i class="bx bx-horizontal-center align-middle"></i>
+		                                            <span class="align-middle m2">Projects</span>
+		                                        </a>
+		                                    </li>
+		                                   
+		                               	 </ul>
+									            
+				            			      <div class="tab-content">
+			                               		 <div class="tab-pane active " id="home" aria-labelledby="home-tab" role="tabpanel">
+			                                    
+								            <div class="row">
+											
+											
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="emptitle">Basic Information</label>
+													</div>
+												</div>
+												<div class="col-md-3">
+													
+													<div class="form-group">
+														<label for="first-name-icon">Name</label>
+														<div class="position-relative has-icon-left">
+															<input type="hidden"
+																 class="form-control capitalize"
+																 th:value="${contactperson['id']}"
+																th:field="*{id}"  readonly />
+																
+															
+															<input type="text" 
+																id="peoplename"
+																class="form-control capitalize" 
+																placeholder="Person Name"
+																th:value="${contactperson['peoplename']}"
+																th:field="*{peoplename}" onkeypress="return onlyAlphabets(event,this);" >
+															<div class="form-control-position">
+																<i class="bx bx-user"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="contact-info-icon">Organization</label>
+														<div class="position-relative has-icon-left">
+															<!-- <input type="text" class="form-control capitalize"
+																placeholder="organization"
+																th:value="${contactperson['organization']}"
+																th:field="*{organization}"  />
+															 -->
+																		
+															<select class="select2 orgnames form-control js-example-tags " multiple="multiple"
+																	
+																	th:field="*{organization}">
+																	<th:block th:each="str :${organizationlist}">
+																		<option  th:value="${str.id}"  th:text="${str.orgname}"></option>
+																	</th:block>
+														
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Type of Industry<label
+															class="emptitle additem" name="addtypeofindustrydata"><i
+																class="bx bxs-plus-circle ownstyle1"></i></label>
+														</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<select class="form-control addtypeofindustrydata"
+																	th:value="${contactperson['typeofindustry']}"
+																	th:field="*{typeofindustry}">
+																	<option value="-">-</option>
+																	
+																	<th:block th:each="str :${TYPEOFINDUSTRY}">
+																		<option  th:value="${str}"  th:text="${str}"></option>
+																	</th:block>
+																	
+																	
+
+																</select>
+																<div class="form-control-position">
+																	<i class="bx bxl-redux"></i>
+																</div>
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="email-id-icon">Member In <label
+															class="emptitle additem" name="addmemberindata"><i
+																class="bx bxs-plus-circle ownstyle1"></i></label>
+														</label>
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<select class="form-control addmemberindata"
+																	th:value="${contactperson['memberin']}"
+																	th:field="*{memberin}">
+																	<option value="-">-</option>
+																	
+																	<th:block th:each="str :${MEMBERIN}">
+																		<option  th:value="${str}"  th:text="${str}"></option>
+																	</th:block>
+														
+																</select>
+																<div class="form-control-position">
+																	<i class="bx bxl-react"></i>
+																</div>
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												
+												<div class="col-md-12">
+													<div class="form-group">
+														<hr />
+														<label class="emptitle">Contact</label>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="number" class="form-control  form-control-sm capitalize"
+																id="Work_Phone"
+																placeholder="Work Phone"
+																th:value="${contactperson['phonework']}"
+																th:field="*{phonework}"  />
+															<div class="form-control-position">
+																<i class="bx bx-dialpad"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="number" class="form-control  form-control-sm capitalize"
+																placeholder="Personal Phone"
+																th:value="${contactperson['phonepersonal']}"
+																th:field="*{phonepersonal}"  />
+															<div class="form-control-position">
+																<i class="bx bxs-phone"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="number" class="form-control  form-control-sm capitalize"
+																placeholder="Other Phone"
+																th:value="${contactperson['phoneothers']}"
+																th:field="*{phoneothers}"  />
+															<div class="form-control-position">
+																<i class="bx bxs-phone"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="email" class="form-control  form-control-sm  email"
+																placeholder="Work Email ID"
+																th:value="${contactperson['emailwork']}"
+																th:field="*{emailwork}"  />
+															<div class="form-control-position">
+																<i class="bx bx-mail-send"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="email" class="form-control  form-control-sm  email"
+																placeholder="Personal Email"
+																th:value="${contactperson['emailpersonal']}"
+																th:field="*{emailpersonal}"  />
+															<div class="form-control-position">
+																<i class="bx bx-mail-send"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="email" class="form-control  form-control-sm  email"
+																placeholder="Other Email"
+																th:value="${contactperson['emailothers']}"
+																th:field="*{emailothers}"  />
+															<div class="form-control-position">
+																<i class="bx bx-mail-send"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												
+												
+										
+											
+												<div class="col-md-12">
+													<div class="form-group">
+														
+														<label class="emptitle">Address</label>
+													</div>
+												</div>
+
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="text" 
+																class="form-control form-control-sm capitalize" placeholder="Street 1"
+																th:value="${contactperson['addressStreet1']}"
+																th:field="*{addressStreet1}"  />
+															<div class="form-control-position">
+																<i class="bx bxs-home"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="text" 
+																class="form-control form-control-sm  capitalize" placeholder="Street 2"
+																th:value="${contactperson['addressStreet2']}"
+																th:field="*{addressStreet2}"  />
+															<div class="form-control-position">
+																<i class="bx bx-navigation"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="text" 
+																class="form-control form-control-sm  capitalize" placeholder="Village"
+																th:value="${contactperson['addressVillage']}"
+																th:field="*{addressVillage}"  />
+															<div class="form-control-position">
+																<i class="bx bx-directions"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="text" 
+																class="form-control form-control-sm  capitalize" placeholder="Taluk"
+																th:value="${contactperson['addressTaluk']}"
+																th:field="*{addressTaluk}"  onkeypress="return onlyAlphabets(event,this);"   />
+															<div class="form-control-position">
+																<i class="bx bxs-city"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="text" class="form-control form-control-sm  capitalize"
+																placeholder="City"
+																th:value="${contactperson['addressCity']}"
+																th:field="*{addressCity}"  onkeypress="return onlyAlphabets(event,this);"   />
+															<div class="form-control-position">
+																<i class="bx bxs-building-house"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="text" class="form-control form-control-sm  capitalize"
+																placeholder="State"
+																th:value="${contactperson['addressState']}"
+																th:field="*{addressState}" onkeypress="return onlyAlphabets(event,this);"   />
+															<div class="form-control-position">
+																<i class="bx bx-stats"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="number" class="form-control  form-control-sm capitalize"
+																placeholder="Zip code"
+																th:value="${contactperson['addressZIP']}"
+																th:field="*{addressZIP}"  />
+															<div class="form-control-position">
+																<i class="bx bx-message-alt-dots"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														<div class="position-relative has-icon-left">
+															<input type="text" class="form-control form-control-sm  capitalize"
+																placeholder="Country"
+																th:value="${contactperson['addressCountry']}"
+																th:field="*{addressCountry}" onkeypress="return onlyAlphabets(event,this);"  
+																  />
+															<div class="form-control-position">
+																<i class="bx bxs-flag-alt"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="emptitle">Followers</label>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="email-id-icon">Followers</label>
+														
+														<div class="position-relative has-icon-left">
+															<fieldset class="form-group">
+																<select class="select2 followers form-control " multiple="multiple"
+																	
+																	th:field="*{followers}">
+																	<th:block th:each="str :${employeelist}">
+																		<option  th:value="${str.empMasterid}"  th:text="${str.StaffName}"></option>
+																	</th:block>
+														
+																</select>
+																
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												<div class="col-12">
+												<br/>
+													<button type="submit" class="btn btn-primary mr-1 mb-1 abouttabclick"  style="float:right">Save</button>
+													
+												</div>
+												
+												
+												
+												
+											 </div>	
+											 </div>
+                                   			
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- // Basic Vertical form layout section end -->
+
+
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+	</footer>
+	<!-- END: Footer-->
+
+	
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	 <script th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+    
+	<!-- BEGIN Vendor JS-->
+
+	<!-- BEGIN: Page Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/forms/validation/jquery.validate.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/editors/quill/quill.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	 <script th:src="@{/app-assets/js/scripts/pages/app-email.js}"></script>
+ 	<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
+    	
+<!-- END: Page JS-->
+	<!-- Custom Java script validations -->
+	<script th:src="@{/js/customvalidation.js}"></script>
+
+	<script>
+		$(document).ready(
+				function() {
+
+		            
+					var values = "[[${contactperson['followers']}]]";
+					$('.followers').val(values.split(',')).change();
+			 		
+					var values = "[[${contactperson['organization']}]]";
+					$('.orgnames').val(values.split(',')).change();
+			 		
+					
+					
+					$("#submit_validation").click(function(){
+						
+						var StaffName= $('#StaffName').val();
+						var Work_Phone= $('#Work_Phone').val();
+						
+						if(StaffName =="")
+						{
+							alert("Staff Name should not be empty");
+						}else if(Work_Phone.length < 10)
+						{
+							alert("Work Phone is not valid");
+						}else
+						{
+							$("#submit").click();
+						}
+						
+						
+					});
+					
+ 					$(document).on("click", ".additem", function() {
+					
+						var name = $(this).attr('name');
+						var labeltext = "";
+						if (name == "addmemberindata") {
+							labeltext = "New Member In";
+						}
+						if (name == "addtypeofindustrydata") {
+							labeltext = "New Type of Industry";
+						}
+						
+						$('#additemalltxt').text(labeltext);
+						$('#personStatusScrollable').modal('toggle');
+
+					});
+
+					$("#additemallsavebtn").click(
+							function() {
+								if ($("#additemall").val() != '') {
+									var name = $('#additemalltxt').text();
+									var labeltext = "";
+									if (name == "New Member In") {
+										labeltext = "addmemberindata";
+									}
+									if (name == "New Type of Industry") {
+										labeltext = "addtypeofindustrydata";
+									}
+									
+									$('.' + labeltext).append(
+											"<option value='"
+													+ $("#additemall").val()
+													+ "'>"
+													+ $("#additemall").val()
+													+ "</option>");
+									$("#additemall").val('');
+									$('#personStatusScrollable').modal(
+											'toggle');
+								}
+							});
+				});
+
+		
+		
+		$('.hometabclick').click(function(){$('#home-tab').click();});
+		$('.profiletabclick').click(function(){$('#profile-tab').click();});
+		$('.abouttabclick').click(function(){$('#about-tab').click();});
+		$('.about1tabclick').click(function(){$('#about1-tab').click();});
+		$('.about2tabclick').click(function(){$('#about2-tab').click();});
+		
+		
+	</script>
+	<script>
+		$(".js-example-tags").select2({
+			  tags: true
+			});
+	</script>
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+
+ 

@@ -15,6 +15,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -74,6 +75,7 @@ import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
+import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
@@ -99,6 +101,7 @@ import com.rvs.springboot.thymeleaf.service.HireMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
 import com.rvs.springboot.thymeleaf.service.InsuranceMasterService;
 import com.rvs.springboot.thymeleaf.service.ItemListService;
+import com.rvs.springboot.thymeleaf.service.LeadMasterService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 import com.rvs.springboot.thymeleaf.service.LoginService;
 import com.rvs.springboot.thymeleaf.service.PaySlipService;
@@ -147,17 +150,18 @@ public class HomeController {
 	AssetAuditService assetauditService;
 	@Autowired
 	ItemListService itemlistService;
-
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	InsuranceMasterService insuranceMasterService;
+	@Autowired
+	ContactPersonService contactPersonSerivce;
+	@Autowired
+	ContactOrganizationService contactOrganizationSerivce;
+	@Autowired
+	LeadMasterService leadMasterSerivce;
 
-	@Autowired
-	ContactPersonService contactPersonSerivce; 
-	@Autowired
-	ContactOrganizationService contactOrganizationSerivce; 
-	
+
 	
 	
 	
@@ -323,7 +327,7 @@ public class HomeController {
 		if (!(id == null)) {
 			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(String.valueOf(id)));
 			Login obj = loginService.findByEmpid(String.valueOf(empobj.getEmpMasterid()));
-			
+
 			if (obj == null) {
 				return "redirect:/credentialrolechange?error";
 			} else {
@@ -335,27 +339,25 @@ public class HomeController {
 	}
 
 	@PostMapping("changerole")
-	public String changerole(@RequestParam(name = "id") int id,
-			@RequestParam(name = "privilege") String privilege,@RequestParam(name = "checkboxresetpwd", defaultValue = "false") boolean checkboxresetpwd) {
+	public String changerole(@RequestParam(name = "id") int id, @RequestParam(name = "privilege") String privilege,
+			@RequestParam(name = "checkboxresetpwd", defaultValue = "false") boolean checkboxresetpwd) {
 
 		Login existing = loginService.findByEmpid(String.valueOf(id));
 		if (existing != null) {
-			
+
 			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(String.valueOf(id)));
 			LoginRegistrationDto loginDto = new LoginRegistrationDto();
 			loginDto.setEmpid(String.valueOf(empobj.getEmpMasterid()));
-			if(checkboxresetpwd)
-			{
+			if (checkboxresetpwd) {
 				loginDto.setPassword(passwordEncoder.encode(String.valueOf(empobj.getEmpMasterid())));
-			}else
-			{
+			} else {
 				loginDto.setPassword(existing.getPassword());
 			}
-			
-			loginService.resetall(loginDto, privilege,existing.getId());
-			
+
+			loginService.resetall(loginDto, privilege, existing.getId());
+
 		} else {
-			
+
 			return "redirect:/changerole?error";
 		}
 		return "redirect:/changerole?success";
@@ -2585,8 +2587,8 @@ public class HomeController {
 		assetobj.setStatus("In Stock");
 
 		List<AssetService> setassetSevice = new ArrayList();
-		AssetService objassetservice =new AssetService();
-		objassetservice.setOptionradiobtn("RepeatEvery"); 
+		AssetService objassetservice = new AssetService();
+		objassetservice.setOptionradiobtn("RepeatEvery");
 		setassetSevice.add(objassetservice);
 		assetobj.setAssetService(setassetSevice);
 		AssetMasterFiles assetfiles = new AssetMasterFiles();
@@ -3818,157 +3820,335 @@ public class HomeController {
 
 	@GetMapping("contactspersonlist")
 	public String contactspersonlist(Model themodel) {
-		
+
 		List<ContactPerson> contactPersonlist = contactPersonSerivce.findAll();
 		themodel.addAttribute("contactPersonlist", contactPersonlist);
-		
+
 		return "contactpersonlist";
 	}
+
 	@GetMapping("contactspersonadd")
 	public String contactspersonadd(Model themodel) {
 
-		ContactPerson contactperson =new ContactPerson();
-		themodel.addAttribute("contactperson", contactperson) ;
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
-		themodel.addAttribute("organizationlist",contactOrganizationSerivce.findAll()) ;
+		ContactPerson contactperson = new ContactPerson();
+		themodel.addAttribute("contactperson", contactperson);
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		themodel.addAttribute("organizationlist", contactOrganizationSerivce.findAll());
 		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
 		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
-		
+
 		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
 		themodel.addAttribute("MEMBERIN", MEMBERIN);
 		return "contactpersonadd";
 	}
-	
+
 	@GetMapping("contactpersonview")
 	public String contactpersonview(Model themodel, @RequestParam("id") int id) {
 
 		ContactPerson contactperson = contactPersonSerivce.findById(id);
-		
-		themodel.addAttribute("contactperson", contactperson) ;
+
+		themodel.addAttribute("contactperson", contactperson);
 		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
 		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
 		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
 		themodel.addAttribute("MEMBERIN", MEMBERIN);
-		themodel.addAttribute("organizationlist",contactOrganizationSerivce.findAll()) ;
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
-		
-		
+		themodel.addAttribute("organizationlist", contactOrganizationSerivce.findAll());
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+
 		return "contactpersonadd";
 	}
-	
+
 	@PostMapping("contactpersonsave")
 	public String contactpersonsave(Model themodel, @ModelAttribute("contactperson") ContactPerson contactperson) {
-		
-		String collectorgids="";
-		
-		for(String str:contactperson.getOrganization().split(","))
-		{
-			if(NumberUtils.isParsable(str))
-			{
-				collectorgids +=str+",";
-			}else
-			{
-				ContactOrganization contactOrganization= new ContactOrganization();
-				contactOrganization.setOrgname(str);
-				collectorgids +=contactOrganizationSerivce.save(contactOrganization).getId()+",";
+
+		String collectorgids = "";
+		String srcOrg = String.valueOf(contactperson.getOrganization()).replace("null", "");
+		if (srcOrg.length() > 0) {
+			for (String str : srcOrg.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectorgids += str + ",";
+				} else {
+					ContactOrganization contactOrganization = new ContactOrganization();
+					contactOrganization.setOrgname(str);
+
+					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+				}
 			}
 		}
-		
-		if(collectorgids.length()>0)
-		{
-			collectorgids=collectorgids.substring(0,collectorgids.length()-1);
+		if (collectorgids.length() > 0) {
+			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
 		}
 		contactperson.setOrganization(collectorgids);
-		
+
 		itemlistService.savesingletxt(contactperson.getTypeofindustry(), "TYPEOFINDUSTRY");
 		itemlistService.savesingletxt(contactperson.getMemberin(), "MEMBERIN");
 		contactperson = contactPersonSerivce.save(contactperson);
-		
-		themodel.addAttribute("contactperson", contactperson) ;
+		// -------------------------------
+		mappersonstoOrganization(collectorgids,contactperson.getId());
+		// --------------------------------
+		themodel.addAttribute("contactperson", contactperson);
 		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
 		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
-		
+
 		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
 		themodel.addAttribute("MEMBERIN", MEMBERIN);
 		themodel.addAttribute("save", true);
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
-		themodel.addAttribute("organizationlist",contactOrganizationSerivce.findAll()) ;
-		
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		themodel.addAttribute("organizationlist", contactOrganizationSerivce.findAll());
+
 		return "contactpersonadd";
 	}
-	
-	
+
 	@GetMapping("contactsOrganizationadd")
 	public String contactsOrganizationadd(Model themodel) {
 
-		ContactOrganization contactOrganization =new ContactOrganization();
-		themodel.addAttribute("contactOrganization", contactOrganization) ;
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
-		themodel.addAttribute("personlist", contactPersonSerivce.findAll()) ;
+		ContactOrganization contactOrganization = new ContactOrganization();
+		themodel.addAttribute("contactOrganization", contactOrganization);
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		themodel.addAttribute("personlist", contactPersonSerivce.findAll());
 		return "contactorganizationadd";
 	}
-	
+
 	@GetMapping("contactOrganizationview")
 	public String contactOrganizationview(Model themodel, @RequestParam("id") int id) {
 
 		ContactOrganization contactOrganization = contactOrganizationSerivce.findById(id);
-		themodel.addAttribute("contactOrganization", contactOrganization) ;
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
-		themodel.addAttribute("personlist", contactPersonSerivce.findAll()) ;
-		
+		themodel.addAttribute("contactOrganization", contactOrganization);
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		themodel.addAttribute("personlist", contactPersonSerivce.findAll());
+
 		return "contactorganizationadd";
 	}
-	
-	@PostMapping("contactOrganizationsave")
-	public String contactOrganizationsave(Model themodel, @ModelAttribute("contactOrganization") ContactOrganization contactOrganization) {
 
-		String collectpeopleids="";
-		
-		for(String str:contactOrganization.getPersonid().split(","))
-		{
-			if(NumberUtils.isParsable(str))
-			{
-				collectpeopleids +=str+",";
-			}else
-			{
-				ContactPerson contactperson= new ContactPerson();
-				contactperson.setPeoplename(str);
-				collectpeopleids +=contactPersonSerivce.save(contactperson).getId()+",";
+	@PostMapping("contactOrganizationsave")
+	public String contactOrganizationsave(Model themodel,
+			@ModelAttribute("contactOrganization") ContactOrganization contactOrganization) {
+
+		String collectpeopleids = "";
+		String srcPer = String.valueOf(contactOrganization.getPersonid()).replace("null", "");
+		if (srcPer.length() > 0) {
+			for (String str : srcPer.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectpeopleids += str + ",";
+				} else {
+					ContactPerson contactperson = new ContactPerson();
+					contactperson.setPeoplename(str);
+					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+				}
 			}
 		}
-		
-		if(collectpeopleids.length()>0)
-		{
-			collectpeopleids=collectpeopleids.substring(0,collectpeopleids.length()-1);
+		if (collectpeopleids.length() > 0) {
+			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
 		}
 		contactOrganization.setPersonid(collectpeopleids);
-		
+
 		contactOrganization = contactOrganizationSerivce.save(contactOrganization);
-		
-		themodel.addAttribute("contactOrganization", contactOrganization) ;
+
+		// -------------------------------
+		mapOrganizationtopersons(collectpeopleids,contactOrganization.getId());
+		// --------------------------------
+
+		themodel.addAttribute("contactOrganization", contactOrganization);
 		themodel.addAttribute("save", true);
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll())) ;
-		themodel.addAttribute("personlist", contactPersonSerivce.findAll()) ;
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		themodel.addAttribute("personlist", contactPersonSerivce.findAll());
 		return "contactorganizationadd";
 	}
-	
+
+	public void mappersonstoOrganization(String collectorgids,int personId) {
+		
+		final String perid = String.valueOf(personId);
+		if (!collectorgids.equalsIgnoreCase("")) {
+			for (String s : collectorgids.split(",")) {
+				ContactOrganization contactOrganization1 = contactOrganizationSerivce.findById(Integer.parseInt(s));
+				String[] arr = String.valueOf(contactOrganization1.getPersonid()).split(",");
+				System.out.println(arr);
+				if (!Arrays.stream(arr).anyMatch(x -> x.equalsIgnoreCase(perid))) {
+					String temp = String.valueOf(contactOrganization1.getPersonid()).replace("null", "");
+					if (temp.length() > 0) {
+						contactOrganization1.setPersonid(temp + "," + personId);
+					} else {
+						contactOrganization1.setPersonid(String.valueOf(personId));
+					}
+				}
+				contactOrganizationSerivce.save(contactOrganization1);
+			}
+		}
+	}
+	public void mapOrganizationtopersons(String collectpeopleids,int orgId) {
+		
+		// -------------------------------
+				final String orgid = String.valueOf(orgId);
+				if (!collectpeopleids.equalsIgnoreCase("")) {
+					for (String s : collectpeopleids.split(",")) {
+						ContactPerson contactPerson1 = contactPersonSerivce.findById(Integer.parseInt(s));
+
+						String[] arr = String.valueOf(contactPerson1.getOrganization()).split(",");
+
+						if (!Arrays.stream(arr).anyMatch(x -> x.equalsIgnoreCase(orgid))) {
+							String temp = String.valueOf(contactPerson1.getOrganization()).replace("null", "");
+							if (temp.length() > 0) {
+								contactPerson1.setOrganization(temp + "," + orgId);
+							} else {
+								contactPerson1.setOrganization(String.valueOf(orgId));
+							}
+						}
+						contactPersonSerivce.save(contactPerson1);
+					}
+				}
+				// --------------------------------
+	}
 	
 	@GetMapping("contactsorganizationslist")
 	public String contactsorganizationslist(Model themodel) {
 
 		List<ContactOrganization> contactOrganizationlist = contactOrganizationSerivce.findAll();
 		themodel.addAttribute("contactOrganizationlist", contactOrganizationlist);
-		
-		
+
 		return "contactorganizationlist";
 	}
 
-	
 	@GetMapping("leadlist")
-	public String leadlist() {
+	public String leadlist(Model themodel) {
+
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+
+			for (String str1 : (cp.getOrganization().toString()).split(",")) {
+				String temp2 = "";
+				String str2 = str1.replace("null", "");
+				if (str2.length() > 0) {
+					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+							.collect(Collectors.toList()).get(0);
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+					personorgls.add(temp2);
+				} else {
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+					personorgls.add(temp2);
+				}
+			}
+
+		}
+		// --------------------------------------------------
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
 
 		return "leadlist";
 	}
+
+	@PostMapping("contactpersondetails")
+	@ResponseBody
+	public String organizationlist(@RequestParam Map<String, String> params) {
+		ContactPerson obj = new ContactPerson();
+		obj = contactPersonSerivce.findById(Integer.parseInt(params.get("personid")));
+		String str=obj.getPhonework() +" |"+obj.getPhonepersonal() +" |"+obj.getPhoneothers() +" |"+obj.getEmailwork() +" |"+obj.getEmailpersonal() +" |"+obj.getEmailothers() +" |"+obj.getFollowers() +" |";
+		str=str.replace("null", "");
+		
+		return str;
+	}
+	
+	
+	@PostMapping("leadsavestage1")
+	@ResponseBody
+	public String leadsavestage1(@RequestParam Map<String, String> params) {
+		
+		String ContactPerson =params.get("ContactPerson");
+		String Organization  =params.get("Organization");
+		String Title =params.get("Title");
+		String Source =params.get("Source");
+		String Reference =params.get("Reference");
+		String Label =params.get("Label");
+		String notes =params.get("notes");
+		String followers=params.get("followers");
+		String phonework=params.get("phonework");
+		String phonepersonal=params.get("phonepersonal");
+		String phoneothers=params.get("phoneothers");
+		String emailwork=params.get("emailwork");
+		String emailpersonal=params.get("emailpersonal");
+		String emailothers=params.get("emailothers");
+		//----------------------------
+		String collectorgids = "";
+		String srcOrg = String.valueOf(Organization).replace("null", "");
+		if (srcOrg.length() > 0) {
+			for (String str : srcOrg.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectorgids += str + ",";
+				} else {
+					ContactOrganization contactOrganization = new ContactOrganization();
+					contactOrganization.setOrgname(str);
+
+					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+				}
+			}
+		}
+		//----------------------------
+		String collectpeopleids = "";
+		String srcPer = String.valueOf(ContactPerson).replace("null", "");
+		if (srcPer.length() > 0) {
+			for (String str : srcPer.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectpeopleids += str + ",";
+					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					contactperson.setFollowers(followers);
+					contactperson.setPhonework(phonework);
+					contactperson.setPhonepersonal(phonepersonal);
+					contactperson.setPhoneothers(phoneothers);
+					contactperson.setEmailwork(emailwork);
+					contactperson.setEmailpersonal(emailpersonal);
+					contactperson.setEmailothers(emailothers);
+					contactPersonSerivce.save(contactperson);
+					
+				} else {
+					ContactPerson contactperson = new ContactPerson();
+					contactperson.setPeoplename(str);
+					contactperson.setFollowers(followers);
+					contactperson.setPhonework(phonework);
+					contactperson.setPhonepersonal(phonepersonal);
+					contactperson.setPhoneothers(phoneothers);
+					contactperson.setEmailwork(emailwork);
+					contactperson.setEmailpersonal(emailpersonal);
+					contactperson.setEmailothers(emailothers);
+					
+					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+				}
+			}
+		}
+		//----------------------------
+		if (!collectpeopleids.equalsIgnoreCase("")) {
+			for (String s : collectpeopleids.split(",")) {
+				mappersonstoOrganization(collectorgids,Integer.parseInt(s));
+
+			}
+		}
+		if (!collectorgids.equalsIgnoreCase("")) {
+			for (String s : collectorgids.split(",")) {
+				mapOrganizationtopersons(collectpeopleids,Integer.parseInt(s));
+			}
+		}
+		//----------------------------
+		LeadMaster leadMaster = new LeadMaster();
+		leadMaster.setContactPerson(collectpeopleids);
+		leadMaster.setOrganization(collectorgids);
+		leadMaster.setTitle(Title);
+		leadMaster.setSource(Source);
+		leadMaster.setReference(Reference);
+		leadMaster.setLabel(Label);
+		leadMaster.setNotes(notes);
+		leadMasterSerivce.save(leadMaster);
+		//----------------------------		
+		itemlistService.savesingletxt(Source, "SOURCE");
+		//----------------------------
+		return "";
+	}
+
 	@GetMapping("deal")
 	public String deal() {
 

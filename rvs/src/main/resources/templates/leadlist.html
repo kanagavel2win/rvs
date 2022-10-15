@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
 
 <!-- BEGIN: Head-->
 
 <head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -22,14 +26,15 @@
 <!-- BEGIN: Vendor CSS-->
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/vendors.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
-	
+
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/tables/datatable/datatables.min.css}">
-	
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
+
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->
@@ -55,34 +60,34 @@
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
-	.pop
-	{
-	 
-	 position:absolute;
-	 right:-20px;
-	 top:0px;
-	 cursor:pointer;
-	}
-	.bx-edit, .bx-show
-	{
-	 float:right;
-	 padding-top:10%;
-	 padding-right:10%;
-	 font-size:20px;
-	 cursor:pointer;
-	}
-	.iconalign
-	{
-	 float:right;
-	 position:relative;
-	 padding-top:10%;
-	 font-size:20px;
-	 width: 100px;
-	}
-	.emptitle {
+.pop {
+	position: absolute;
+	right: -20px;
+	top: 0px;
+	cursor: pointer;
+}
+
+.bx-edit, .bx-show {
+	float: right;
+	padding-top: 10%;
+	padding-right: 10%;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.iconalign {
+	float: right;
+	position: relative;
+	padding-top: 10%;
+	font-size: 20px;
+	width: 100px;
+}
+
+.emptitle {
 	color: #527a00;
 	font-size: 15px;
 	line-height: 20px;
@@ -91,7 +96,10 @@
 	cursor: pointer;
 }
 </style>
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 </head>
 <!-- END: Head-->
 
@@ -101,56 +109,58 @@
 	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
 	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
-		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
-		<!-- END: Header-->
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
 
 
-		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
-		<!-- END: Main Menu-->
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
 
-			<!-- BEGIN: Content-->
-				<!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Lead List</h5>
-                            <div class="breadcrumb-wrapper col-12">
-                                <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
-                                    </li>
-                                  
-                                	   
-                                </ol>
-                                
-                                	<button type="button" class="btn btn-warning mr-1 mb-1 pop">Add Lead</button>
-                                
-                            </div>
-                        </div>
-                   
-                    </div>
-                </div>
-                
-            </div>
-            <div class="content-body">
-              
-				 <!-- Zero configuration table -->
-                <section id="basic-datatable">
-                    <div class="row">
-                        <div class="col-12">
-                        	
-                            <div class="card">
-                                
-                                <div class="card-content">
-                                    <div class="card-body card-dashboard">
-                                        <p class="card-text"></p>
-                                       
-                                       <!--scrolling content Modal -->
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+							<h5 class="content-header-title float-left pr-1 mb-0">Lead
+								List</h5>
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+
+
+								</ol>
+
+								<button type="button" class="btn btn-warning mr-1 mb-1 pop">Add
+									Lead</button>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+			<div class="content-body">
+
+				<!-- Zero configuration table -->
+				<section id="basic-datatable">
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card">
+
+								<div class="card-content">
+									<div class="card-body card-dashboard">
+										<p class="card-text"></p>
+
+										<!--scrolling content Modal -->
 										<div class="modal fade" id="peopleStatusScrollable"
 											tabindex="-1" role="dialog"
 											aria-labelledby="peopleStatusScrollableTitle"
@@ -160,38 +170,59 @@
 												<div class="modal-content">
 													<div class="modal-header bg-warning">
 														<h5 class="modal-title white"
-															id="peopleStatusScrollableTitle">New Lead</h5>
-														<button type="button" class="close"
-															data-dismiss="modal" aria-label="Close">
+															id="peopleStatusScrollableTitle">Lead Information</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
 															<i class="bx bx-x"></i>
 														</button>
 													</div>
 													<div class="modal-body">
 														<div class="row">
+
 															<div class="col-md-6">
 																<div class="form-group">
-																	<label for="addmodel">Contact Person</label>
-																	<div class="position-relative  has-icon-left">
+																	<label for="email-id-icon">Contact Person
+																	<div class="spinner-border spinner-border-sm text-primary" role="status" style="visibility:hidden">
+						                                                <span class="sr-only">Loading...</span>
+						                                            </div>
+																	</label>
+
+																	<div class="position-relative has-icon-left">
 																		<fieldset class="form-group">
-																			<input type="text" id="" 
-																				class="form-control form-control-sm capitalize">
-																			<div class="form-control-position">
-																				<i class="bx bx-user"></i>
-																			</div>
+																			<select
+																				class="select2 form-control form-control js-example-tags"
+																				multiple="multiple" style="width: 100%;" id="ContactPerson">
+																				<th:block th:each="str :${personorgls}">
+																					<option
+																						th:value="${#strings.arraySplit(str,'|')[0]} +'-' + ${#strings.arraySplit(str,'|')[2] }"
+																						th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>
+																				</th:block>
+
+																			</select>
+
 																		</fieldset>
 																	</div>
 																</div>
 															</div>
+
+
 															<div class="col-md-6">
 																<div class="form-group">
 																	<label for="addmodel">Organization </label>
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
-																			<input type="text" id="" 
-																				class="form-control form-control-sm capitalize">
-																			<div class="form-control-position">
-																				<i class="bx bxs-building-house"></i>
-																			</div>
+
+																			<select
+																				class="select2 form-control form-control js-example-tags"
+																				id="Organization" multiple="multiple"
+																				style="width: 100%;"> 
+																				<th:block th:each="str :${organizationlist}">
+																	
+																					<option  th:value="${str.id}"  th:text="${str.orgname}"></option>
+																				</th:block>
+																			</select>
+
+
 																		</fieldset>
 																	</div>
 																</div>
@@ -201,7 +232,7 @@
 																	<label for="addmodel">Title</label>
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
-																			<input type="text" id="" 
+																			<input type="text" id="Title"
 																				class="form-control form-control-sm capitalize">
 																			<div class="form-control-position">
 																				<i class="bx bx-task"></i>
@@ -212,15 +243,18 @@
 															</div>
 															<div class="col-md-6">
 																<div class="form-group">
-																	<label for="addmodel">Source
-																	<label
-																	class="emptitle additem" name="addsourcedata"><i
-																		class="bx bxs-plus-circle ownstyle1"></i></label>
+																	<label for="addmodel">Source <label
+																		class="emptitle additem" name="addsourcedata"><i
+																			class="bx bxs-plus-circle ownstyle1"></i></label>
 																	</label>
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
-																			<select class="form-control addsourcedata">
-																				<option value="-">-</option>
+																			<select
+																				class="form-control form-control-sm addsourcedata"
+																				id="Source">
+																				<th:block th:each="str :${SOURCE}">
+																					<option th:value="${str}" th:text="${str}"></option>
+																				</th:block>
 																			</select>
 																			<div class="form-control-position">
 																				<i class="bx bx-news"></i>
@@ -234,8 +268,16 @@
 																	<label for="addmodel">Reference</label>
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
-																			<input type="text" id="" 
-																				class="form-control form-control-sm capitalize">
+																			<select
+																				class="form-control form-control-sm addsourcedata"
+																				id="Reference">
+																				<option value="">-</option>
+																				<th:block th:each="str :${personlist}">
+																					<option th:value="${str.id}"
+																						th:text="${str.peoplename}"></option>
+																				</th:block>
+																			</select>
+
 																			<div class="form-control-position">
 																				<i class="bx bx-link-alt"></i>
 																			</div>
@@ -248,8 +290,14 @@
 																	<label for="addmodel">Label</label>
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
-																			<input type="text" id="" 
-																				class="form-control form-control-sm capitalize">
+
+																			<select
+																				class="form-control form-control-sm addsourcedata"
+																				id="Label">
+																				<option value="Hot">Hot</option>
+																				<option value="Cold">Cold</option>
+																				<option value="Warm">Warm</option>
+																			</select>
 																			<div class="form-control-position">
 																				<i class="bx bx-label"></i>
 																			</div>
@@ -260,100 +308,116 @@
 															<div class="col-md-12">
 																<div class="form-group">
 																	<hr />
-																	<label class="emptitle">Contact</label>
+																	<label class="emptitle">PERSON Contact</label>
 																</div>
 															</div>
 															<div class="col-md-6">
+
 																<div class="form-group">
-			
-																	<div class="position-relative has-icon-left">
-																		<input type="number" class="form-control  form-control-sm capitalize"
-																			id="Work_Phone"
-																			placeholder="Work Phone"
-																			  />
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="number"
+																			class="form-control  form-control-sm capitalize"
+																			id="phonework" placeholder="Work Phone" />
 																		<div class="form-control-position">
 																			<i class="bx bx-dialpad"></i>
 																		</div>
+																		<label for="phonework">Work Phone</label>
 																	</div>
 																</div>
 															</div>
 															<div class="col-md-6">
 																<div class="form-group">
-			
-																	<div class="position-relative has-icon-left">
-																		<input type="number" class="form-control  form-control-sm capitalize"
-																			placeholder="Personal Phone"
-																			/>
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="number"
+																			class="form-control  form-control-sm capitalize"
+																			id="phonepersonal" placeholder="Personal Phone" />
 																		<div class="form-control-position">
 																			<i class="bx bxs-phone"></i>
 																		</div>
+																		<label for="phonepersonal">Personal Phone</label>
 																	</div>
 																</div>
 															</div>
 															<div class="col-md-6">
 																<div class="form-group">
-			
-																	<div class="position-relative has-icon-left">
-																		<input type="number" class="form-control  form-control-sm capitalize"
-																			placeholder="Other Phone"
-																			 />
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="number"
+																			class="form-control  form-control-sm capitalize"
+																			id="phoneothers" placeholder="Other Phone" />
 																		<div class="form-control-position">
 																			<i class="bx bxs-phone"></i>
 																		</div>
+																		<label for="phoneothers">Other Phone</label>
 																	</div>
 																</div>
 															</div>
 															<div class="col-md-6">
 																<div class="form-group">
-			
-																	<div class="position-relative has-icon-left">
-																		<input type="email" class="form-control  form-control-sm  email"
-																			placeholder="Work Email ID"
-																			  />
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="email"
+																			class="form-control  form-control-sm  email"
+																			id="emailwork" placeholder="Work Email ID" />
 																		<div class="form-control-position">
 																			<i class="bx bx-mail-send"></i>
 																		</div>
+																		<label for="emailwork">Work Email ID</label>
 																	</div>
 																</div>
 															</div>
 															<div class="col-md-6">
 																<div class="form-group">
-			
-																	<div class="position-relative has-icon-left">
-																		<input type="email" class="form-control  form-control-sm  email"
-																			placeholder="Personal Email"
-																			 />
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="email"
+																			class="form-control  form-control-sm  email"
+																			id="emailpersonal" placeholder="Personal Email" />
 																		<div class="form-control-position">
 																			<i class="bx bx-mail-send"></i>
 																		</div>
+																		<label for="emailpersonal">Personal Email</label>
 																	</div>
 																</div>
 															</div>
 															<div class="col-md-6">
 																<div class="form-group">
-			
-																	<div class="position-relative has-icon-left">
-																		<input type="email" class="form-control  form-control-sm  email"
-																			placeholder="Other Email"
-																			 />
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="email"
+																			class="form-control  form-control-sm  email"
+																			id="emailothers" placeholder="Other Email" />
 																		<div class="form-control-position">
 																			<i class="bx bx-mail-send"></i>
 																		</div>
+																		<label for="emailothers">Other Email</label>
 																	</div>
 																</div>
 															</div>
-															
-															
+
+
 															<div class="col-md-6">
 																<div class="form-group">
 																	<label for="addmodel">Follower</label>
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
-																			<input type="text" id="" 
-																				class="form-control form-control-sm capitalize">
-																			<div class="form-control-position">
-																				<i class="bx bx-user"></i>
-																			</div>
+																			<select
+																				class="select2 followers form-control form-control-sm"
+																				id="followers" multiple="multiple">
+																				<th:block th:each="str :${employeelist}">
+																					<option th:value="${str.empMasterid}"
+																						th:text="${str.StaffName}"></option>
+																				</th:block>
+																			</select>
+
 																		</fieldset>
 																	</div>
 																</div>
@@ -363,7 +427,7 @@
 																	<label for="addmodel">Notes</label>
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
-																			<input type="text" id="" 
+																			<input type="text" id="notes"
 																				class="form-control form-control-sm capitalize">
 																			<div class="form-control-position">
 																				<i class="bx bxs-notepad"></i>
@@ -372,10 +436,56 @@
 																	</div>
 																</div>
 															</div>
-															
-															
+
+
 														</div>
-														
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-secondary"
+															data-dismiss="modal">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Close</span>
+														</button>
+														<button type="button" class="btn btn-primary ml-1" id="savelead">
+															<i class="bx bx-check d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">ADD</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+
+										<!--scrolling content Modal -->
+										<div class="modal fade" id="additemStatusScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="additemStatusScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-primary">
+														<h5 class="modal-title white"
+															id="additemStatusScrollableTitle"></h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel" id="additemalltxt"></label>
+																<div class="position-relative">
+																	<fieldset class="form-group">
+																		<input type="text" id="additemtxt" name="addmodel"
+																			class="form-control capitalize">
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-light-secondary"
@@ -393,109 +503,62 @@
 											</div>
 										</div>
 										<!--scrolling content Modal -->
-										
-                                       <!--scrolling content Modal -->
-													<div class="modal fade" id="additemStatusScrollable"
-														tabindex="-1" role="dialog"
-														aria-labelledby="additemStatusScrollableTitle"
-														aria-hidden="true">
-														<div class="modal-dialog modal-dialog-scrollable"
-															role="document">
-															<div class="modal-content">
-																<div class="modal-header bg-warning">
-																	<h5 class="modal-title white"
-																		id="additemStatusScrollableTitle"></h5>
-																	<button type="button" class="close"
-																		data-dismiss="modal" aria-label="Close">
-																		<i class="bx bx-x"></i>
-																	</button>
-																</div>
-																<div class="modal-body">
-																	<div class="col-md-12">
-																		<div class="form-group">
-																			<label for="addmodel" id="additemalltxt"></label>
-																			<div class="position-relative">
-																				<fieldset class="form-group">
-																					<input type="text" id="" name="addmodel"
-																						class="form-control capitalize">
-																				</fieldset>
-																			</div>
-																		</div>
-																	</div>
+										<div class="table-responsive">
+											<table class="table zero-configuration">
+												<thead>
+													<tr>
+														<th>Title</th>
+														<th>Next Activity</th>
+														<th>Labels</th>
+														<th>Lead Created</th>
+														<th>Owner</th>
 
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-light-secondary"
-																		data-dismiss="modal">
-																		<i class="bx bx-x d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">Close</span>
-																	</button>
-																	<button type="button" class="btn btn-primary ml-1"
-																		id="additemallsavebtn">
-																		<i class="bx bx-check d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">ADD</span>
-																	</button>
-																</div>
-															</div>
-														</div>
-													</div>
-													<!--scrolling content Modal -->
-                                        <div class="table-responsive">
-                                            <table class="table zero-configuration">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Title</th>
-                                                        <th>Next Activity</th>
-                                                        <th>Labels</th>
-                                                        <th>Lead Created</th>  
-                                                        <th>Owner</th>
-                                                        
-                                                    </tr>
-                                                </thead>
-                                                 <tbody>
-                                               			<!-- <tr th:each="obj,stat :${contactLeadlist}">
+													</tr>
+												</thead>
+												<tbody>
+													<!-- <tr th:each="obj,stat :${contactLeadlist}">
                                                				<td th:text="${stat.index+1}"></td>
                                                				<td><a th:href="'contactLeadview?id='+${obj.id}"><span th:text="${obj.orgname}"></span></a></td>
                                                				<td th:text="${obj.addressCity}"></td>
                                                				<td th:text="${obj.personid}"></td>
                                                				<td>0</td>
                                                				<td>0</td>
-                                               			</tr>  -->                                              		
-                                                </tbody>
-                                                <tfoot>
-                                                     <tr>
-                                                        <th>Title</th>
-                                                        <th>Next Activity</th>
-                                                        <th>Labels</th>
-                                                        <th>Lead Created</th>  
-                                                        <th>Owner</th>
-                                                                                                                                                             
-                                                        
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!--/ Zero configuration table -->               
-
- 
-            </div>
-        </div>
-    </div>
-			<!-- END: Content-->
+                                               			</tr>  -->
+												</tbody>
+												<tfoot>
+													<tr>
+														<th>Title</th>
+														<th>Next Activity</th>
+														<th>Labels</th>
+														<th>Lead Created</th>
+														<th>Owner</th>
 
 
-		
-		<div class="sidenav-overlay"></div>
-		<div class="drag-target"></div>
+													</tr>
+												</tfoot>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!--/ Zero configuration table -->
 
-		<!-- BEGIN: Footer-->
-		<footer class="footer footer-static footer-light">
+
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
 		<p class="clearfix mb-0">
 			<span class="float-left d-inline-block"></span><span
 				class="float-right d-sm-inline-block d-none"></span>
@@ -503,91 +566,199 @@
 				<i class="bx bx-up-arrow-alt"></i>
 			</button>
 		</p>
-		</footer>
-		<!-- END: Footer-->
+	</footer>
+	<!-- END: Footer-->
 
 
-		<!-- BEGIN: Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-		<!-- BEGIN Vendor JS-->
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<script
+		th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+	<!-- BEGIN Vendor JS-->
 
-		<!-- BEGIN: Page Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
-		
-		
-		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-		<!-- END: Page Vendor JS-->
+	<!-- BEGIN: Page Vendor JS-->
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
+	<script
+		th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
 
-		<!-- BEGIN: Theme JS-->
-		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-		<script th:src="@{/app-assets/js/core/app.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-		<!-- END: Theme JS-->
 
-		<!-- BEGIN: Page JS-->
-		<script
-			th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
-		<!-- END: Page JS-->
-		
-		<script>
-		$(document).ready(function(){
-		
-			$(document).on("click", ".pop", function() {
-				
-				$('#peopleStatusScrollable').modal('toggle');
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
 
-			});
-			//-----------------------------------------------------------
-			$(document).on("click", ".additem", function() {
-				
-				var name = $(this).attr('name');
-				var labeltext = "";
-				if (name == "addsourcedata") {
-					labeltext = "New Source";
-				}
-				
-				$('#additemalltxt').text(labeltext);
-				$('#additemStatusScrollable').modal('toggle');
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
 
-			});
-			//-----------------------------------------------------------
-			$("#additemallsavebtn").click(
-					function() {
-						if ($("#additemall").val() != '') {
-							var name = $('#additemalltxt').text();
-							var labeltext = "";
-							if (name == "New Source") {
-								labeltext = "addsourcedata";
-							}
-							
-							
-							$('.' + labeltext).append(
-									"<option value='"
-											+ $("#additemall").val()
-											+ "'>"
-											+ $("#additemall").val()
-											+ "</option>");
-							$("#additemall").val('');
-							$('#additemStatusScrollable').modal(
-									'toggle');
-						}
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
+	<!-- END: Page JS-->
+
+	<script>
+		$(document).ready(
+				function() {
+
+					$(document).on("click", ".pop", function() {
+
+						$('#peopleStatusScrollable').modal('toggle');
+
 					});
-			//-----------------------------------------------------------
+					//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+					$(function() {
+						var token = $("meta[name='_csrf']").attr("content");
+						var header = $("meta[name='_csrf_header']").attr("content");
+						$(document).ajaxSend(function(e, xhr, options) {
+							xhr.setRequestHeader(header, token);
+						});
+					});
+					//--------------------------------------------------------------------------------------------------------------------------------------		 
+					
+					$(document).on("click", ".additem", function() {
+
+						var name = $(this).attr('name');
+						var labeltext = "";
+						if (name == "addsourcedata") {
+							labeltext = "New Source";
+						}
+
+						$('#additemalltxt').text(labeltext);
+						$('#additemStatusScrollable').modal('toggle');
+
+					});
+					//-----------------------------------------------------------
+					$("#additemallsavebtn").click(
+							function() {
+								if ($("#additemall").val() != '') {
+									var name = $('#additemalltxt').text();
+									var labeltext = "";
+									if (name == "New Source") {
+										labeltext = "addsourcedata";
+									}
+
+									$('.' + labeltext).append(
+											"<option value='"
+													+ $("#additemtxt").val()
+													+ "'>"
+													+ $("#additemtxt").val()
+													+ "</option>");
+									$("#additemall").val('');
+									$('#additemStatusScrollable').modal(
+											'toggle');
+								}
+							});
+
+					//------------------------------------------------------------
+					$("#ContactPerson").change(function(){
+						var selectval = $(this).find(":selected").val();
+						$('#Organization').val(selectval.split('-')[1]).change();
+						 var personid=selectval.split('-')[0];
+						 $(".spinner-border").css("visibility","visible");
+						 //---------------------------------------------------------------------------
+						 var formData = {
+								 personid : personid
+						 }
+						 $.ajax({
+								type : "POST",url : "contactpersondetails",
+								data : formData, success : function(result) {
+									
+										var arr =result.split("|");
+								      $('#phonework').val(arr[0].trim());
+								      $('#phonepersonal').val(arr[1].trim());
+								      $('#phoneothers').val(arr[2].trim());
+								      $('#emailwork').val(arr[3].trim());
+								      $('#emailpersonal').val(arr[4].trim());
+								      $('#emailothers').val(arr[5].trim());
+								      $('#followers').val(arr[6].trim().split(',')).change();
+								      
+								      
+								      $(".spinner-border").css("visibility","hidden");
+								},
+								error : function(e) {
+									console.log("Error" + e);
+									$(".spinner-border").css("visibility","hidden");
+								}
+								
+							});
+						 //---------------------------------------------------------------------------
+					});
+					
+					$("#Organization").change(function(){
+						$('#Title').val($(this).find(":selected").text() + ' Lead');
+						
+					});
+					//------------------------------------------------------------
+					$("#savelead").click(function(){
+					 
+						   var ContactPerson = $("#ContactPerson").val();
+						  if(ContactPerson !="")
+						  {
+							   var Organization = $("#Organization").val();
+							   var Title= $("#Title").val();
+							   var Source= $("#Source").val();
+							   var Reference= $("#Reference").val();
+							   var Label= $("#Label").val();
+							   var notes= $("#notes").val();
+							   var followers= $("#followers").val();
+							   var phonework= $("#phonework").val();
+							   var phonepersonal= $("#phonepersonal").val();
+							   var phoneothers= $("#phoneothers").val();
+							   var emailwork= $("#emailwork").val();
+							   var emailpersonal= $("#emailpersonal").val();
+							   var emailothers= $("#emailothers").val();
+							   
+							   var formData = {
+									   ContactPerson:ContactPerson,
+									   Organization : Organization,
+									   Title : Title,
+									   Source : Source,
+									   Reference:Reference,
+									   Label : Label,
+									   notes : notes,
+									   followers : followers,
+									   phonework : phonework,
+									   phonepersonal : phonepersonal,
+									   phoneothers : phoneothers,
+									   emailwork : emailwork,
+									   emailpersonal : emailpersonal,
+									   emailothers : emailothers
+								 }
+							   
+							   
+								   $.ajax({
+										type : "POST",url : "leadsavestage1",
+										data : formData, success : function(result) {
+										      
+										      $(".spinner-border").css("visibility","hidden");
+										},
+										error : function(e) {
+											console.log("Error" + e);
+											$(".spinner-border").css("visibility","hidden");
+										}
+										
+									}); 
+							   
+						  }else
+						  {
+						  	alert("Person & Phone (Work) is mandatory");
+						  }
+					});
+					//------------------------------------------------------------
+					
+				});
+	</script>
+	<script>
+		$(".js-example-tags").select2({
+			tags : true
 		});
-			
-		
-		</script>
-		
+	</script>
 </body>
 <!-- END: Body-->
 

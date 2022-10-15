@@ -697,16 +697,32 @@
 					//------------------------------------------------------------
 					$("#savelead").click(function(){
 					 
-						   var ContactPerson = $("#ContactPerson").val();
+						   var ContactPerson = String($("#ContactPerson").val());
 						  if(ContactPerson !="")
 						  {
-							   var Organization = $("#Organization").val();
+							   var ContactPersontemp="";
+							   var split1=ContactPerson.split(",");
+							   $.each(split1, function(index, value) { 
+							   
+								   if(value.includes("-"))
+							  		{
+									   var split2=value.split("-");
+									   ContactPersontemp +=split2[1]+",";
+							  		}else
+						  			{
+							  			ContactPersontemp +=value +",";
+						  			}
+							   
+							   });
+							   ContactPersontemp =ContactPersontemp.substring(0,ContactPersontemp.length-1); 
+							  
+							   var Organization =String($("#Organization").val());
 							   var Title= $("#Title").val();
 							   var Source= $("#Source").val();
 							   var Reference= $("#Reference").val();
 							   var Label= $("#Label").val();
 							   var notes= $("#notes").val();
-							   var followers= $("#followers").val();
+							   var followers= String($("#followers").val());
 							   var phonework= $("#phonework").val();
 							   var phonepersonal= $("#phonepersonal").val();
 							   var phoneothers= $("#phoneothers").val();
@@ -714,15 +730,16 @@
 							   var emailpersonal= $("#emailpersonal").val();
 							   var emailothers= $("#emailothers").val();
 							   
+							   alert(Organization);
 							   var formData = {
-									   ContactPerson:ContactPerson,
-									   Organization : Organization,
+									   ContactPerson:String(ContactPersontemp),
+									   Organization : String(Organization),
 									   Title : Title,
 									   Source : Source,
 									   Reference:Reference,
 									   Label : Label,
 									   notes : notes,
-									   followers : followers,
+									   followers : String(followers),
 									   phonework : phonework,
 									   phonepersonal : phonepersonal,
 									   phoneothers : phoneothers,

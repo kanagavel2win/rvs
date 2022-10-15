@@ -3962,7 +3962,7 @@ public class HomeController {
 			for (String s : collectorgids.split(",")) {
 				ContactOrganization contactOrganization1 = contactOrganizationSerivce.findById(Integer.parseInt(s));
 				String[] arr = String.valueOf(contactOrganization1.getPersonid()).split(",");
-				System.out.println(arr);
+				
 				if (!Arrays.stream(arr).anyMatch(x -> x.equalsIgnoreCase(perid))) {
 					String temp = String.valueOf(contactOrganization1.getPersonid()).replace("null", "");
 					if (temp.length() > 0) {
@@ -4059,7 +4059,6 @@ public class HomeController {
 	@PostMapping("leadsavestage1")
 	@ResponseBody
 	public String leadsavestage1(@RequestParam Map<String, String> params) {
-		
 		String ContactPerson =params.get("ContactPerson");
 		String Organization  =params.get("Organization");
 		String Title =params.get("Title");
@@ -4075,6 +4074,7 @@ public class HomeController {
 		String emailpersonal=params.get("emailpersonal");
 		String emailothers=params.get("emailothers");
 		//----------------------------
+		
 		String collectorgids = "";
 		String srcOrg = String.valueOf(Organization).replace("null", "");
 		if (srcOrg.length() > 0) {
@@ -4088,10 +4088,13 @@ public class HomeController {
 					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
 				}
 			}
+			collectorgids =collectorgids.substring(0, collectorgids.length()-1);
 		}
+		
 		//----------------------------
 		String collectpeopleids = "";
 		String srcPer = String.valueOf(ContactPerson).replace("null", "");
+		
 		if (srcPer.length() > 0) {
 			for (String str : srcPer.split(",")) {
 				if (NumberUtils.isParsable(str)) {
@@ -4120,7 +4123,10 @@ public class HomeController {
 					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
 				}
 			}
+			collectpeopleids =collectpeopleids.substring(0, collectpeopleids.length()-1);
 		}
+		
+		
 		//----------------------------
 		if (!collectpeopleids.equalsIgnoreCase("")) {
 			for (String s : collectpeopleids.split(",")) {

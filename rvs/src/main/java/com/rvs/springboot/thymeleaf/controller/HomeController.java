@@ -4483,6 +4483,18 @@ public class HomeController {
 	}
 
 	@ResponseBody
+	@PostMapping("activitymarkascompleted")
+	public String activitymarkascompleted(@RequestParam Map<String, String> params) {
+
+		String activityid = params.get("activityid");
+		ActivityMaster actimaster = activityMasterSerivce.findById(Integer.parseInt(activityid));
+		actimaster.setStatus("Completed");
+		activityMasterSerivce.save(actimaster);
+
+		return "";
+	}
+
+	@ResponseBody
 	@PostMapping("gettimelinelist")
 	public String gettimelinelist(@RequestParam Map<String, String> params) {
 
@@ -4504,7 +4516,7 @@ public class HomeController {
 			String description = nullremover(String.valueOf(rowMap.get("description")));
 			String notes = nullremover(String.valueOf(rowMap.get("notes")));
 			String htmlnotes = nullremover(String.valueOf(rowMap.get("htmlnotes")));
-			String followers = nullremover(String.valueOf(rowMap.get("followers")));
+			String followers = nullremover(String.valueOf(rowMap.get("activityfollowers")));
 			String status = nullremover(String.valueOf(rowMap.get("status")));
 			ActivityMaster actimaster = activityMasterSerivce
 					.findById(Integer.parseInt(String.valueOf(rowMap.get("activity_id"))));
@@ -4512,20 +4524,23 @@ public class HomeController {
 			// guest Details
 			String guestdetails = "";
 			for (ActivityMasterGuest gobj : actimaster.getActivityMasterGuest()) {
-				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(gobj.getGuestid()));
+				if (gobj.getGuestid() != null) {
+					EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(gobj.getGuestid()));
 
-				if (empobj != null) {
-					guestdetails += "<div class='badge badge-pill badge-light-secondary mr-1 mb-1'>"
-							+ empobj.getStaffName() + "</div>";
+					if (empobj != null) {
+						guestdetails += "<div class='badge badge-pill badge-light-secondary mr-1 mb-1'>"
+								+ empobj.getStaffName() + "</div>";
+					}
 				}
 			}
 			// -------------------------------------------
-			// Activity File 
+			// Activity File
 			String filedetails = "";
 			for (ActivityMasterFiles aobj : actimaster.getActivityMasterFiles()) {
 
-				filedetails += "<a href='" + aobj.getFiles_Attach()
-						+ "' target='_blank' title='"+ (aobj.getFiles_Attach()).toString().substring(30, aobj.getFiles_Attach().length()) +"'><div class='avatar mr-1 avatar-sm bg-info'><span class='avatar-content'><i class='avatar-icon bx bx-link'></i></span></div></a>";
+				filedetails += "<a href='" + aobj.getFiles_Attach() + "' target='_blank' title='"
+						+ (aobj.getFiles_Attach()).toString().substring(29, aobj.getFiles_Attach().length())
+						+ "'><div class='avatar mr-1 avatar-sm bg-info'><span class='avatar-content'><i class='avatar-icon bx bx-link'></i></span></div></a>";
 
 			}
 			// -------------------------------------------
@@ -4546,7 +4561,10 @@ public class HomeController {
 			if (status.equalsIgnoreCase("Completed")) {
 				status = "<span class='badge-circle-light-success'><i class='bx bx-check font-size-base'></i></span>";
 			} else {
-				status = "<span class='badge-circle-light-danger'><i class='bx bxs-flag-alt font-size-base'></i></span>";
+				status = "<span id='" + actimaster.getActivityId()
+						+ "NC' class='badge-circle-light-danger'><i class='bx bxs-flag-alt font-size-base'></i></span>"
+						+ "<a id='" + actimaster.getActivityId()
+						+ "' class='badge-circle-light-warning' title='Mark it As Completed'><i class='bx bx-like font-size-base'></i></a>";
 			}
 			// -------------------------------------------
 			// time calculator
@@ -4560,7 +4578,12 @@ public class HomeController {
 			if (differdate > 30) {
 				timecalculator = sorteddates + "";
 			} else {
-				if (differdate > 0) {
+
+				if (differdate == -1) {
+					timecalculator = " Tomorrow ";
+				} else if (differdate < -1) {
+					timecalculator = " Next Coming in  " + differdate + " days";
+				} else if (differdate > 0) {
 					timecalculator = differdate + " days ago";
 				} else {
 					timecalculator = differhr + "hrs " + differmins + "  mins ago";
@@ -4578,10 +4601,8 @@ public class HomeController {
 						+ timecalculator + "</div>";
 				result[0] += "<h6 class='timeline-title'>" + activitytitle + " " + status
 						+ "</h6><p class='timeline-text'>" + activitytype + " (" + startdate + " - " + starttime
-						+ " to " + enddate + " - " + endtime + ") </p><div align='right'>" + followerdetails
-						+ "</div><div class='timeline-content'>";
+						+ " to " + enddate + " - " + endtime + ") </p><div class='timeline-content'>";
 
-				
 				if (!location.equalsIgnoreCase("")) {
 					result[0] += "Location : " + location;
 				}
@@ -4591,17 +4612,20 @@ public class HomeController {
 				if (!notes.equalsIgnoreCase("")) {
 					result[0] += "<br/>Notes : " + notes;
 				}
-				
 
 				result[0] += "</div>";
-				
+
 				if (!guestdetails.equalsIgnoreCase("")) {
-					result[0] += "<div>Guest : " + guestdetails+ "</div>";
+					result[0] += "<div>Guest : " + guestdetails + "</div>";
 				}
 				if (!filedetails.equalsIgnoreCase("")) {
 					result[0] += "<div>" + filedetails + "</div>";
 				}
 				
+				if (!guestdetails.equalsIgnoreCase("")) {
+					result[0] += "Follower: " + followerdetails;
+				}
+
 				result[0] += "<hr/></li>";
 			}
 

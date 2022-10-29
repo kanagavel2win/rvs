@@ -52,7 +52,7 @@ public class ActivityMasterImp implements ActivityMasterService {
 				+ mastercategory + "' and mastercategoryid=" + mastercategoryid
 				+ " order by (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(startdate,'%Y-%m-%d') end ) desc)t1";
 		
-		System.out.println(sql);
+		//System.out.println(sql);
 		List<Map<String, Object>> result = JdbcTemplate.queryForList(sql);
 		return result;
 	}

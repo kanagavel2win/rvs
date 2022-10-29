@@ -78,6 +78,10 @@
 	th:href="@{/app-assets/css/pages/app-email.css}">
 <!-- END: Custom CSS-->
 <style>
+.badge-circle-light-warning{
+margin-left:10px;
+cursor:pointer;
+}
 .emptitle {
 	color: #527a00;
 	font-size: 15px;
@@ -892,7 +896,7 @@
 									                                <div class="card-content timelinehistory">
 									                                    <div class="card-body">
 									                                        <ul class="widget-timeline">
-									                                            <li class="timeline-items timeline-icon-success active">
+									                                            <!-- <li class="timeline-items timeline-icon-success active">
 									                                                <div class="timeline-time">Mon 8:17pm</div>
 									                                                <h6 class="timeline-title">Jonny Richie Commented</h6>
 									                                                <p class="timeline-text">o</p>
@@ -939,7 +943,7 @@
 									                                                <div class="timeline-content">
 									                                                    The Amairates
 									                                                </div>
-									                                            </li>
+									                                            </li> -->
 									                                        </ul>
 									                                        
 									                                    </div>
@@ -1201,6 +1205,7 @@
 									      $("#notessave").css("visibility","visible");
 									      alert("Note Info Updated Successfully ");
 									      $('.ql-editor').html("");
+									      gettimelinelist();
 									},
 									error : function(e) {
 										console.log("Error" + e);
@@ -1215,6 +1220,11 @@
 					//--------------------------------------------------------------------------------
 					$("#profile-tab").click(function() {
 						// gettimelinelist
+						gettimelinelist();
+					});
+					//--------------------------------------------------------------------------------
+					//function load the history events
+					function gettimelinelist(){
 						var mastercategoryid = $("#mastercategoryid").val();
 						var formData = {
 								 mastercategoryid: mastercategoryid
@@ -1225,6 +1235,29 @@
 								data : formData, success : function(result) {
 									  
 									 $('.widget-timeline').html(result);
+								},
+								error : function(e) {
+									console.log("Error" + e);
+									
+								}
+								
+							});
+						
+					}
+					//--------------------------------------------------------------------------------
+					$(document).on("click", ".badge-circle-light-warning", function() {
+						let activityid =$(this).attr("id");
+						var formData = {
+								 activityid: activityid
+						 }	
+							
+						 $.ajax({
+								type : "POST",url : "activitymarkascompleted",
+								data : formData, success : function(result) {
+									  $("#"+activityid+"NC").removeClass("badge-circle-light-danger");
+									  $("#"+activityid+"NC").addClass("badge-circle-light-success");
+									  $("#"+activityid+"NC").html("<i class='bx bx-check font-size-base'></i>");
+									  $("#"+activityid).hide();
 								},
 								error : function(e) {
 									console.log("Error" + e);

@@ -269,7 +269,7 @@
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
 																			<select
-																				class="form-control form-control-sm addsourcedata"
+																				class="form-control form-control-sm"
 																				id="Reference">
 																				<option value="">-</option>
 																				<th:block th:each="str :${personlist}">
@@ -292,7 +292,7 @@
 																		<fieldset class="form-group">
 
 																			<select
-																				class="form-control form-control-sm addsourcedata"
+																				class="form-control form-control-sm"
 																				id="Label">
 																				<option value="Hot">Hot</option>
 																				<option value="Cold">Cold</option>
@@ -451,6 +451,9 @@
 															<i class="bx bx-check d-block d-sm-none"></i> <span
 																class="d-none d-sm-block">ADD</span>
 														</button>
+														<div class="spinner-border spinner-border-sm text-primary" role="status" style="visibility:hidden">
+						                                                <span class="sr-only">Loading...</span>
+						                                            </div>
 													</div>
 												</div>
 											</div>
@@ -503,6 +506,44 @@
 											</div>
 										</div>
 										<!--scrolling content Modal -->
+									
+									
+									<!--scrolling content Modal -->
+										<div class="modal fade" id="saveresultStatusScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="saveresultStatusScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-primary">
+														<h5 class="modal-title white"
+															id="saveresultStatusScrollableTitle"></h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group" align="center" id="saveresult">
+																 <div class="spinner-border spinner-border-sm text-primary"> <span class="sr-only">Loading...</span> </div>
+															</div>
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-secondary" id="resultclose">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Close</span>
+														</button>
+													
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+									
 										<div class="table-responsive">
 											<table class="table zero-configuration">
 												<thead>
@@ -511,19 +552,15 @@
 														<th>Next Activity</th>
 														<th>Labels</th>
 														<th>Lead Created</th>
-														<th>Owner</th>
-
 													</tr>
 												</thead>
 												<tbody>
-													<!-- <tr th:each="obj,stat :${contactLeadlist}">
-                                               				<td th:text="${stat.index+1}"></td>
-                                               				<td><a th:href="'contactLeadview?id='+${obj.id}"><span th:text="${obj.orgname}"></span></a></td>
-                                               				<td th:text="${obj.addressCity}"></td>
-                                               				<td th:text="${obj.personid}"></td>
-                                               				<td>0</td>
-                                               				<td>0</td>
-                                               			</tr>  -->
+													<tr th:each="obj,stat :${leadmasterlist}">
+                                               				<td> <a th:href="'leadevents?id='+ ${obj.id}"> <span th:text="${obj.Title}"></span></a></td>
+                                               				<td></td>
+                                               				<td th:text="${obj.Label}"></td>
+                                               				<td th:text="${obj.createddate}"></td>                                               				
+                                               			</tr> 
 												</tbody>
 												<tfoot>
 													<tr>
@@ -531,9 +568,7 @@
 														<th>Next Activity</th>
 														<th>Labels</th>
 														<th>Lead Created</th>
-														<th>Owner</th>
-
-
+														
 													</tr>
 												</tfoot>
 											</table>
@@ -601,6 +636,7 @@
 	<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
 	<!-- END: Page JS-->
 
+	
 	<script>
 		$(document).ready(
 				function() {
@@ -698,8 +734,12 @@
 					$("#savelead").click(function(){
 					 
 						   var ContactPerson = String($("#ContactPerson").val());
-						  if(ContactPerson !="")
+						   var phonework= $("#phonework").val();
+						  if(ContactPerson !="" && phonework !="")
 						  {
+							  $('#peopleStatusScrollable').modal('toggle');
+							  $('#saveresultStatusScrollable').modal('toggle');
+							  							  
 							   var ContactPersontemp="";
 							   var split1=ContactPerson.split(",");
 							   $.each(split1, function(index, value) { 
@@ -723,14 +763,12 @@
 							   var Label= $("#Label").val();
 							   var notes= $("#notes").val();
 							   var followers= String($("#followers").val());
-							   var phonework= $("#phonework").val();
+							   
 							   var phonepersonal= $("#phonepersonal").val();
 							   var phoneothers= $("#phoneothers").val();
 							   var emailwork= $("#emailwork").val();
 							   var emailpersonal= $("#emailpersonal").val();
 							   var emailothers= $("#emailothers").val();
-							   
-							   alert(Organization);
 							   var formData = {
 									   ContactPerson:String(ContactPersontemp),
 									   Organization : String(Organization),
@@ -754,10 +792,12 @@
 										data : formData, success : function(result) {
 										      
 										      $(".spinner-border").css("visibility","hidden");
+										      $('#saveresult').text("Save Successfully");
 										},
 										error : function(e) {
 											console.log("Error" + e);
 											$(".spinner-border").css("visibility","hidden");
+											$('#saveresult').text(e);
 										}
 										
 									}); 
@@ -768,7 +808,11 @@
 						  }
 					});
 					//------------------------------------------------------------
-					
+					$('#resultclose').click(function(){
+						$('#saveresultStatusScrollable').modal('toggle');
+						location.reload();
+					});
+					//$('#saveresultStatusScrollable').modal('toggle');
 				});
 	</script>
 	<script>

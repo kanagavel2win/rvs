@@ -19,29 +19,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "leadmaster")
-public class LeadMaster {
+@Table(name="activitymasterfiles")
+
+public class ActivityMasterFiles {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@Column
-	private String ContactPerson;
-	@Column
-	private String Organization;
-	@Column
-	private String Title;
-	@Column
-	private String Source;
-	@Column
-	private String Reference;
-	@Column
-	private String Label;
-	@Column
-	private String notes;
-	@Column
-	private String follower;
-	@Column
-	private String createddate;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int activityFileid;
+	@Column  
+	private String Files_Attach;
 	
+
 }

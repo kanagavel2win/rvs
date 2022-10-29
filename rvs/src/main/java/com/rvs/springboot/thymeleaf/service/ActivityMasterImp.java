@@ -1,0 +1,60 @@
+package com.rvs.springboot.thymeleaf.service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
+import com.rvs.springboot.thymeleaf.dao.ActivityMasterRepository;
+import com.rvs.springboot.thymeleaf.entity.ActivityMaster;
+
+@Service
+public class ActivityMasterImp implements ActivityMasterService {
+
+	@Autowired
+	ActivityMasterRepository activityRepo;
+
+	@Autowired
+	private JdbcTemplate JdbcTemplate;
+
+	@Override
+	public ActivityMaster save(ActivityMaster obj) {
+		return activityRepo.save(obj);
+	}
+
+	@Override
+	public ActivityMaster findById(Integer id) {
+		Optional<ActivityMaster> obj = activityRepo.findById(id);
+
+		ActivityMaster bm = null;
+
+		if (obj.isPresent()) {
+			bm = obj.get();
+		} else {
+			throw new RuntimeException("Did find any records of Asset id " + id);
+		}
+		return bm;
+	}
+
+	@Override
+	public List<ActivityMaster> findAll() {
+
+		return activityRepo.findAll();
+	}
+
+	@Override
+	public List<Map<String, Object>> gettimelinelist(String mastercategory, String mastercategoryid) {
+
+		String sql = "select DATEDIFF(now() , t1.sorteddates)as differdate, TIME_FORMAT(TIMEDIFF(now() , t1.sorteddates), '%H:%i') as differtime,MINUTE(TIMEDIFF(now() , t1.sorteddates)) as differmins,HOUR(TIMEDIFF(now() , t1.sorteddates)) differhr,DATE_FORMAT(t1.sorteddates,'%d-%m-%Y') as sorteddates,t1.* from (SELECT (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(startdate,'%Y-%m-%d') end) sorteddates,actmaster.* FROM activitymaster as actmaster where mastercategory='"
+				+ mastercategory + "' and mastercategoryid=" + mastercategoryid
+				+ " order by (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(startdate,'%Y-%m-%d') end ) desc)t1";
+		
+		System.out.println(sql);
+		List<Map<String, Object>> result = JdbcTemplate.queryForList(sql);
+		return result;
+	}
+
+}

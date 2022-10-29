@@ -47,6 +47,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rvs.springboot.thymeleaf.entity.ActivityMaster;
+import com.rvs.springboot.thymeleaf.entity.ActivityMasterFiles;
+import com.rvs.springboot.thymeleaf.entity.ActivityMasterGuest;
 import com.rvs.springboot.thymeleaf.entity.AssetAudit;
 import com.rvs.springboot.thymeleaf.entity.AssetAuditFiles;
 import com.rvs.springboot.thymeleaf.entity.AssetMaster;
@@ -83,6 +86,7 @@ import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
 import com.rvs.springboot.thymeleaf.entity.VendorFiles;
 import com.rvs.springboot.thymeleaf.entity.VendorMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
+import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetAuditService;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetServiceService;
@@ -160,11 +164,9 @@ public class HomeController {
 	ContactOrganizationService contactOrganizationSerivce;
 	@Autowired
 	LeadMasterService leadMasterSerivce;
+	@Autowired
+	ActivityMasterService activityMasterSerivce;
 
-
-	
-	
-	
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -3884,7 +3886,7 @@ public class HomeController {
 		itemlistService.savesingletxt(contactperson.getMemberin(), "MEMBERIN");
 		contactperson = contactPersonSerivce.save(contactperson);
 		// -------------------------------
-		mappersonstoOrganization(collectorgids,contactperson.getId());
+		mappersonstoOrganization(collectorgids, contactperson.getId());
 		// --------------------------------
 		themodel.addAttribute("contactperson", contactperson);
 		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
@@ -3945,7 +3947,7 @@ public class HomeController {
 		contactOrganization = contactOrganizationSerivce.save(contactOrganization);
 
 		// -------------------------------
-		mapOrganizationtopersons(collectpeopleids,contactOrganization.getId());
+		mapOrganizationtopersons(collectpeopleids, contactOrganization.getId());
 		// --------------------------------
 
 		themodel.addAttribute("contactOrganization", contactOrganization);
@@ -3955,14 +3957,14 @@ public class HomeController {
 		return "contactorganizationadd";
 	}
 
-	public void mappersonstoOrganization(String collectorgids,int personId) {
-		
+	public void mappersonstoOrganization(String collectorgids, int personId) {
+
 		final String perid = String.valueOf(personId);
 		if (!collectorgids.equalsIgnoreCase("")) {
 			for (String s : collectorgids.split(",")) {
 				ContactOrganization contactOrganization1 = contactOrganizationSerivce.findById(Integer.parseInt(s));
 				String[] arr = String.valueOf(contactOrganization1.getPersonid()).split(",");
-				
+
 				if (!Arrays.stream(arr).anyMatch(x -> x.equalsIgnoreCase(perid))) {
 					String temp = String.valueOf(contactOrganization1.getPersonid()).replace("null", "");
 					if (temp.length() > 0) {
@@ -3975,30 +3977,31 @@ public class HomeController {
 			}
 		}
 	}
-	public void mapOrganizationtopersons(String collectpeopleids,int orgId) {
-		
+
+	public void mapOrganizationtopersons(String collectpeopleids, int orgId) {
+
 		// -------------------------------
-				final String orgid = String.valueOf(orgId);
-				if (!collectpeopleids.equalsIgnoreCase("")) {
-					for (String s : collectpeopleids.split(",")) {
-						ContactPerson contactPerson1 = contactPersonSerivce.findById(Integer.parseInt(s));
+		final String orgid = String.valueOf(orgId);
+		if (!collectpeopleids.equalsIgnoreCase("")) {
+			for (String s : collectpeopleids.split(",")) {
+				ContactPerson contactPerson1 = contactPersonSerivce.findById(Integer.parseInt(s));
 
-						String[] arr = String.valueOf(contactPerson1.getOrganization()).split(",");
+				String[] arr = String.valueOf(contactPerson1.getOrganization()).split(",");
 
-						if (!Arrays.stream(arr).anyMatch(x -> x.equalsIgnoreCase(orgid))) {
-							String temp = String.valueOf(contactPerson1.getOrganization()).replace("null", "");
-							if (temp.length() > 0) {
-								contactPerson1.setOrganization(temp + "," + orgId);
-							} else {
-								contactPerson1.setOrganization(String.valueOf(orgId));
-							}
-						}
-						contactPersonSerivce.save(contactPerson1);
+				if (!Arrays.stream(arr).anyMatch(x -> x.equalsIgnoreCase(orgid))) {
+					String temp = String.valueOf(contactPerson1.getOrganization()).replace("null", "");
+					if (temp.length() > 0) {
+						contactPerson1.setOrganization(temp + "," + orgId);
+					} else {
+						contactPerson1.setOrganization(String.valueOf(orgId));
 					}
 				}
-				// --------------------------------
+				contactPersonSerivce.save(contactPerson1);
+			}
+		}
+		// --------------------------------
 	}
-	
+
 	@GetMapping("contactsorganizationslist")
 	public String contactsorganizationslist(Model themodel) {
 
@@ -4012,7 +4015,6 @@ public class HomeController {
 	public String leadlist(Model themodel) {
 
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-
 		List<ContactPerson> cplis = contactPersonSerivce.findAll();
 		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
 		// --------------------------------------------------
@@ -4035,12 +4037,15 @@ public class HomeController {
 
 		}
 		// --------------------------------------------------
+		List<LeadMaster> leadmasterls = leadMasterSerivce.findAll();
+
+		// --------------------------------------------------
+		themodel.addAttribute("leadmasterlist", leadmasterls);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
 		themodel.addAttribute("personorgls", personorgls);
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
-
 		return "leadlist";
 	}
 
@@ -4049,32 +4054,33 @@ public class HomeController {
 	public String organizationlist(@RequestParam Map<String, String> params) {
 		ContactPerson obj = new ContactPerson();
 		obj = contactPersonSerivce.findById(Integer.parseInt(params.get("personid")));
-		String str=obj.getPhonework() +" |"+obj.getPhonepersonal() +" |"+obj.getPhoneothers() +" |"+obj.getEmailwork() +" |"+obj.getEmailpersonal() +" |"+obj.getEmailothers() +" |"+obj.getFollowers() +" |";
-		str=str.replace("null", "");
-		
+		String str = obj.getPhonework() + " |" + obj.getPhonepersonal() + " |" + obj.getPhoneothers() + " |"
+				+ obj.getEmailwork() + " |" + obj.getEmailpersonal() + " |" + obj.getEmailothers() + " |"
+				+ obj.getFollowers() + " |";
+		str = str.replace("null", "");
+
 		return str;
 	}
-	
-	
+
 	@PostMapping("leadsavestage1")
 	@ResponseBody
 	public String leadsavestage1(@RequestParam Map<String, String> params) {
-		String ContactPerson =params.get("ContactPerson");
-		String Organization  =params.get("Organization");
-		String Title =params.get("Title");
-		String Source =params.get("Source");
-		String Reference =params.get("Reference");
-		String Label =params.get("Label");
-		String notes =params.get("notes");
-		String followers=params.get("followers");
-		String phonework=params.get("phonework");
-		String phonepersonal=params.get("phonepersonal");
-		String phoneothers=params.get("phoneothers");
-		String emailwork=params.get("emailwork");
-		String emailpersonal=params.get("emailpersonal");
-		String emailothers=params.get("emailothers");
-		//----------------------------
-		
+		String ContactPerson = params.get("ContactPerson");
+		String Organization = params.get("Organization");
+		String Title = params.get("Title");
+		String Source = params.get("Source");
+		String Reference = params.get("Reference");
+		String Label = params.get("Label");
+		String notes = params.get("notes");
+		String followers = params.get("followers");
+		String phonework = params.get("phonework");
+		String phonepersonal = params.get("phonepersonal");
+		String phoneothers = params.get("phoneothers");
+		String emailwork = params.get("emailwork");
+		String emailpersonal = params.get("emailpersonal");
+		String emailothers = params.get("emailothers");
+		// ----------------------------
+
 		String collectorgids = "";
 		String srcOrg = String.valueOf(Organization).replace("null", "");
 		if (srcOrg.length() > 0) {
@@ -4088,13 +4094,13 @@ public class HomeController {
 					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
 				}
 			}
-			collectorgids =collectorgids.substring(0, collectorgids.length()-1);
+			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
 		}
-		
-		//----------------------------
+
+		// ----------------------------
 		String collectpeopleids = "";
 		String srcPer = String.valueOf(ContactPerson).replace("null", "");
-		
+
 		if (srcPer.length() > 0) {
 			for (String str : srcPer.split(",")) {
 				if (NumberUtils.isParsable(str)) {
@@ -4108,7 +4114,7 @@ public class HomeController {
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
 					contactPersonSerivce.save(contactperson);
-					
+
 				} else {
 					ContactPerson contactperson = new ContactPerson();
 					contactperson.setPeoplename(str);
@@ -4119,27 +4125,26 @@ public class HomeController {
 					contactperson.setEmailwork(emailwork);
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
-					
+
 					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
 				}
 			}
-			collectpeopleids =collectpeopleids.substring(0, collectpeopleids.length()-1);
+			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
 		}
-		
-		
-		//----------------------------
+
+		// ----------------------------
 		if (!collectpeopleids.equalsIgnoreCase("")) {
 			for (String s : collectpeopleids.split(",")) {
-				mappersonstoOrganization(collectorgids,Integer.parseInt(s));
+				mappersonstoOrganization(collectorgids, Integer.parseInt(s));
 
 			}
 		}
 		if (!collectorgids.equalsIgnoreCase("")) {
 			for (String s : collectorgids.split(",")) {
-				mapOrganizationtopersons(collectpeopleids,Integer.parseInt(s));
+				mapOrganizationtopersons(collectpeopleids, Integer.parseInt(s));
 			}
 		}
-		//----------------------------
+		// ----------------------------
 		LeadMaster leadMaster = new LeadMaster();
 		leadMaster.setContactPerson(collectpeopleids);
 		leadMaster.setOrganization(collectorgids);
@@ -4148,11 +4153,466 @@ public class HomeController {
 		leadMaster.setReference(Reference);
 		leadMaster.setLabel(Label);
 		leadMaster.setNotes(notes);
+		leadMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
 		leadMasterSerivce.save(leadMaster);
-		//----------------------------		
+		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
-		//----------------------------
+		// ----------------------------
 		return "";
+	}
+
+	@GetMapping("leadevents")
+	public String leadevents(@RequestParam("id") int id, Model themodel) {
+		LeadMaster leadMaster = leadMasterSerivce.findById(id);
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		ContactPerson contactPersonobj = null;
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+
+			if (contactPersonobj == null) {
+				contactPersonobj = cp;
+			}
+			for (String str1 : (cp.getOrganization().toString()).split(",")) {
+				String temp2 = "";
+				String str2 = str1.replace("null", "");
+				if (str2.length() > 0) {
+					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+							.collect(Collectors.toList()).get(0);
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+					personorgls.add(temp2);
+				} else {
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+					personorgls.add(temp2);
+				}
+			}
+
+		}
+
+		themodel.addAttribute("contactPersonobj", contactPersonobj);
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		themodel.addAttribute("leadMaster", leadMaster);
+
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
+
+		ActivityMaster amobj = new ActivityMaster();
+		amobj.setActivitytype("Task");
+		amobj.setActivityfollowers(contactPersonobj.getFollowers());
+		themodel.addAttribute("activityMaster", amobj);
+
+		return "leadevents";
+	}
+
+	@PostMapping("leadeventpart1save")
+	public String leadeventpart1save(@ModelAttribute("leadMaster") LeadMaster leadMaster,
+			@RequestParam Map<String, String> params, Model themodel) {
+
+		String ContactPerson = params.get("ContactPerson");
+		String Organization = params.get("Organization");
+		String Title = params.get("Title");
+		String Source = params.get("Source");
+		String Reference = params.get("Reference");
+		String Label = params.get("Label");
+		String notes = params.get("notestemp");
+		String phonework = params.get("phonework");
+		String phonepersonal = params.get("phonepersonal");
+		String phoneothers = params.get("phoneothers");
+		String emailwork = params.get("emailwork");
+		String emailpersonal = params.get("emailpersonal");
+		String emailothers = params.get("emailothers");
+		// ----------------------------
+
+		String collectorgids = "";
+		String srcOrg = String.valueOf(Organization).replace("null", "");
+		if (srcOrg.length() > 0) {
+			for (String str : srcOrg.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectorgids += str + ",";
+				} else {
+					ContactOrganization contactOrganization = new ContactOrganization();
+					contactOrganization.setOrgname(str);
+
+					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+				}
+			}
+			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
+		}
+
+		// ----------------------------
+		String collectpeopleids = "";
+		String srcPer = String.valueOf(ContactPerson).replace("null", "");
+
+		if (srcPer.length() > 0) {
+			for (String str : srcPer.split(",")) {
+				if (str.contains("-")) {
+					str = str.split("-")[0];
+				}
+
+				if (NumberUtils.isParsable(str)) {
+					collectpeopleids += str + ",";
+					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					contactperson.setPhonework(phonework);
+					contactperson.setPhonepersonal(phonepersonal);
+					contactperson.setPhoneothers(phoneothers);
+					contactperson.setEmailwork(emailwork);
+					contactperson.setEmailpersonal(emailpersonal);
+					contactperson.setEmailothers(emailothers);
+					contactPersonSerivce.save(contactperson);
+
+				} else {
+					ContactPerson contactperson = new ContactPerson();
+					contactperson.setPeoplename(str);
+					contactperson.setPhonework(phonework);
+					contactperson.setPhonepersonal(phonepersonal);
+					contactperson.setPhoneothers(phoneothers);
+					contactperson.setEmailwork(emailwork);
+					contactperson.setEmailpersonal(emailpersonal);
+					contactperson.setEmailothers(emailothers);
+
+					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+				}
+			}
+			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
+		}
+
+		// ----------------------------
+		if (!collectpeopleids.equalsIgnoreCase("")) {
+			for (String s : collectpeopleids.split(",")) {
+				mappersonstoOrganization(collectorgids, Integer.parseInt(s));
+
+			}
+		}
+		if (!collectorgids.equalsIgnoreCase("")) {
+			for (String s : collectorgids.split(",")) {
+				mapOrganizationtopersons(collectpeopleids, Integer.parseInt(s));
+			}
+		}
+		// ----------------------------
+
+		leadMaster.setContactPerson(collectpeopleids);
+		leadMaster.setOrganization(collectorgids);
+		leadMasterSerivce.save(leadMaster);
+		// ----------------------------
+		itemlistService.savesingletxt(Source, "SOURCE");
+		// ----------------------------
+
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		ContactPerson contactPersonobj = null;
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+
+			if (contactPersonobj == null) {
+				contactPersonobj = cp;
+			}
+			for (String str1 : (cp.getOrganization().toString()).split(",")) {
+				String temp2 = "";
+				String str2 = str1.replace("null", "");
+				if (str2.length() > 0) {
+					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+							.collect(Collectors.toList()).get(0);
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+					personorgls.add(temp2);
+				} else {
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+					personorgls.add(temp2);
+				}
+			}
+
+		}
+
+		themodel.addAttribute("contactPersonobj", contactPersonobj);
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		themodel.addAttribute("leadMaster", leadMaster);
+
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
+		themodel.addAttribute("save", true);
+		return "leadevents";
+	}
+
+	@PostMapping("leadeventpart2save")
+	public String leadeventpart2save(@ModelAttribute("activityMaster") ActivityMaster activityMaster,
+			@RequestParam Map<String, String> params, Model themodel,
+			@RequestParam(name = "activityfiles", required = false) MultipartFile activityfiles,
+			HttpServletRequest request) {
+		// --------------------------------------------------
+		List<ActivityMasterGuest> lsactivityMasterguest = activityMaster.getActivityMasterGuest();
+		String guestStaff = "";
+		if (lsactivityMasterguest.size() > 0) {
+			guestStaff = String.valueOf(lsactivityMasterguest.get(0).getGuestid());
+			guestStaff = guestStaff.replace("null", "");
+			themodel.addAttribute("guestStaff", guestStaff);
+		}
+
+		String status = String.valueOf(params.get("status"));
+		status = status.replace("null", "");
+
+		// --------------------------------------------------
+		if (!status.equalsIgnoreCase("")) {
+			activityMaster.setStatus("Completed");
+		}
+		// --------------------------------------------------
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("activityfiles");
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+
+		if (activityfiles.getOriginalFilename().toString().length() > 0) {
+			List<ActivityMasterFiles> actfilelist = new ArrayList();
+
+			ActivityMasterFiles actfiles = new ActivityMasterFiles();
+			StringBuilder filename = new StringBuilder();
+			String tempfilename = stringdatetime() + activityfiles.getOriginalFilename();
+			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+			filename.append(tempfilename);
+			actfiles.setFiles_Attach("activityfiles/" + filename);
+			try {
+				Files.write(fileNameandPath, activityfiles.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			actfilelist.add(actfiles);
+			activityMaster.setActivityMasterFiles(actfilelist);
+		}
+
+		// --------------------------------------------------
+
+		if (!guestStaff.equalsIgnoreCase("")) {
+			List<ActivityMasterGuest> actguestlist = new ArrayList();
+			String guestStaffarr1[] = guestStaff.split(",");
+
+			for (String str : guestStaffarr1) {
+				ActivityMasterGuest activityMasterGuest = new ActivityMasterGuest();
+				activityMasterGuest.setGuestid(String.valueOf(str));
+				actguestlist.add(activityMasterGuest);
+			}
+			activityMaster.setActivityMasterGuest(actguestlist);
+		}
+
+		// --------------------------------------------------
+		if (String.valueOf(activityMaster.getCreatedtime()).equalsIgnoreCase("")) {
+			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
+		}
+		activityMaster.setActivitycategory("Activity");
+		activityMaster.setMastercategory("Lead");
+		activityMaster = activityMasterSerivce.save(activityMaster);
+		// --------------------------------------------------
+		LeadMaster leadMaster = leadMasterSerivce.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		ContactPerson contactPersonobj = null;
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+
+			if (contactPersonobj == null) {
+				contactPersonobj = cp;
+			}
+			for (String str1 : (cp.getOrganization().toString()).split(",")) {
+				String temp2 = "";
+				String str2 = str1.replace("null", "");
+				if (str2.length() > 0) {
+					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+							.collect(Collectors.toList()).get(0);
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+					personorgls.add(temp2);
+				} else {
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+					personorgls.add(temp2);
+				}
+			}
+
+		}
+
+		themodel.addAttribute("contactPersonobj", contactPersonobj);
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		themodel.addAttribute("leadMaster", leadMaster);
+
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
+
+		themodel.addAttribute("activityMaster", activityMaster);
+
+		return "leadevents";
+
+	}
+
+	@ResponseBody
+	@PostMapping("leadeventnotesave")
+	public String leadeventnotesave(@RequestParam Map<String, String> params) {
+
+		String editor = params.get("editor");
+		String noteckbox = params.get("noteckbox");
+		String mastercategoryid = params.get("mastercategoryid");
+		int noteactivityid = Integer.parseInt(params.get("noteactivityid"));
+
+		ActivityMaster activityMaster = new ActivityMaster();
+		if (noteactivityid > 0) {
+			activityMaster = activityMasterSerivce.findById(noteactivityid);
+		} else {
+			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
+		}
+		if (noteckbox.equalsIgnoreCase("true")) {
+			activityMaster.setStatus("Completed");
+		}
+
+		activityMaster.setHtmlnotes(editor);
+		activityMaster.setMastercategoryid(mastercategoryid);
+		activityMaster.setActivitycategory("Note");
+		activityMaster.setMastercategory("Lead");
+		activityMaster = activityMasterSerivce.save(activityMaster);
+
+		return "Saved";
+	}
+
+	@ResponseBody
+	@PostMapping("gettimelinelist")
+	public String gettimelinelist(@RequestParam Map<String, String> params) {
+
+		String mastercategoryid = params.get("mastercategoryid");
+
+		List<Map<String, Object>> ls = activityMasterSerivce.gettimelinelist("Lead", mastercategoryid);
+
+		String[] result = { "" };
+
+		ls.forEach(rowMap -> {
+
+			String activitytitle = String.valueOf(rowMap.get("activitytitle"));
+			String activitytype = nullremover(String.valueOf(rowMap.get("activitytype")));
+			String startdate = nullremover(String.valueOf(rowMap.get("startdate")));
+			String starttime = nullremover(String.valueOf(rowMap.get("starttime")));
+			String enddate = nullremover(String.valueOf(rowMap.get("enddate")));
+			String endtime = nullremover(String.valueOf(rowMap.get("endtime")));
+			String location = nullremover(String.valueOf(rowMap.get("location")));
+			String description = nullremover(String.valueOf(rowMap.get("description")));
+			String notes = nullremover(String.valueOf(rowMap.get("notes")));
+			String htmlnotes = nullremover(String.valueOf(rowMap.get("htmlnotes")));
+			String followers = nullremover(String.valueOf(rowMap.get("followers")));
+			String status = nullremover(String.valueOf(rowMap.get("status")));
+			ActivityMaster actimaster = activityMasterSerivce
+					.findById(Integer.parseInt(String.valueOf(rowMap.get("activity_id"))));
+			// -------------------------------------------
+			// guest Details
+			String guestdetails = "";
+			for (ActivityMasterGuest gobj : actimaster.getActivityMasterGuest()) {
+				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(gobj.getGuestid()));
+
+				if (empobj != null) {
+					guestdetails += "<div class='badge badge-pill badge-light-secondary mr-1 mb-1'>"
+							+ empobj.getStaffName() + "</div>";
+				}
+			}
+			// -------------------------------------------
+			// Activity File 
+			String filedetails = "";
+			for (ActivityMasterFiles aobj : actimaster.getActivityMasterFiles()) {
+
+				filedetails += "<a href='" + aobj.getFiles_Attach()
+						+ "' target='_blank' title='"+ (aobj.getFiles_Attach()).toString().substring(30, aobj.getFiles_Attach().length()) +"'><div class='avatar mr-1 avatar-sm bg-info'><span class='avatar-content'><i class='avatar-icon bx bx-link'></i></span></div></a>";
+
+			}
+			// -------------------------------------------
+			String followerdetails = "";
+			EmployeeMaster empobj = null;
+			for (String str : followers.split(",")) {
+				if (!str.equalsIgnoreCase("")) {
+					empobj = employeeMasterService.findById(Integer.parseInt(str));
+
+					if (empobj != null) {
+						followerdetails += "<div class='badge badge-pill badge-light-secondary mr-1 mb-1'>"
+								+ empobj.getStaffName() + "</div>";
+					}
+				}
+
+			}
+			// -------------------------------------------
+			if (status.equalsIgnoreCase("Completed")) {
+				status = "<span class='badge-circle-light-success'><i class='bx bx-check font-size-base'></i></span>";
+			} else {
+				status = "<span class='badge-circle-light-danger'><i class='bx bxs-flag-alt font-size-base'></i></span>";
+			}
+			// -------------------------------------------
+			// time calculator
+			String timecalculator = "";
+			long differdate = (long) rowMap.get("differdate");
+			String differtime = String.valueOf(rowMap.get("differtime"));
+			long differmins = (long) rowMap.get("differmins");
+			long differhr = (long) rowMap.get("differhr");
+			String sorteddates = (String) rowMap.get("sorteddates");
+
+			if (differdate > 30) {
+				timecalculator = sorteddates + "";
+			} else {
+				if (differdate > 0) {
+					timecalculator = differdate + " days ago";
+				} else {
+					timecalculator = differhr + "hrs " + differmins + "  mins ago";
+				}
+			}
+			// -------------------------------------------------
+			if (activitytitle.equalsIgnoreCase("null")) {
+				result[0] += "<li class='timeline-items timeline-icon-secondary active'><div class='timeline-time'>"
+						+ timecalculator + "</div>";
+				result[0] += "<h6 class='timeline-title'>Notes " + status + "</h6><div class='timeline-content'>";
+				result[0] += htmlnotes;
+				result[0] += "</div> </li>";
+			} else {
+				result[0] += "<li class='timeline-items timeline-icon-secondary active'><div class='timeline-time'>"
+						+ timecalculator + "</div>";
+				result[0] += "<h6 class='timeline-title'>" + activitytitle + " " + status
+						+ "</h6><p class='timeline-text'>" + activitytype + " (" + startdate + " - " + starttime
+						+ " to " + enddate + " - " + endtime + ") </p><div align='right'>" + followerdetails
+						+ "</div><div class='timeline-content'>";
+
+				
+				if (!location.equalsIgnoreCase("")) {
+					result[0] += "Location : " + location;
+				}
+				if (!description.equalsIgnoreCase("")) {
+					result[0] += "<br/>Description : " + description;
+				}
+				if (!notes.equalsIgnoreCase("")) {
+					result[0] += "<br/>Notes : " + notes;
+				}
+				
+
+				result[0] += "</div>";
+				
+				if (!guestdetails.equalsIgnoreCase("")) {
+					result[0] += "<div>Guest : " + guestdetails+ "</div>";
+				}
+				if (!filedetails.equalsIgnoreCase("")) {
+					result[0] += "<div>" + filedetails + "</div>";
+				}
+				
+				result[0] += "<hr/></li>";
+			}
+
+		});
+
+		return result[0];
+	}
+
+	public String nullremover(String str) {
+
+		return str.toLowerCase().replace("null", "");
 	}
 
 	@GetMapping("deal")

@@ -63,6 +63,7 @@ import com.rvs.springboot.thymeleaf.entity.CheckOut;
 import com.rvs.springboot.thymeleaf.entity.CheckOutFiles;
 import com.rvs.springboot.thymeleaf.entity.ContactOrganization;
 import com.rvs.springboot.thymeleaf.entity.ContactPerson;
+import com.rvs.springboot.thymeleaf.entity.DealMaster;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
@@ -96,6 +97,7 @@ import com.rvs.springboot.thymeleaf.service.CheckInService;
 import com.rvs.springboot.thymeleaf.service.CheckOutService;
 import com.rvs.springboot.thymeleaf.service.ContactOrganizationService;
 import com.rvs.springboot.thymeleaf.service.ContactPersonService;
+import com.rvs.springboot.thymeleaf.service.DealMasterService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobcompensationService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
@@ -166,7 +168,9 @@ public class HomeController {
 	LeadMasterService leadMasterSerivce;
 	@Autowired
 	ActivityMasterService activityMasterSerivce;
-
+	@Autowired
+	DealMasterService dealMasterSerivce;
+	
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -4049,6 +4053,7 @@ public class HomeController {
 		return "leadlist";
 	}
 
+	
 	@PostMapping("contactpersondetails")
 	@ResponseBody
 	public String organizationlist(@RequestParam Map<String, String> params) {
@@ -4153,6 +4158,7 @@ public class HomeController {
 		leadMaster.setReference(Reference);
 		leadMaster.setLabel(Label);
 		leadMaster.setNotes(notes);
+		leadMaster.setFollower(followers);
 		leadMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
 		leadMasterSerivce.save(leadMaster);
 		// ----------------------------
@@ -4640,11 +4646,154 @@ public class HomeController {
 	}
 
 	@GetMapping("deal")
-	public String deal() {
+	public String deal(Model themodel) {
 
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+
+			for (String str1 : (cp.getOrganization().toString()).split(",")) {
+				String temp2 = "";
+				String str2 = str1.replace("null", "");
+				if (str2.length() > 0) {
+					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+							.collect(Collectors.toList()).get(0);
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+					personorgls.add(temp2);
+				} else {
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+					personorgls.add(temp2);
+				}
+			}
+
+		}
+		// --------------------------------------------------
+		List<DealMaster> dealmasterls = dealMasterSerivce.findAll();
+
+		// --------------------------------------------------
+		themodel.addAttribute("dealmasterlist", dealmasterls);
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		themodel.addAttribute("PURPOSE", PURPOSE);
 		return "deal";
 	}
+	
+	@PostMapping("dealsavestage1")
+	@ResponseBody
+	public String dealsavestage1(@RequestParam Map<String, String> params) {
+		String ContactPerson = params.get("ContactPerson");
+		String Organization = params.get("Organization");
+		String Title = params.get("Title");
+		String Source = params.get("Source");
+		String Reference = params.get("Reference");
+		String expectedclosingdate = params.get("expectedclosingdate");
+		String pipeline = params.get("pipeline");
+		String purpose = params.get("purpose");
+		String notes = params.get("notes");
+		String followers = params.get("followers");
+		String phonework = params.get("phonework");
+		String phonepersonal = params.get("phonepersonal");
+		String phoneothers = params.get("phoneothers");
+		String emailwork = params.get("emailwork");
+		String emailpersonal = params.get("emailpersonal");
+		String emailothers = params.get("emailothers");
+		// ----------------------------
 
+		String collectorgids = "";
+		String srcOrg = String.valueOf(Organization).replace("null", "");
+		if (srcOrg.length() > 0) {
+			for (String str : srcOrg.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectorgids += str + ",";
+				} else {
+					ContactOrganization contactOrganization = new ContactOrganization();
+					contactOrganization.setOrgname(str);
+
+					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+				}
+			}
+			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
+		}
+
+		// ----------------------------
+		String collectpeopleids = "";
+		String srcPer = String.valueOf(ContactPerson).replace("null", "");
+
+		if (srcPer.length() > 0) {
+			for (String str : srcPer.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectpeopleids += str + ",";
+					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					contactperson.setFollowers(followers);
+					contactperson.setPhonework(phonework);
+					contactperson.setPhonepersonal(phonepersonal);
+					contactperson.setPhoneothers(phoneothers);
+					contactperson.setEmailwork(emailwork);
+					contactperson.setEmailpersonal(emailpersonal);
+					contactperson.setEmailothers(emailothers);
+					contactPersonSerivce.save(contactperson);
+
+				} else {
+					ContactPerson contactperson = new ContactPerson();
+					contactperson.setPeoplename(str);
+					contactperson.setFollowers(followers);
+					contactperson.setPhonework(phonework);
+					contactperson.setPhonepersonal(phonepersonal);
+					contactperson.setPhoneothers(phoneothers);
+					contactperson.setEmailwork(emailwork);
+					contactperson.setEmailpersonal(emailpersonal);
+					contactperson.setEmailothers(emailothers);
+
+					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+				}
+			}
+			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
+		}
+
+		// ----------------------------
+		if (!collectpeopleids.equalsIgnoreCase("")) {
+			for (String s : collectpeopleids.split(",")) {
+				mappersonstoOrganization(collectorgids, Integer.parseInt(s));
+
+			}
+		}
+		if (!collectorgids.equalsIgnoreCase("")) {
+			for (String s : collectorgids.split(",")) {
+				mapOrganizationtopersons(collectpeopleids, Integer.parseInt(s));
+			}
+		}
+		// ----------------------------
+		DealMaster dealMaster = new DealMaster();
+		dealMaster.setContactPerson(collectpeopleids);
+		dealMaster.setOrganization(collectorgids);
+		dealMaster.setTitle(Title);
+		dealMaster.setSource(Source);
+		dealMaster.setReference(Reference);
+		dealMaster.setExpectedclosingdate(expectedclosingdate);
+		dealMaster.setPipeline(pipeline);
+		dealMaster.setPurpose(purpose);
+		dealMaster.setNotes(notes);
+		dealMaster.setFollower(followers);
+		dealMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
+		dealMasterSerivce.save(dealMaster);
+		// ----------------------------
+		itemlistService.savesingletxt(Source, "SOURCE");
+		itemlistService.savesingletxt(purpose, "PURPOSE");
+		// ----------------------------
+		return "";
+	}
+
+	
+	
+	
 	@GetMapping("dealfollowupls")
 	public String dealfollowuplist() {
 

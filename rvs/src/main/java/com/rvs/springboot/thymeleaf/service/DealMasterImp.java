@@ -67,6 +67,20 @@ public class DealMasterImp implements DealMasterService {
 		JdbcTemplate.execute(sql);
 		
 	}
+
+	@Override
+	public List<String> getStateAll() {
+		
+		String sql="select distinct(State) from statedistrict";
+		return JdbcTemplate.queryForList(sql,String.class);
+	}
+
+	@Override
+	public List<String> getDistrictAll(String state) {
+		String sql="select distinct(District) from statedistrict where State='"+ state+ "'";
+			
+		return JdbcTemplate.queryForList(sql,String.class);
+	}
 		
 	
 }

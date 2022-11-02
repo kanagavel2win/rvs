@@ -11,5 +11,6 @@ public interface DealMasterService {
 	public List<DealMaster> findAll();
 	public List<DealMaster> saveall(List<DealMaster> objList);
 	public void updatepipeline(String str,String pipeline, String notes);
-	
+	public List<String> getStateAll();
+	public List<String> getDistrictAll(String state);
 }

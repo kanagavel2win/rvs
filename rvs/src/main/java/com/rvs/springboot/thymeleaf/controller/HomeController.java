@@ -4460,6 +4460,119 @@ public class HomeController {
 
 	}
 
+	@PostMapping("dealeventpart2save")
+	public String dealeventpart2save(@ModelAttribute("activityMaster") ActivityMaster activityMaster,
+			@RequestParam Map<String, String> params, Model themodel,
+			@RequestParam(name = "activityfiles", required = false) MultipartFile activityfiles,
+			HttpServletRequest request) {
+		// --------------------------------------------------
+		List<ActivityMasterGuest> lsactivityMasterguest = activityMaster.getActivityMasterGuest();
+		String guestStaff = "";
+		if (lsactivityMasterguest.size() > 0) {
+			guestStaff = String.valueOf(lsactivityMasterguest.get(0).getGuestid());
+			guestStaff = guestStaff.replace("null", "");
+			themodel.addAttribute("guestStaff", guestStaff);
+		}
+
+		String status = String.valueOf(params.get("status"));
+		status = status.replace("null", "");
+
+		// --------------------------------------------------
+		if (!status.equalsIgnoreCase("")) {
+			activityMaster.setStatus("Completed");
+		}
+		// --------------------------------------------------
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("activityfiles");
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+
+		if (activityfiles.getOriginalFilename().toString().length() > 0) {
+			List<ActivityMasterFiles> actfilelist = new ArrayList();
+
+			ActivityMasterFiles actfiles = new ActivityMasterFiles();
+			StringBuilder filename = new StringBuilder();
+			String tempfilename = stringdatetime() + activityfiles.getOriginalFilename();
+			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+			filename.append(tempfilename);
+			actfiles.setFiles_Attach("activityfiles/" + filename);
+			try {
+				Files.write(fileNameandPath, activityfiles.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			actfilelist.add(actfiles);
+			activityMaster.setActivityMasterFiles(actfilelist);
+		}
+
+		// --------------------------------------------------
+
+		if (!guestStaff.equalsIgnoreCase("")) {
+			List<ActivityMasterGuest> actguestlist = new ArrayList();
+			String guestStaffarr1[] = guestStaff.split(",");
+
+			for (String str : guestStaffarr1) {
+				ActivityMasterGuest activityMasterGuest = new ActivityMasterGuest();
+				activityMasterGuest.setGuestid(String.valueOf(str));
+				actguestlist.add(activityMasterGuest);
+			}
+			activityMaster.setActivityMasterGuest(actguestlist);
+		}
+
+		// --------------------------------------------------
+		if (String.valueOf(activityMaster.getCreatedtime()).equalsIgnoreCase("")) {
+			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
+		}
+		activityMaster.setActivitycategory("Activity");
+		activityMaster.setMastercategory("Deal");
+		activityMaster = activityMasterSerivce.save(activityMaster);
+		// --------------------------------------------------
+		DealMaster dealMaster = dealMasterSerivce.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		ContactPerson contactPersonobj = null;
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+
+			if (contactPersonobj == null) {
+				contactPersonobj = cp;
+			}
+			for (String str1 : (cp.getOrganization().toString()).split(",")) {
+				String temp2 = "";
+				String str2 = str1.replace("null", "");
+				if (str2.length() > 0) {
+					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+							.collect(Collectors.toList()).get(0);
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+					personorgls.add(temp2);
+				} else {
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+					personorgls.add(temp2);
+				}
+			}
+
+		}
+
+		themodel.addAttribute("contactPersonobj", contactPersonobj);
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		themodel.addAttribute("dealMaster", dealMaster);
+
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
+
+		themodel.addAttribute("activityMaster", activityMaster);
+
+		return "dealevents";
+
+	}
 	@ResponseBody
 	@PostMapping("leadeventnotesave")
 	public String leadeventnotesave(@RequestParam Map<String, String> params) {
@@ -4487,6 +4600,34 @@ public class HomeController {
 
 		return "Saved";
 	}
+	
+	@ResponseBody
+	@PostMapping("dealeventnotesave")
+	public String dealeventnotesave(@RequestParam Map<String, String> params) {
+
+		String editor = params.get("editor");
+		String noteckbox = params.get("noteckbox");
+		String mastercategoryid = params.get("mastercategoryid");
+		int noteactivityid = Integer.parseInt(params.get("noteactivityid"));
+
+		ActivityMaster activityMaster = new ActivityMaster();
+		if (noteactivityid > 0) {
+			activityMaster = activityMasterSerivce.findById(noteactivityid);
+		} else {
+			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
+		}
+		if (noteckbox.equalsIgnoreCase("true")) {
+			activityMaster.setStatus("Completed");
+		}
+
+		activityMaster.setHtmlnotes(editor);
+		activityMaster.setMastercategoryid(mastercategoryid);
+		activityMaster.setActivitycategory("Note");
+		activityMaster.setMastercategory("Deal");
+		activityMaster = activityMasterSerivce.save(activityMaster);
+
+		return "Saved";
+	}
 
 	@ResponseBody
 	@PostMapping("activitymarkascompleted")
@@ -4505,8 +4646,9 @@ public class HomeController {
 	public String gettimelinelist(@RequestParam Map<String, String> params) {
 
 		String mastercategoryid = params.get("mastercategoryid");
+		String categoryType = params.get("categoryType");
 
-		List<Map<String, Object>> ls = activityMasterSerivce.gettimelinelist("Lead", mastercategoryid);
+		List<Map<String, Object>> ls = activityMasterSerivce.gettimelinelist(categoryType, mastercategoryid);
 
 		String[] result = { "" };
 
@@ -4808,6 +4950,17 @@ public class HomeController {
 		DealMaster dealMaster = dealMasterSerivce.findById(id);
 		List<ContactPerson> cplis = contactPersonSerivce.findAll();
 		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		
+		List<String> statelist=dealMasterSerivce.getStateAll();
+		String state = nullremover(String.valueOf(dealMaster.getState()));
+		List<String> districtlist = new ArrayList();
+		if(state.length()>0)
+		{
+			 districtlist=dealMasterSerivce.getDistrictAll(state);	
+		}
+		themodel.addAttribute("statelist", statelist);
+		themodel.addAttribute("districtlist", districtlist);
+		
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -4849,6 +5002,13 @@ public class HomeController {
 
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		themodel.addAttribute("PURPOSE", PURPOSE);
+		
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+		
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		themodel.addAttribute("UNITS", UNITS);
+		
 		ActivityMaster amobj = new ActivityMaster();
 		amobj.setActivitytype("Task");
 		amobj.setActivityfollowers(contactPersonobj.getFollowers());
@@ -4877,7 +5037,8 @@ public class HomeController {
 		dealMaster.setDealProjectMaster(dpmls);
 		
 		for (DealProjectMaster o : dpmls) {
-			itemlistService.savesingletxt(o.getProjecttype(), "PolicyCover");
+			itemlistService.savesingletxt(o.getProjecttype(), "NATUREOFWORK");
+			itemlistService.savesingletxt(o.getUnit(), "UNITS");
 		}
 		// -------------------------------
 		String collectorgids = "";
@@ -4949,7 +5110,7 @@ public class HomeController {
 
 		dealMaster.setContactPerson(collectpeopleids);
 		dealMaster.setOrganization(collectorgids);
-		dealMasterSerivce.save(dealMaster);
+		dealMaster =dealMasterSerivce.save(dealMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
 		// ----------------------------
@@ -4992,15 +5153,42 @@ public class HomeController {
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		themodel.addAttribute("PURPOSE", PURPOSE);
 		
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		themodel.addAttribute("UNITS", UNITS);
+		
 		ActivityMaster amobj = new ActivityMaster();
 		amobj.setActivitytype("Task");
 		amobj.setActivityfollowers(contactPersonobj.getFollowers());
 		themodel.addAttribute("activityMaster", amobj);
 		
+		List<String> statelist=dealMasterSerivce.getStateAll();
+		String state = nullremover(String.valueOf(dealMaster.getState()));
+		List<String> districtlist = new ArrayList();
+		if(state.length()>0)
+		{
+			 districtlist=dealMasterSerivce.getDistrictAll(state);	
+		}
+		themodel.addAttribute("statelist", statelist);
+		themodel.addAttribute("districtlist", districtlist);
+		
 		themodel.addAttribute("save", true);
 		return "dealevents";
 	}
 	
+	@PostMapping("getdistrictlist")
+	@ResponseBody
+	public String getdistrictlist(@RequestParam("state") String state)
+	{
+		List<String> districtlist = dealMasterSerivce.getDistrictAll(state);
+		String output="";
+		for(String str: districtlist)
+		{
+			output +="<option value='"+ str+"'>"+ str+ "</option>";
+		}
+		return output;
+	}
 	
 	@GetMapping("dealfollowupls")
 	public String dealfollowuplist() {

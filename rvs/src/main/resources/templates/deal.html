@@ -715,7 +715,7 @@ color:green;
 																
 																<th:block th:each="obj,stat :${dealmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Deal In'">
-																		<a th:href="'dealevents?id=' + ${obj.id}"><div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
 																			<span class="line1" th:text="${obj.Title}"> </span><br/>
@@ -741,14 +741,14 @@ color:green;
 															<div id="handle-list-2" class="droptarget">
 																<th:block th:each="obj,stat :${dealmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Contact made'">
-																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
 																			<span class="line1" th:text="${obj.Title}"> </span><br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : 30'"> </span>
 																		
-																		</div>
+																		</div></a>
 																		
 																	</th:block>	
 																</th:block>
@@ -766,14 +766,14 @@ color:green;
 															<div id="handle-list-3" class="droptarget">
 																<th:block th:each="obj,stat :${dealmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Site Visit Scheduled'">
-																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
 																			<span class="line1" th:text="${obj.Title}"> </span><br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : 30'"> </span>
 																		
-																		</div>
+																		</div></a>
 																	</th:block>	
 																</th:block>
 															<!-- <button class="col-12 btn addSiteVisitScheduledsection">+</button> -->	
@@ -790,14 +790,14 @@ color:green;
 															<div id="handle-list-4" class="droptarget">
 																<th:block th:each="obj,stat :${dealmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Project Evaluvated'">
-																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
 																			<span class="line1" th:text="${obj.Title}"> </span><br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : 30'"> </span>
 																		
-																		</div>
+																		</div></a>
 																	</th:block>	
 																</th:block>
 															<!-- <button class="col-12 btn addProjectEvaluvatedsection">+</button> -->	
@@ -814,14 +814,14 @@ color:green;
 															<div id="handle-list-5" class="droptarget">
 																<th:block th:each="obj,stat :${dealmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Proposal made'">
-																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
 																			<span class="line1" th:text="${obj.Title}"> </span><br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : 30'"> </span>
 																		
-																		</div>
+																		</div></a>
 																	</th:block>	
 																</th:block>
 															<!-- <button class="col-12 btn addProposalmadesection">+</button> -->	
@@ -838,14 +838,14 @@ color:green;
 															<div id="handle-list-6" class="droptarget">
 																<th:block th:each="obj,stat :${dealmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Negotiations started'">
-																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
 																			<span class="line1" th:text="${obj.Title}"> </span><br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : 30'"> </span>
 																		
-																		</div>
+																		</div></a>
 																	</th:block>	
 																</th:block>
 																	

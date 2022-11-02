@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,27 +49,41 @@ public class DealMaster {
 	@Column
 	private String pipeline;
 	@Column
+	
 	private String notes;
 	@Column
 	private String follower;
 	@Column
+	
 	private String state;
 	@Column
+	
 	private String district;
 	@Column
+	
 	private String taluk;
 	@Column
+	
 	private String village;
 	@Column
+	
 	private String lankmark;
 	@Column
+	
 	private String lanlong;
 	@Column
 	private String createddate;
+	@Column
+	private String lossbacktoleadreason;
+	
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "activityId")
 	private List<ActivityMasterGuest> activityMasterGuest;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "activityId")
+	private List<DealProjectMaster> dealProjectMaster;
 	
 	
 }

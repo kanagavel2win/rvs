@@ -10,5 +10,6 @@ public interface DealMasterService {
 	public DealMaster findById(Integer id);
 	public List<DealMaster> findAll();
 	public List<DealMaster> saveall(List<DealMaster> objList);
+	public void updatepipeline(String str,String pipeline, String notes);
 	
 }

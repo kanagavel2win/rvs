@@ -64,6 +64,7 @@ import com.rvs.springboot.thymeleaf.entity.CheckOutFiles;
 import com.rvs.springboot.thymeleaf.entity.ContactOrganization;
 import com.rvs.springboot.thymeleaf.entity.ContactPerson;
 import com.rvs.springboot.thymeleaf.entity.DealMaster;
+import com.rvs.springboot.thymeleaf.entity.DealProjectMaster;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
@@ -170,7 +171,7 @@ public class HomeController {
 	ActivityMasterService activityMasterSerivce;
 	@Autowired
 	DealMasterService dealMasterSerivce;
-	
+
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -4053,7 +4054,6 @@ public class HomeController {
 		return "leadlist";
 	}
 
-	
 	@PostMapping("contactpersondetails")
 	@ResponseBody
 	public String organizationlist(@RequestParam Map<String, String> params) {
@@ -4627,7 +4627,7 @@ public class HomeController {
 				if (!filedetails.equalsIgnoreCase("")) {
 					result[0] += "<div>" + filedetails + "</div>";
 				}
-				
+
 				if (!guestdetails.equalsIgnoreCase("")) {
 					result[0] += "Follower: " + followerdetails;
 				}
@@ -4678,14 +4678,26 @@ public class HomeController {
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
 		themodel.addAttribute("personorgls", personorgls);
-		
+
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		themodel.addAttribute("PURPOSE", PURPOSE);
 		return "deal";
 	}
-	
+
+	@PostMapping("dealsavestage3")
+	@ResponseBody
+	public String dealsavestage3(@RequestParam Map<String, String> params) {
+		String ids = String.valueOf(params.get("ids"));
+		String txt = String.valueOf(params.get("txt"));
+		String notes = String.valueOf(params.get("notes")).replace("null", "");
+		;
+
+		dealMasterSerivce.updatepipeline(ids, txt, notes);
+		return "";
+	}
+
 	@PostMapping("dealsavestage1")
 	@ResponseBody
 	public String dealsavestage1(@RequestParam Map<String, String> params) {
@@ -4791,7 +4803,203 @@ public class HomeController {
 		return "";
 	}
 
+	@GetMapping("dealevents")
+	public String dealevents(@RequestParam("id") int id, Model themodel) {
+		DealMaster dealMaster = dealMasterSerivce.findById(id);
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		ContactPerson contactPersonobj = null;
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+
+			if (contactPersonobj == null) {
+				contactPersonobj = cp;
+			}
+			for (String str1 : (cp.getOrganization().toString()).split(",")) {
+				String temp2 = "";
+				String str2 = str1.replace("null", "");
+				if (str2.length() > 0) {
+					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+							.collect(Collectors.toList()).get(0);
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+					personorgls.add(temp2);
+				} else {
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+					personorgls.add(temp2);
+				}
+			}
+
+		}
+		if (dealMaster.getDealProjectMaster().size() == 0) {
+			List<DealProjectMaster> dmls= new ArrayList();
+			DealProjectMaster dpmobj = new DealProjectMaster();
+			dmls.add(dpmobj);
+			dealMaster.setDealProjectMaster(dmls);			
+		}
+		themodel.addAttribute("contactPersonobj", contactPersonobj);
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		themodel.addAttribute("dealMaster", dealMaster);
+
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		themodel.addAttribute("PURPOSE", PURPOSE);
+		ActivityMaster amobj = new ActivityMaster();
+		amobj.setActivitytype("Task");
+		amobj.setActivityfollowers(contactPersonobj.getFollowers());
+		themodel.addAttribute("activityMaster", amobj);
+
+		return "dealevents";
+	}
+
 	
+	@PostMapping("dealeventpart1save")
+	public String dealeventpart1save(@ModelAttribute("dealMaster") DealMaster dealMaster,
+			@RequestParam Map<String, String> params, Model themodel) {
+
+		String ContactPerson = params.get("ContactPerson");
+		String Organization = params.get("Organization");
+		String Source = params.get("Source");
+		String phonework = params.get("phonework");
+		String phonepersonal = params.get("phonepersonal");
+		String phoneothers = params.get("phoneothers");
+		String emailwork = params.get("emailwork");
+		String emailpersonal = params.get("emailpersonal");
+		String emailothers = params.get("emailothers");
+		// ----------------------------
+		List<DealProjectMaster> dpmls = dealMaster.getDealProjectMaster().stream()
+				.filter(C -> !String.valueOf(C.getProjecttype()).equalsIgnoreCase("null")).collect(Collectors.toList());
+		dealMaster.setDealProjectMaster(dpmls);
+		
+		for (DealProjectMaster o : dpmls) {
+			itemlistService.savesingletxt(o.getProjecttype(), "PolicyCover");
+		}
+		// -------------------------------
+		String collectorgids = "";
+		String srcOrg = String.valueOf(Organization).replace("null", "");
+		if (srcOrg.length() > 0) {
+			for (String str : srcOrg.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectorgids += str + ",";
+				} else {
+					ContactOrganization contactOrganization = new ContactOrganization();
+					contactOrganization.setOrgname(str);
+
+					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+				}
+			}
+			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
+		}
+
+		// ----------------------------
+		String collectpeopleids = "";
+		String srcPer = String.valueOf(ContactPerson).replace("null", "");
+
+		if (srcPer.length() > 0) {
+			for (String str : srcPer.split(",")) {
+				if (str.contains("-")) {
+					str = str.split("-")[0];
+				}
+
+				if (NumberUtils.isParsable(str)) {
+					collectpeopleids += str + ",";
+					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					contactperson.setPhonework(phonework);
+					contactperson.setPhonepersonal(phonepersonal);
+					contactperson.setPhoneothers(phoneothers);
+					contactperson.setEmailwork(emailwork);
+					contactperson.setEmailpersonal(emailpersonal);
+					contactperson.setEmailothers(emailothers);
+					contactPersonSerivce.save(contactperson);
+
+				} else {
+					ContactPerson contactperson = new ContactPerson();
+					contactperson.setPeoplename(str);
+					contactperson.setPhonework(phonework);
+					contactperson.setPhonepersonal(phonepersonal);
+					contactperson.setPhoneothers(phoneothers);
+					contactperson.setEmailwork(emailwork);
+					contactperson.setEmailpersonal(emailpersonal);
+					contactperson.setEmailothers(emailothers);
+
+					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+				}
+			}
+			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
+		}
+
+		// ----------------------------
+		if (!collectpeopleids.equalsIgnoreCase("")) {
+			for (String s : collectpeopleids.split(",")) {
+				mappersonstoOrganization(collectorgids, Integer.parseInt(s));
+
+			}
+		}
+		if (!collectorgids.equalsIgnoreCase("")) {
+			for (String s : collectorgids.split(",")) {
+				mapOrganizationtopersons(collectpeopleids, Integer.parseInt(s));
+			}
+		}
+		// ----------------------------
+
+		dealMaster.setContactPerson(collectpeopleids);
+		dealMaster.setOrganization(collectorgids);
+		dealMasterSerivce.save(dealMaster);
+		// ----------------------------
+		itemlistService.savesingletxt(Source, "SOURCE");
+		// ----------------------------
+
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		ContactPerson contactPersonobj = null;
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+
+			if (contactPersonobj == null) {
+				contactPersonobj = cp;
+			}
+			for (String str1 : (cp.getOrganization().toString()).split(",")) {
+				String temp2 = "";
+				String str2 = str1.replace("null", "");
+				if (str2.length() > 0) {
+					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+							.collect(Collectors.toList()).get(0);
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+					personorgls.add(temp2);
+				} else {
+					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+					personorgls.add(temp2);
+				}
+			}
+
+		}
+
+		themodel.addAttribute("contactPersonobj", contactPersonobj);
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		themodel.addAttribute("dealMaster", dealMaster);
+
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		themodel.addAttribute("PURPOSE", PURPOSE);
+		
+		ActivityMaster amobj = new ActivityMaster();
+		amobj.setActivitytype("Task");
+		amobj.setActivityfollowers(contactPersonobj.getFollowers());
+		themodel.addAttribute("activityMaster", amobj);
+		
+		themodel.addAttribute("save", true);
+		return "dealevents";
+	}
 	
 	
 	@GetMapping("dealfollowupls")

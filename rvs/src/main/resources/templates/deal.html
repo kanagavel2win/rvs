@@ -117,6 +117,8 @@ background:#fff;
 .dragdiver:active{
 background:#F2F2F2;
 }
+
+
 .droptarget{
 background:#F7F7F7;
 border:0px solid #ccc;
@@ -139,14 +141,39 @@ border:0px solid #ccc;
 	font-size:10px;
 }
 
-#handle-list-1, #handle-list-2, #handle-list-3, #handle-list-4, #handle-list-5, #handle-list-6, #handle-list-7 {
+#infoi {
+	
+	 position: absolute;
+	  top: 91%;
+	  left: 27px;
+	  z-index: 10;
+}
+.lossdiv{
+color:red;
+}
+.wondiv{
+color:green;
+}
+.lossdiv,.wondiv,.backtodiv
+{
+	 padding-top:15px;
+	text-align:center;
+	vertical-align:middle;
+	height:50px;
+	min-height: 50px;	
+	width:100%;
+}
+#handle-list-1, #handle-list-2, #handle-list-3, #handle-list-4, #handle-list-5, #handle-list-6{
 	float: left;
 	width: 200px;
-	min-height: 335px;	
+	height: 335px;	
+	overflow-Y:auto;
 	padding: 2px;
 	border: 0px solid #ccc;
 	position: static;
 }
+
+
 
 .table-responsive {
 	
@@ -634,6 +661,43 @@ border:0px solid #ccc;
 											</div>
 										</div>
 										<!--scrolling content Modal -->
+										<!--scrolling content Modal -->
+										<div class="modal fade" id="lossbacktoleadinfoScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="lossbacktoleadinfoScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-primary">
+														<h5 class="modal-title white"
+															id="lossbacktoleadinfoScrollableTitle">Reason / Notes for <span class="losstitle"></span></h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group" align="left">
+																 Notes
+																 <textarea class="form-control losscomments" placeholder="Notes" height="100px" >
+																 </textarea>
+																 <input type="hidden" class="lossid" />
+															</div>
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-primary" id="lossbacktoleadsave">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Save</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
 										
 										<div class="table-responsive">
 											<!-- ----Start Drag & Drop -->
@@ -651,14 +715,14 @@ border:0px solid #ccc;
 																
 																<th:block th:each="obj,stat :${dealmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Deal In'">
-																		<div class="dragdiver handle"  
+																		<a th:href="'dealevents?id=' + ${obj.id}"><div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
 																			<span class="line1" th:text="${obj.Title}"> </span><br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : 30'"> </span>
 																		
-																		</div>
+																		</div></a>
 																	</th:block>	
 																</th:block>
 																<!--- <button class="col-12 btn adddealinsection">+</button> -->	
@@ -675,7 +739,19 @@ border:0px solid #ccc;
 														<div class="col3">
 
 															<div id="handle-list-2" class="droptarget">
-																
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Contact made'">
+																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : 30'"> </span>
+																		
+																		</div>
+																		
+																	</th:block>	
+																</th:block>
 															<!-- <button class="col-12 btn addContactmadesection">+</button> -->	
 															</div>
 														</div>
@@ -688,7 +764,18 @@ border:0px solid #ccc;
 														</div>
 														<div class="col3">
 															<div id="handle-list-3" class="droptarget">
-																
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Site Visit Scheduled'">
+																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : 30'"> </span>
+																		
+																		</div>
+																	</th:block>	
+																</th:block>
 															<!-- <button class="col-12 btn addSiteVisitScheduledsection">+</button> -->	
 															</div>
 														</div>
@@ -701,7 +788,18 @@ border:0px solid #ccc;
 														</div>
 														<div class="col3">
 															<div id="handle-list-4" class="droptarget">
-															
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Project Evaluvated'">
+																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : 30'"> </span>
+																		
+																		</div>
+																	</th:block>	
+																</th:block>
 															<!-- <button class="col-12 btn addProjectEvaluvatedsection">+</button> -->	
 															</div>
 														</div>
@@ -714,7 +812,18 @@ border:0px solid #ccc;
 														</div>
 														<div class="col3">
 															<div id="handle-list-5" class="droptarget">
-															
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Proposal made'">
+																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : 30'"> </span>
+																		
+																		</div>
+																	</th:block>	
+																</th:block>
 															<!-- <button class="col-12 btn addProposalmadesection">+</button> -->	
 															</div>
 														</div>
@@ -727,7 +836,18 @@ border:0px solid #ccc;
 														</div>
 														<div class="col3">
 															<div id="handle-list-6" class="droptarget">
-																
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Negotiations started'">
+																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : 30'"> </span>
+																		
+																		</div>
+																	</th:block>	
+																</th:block>
 																	
 															</div>
 														</div>
@@ -735,6 +855,27 @@ border:0px solid #ccc;
 													
 												</tr>
 											</table>
+											<div id="infoi"  class="col-11"  style="visibility:hidden">
+													<table class="col-12">
+														<tr>
+															<td width="33%">
+																<div class="txttitle lossdiv" id="handle-list-7" >
+																	 Loss
+																</div>
+															</td>
+															<td width="33%">
+																<div class="txttitle wondiv" id="handle-list-8" >
+																	 Won
+																</div>
+															</td>
+															<td width="33%">
+																<div class="txttitle backtodiv" id="handle-list-9"  >
+																	 Back To Lead
+																</div>
+															</td>
+														</tr>
+													</table>
+											 </div>
 											<!-- ----End Drag & Drop -->
 										</div>
 									</div>
@@ -1025,7 +1166,7 @@ border:0px solid #ccc;
 						
 						//------------------------------------------------------------
 						// Handle Drag and drop
-						 var drake= dragula([document.getElementById("handle-list-1"), document.getElementById("handle-list-2"), document.getElementById("handle-list-3"), document.getElementById("handle-list-4"), document.getElementById("handle-list-5"), document.getElementById("handle-list-6"), document.getElementById("handle-list-7")], {
+						 var drake= dragula([document.getElementById("handle-list-1"), document.getElementById("handle-list-2"), document.getElementById("handle-list-3"), document.getElementById("handle-list-4"), document.getElementById("handle-list-5"), document.getElementById("handle-list-6"), document.getElementById("handle-list-7"), document.getElementById("handle-list-8"), document.getElementById("handle-list-9")], {
 						    moves: function (el, container, handle) {
 						      return handle.classList.contains('handle');
 						    },
@@ -1035,13 +1176,32 @@ border:0px solid #ccc;
 						 drake.on('drag', function (el) {
 							 el.className = el.className.replace('ex-moved', '');	
 							 el.className += ' ex-moved';
+							 $("#infoi").css("visibility","visible");
 						 });
 						  
 						 drake.on('drop', function (el,container) {
 						    	container.className =  container.className += ' ex-over';
+						    	$("#infoi").css("visibility","visible");
 						    	updatedealdashboard();
 						    	dbupdate();
 						    });
+						 
+						 drake.on('over', function (el,container) {
+							 $("#infoi").css("visibility","visible");
+						    	
+						    });
+						 drake.on('out', function (el,container) {
+						    	$("#infoi").css("visibility","hidden");
+						    	
+						    });
+						 
+						 function mouseDown() {
+							 //$("#infoi").css("visibility","visible");
+						}
+
+						function mouseUp() {
+							//$("#infoi").css("visibility","visible");
+						}
 						//------------------------------------------------------------
 							
 						 function updatedealdashboardexecute(eleid, rsid, nosdealsid){
@@ -1066,8 +1226,106 @@ border:0px solid #ccc;
 							        	 ids += $(this).val()+ ",";
 							             
 							         });
-							alert(ids);
+							 
+							 if(ids.length>1)
+							 {
+								 ids=ids.substring(0,ids.length-1);
+								  var formData = {
+										 ids:ids,
+										 txt:txt
+									 }
+								    $.ajax({
+											type : "POST",url : "dealsavestage3",
+											data : formData, success : function(result) {
+											},
+											error : function(e) {
+												console.log("Error" + e);
+											}
+										});  
+								 
+							 }
+							
 							}
+						 
+						 
+						 function updatedealdashboarddbexecuteforlossbacktolead(eleid, txt){
+							 var div = document.getElementById(eleid);
+							 let ids="";
+							 
+							 $(div).find('.dealsids')
+							         .each(function() {
+							        	 ids += $(this).val()+ ",";
+							             
+							         });
+							 
+							 if(ids.length>1)
+							 {
+								 ids=ids.substring(0,ids.length-1);
+								  var formData = {
+										 ids:ids,
+										 txt:txt,
+										 notes:""
+									 }
+								    $.ajax({
+											type : "POST",url : "dealsavestage3",
+											data : formData, success : function(result) {
+											},
+											error : function(e) {
+												console.log("Error" + e);
+											}
+										});  
+								 
+							 }
+							
+							}
+						 
+						 function updatedealdashboarddbexecutewithcomments(eleid, txt){
+								 var div = document.getElementById(eleid);
+								 let ids="";
+								 
+								 $(div).find('.dealsids')
+								         .each(function() {
+								        	 ids += $(this).val()+ ",";
+								             
+								         });
+								 
+								 if(ids.length>1)
+								 {
+									 ids=ids.substring(0,ids.length-1);
+									 $(".losstitle").text(txt);
+									 $(".lossid").val(ids);
+									 $('#lossbacktoleadinfoScrollable').modal('toggle');
+								 }
+							
+							}
+						 
+						 $("#lossbacktoleadsave").click(function(){
+							  let lossid= $(".lossid").val();
+							  let losscomments= $(".losscomments").val();
+							  let losstitle= $(".losstitle").text().trim();
+							  
+							  var formData = {
+									 ids:lossid,
+									 txt:losstitle,
+									 notes:losscomments
+								 }
+							    $.ajax({
+										type : "POST",url : "dealsavestage3",
+										data : formData, success : function(result) {
+											$('#lossbacktoleadinfoScrollable').modal('toggle');
+											alert("Item moved to " +losstitle);
+											$("#handle-list-7").html("Loss");
+											$("#handle-list-9").html("Back To Lead");
+										},
+										error : function(e) {
+											console.log("Error" + e);
+											
+										}
+									});  
+						 
+						 });
+						  
+						  
 						 function updatedealdashboard(){
 							 updatedealdashboardexecute("handle-list-1","1rs","1nosdeals");
 							 updatedealdashboardexecute("handle-list-2","2rs","2nosdeals");
@@ -1086,8 +1344,13 @@ border:0px solid #ccc;
 							 updatedealdashboarddbexecute("handle-list-4","Project Evaluvated");
 							 updatedealdashboarddbexecute("handle-list-5","Proposal made");
 							 updatedealdashboarddbexecute("handle-list-6","Negotiations started");
+							 updatedealdashboarddbexecute("handle-list-8","Won");
+							 updatedealdashboarddbexecutewithcomments("handle-list-7","Loss");
+							 updatedealdashboarddbexecutewithcomments("handle-list-9","Back To Lead");
 						 }
 						 updatedealdashboard();
+						 
+						 
 						//------------------------------------------------------------
 					});
 		</script>

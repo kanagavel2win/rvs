@@ -1,9 +1,11 @@
 package com.rvs.springboot.thymeleaf.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.DealMasterRepository;
@@ -14,6 +16,9 @@ public class DealMasterImp implements DealMasterService {
 
 	@Autowired
 	DealMasterRepository dealMasterRepo;
+	@Autowired
+	private JdbcTemplate JdbcTemplate;
+	
 	
 	@Override
 	public DealMaster save(DealMaster obj) {
@@ -45,6 +50,22 @@ public class DealMasterImp implements DealMasterService {
 	@Override
 	public List<DealMaster> saveall(List<DealMaster> objList) {
 		return dealMasterRepo.saveAll(objList);
+	}
+
+	@Override
+	public void updatepipeline(String str,String pipeline, String notes) {
+		
+		String sql = "";
+		if(notes.equalsIgnoreCase(""))
+		{
+			sql = "update dealmaster set pipeline ='" + pipeline +"'  where id in ("+ str +")";
+		}else
+		{
+			sql = "update dealmaster set pipeline ='" + pipeline +"', lossbacktoleadreason= '"+ notes.trim() + "'  where id in ("+ str +")";
+		}
+		
+		JdbcTemplate.execute(sql);
+		
 	}
 		
 	

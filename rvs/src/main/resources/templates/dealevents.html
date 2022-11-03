@@ -1830,6 +1830,30 @@
 							pipeline("[[${dealMaster['pipeline']}]]");
 							//--------------------------------------------------------------------------------
 							
+							$(document).on("change", ".prjTotal", function() {
+								let ids=$(this).attr("id").replace("prjTotal","");
+
+								let prjTotal=$("#prjTotal"+ids).val().replace("NaN","");
+								let prjQty=$("#prjQty"+ids).val().replace("NaN","");
+								
+								$("#prjPrice"+ids).val(Math.round(prjTotal / prjQty));
+								
+							});
+							$(document).on("change", ".prjPrice", function() {
+								let ids=$(this).attr("id").replace("prjPrice","");
+								let prjPrice=$("#prjPrice"+ids).val().replace("NaN","");
+								let prjQty=$("#prjQty"+ids).val().replace("NaN","");
+								
+								$("#prjTotal"+ids).val(prjPrice * prjQty);
+							});
+							$(document).on("change", ".prjQty", function() {
+								let ids=$(this).attr("id").replace("prjQty","");
+								let prjPrice=$("#prjPrice"+ids).val().replace("NaN","");
+								let prjQty=$("#prjQty"+ids).val().replace("NaN","");
+								
+									$("#prjTotal"+ids).val(prjPrice * prjQty);
+								
+							});
 							
 							//--------------------------------------------------------------------------------
 						});

@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -4814,13 +4815,27 @@ public class HomeController {
 		}
 		// --------------------------------------------------
 		List<DealMaster> dealmasterls = dealMasterSerivce.findAll();
-
+		HashMap maptotalamt= new HashMap();
+		
+		for(DealMaster objg : dealmasterls)
+		{
+			int totalamount=0;
+			for(DealProjectMaster objpr : objg.getDealProjectMaster())
+			{
+				if(!nullremover(String.valueOf(objpr.getAmount())).equalsIgnoreCase(""))
+				{
+					totalamount += Integer.parseInt(objpr.getAmount());
+				}
+			}
+			maptotalamt.put(objg.getId(), totalamount);
+		}
+		
 		// --------------------------------------------------
 		themodel.addAttribute("dealmasterlist", dealmasterls);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
 		themodel.addAttribute("personorgls", personorgls);
-
+		themodel.addAttribute("maptotalamt", maptotalamt);
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");

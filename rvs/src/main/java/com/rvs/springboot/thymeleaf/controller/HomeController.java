@@ -174,6 +174,7 @@ public class HomeController {
 	DealMasterService dealMasterSerivce;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
 	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
 	@ModelAttribute
@@ -2865,6 +2866,7 @@ public class HomeController {
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("selectedasset", selectedasset);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		themodel.addAttribute("today",displaydateFormatrev.format(new Date()) );
 		return "checkout";
 	}
 
@@ -3133,7 +3135,8 @@ public class HomeController {
 		themodel.addAttribute("branchls", branchls);
 		themodel.addAttribute("emp", emp);
 		themodel.addAttribute("selectedasset", selectedasset);
-
+		themodel.addAttribute("today",displaydateFormatrev.format(new Date()) );
+		
 		return "checkin";
 	}
 
@@ -4763,8 +4766,20 @@ public class HomeController {
 			String timecalculator = "";
 			long differdate = (long) rowMap.get("differdate");
 			String differtime = String.valueOf(rowMap.get("differtime"));
-			long differmins = (long) rowMap.get("differmins");
-			long differhr = (long) rowMap.get("differhr");
+			long differmins = 0;
+			long differhr = 0;
+			
+			if(!nullremover(String.valueOf(rowMap.get("differmins"))).equalsIgnoreCase(""))
+			{
+				 differmins = (long) rowMap.get("differmins");
+			}
+			
+			if(!nullremover(String.valueOf(rowMap.get("differhr"))).equalsIgnoreCase(""))
+			{
+				 differmins = (long) rowMap.get("differhr");
+			}
+			
+			
 			String sorteddates = (String) rowMap.get("sorteddates");
 
 			if (differdate > 30) {

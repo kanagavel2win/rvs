@@ -1332,7 +1332,9 @@
 															<div class="card-content timelinehistory">
 																<div class="card-body">
 																	<ul class="widget-timeline">
-
+																			<div class="spinner-border spinner-border-sm text-primary" role="status">
+								                                                <span class="sr-only">Loading...</span>
+								                                            </div>
 																	</ul>
 
 																</div>
@@ -1538,6 +1540,8 @@
 
 								var selectval = $("#ContactPerson").find(
 										":selected").val();
+								if(selectval.indexOf("-") !== -1)
+								{
 								var personid = selectval.split('-')[0];
 								$(".spinnerbordercontactperson").css(
 										"visibility", "visible");
@@ -1571,7 +1575,7 @@
 
 								});
 								//---------------------------------------------------------------------------
-
+								}
 							}
 							//--------------------------------------------------------------------------------
 							//Note Save

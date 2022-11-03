@@ -531,7 +531,9 @@ color:red;
 													<div class="modal-body">
 														<div class="col-md-12">
 															<div class="form-group" align="center" id="saveresult">
-																 <div class="spinner-border spinner-border-sm text-primary"> <span class="sr-only">Loading...</span> </div>
+																 <div class="spinner-border spinner-border-sm text-primary" role="status">
+						                                                <span class="sr-only">Loading...</span>
+						                                            </div>
 															</div>
 														</div>
 
@@ -702,6 +704,8 @@ color:red;
 					//------------------------------------------------------------
 					$("#ContactPerson").change(function(){
 						var selectval = $(this).find(":selected").val();
+						if(selectval.indexOf("-") !== -1)
+						{
 						$('#Organization').val(selectval.split('-')[1]).change();
 						 var personid=selectval.split('-')[0];
 						 $(".spinner-border").css("visibility","visible");
@@ -732,6 +736,7 @@ color:red;
 								
 							});
 						 //---------------------------------------------------------------------------
+						}
 					});
 					
 					$("#Organization").change(function(){
@@ -820,7 +825,7 @@ color:red;
 						$('#saveresultStatusScrollable').modal('toggle');
 						location.reload();
 					});
-					//$('#saveresultStatusScrollable').modal('toggle');
+//					$('#saveresultStatusScrollable').modal('toggle');
 				});
 	</script>
 	<script>

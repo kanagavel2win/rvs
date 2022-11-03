@@ -913,6 +913,10 @@
 																<div class="card-content timelinehistory">
 																	<div class="card-body">
 																		<ul class="widget-timeline">
+																			
+																			<div class="spinner-border spinner-border-sm text-primary" role="status">
+								                                                <span class="sr-only">Loading...</span>
+								                                            </div>
 																			<!-- <li class="timeline-items timeline-icon-success active">
 									                                                <div class="timeline-time">Mon 8:17pm</div>
 									                                                <h6 class="timeline-title">Jonny Richie Commented</h6>
@@ -1161,7 +1165,9 @@
 					function contactpersonchange(){
 						
 						var selectval = $("#ContactPerson").find(":selected").val();
-						 var personid=selectval.split('-')[0];
+						if(selectval.indexOf("-") !== -1)
+						{
+						var personid=selectval.split('-')[0];
 						 $(".spinnerbordercontactperson").css("visibility","visible");
 						 //---------------------------------------------------------------------------
 						 var formData = {
@@ -1187,7 +1193,7 @@
 								
 							}); 
 						 //---------------------------------------------------------------------------
-						
+						}
 					}
 					//--------------------------------------------------------------------------------
 					//Note Save
@@ -1242,6 +1248,7 @@
 					//--------------------------------------------------------------------------------
 					//function load the history events
 					function gettimelinelist(){
+						
 						var mastercategoryid = $("#mastercategoryid").val();
 						var formData = {
 								 mastercategoryid: mastercategoryid,

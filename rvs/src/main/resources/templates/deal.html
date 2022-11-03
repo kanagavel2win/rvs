@@ -62,6 +62,11 @@
 	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
+.bxs-error, .bxs-comment-detail
+{
+float:right;
+}
+
 .pop {
 	position: absolute;
 	right: -20px;
@@ -183,6 +188,23 @@ a
 {
 color:#727E8C;
 }
+
+.new{
+border-radius:5px;
+padding:2px;
+background:green;
+color:#fff;
+font-size:9px;
+}
+
+.red{
+color:red;
+}
+
+.green{
+color:green;
+}
+
 </style>
 
 
@@ -722,7 +744,19 @@ color:#727E8C;
 																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
-																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
+																			 	<i class="red bx bxs-error" title="No Activity"></i>
+																			</th:block>
+																			<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
+																			 	
+																					<i class="green bx bxs-comment-detail" th:title="${nextactmap.get(obj.id)}"></i>
+																			</th:block>
+																			<br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																		
@@ -748,7 +782,11 @@ color:#727E8C;
 																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
-																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																		
@@ -773,7 +811,11 @@ color:#727E8C;
 																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
-																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																		
@@ -797,7 +839,11 @@ color:#727E8C;
 																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
-																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																		
@@ -821,7 +867,11 @@ color:#727E8C;
 																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
-																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																		
@@ -845,7 +895,12 @@ color:#727E8C;
 																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
 																			th:id="'dealin'+ ${stat.index}" >
 																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
-																			<span class="line1" th:text="${obj.Title}"> </span><br/>
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			
+																			<br/>
 																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																		

@@ -4914,8 +4914,9 @@ public class HomeController {
 		}
 		// --------------------------------------------------
 		List<DealMaster> dealmasterls = dealMasterSerivce.findAll();
-		HashMap maptotalamt = new HashMap();
-
+		HashMap<Integer, Integer> maptotalamt = new HashMap();
+		HashMap<Integer, String> nextactmap = new HashMap();
+		
 		for (DealMaster objg : dealmasterls) {
 			int totalamount = 0;
 			for (DealProjectMaster objpr : objg.getDealProjectMaster()) {
@@ -4924,14 +4925,31 @@ public class HomeController {
 				}
 			}
 			maptotalamt.put(objg.getId(), totalamount);
+			
+			// Next Activity & Followers Details
+			List<Map<String, Object>> ls = activityMasterSerivce.nextactivity("Deal", String.valueOf(objg.getId()));
+			if (ls.size() > 0) {
+				ls.forEach(rowMap -> {
+					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
+					String activitytype = String.valueOf(rowMap.get("activitytype"));
+					nextactmap.put(objg.getId(), "(" +activitytype + ") - "+ activitytitle );
+				});
+			}else
+			{
+				nextactmap.put(objg.getId(), "No");
+			}
 		}
 
+		
 		// --------------------------------------------------
 		themodel.addAttribute("dealmasterlist", dealmasterls);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
 		themodel.addAttribute("personorgls", personorgls);
 		themodel.addAttribute("maptotalamt", maptotalamt);
+		themodel.addAttribute("nextactmap", nextactmap);
+		
+		themodel.addAttribute("todaydate", displaydateFormat.format(new Date()));
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");

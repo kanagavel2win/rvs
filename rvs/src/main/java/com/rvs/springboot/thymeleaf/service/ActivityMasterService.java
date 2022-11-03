@@ -11,4 +11,5 @@ public interface ActivityMasterService {
 	public ActivityMaster findById(Integer id);
 	public List<ActivityMaster> findAll();
 	public  List<Map<String, Object>> gettimelinelist(String mastercategory,String mastercategoryid) ;
+	public  List<Map<String, Object>> nextactivity(String mastercategory,String mastercategoryid) ;
 }

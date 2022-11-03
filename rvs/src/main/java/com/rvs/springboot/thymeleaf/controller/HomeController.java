@@ -4020,7 +4020,9 @@ public class HomeController {
 	@GetMapping("leadlist")
 	public String leadlist(Model themodel) {
 
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		
+		List<EmployeeMaster> emplist= EffectiveEmployee(employeeMasterService.findAll());
+		themodel.addAttribute("employeelist",emplist );
 		List<ContactPerson> cplis = contactPersonSerivce.findAll();
 		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
 		// --------------------------------------------------
@@ -4045,8 +4047,43 @@ public class HomeController {
 		// --------------------------------------------------
 		List<LeadMaster> leadmasterls = leadMasterSerivce.findAll();
 
+		// Next Activity & Followers Details
+		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> followersmap = new HashMap();
+		String followerstr ="";
+		
+		for (LeadMaster tmp1obj : leadmasterls) {
+			// --------------------------------------------------
+			List<Map<String, Object>> ls = activityMasterSerivce.nextactivity("Lead", String.valueOf(tmp1obj.getId()));
+			if (ls.size() > 0) {
+				ls.forEach(rowMap -> {
+					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
+					String activitytype = String.valueOf(rowMap.get("activitytype"));
+					nextactmap.put(tmp1obj.getId(), activitytype + " - "+ activitytitle);
+				});
+			}else
+			{
+				nextactmap.put(tmp1obj.getId(), "<span class='red'>No Activity</span>");
+			}
+			// --------------------------------------------------
+			followerstr= nullremover(String.valueOf(tmp1obj.getFollower()));
+			String followernames="";
+			for(String locstr : followerstr.split(","))
+			{
+				if(!locstr.equalsIgnoreCase(""))
+				followernames += emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(locstr)).collect(Collectors.toList()).get(0).getStaffName() + " ,";
+			}
+			if(followernames.length() >0)
+			{
+				followernames =followernames.substring(0,followernames.length()-1);
+			}
+			followersmap.put(tmp1obj.getId(), followernames);
+		}
+
 		// --------------------------------------------------
 		themodel.addAttribute("leadmasterlist", leadmasterls);
+		themodel.addAttribute("followersmap", followersmap);
+		themodel.addAttribute("nextactmap", nextactmap);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
 		themodel.addAttribute("personorgls", personorgls);
@@ -4344,6 +4381,12 @@ public class HomeController {
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
 		themodel.addAttribute("save", true);
+
+		ActivityMaster amobj = new ActivityMaster();
+		amobj.setActivitytype("Task");
+		amobj.setActivityfollowers(contactPersonobj.getFollowers());
+		themodel.addAttribute("activityMaster", amobj);
+
 		return "leadevents";
 	}
 
@@ -4574,6 +4617,7 @@ public class HomeController {
 		return "dealevents";
 
 	}
+
 	@ResponseBody
 	@PostMapping("leadeventnotesave")
 	public String leadeventnotesave(@RequestParam Map<String, String> params) {
@@ -4601,7 +4645,7 @@ public class HomeController {
 
 		return "Saved";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("dealeventnotesave")
 	public String dealeventnotesave(@RequestParam Map<String, String> params) {
@@ -4638,7 +4682,6 @@ public class HomeController {
 		ActivityMaster actimaster = activityMasterSerivce.findById(Integer.parseInt(activityid));
 		actimaster.setStatus("Completed");
 		activityMasterSerivce.save(actimaster);
-
 		return "";
 	}
 
@@ -4788,6 +4831,62 @@ public class HomeController {
 		return str.toLowerCase().replace("null", "");
 	}
 
+	@PostMapping("convertodeal")
+	public String convertodeal(@RequestParam Map<String, String> params) {
+		int leadmasterid = Integer.parseInt(params.get("leadmasterid"));
+		LeadMaster leadobj = leadMasterSerivce.findById(leadmasterid);
+		leadobj.setMovedtolead(true);
+		leadMasterSerivce.save(leadobj);
+
+		DealMaster dealobj = new DealMaster();
+		dealobj.setContactPerson(leadobj.getContactPerson());
+		dealobj.setOrganization(leadobj.getOrganization());
+		dealobj.setTitle(leadobj.getTitle());
+		dealobj.setSource(leadobj.getSource());
+		dealobj.setReference(leadobj.getReference());
+		dealobj.setNotes(leadobj.getNotes());
+		dealobj.setFollower(leadobj.getFollower());
+		dealobj.setLeadid(leadobj.getId());
+		dealobj.setPipeline("Deal In");
+		dealobj.setCreateddate(displaydatetimeFormat.format(new Date()));
+		dealMasterSerivce.save(dealobj);
+
+		return "redirect:/deal?new";
+	}
+
+	@ResponseBody
+	@PostMapping("convertolead")
+	public String convertolead(@RequestParam Map<String, String> params) {
+		int dealmasterid = Integer.parseInt(params.get("ids"));
+
+		DealMaster dealobj = dealMasterSerivce.findById(dealmasterid);
+
+		if (dealobj.getLeadid() == 0) {
+			LeadMaster leadobj = new LeadMaster();
+			leadobj.setContactPerson(dealobj.getContactPerson());
+			leadobj.setOrganization(dealobj.getOrganization());
+			leadobj.setTitle(dealobj.getTitle());
+			leadobj.setSource(dealobj.getSource());
+			leadobj.setReference(dealobj.getReference());
+			leadobj.setNotes(dealobj.getNotes());
+			leadobj.setFollower(dealobj.getFollower());
+			leadobj.setCreateddate(displaydatetimeFormat.format(new Date()));
+			leadobj.setMovedtolead(false);
+			leadobj.setBackfromdeal(true);
+			leadobj = leadMasterSerivce.save(leadobj);
+
+			dealobj.setLeadid(leadobj.getId());
+			dealMasterSerivce.save(dealobj);
+		} else {
+			LeadMaster leadobj = leadMasterSerivce.findById(dealobj.getLeadid());
+			leadobj.setMovedtolead(false);
+			leadobj.setBackfromdeal(true);
+			leadobj = leadMasterSerivce.save(leadobj);
+		}
+
+		return "";
+	}
+
 	@GetMapping("deal")
 	public String deal(Model themodel) {
 
@@ -4815,21 +4914,18 @@ public class HomeController {
 		}
 		// --------------------------------------------------
 		List<DealMaster> dealmasterls = dealMasterSerivce.findAll();
-		HashMap maptotalamt= new HashMap();
-		
-		for(DealMaster objg : dealmasterls)
-		{
-			int totalamount=0;
-			for(DealProjectMaster objpr : objg.getDealProjectMaster())
-			{
-				if(!nullremover(String.valueOf(objpr.getAmount())).equalsIgnoreCase(""))
-				{
+		HashMap maptotalamt = new HashMap();
+
+		for (DealMaster objg : dealmasterls) {
+			int totalamount = 0;
+			for (DealProjectMaster objpr : objg.getDealProjectMaster()) {
+				if (!nullremover(String.valueOf(objpr.getAmount())).equalsIgnoreCase("")) {
 					totalamount += Integer.parseInt(objpr.getAmount());
 				}
 			}
 			maptotalamt.put(objg.getId(), totalamount);
 		}
-		
+
 		// --------------------------------------------------
 		themodel.addAttribute("dealmasterlist", dealmasterls);
 		themodel.addAttribute("personlist", cplis);
@@ -4965,17 +5061,16 @@ public class HomeController {
 		DealMaster dealMaster = dealMasterSerivce.findById(id);
 		List<ContactPerson> cplis = contactPersonSerivce.findAll();
 		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
-		
-		List<String> statelist=dealMasterSerivce.getStateAll();
+
+		List<String> statelist = dealMasterSerivce.getStateAll();
 		String state = nullremover(String.valueOf(dealMaster.getState()));
 		List<String> districtlist = new ArrayList();
-		if(state.length()>0)
-		{
-			 districtlist=dealMasterSerivce.getDistrictAll(state);	
+		if (state.length() > 0) {
+			districtlist = dealMasterSerivce.getDistrictAll(state);
 		}
 		themodel.addAttribute("statelist", statelist);
 		themodel.addAttribute("districtlist", districtlist);
-		
+
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -5000,10 +5095,10 @@ public class HomeController {
 
 		}
 		if (dealMaster.getDealProjectMaster().size() == 0) {
-			List<DealProjectMaster> dmls= new ArrayList();
+			List<DealProjectMaster> dmls = new ArrayList();
 			DealProjectMaster dpmobj = new DealProjectMaster();
 			dmls.add(dpmobj);
-			dealMaster.setDealProjectMaster(dmls);			
+			dealMaster.setDealProjectMaster(dmls);
 		}
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
@@ -5017,13 +5112,13 @@ public class HomeController {
 
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		themodel.addAttribute("PURPOSE", PURPOSE);
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
-		
+
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
-		
+
 		ActivityMaster amobj = new ActivityMaster();
 		amobj.setActivitytype("Task");
 		amobj.setActivityfollowers(contactPersonobj.getFollowers());
@@ -5032,7 +5127,6 @@ public class HomeController {
 		return "dealevents";
 	}
 
-	
 	@PostMapping("dealeventpart1save")
 	public String dealeventpart1save(@ModelAttribute("dealMaster") DealMaster dealMaster,
 			@RequestParam Map<String, String> params, Model themodel) {
@@ -5050,7 +5144,7 @@ public class HomeController {
 		List<DealProjectMaster> dpmls = dealMaster.getDealProjectMaster().stream()
 				.filter(C -> !String.valueOf(C.getProjecttype()).equalsIgnoreCase("null")).collect(Collectors.toList());
 		dealMaster.setDealProjectMaster(dpmls);
-		
+
 		for (DealProjectMaster o : dpmls) {
 			itemlistService.savesingletxt(o.getProjecttype(), "NATUREOFWORK");
 			itemlistService.savesingletxt(o.getUnit(), "UNITS");
@@ -5125,7 +5219,7 @@ public class HomeController {
 
 		dealMaster.setContactPerson(collectpeopleids);
 		dealMaster.setOrganization(collectorgids);
-		dealMaster =dealMasterSerivce.save(dealMaster);
+		dealMaster = dealMasterSerivce.save(dealMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
 		// ----------------------------
@@ -5167,44 +5261,41 @@ public class HomeController {
 		themodel.addAttribute("SOURCE", MEMBERIN);
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		themodel.addAttribute("PURPOSE", PURPOSE);
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
-		
+
 		ActivityMaster amobj = new ActivityMaster();
 		amobj.setActivitytype("Task");
 		amobj.setActivityfollowers(contactPersonobj.getFollowers());
 		themodel.addAttribute("activityMaster", amobj);
-		
-		List<String> statelist=dealMasterSerivce.getStateAll();
+
+		List<String> statelist = dealMasterSerivce.getStateAll();
 		String state = nullremover(String.valueOf(dealMaster.getState()));
 		List<String> districtlist = new ArrayList();
-		if(state.length()>0)
-		{
-			 districtlist=dealMasterSerivce.getDistrictAll(state);	
+		if (state.length() > 0) {
+			districtlist = dealMasterSerivce.getDistrictAll(state);
 		}
 		themodel.addAttribute("statelist", statelist);
 		themodel.addAttribute("districtlist", districtlist);
-		
+
 		themodel.addAttribute("save", true);
 		return "dealevents";
 	}
-	
+
 	@PostMapping("getdistrictlist")
 	@ResponseBody
-	public String getdistrictlist(@RequestParam("state") String state)
-	{
+	public String getdistrictlist(@RequestParam("state") String state) {
 		List<String> districtlist = dealMasterSerivce.getDistrictAll(state);
-		String output="";
-		for(String str: districtlist)
-		{
-			output +="<option value='"+ str+"'>"+ str+ "</option>";
+		String output = "";
+		for (String str : districtlist) {
+			output += "<option value='" + str + "'>" + str + "</option>";
 		}
 		return output;
 	}
-	
+
 	@GetMapping("dealfollowupls")
 	public String dealfollowuplist() {
 

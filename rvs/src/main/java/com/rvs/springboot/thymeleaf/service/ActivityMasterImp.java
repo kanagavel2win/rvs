@@ -48,13 +48,21 @@ public class ActivityMasterImp implements ActivityMasterService {
 	@Override
 	public List<Map<String, Object>> gettimelinelist(String mastercategory, String mastercategoryid) {
 
-		String sql = "select DATEDIFF(now() , t1.sorteddates)as differdate, TIME_FORMAT(TIMEDIFF(now() , t1.sorteddates), '%H:%i') as differtime,MINUTE(TIMEDIFF(now() , t1.sorteddates)) as differmins,HOUR(TIMEDIFF(now() , t1.sorteddates)) differhr,DATE_FORMAT(t1.sorteddates,'%d-%m-%Y') as sorteddates,t1.* from (SELECT (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(startdate,'%Y-%m-%d') end) sorteddates,actmaster.* FROM activitymaster as actmaster where mastercategory='"
+	String sql = "select DATEDIFF(now() , t1.sorteddates)as differdate, TIME_FORMAT(TIMEDIFF(now() , t1.sorteddates), '%H:%i') as differtime,MINUTE(TIMEDIFF(now() , t1.sorteddates)) as differmins,HOUR(TIMEDIFF(now() , t1.sorteddates)) differhr,DATE_FORMAT(t1.sorteddates,'%d-%m-%Y') as sorteddates,t1.* from (SELECT (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(startdate,'%Y-%m-%d') end) sorteddates,actmaster.* FROM activitymaster as actmaster where mastercategory='"
 				+ mastercategory + "' and mastercategoryid=" + mastercategoryid
 				+ " order by (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(startdate,'%Y-%m-%d') end ) desc)t1";
 		
 		//System.out.println(sql);
 		List<Map<String, Object>> result = JdbcTemplate.queryForList(sql);
 		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> nextactivity(String mastercategory, String mastercategoryid) {
+		String sql = "SELECT * FROM activitymaster WHERE activitycategory ='Activity' and STR_TO_DATE(startdate,'%Y-%m-%d') >= date_format(curdate(),'%Y-%m-%d') and  mastercategory='"+ mastercategory + "' and mastercategoryid=" + mastercategoryid +" limit 1";
+		List<Map<String, Object>> result = JdbcTemplate.queryForList(sql);
+		return result;
+		
 	}
 
 }

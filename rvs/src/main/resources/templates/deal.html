@@ -179,6 +179,10 @@ color:green;
 	
 	overflow: auto;
 }
+a 
+{
+color:#727E8C;
+}
 </style>
 
 
@@ -1322,7 +1326,27 @@ color:green;
 											
 										}
 									});  
-						 
+						 	//--------------------------------------
+						 	// Back to lead
+						 	if(losstitle == "Back To Lead")
+					 		{
+						 			var formData = {
+										 ids:lossid
+										 
+									 }
+								    $.ajax({
+											type : "POST",url : "convertolead",
+											data : formData, success : function(result) {
+												
+												
+											},
+											error : function(e) {
+												console.log("Error" + e);
+												
+											}
+										}); 
+					 		
+					 		}
 						 });
 						  
 						  

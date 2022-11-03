@@ -49,32 +49,27 @@ public class DealMaster {
 	@Column
 	private String pipeline;
 	@Column
-	
 	private String notes;
 	@Column
 	private String follower;
 	@Column
-	
 	private String state;
 	@Column
-	
 	private String district;
 	@Column
-	
 	private String taluk;
 	@Column
-	
 	private String village;
 	@Column
-	
 	private String lankmark;
 	@Column
-	
 	private String lanlong;
 	@Column
 	private String createddate;
 	@Column
 	private String lossbacktoleadreason;
+	@Column
+	private int leadid;
 	
 	
 	@OneToMany(cascade = CascadeType.ALL)

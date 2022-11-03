@@ -95,6 +95,10 @@
 	font-family: Fira Sans, Trebuchet MS, sans-serif;
 	cursor: pointer;
 }
+.red
+{
+color:red;
+}
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -550,14 +554,17 @@
 													<tr>
 														<th>Title</th>
 														<th>Next Activity</th>
+														<th>Followers</th>
 														<th>Labels</th>
 														<th>Lead Created</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr th:each="obj,stat :${leadmasterlist}">
+													<tr th:each="obj,stat :${leadmasterlist}" th:if="${obj.movedtolead} == false">
+														 
                                                				<td> <a th:href="'leadevents?id='+ ${obj.id}"> <span th:text="${obj.Title}"></span></a></td>
-                                               				<td></td>
+                                               				<td th:utext="${nextactmap.get(obj.id)}"></td>
+                                               				<td th:text="${followersmap.get(obj.id)}"></td>
                                                				<td th:text="${obj.Label}"></td>
                                                				<td th:text="${obj.createddate}"></td>                                               				
                                                			</tr> 
@@ -566,6 +573,7 @@
 													<tr>
 														<th>Title</th>
 														<th>Next Activity</th>
+														<th>Followers</th>
 														<th>Labels</th>
 														<th>Lead Created</th>
 														

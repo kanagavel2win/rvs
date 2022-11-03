@@ -1,4 +1,5 @@
-	<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
 	data-textdirection="ltr">
 
@@ -78,10 +79,11 @@
 	th:href="@{/app-assets/css/pages/app-email.css}">
 <!-- END: Custom CSS-->
 <style>
-.badge-circle-light-warning{
-margin-left:10px;
-cursor:pointer;
+.badge-circle-light-warning {
+	margin-left: 10px;
+	cursor: pointer;
 }
+
 .emptitle {
 	color: #527a00;
 	font-size: 15px;
@@ -119,14 +121,11 @@ cursor:pointer;
 
 .history {
 	padding-top: 20px;
-	
 }
 
-.timelinehistory 
-{
-	max-height:300px;
+.timelinehistory {
+	max-height: 300px;
 	overflow-Y: auto;
-	
 }
 
 .notes-sm {
@@ -137,7 +136,6 @@ cursor:pointer;
 	font-size: 14px;
 	color: #4169E1;
 }
-
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -245,7 +243,7 @@ cursor:pointer;
 														<div class="col-md-12">
 															<div class="form-group">
 																<label class="emptitle">Basic Information</label>
-																
+
 															</div>
 														</div>
 														<div class="col-md-6">
@@ -533,8 +531,8 @@ cursor:pointer;
 														</div>
 														<div class="col-12">
 															<br />
-															<button type="button" 
-																class="btn btn-primary mr-1 mb-1"
+															
+															<button type="submit" class="btn btn-primary mr-1 mb-1"
 																style="float: right">Save</button>
 
 														</div>
@@ -542,6 +540,15 @@ cursor:pointer;
 
 													</div>
 												</form>
+												
+												<form th:action="@{/convertodeal}" method="POST"
+																class="wizard-horizontal" enctype="multipart/form-data">
+																<input type="hidden"
+																			class="form-control form-control-sm capitalize"
+																			name="leadmasterid" th:value="${leadMaster['id']}">
+																<button type="submit" class="btn btn-success mr-1 mb-1"
+																	style="float: left">Convert to Deal</button>
+															</form>
 											</div>
 											<div class="tab-pane " id="profile"
 												aria-labelledby="profile-tab" role="tabpanel">
@@ -576,35 +583,36 @@ cursor:pointer;
 																<div class="col-12">
 																	<hr />
 																	<input type="hidden" value="0" id="noteactivityid" />
-																	
+
 																	<button type="button" id="notessave"
 																		class="btn btn-primary mr-1 mb-1"
-																		style="float: right;">
-																		Save</button>
-																		
+																		style="float: right;">Save</button>
+
 																	<button type="button" id="notessavetemp"
 																		class="btn btn-primary mr-1 mb-1"
-																		style="float: right;visibility: hidden;">
+																		style="float: right; visibility: hidden;">
 																		<div
 																			class="spinner-border spinnerbordernote spinner-border-sm "
-																			role="status"  style="float: right;color:#fff;">
+																			role="status" style="float: right; color: #fff;">
 																			<span class="sr-only">Loading...</span>
 																		</div>
-																		 Please Wait...!
+																		Please Wait...!
 																	</button>
-																	
+
 																	<div class="checkbox checkbox-success checkbox-glow">
 																		<input type="checkbox" id="noteckbox"> <label
 																			for="noteckbox">Make as done</label>
 																	</div>
 																</div>
 																<div class="col-12" align="center">
-																	<div class="form-group col-12 resultdivnote" style="visibility: hidden">
+																	<div class="form-group col-12 resultdivnote"
+																		style="visibility: hidden">
 																		<button type="button"
-																			class="btn mb-1 btn-success btn-lg btn-block">Note Info Updated Successfully</button>
+																			class="btn mb-1 btn-success btn-lg btn-block">Note
+																			Info Updated Successfully</button>
 																	</div>
-																	
-																</div>	
+
+																</div>
 															</div>
 															<!-- ------------------------------------------ -->
 
@@ -621,15 +629,18 @@ cursor:pointer;
 																		<label for="addmodel">Activity Title</label>
 																		<div class="form-group">
 																			<div class="position-relative">
-																				<!-- <input type="hidden" value="Lead"  th:field="*{mastercategory}" /> --> 
-																				<input type="hidden" th:field="*{mastercategoryid}" id="mastercategoryid" /> 
-																				<!-- <input type="hidden"  th:value="'Activity'"  th:field="*{activitycategory}"/> --> 
-																				<input type="hidden" th:field="*{activityId}" th:value="${activityMaster['activityId']}" />
-																				<input type="hidden" th:field="*{createdtime}" th:value="${activityMaster['createdtime']}" /> 
-																				<input
+																				<!-- <input type="hidden" value="Lead"  th:field="*{mastercategory}" /> -->
+																				<input type="hidden" th:field="*{mastercategoryid}"
+																					id="mastercategoryid" />
+																				<!-- <input type="hidden"  th:value="'Activity'"  th:field="*{activitycategory}"/> -->
+																				<input type="hidden" th:field="*{activityId}"
+																					th:value="${activityMaster['activityId']}" /> <input
+																					type="hidden" th:field="*{createdtime}"
+																					th:value="${activityMaster['createdtime']}" /> <input
 																					type="text"
 																					class="form-control  form-control-sm capitalize ActivityTitle"
-																					placeholder="Task details..." th:field="*{activitytitle}"
+																					placeholder="Task details..."
+																					th:field="*{activitytitle}"
 																					th:value="${activityMaster['activitytitle']}" />
 
 																			</div>
@@ -639,15 +650,23 @@ cursor:pointer;
 																		<div class="form-group">
 																			<div class="btn-group btn-group-toggle mb-1"
 																				data-toggle="buttons">
-																				<label th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} " onclick="optionshandle(this);" title="Task">
-																					<input type="radio" name="options"  onclick="optionshandle(this);"
+																				<label
+																					th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
+																					onclick="optionshandle(this);" title="Task">
+																					<input type="radio" name="options"
+																					onclick="optionshandle(this);"
 																					th:field="*{activitytype}" value="Task" id="radio1"><i
 																					class="bx bx-alarm-add"></i>
-																				</label> <label th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} " onclick="optionshandle(this);" title="Call">
-																					<input type="radio" name="options"  onclick="optionshandle(this);"
+																				</label> <label
+																					th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
+																					onclick="optionshandle(this);" title="Call">
+																					<input type="radio" name="options"
+																					onclick="optionshandle(this);"
 																					th:field="*{activitytype}" value="Call" id="radio2"><i
 																					class="bx bx-phone-call"></i>
-																				</label> <label th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} " onclick="optionshandle(this);"	title="Meetings"> 
+																				</label> <label
+																					th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
+																					onclick="optionshandle(this);" title="Meetings">
 																					<input type="radio" onclick="optionshandle(this);"
 																					name="options" th:field="*{activitytype}"
 																					value="Meetings" id="radio3"><i
@@ -655,8 +674,8 @@ cursor:pointer;
 																				</label>
 																			</div>
 																		</div>
-																		
-																		
+
+
 																	</div>
 
 																	<div class="col-md-3">
@@ -749,9 +768,8 @@ cursor:pointer;
 																											<fieldset class="form-group">
 																												<select
 																													class="select2 form-control form-control-sm guestStaff"
-																													multiple="multiple"  
-																													th:field="*{activityMasterGuest[0].guestid}"
-																													>
+																													multiple="multiple"
+																													th:field="*{activityMasterGuest[0].guestid}">
 																													<th:block th:each="str :${employeelist}">
 																														<option th:value="${str.empMasterid}"
 																															th:text="${str.StaffName}"></option>
@@ -836,8 +854,8 @@ cursor:pointer;
 																		<div class="position-relative  has-icon-left">
 																			<fieldset class="form-group">
 																				<select class="select2 form-control form-control-sm"
-																					multiple="multiple" id="activityfollowers" th:field="*{activityfollowers}" 
-																					>
+																					multiple="multiple" id="activityfollowers"
+																					th:field="*{activityfollowers}">
 																					<th:block th:each="str :${employeelist}">
 																						<option th:value="${str.empMasterid}"
 																							th:text="${str.StaffName}"></option>
@@ -853,7 +871,8 @@ cursor:pointer;
 																		<label for="addmodel">Files</label>
 																		<div class="position-relative has-icon-left">
 																			<input type="file"
-																				class="form-control  form-control-sm" name="activityfiles" />
+																				class="form-control  form-control-sm"
+																				name="activityfiles" />
 																			<div class="form-control-position">
 																				<i class="bx bx-link"></i>
 																			</div>
@@ -864,15 +883,15 @@ cursor:pointer;
 																<div class="col-12">
 																	<hr />
 
-																	<button type="submit"
-																		class="btn btn-primary mr-1 mb-1"
+																	<button type="submit" class="btn btn-primary mr-1 mb-1"
 																		style="float: right">Save</button>
 																	<button type="reset"
 																		class="btn btn-secondary mr-1 mb-1"
 																		style="float: right">Reset</button>
 																	<div class="checkbox checkbox-success checkbox-glow">
-																		<input type="checkbox" id="checkboxGlow1" name="status"> <label
-																			for="checkboxGlow1">Make as done</label>
+																		<input type="checkbox" id="checkboxGlow1"
+																			name="status"> <label for="checkboxGlow1">Make
+																			as done</label>
 																	</div>
 																</div>
 																<!-- ------------------------------------------ -->
@@ -884,19 +903,17 @@ cursor:pointer;
 													<!-- ---------------------------- -->
 
 													<div class="col-12 history">
-													
-														 <!-- Timeline Widget Starts -->
-									                        <div class="timline-card">
-									                            <div class="card ">
-									                                <div class="card-header">
-									                                    <h4 class="card-title">
-									                                        Timeline
-									                                    </h4>
-									                                </div>
-									                                <div class="card-content timelinehistory">
-									                                    <div class="card-body">
-									                                        <ul class="widget-timeline">
-									                                            <!-- <li class="timeline-items timeline-icon-success active">
+
+														<!-- Timeline Widget Starts -->
+														<div class="timline-card">
+															<div class="card ">
+																<div class="card-header">
+																	<h4 class="card-title">Timeline</h4>
+																</div>
+																<div class="card-content timelinehistory">
+																	<div class="card-body">
+																		<ul class="widget-timeline">
+																			<!-- <li class="timeline-items timeline-icon-success active">
 									                                                <div class="timeline-time">Mon 8:17pm</div>
 									                                                <h6 class="timeline-title">Jonny Richie Commented</h6>
 									                                                <p class="timeline-text">o</p>
@@ -944,14 +961,14 @@ cursor:pointer;
 									                                                    The Amairates
 									                                                </div>
 									                                            </li> -->
-									                                        </ul>
-									                                        
-									                                    </div>
-									                                </div>
-									                            </div>
-									                        </div>
-									                        <!-- Timeline Widget Ends -->
-													
+																		</ul>
+
+																	</div>
+																</div>
+															</div>
+														</div>
+														<!-- Timeline Widget Ends -->
+
 													</div>
 
 												</div>

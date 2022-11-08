@@ -1145,7 +1145,8 @@ color:green;
 						 
 							   var ContactPerson = String($("#ContactPerson").val());
 							   var phonework= $("#phonework").val();
-							  if(ContactPerson !="" && phonework !="")
+							   
+							   if(ContactPerson !="" && phonework !="" )
 							  {
 								  $('#peopleStatusScrollable').modal('toggle');
 								  $('#saveresultStatusScrollable').modal('toggle');
@@ -1157,13 +1158,14 @@ color:green;
 									   if(value.includes("-"))
 								  		{
 										   var split2=value.split("-");
-										   ContactPersontemp +=split2[1]+",";
+										   ContactPersontemp +=split2[0]+",";
 								  		}else
 							  			{
 								  			ContactPersontemp +=value +",";
 							  			}
 								   
 								   });
+								   
 								   ContactPersontemp =ContactPersontemp.substring(0,ContactPersontemp.length-1); 
 								  
 								   var Organization =String($("#Organization").val());
@@ -1219,7 +1221,7 @@ color:green;
 								   
 							  }else
 							  {
-							  	alert("Person & Phone (Work) is mandatory");
+								  alert("Contact Person  & Phone (Work) is mandatory");
 							  }
 						});
 						//------------------------------------------------------------

@@ -269,7 +269,7 @@
 																class="form-control capitalize" 
 																placeholder="Person Name"
 																th:value="${contactperson['peoplename']}"
-																th:field="*{peoplename}" onkeypress="return onlyAlphabets(event,this);" >
+																th:field="*{peoplename}" required="required">
 															<div class="form-control-position">
 																<i class="bx bx-user"></i>
 															</div>
@@ -286,9 +286,8 @@
 																th:field="*{organization}"  />
 															 -->
 																		
-															<select class="select2 orgnames form-control js-example-tags " multiple="multiple"
-																	
-																	th:field="*{organization}">
+															<select class="select2 orgnames form-control js-example-tags " multiple="multiple"																	
+																	th:field="*{organization}" >
 																	<th:block th:each="str :${organizationlist}">
 																		<option  th:value="${str.id}"  th:text="${str.orgname}"></option>
 																	</th:block>

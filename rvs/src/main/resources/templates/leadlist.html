@@ -748,6 +748,7 @@ color:red;
 					 
 						   var ContactPerson = String($("#ContactPerson").val());
 						   var phonework= $("#phonework").val();
+						   
 						  if(ContactPerson !="" && phonework !="")
 						  {
 							  $('#peopleStatusScrollable').modal('toggle');
@@ -760,7 +761,7 @@ color:red;
 								   if(value.includes("-"))
 							  		{
 									   var split2=value.split("-");
-									   ContactPersontemp +=split2[1]+",";
+									   ContactPersontemp +=split2[0]+",";
 							  		}else
 						  			{
 							  			ContactPersontemp +=value +",";
@@ -817,7 +818,7 @@ color:red;
 							   
 						  }else
 						  {
-						  	alert("Person & Phone (Work) is mandatory");
+						  	alert("Contact Person  & Phone (Work) is mandatory");
 						  }
 					});
 					//------------------------------------------------------------

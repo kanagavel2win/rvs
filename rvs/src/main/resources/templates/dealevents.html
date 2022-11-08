@@ -388,9 +388,17 @@
 																			multiple="multiple" style="width: 100%;"
 																			id="ContactPerson" th:field="*{ContactPerson}">
 																			<th:block th:each="str :${personorgls}">
-																				<option
+																				<th:block th:if="${#strings.arraySplit(str,'|')[3]} == ' '">
+																					<option
+																					th:value="${#strings.arraySplit(str,'|')[0]} +'-'"
+																					th:text="${#strings.arraySplit(str,'|')[1]}"></option>		
+																																									
+																				</th:block>
+																				<th:block th:unless="${#strings.arraySplit(str,'|')[3]} == ' '">
+																					<option
 																					th:value="${#strings.arraySplit(str,'|')[0]} +'-' + ${#strings.arraySplit(str,'|')[2] }"
-																					th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>
+																					th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>																
+																				</th:block>
 																			</th:block>
 
 																		</select>
@@ -1489,16 +1497,25 @@
 							var arrorg = arrtemp.split(',');
 							var arrperson = values.split(',');
 							var selectedperson = "";
-							for (var i = 0; i < arrperson.length; i++) {
-								for (var j = 0; j < arrorg.length; j++) {
-									selectedperson += arrperson[i] + "-"
-											+ arrorg[j] + ",";
-									if (j < arrorg.length) {
-										selectedperson += selectedperson + ",";
+							for(var i=0;i<arrperson.length; i++)
+							{
+								if(arrorg.length>0)
+								{
+									for(var j=0;j<arrorg.length; j++)
+									{
+										selectedperson +=arrperson[i]+"-"+arrorg[j]+",";
+										if(j<arrorg.length)
+											{
+												selectedperson +=selectedperson+",";
+											}
 									}
+								}else
+								{
+									selectedperson +=arrperson[i]+"- ,";
 								}
-								if (i < arrperson.length) {
-									selectedperson += selectedperson + ",";
+								if(i<arrperson.length)
+								{
+									selectedperson +=selectedperson+",";
 								}
 							}
 							$('#ContactPerson').val(selectedperson.split(','))
@@ -1543,6 +1560,10 @@
 								if(selectval.indexOf("-") !== -1)
 								{
 								var personid = selectval.split('-')[0];
+								if(selectval.split('-')[1] != " ")
+								{
+									$('#Organization').val(selectval.split('-')[1]).change();	
+								}
 								$(".spinnerbordercontactperson").css(
 										"visibility", "visible");
 								//---------------------------------------------------------------------------

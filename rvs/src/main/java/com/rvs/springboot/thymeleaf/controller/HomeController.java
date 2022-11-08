@@ -2575,12 +2575,9 @@ public class HomeController {
 			if (!obj.getStatus().equalsIgnoreCase("In Stock") && (obj.getStaffID() != null)) {
 				custodian = employeeMasterService.findById(Integer.parseInt(obj.getStaffID())).getStaffName();
 			}
-
 			str += custodian + " |";
-
 			str += obj.getLastupdate() + " |";
-
-			str = str.replace("null", "");
+			str = nullremover(String.valueOf(str));
 			data.add(str);
 		}
 
@@ -4032,20 +4029,25 @@ public class HomeController {
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
 
-			for (String str1 : (cp.getOrganization().toString()).split(",")) {
-				String temp2 = "";
-				String str2 = str1.replace("null", "");
-				if (str2.length() > 0) {
-					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-							.collect(Collectors.toList()).get(0);
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
-					personorgls.add(temp2);
-				} else {
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-					personorgls.add(temp2);
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
 				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
-
 		}
 		// --------------------------------------------------
 		List<LeadMaster> leadmasterls = leadMasterSerivce.findAll();
@@ -4103,7 +4105,7 @@ public class HomeController {
 		String str = obj.getPhonework() + " |" + obj.getPhonepersonal() + " |" + obj.getPhoneothers() + " |"
 				+ obj.getEmailwork() + " |" + obj.getEmailpersonal() + " |" + obj.getEmailothers() + " |"
 				+ obj.getFollowers() + " |";
-		str = str.replace("null", "");
+		str = nullremover(String.valueOf(str));
 
 		return str;
 	}
@@ -4218,25 +4220,41 @@ public class HomeController {
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
 
-			if (contactPersonobj == null) {
-				contactPersonobj = cp;
-			}
-			for (String str1 : (cp.getOrganization().toString()).split(",")) {
-				String temp2 = "";
-				String str2 = str1.replace("null", "");
-				if (str2.length() > 0) {
-					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-							.collect(Collectors.toList()).get(0);
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
-					personorgls.add(temp2);
-				} else {
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-					personorgls.add(temp2);
+			
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
 				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 
 		}
 
+		if(!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase(""))
+		{
+			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
+				
+				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				contactPersonobj = cplistemp;
+				break;
+				
+			}
+			
+		}
+		
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
@@ -4355,25 +4373,42 @@ public class HomeController {
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
 
-			if (contactPersonobj == null) {
-				contactPersonobj = cp;
-			}
-			for (String str1 : (cp.getOrganization().toString()).split(",")) {
-				String temp2 = "";
-				String str2 = str1.replace("null", "");
-				if (str2.length() > 0) {
-					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-							.collect(Collectors.toList()).get(0);
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
-					personorgls.add(temp2);
-				} else {
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-					personorgls.add(temp2);
+			
+			
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
 				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 
 		}
 
+
+		if(!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase(""))
+		{
+			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
+				
+				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				contactPersonobj = cplistemp;
+				break;
+				
+			}
+			
+		}
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
@@ -4472,25 +4507,40 @@ public class HomeController {
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
 
-			if (contactPersonobj == null) {
-				contactPersonobj = cp;
-			}
-			for (String str1 : (cp.getOrganization().toString()).split(",")) {
-				String temp2 = "";
-				String str2 = str1.replace("null", "");
-				if (str2.length() > 0) {
-					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-							.collect(Collectors.toList()).get(0);
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
-					personorgls.add(temp2);
-				} else {
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-					personorgls.add(temp2);
+			
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
 				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 
 		}
 
+		if(!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase(""))
+		{
+			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
+				
+				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				contactPersonobj = cplistemp;
+				break;
+				
+			}
+			
+		}
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
@@ -4586,25 +4636,40 @@ public class HomeController {
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
 
-			if (contactPersonobj == null) {
-				contactPersonobj = cp;
-			}
-			for (String str1 : (cp.getOrganization().toString()).split(",")) {
-				String temp2 = "";
-				String str2 = str1.replace("null", "");
-				if (str2.length() > 0) {
-					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-							.collect(Collectors.toList()).get(0);
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
-					personorgls.add(temp2);
-				} else {
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-					personorgls.add(temp2);
+			
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
 				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 
 		}
 
+		if(!nullremover(String.valueOf(dealMaster.getContactPerson())).equalsIgnoreCase(""))
+		{
+			for (String str1 : (dealMaster.getContactPerson().toString()).split(",")) {
+				
+				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				contactPersonobj = cplistemp;
+				break;
+				
+			}
+			
+		}
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
@@ -4912,18 +4977,24 @@ public class HomeController {
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
 
-			for (String str1 : (cp.getOrganization().toString()).split(",")) {
-				String temp2 = "";
-				String str2 = str1.replace("null", "");
-				if (str2.length() > 0) {
-					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-							.collect(Collectors.toList()).get(0);
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
-					personorgls.add(temp2);
-				} else {
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-					personorgls.add(temp2);
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
 				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 
 		}
@@ -5109,29 +5180,44 @@ public class HomeController {
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
 
-			if (contactPersonobj == null) {
-				contactPersonobj = cp;
-			}
-			for (String str1 : (cp.getOrganization().toString()).split(",")) {
-				String temp2 = "";
-				String str2 = str1.replace("null", "");
-				if (str2.length() > 0) {
-					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-							.collect(Collectors.toList()).get(0);
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
-					personorgls.add(temp2);
-				} else {
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-					personorgls.add(temp2);
+			
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
 				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
-
 		}
 		if (dealMaster.getDealProjectMaster().size() == 0) {
 			List<DealProjectMaster> dmls = new ArrayList();
 			DealProjectMaster dpmobj = new DealProjectMaster();
 			dmls.add(dpmobj);
 			dealMaster.setDealProjectMaster(dmls);
+		}
+
+		if(!nullremover(String.valueOf(dealMaster.getContactPerson())).equalsIgnoreCase(""))
+		{
+			for (String str1 : (dealMaster.getContactPerson().toString()).split(",")) {
+				
+				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				contactPersonobj = cplistemp;
+				break;
+				
+			}
+			
 		}
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
@@ -5264,25 +5350,40 @@ public class HomeController {
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
 
-			if (contactPersonobj == null) {
-				contactPersonobj = cp;
-			}
-			for (String str1 : (cp.getOrganization().toString()).split(",")) {
-				String temp2 = "";
-				String str2 = str1.replace("null", "");
-				if (str2.length() > 0) {
-					ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-							.collect(Collectors.toList()).get(0);
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
-					personorgls.add(temp2);
-				} else {
-					temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-					personorgls.add(temp2);
+			
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
 				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 
 		}
 
+		if(!nullremover(String.valueOf(dealMaster.getContactPerson())).equalsIgnoreCase(""))
+		{
+			for (String str1 : (dealMaster.getContactPerson().toString()).split(",")) {
+				
+				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				contactPersonobj = cplistemp;
+				break;
+				
+			}
+			
+		}
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);

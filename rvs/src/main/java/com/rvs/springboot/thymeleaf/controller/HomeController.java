@@ -85,6 +85,8 @@ import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
+import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
+import com.rvs.springboot.thymeleaf.entity.ProjectdetailsMaster;
 import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
 import com.rvs.springboot.thymeleaf.entity.VendorFiles;
 import com.rvs.springboot.thymeleaf.entity.VendorMaster;
@@ -113,6 +115,7 @@ import com.rvs.springboot.thymeleaf.service.LeadMasterService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 import com.rvs.springboot.thymeleaf.service.LoginService;
 import com.rvs.springboot.thymeleaf.service.PaySlipService;
+import com.rvs.springboot.thymeleaf.service.ProjectMasterService;
 import com.rvs.springboot.thymeleaf.service.VendorMasterService;
 
 @Controller
@@ -172,6 +175,9 @@ public class HomeController {
 	ActivityMasterService activityMasterSerivce;
 	@Autowired
 	DealMasterService dealMasterSerivce;
+	
+	@Autowired
+	ProjectMasterService projectMasterSerivce;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
@@ -5430,40 +5436,258 @@ public class HomeController {
 		return output;
 	}
 
-	@GetMapping("dealfollowupls")
-	public String dealfollowuplist() {
-
-		return "dealfollowuplist";
-	}
-
-	@GetMapping("dealfollowup")
-	public String dealfollowup() {
-		return "dealfollowup";
-	}
-
+	
 	@GetMapping("projectls")
-	public String projectls() {
-		return "projectlist";
+	public String projectls(Model themodel) {
+
+			themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+			List<ContactPerson> cplis = contactPersonSerivce.findAll();
+			List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+			// --------------------------------------------------
+			ArrayList<String> personorgls = new ArrayList<String>();
+			for (ContactPerson cp : cplis) {
+
+				if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+				{
+					for (String str1 : (cp.getOrganization().toString()).split(",")) {
+						String temp2 = "";
+						String str2 = nullremover(String.valueOf(str1));
+						if (str2.length() > 0) {
+							ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+									.collect(Collectors.toList()).get(0);
+							temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+							personorgls.add(temp2);
+						} else {
+							temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+							personorgls.add(temp2);
+						}
+					}
+				}else
+				{
+					personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
+				}
+
+			}
+			// --------------------------------------------------
+			List<ProjectMaster> projectmasterls = projectMasterSerivce.findAll();
+			HashMap<Integer, Integer> maptotalamt = new HashMap();
+			HashMap<Integer, String> nextactmap = new HashMap();
+			
+			for (ProjectMaster objg : projectmasterls) {
+				int totalamount = 0;
+				for (ProjectdetailsMaster objpr : objg.getProjectdetailMaster()) {
+					if (!nullremover(String.valueOf(objpr.getAmount())).equalsIgnoreCase("")) {
+						totalamount += Integer.parseInt(objpr.getAmount());
+					}
+				}
+				maptotalamt.put(objg.getId(), totalamount);
+				
+				// Next Activity & Followers Details
+				List<Map<String, Object>> ls = activityMasterSerivce.nextactivity("Project", String.valueOf(objg.getId()));
+				if (ls.size() > 0) {
+					ls.forEach(rowMap -> {
+						String activitytitle = String.valueOf(rowMap.get("activitytitle"));
+						String activitytype = String.valueOf(rowMap.get("activitytype"));
+						nextactmap.put(objg.getId(), "(" +activitytype + ") - "+ activitytitle );
+					});
+				}else
+				{
+					nextactmap.put(objg.getId(), "No");
+				}
+			}
+
+			
+			// --------------------------------------------------
+			List<BranchMaster> bmlist = branchMasterService.findAll();
+			themodel.addAttribute("branchlist", bmlist);
+			// --------------------------------------------------
+			
+			themodel.addAttribute("projectmasterlist", projectmasterls);
+			themodel.addAttribute("personlist", cplis);
+			themodel.addAttribute("organizationlist", corglis);
+			themodel.addAttribute("personorgls", personorgls);
+			themodel.addAttribute("maptotalamt", maptotalamt);
+			themodel.addAttribute("nextactmap", nextactmap);
+			
+			themodel.addAttribute("todaydate", displaydateFormat.format(new Date()));
+			List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+			themodel.addAttribute("SOURCE", MEMBERIN);
+			List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+			themodel.addAttribute("PURPOSE", PURPOSE);
+			return "project";
+		}
+
+	
+	@PostMapping("projectsavestage3")
+	@ResponseBody
+	public String projectsavestage3(@RequestParam Map<String, String> params) {
+		String ids = String.valueOf(params.get("ids"));
+		String txt = String.valueOf(params.get("txt"));
+		String notes = String.valueOf(params.get("notes")).replace("null", "");
+		
+		projectMasterSerivce.updatepipeline(ids, txt, notes);
+		return "";
 	}
 
-	@GetMapping("project")
-	public String project() {
-		return "project";
+	@PostMapping("projectsavestage1")
+	@ResponseBody
+	public String projectsavestage1(@RequestParam Map<String, String> params) {
+		String ContactPerson = params.get("ContactPerson");
+		String Organization = params.get("Organization");
+		String deal = params.get("deal");
+		String Title = params.get("Title");
+		String startdate = params.get("startdate");
+		String enddate = params.get("enddate");
+		String pipeline = params.get("pipeline");
+		String followers = params.get("followers");
+		String label = params.get("label");
+		String branch = params.get("branch");
+		String assigntouser = params.get("assigntouser");
+		String Description =  params.get("Description");
+		// ----------------------------
+		
+		
+		String collectorgids = "";
+		String srcOrg = String.valueOf(Organization).replace("null", "");
+		if (srcOrg.length() > 0) {
+			for (String str : srcOrg.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectorgids += str + ",";
+				} else {
+					ContactOrganization contactOrganization = new ContactOrganization();
+					contactOrganization.setOrgname(str);
+
+					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+				}
+			}
+			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
+		}
+
+		// ----------------------------
+		String collectpeopleids = "";
+		String srcPer = String.valueOf(ContactPerson).replace("null", "");
+
+		if (srcPer.length() > 0) {
+			for (String str : srcPer.split(",")) {
+				if (NumberUtils.isParsable(str)) {
+					collectpeopleids += str + ",";
+					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					contactperson.setFollowers(followers);
+					contactPersonSerivce.save(contactperson);
+
+				} else {
+					ContactPerson contactperson = new ContactPerson();
+					contactperson.setPeoplename(str);
+					contactperson.setFollowers(followers);
+					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+				}
+			}
+			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
+		}
+
+		// ----------------------------
+		if (!collectpeopleids.equalsIgnoreCase("")) {
+			for (String s : collectpeopleids.split(",")) {
+				mappersonstoOrganization(collectorgids, Integer.parseInt(s));
+
+			}
+		}
+		if (!collectorgids.equalsIgnoreCase("")) {
+			for (String s : collectorgids.split(",")) {
+				mapOrganizationtopersons(collectpeopleids, Integer.parseInt(s));
+			}
+		}
+		// ----------------------------
+		
+		ProjectMaster projectMaster = new ProjectMaster();
+		projectMaster.setContactPerson(collectpeopleids);
+		projectMaster.setOrganization(collectorgids);
+		projectMaster.setTitle(Title);
+		projectMaster.setStartdate(startdate);
+		projectMaster.setEnddate(enddate);
+		projectMaster.setPipeline(pipeline);
+		projectMaster.setFollowers(followers);
+		projectMaster.setLabel(label);
+		projectMaster.setBranch(branch);
+		projectMaster.setAssigntouser(assigntouser);
+		projectMaster.setDescription(Description);
+		projectMaster.setDealid(deal);
+		
+		projectMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
+		projectMasterSerivce.save(projectMaster);		
+		return "";
 	}
 
-	@GetMapping("projectschedule")
-	public String projectschedule() {
-		return "projectschedule";
-	}
 
-	@GetMapping("drawingactivity")
-	public String drawingactivity() {
-		return "drawingactivity";
-	}
+	@GetMapping("projectevents")
+	public String projectevents(@RequestParam("id") int id, Model themodel) {
+		ProjectMaster projectMaster = projectMasterSerivce.findById(id);
+		List<ContactPerson> cplis = contactPersonSerivce.findAll();
+		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		
 
-	@GetMapping("fieldactivity")
-	public String fieldactivity() {
-		return "fieldactivity";
-	}
+		ContactPerson contactPersonobj = null;
+		// --------------------------------------------------
+		ArrayList<String> personorgls = new ArrayList<String>();
+		for (ContactPerson cp : cplis) {
+			if(!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+			{
+				for (String str1 : (cp.getOrganization().toString()).split(",")) {
+					String temp2 = "";
+					String str2 = nullremover(String.valueOf(str1));
+					if (str2.length() > 0) {
+						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
+								.collect(Collectors.toList()).get(0);
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname() + " |";
+						personorgls.add(temp2);
+					} else {
+						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
+						personorgls.add(temp2);
+					}
+				}
+			}else
+			{
+				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
+			}
+		}
+		if (projectMaster.getProjectdetailMaster().size() == 0) {
+			List<ProjectdetailsMaster> dmls = new ArrayList();
+			ProjectdetailsMaster dpmobj = new ProjectdetailsMaster();
+			dmls.add(dpmobj);
+			projectMaster.setProjectdetailMaster(dmls);
+		}
 
+		if(!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase(""))
+		{
+			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
+				
+				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				contactPersonobj = cplistemp;
+				break;
+				
+			}
+			
+		}
+		themodel.addAttribute("contactPersonobj", contactPersonobj);
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+		themodel.addAttribute("personorgls", personorgls);
+		themodel.addAttribute("projectMaster", projectMaster);
+
+		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		themodel.addAttribute("UNITS", UNITS);
+
+		ActivityMaster amobj = new ActivityMaster();
+		amobj.setActivitytype("Task");
+		amobj.setActivityfollowers(contactPersonobj.getFollowers());
+		themodel.addAttribute("activityMaster", amobj);
+
+		return "projectevents";
+	}
 }

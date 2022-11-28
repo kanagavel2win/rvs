@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -73,11 +71,7 @@ public class DealMaster {
 	
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "activityId")
-	private List<ActivityMasterGuest> activityMasterGuest;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "activityId")
+	@JoinColumn(name = "dealId")
 	private List<DealProjectMaster> dealProjectMaster;
 	
 	

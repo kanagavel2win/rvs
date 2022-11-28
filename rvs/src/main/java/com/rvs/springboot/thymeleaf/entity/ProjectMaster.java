@@ -24,53 +24,44 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "activitymaster")
-
-public class ActivityMaster {
+@Table(name = "projectmaster")
+public class ProjectMaster {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int activityId;
+	private int id;
 	@Column
-	private String mastercategory;
-	@Column
-	private String mastercategoryid;
-	@Column
-	private String activitycategory;
-	@Column
-	private String activitytitle;
-	@Column
-	private String activitytype;
+	private String Title;
 	@Column
 	private String startdate;
 	@Column
-	private String starttime;
-	@Column
 	private String enddate;
 	@Column
-	private String endtime;
+	private String pipeline;
 	@Column
-	private String location;
+	private String followers;
+	@Column
+	private String label;
 	@Column
 	private String description;
 	@Column
-	private String notes;
+	private String branch;
 	@Column
-	private String htmlnotes;
+	private String assigntouser;
 	@Column
-	private String activityfollowers;	
+	private String createddate;
 	@Column
-	private String status;	
+	private String dealid;
 	@Column
-	private String createdtime;
-		
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "activityId")
-	private List<ActivityMasterGuest> activityMasterGuest;
+	private String ContactPerson;
+	@Column
+	private String Organization;
 	
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "activityId")
-	private List<ActivityMasterFiles> activityMasterFiles;
+	@JoinColumn(name = "projectId")
+	private List<ProjectdetailsMaster> projectdetailMaster;
+	
+	
 	
 }

@@ -79,6 +79,17 @@
 	th:href="@{/app-assets/css/pages/app-email.css}">
 <!-- END: Custom CSS-->
 <style>
+.actionitems
+{
+	font-size:15px;
+}
+.addtasklink, .addtactivitylink
+{
+	padding:5px;
+	cursor:pointer;
+	color:blue;
+}
+
 .badge-circle-light-warning {
 	margin-left: 10px;
 	cursor: pointer;
@@ -151,13 +162,13 @@
 
 #progress li {
 	float: left;
-	padding: 10px 10px 10px 20px;
+	padding: 10px 5px 10px 15px;
 	background: #E5E5E5;
 	color: #919191;
 	position: relative;
 	border-top: 1px solid #E5E5E5;
 	border-bottom: 1px solid #E5E5E5;
-	width: 16%;
+	width: 12%;
 	margin: 0 1px;
 }
 
@@ -201,13 +212,14 @@
 <script th:inline="javascript">
 	var NATUREOFWORKlist = "";
 	var UNITSlist = "";
-
+	
 	function optionshandle(radio) {
 
 		$(".ActivityTitle").attr('placeholder', radio.title + ' details...');
 	}
 
 	var edudivadd = 0;
+	var projecttaskid="";
 </script>
 <th:block th:each="str :${NATUREOFWORK}">
 
@@ -320,618 +332,50 @@
 											</div>
 										</div>
 										<!--scrolling content Modal -->
-
-
-										<div th:if="${save}" class="form-group col-12">
-											<button type="button"
-												class="btn mb-1 btn-success btn-lg btn-block">Project
-												Info Updated Successfully</button>
-										</div>
-										<ul class="nav nav-tabs" role="tablist">
-											<li class="nav-item"><a class="nav-link active"
-												id="home-tab" data-toggle="tab" href="#home"
-												aria-controls="home" role="tab" aria-selected="true"> <i
-													class="bx bx-user align-middle"></i> <span
-													class="align-middle m2">Basic</span>
-											</a></li>
-											<li class="nav-item"><a class="nav-link"
-												id="project-tab" data-toggle="tab" href="#project"
-												aria-controls="project" role="tab" aria-selected="false">
-													<i class="bx bxs-bell-ring align-middle"></i> <span
-													class="align-middle m2">Project Info</span>
-											</a></li>
-											<li class="nav-item"><a class="nav-link"
-												id="profile-tab" data-toggle="tab" href="#profile"
-												aria-controls="profile" role="tab" aria-selected="false">
-													<i class="bx bxs-bell-ring align-middle"></i> <span
-													class="align-middle m2">Events & Activities</span>
-											</a></li>
-
-										</ul>
-										<form th:action="@{/projecteventpart1save}"
-											th:object="${projectMaster}" method="POST"
-											class="wizard-horizontal" id="formId"
-											enctype="multipart/form-data">
-											<div class="tab-content">
-
-
-												<div class="tab-pane active " id="home"
-													aria-labelledby="home-tab" role="tabpanel">
-
-													<div class="row">
-														<div class="col-md-12">
-															<div class="form-group">
-																<label class="emptitle">Basic Information</label>
-
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Title</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<input type="hidden"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{id}" th:value="${projectMaster['id']}">
-																		<input type="hidden"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{createddate}"
-																			th:value="${projectMaster['createddate']}"> 
-																		<input type="text" id="Title"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{Title}" th:value="${projectMaster['Title']}">
-																		<div class="form-control-position">
-																			<i class="bx bx-task"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Start Date</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<input type="text" id="startdate"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{startdate}" th:value="${projectMaster['startdate']}">
-																		<div class="form-control-position">
-																			<i class="bx bx-task"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">End Date</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<input type="text" id="enddate"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{enddate}" th:value="${projectMaster['enddate']}">
-																		<div class="form-control-position">
-																			<i class="bx bx-task"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Pipeline</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<ul id="progress">
-																			<li class=" la lb lc ld le lf lg lh " title="Unscheduled">Unscheduled</li>
-																			<li class=" lb lc ld le lf lg lh " title="Scheduled">Scheduled</li>
-																			<li class=" lc ld le lf  lg lh "
-																				title="kick-off">kick</li>
-																			<li class=" ld le lf lg lh " title="Planning">Planning</li>
-																			<li class=" le lf lg lh " title="Field Work">Field</li>
-																			<li class=" lf lg lh " title="Drawing">Drawing</li>
-																			<li class=" lg lh " title="Review">Review</li>
-																			<li class=" lh " title="Delivered">Delivered</li>
-																		</ul>
-																		<select class="form-control form-control-sm"
-																			id="pipeline" th:field="*{pipeline}"
-																			th:value="${projectMaster['pipeline']}"
-																			style="visibility: hidden">
-																			<option value="Unscheduled">Unscheduled</option>
-																			<option value="Scheduled">Scheduled</option>
-																			<option value="kick-off">kick-off</option>
-																			<option value="Planning">Planning</option>
-																			<option value="Field Work">Field Work</option>
-																			<option value="Drawing">Drawing</option>
-																			<option value="Review">Review</option>
-																			<option value="Delivered">Delivered</option>
-																		</select>
-																		<!-- <div class="form-control-position">
-																			<i class="bx bx-label"></i>
-																		</div> -->
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-12">
-															<div class="form-group">
-																<label for="addmodel">Follower</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="select2 followers form-control form-control-sm"
-																			id="followers" multiple="multiple">
-																			<th:block th:each="str :${employeelist}">
-																				<option th:value="${str.empMasterid}"
-																					th:text="${str.StaffName}"></option>
-																			</th:block>
-																		</select>
-
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														
-														<div class="col-md-12">
-															<div class="form-group">
-																<hr />
-																<label class="emptitle">Linked To</label>
-															</div>
-														</div>
-														<div class="col-md-12">
-															<div class="form-group">
-																<label for="email-id-icon">Deal</label>
-
-																<div class="position-relative has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="select2 form-control form-control js-example-tags"
-																			 style="width: 100%;" id="deal" th:field="*{deal}" th:value="${projectMaster['deal']}">
-																			<th:block th:each="str :${personorgls}">
-																				<option
-																					th:value="${#strings.arraySplit(str,'|')[0]} +'-' + ${#strings.arraySplit(str,'|')[2] }"
-																					th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>
-																			</th:block>
-
-																		</select>
-
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="email-id-icon">Contact Person
-																	<div
-																		class="spinner-border spinnerbordercontactperson spinner-border-sm text-primary"
-																		role="status" style="visibility: hidden">
-																		<span class="sr-only">Loading...</span>
-																	</div>
-																</label>
-
-																<div class="position-relative has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="select2 form-control form-control js-example-tags"
-																			multiple="multiple" style="width: 100%;"
-																			id="ContactPerson" th:field="*{ContactPerson}">
-																			<th:block th:each="str :${personorgls}">
-																				<th:block th:if="${#strings.arraySplit(str,'|')[3]} == ' '">
-																					<option
-																					th:value="${#strings.arraySplit(str,'|')[0]} +'-'"
-																					th:text="${#strings.arraySplit(str,'|')[1]}"></option>		
-																																									
-																				</th:block>
-																				<th:block th:unless="${#strings.arraySplit(str,'|')[3]} == ' '">
-																					<option
-																					th:value="${#strings.arraySplit(str,'|')[0]} +'-' + ${#strings.arraySplit(str,'|')[2] }"
-																					th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>																
-																				</th:block>
-																			</th:block>
-
-																		</select>
-
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-
-
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Organization </label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<select
-																			class="select2 form-control form-control js-example-tags"
-																			id="Organization" multiple="multiple"
-																			style="width: 100%;" th:field="*{Organization}">
-																			<th:block th:each="str :${organizationlist}">
-
-																				<option th:value="${str.id}"
-																					th:text="${str.orgname}"></option>
-																			</th:block>
-																		</select>
-
-
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Label</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		
-																		<select
-																				class="form-control form-control-sm"
-																				id="label" th:field="*{label}" th:value="${projectMaster['label']}">
-																			<option value="To-Do">To-Do</option>
-																			<option value="In Progress">In Progress</option>
-																			<option value="On Hold">On Hold</option>
-																			
-																		</select>
-																			
-																		<div class="form-control-position">
-																			<i class="bx bx-task"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-12">
-															<div class="form-group">
-																<hr />
-																<label class="emptitle">Assign To User</label>
-															</div>
-														</div>
-														<div class="col-md-6">
-																<div class="form-group">
-																	<label for="addmodel">Branch</label>
-																	<div class="position-relative  has-icon-left">
-																		<fieldset class="form-group">
-
-																			<select
-																				class="form-control form-control-sm"
-																				id="branch"  th:field="*{branch}" th:value="${projectMaster['branch']}">
-																				<option value="">-</option>
-																				<th:block th:each="str :${branchlist}">
-																					<option  th:value="${str.id}"  th:text="${str.BRANCH_NAME}"></option>
-																				</th:block>
-																			</select>
-																			<div class="form-control-position">
-																				<i class="bx bx-label"></i>
-																			</div>
-																		</fieldset>
-																	</div>
-																</div>
-															</div>
-															<div class="col-md-6">
-																<div class="form-group">
-																	<label for="addmodel">User</label>
-																	<div class="position-relative  has-icon-left">
-																		<fieldset class="form-group">
-																			<select
-																				class="form-control form-control-sm"
-																				id="assigntouser"  th:field="*{assigntouser}" th:value="${projectMaster['lassigntouser']}">
-																				
-																			</select>
-																			<div class="form-control-position">
-																				<i class="bx bx-label"></i>
-																			</div>
-																		</fieldset>
-																	</div>
-																</div>
-															</div>
-														
-														<div class="col-12">
-															<br />
-															<button type="button"
-																class="btn btn-primary mr-1 mb-1 projecttabclick"
-																style="float: right">Next</button>
-
-														</div>
-
-
+										<!--scrolling content Modal -->
+										<div class="modal fade" id="TaskeventsStatusScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="TaskeventsStatusScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable  modal-lg"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title"
+															id="TaskeventsStatusScrollableTitle">Task</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
 													</div>
-
-												</div>
-												<div class="tab-pane " id="project"
-													aria-labelledby="project-tab" role="tabpanel">
-
-													<div class="row">
-														<div class="col-md-12">
-															<div class="form-group">
-																<label class="emptitle">Project Location</label>
-
-															</div>
-														</div>
-
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">State</label>
-
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="form-control form-control-sm addsourcedata state"
-																			id="state" th:field="*{state}"
-																			th:value="${projectMaster['state']}">
-																			<option value="">-</option>
-																			<th:block th:each="str :${statelist}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bxs-map-alt"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">District</label>
-
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="form-control form-control-sm addsourcedata district"
-																			id="district" th:field="*{district}"
-																			th:value="${projectMaster['district']}">
-																			<th:block th:each="str :${districtlist}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bxs-map"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Taluk</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="text" th:field="*{taluk}"
-																			th:value="${projectMaster['taluk']}"
-																			class="form-control form-control-sm capitalize">
-																		<div class="form-control-position">
-																			<i class="bx bxs-navigation"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Village</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="text" th:field="*{village}"
-																			th:value="${projectMaster['village']}"
-																			class="form-control form-control-sm capitalize">
-																		<div class="form-control-position">
-																			<i class="bx bxs-direction-right"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Land Mark</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="text" th:field="*{lankmark}"
-																			th:value="${projectMaster['lankmark']}"
-																			class="form-control form-control-sm capitalize">
-																		<div class="form-control-position">
-																			<i class="bx bx-map-pin"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Lat, Long</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="text" th:field="*{lanlong}"
-																			th:value="${projectMaster['lanlong']}"
-																			class="form-control form-control-sm capitalize">
-																		<div class="form-control-position">
-																			<i class="bx bx-world"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-
-														<div class="col-md-12">
-															<div class="form-group">
-
-																<label class="emptitle">1.Project Details</label>
-																<button class="btn btn-light-primary btn-sm"
-																	id="projectdivadd" type="button"
-																	title="Add Project Details">
-																	<i class="bx bx-plus"></i>
-																</button>
-															</div>
-														</div>
-
-														<th:block th:each="childobj, s : *{projectProjectMaster}">
-
-															<div th:class="'col-md-12 edudivdelete' + ${s.index}">
-																<label class="emptitle" th:if="${s.index != 0}"
-																	th:text=" ${s.index+1} + '.Project Details'"></label> <span
-																	class="cursor-pointer edudivdelete"
-																	th:name="${s.index}" style="float: right"> <i
-																	class="bx bx-x"></i>
-																</span>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Nature of Work <label
-																		class="emptitle additem" name="addnatureofworkdata"><i
-																			class="bx bxs-plus-circle ownstyle1"></i></label>
-																	</label>
-																	<div class="position-relative has-icon-left">
-
-																		<input type="hidden"
-																			th:field="*{projectProjectMaster[__${s.index}__].projectprojectid}"
-																			th:value="${childobj['projectprojectid']}" /> <select
-																			class="form-control form-control-sm addnatureofworkdata"
-																			th:field="*{projectProjectMaster[__${s.index}__].projecttype}"
-																			th:value="${childobj['projecttype']}">
-																			<option value="">-</option>
-																			<th:block th:each="str :${NATUREOFWORK}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bx-landscape"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Quantity</label>
-																	<div class="position-relative has-icon-left">
-																		<input type="text"
-																			class="form-control form-control-sm prjQty"
-																			placeholder="Quantity"  th:id="'prjQty'+ ${s.index} "
-																			th:field="*{projectProjectMaster[__${s.index}__].Quantity}"
-																			th:value="${childobj['Quantity']}" />
-																		<div class="form-control-position">
-																			<i class="bx bx-radio-circle-marked"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Units <label
-																		class="emptitle additem" name="addunitsdata"><i
-																			class="bx bxs-plus-circle ownstyle1"></i></label>
-																	</label>
-																	<div class="position-relative has-icon-left">
-																		<select
-																			class="form-control form-control-sm addunitsdata"
-																			th:field="*{projectProjectMaster[__${s.index}__].Unit}"
-																			th:value="${childobj['Unit']}">
-																			<option value="">-</option>
-																			<th:block th:each="str :${UNITS}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bxs-film"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Price</label>
-																	<div class="position-relative has-icon-left">
-																		<input type="text"
-																			class="form-control  form-control-sm prjPrice"
-																			placeholder="Price" th:id="'prjPrice'+ ${s.index}"
-																			th:field="*{projectProjectMaster[__${s.index}__].Price}"
-																			th:value="${childobj['Price']}" />
-																		<div class="form-control-position">
-																			<i class="bx bx-money"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Total Amount</label>
-																	<div class="position-relative has-icon-left">
-																		<input type="text"
-																			class="form-control  form-control-sm prjTotal"
-																			th:id="'prjTotal'+ ${s.index}"
-																			placeholder="Total"
-																			th:field="*{projectProjectMaster[__${s.index}__].Amount}"
-																			th:value="${childobj['Amount']}" />
-																		<div class="form-control-position">
-																			<i class="bx bxs-wallet"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<script>
-																edudivadd = edudivadd + 1;
-															</script>
-
-														</th:block>
-														<span id="projectdivlast"></span>
-
-
-														<div class="col-12">
-															<br />
-															<button type="submit" class="btn btn-primary mr-1 mb-1"
-																style="float: right">Save</button>
-															<button type="button"
-																class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
-														</div>
-
-
-													</div>
-												</div>
-										</form>
-										<div class="tab-pane " id="profile"
-											aria-labelledby="profile-tab" role="tabpanel">
-											<div class="row">
-												<!-- ---------------------------- -->
-												<ul class="nav nav-pills col-md-12 ">
-													<li class="nav-item"><a class="nav-link active"
-														id="activities-tab" data-toggle="pill" href="#activities"
-														aria-expanded="false"> <i
-															class="bx bx-note align-middle"></i> Notes
-													</a></li>
-													<li class="nav-item"><a class="nav-link"
-														id="activnotes-tab" data-toggle="pill" href="#activnotes"
-														aria-expanded="true"> <i
-															class="bx bx-calendar align-middle"></i> Activity
-													</a></li>
-
-												</ul>
-												<div class="tab-content">
-													<div class="tab-pane active" id="activities"
-														role="tabpanel" aria-labelledby="activities-tab"
-														aria-expanded="false">
+													<div class="modal-body">
 														<!-- ------------------------------------------ -->
 														<div class="row">
 															<div class="col-sm-12">
 																<div id="full-wrapper">
 																	<div id="full-container">
-																		<div class="editor"></div>
+																		<div class="editor" style="height:100px;"></div>
 																	</div>
 																</div>
+															</div>
+															<div class="col-12" align="center">
+																<div class="form-group col-12 resultdivnote"
+																	style="visibility: hidden">
+																	<button type="button"
+																		class="btn mb-1 btn-success btn-lg btn-block">Note
+																		Info Updated Successfully</button>
+																</div>
+
 															</div>
 															<div class="col-12">
 																<hr />
 																<input type="hidden" value="0" id="noteactivityid" />
-
+																<input type="hidden" value="0" id="noteactivityidsourceid" />
+																
 																<button type="button" id="notessave"
 																	class="btn btn-primary mr-1 mb-1" style="float: right;">
 																	Save</button>
-
+																
 																<button type="button" id="notessavetemp"
 																	class="btn btn-primary mr-1 mb-1"
 																	style="float: right; visibility: hidden;">
@@ -948,22 +392,34 @@
 																		for="noteckbox">Make as done</label>
 																</div>
 															</div>
-															<div class="col-12" align="center">
-																<div class="form-group col-12 resultdivnote"
-																	style="visibility: hidden">
-																	<button type="button"
-																		class="btn mb-1 btn-success btn-lg btn-block">Note
-																		Info Updated Successfully</button>
-																</div>
-
-															</div>
+															
 														</div>
 														<!-- ------------------------------------------ -->
 
 													</div>
-													<div role="tabpanel" class="tab-pane" id="activnotes"
-														aria-labelledby="activnotes-tab" aria-expanded="true"
-														style="width: 100%">
+													
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+										<!--scrolling content Modal -->
+										<div class="modal fade" id="ActivityeventsStatusScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="ActivityeventsStatusScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable  modal-lg"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title"
+															id="ActivityeventsStatusScrollableTitle">Activity</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<!-- ------------------------------------------ -->
 														<form th:action="@{/projecteventpart2save}"
 															th:object="${activityMaster}" method="POST"
 															class="wizard-horizontal" enctype="multipart/form-data">
@@ -975,7 +431,9 @@
 																		<div class="position-relative">
 																			<!-- <input type="hidden" value="Project"  th:field="*{mastercategory}" /> -->
 																			<input type="hidden" th:field="*{mastercategoryid}"
-																				id="mastercategoryid" />
+																				id="activityidsourceid" />
+																			<input type="hidden" name="projectMasterid" class="projectMasterid form-control form-control-sm capitalize" />
+																			
 																			<!-- <input type="hidden"  th:value="'Activity'"  th:field="*{activitycategory}"/> -->
 																			<input type="hidden" th:field="*{activityId}"
 																				th:value="${activityMaster['activityId']}" /> <input
@@ -1188,8 +646,6 @@
 																	</section>
 																	<!-- Accordion end -->
 																</div>
-
-
 															</div>
 
 															<div class="col-md-6">
@@ -1229,8 +685,7 @@
 
 																<button type="submit" class="btn btn-primary mr-1 mb-1"
 																	style="float: right">Save</button>
-																<button type="reset" class="btn btn-secondary mr-1 mb-1"
-																	style="float: right">Reset</button>
+																
 																<div class="checkbox checkbox-success checkbox-glow">
 																	<input type="checkbox" id="checkboxGlow1" name="status">
 																	<label for="checkboxGlow1">Make as done</label>
@@ -1238,38 +693,547 @@
 															</div>
 															<!-- ------------------------------------------ -->
 														</form>
+														<!-- ------------------------------------------ -->
+
 													</div>
-
-
+													
 												</div>
-												<!-- ---------------------------- -->
+											</div>
+										</div>
+										<!--scrolling content Modal -->
 
-												<div class="col-12 history">
+										<div th:if="${save}" class="form-group col-12">
+											<button type="button"
+												class="btn mb-1 btn-success btn-lg btn-block">Project
+												Info Updated Successfully</button>
+										</div>
+										<div class="form-group col-12">
+											<label class="emptitle" th:text="${projectMaster['Title']}"></label>
+											
+										</div>
+										
+										<ul class="nav nav-tabs" role="tablist">
+											<li class="nav-item"><a class="nav-link active"
+												id="home-tab" data-toggle="tab" href="#home"
+												aria-controls="home" role="tab" aria-selected="true"> <i
+													class="bx bx-user align-middle"></i> <span
+													class="align-middle m2">Project Info</span>
+											</a></li>
+											<li class="nav-item"><a class="nav-link"
+												id="project-tab" data-toggle="tab" href="#project"
+												aria-controls="project" role="tab" aria-selected="false">
+													<i class="bx bxs-bell-ring align-middle"></i> <span
+													class="align-middle m2">Basic</span>
+											</a></li>
+											
 
-													<!-- Timeline Widget Starts -->
-													<div class="timline-card">
-														<div class="card ">
-															<div class="card-header">
-																<h4 class="card-title">Timeline</h4>
+										</ul>
+										<form th:action="@{/projecteventpart1save}"
+											th:object="${projectMaster}" method="POST"
+											class="wizard-horizontal" id="formId"
+											enctype="multipart/form-data">
+											<div class="tab-content">
+
+
+												<div class="tab-pane active " id="home"
+													aria-labelledby="home-tab" role="tabpanel">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<label class="emptitle">Project Details</label>
+																	<button class="btn btn-light-primary btn-sm"
+																		id="projectdivadd" type="button"
+																		title="Add Project Details">
+																		<i class="bx bx-plus"></i>
+																	</button>
+																	<input type="hidden" name="projectMasterid" class="projectMasterid form-control form-control-sm capitalize" />
 															</div>
-															<div class="card-content timelinehistory">
-																<div class="card-body">
-																	<ul class="widget-timeline">
-																			<div class="spinner-border spinner-border-sm text-primary" role="status">
-								                                                <span class="sr-only">Loading...</span>
-								                                            </div>
-																	</ul>
+														</div>
 
+														<!-- Collapse start -->
+										                <section id="collapsible" class="col-md-12">
+										                    
+										                    <div class="collapsible">
+										                       <th:block th:each="childobj, s : *{projectdetailMaster}">
+											                        <div class="card collapse-header">
+											                            <div id="headingCollapse1" class="card-header" th:name="${childobj['projectdetailid']}" data-toggle="collapse" role="button" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+											                                <span class="collapse-title" th:text="${childobj['projecttype']} +'-' + ${childobj['Quantity']} +' ' + ${childobj['Unit']}">
+											                                    
+											                                </span>
+											                            </div>
+											                            <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
+											                                <div class="card-content">
+											                                    <div class="card-body ">
+											                                    	<div class="row">
+												                                    	<div th:class="'col-md-12 edudivdelete' + ${s.index}">
+																							<label class="emptitle" th:if="${s.index != 0}"
+																								th:text=" ${s.index+1} + '.Project Details'"></label> <span
+																								class="cursor-pointer edudivdelete"
+																								th:name="${s.index}" style="float: right"> <i
+																								class="bx bx-x"></i>
+																							</span>
+																						</div>
+																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																							<div class="form-group">
+																								<label for="contact-info-icon">Nature of Work <label
+																									class="emptitle additem" name="addnatureofworkdata"><i
+																										class="bx bxs-plus-circle ownstyle1"></i></label>
+																								</label>
+																								<div class="position-relative has-icon-left">
+							
+																									<input type="text"
+																										th:field="*{projectdetailMaster[__${s.index}__].projectdetailid}"
+																										th:value="${childobj['projectdetailid']}" /> <select
+																										class="form-control form-control-sm addnatureofworkdata"
+																										th:field="*{projectdetailMaster[__${s.index}__].projecttype}"
+																										th:value="${childobj['projecttype']}">
+																										<option value="">-</option>
+																										<th:block th:each="str :${NATUREOFWORK}">
+																											<option th:value="${str}" th:text="${str}"></option>
+																										</th:block>
+																									</select>
+																									<div class="form-control-position">
+																										<i class="bx bx-landscape"></i>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																							<div class="form-group">
+																								<label for="contact-info-icon">Quantity</label>
+																								<div class="position-relative has-icon-left">
+																									<input type="text"
+																										class="form-control form-control-sm prjQty"
+																										placeholder="Quantity"  th:id="'prjQty'+ ${s.index} "
+																										th:field="*{projectdetailMaster[__${s.index}__].Quantity}"
+																										th:value="${childobj['Quantity']}" />
+																									<div class="form-control-position">
+																										<i class="bx bx-radio-circle-marked"></i>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																							<div class="form-group">
+																								<label for="contact-info-icon">Units <label
+																									class="emptitle additem" name="addunitsdata"><i
+																										class="bx bxs-plus-circle ownstyle1"></i></label>
+																								</label>
+																								<div class="position-relative has-icon-left">
+																									<select
+																										class="form-control form-control-sm addunitsdata"
+																										th:field="*{projectdetailMaster[__${s.index}__].Unit}"
+																										th:value="${childobj['Unit']}">
+																										<option value="">-</option>
+																										<th:block th:each="str :${UNITS}">
+																											<option th:value="${str}" th:text="${str}"></option>
+																										</th:block>
+																									</select>
+																									<div class="form-control-position">
+																										<i class="bx bxs-film"></i>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																							<div class="form-group">
+																								<label for="contact-info-icon">Price</label>
+																								<div class="position-relative has-icon-left">
+																									<input type="text"
+																										class="form-control  form-control-sm prjPrice"
+																										placeholder="Price" th:id="'prjPrice'+ ${s.index}"
+																										th:field="*{projectdetailMaster[__${s.index}__].Price}"
+																										th:value="${childobj['Price']}" />
+																									<div class="form-control-position">
+																										<i class="bx bx-money"></i>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																							<div class="form-group">
+																								<label for="contact-info-icon">Total Amount</label>
+																								<div class="position-relative has-icon-left">
+																									<input type="text"
+																										class="form-control  form-control-sm prjTotal"
+																										th:id="'prjTotal'+ ${s.index}"
+																										placeholder="Total"
+																										th:field="*{projectdetailMaster[__${s.index}__].Amount}"
+																										th:value="${childobj['Amount']}" />
+																									<div class="form-control-position">
+																										<i class="bx bxs-wallet"></i>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																						
+																						<script>
+																							edudivadd = edudivadd + 1;
+																						</script>
+																						<th:block th:each="projecttaskMasterobj, s1 : ${childobj['projecttaskMaster']}">
+																						
+																						<div class="col-12 card collapse-header">
+																							  <div id="innerheadingCollapse1" class="card-header" data-toggle="collapse" role="button" data-target="#innercollapse1" aria-expanded="false" aria-controls="innercollapse1">
+																							  		<span class="collapse-title" th:text="${projecttaskMasterobj['projecttasktitle']}"></span>
+																							  </div>
+																							  <div id="innercollapse1" role="tabpanel" aria-labelledby="innerheadingCollapse1" class="collapse">
+																							  		
+																									<!-- ---------------------------- -->
+																									<div class="col-12 history">
+																										<div th:class="'col-md-12 edudivdelete' + ${s.index}">
+																											<span class="addtasklink" th:name="${projecttaskMasterobj['projecttaskid']}"> + Task</span>
+																											<span class="addtactivitylink" th:name="${projecttaskMasterobj['projecttaskid']}"> + Activity</span>
+																										</div>
+																										<!-- Timeline Widget Starts -->
+																										<div class="timline-card">
+																											<div class="card ">
+																												<div class="card-header">
+																													<span class="actionitems">Action Items</span>
+																												</div>
+																												<div class="card-content timelinehistory">
+																													<div class="card-body">
+																														<ul  th:class="'widget-timeline his'+ ${projecttaskMasterobj['projecttaskid']}">
+																															<script>
+																															projecttaskid = projecttaskid +"[[${projecttaskMasterobj['projecttaskid']}]],";
+																															
+																															</script>
+																														</ul>
+													
+																													</div>
+																												</div>
+																											</div>
+																										</div>
+																										<!-- Timeline Widget Ends -->
+													
+																									</div>
+																									<!-- ---------------------------- -->
+																							  </div>
+																						</div>
+																						
+																						</th:block>
+																						
+																					</div>
+											                                    </div>
+											                                </div>
+											                            </div>
+											                        </div>
+										                       </th:block>
+										                    </div>
+										                </section>
+										                <!-- Collapse end -->
+
+													
+
+															
+
+														
+														<span id="projectdivlast"></span>
+
+
+														<div class="col-12">
+															<br />
+															<button type="submit" class="btn btn-primary mr-1 mb-1"
+																style="float: right">Save</button>
+															<button type="button"
+																class="btn btn-primary mr-1 mb-1 projecttabclick"
+																style="float: right">Next</button>
+
+														</div>
+
+
+													</div>
+												
+												</div>
+												<div class="tab-pane " id="project"
+													aria-labelledby="project-tab" role="tabpanel">
+
+												
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<label class="emptitle">Basic Information</label>
+
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="form-group">
+																<label for="addmodel">Title</label>
+																<div class="position-relative  has-icon-left">
+																	<fieldset class="form-group">
+																		<input type="hidden"
+																			class="form-control form-control-sm capitalize"
+																			th:field="*{id}" th:value="${projectMaster['id']}">
+																		<input type="hidden"
+																			class="form-control form-control-sm capitalize"
+																			th:field="*{createddate}"
+																			th:value="${projectMaster['createddate']}"> 
+																		<input type="text" id="Title"
+																			class="form-control form-control-sm capitalize"
+																			th:field="*{Title}" th:value="${projectMaster['Title']}">
+																		<div class="form-control-position">
+																			<i class="bx bx-task"></i>
+																		</div>
+																	</fieldset>
 																</div>
 															</div>
 														</div>
+														<div class="col-md-6">
+															<div class="form-group">
+																<label for="addmodel">Start Date</label>
+																<div class="position-relative  has-icon-left">
+																	<fieldset class="form-group">
+																		<input type="date" id="startdate"
+																			class="form-control form-control-sm capitalize"
+																			th:field="*{startdate}" th:value="${projectMaster['startdate']}">
+																		<div class="form-control-position">
+																			<i class="bx bxs-calendar"></i>
+																		</div>
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="form-group">
+																<label for="addmodel">End Date</label>
+																<div class="position-relative  has-icon-left">
+																	<fieldset class="form-group">
+																		<input type="date" id="enddate"
+																			class="form-control form-control-sm capitalize"
+																			th:field="*{enddate}" th:value="${projectMaster['enddate']}">
+																		<div class="form-control-position">
+																			<i class="bx bxs-calendar-check"></i>
+																		</div>
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-md-6">
+															<div class="form-group">
+																<label for="addmodel">Pipeline</label>
+																<div class="position-relative  has-icon-left">
+																	<fieldset class="form-group">
+																		<ul id="progress">
+																			<li class=" la lb lc ld le lf lg lh " title="Unscheduled">Unsched</li>
+																			<li class=" lb lc ld le lf lg lh " title="Scheduled">Schedu</li>
+																			<li class=" lc ld le lf  lg lh "
+																				title="kick-off">kick</li>
+																			<li class=" ld le lf lg lh " title="Planning">Planning</li>
+																			<li class=" le lf lg lh " title="Field Work">Field</li>
+																			<li class=" lf lg lh " title="Drawing">Drawing</li>
+																			<li class=" lg lh " title="Review">Review</li>
+																			<li class=" lh " title="Delivered">Delivered</li>
+																		</ul>
+																		<select class="form-control form-control-sm"
+																			id="pipeline" th:field="*{pipeline}"
+																			th:value="${projectMaster['pipeline']}"
+																			style="visibility: hidden">
+																			<option value="Unscheduled">Unscheduled</option>
+																			<option value="Scheduled">Scheduled</option>
+																			<option value="kick-off">kick-off</option>
+																			<option value="Planning">Planning</option>
+																			<option value="Field Work">Field Work</option>
+																			<option value="Drawing">Drawing</option>
+																			<option value="Review">Review</option>
+																			<option value="Delivered">Delivered</option>
+																		</select>
+																		<!-- <div class="form-control-position">
+																			<i class="bx bx-label"></i>
+																		</div> -->
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel">Follower</label>
+																<div class="position-relative  has-icon-left">
+																	<fieldset class="form-group">
+																		<select
+																			class="select2 followers form-control form-control-sm"
+																			id="followers" name="followers" multiple="multiple">
+																			<th:block th:each="str :${employeelist}">
+																				<option th:value="${str.empMasterid}"
+																					th:text="${str.StaffName}"></option>
+																			</th:block>
+																		</select>
+
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-md-12">
+															<div class="form-group">
+																<hr />
+																<label class="emptitle">Linked To</label>
+															</div>
+														</div>
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="email-id-icon">Deal</label>
+
+																<div class="position-relative has-icon-left">
+																	<fieldset class="form-group">
+																		<select
+																			class="select2 form-control form-control js-example-tags"
+																			 style="width: 100%;" id="deal" th:field="*{dealid}" th:value="${projectMaster['dealid']}">
+																			<th:block th:each="str :${personorgls}">
+																				<option
+																					th:value="${#strings.arraySplit(str,'|')[0]} +'-' + ${#strings.arraySplit(str,'|')[2] }"
+																					th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>
+																			</th:block>
+
+																		</select>
+
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="form-group">
+																<label for="email-id-icon">Contact Person
+																	<div
+																		class="spinner-border spinnerbordercontactperson spinner-border-sm text-primary"
+																		role="status" style="visibility: hidden">
+																		<span class="sr-only">Loading...</span>
+																	</div>
+																</label>
+
+																<div class="position-relative has-icon-left">
+																	<fieldset class="form-group">
+																		<select
+																			class="select2 form-control form-control js-example-tags"
+																			multiple="multiple" style="width: 100%;"
+																			id="ContactPerson" th:field="*{ContactPerson}">
+																			<th:block th:each="str :${personorgls}">
+																				<th:block th:if="${#strings.arraySplit(str,'|')[3]} == ' '">
+																					<option
+																					th:value="${#strings.arraySplit(str,'|')[0]} +'-'"
+																					th:text="${#strings.arraySplit(str,'|')[1]}"></option>		
+																																									
+																				</th:block>
+																				<th:block th:unless="${#strings.arraySplit(str,'|')[3]} == ' '">
+																					<option
+																					th:value="${#strings.arraySplit(str,'|')[0]} +'-' + ${#strings.arraySplit(str,'|')[2] }"
+																					th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>																
+																				</th:block>
+																			</th:block>
+
+																		</select>
+
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+
+
+														<div class="col-md-6">
+															<div class="form-group">
+																<label for="addmodel">Organization </label>
+																<div class="position-relative  has-icon-left">
+																	<fieldset class="form-group">
+
+																		<select
+																			class="select2 form-control form-control js-example-tags"
+																			id="Organization" multiple="multiple"
+																			style="width: 100%;" th:field="*{Organization}">
+																			<th:block th:each="str :${organizationlist}">
+
+																				<option th:value="${str.id}"
+																					th:text="${str.orgname}"></option>
+																			</th:block>
+																		</select>
+
+
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="form-group">
+																<label for="addmodel">Label</label>
+																<div class="position-relative  has-icon-left">
+																	<fieldset class="form-group">
+																		
+																		<select
+																				class="form-control form-control-sm"
+																				id="label" th:field="*{label}" th:value="${projectMaster['label']}">
+																			<option value="To-Do">To-Do</option>
+																			<option value="In Progress">In Progress</option>
+																			<option value="On Hold">On Hold</option>
+																			
+																		</select>
+																			
+																		<div class="form-control-position">
+																			<i class="bx bx-task"></i>
+																		</div>
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-12">
+															<div class="form-group">
+																<hr />
+																<label class="emptitle">Assign To User</label>
+															</div>
+														</div>
+														<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Branch</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+
+																			<select
+																				class="form-control form-control-sm"
+																				id="branch"  th:field="*{branch}" th:value="${projectMaster['branch']}">
+																				<option value="">-</option>
+																				<th:block th:each="str :${branchlist}">
+																					<option  th:value="${str.id}"  th:text="${str.BRANCH_NAME}"></option>
+																				</th:block>
+																			</select>
+																			<div class="form-control-position">
+																				<i class="bx bx-git-branch"></i>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">User</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+																			<select
+																				class="form-control form-control-sm"
+																				id="assigntouser"  th:field="*{assigntouser}" th:value="${projectMaster['assigntouser']}">
+																				<th:block th:each="str :${employeelistuser}">
+																					<option  th:value="${str.empMasterid}"  th:text="${str.StaffName}"></option>
+																				</th:block>
+																				
+																			</select>
+																			<div class="form-control-position">
+																				<i class="bx bxs-user"></i>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+														
+														
+
+														<div class="col-12">
+															<br />
+															<button type="submit" class="btn btn-primary mr-1 mb-1"
+																style="float: right">Save</button>
+															<button type="button"
+																class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
+														</div>
 													</div>
-													<!-- Timeline Widget Ends -->
-
+												
 												</div>
-
-											</div>
-										</div>
+										</form>
+										
 									</div>
 
 								</div>
@@ -1341,6 +1305,7 @@
 		$(document)
 				.ready(
 						function() {
+							
 							//-------------------------------------------------
 							//-------------------------------------------------
 							$(document).on("click", ".additem", function() {
@@ -1359,7 +1324,27 @@
 								$('#VendorStatusScrollable').modal('toggle');
 
 							});
+							
+							$(document).on("click", ".addtasklink", function() {
 
+								var name = $(this).attr('name');
+								alert(name);
+								$("#noteactivityidsourceid").val(name);
+								$('#TaskeventsStatusScrollable').modal('toggle');
+
+							});
+							
+							$(document).on("click", ".addtactivitylink", function() {
+
+								var name = $(this).attr('name');
+								alert(name);
+								$("#activityidsourceid").val(name);
+								$('#ActivityeventsStatusScrollable').modal('toggle');
+
+							});
+
+							
+							
 							$("#additemallsavebtn")
 									.click(
 											function() {
@@ -1395,13 +1380,17 @@
 											});
 
 							//-------------------------------------------------
+							
 							var ids = "[[${projectMaster['id']}]]";
 							$("#mastercategoryid").val(ids);
+							$(".projectMasterid").val(ids);
+							
 							var values = "[[${projectMaster['ContactPerson']}]]";
 							var arrtemp = "[[${projectMaster['Organization']}]]"
 							var arrorg = arrtemp.split(',');
 							var arrperson = values.split(',');
 							var selectedperson = "";
+							
 							for(var i=0;i<arrperson.length; i++)
 							{
 								if(arrorg.length>0)
@@ -1423,13 +1412,14 @@
 									selectedperson +=selectedperson+",";
 								}
 							}
+							
 							$('#ContactPerson').val(selectedperson.split(','))
 									.change();
 
 							var values = "[[${projectMaster['Organization']}]]";
 							$('#Organization').val(values.split(',')).change();
 
-							var values = "[[${projectMaster['follower']}]]";
+							var values = "[[${projectMaster['followers']}]]";
 							$('.followers').val(values.split(',')).change();
 
 							var values = "[[${activityMaster['activityfollowers']}]]";
@@ -1441,7 +1431,6 @@
 
 							//--------------------------------------------------------------------------------------------------------------------------------------		 		
 
-							$(function() {
 								var token = $("meta[name='_csrf']").attr(
 										"content");
 								var header = $("meta[name='_csrf_header']")
@@ -1449,9 +1438,19 @@
 								$(document).ajaxSend(function(e, xhr, options) {
 									xhr.setRequestHeader(header, token);
 								});
-							});
+							
 							//--------------------------------------------------------------------------------------------------------------------------------------		 
-
+ 								
+							var protask = projecttaskid.split(',');
+								
+								for(var i=0;i<protask.length; i++)
+								{
+									if(protask[i] != "")
+									{
+										gettimelinelist(protask[i]);	
+									}
+									
+								}
 							//--------------------------------------------------------------------------------------------------------------------------------------
 
 							$("#ContactPerson").change(function() {
@@ -1514,72 +1513,39 @@
 												if (editor != '<p><br></p>') {
 
 													var noteckbox = "false";
-													var mastercategoryid = $(
-															"#mastercategoryid")
-															.val();
-													var noteactivityid = $(
-															"#noteactivityid")
-															.val();
-													if ($("#noteckbox").prop(
-															"checked")) {
+													var mastercategoryid = $("#noteactivityidsourceid").val();
+													
+													var noteactivityid = $("#noteactivityid").val();
+													if ($("#noteckbox").prop("checked")) {
 														noteckbox = "true";
 													}
 
-													$("#notessave").css(
-															"visibility",
-															"hidden");
-													$("#notessavetemp").css(
-															"visibility",
-															"visible");
+													$("#notessave").css("visibility","hidden");
+													$("#notessavetemp").css("visibility","visible");
 													var formData = {
 														editor : editor,
 														noteckbox : noteckbox,
 														mastercategoryid : mastercategoryid,
 														noteactivityid : noteactivityid
 													}
-
-													$
-															.ajax({
-																type : "POST",
+													$.ajax({	type : "POST",
 																url : "projecteventnotesave",
 																data : formData,
 																success : function(
 																		result) {
-
-																	$(
-																			"#notessavetemp")
-																			.css(
-																					"visibility",
-																					"hidden");
-																	$(
-																			"#notessave")
-																			.css(
-																					"visibility",
-																					"visible");
+																	$("#notessavetemp").css("visibility","hidden");
+																	$("#notessave").css("visibility","visible");
+																	$('#TaskeventsStatusScrollable').modal('toggle');
 																	alert("Note Info Updated Successfully ");
-																	$(
-																			'.ql-editor')
-																			.html(
-																					"");
-																	gettimelinelist();
+																	$('.ql-editor').html("");
+																	gettimelinelist(mastercategoryid);
+																	
 																},
-																error : function(
-																		e) {
-																	console
-																			.log("Error"
-																					+ e);
-																	$(
-																			"#notessavetemp")
-																			.css(
-																					"visibility",
-																					"hidden");
-																	$(
-																			"#notessave")
-																			.css(
-																					"visibility",
-																					"visible");
+																error : function(e) {
+																	console.log("Error"+ e);
+																	$("#notessavetemp").css("visibility","hidden");
+																	$("#notessave").css("visibility","visible");
 																}
-
 															});
 													//---------------------------------------------------------
 												}
@@ -1587,13 +1553,12 @@
 							//--------------------------------------------------------------------------------
 							$("#profile-tab").click(function() {
 								// gettimelinelist
-								gettimelinelist();
+								//gettimelinelist();
 							});
 							//--------------------------------------------------------------------------------
 							//function load the history events
-							function gettimelinelist() {
-								var mastercategoryid = $("#mastercategoryid")
-										.val();
+							function gettimelinelist(mastercategoryid) {
+								
 								var formData = {
 									mastercategoryid : mastercategoryid,
 									categoryType : "Project"
@@ -1605,7 +1570,7 @@
 									data : formData,
 									success : function(result) {
 
-										$('.widget-timeline').html(result);
+										$('.his'+mastercategoryid ).html(result);
 									},
 									error : function(e) {
 										console.log("Error" + e);
@@ -1615,6 +1580,11 @@
 								});
 
 							}
+							//--------------------------------------------------------------------------------
+							
+							$(document).on("onmouseup",".card-header",function() {
+								//gettimelinelist($(this).attr('name'));							
+							});
 							//--------------------------------------------------------------------------------
 							$(document)
 									.on(
@@ -1683,11 +1653,11 @@
 														.before(
 																'<div class="col-md-12 edudivdelete'+ edudivadd +'"><label class="emptitle" >'
 																		+ edudivadd
-																		+ ' .Project Details</label><span class="cursor-pointer edudivdelete"	name="'+ edudivadd +'" style="float: right"> <i	class="bx bx-x"></i></span> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Nature of Work <label class="emptitle additem" name="addnatureofworkdata"><i class="bx bxs-plus-circle ownstyle1"></i></label></label>	<div class="position-relative has-icon-left">				<input type="hidden"				name="projectProjectMaster['+ edudivadd +'].projectprojectid"	  value="0"			/>				<select class="form-control form-control-sm addnatureofworkdata" name="projectProjectMaster['+ edudivadd +'].projecttype">			<option value="">-</option>'
+																		+ ' .Project Details</label><span class="cursor-pointer edudivdelete"	name="'+ edudivadd +'" style="float: right"> <i	class="bx bx-x"></i></span> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Nature of Work <label class="emptitle additem" name="addnatureofworkdata"><i class="bx bxs-plus-circle ownstyle1"></i></label></label>	<div class="position-relative has-icon-left">				<input type="hidden"				name="projectdetailMaster['+ edudivadd +'].projectdetailid"	  value="0"			/>				<select class="form-control form-control-sm addnatureofworkdata" name="projectdetailMaster['+ edudivadd +'].projecttype">			<option value="">-</option>'
 																		+ NATUREOFWORKlist
-																		+ '		</select>		<div class="form-control-position">			<i class="bx bx-landscape"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Quantity</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control form-control-sm prjQty"	 id="prjQty'+ edudivadd +'"		placeholder="Quantity"   name="projectProjectMaster['+ edudivadd +'].Quantity"/>		<div class="form-control-position">			<i class="bx bx-radio-circle-marked"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Units <label	class="emptitle additem" name="addunitsdata"><i class="bx bxs-plus-circle ownstyle1"></i></label></label>	<div class="position-relative has-icon-left">		<select class="form-control form-control-sm addunitsdata"  name="projectProjectMaster['+ edudivadd +'].Unit">			<option value="">-</option>	'
+																		+ '		</select>		<div class="form-control-position">			<i class="bx bx-landscape"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Quantity</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control form-control-sm prjQty"	 id="prjQty'+ edudivadd +'"		placeholder="Quantity"   name="projectdetailMaster['+ edudivadd +'].Quantity"/>		<div class="form-control-position">			<i class="bx bx-radio-circle-marked"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Units <label	class="emptitle additem" name="addunitsdata"><i class="bx bxs-plus-circle ownstyle1"></i></label></label>	<div class="position-relative has-icon-left">		<select class="form-control form-control-sm addunitsdata"  name="projectdetailMaster['+ edudivadd +'].Unit">			<option value="">-</option>	'
 																		+ UNITSlist
-																		+ '</select>		<div class="form-control-position">			<i class="bx bxs-film"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Price</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control  form-control-sm prjPrice"	id="prjPrice'+ edudivadd +'"		placeholder="Price"   name="projectProjectMaster['+ edudivadd +'].Price"				/>		<div class="form-control-position">			<i class="bx bx-money"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Total Amount</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control  form-control-sm prjTotal"	id="prjTotal'+ edudivadd +'"		placeholder="Total"  name="projectProjectMaster['+ edudivadd +'].Amount"				/>		<div class="form-control-position">			<i class="bx bxs-wallet"></i>		</div>	</div></div> 														</div> 														');
+																		+ '</select>		<div class="form-control-position">			<i class="bx bxs-film"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Price</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control  form-control-sm prjPrice"	id="prjPrice'+ edudivadd +'"		placeholder="Price"   name="projectdetailMaster['+ edudivadd +'].Price"				/>		<div class="form-control-position">			<i class="bx bx-money"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Total Amount</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control  form-control-sm prjTotal"	id="prjTotal'+ edudivadd +'"		placeholder="Total"  name="projectdetailMaster['+ edudivadd +'].Amount"				/>		<div class="form-control-position">			<i class="bx bxs-wallet"></i>		</div>	</div></div> 														</div> 														');
 											});
 
 							$(document).on(
@@ -1696,9 +1666,9 @@
 									function() {
 										var id = $(this).attr('name');
 										var deleteid = $(
-												"[name='projectProjectMaster["
+												"[name='projectdetailMaster["
 														+ id
-														+ "].projectprojectid")
+														+ "].projectdetailid")
 												.val();
 										$('.edudivdelete' + id).remove();
 										alert("Removed Successfully...!");
@@ -1728,26 +1698,31 @@
 							//--------------------------------------------------------------------------------
 							function pipeline(title) {
 
-								if (title == 'Project In') {
+								if (title == 'Unscheduled') {
 									$(".la").addClass("active");
-									$('#pipeline').val('Project In');
-								} else if (title == 'Contact made') {
+									$('#pipeline').val('Unscheduled');
+								} else if (title == 'Scheduled') {
 									$(".lb").addClass("active");
-									$('#pipeline').val('Contact made');
+									$('#pipeline').val('Scheduled');
 
-								} else if (title == 'Site Visit Scheduled') {
+								} else if (title == 'kick-off') {
 									$(".lc").addClass("active");
-									$('#pipeline').val('Site Visit Scheduled');
-								} else if (title == 'Project Evaluvated') {
+									$('#pipeline').val('kick-off');
+								} else if (title == 'Planning') {
 									$(".ld").addClass("active");
-									$('#pipeline').val('Project Evaluvated');
-								} else if (title == 'Proposal made') {
+									$('#pipeline').val('Planning');
+								} else if (title == 'Field Work') {
 									$(".le").addClass("active");
-									$('#pipeline').val('Proposal made');
-
-								} else if (title == 'Negotiations started') {
+									$('#pipeline').val('Field Work');
+								} else if (title == 'Drawing') {
 									$(".lf").addClass("active");
-									$('#pipeline').val('Negotiations started');
+									$('#pipeline').val('Drawing');
+								}else if (title == 'Review') {
+									$(".lf").addClass("active");
+									$('#pipeline').val('Review');
+								}else if (title == 'Delivered') {
+									$(".lf").addClass("active");
+									$('#pipeline').val('Delivered');
 								}
 							}
 
@@ -1786,7 +1761,28 @@
 							});
 							
 							//--------------------------------------------------------------------------------
+							 $("#branch").change(function(){
+								  let branch= $("#branch option:selected").text();
+								  var formData = {
+										  branchname:branch
+									 }
+								    $.ajax({
+											type : "POST",url : "getEmployeelistbasedonbranch",
+											data : formData, success : function(result) {
+												$("#assigntouser").html(result);
+											},
+											error : function(e) {
+												console.log("Error" + e);
+											}
+										});  
+							 	
+							 });
+							//--------------------------------------------------------------------------------
+							 
+							
+							//------------------------------------------------------
 						});
+		
 	</script>
 	<script>
 		$(".js-example-tags").select2({

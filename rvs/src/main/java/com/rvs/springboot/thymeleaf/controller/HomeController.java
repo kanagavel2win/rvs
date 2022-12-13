@@ -87,6 +87,7 @@ import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTaskMaster;
+import com.rvs.springboot.thymeleaf.entity.ProjectTemplateMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectdetailsMaster;
 import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
 import com.rvs.springboot.thymeleaf.entity.VendorFiles;
@@ -117,6 +118,7 @@ import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
 import com.rvs.springboot.thymeleaf.service.LoginService;
 import com.rvs.springboot.thymeleaf.service.PaySlipService;
 import com.rvs.springboot.thymeleaf.service.ProjectMasterService;
+import com.rvs.springboot.thymeleaf.service.ProjectTemplateMasterService;
 import com.rvs.springboot.thymeleaf.service.VendorMasterService;
 
 @Controller
@@ -179,6 +181,9 @@ public class HomeController {
 
 	@Autowired
 	ProjectMasterService projectMasterSerivce;
+	
+	@Autowired 
+	ProjectTemplateMasterService projectTemplateMasterService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
@@ -5998,5 +6003,20 @@ public class HomeController {
 
 		return "Saved";
 	}
-
+	
+	@GetMapping("projecttemplatelist")
+	public String projecttemplatelist(Model themodel)
+	{
+		List<ProjectTemplateMaster>prols = projectTemplateMasterService.findAll();
+		themodel.addAttribute("projecttemplatelist",prols);
+		return "projecttemplatelist";
+	}
+	
+	@GetMapping("projecttemplate")
+	public String projecttemplate(Model themodel)
+	{
+		List<ProjectTemplateMaster>prols = projectTemplateMasterService.findAll();
+		themodel.addAttribute("projecttemplatelist",prols);
+		return "projecttemplatelist";
+	}
 }

@@ -79,10 +79,23 @@
 	th:href="@{/app-assets/css/pages/app-email.css}">
 <!-- END: Custom CSS-->
 <style>
+.edudivview
+{
+
+
+}
 .actionitems
 {
 	font-size:15px;
 }
+.card-headerpd{
+background:#EBEBEB;
+}
+
+.card-headerpdtask{
+background:#EBEBEB;
+}
+
 .addtasklink, .addtactivitylink
 {
 	padding:5px;
@@ -756,24 +769,34 @@
 										                    <div class="collapsible">
 										                       <th:block th:each="childobj, s : *{projectdetailMaster}">
 											                        <div class="card collapse-header">
-											                            <div id="headingCollapse1" class="card-header" th:name="${childobj['projectdetailid']}" data-toggle="collapse" role="button" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+											                            <div th:id="'headingCollapsepd' + ${s.index}" class="card-header card-headerpd" th:name="${childobj['projectdetailid']}" data-toggle="collapse" role="button" th:data-target="'#collapsepd' + ${s.index}" aria-expanded="false" th:aria-controls="'collapsepd' + ${s.index}">
 											                                <span class="collapse-title" th:text="${childobj['projecttype']} +'-' + ${childobj['Quantity']} +' ' + ${childobj['Unit']}">
 											                                    
 											                                </span>
 											                            </div>
-											                            <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
+											                            <div th:id="'collapsepd' + ${s.index}" role="tabpanel" th:aria-labelledby="'headingCollapsepd' + ${s.index}" class="collapse">
 											                                <div class="card-content">
 											                                    <div class="card-body ">
 											                                    	<div class="row">
 												                                    	<div th:class="'col-md-12 edudivdelete' + ${s.index}">
-																							<label class="emptitle" th:if="${s.index != 0}"
-																								th:text=" ${s.index+1} + '.Project Details'"></label> <span
-																								class="cursor-pointer edudivdelete"
-																								th:name="${s.index}" style="float: right"> <i
-																								class="bx bx-x"></i>
+																							<label class="emptitle"
+																								th:text=" ${s.index+1} + '.Project Details'"></label>
+																								 <span
+																								th:class="'cursor-pointer edudivhide  edudivhide'+ ${s.index}"
+																								th:name="${s.index}" style="float: right;"> <i
+																								class="bx bx-hide"></i></span>
+																								
+																								 <span
+																								th:class="'cursor-pointer edudivview edudivview'+ ${s.index}"
+																								th:name="${s.index}" style="float: right;"> <i
+																								class="bx bxs-pencil"></i></span>
+																								 <span
+																								class="cursor-pointer  edudivdelete"
+																								th:name="${s.index}" style="float: right;padding-right:20px;"> <i
+																								class="bx bx-trash"></i>
 																							</span>
 																						</div>
-																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																						<div th:class="'col-md-3 prjdetailsedit edudivdelete' + ${s.index}">
 																							<div class="form-group">
 																								<label for="contact-info-icon">Nature of Work <label
 																									class="emptitle additem" name="addnatureofworkdata"><i
@@ -781,7 +804,7 @@
 																								</label>
 																								<div class="position-relative has-icon-left">
 							
-																									<input type="text"
+																									<input type="hidden"
 																										th:field="*{projectdetailMaster[__${s.index}__].projectdetailid}"
 																										th:value="${childobj['projectdetailid']}" /> <select
 																										class="form-control form-control-sm addnatureofworkdata"
@@ -798,7 +821,7 @@
 																								</div>
 																							</div>
 																						</div>
-																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																						<div th:class="'col-md-3  prjdetailsedit edudivdelete' + ${s.index}">
 																							<div class="form-group">
 																								<label for="contact-info-icon">Quantity</label>
 																								<div class="position-relative has-icon-left">
@@ -813,7 +836,7 @@
 																								</div>
 																							</div>
 																						</div>
-																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																						<div th:class="'col-md-3  prjdetailsedit edudivdelete' + ${s.index}">
 																							<div class="form-group">
 																								<label for="contact-info-icon">Units <label
 																									class="emptitle additem" name="addunitsdata"><i
@@ -835,7 +858,7 @@
 																								</div>
 																							</div>
 																						</div>
-																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																						<div th:class="'col-md-3 prjdetailsedit  edudivdelete' + ${s.index}">
 																							<div class="form-group">
 																								<label for="contact-info-icon">Price</label>
 																								<div class="position-relative has-icon-left">
@@ -850,7 +873,7 @@
 																								</div>
 																							</div>
 																						</div>
-																						<div th:class="'col-md-3 edudivdelete' + ${s.index}">
+																						<div th:class="'col-md-3  prjdetailsedit edudivdelete' + ${s.index}">
 																							<div class="form-group">
 																								<label for="contact-info-icon">Total Amount</label>
 																								<div class="position-relative has-icon-left">
@@ -873,10 +896,10 @@
 																						<th:block th:each="projecttaskMasterobj, s1 : ${childobj['projecttaskMaster']}">
 																						
 																						<div class="col-12 card collapse-header">
-																							  <div id="innerheadingCollapse1" class="card-header" data-toggle="collapse" role="button" data-target="#innercollapse1" aria-expanded="false" aria-controls="innercollapse1">
-																							  		<span class="collapse-title" th:text="${projecttaskMasterobj['projecttasktitle']}"></span>
+																							  <div th:id="'innerheadingCollapse' + ${projecttaskMasterobj['projecttaskid']}" class="card-header card-headerpdtask" data-toggle="collapse" role="button" th:data-target="'#innercollapse' + ${projecttaskMasterobj['projecttaskid']}" aria-expanded="false" th:aria-controls="'innercollapse' + ${projecttaskMasterobj['projecttaskid']}">
+																							  		<span class="collapse-title" th:text="${projecttaskMasterobj['projecttasktitle']}  "></span>
 																							  </div>
-																							  <div id="innercollapse1" role="tabpanel" aria-labelledby="innerheadingCollapse1" class="collapse">
+																							  <div th:id="'innercollapse' + ${projecttaskMasterobj['projecttaskid']}" role="tabpanel" th:aria-labelledby="'innerheadingCollapse' + ${projecttaskMasterobj['projecttaskid']}" class="collapse">
 																							  		
 																									<!-- ---------------------------- -->
 																									<div class="col-12 history">
@@ -1306,6 +1329,8 @@
 				.ready(
 						function() {
 							
+							$(".prjdetailsedit").hide();
+							$(".edudivhide").hide();
 							//-------------------------------------------------
 							//-------------------------------------------------
 							$(document).on("click", ".additem", function() {
@@ -1674,6 +1699,25 @@
 										alert("Removed Successfully...!");
 
 									});
+							//--------------------------------------------------------------------------------
+							
+							$(document).on("click",".edudivview",function() {
+										var id = $(this).attr('name');
+										
+										$('.edudivdelete' + id).show();
+										$(".edudivview" + id).hide();
+										$(".edudivhide" + id).show();
+
+									});
+							
+							$(document).on("click",".edudivhide",function() {
+								var id = $(this).attr('name');
+								
+								$('.edudivdelete' + id +":gt(0)").hide();
+								$(".edudivview" + id).show();
+								$(".edudivhide" + id).hide();
+
+							});
 							//--------------------------------------------------------------------------------
 							$(document).on("change", ".state", function() {
 								let state = $(this).val();

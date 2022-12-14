@@ -51,7 +51,14 @@ public class ProjectTemplateMasterImp implements ProjectTemplateMasterService {
 		return ProjectTemplateMasterRepo.saveAll(objList);
 	}
 
+	@Override
+	public void deletenullrows() {
+
+		String deletequery = "DELETE FROM `projecttemplateactivitymaster` WHERE `activityorder` IS NULL and `activitytitle`  IS NULL and `activitytype` IS NULL";
+		JdbcTemplate.update(deletequery);
+	}
+
 	
-		
+		//DELETE FROM `projecttemplateactivitymaster` WHERE `activityorder` IS NULL and `activitytitle`  IS NULL and `activitytype` IS NULL
 	
 }

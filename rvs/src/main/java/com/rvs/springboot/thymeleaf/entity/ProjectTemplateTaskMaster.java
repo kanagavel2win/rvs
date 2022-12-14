@@ -24,19 +24,20 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "projecttemplatemaster")
-public class ProjectTemplateMaster {
+@Table(name = "projecttemplatetaskmaster")
+public class ProjectTemplateTaskMaster {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int projecttaskid;
 	@Column
-	private String Title;
+	private String tasktitle;
+	@Column
+	private String taskorder;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "projecttemplateId")
-	private List<ProjectTemplateTaskMaster> projectTemplateTaskMaster;
-	
+	@JoinColumn(name = "projecttemplatetaskId")
+	private List<ProjectTemplateActivityMaster> projectTemplateActivityMaster;
 	
 	
 }

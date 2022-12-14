@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="ICC">
-<title>Vendor</title>
+<title>Project Template</title>
 <link rel="apple-touch-icon"
 	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
 <link rel="shortcut icon" type="image/x-icon"
@@ -58,6 +58,41 @@
 	th:href="@{/assets/css/style.css}">
 <!-- END: Custom CSS-->
 <style>
+.delete,.deletetask{
+cursor:pointer;
+float:right;
+}
+.table1 td
+{
+border:1px solid #ccc;
+padding:5px;
+font-size:11px; 
+}
+.table1 th
+{
+border:1px solid #ccc;
+padding:5px;
+font-size:11px; 
+font-weight:bold;
+}
+.addactivity
+{
+
+cursor:pointer;
+font-size:11px;
+color:#0000FF;
+}
+.actionitems
+{
+	font-size:15px;
+}
+.card-headerpd{
+background:#EBEBEB;
+}
+
+.card-headerpdtask{
+background:#EBEBEB;
+}
 .emptitle {
 	color: #527a00;
 	font-size: 15px;
@@ -94,7 +129,9 @@
 }
 
 </style>
-<script th:inline="javascript">emgstat = 0;		</script>
+<script th:inline="javascript">
+var emgstat = 0;
+var taskactivity = 0;</script>
 </head>
 <!-- END: Head-->
 
@@ -122,9 +159,8 @@
 				<div class="content-header-left col-12 mb-2 mt-1">
 					<div class="row breadcrumbs-top">
 						<div class="col-12">
-							<a href="vendor" style="float:right"><button type="button" class="btn btn-primary mr-1 mb-1">+ New</button></a>
 							<h5 class="content-header-title float-left pr-1 mb-0">
-								Vendor</h5>
+								Project Template</h5>
 							
 							<div class="breadcrumb-wrapper col-12">
 								<ol class="breadcrumb p-0 mb-0">
@@ -148,100 +184,156 @@
 							<div class="card">
 								<div class="card-content">
 									<div class="card-body">
-									<form th:action="@{/Vendorsave}"
-											th:object="${vendormaster}" method="POST"
-											class="wizard-horizontal" id="formId" enctype="multipart/form-data">
-									
-										<div th:if="${save}" class="form-group col-12">
-											<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Vendor
-												Info Updated Successfully</button>
-										</div>
-					           		 	 <ul class="nav nav-tabs" role="tablist">
-		                                    <li class="nav-item">
-		                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" aria-controls="home" role="tab" aria-selected="true">
-		                                            <i class="bx bx-user align-middle"></i>
-		                                            <span class="align-middle m2">Basic</span>
-		                                        </a>
-		                                    </li>
-		                                    
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" aria-controls="about" role="tab" aria-selected="false">
-		                                            <i class="bx bxs-graduation align-middle"></i>
-		                                            <span class="align-middle m2">Contact</span>
-		                                        </a>
-		                                    </li>
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="about1-tab" data-toggle="tab" href="#about1" aria-controls="about1" role="tab" aria-selected="false">
-		                                            <i class="bx bxs-bank align-middle"></i>
-		                                            <span class="align-middle m2">Bank </span>
-		                                        </a>
-		                                    </li>
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="about2-tab" data-toggle="tab" href="#about2" aria-controls="about2" role="tab" aria-selected="false">
-		                                            <i class="bx bx-cloud-upload align-middle"></i>
-		                                            <span class="align-middle m2">Documents & Others</span>
-		                                        </a>
-		                                    </li>
-		                               	 </ul>
-									            
-				            			      <div class="tab-content">
-			                               		 <div class="tab-pane active " id="home" aria-labelledby="home-tab" role="tabpanel">
-			                                    
-								            <div class="row">
-											
-											
-												<div class="col-md-12">
-													<div class="form-group">
-														<label class="emptitle">General</label>
+									<!--scrolling content Modal -->
+										<div class="modal fade" id="ProjectActivityScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="ProjectActivityScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-warning">
+														<h5 class="modal-title white"
+															id="ProjectActivityScrollableTitle"> Activity </h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
 													</div>
-												</div>
-												<div class="col-md-6">
-													<!--scrolling content Modal -->
-													<div class="modal fade" id="VendorStatusScrollable"
-														tabindex="-1" role="dialog"
-														aria-labelledby="VendorStatusScrollableTitle"
-														aria-hidden="true">
-														<div class="modal-dialog modal-dialog-scrollable"
-															role="document">
-															<div class="modal-content">
-																<div class="modal-header bg-warning">
-																	<h5 class="modal-title white"
-																		id="VendorStatusScrollableTitle"></h5>
-																	<button type="button" class="close"
-																		data-dismiss="modal" aria-label="Close">
-																		<i class="bx bx-x"></i>
-																	</button>
-																</div>
-																<div class="modal-body">
-																	<div class="col-md-12">
-																		<div class="form-group">
-																			<label for="addmodel" id="additemalltxt"></label>
-																			<div class="position-relative">
-																				<fieldset class="form-group">
-																					<input type="text" id="additemall" name="addmodel"
-																						class="form-control capitalize">
-																				</fieldset>
-																			</div>
-																		</div>
-																	</div>
-
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-light-secondary"
-																		data-dismiss="modal">
-																		<i class="bx bx-x d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">Close</span>
-																	</button>
-																	<button type="button" class="btn btn-primary ml-1"
-																		id="additemallsavebtn">
-																		<i class="bx bx-check d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">ADD</span>
-																	</button>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel">Activity Type</label>
+																<div class="position-relative">
+																	<fieldset class="form-group">
+																		<input type="hidden" id="addActivitytypearea" 
+																			>
+																		<select class="form-control" id="addActivitytype">
+																			<option>Task</option>
+																			<option>Meeting</option>
+																		</select>
+																	</fieldset>
 																</div>
 															</div>
 														</div>
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel">Activity Name</label>
+																<div class="position-relative">
+																	<fieldset class="form-group">
+																		<input type="text" id="addActivityname" 
+																			class="form-control capitalize">
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel">Activity Order</label>
+																<div class="position-relative">
+																	<fieldset class="form-group">
+																		<input type="number" id="addActivityorder" 
+																			class="form-control capitalize">
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+
 													</div>
-													<!--scrolling content Modal -->
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-secondary"
+															data-dismiss="modal">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Close</span>
+														</button>
+														<button type="button" class="btn btn-primary ml-1"
+															id="addActivitysavebtn">
+															<i class="bx bx-check d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">ADD</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+									<!--scrolling content Modal -->
+										<div class="modal fade" id="ProjectTaskScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="ProjectTaskScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-warning">
+														<h5 class="modal-title white"
+															id="ProjectTaskScrollableTitle"> Task </h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel">Task Name</label>
+																<div class="position-relative">
+																	<fieldset class="form-group">
+																		<input type="text" id="addtaskname" 
+																			class="form-control capitalize">
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel">Task Order</label>
+																<div class="position-relative">
+																	<fieldset class="form-group">
+																		<input type="number" id="addtaskorder" 
+																			class="form-control capitalize">
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-secondary"
+															data-dismiss="modal">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Close</span>
+														</button>
+														<button type="button" class="btn btn-primary ml-1"
+															id="addtasksavebtn">
+															<i class="bx bx-check d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">ADD</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+									
+									<form th:action="@{/projecttemplatesave}"
+											th:object="${projecttemplateobject}" method="POST"
+											class="wizard-horizontal" id="formId" enctype="multipart/form-data">
+									
+										
+					           		 	
+								            <div class="row">
+													<div th:if="${param.success}" class="col-12">
+													<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Template Info
+														 Updated Successfully</button>
+													</div>
+											
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="emptitle">Template</label>
+														
+													</div>
+													
+												</div>
+												<div class="col-md-6">
 													<div class="form-group">
 														<label for="first-name-icon">Name
 															<span  class="error">*</span>
@@ -249,233 +341,104 @@
 														
 														<div class="position-relative has-icon-left">
 															<input type="hidden"
-																th:value="${vendormaster['vendormasterid']}"
-																th:field="*{vendormasterid}"> 
+																th:value="${projecttemplateobject['id']}"
+																th:field="*{id}"> 
 																
-																
-															
 															<input type="text" 
 																id="Name"
 																class="form-control capitalize" 
-																placeholder="Name"
-																th:value="${vendormaster['Name']}"
-																th:field="*{Name}" onkeypress="return onlyAlphabets(event,this);" required>
+																placeholder="Template Name"
+																th:value="${projecttemplateobject['Title']}"
+																th:field="*{Title}" onkeypress="return onlyAlphabets(event,this);" required>
 															<div class="form-control-position">
-																<i class="bx bx-user"></i>
+																<i class="bx bxs-report"></i>
 															</div>
 														</div>
 													</div>
 												</div>
 												
 												
-												<div class="col-md-6">
-													<div class="form-group">
-														<label for="email-id-icon">Vendor Type
-														</label>
-														<label
-															class="emptitle additem" name="addAssetTypedata"><i
-																class="bx bxs-plus-circle ownstyle1"></i></label>
-														<div class="position-relative has-icon-left">
-															<fieldset class="form-group">
-																<select class="form-control addAssetTypedata"
-																	th:value="${vendormaster['AssetType']}"
-																	th:field="*{AssetType}">
-																	<option value="-">-</option>
-																	<th:block th:each="str :${ASSETTYPE}">
-																		<option  th:value="${str}"  th:text="${str}"></option>
-																	</th:block>
-																	
-
-																</select>
-																<div class="form-control-position">
-																	<i class="bx bxl-redux"></i>
-																</div>
-															</fieldset>
-														</div>
-													</div>
-												</div>
+												
 												
 												<div class="col-md-12">
 													<div class="form-group">
 														<hr/>
-														<label class="emptitle">Address</label>
+														<label class="emptitle">Task List</label>
+														<button class="btn btn-light-primary btn-sm"
+																		id="projecttasskdivadd" type="button"
+																		title="Add Project Task">
+																		<i class="bx bx-plus"></i>
+																	</button>
 													</div>
 												</div>
 
-												<div class="col-md-6">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" 
-																class="form-control capitalize" placeholder="Street 1"
-																th:value="${vendormaster['Address_Street1']}"
-																th:field="*{Address_Street1}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-home"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" 
-																class="form-control capitalize" placeholder="Street 2"
-																th:value="${vendormaster['Address_Street2']}"
-																th:field="*{Address_Street2}"  />
-															<div class="form-control-position">
-																<i class="bx bx-navigation"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" 
-																class="form-control capitalize" placeholder="Village"
-																th:value="${vendormaster['Address_Village']}"
-																th:field="*{Address_Village}"  />
-															<div class="form-control-position">
-																<i class="bx bx-directions"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" 
-																class="form-control capitalize" placeholder="Taluk"
-																th:value="${vendormaster['Address_Taluk']}"
-																th:field="*{Address_Taluk}"  onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bxs-city"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="City"
-																th:value="${vendormaster['Address_City']}"
-																th:field="*{Address_City}"  onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bxs-building-house"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="State"
-																th:value="${vendormaster['Address_State']}"
-																th:field="*{Address_State}" onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bx-stats"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="Zip code"
-																th:value="${vendormaster['Address_ZIP']}"
-																th:field="*{Address_ZIP}"  />
-															<div class="form-control-position">
-																<i class="bx bx-message-alt-dots"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="Country"
-																th:value="${vendormaster['Address_Country']}"
-																th:field="*{Address_Country}" onkeypress="return onlyAlphabets(event,this);"  
-																  />
-															<div class="form-control-position">
-																<i class="bx bxs-flag-alt"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"  maxlength="15" onkeypress="return onlyAlphanumeric(event,this);"
-																placeholder="GST"
-																th:value="${vendormaster['GST']}"
-																th:field="*{GST}"  />
-															<div class="form-control-position">
-																<i class="bx bx-id-card"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase "
-																placeholder="TAN"
-																th:value="${vendormaster['TAN']}"
-																th:field="*{TAN}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-bookmark-star"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase "
-																placeholder="PAN"
-																th:value="${vendormaster['PAN']}"
-																th:field="*{PAN}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-bookmark-star"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control"
-																placeholder="Website"
-																th:value="${vendormaster['Website']}"
-																th:field="*{Website}"  />
-															<div class="form-control-position">
-																<i class="bx bx-world"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-											
+												<!-- Collapse start -->
+										                <section id="collapsible" class="col-md-12">
+										                    
+										                    <div class="collapsible">
+										                       <th:block th:each="childobj, s : *{projectTemplateTaskMaster}">
+											                        <div th:class="'card collapse-header masterdiv'+  ${s.index}">
+											                            <div th:id="'headingCollapsepd' + ${s.index}" class="card-header card-headerpd" th:name="${childobj['projecttaskid']}" data-toggle="collapse" role="button" th:data-target="'#collapsepd' + ${s.index}" aria-expanded="false" th:aria-controls="'collapsepd' + ${s.index}">
+											                                <span class="collapse-title" th:text="${childobj['tasktitle']} ">
+											                                </span>
+											                                <input type="hidden" th:field="*{projectTemplateTaskMaster[__${s.index}__].projecttaskid}"
+																										th:value="${childobj['projecttaskid']}" />
+																			<input type="hidden" th:field="*{projectTemplateTaskMaster[__${s.index}__].tasktitle}"
+																										th:value="${childobj['tasktitle']}" />
+																			<input type="hidden" th:field="*{projectTemplateTaskMaster[__${s.index}__].taskorder}"
+																										th:value="${childobj['taskorder']}" />
+																				
+																			<span class="deletetask" th:name="${s.index}"><i class="bx bx-trash-alt"></i></span>						
+											                            </div>
+											                            <div th:id="'collapsepd' + ${s.index}" role="tabpanel" th:aria-labelledby="'headingCollapsepd' + ${s.index}" class="collapse">
+											                                <div class="card-content">
+											                                    <div class="card-body ">
+											                                    	<div class="row">
+																								
+																									<table th:class="'table1 divholder'+ ${s.index}" > 
+																										<tr> <th>Activity Type</th> 
+																											 <th>Activity Name</th> 
+																											 <th>Order</th>
+																											 <th></th>  
+																										</tr> 
+																									<th:block th:each="childactvity, ac : *{projectTemplateTaskMaster[__${s.index}__].projectTemplateActivityMaster}">
+																									
+																										<tr><td><input type="hidden" th:field="*{projectTemplateTaskMaster[__${s.index}__].projectTemplateActivityMaster[__${ac.index}__].projectactivityid}" th:value="${childactvity['projectactivityid']}"/>
+																										<input type="hidden" th:field="*{projectTemplateTaskMaster[__${s.index}__].projectTemplateActivityMaster[__${ac.index}__].activitytype}" th:value="${childactvity['activitytype']}" /><span th:text="${childactvity['activitytype']}"></span></td>
+																										<td><input  type="hidden"th:field="*{projectTemplateTaskMaster[__${s.index}__].projectTemplateActivityMaster[__${ac.index}__].activitytitle}" th:value="${childactvity['activitytitle']}"/><span th:text="${childactvity['activitytitle']}"></span></td>
+																										<td><input type="hidden" th:field="*{projectTemplateTaskMaster[__${s.index}__].projectTemplateActivityMaster[__${ac.index}__].activityorder}"  th:value="${childactvity['activityorder']}" /><span th:text="${childactvity['activityorder']}"></span></td>
+																										<td> <span class="delete"><i class="bx bx-trash-alt"></i></span></td>
+																										</tr>
+																										<script>
+																											taskactivity = taskactivity + 1;
+																										</script>
+																									</th:block>
+																									
+																									
+																									</table>
+																									
+																									<br/><br/><span class="addactivity col-12" th:name="${s.index}">+ Add Activity</span>	
+																																				                                    	
+																					</div>
+											                                    </div>
+											                                </div>
+											                            </div>
+											                        </div>
+											                        <script>
+																		emgstat = emgstat + 1;
+																	</script>
+										                       </th:block>
+										                       <span id="projectdivlast"></span>
+										                       
+										                    </div>
+										                </section>
+										                <!-- Collapse end -->
+												
+													
+												
 												<div class="col-12">
 													<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 abouttabclick"  style="float:right">Next</button>
+													<button type="submit" class="btn btn-primary mr-1 mb-1 abouttabclick"  style="float:right">Save</button>
 													
 												</div>
 												
@@ -483,304 +446,9 @@
 												
 												
 											</div>
-											</div>
+											
                                    			
-                                   			 <div class="tab-pane" id="about" aria-labelledby="about-tab" role="tabpanel">
-                                   			 <div class="row">
-											
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle"> Contact</label>
-														<button class="btn btn-light-primary btn-sm"
-															id="econtactdivadd" type="button"
-															title="Add new Emergency Contact">
-															<i class="bx bx-plus"></i>
-														</button>
-													</div>
-												</div>
-
-												<th:block
-													th:each="vendorEmgContact, emgstat : ${vendorEmgContact}">
-													
-													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-12'  ">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<fieldset>
-																	<div class="checkbox checkbox-primary checkbox-glow">
-																		<input type="hidden"
-																			th:value="${vendorEmgContact.venEmgContactid}"
-																			name="venEmgContactid"> 
-																		<input type="hidden"
-																			th:value="${emgstat.index}" name="emgid">
-																		<script th:inline="javascript">
-																			emgstat = emgstat + 1;
-																		</script>
-
-																		<input type="checkbox" id="checkboxGlow1"
-																			th:checked="${vendorEmgContact['Emg_primarycontact']}"
-																			th:name="'Emg_primarycontact' + ${emgstat.index}" />
-																		<label for="checkboxGlow1">Primary Contact</label>
-																	</div>
-																	
-																	
-																	<span class="cursor-pointer srcecontactdivdelete" th:name="${emgstat.index}"  style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 
-																	
-																</fieldset>
-															</div>
-														</div>
-													</div>
-													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text"  
-																	class="form-control capitalize" placeholder="Name"
-																	th:value="${vendorEmgContact['Emg_Name']}"
-																	onkeypress="return onlyAlphabets(event,this);"  name="Emg_Name" />
-																<div class="form-control-position">
-																	<i class="bx bxs-contact"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-														<input type="text"  
-																	class="form-control capitalize" placeholder="Designation" th:value="${vendorEmgContact['Designation']}"
-																	name="Designation"
-																	onkeypress="return onlyAlphabets(event,this);"  />
-																
-																
-															</div>
-														</div>
-													</div>
-													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="number" 
-																	class="form-control capitalize" placeholder="Personal Phone"
-																	th:value="${vendorEmgContact['Emg_PersonalPhone']}"
-																	name="Emg_PersonalPhone"  />
-																<div class="form-control-position">
-																	<i class="bx bx-phone-call"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="number" 
-																	class="form-control capitalize" placeholder="Other Phone"
-																	th:value="${vendorEmgContact['Emg_OtherPhone']}"
-																	name="Emg_OtherPhone" />
-																<div class="form-control-position">
-																	<i class="bx bx-phone-call"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="email" 
-																	class="form-control " placeholder="Email ID"
-																	th:value="${vendorEmgContact['Emg_EmailID']}"
-																	name="Emg_EmailID"  />
-																<div class="form-control-position">
-																	<i class="bx bx-mail-send"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'econtactdivadd'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" 
-																	class="form-control capitalize" placeholder="Land Line No"
-																	th:value="${vendorEmgContact['Landlineno']}"
-																	name="Landlineno" />
-																<div class="form-control-position">
-																	<i class="bx bxs-home"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-												</th:block>
-												
-												<span id="econtactdivlast"></span>
-												
-												
-												<div class="col-12">
-												<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 about1tabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
-												</div>
-												
-
-
-											</div>
-											</div>
-                                   			 <div class="tab-pane" id="about1" aria-labelledby="about1-tab" role="tabpanel">
-                                   			 <div class="row">
-											
-												
-												
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle">Bank Account Details</label>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"
-																placeholder="A.C.No"
-																th:value="${vendormaster['BankACNo']}"
-																th:field="*{BankACNo}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-bank"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"
-																placeholder="Bank Name"
-																th:value="${vendormaster['BankName']}"
-																th:field="*{BankName}" onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bxs-bookmark-plus"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"
-																placeholder="Branch Name"
-																th:value="${vendormaster['BranchName']}"
-																th:field="*{BranchName}" onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bx-stats"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"
-																placeholder="IFSC Code"
-																th:value="${vendormaster['BankIFSCCode']}"
-																th:field="*{BankIFSCCode}" onkeypress="return onlyAlphanumeric(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bx-code"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-12">
-												<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 about2tabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 abouttabclick">Previous</button>
-												</div>
-												
-												
-												
-											</div>
-											</div>
-                                   			 <div class="tab-pane" id="about2" aria-labelledby="about2-tab" role="tabpanel">
-                                   			 <div class="row">
-												
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle">Files</label>
-													</div>
-												</div>
-												<div class="table-responsive col-md-12">
-												<table class="table zero-configuration">
-													<tr>
-
-														<th>Attachment</th>
-														<th>Name</th>
-														<th>Remove</th>
-													</tr>
-													<th:block th:each="Files,stat : ${vendorFiles}">
-														
-														
-														<tr th:if="${Files['Files_Attach']}  !=null">
-															<td><i class="bx bxs-file-pdf"></i>
-																<input type="hidden" th:value="${Files['venFileid']}" name="filesempFileid"/>
-																<input type="hidden" th:value="${Files['Files_Attach']}" th:name="filesempFileidstr"/>
-															</td>
-															<td>
-																<span th:text=" ${ #strings.substring(#strings.arraySplit(Files['Files_Attach'],'/')[1],15) } " ></span>
-																 <br/><a th:href="${Files['Files_Attach']}" target="_blank">View & Download</a></td>
-															<td align="center"><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-trash-alt"></i>   </span></td>
-														</tr>
-													</th:block>
-												</table>
-												</div>
-												
-												
-												<div class="col-md-6">
-													<div class="form-group">
-														<label for="contact-info-icon">Files</label>
-														<div class="position-relative">
-															<input type="file" class="form-control capitalize"
-																name="Files_Attach" accept=".pdf" />
-														</div>
-													</div>
-												</div>
-
-
-
-												<div class="col-md-12">
-													<div class="form-group">
-														<hr />
-														<label class="emptitle">Notes</label>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="form-group">
-
-														<div class="position-relative">
-															<textarea  class="form-control capitalize"
-																th:value="${vendormaster['Notes']}"
-																th:field="*{Notes}"  placeholder="Notes" height="100px"></textarea>																	
-														</div>
-													</div>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 about1tabclick">Previous</button>
-												</div>
-
-												<div class="col-12 d-flex justify-content-end">
-													
-													<button type="submit" id="submit" style="visibility: hidden;" class="btn btn-primary mr-1 mb-1">Save</button>
-													<button type="button" id="submit_validation"  class="btn btn-primary mr-1 mb-1">Save</button>
-													<button type="reset"
-														class="btn btn-light-secondary mr-1 mb-1">Reset</button>
-													<a href="emplist"><button type="button"
-															class="btn btn-warning mr-1 mb-1">Cancel</button></a>
-												</div>
-												
-											</div>
-                                   			</div>
-                                   		
-										
+                                   			
 										</form>
 									</div>
 								</div>
@@ -846,87 +514,94 @@
 	<script>
 		$(document).ready(
 				function() {
-		
-			 	
-					
-					$("#submit_validation").click(function(){
+					//----------------------------------------
+					$(document).on("click", "#projecttasskdivadd", function() {
 						
-						var Name= $('#Name').val();
-						
-						
-						if(Name =="")
-						{
-							alert("Name should not be empty");
-						}else
-						{
-							$("#submit").click();
-						}
-						
-						
-					});
-					
-					$(".additem").click(function() {
-						var name = $(this).attr('name');
-						var labeltext = "";
-						if (name == "addAssetTypedata") {
-							labeltext = "New Asster Type";
-						}
-						
-						$('#additemalltxt').text(labeltext);
-						$('#VendorStatusScrollable').modal('toggle');
+						$('#ProjectTaskScrollable').modal('toggle');
 
 					});
-
-					$("#additemallsavebtn").click(
-							function() {
-								if ($("#additemall").val() != '') {
-									var name = $('#additemalltxt').text();
-									var labeltext = "";
-									if (name == "New Asster Type") {
-										labeltext = "addAssetTypedata";
-									}
-									
-									$('.' + labeltext).append(
-											"<option value='"
-													+ $("#additemall").val()
-													+ "'>"
-													+ $("#additemall").val()
-													+ "</option>");
-									//$('.' + labeltext).val($("#additemall").val());
-									$("#additemall").val('');
-									$('#VendorStatusScrollable').modal(
-											'toggle');
-								}
-							});
-				});
-
-		
-		var econtactdivadd = emgstat;
-		//var emgstat=0;
-		$("#econtactdivadd")
-				.click(
-						function() {
-							econtactdivadd = econtactdivadd + 1;
-											
-							$("#econtactdivlast").before('<div class="econtactdivadd0 col-md-12 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<fieldset> 			<div class="checkbox checkbox-primary checkbox-glow"> 				<input type="hidden" 					value="" 					name="venEmgContactid"> 				<input type="hidden" 					value="" name="emgid"> 	<input type="checkbox" id="checkboxGlow1" 					name="Emg_primarycontact'+ econtactdivadd +'"  /> 				<label for="checkboxGlow1">Primary Contact</label> 			</div> 			 			 			<span class="cursor-pointer srcecontactdivdelete" name="'+ econtactdivadd +'"  style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			 		</fieldset> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="text"  			class="form-control capitalize" placeholder="Name" 			value="" 			onkeypress="return onlyAlphabets(event,this);"  name="Emg_Name" /> 		<div class="form-control-position"> 			<i class="bx bxs-contact"></i> 		</div> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3  econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> <input type="text"  			class="form-control capitalize" placeholder="Designation" value="" 			name="Designation" 			onkeypress="return onlyAlphabets(event,this);"  /> 		 		 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="number" 			class="form-control capitalize" placeholder="Personal Phone" 			value="" 			name="Emg_PersonalPhone"  /> 		<div class="form-control-position"> 			<i class="bx bx-phone-call"></i> 		</div> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="number" 			class="form-control capitalize" placeholder="Other Phone" 			value="" 			name="Emg_OtherPhone" /> 		<div class="form-control-position"> 			<i class="bx bx-phone-call"></i> 		</div> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="email" 			class="form-control capitalize" placeholder="Email ID" 			value="" 			name="Emg_EmailID"  /> 		<div class="form-control-position"> 			<i class="bx bx-mail-send"></i> 		</div> 	</div> </div>	</div>	<div class="econtactdivadd0 col-md-3 econtactdivadd'+ econtactdivadd +'"> <div class="form-group">  	<div class="position-relative has-icon-left"> 		<input type="text" 			class="form-control capitalize" placeholder="Land Line No" 			value="" 			name="Landlineno" /> 		<div class="form-control-position"> 			<i class="bx bxs-home"></i> 		</div> 	</div> </div>	</div>');							
+					
+					//----------------------------------------
+					$(document).on("click", "#addtasksavebtn", function() {
+					
+						var addtaskname = $('#addtaskname').val();
+						var addtaskorder = $('#addtaskorder').val();
+						if(addtaskname == "" || addtaskorder=="")
+						{
+							alert("Please fill the Task Name and Order no");
+						}
+						else
+						{
+							$("#projectdivlast")
+							.before('<div class="card collapse-header masterdiv' + emgstat +'"> <div id="headingCollapsepd' + emgstat +'" class="card-header card-headerpd"  data-toggle="collapse" role="button" data-target="#collapsepd' + emgstat +'" aria-expanded="false" aria-controls="collapsepd' + emgstat +'"> 	<span class="collapse-title">'+ addtaskname +' 	</span> 	<input type="hidden" name="projectTemplateTaskMaster[' + emgstat +'].projecttaskid" value="0" /> 	<input type="hidden" name="projectTemplateTaskMaster[' + emgstat +'].tasktitle" 								value="'+ addtaskname +'" /> 	<input type="hidden" name="projectTemplateTaskMaster[' + emgstat +'].taskorder" 								value="'+ addtaskorder +'" /> 				<span class="deletetask" name="' + emgstat +'"><i class="bx bx-trash-alt"></i></span>				 </div> <div id="collapsepd' + emgstat +'" role="tabpanel" aria-labelledby="headingCollapsepd' + emgstat +'" class="collapse"> 	<div class="card-content"> 		<div class="card-body "> 			<div class="row"> 	<table class="table1 divholder' + emgstat +'" > <tr> <th>Activity Type</th> <th>Activity Name</th> <th>Order</th> </tr> </table><br/><br/><span class="addactivity col-12" name="' + emgstat +'">+ Add Activity</span>	</div> 		</div> 	</div> </div> </div>');
+							
 							emgstat = emgstat + 1;
-						});
+							$('#ProjectTaskScrollable').modal('toggle');
+							$('#addtaskname').val("");
+							$('#addtaskorder').val("");
+						}
+						
 
-		$(document).on("click", ".srcecontactdivdelete", function() {
-			var id = $(this).attr('name');
-			$('.econtactdivadd' + id).hide();
-		});
-		
-		$(document).on("click", ".filedivdelete", function() {
-			$(this).closest("tr").remove();
-		});
-		
-		$('.hometabclick').click(function(){$('#home-tab').click();});
-		$('.profiletabclick').click(function(){$('#profile-tab').click();});
-		$('.abouttabclick').click(function(){$('#about-tab').click();});
-		$('.about1tabclick').click(function(){$('#about1-tab').click();});
-		$('.about2tabclick').click(function(){$('#about2-tab').click();});
-		
+					});
+					
+					//----------------------------------------
+					$(document).on("click", ".addactivity", function() {
+						name= $(this).attr("name");
+						$("#addActivitytypearea").val(name);
+						$('#ProjectActivityScrollable').modal('toggle');
+
+					});
+					//----------------------------------------
+					$(document).on("click", "#addActivitysavebtn", function() {
+					
+						var addActivitytype = $('#addActivitytype').val();
+						var addActivityorder = $('#addActivityorder').val();
+						var addActivityname = $('#addActivityname').val();
+						var addActivitytypearea = $('#addActivitytypearea').val();
+						if(addActivityname == "" || addActivityorder=="")
+						{
+							alert("Please fill the Activity Name and Order no");
+						}
+						else
+						{
+							
+							let temphtml='<tr><td><input type="hidden" name="projectTemplateTaskMaster[' + addActivitytypearea +'].projectTemplateActivityMaster['+ taskactivity +'].projectactivityid" value="0"/>';
+							 temphtml +='<input type="hidden" name="projectTemplateTaskMaster[' + addActivitytypearea +'].projectTemplateActivityMaster['+ taskactivity +'].activitytype"  value="'+ addActivitytype+'"/>'+ addActivitytype+'</td>';
+							 temphtml +='<td><input type="hidden" name="projectTemplateTaskMaster[' + addActivitytypearea +'].projectTemplateActivityMaster['+ taskactivity +'].activitytitle"  value="'+ addActivityname+'"/>'+ addActivityname+'</td>';
+							 temphtml +='<td><input type="hidden" name="projectTemplateTaskMaster[' + addActivitytypearea +'].projectTemplateActivityMaster['+ taskactivity +'].activityorder"  value="'+ addActivityorder+'"/>'+ addActivityorder+'</td><td> <span class="delete"><i class="bx bx-trash-alt"></i></span></td></tr>';
+							$(".divholder"+addActivitytypearea)
+							.append(temphtml);
+							
+							taskactivity = taskactivity + 1;
+							$('#ProjectActivityScrollable').modal('toggle');
+							$('#addActivityorder').val("");
+							$('#addActivityname').val("");
+						}
+						
+
+					});
+					//----------------------------------------
+					$(document).on("click", ".delete", function() {
+					
+						if(confirm("Are you sure to remove this item from list?"))
+							{
+								$(this).closest("tr").remove();
+							}
+					});
+					//----------------------------------------
+					//----------------------------------------
+					$(document).on("click", ".deletetask", function() {
+						name= $(this).attr("name");
+						
+						if(confirm("Are you sure to remove this item from list?"))
+							{
+								$(".masterdiv"+ name).html("");
+							}
+					});
+					//----------------------------------------
+					
+					
+				});			
 		
 	</script>
 

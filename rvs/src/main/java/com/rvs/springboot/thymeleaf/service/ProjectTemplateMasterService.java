@@ -10,5 +10,5 @@ public interface ProjectTemplateMasterService {
 	public ProjectTemplateMaster findById(Integer id);
 	public List<ProjectTemplateMaster> findAll();
 	public List<ProjectTemplateMaster> saveall(List<ProjectTemplateMaster> objList);
-	
+	public void deletenullrows();
 }

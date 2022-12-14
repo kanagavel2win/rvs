@@ -26,11 +26,11 @@ public class ProjectTemplateActivityMaster {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int projectactivityid;
 	@Column
-	private String tasktype;
+	private String activitytype;
 	@Column
-	private String tasktitle;
+	private String activitytitle;
 	@Column
-	private String taskorder;
+	private String activityorder;
 	
 	
 }

@@ -6013,10 +6013,24 @@ public class HomeController {
 	}
 	
 	@GetMapping("projecttemplate")
-	public String projecttemplate(Model themodel)
+	public String projecttemplate(Model themodel, @RequestParam(name="id", required=false ,defaultValue="0") Integer id)
 	{
-		List<ProjectTemplateMaster>prols = projectTemplateMasterService.findAll();
-		themodel.addAttribute("projecttemplatelist",prols);
-		return "projecttemplatelist";
+		ProjectTemplateMaster proobj =new ProjectTemplateMaster();
+				
+		if(id >0)
+		{
+			proobj = projectTemplateMasterService.findById(id);
+		}
+		themodel.addAttribute("projecttemplateobject",proobj);
+		
+		return "projecttemplate";
+	}
+	
+	@PostMapping("projecttemplatesave")
+	public String projecttemplatesave(Model themodel, @ModelAttribute("projecttemplateobject") ProjectTemplateMaster obj ) {
+		
+		obj=projectTemplateMasterService.save(obj);
+		projectTemplateMasterService.deletenullrows();		
+		return "redirect:projecttemplate?id="+ obj.getId() + "&sucess";
 	}
 }

@@ -893,6 +893,18 @@ background:#EBEBEB;
 																						<script>
 																							edudivadd = edudivadd + 1;
 																						</script>
+																						
+																						<th:block th:if="${#lists.size(childobj['projecttaskMaster'])==0}"> 
+																							 <div th:class="col-md-12">
+																							 Please Select the Project Template
+																								 <select th:class="'col-md-6 form-control form-control-sm projecttemplist'+ ${s.index}" >
+																										<th:block th:each="prjtemp: ${projecttemplatemasterobj}">
+																											<option th:value="${prjtemp.id}" th:text="${prjtemp.Title}"></option>
+																										</th:block>	
+																								</select> 
+																								<button type="button" class="btn btn-primary mr-1 mb-1 templateload btn-sm" th:name="${s.index}">Load This Template</button>
+																							</div>
+																						</th:block>
 																						<th:block th:each="projecttaskMasterobj, s1 : ${childobj['projecttaskMaster']}">
 																						
 																						<div class="col-12 card collapse-header">
@@ -1822,7 +1834,33 @@ background:#EBEBEB;
 							 	
 							 });
 							//--------------------------------------------------------------------------------
-							 
+							 $(document).on("click", ".templateload", function() {
+								let name=$(this).attr("name");
+								var projecttemplistVal = $('.projecttemplist'+name).val();
+								let srcprojectdetailid= $('input[name="projectdetailMaster['+name+'].projectdetailid"').val();
+								let projectMasterid =$(".projectMasterid").val();
+								var formData = {
+										projecttemplistVal : projecttemplistVal,
+										srcprojectdetailid : srcprojectdetailid,
+										projectMasterid : projectMasterid
+									}
+
+									$.ajax({
+										type : "POST",
+										url : "loadprojecttemplate",
+										data : formData,
+										success : function(result) {
+											//$(".district").html(result);
+											alert(result);
+										},
+										error : function(e) {
+											console.log("Error" + e);
+
+										}
+
+									});
+								
+							});
 							
 							//------------------------------------------------------
 						});

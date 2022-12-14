@@ -88,6 +88,7 @@ import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTaskMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateMaster;
+import com.rvs.springboot.thymeleaf.entity.ProjectTemplateTaskMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectdetailsMaster;
 import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
 import com.rvs.springboot.thymeleaf.entity.VendorFiles;
@@ -180,7 +181,7 @@ public class HomeController {
 	DealMasterService dealMasterSerivce;
 
 	@Autowired
-	ProjectMasterService projectMasterSerivce;
+	ProjectMasterService projectMasterService;
 	
 	@Autowired 
 	ProjectTemplateMasterService projectTemplateMasterService;
@@ -5478,7 +5479,7 @@ public class HomeController {
 
 		}
 		// --------------------------------------------------
-		List<ProjectMaster> projectmasterls = projectMasterSerivce.findAll();
+		List<ProjectMaster> projectmasterls = projectMasterService.findAll();
 		HashMap<Integer, Integer> maptotalamt = new HashMap();
 		HashMap<Integer, String> nextactmap = new HashMap();
 
@@ -5531,7 +5532,7 @@ public class HomeController {
 		String txt = String.valueOf(params.get("txt"));
 		String notes = String.valueOf(params.get("notes")).replace("null", "");
 
-		projectMasterSerivce.updatepipeline(ids, txt, notes);
+		projectMasterService.updatepipeline(ids, txt, notes);
 		return "";
 	}
 
@@ -5619,13 +5620,13 @@ public class HomeController {
 		projectMaster.setDealid(deal);
 
 		projectMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
-		projectMasterSerivce.save(projectMaster);
+		projectMasterService.save(projectMaster);
 		return "";
 	}
 
 	@GetMapping("projectevents")
 	public String projectevents(@RequestParam("id") int id, Model themodel) {
-		ProjectMaster projectMaster = projectMasterSerivce.findById(id);
+		ProjectMaster projectMaster = projectMasterService.findById(id);
 		List<ContactPerson> cplis = contactPersonSerivce.findAll();
 		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
 
@@ -5681,7 +5682,7 @@ public class HomeController {
 			themodel.addAttribute("employeelistuser", emlist);
 		}
 		// --------------------------------------------------
-		for(ProjectdetailsMaster m : projectMaster.getProjectdetailMaster())
+		/*for(ProjectdetailsMaster m : projectMaster.getProjectdetailMaster())
 		{
 			if(m.getProjecttaskMaster().size()==0)
 			{
@@ -5689,7 +5690,10 @@ public class HomeController {
 				projecttaskMasterls.add(new ProjectTaskMaster());
 				m.setProjecttaskMaster(projecttaskMasterls);
 			}
-		}
+		}*/
+		// --------------------------------------------------
+		List<ProjectTemplateMaster> projecttemplatemasterobj= projectTemplateMasterService.findAll();
+		themodel.addAttribute("projecttemplatemasterobj", projecttemplatemasterobj);
 		// --------------------------------------------------
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
@@ -5789,7 +5793,7 @@ public class HomeController {
 		projectMaster.setFollowers(followers);
 		projectMaster.setContactPerson(collectpeopleids);
 		projectMaster.setOrganization(collectorgids);
-		projectMaster = projectMasterSerivce.save(projectMaster);
+		projectMaster = projectMasterService.save(projectMaster);
 		// ----------------------------
 
 		List<ContactPerson> cplis = contactPersonSerivce.findAll();
@@ -5931,7 +5935,7 @@ public class HomeController {
 		activityMaster.setMastercategory("Project");
 		activityMaster = activityMasterSerivce.save(activityMaster);
 		// --------------------------------------------------
-		ProjectMaster projectMaster = projectMasterSerivce.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
+		ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
 		List<ContactPerson> cplis = contactPersonSerivce.findAll();
 		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
 		ContactPerson contactPersonobj = null;
@@ -6010,6 +6014,31 @@ public class HomeController {
 		List<ProjectTemplateMaster>prols = projectTemplateMasterService.findAll();
 		themodel.addAttribute("projecttemplatelist",prols);
 		return "projecttemplatelist";
+	}
+	
+	@ResponseBody
+	@PostMapping("loadprojecttemplate")
+	public String loadprojecttemplate(@RequestParam Map<String,String> params)
+	{
+		int projecttemplateid= Integer.parseInt(params.get("projecttemplistVal"));
+		int srcprojectdetailid= Integer.parseInt(params.get("srcprojectdetailid"));
+		int projectMasterid= Integer.parseInt(params.get("projectMasterid"));
+		
+		ProjectTemplateMaster obj= projectTemplateMasterService.findById(projecttemplateid);
+		ProjectMaster projectMasterObj= projectMasterService.findById(projectMasterid);
+		
+		List<ProjectTaskMaster> projectTaskMaster= new ArrayList<ProjectTaskMaster>();
+		
+		for(ProjectTemplateTaskMaster pttmobj: obj.getProjectTemplateTaskMaster())
+		{
+			projectTaskMaster.add(new ProjectTaskMaster(0,pttmobj.getTasktitle()));
+		}
+		
+		projectMasterObj.getProjectdetailMaster().stream().filter(C -> C.getProjectdetailid() == srcprojectdetailid).findFirst().ifPresent(C -> C.setProjecttaskMaster(projectTaskMaster));
+		
+		projectMasterObj = projectMasterService.save(projectMasterObj);
+		
+		return "Loaded";
 	}
 	
 	@GetMapping("projecttemplate")

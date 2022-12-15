@@ -79,10 +79,19 @@
 	th:href="@{/app-assets/css/pages/app-email.css}">
 <!-- END: Custom CSS-->
 <style>
-.edudivview
+
+.table1 td
 {
-
-
+border:1px solid #ccc;
+padding:5px;
+font-size:11px; 
+}
+.table1 th
+{
+border:1px solid #ccc;
+padding:5px;
+font-size:11px; 
+font-weight:bold;
 }
 .actionitems
 {
@@ -914,13 +923,37 @@ background:#EBEBEB;
 																							  <div th:id="'innercollapse' + ${projecttaskMasterobj['projecttaskid']}" role="tabpanel" th:aria-labelledby="'innerheadingCollapse' + ${projecttaskMasterobj['projecttaskid']}" class="collapse">
 																							  		
 																									<!-- ---------------------------- -->
+																									<table class="table1">
+																										<tr>
+																											<th></th><th>Done</th><th>Subject</th><th>Assignee</th><th>Due date</th>																											
+																										</tr>
+																										<th:block th:each="actobj, id : ${activitymaster}">
+																											<tr th:if="${actobj.mastercategoryid} == ${projecttaskMasterobj.projecttaskid}">
+																												
+																												<td>
+																													<span th:if="${actobj.activitytype}=='Task'"><i class="bx bx-notepad"></i></span>
+																													<span th:if="${actobj.activitytype}=='Meeting'"><i class="bx bx-calendar-event"></i></span>
+																													<span th:if="${actobj.activitytype}=='Call'"><i class="bx bx-phone-call"></i></span>
+																												</td>
+																												
+																												<td align="center">
+																													
+																													<input type="checkbox" class="checkboxdone" th:id="'customColorCheck'+ ${actobj.activityId}">
+																                                                    
+														                                                        </td>
+																												<td th:text="${actobj.activitytitle}"></td>																											
+																											</tr>
+																										</th:block>
+																									</table>
+																									<!-- ---------------------------- -->
 																									<div class="col-12 history">
 																										<div th:class="'col-md-12 edudivdelete' + ${s.index}">
 																											<span class="addtasklink" th:name="${projecttaskMasterobj['projecttaskid']}"> + Task</span>
 																											<span class="addtactivitylink" th:name="${projecttaskMasterobj['projecttaskid']}"> + Activity</span>
+																											<br/>
 																										</div>
 																										<!-- Timeline Widget Starts -->
-																										<div class="timline-card">
+																										<!-- <div class="timline-card">
 																											<div class="card ">
 																												<div class="card-header">
 																													<span class="actionitems">Action Items</span>
@@ -937,7 +970,7 @@ background:#EBEBEB;
 																													</div>
 																												</div>
 																											</div>
-																										</div>
+																										</div> -->
 																										<!-- Timeline Widget Ends -->
 													
 																									</div>
@@ -1478,7 +1511,7 @@ background:#EBEBEB;
 							
 							//--------------------------------------------------------------------------------------------------------------------------------------		 
  								
-							var protask = projecttaskid.split(',');
+						/*	var protask = projecttaskid.split(',');
 								
 								for(var i=0;i<protask.length; i++)
 								{
@@ -1487,7 +1520,7 @@ background:#EBEBEB;
 										gettimelinelist(protask[i]);	
 									}
 									
-								}
+								}*/
 							//--------------------------------------------------------------------------------------------------------------------------------------
 
 							$("#ContactPerson").change(function() {
@@ -1835,10 +1868,14 @@ background:#EBEBEB;
 							 });
 							//--------------------------------------------------------------------------------
 							 $(document).on("click", ".templateload", function() {
+								 
 								let name=$(this).attr("name");
 								var projecttemplistVal = $('.projecttemplist'+name).val();
 								let srcprojectdetailid= $('input[name="projectdetailMaster['+name+'].projectdetailid"').val();
 								let projectMasterid =$(".projectMasterid").val();
+								
+								$(this).html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Loading...');
+								
 								var formData = {
 										projecttemplistVal : projecttemplistVal,
 										srcprojectdetailid : srcprojectdetailid,
@@ -1851,7 +1888,15 @@ background:#EBEBEB;
 										data : formData,
 										success : function(result) {
 											//$(".district").html(result);
-											alert(result);
+											if(result=="Loaded")
+											{
+												alert("Task & Activity List are Imported Successfully");
+												document.location.reload();
+											}else
+											{
+												alert(result);
+												
+											}
 										},
 										error : function(e) {
 											console.log("Error" + e);

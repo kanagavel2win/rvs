@@ -42,6 +42,8 @@ public class ActivityMaster {
 	@Column
 	private String activitytype;
 	@Column
+	private String duedate;
+	@Column
 	private String startdate;
 	@Column
 	private String starttime;

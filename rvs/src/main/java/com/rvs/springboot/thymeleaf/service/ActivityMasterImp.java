@@ -65,4 +65,16 @@ public class ActivityMasterImp implements ActivityMasterService {
 		
 	}
 
+	@Override
+	public List<ActivityMaster> saveall(List<ActivityMaster> obj) {
+		return activityRepo.saveAll(obj);
+	}
+
+	@Override
+	public List<ActivityMaster> findByMastercategoryAndMastercategoryid(String mastercategory,
+			String mastercategoryid) {
+
+		return activityRepo.findByMastercategoryAndMastercategoryid(mastercategory,mastercategoryid);
+	}
+
 }

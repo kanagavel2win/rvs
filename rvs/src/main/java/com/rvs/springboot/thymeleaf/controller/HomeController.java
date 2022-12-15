@@ -87,6 +87,7 @@ import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTaskMaster;
+import com.rvs.springboot.thymeleaf.entity.ProjectTemplateActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateTaskMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectdetailsMaster;
@@ -170,15 +171,15 @@ public class HomeController {
 	@Autowired
 	InsuranceMasterService insuranceMasterService;
 	@Autowired
-	ContactPersonService contactPersonSerivce;
+	ContactPersonService contactPersonService;
 	@Autowired
-	ContactOrganizationService contactOrganizationSerivce;
+	ContactOrganizationService contactOrganizationService;
 	@Autowired
-	LeadMasterService leadMasterSerivce;
+	LeadMasterService leadMasterService;
 	@Autowired
-	ActivityMasterService activityMasterSerivce;
+	ActivityMasterService activityMasterService;
 	@Autowired
-	DealMasterService dealMasterSerivce;
+	DealMasterService dealMasterService;
 
 	@Autowired
 	ProjectMasterService projectMasterService;
@@ -3877,7 +3878,7 @@ public class HomeController {
 	@GetMapping("contactspersonlist")
 	public String contactspersonlist(Model themodel) {
 
-		List<ContactPerson> contactPersonlist = contactPersonSerivce.findAll();
+		List<ContactPerson> contactPersonlist = contactPersonService.findAll();
 		themodel.addAttribute("contactPersonlist", contactPersonlist);
 
 		return "contactpersonlist";
@@ -3889,7 +3890,7 @@ public class HomeController {
 		ContactPerson contactperson = new ContactPerson();
 		themodel.addAttribute("contactperson", contactperson);
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		themodel.addAttribute("organizationlist", contactOrganizationSerivce.findAll());
+		themodel.addAttribute("organizationlist", contactOrganizationService.findAll());
 		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
 		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
 
@@ -3901,14 +3902,14 @@ public class HomeController {
 	@GetMapping("contactpersonview")
 	public String contactpersonview(Model themodel, @RequestParam("id") int id) {
 
-		ContactPerson contactperson = contactPersonSerivce.findById(id);
+		ContactPerson contactperson = contactPersonService.findById(id);
 
 		themodel.addAttribute("contactperson", contactperson);
 		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
 		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
 		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
 		themodel.addAttribute("MEMBERIN", MEMBERIN);
-		themodel.addAttribute("organizationlist", contactOrganizationSerivce.findAll());
+		themodel.addAttribute("organizationlist", contactOrganizationService.findAll());
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
 
 		return "contactpersonadd";
@@ -3927,7 +3928,7 @@ public class HomeController {
 					ContactOrganization contactOrganization = new ContactOrganization();
 					contactOrganization.setOrgname(str);
 
-					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
 				}
 			}
 		}
@@ -3938,7 +3939,7 @@ public class HomeController {
 
 		itemlistService.savesingletxt(contactperson.getTypeofindustry(), "TYPEOFINDUSTRY");
 		itemlistService.savesingletxt(contactperson.getMemberin(), "MEMBERIN");
-		contactperson = contactPersonSerivce.save(contactperson);
+		contactperson = contactPersonService.save(contactperson);
 		// -------------------------------
 		mappersonstoOrganization(collectorgids, contactperson.getId());
 		// --------------------------------
@@ -3950,7 +3951,7 @@ public class HomeController {
 		themodel.addAttribute("MEMBERIN", MEMBERIN);
 		themodel.addAttribute("save", true);
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		themodel.addAttribute("organizationlist", contactOrganizationSerivce.findAll());
+		themodel.addAttribute("organizationlist", contactOrganizationService.findAll());
 
 		return "contactpersonadd";
 	}
@@ -3961,17 +3962,17 @@ public class HomeController {
 		ContactOrganization contactOrganization = new ContactOrganization();
 		themodel.addAttribute("contactOrganization", contactOrganization);
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		themodel.addAttribute("personlist", contactPersonSerivce.findAll());
+		themodel.addAttribute("personlist", contactPersonService.findAll());
 		return "contactorganizationadd";
 	}
 
 	@GetMapping("contactOrganizationview")
 	public String contactOrganizationview(Model themodel, @RequestParam("id") int id) {
 
-		ContactOrganization contactOrganization = contactOrganizationSerivce.findById(id);
+		ContactOrganization contactOrganization = contactOrganizationService.findById(id);
 		themodel.addAttribute("contactOrganization", contactOrganization);
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		themodel.addAttribute("personlist", contactPersonSerivce.findAll());
+		themodel.addAttribute("personlist", contactPersonService.findAll());
 
 		return "contactorganizationadd";
 	}
@@ -3989,7 +3990,7 @@ public class HomeController {
 				} else {
 					ContactPerson contactperson = new ContactPerson();
 					contactperson.setPeoplename(str);
-					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
 				}
 			}
 		}
@@ -3998,7 +3999,7 @@ public class HomeController {
 		}
 		contactOrganization.setPersonid(collectpeopleids);
 
-		contactOrganization = contactOrganizationSerivce.save(contactOrganization);
+		contactOrganization = contactOrganizationService.save(contactOrganization);
 
 		// -------------------------------
 		mapOrganizationtopersons(collectpeopleids, contactOrganization.getId());
@@ -4007,7 +4008,7 @@ public class HomeController {
 		themodel.addAttribute("contactOrganization", contactOrganization);
 		themodel.addAttribute("save", true);
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		themodel.addAttribute("personlist", contactPersonSerivce.findAll());
+		themodel.addAttribute("personlist", contactPersonService.findAll());
 		return "contactorganizationadd";
 	}
 
@@ -4016,7 +4017,7 @@ public class HomeController {
 		final String perid = String.valueOf(personId);
 		if (!collectorgids.equalsIgnoreCase("")) {
 			for (String s : collectorgids.split(",")) {
-				ContactOrganization contactOrganization1 = contactOrganizationSerivce.findById(Integer.parseInt(s));
+				ContactOrganization contactOrganization1 = contactOrganizationService.findById(Integer.parseInt(s));
 				String[] arr = String.valueOf(contactOrganization1.getPersonid()).split(",");
 
 				if (!Arrays.stream(arr).anyMatch(x -> x.equalsIgnoreCase(perid))) {
@@ -4027,7 +4028,7 @@ public class HomeController {
 						contactOrganization1.setPersonid(String.valueOf(personId));
 					}
 				}
-				contactOrganizationSerivce.save(contactOrganization1);
+				contactOrganizationService.save(contactOrganization1);
 			}
 		}
 	}
@@ -4038,7 +4039,7 @@ public class HomeController {
 		final String orgid = String.valueOf(orgId);
 		if (!collectpeopleids.equalsIgnoreCase("")) {
 			for (String s : collectpeopleids.split(",")) {
-				ContactPerson contactPerson1 = contactPersonSerivce.findById(Integer.parseInt(s));
+				ContactPerson contactPerson1 = contactPersonService.findById(Integer.parseInt(s));
 
 				String[] arr = String.valueOf(contactPerson1.getOrganization()).split(",");
 
@@ -4050,7 +4051,7 @@ public class HomeController {
 						contactPerson1.setOrganization(String.valueOf(orgId));
 					}
 				}
-				contactPersonSerivce.save(contactPerson1);
+				contactPersonService.save(contactPerson1);
 			}
 		}
 		// --------------------------------
@@ -4059,7 +4060,7 @@ public class HomeController {
 	@GetMapping("contactsorganizationslist")
 	public String contactsorganizationslist(Model themodel) {
 
-		List<ContactOrganization> contactOrganizationlist = contactOrganizationSerivce.findAll();
+		List<ContactOrganization> contactOrganizationlist = contactOrganizationService.findAll();
 		themodel.addAttribute("contactOrganizationlist", contactOrganizationlist);
 
 		return "contactorganizationlist";
@@ -4070,8 +4071,8 @@ public class HomeController {
 
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 		themodel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
@@ -4096,7 +4097,7 @@ public class HomeController {
 			}
 		}
 		// --------------------------------------------------
-		List<LeadMaster> leadmasterls = leadMasterSerivce.findAll();
+		List<LeadMaster> leadmasterls = leadMasterService.findAll();
 
 		// Next Activity & Followers Details
 		HashMap<Integer, String> nextactmap = new HashMap();
@@ -4105,7 +4106,7 @@ public class HomeController {
 
 		for (LeadMaster tmp1obj : leadmasterls) {
 			// --------------------------------------------------
-			List<Map<String, Object>> ls = activityMasterSerivce.nextactivity("Lead", String.valueOf(tmp1obj.getId()));
+			List<Map<String, Object>> ls = activityMasterService.nextactivity("Lead", String.valueOf(tmp1obj.getId()));
 			if (ls.size() > 0) {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
@@ -4145,7 +4146,7 @@ public class HomeController {
 	@ResponseBody
 	public String organizationlist(@RequestParam Map<String, String> params) {
 		ContactPerson obj = new ContactPerson();
-		obj = contactPersonSerivce.findById(Integer.parseInt(params.get("personid")));
+		obj = contactPersonService.findById(Integer.parseInt(params.get("personid")));
 		String str = obj.getPhonework() + " |" + obj.getPhonepersonal() + " |" + obj.getPhoneothers() + " |"
 				+ obj.getEmailwork() + " |" + obj.getEmailpersonal() + " |" + obj.getEmailothers() + " |"
 				+ obj.getFollowers() + " |";
@@ -4183,7 +4184,7 @@ public class HomeController {
 					ContactOrganization contactOrganization = new ContactOrganization();
 					contactOrganization.setOrgname(str);
 
-					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
 				}
 			}
 			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
@@ -4197,7 +4198,7 @@ public class HomeController {
 			for (String str : srcPer.split(",")) {
 				if (NumberUtils.isParsable(str)) {
 					collectpeopleids += str + ",";
-					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					ContactPerson contactperson = contactPersonService.findById(Integer.parseInt(str));
 					contactperson.setFollowers(followers);
 					contactperson.setPhonework(phonework);
 					contactperson.setPhonepersonal(phonepersonal);
@@ -4205,7 +4206,7 @@ public class HomeController {
 					contactperson.setEmailwork(emailwork);
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
-					contactPersonSerivce.save(contactperson);
+					contactPersonService.save(contactperson);
 
 				} else {
 					ContactPerson contactperson = new ContactPerson();
@@ -4218,7 +4219,7 @@ public class HomeController {
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
 
-					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
 				}
 			}
 			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
@@ -4247,7 +4248,7 @@ public class HomeController {
 		leadMaster.setNotes(notes);
 		leadMaster.setFollower(followers);
 		leadMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
-		leadMasterSerivce.save(leadMaster);
+		leadMasterService.save(leadMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
 		// ----------------------------
@@ -4256,9 +4257,9 @@ public class HomeController {
 
 	@GetMapping("leadevents")
 	public String leadevents(@RequestParam("id") int id, Model themodel) {
-		LeadMaster leadMaster = leadMasterSerivce.findById(id);
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		LeadMaster leadMaster = leadMasterService.findById(id);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -4288,7 +4289,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -4343,7 +4344,7 @@ public class HomeController {
 					ContactOrganization contactOrganization = new ContactOrganization();
 					contactOrganization.setOrgname(str);
 
-					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
 				}
 			}
 			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
@@ -4361,14 +4362,14 @@ public class HomeController {
 
 				if (NumberUtils.isParsable(str)) {
 					collectpeopleids += str + ",";
-					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					ContactPerson contactperson = contactPersonService.findById(Integer.parseInt(str));
 					contactperson.setPhonework(phonework);
 					contactperson.setPhonepersonal(phonepersonal);
 					contactperson.setPhoneothers(phoneothers);
 					contactperson.setEmailwork(emailwork);
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
-					contactPersonSerivce.save(contactperson);
+					contactPersonService.save(contactperson);
 
 				} else {
 					ContactPerson contactperson = new ContactPerson();
@@ -4380,7 +4381,7 @@ public class HomeController {
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
 
-					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
 				}
 			}
 			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
@@ -4402,13 +4403,13 @@ public class HomeController {
 
 		leadMaster.setContactPerson(collectpeopleids);
 		leadMaster.setOrganization(collectorgids);
-		leadMasterSerivce.save(leadMaster);
+		leadMasterService.save(leadMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
 		// ----------------------------
 
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -4438,7 +4439,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -4533,11 +4534,11 @@ public class HomeController {
 		}
 		activityMaster.setActivitycategory("Activity");
 		activityMaster.setMastercategory("Lead");
-		activityMaster = activityMasterSerivce.save(activityMaster);
+		activityMaster = activityMasterService.save(activityMaster);
 		// --------------------------------------------------
-		LeadMaster leadMaster = leadMasterSerivce.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -4567,7 +4568,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -4659,11 +4660,11 @@ public class HomeController {
 		}
 		activityMaster.setActivitycategory("Activity");
 		activityMaster.setMastercategory("Deal");
-		activityMaster = activityMasterSerivce.save(activityMaster);
+		activityMaster = activityMasterService.save(activityMaster);
 		// --------------------------------------------------
-		DealMaster dealMaster = dealMasterSerivce.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		DealMaster dealMaster = dealMasterService.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -4693,7 +4694,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(dealMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (dealMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -4727,7 +4728,7 @@ public class HomeController {
 
 		ActivityMaster activityMaster = new ActivityMaster();
 		if (noteactivityid > 0) {
-			activityMaster = activityMasterSerivce.findById(noteactivityid);
+			activityMaster = activityMasterService.findById(noteactivityid);
 		} else {
 			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
 		}
@@ -4739,7 +4740,7 @@ public class HomeController {
 		activityMaster.setMastercategoryid(mastercategoryid);
 		activityMaster.setActivitycategory("Note");
 		activityMaster.setMastercategory("Lead");
-		activityMaster = activityMasterSerivce.save(activityMaster);
+		activityMaster = activityMasterService.save(activityMaster);
 
 		return "Saved";
 	}
@@ -4755,7 +4756,7 @@ public class HomeController {
 
 		ActivityMaster activityMaster = new ActivityMaster();
 		if (noteactivityid > 0) {
-			activityMaster = activityMasterSerivce.findById(noteactivityid);
+			activityMaster = activityMasterService.findById(noteactivityid);
 		} else {
 			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
 		}
@@ -4767,7 +4768,7 @@ public class HomeController {
 		activityMaster.setMastercategoryid(mastercategoryid);
 		activityMaster.setActivitycategory("Note");
 		activityMaster.setMastercategory("Deal");
-		activityMaster = activityMasterSerivce.save(activityMaster);
+		activityMaster = activityMasterService.save(activityMaster);
 
 		return "Saved";
 	}
@@ -4777,9 +4778,9 @@ public class HomeController {
 	public String activitymarkascompleted(@RequestParam Map<String, String> params) {
 
 		String activityid = params.get("activityid");
-		ActivityMaster actimaster = activityMasterSerivce.findById(Integer.parseInt(activityid));
+		ActivityMaster actimaster = activityMasterService.findById(Integer.parseInt(activityid));
 		actimaster.setStatus("Completed");
-		activityMasterSerivce.save(actimaster);
+		activityMasterService.save(actimaster);
 		return "";
 	}
 
@@ -4790,7 +4791,7 @@ public class HomeController {
 		String mastercategoryid = params.get("mastercategoryid");
 		String categoryType = params.get("categoryType");
 
-		List<Map<String, Object>> ls = activityMasterSerivce.gettimelinelist(categoryType, mastercategoryid);
+		List<Map<String, Object>> ls = activityMasterService.gettimelinelist(categoryType, mastercategoryid);
 
 		String[] result = { "" };
 
@@ -4808,7 +4809,7 @@ public class HomeController {
 			String htmlnotes = nullremover(String.valueOf(rowMap.get("htmlnotes")));
 			String followers = nullremover(String.valueOf(rowMap.get("activityfollowers")));
 			String status = nullremover(String.valueOf(rowMap.get("status")));
-			ActivityMaster actimaster = activityMasterSerivce
+			ActivityMaster actimaster = activityMasterService
 					.findById(Integer.parseInt(String.valueOf(rowMap.get("activity_id"))));
 			// -------------------------------------------
 			// guest Details
@@ -4941,9 +4942,9 @@ public class HomeController {
 	@PostMapping("convertodeal")
 	public String convertodeal(@RequestParam Map<String, String> params) {
 		int leadmasterid = Integer.parseInt(params.get("leadmasterid"));
-		LeadMaster leadobj = leadMasterSerivce.findById(leadmasterid);
+		LeadMaster leadobj = leadMasterService.findById(leadmasterid);
 		leadobj.setMovedtolead(true);
-		leadMasterSerivce.save(leadobj);
+		leadMasterService.save(leadobj);
 
 		DealMaster dealobj = new DealMaster();
 		dealobj.setContactPerson(leadobj.getContactPerson());
@@ -4956,7 +4957,7 @@ public class HomeController {
 		dealobj.setLeadid(leadobj.getId());
 		dealobj.setPipeline("Deal In");
 		dealobj.setCreateddate(displaydatetimeFormat.format(new Date()));
-		dealMasterSerivce.save(dealobj);
+		dealMasterService.save(dealobj);
 
 		return "redirect:/deal?new";
 	}
@@ -4966,7 +4967,7 @@ public class HomeController {
 	public String convertolead(@RequestParam Map<String, String> params) {
 		int dealmasterid = Integer.parseInt(params.get("ids"));
 
-		DealMaster dealobj = dealMasterSerivce.findById(dealmasterid);
+		DealMaster dealobj = dealMasterService.findById(dealmasterid);
 
 		if (dealobj.getLeadid() == 0) {
 			LeadMaster leadobj = new LeadMaster();
@@ -4980,15 +4981,15 @@ public class HomeController {
 			leadobj.setCreateddate(displaydatetimeFormat.format(new Date()));
 			leadobj.setMovedtolead(false);
 			leadobj.setBackfromdeal(true);
-			leadobj = leadMasterSerivce.save(leadobj);
+			leadobj = leadMasterService.save(leadobj);
 
 			dealobj.setLeadid(leadobj.getId());
-			dealMasterSerivce.save(dealobj);
+			dealMasterService.save(dealobj);
 		} else {
-			LeadMaster leadobj = leadMasterSerivce.findById(dealobj.getLeadid());
+			LeadMaster leadobj = leadMasterService.findById(dealobj.getLeadid());
 			leadobj.setMovedtolead(false);
 			leadobj.setBackfromdeal(true);
-			leadobj = leadMasterSerivce.save(leadobj);
+			leadobj = leadMasterService.save(leadobj);
 		}
 
 		return "";
@@ -4998,8 +4999,8 @@ public class HomeController {
 	public String deal(Model themodel) {
 
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
@@ -5025,7 +5026,7 @@ public class HomeController {
 
 		}
 		// --------------------------------------------------
-		List<DealMaster> dealmasterls = dealMasterSerivce.findAll();
+		List<DealMaster> dealmasterls = dealMasterService.findAll();
 		HashMap<Integer, Integer> maptotalamt = new HashMap();
 		HashMap<Integer, String> nextactmap = new HashMap();
 
@@ -5039,7 +5040,7 @@ public class HomeController {
 			maptotalamt.put(objg.getId(), totalamount);
 
 			// Next Activity & Followers Details
-			List<Map<String, Object>> ls = activityMasterSerivce.nextactivity("Deal", String.valueOf(objg.getId()));
+			List<Map<String, Object>> ls = activityMasterService.nextactivity("Deal", String.valueOf(objg.getId()));
 			if (ls.size() > 0) {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
@@ -5075,7 +5076,7 @@ public class HomeController {
 		String notes = String.valueOf(params.get("notes")).replace("null", "");
 		;
 
-		dealMasterSerivce.updatepipeline(ids, txt, notes);
+		dealMasterService.updatepipeline(ids, txt, notes);
 		return "";
 	}
 
@@ -5110,7 +5111,7 @@ public class HomeController {
 					ContactOrganization contactOrganization = new ContactOrganization();
 					contactOrganization.setOrgname(str);
 
-					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
 				}
 			}
 			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
@@ -5124,7 +5125,7 @@ public class HomeController {
 			for (String str : srcPer.split(",")) {
 				if (NumberUtils.isParsable(str)) {
 					collectpeopleids += str + ",";
-					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					ContactPerson contactperson = contactPersonService.findById(Integer.parseInt(str));
 					contactperson.setFollowers(followers);
 					contactperson.setPhonework(phonework);
 					contactperson.setPhonepersonal(phonepersonal);
@@ -5132,7 +5133,7 @@ public class HomeController {
 					contactperson.setEmailwork(emailwork);
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
-					contactPersonSerivce.save(contactperson);
+					contactPersonService.save(contactperson);
 
 				} else {
 					ContactPerson contactperson = new ContactPerson();
@@ -5145,7 +5146,7 @@ public class HomeController {
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
 
-					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
 				}
 			}
 			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
@@ -5176,7 +5177,7 @@ public class HomeController {
 		dealMaster.setNotes(notes);
 		dealMaster.setFollower(followers);
 		dealMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
-		dealMasterSerivce.save(dealMaster);
+		dealMasterService.save(dealMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
 		itemlistService.savesingletxt(purpose, "PURPOSE");
@@ -5186,15 +5187,15 @@ public class HomeController {
 
 	@GetMapping("dealevents")
 	public String dealevents(@RequestParam("id") int id, Model themodel) {
-		DealMaster dealMaster = dealMasterSerivce.findById(id);
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		DealMaster dealMaster = dealMasterService.findById(id);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 
-		List<String> statelist = dealMasterSerivce.getStateAll();
+		List<String> statelist = dealMasterService.getStateAll();
 		String state = nullremover(String.valueOf(dealMaster.getState()));
 		List<String> districtlist = new ArrayList();
 		if (state.length() > 0) {
-			districtlist = dealMasterSerivce.getDistrictAll(state);
+			districtlist = dealMasterService.getDistrictAll(state);
 		}
 		themodel.addAttribute("statelist", statelist);
 		themodel.addAttribute("districtlist", districtlist);
@@ -5233,7 +5234,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(dealMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (dealMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -5300,7 +5301,7 @@ public class HomeController {
 					ContactOrganization contactOrganization = new ContactOrganization();
 					contactOrganization.setOrgname(str);
 
-					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
 				}
 			}
 			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
@@ -5318,14 +5319,14 @@ public class HomeController {
 
 				if (NumberUtils.isParsable(str)) {
 					collectpeopleids += str + ",";
-					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					ContactPerson contactperson = contactPersonService.findById(Integer.parseInt(str));
 					contactperson.setPhonework(phonework);
 					contactperson.setPhonepersonal(phonepersonal);
 					contactperson.setPhoneothers(phoneothers);
 					contactperson.setEmailwork(emailwork);
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
-					contactPersonSerivce.save(contactperson);
+					contactPersonService.save(contactperson);
 
 				} else {
 					ContactPerson contactperson = new ContactPerson();
@@ -5337,7 +5338,7 @@ public class HomeController {
 					contactperson.setEmailpersonal(emailpersonal);
 					contactperson.setEmailothers(emailothers);
 
-					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
 				}
 			}
 			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
@@ -5359,13 +5360,13 @@ public class HomeController {
 
 		dealMaster.setContactPerson(collectpeopleids);
 		dealMaster.setOrganization(collectorgids);
-		dealMaster = dealMasterSerivce.save(dealMaster);
+		dealMaster = dealMasterService.save(dealMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
 		// ----------------------------
 
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -5395,7 +5396,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(dealMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (dealMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -5424,11 +5425,11 @@ public class HomeController {
 		amobj.setActivityfollowers(contactPersonobj.getFollowers());
 		themodel.addAttribute("activityMaster", amobj);
 
-		List<String> statelist = dealMasterSerivce.getStateAll();
+		List<String> statelist = dealMasterService.getStateAll();
 		String state = nullremover(String.valueOf(dealMaster.getState()));
 		List<String> districtlist = new ArrayList();
 		if (state.length() > 0) {
-			districtlist = dealMasterSerivce.getDistrictAll(state);
+			districtlist = dealMasterService.getDistrictAll(state);
 		}
 		themodel.addAttribute("statelist", statelist);
 		themodel.addAttribute("districtlist", districtlist);
@@ -5440,7 +5441,7 @@ public class HomeController {
 	@PostMapping("getdistrictlist")
 	@ResponseBody
 	public String getdistrictlist(@RequestParam("state") String state) {
-		List<String> districtlist = dealMasterSerivce.getDistrictAll(state);
+		List<String> districtlist = dealMasterService.getDistrictAll(state);
 		String output = "";
 		for (String str : districtlist) {
 			output += "<option value='" + str + "'>" + str + "</option>";
@@ -5452,8 +5453,8 @@ public class HomeController {
 	public String projectls(Model themodel) {
 
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
 		for (ContactPerson cp : cplis) {
@@ -5493,7 +5494,7 @@ public class HomeController {
 			maptotalamt.put(objg.getId(), totalamount);
 
 			// Next Activity & Followers Details
-			List<Map<String, Object>> ls = activityMasterSerivce.nextactivity("Project", String.valueOf(objg.getId()));
+			List<Map<String, Object>> ls = activityMasterService.nextactivity("Project", String.valueOf(objg.getId()));
 			if (ls.size() > 0) {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
@@ -5563,7 +5564,7 @@ public class HomeController {
 					ContactOrganization contactOrganization = new ContactOrganization();
 					contactOrganization.setOrgname(str);
 
-					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
 				}
 			}
 			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
@@ -5577,15 +5578,15 @@ public class HomeController {
 			for (String str : srcPer.split(",")) {
 				if (NumberUtils.isParsable(str)) {
 					collectpeopleids += str + ",";
-					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
+					ContactPerson contactperson = contactPersonService.findById(Integer.parseInt(str));
 					contactperson.setFollowers(followers);
-					contactPersonSerivce.save(contactperson);
+					contactPersonService.save(contactperson);
 
 				} else {
 					ContactPerson contactperson = new ContactPerson();
 					contactperson.setPeoplename(str);
 					contactperson.setFollowers(followers);
-					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
 				}
 			}
 			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
@@ -5627,8 +5628,8 @@ public class HomeController {
 	@GetMapping("projectevents")
 	public String projectevents(@RequestParam("id") int id, Model themodel) {
 		ProjectMaster projectMaster = projectMasterService.findById(id);
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
@@ -5664,7 +5665,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -5682,15 +5683,22 @@ public class HomeController {
 			themodel.addAttribute("employeelistuser", emlist);
 		}
 		// --------------------------------------------------
-		/*for(ProjectdetailsMaster m : projectMaster.getProjectdetailMaster())
+		List<ActivityMaster> amlist= new ArrayList<ActivityMaster>();
+		
+		for(ProjectdetailsMaster m : projectMaster.getProjectdetailMaster())
 		{
-			if(m.getProjecttaskMaster().size()==0)
+			/*if(m.getProjecttaskMaster().size()==0)
 			{
 				List<ProjectTaskMaster> projecttaskMasterls= new ArrayList();
 				projecttaskMasterls.add(new ProjectTaskMaster());
 				m.setProjecttaskMaster(projecttaskMasterls);
+			}*/
+			for(ProjectTaskMaster prjtaskmobj : m.getProjecttaskMaster())
+			{
+				amlist.addAll(activityMasterService.findByMastercategoryAndMastercategoryid("Project",String.valueOf(prjtaskmobj.getProjecttaskid())));
 			}
-		}*/
+		}
+		themodel.addAttribute("activitymaster",amlist);
 		// --------------------------------------------------
 		List<ProjectTemplateMaster> projecttemplatemasterobj= projectTemplateMasterService.findAll();
 		themodel.addAttribute("projecttemplatemasterobj", projecttemplatemasterobj);
@@ -5745,7 +5753,7 @@ public class HomeController {
 					ContactOrganization contactOrganization = new ContactOrganization();
 					contactOrganization.setOrgname(str);
 
-					collectorgids += contactOrganizationSerivce.save(contactOrganization).getId() + ",";
+					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
 				}
 			}
 			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
@@ -5763,14 +5771,14 @@ public class HomeController {
 
 				if (NumberUtils.isParsable(str)) {
 					collectpeopleids += str + ",";
-					ContactPerson contactperson = contactPersonSerivce.findById(Integer.parseInt(str));
-					contactPersonSerivce.save(contactperson);
+					ContactPerson contactperson = contactPersonService.findById(Integer.parseInt(str));
+					contactPersonService.save(contactperson);
 
 				} else {
 					ContactPerson contactperson = new ContactPerson();
 					contactperson.setPeoplename(str);
 
-					collectpeopleids += contactPersonSerivce.save(contactperson).getId() + ",";
+					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
 				}
 			}
 			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
@@ -5796,8 +5804,8 @@ public class HomeController {
 		projectMaster = projectMasterService.save(projectMaster);
 		// ----------------------------
 
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -5827,7 +5835,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -5933,11 +5941,11 @@ public class HomeController {
 		}
 		activityMaster.setActivitycategory("Activity");
 		activityMaster.setMastercategory("Project");
-		activityMaster = activityMasterSerivce.save(activityMaster);
+		activityMaster = activityMasterService.save(activityMaster);
 		// --------------------------------------------------
 		ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
-		List<ContactPerson> cplis = contactPersonSerivce.findAll();
-		List<ContactOrganization> corglis = contactOrganizationSerivce.findAll();
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
 		ArrayList<String> personorgls = new ArrayList<String>();
@@ -5967,7 +5975,7 @@ public class HomeController {
 		if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
 
-				ContactPerson cplistemp = contactPersonSerivce.findById(Integer.parseInt(str1));
+				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
 				contactPersonobj = cplistemp;
 				break;
 
@@ -5991,7 +5999,7 @@ public class HomeController {
 
 		ActivityMaster activityMaster = new ActivityMaster();
 		if (noteactivityid > 0) {
-			activityMaster = activityMasterSerivce.findById(noteactivityid);
+			activityMaster = activityMasterService.findById(noteactivityid);
 		} else {
 			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
 		}
@@ -6003,7 +6011,7 @@ public class HomeController {
 		activityMaster.setMastercategoryid(mastercategoryid);
 		activityMaster.setActivitycategory("Note");
 		activityMaster.setMastercategory("Project");
-		activityMaster = activityMasterSerivce.save(activityMaster);
+		activityMaster = activityMasterService.save(activityMaster);
 
 		return "Saved";
 	}
@@ -6029,6 +6037,7 @@ public class HomeController {
 		
 		List<ProjectTaskMaster> projectTaskMaster= new ArrayList<ProjectTaskMaster>();
 		
+		// Create Task from Project Template
 		for(ProjectTemplateTaskMaster pttmobj: obj.getProjectTemplateTaskMaster())
 		{
 			projectTaskMaster.add(new ProjectTaskMaster(0,pttmobj.getTasktitle()));
@@ -6037,6 +6046,27 @@ public class HomeController {
 		projectMasterObj.getProjectdetailMaster().stream().filter(C -> C.getProjectdetailid() == srcprojectdetailid).findFirst().ifPresent(C -> C.setProjecttaskMaster(projectTaskMaster));
 		
 		projectMasterObj = projectMasterService.save(projectMasterObj);
+		// Create Activity from Project Template
+		List<ProjectTaskMaster> ptmstobj= projectMasterObj.getProjectdetailMaster().stream().filter(C -> C.getProjectdetailid() == srcprojectdetailid).collect(Collectors.toList()).get(0).getProjecttaskMaster();
+		
+		List<ActivityMaster> actvitymasterlist= new ArrayList<ActivityMaster>();
+		
+		ProjectTemplateTaskMaster PprojectTemplateTaskMasterobj= null;
+		for(ProjectTaskMaster tempobj: ptmstobj) {
+			PprojectTemplateTaskMasterobj = obj.getProjectTemplateTaskMaster().stream().filter(C -> C.getTasktitle().equalsIgnoreCase(tempobj.getProjecttasktitle())).collect(Collectors.toList()).get(0);
+			for(ProjectTemplateActivityMaster actobj: PprojectTemplateTaskMasterobj.getProjectTemplateActivityMaster())
+			{
+				ActivityMaster am = new ActivityMaster();
+				am.setActivitytype(actobj.getActivitytype());
+				am.setActivitycategory("Activity");
+				am.setMastercategory("Project");
+				am.setActivitytitle(actobj.getActivitytitle());
+				am.setMastercategoryid(String.valueOf(tempobj.getProjecttaskid()));
+				actvitymasterlist.add(am);
+			}
+			
+		}
+		activityMasterService.saveall(actvitymasterlist);
 		
 		return "Loaded";
 	}

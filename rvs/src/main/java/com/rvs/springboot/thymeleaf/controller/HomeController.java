@@ -5700,6 +5700,16 @@ public class HomeController {
 		}
 		themodel.addAttribute("activitymaster",amlist);
 		// --------------------------------------------------
+		// Employee Name list
+		HashMap<String,String> empmap=new HashMap<String,String>();
+		
+		for(EmployeeMaster em:employeeMasterService.findAll())
+		{
+			empmap.put(String.valueOf(em.getEmpMasterid()), em.getStaffName());
+		}
+		themodel.addAttribute("employeemaster",empmap);
+		
+		// --------------------------------------------------
 		List<ProjectTemplateMaster> projecttemplatemasterobj= projectTemplateMasterService.findAll();
 		themodel.addAttribute("projecttemplatemasterobj", projecttemplatemasterobj);
 		// --------------------------------------------------
@@ -5943,8 +5953,8 @@ public class HomeController {
 		activityMaster.setMastercategory("Project");
 		activityMaster = activityMasterService.save(activityMaster);
 		// --------------------------------------------------
-		ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		//ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(params.get("projectMasterid")));
+		/*List<ContactPerson> cplis = contactPersonService.findAll();
 		List<ContactOrganization> corglis = contactOrganizationService.findAll();
 		ContactPerson contactPersonobj = null;
 		// --------------------------------------------------
@@ -5971,8 +5981,8 @@ public class HomeController {
 			}
 
 		}
-
-		if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
+*/
+		/*if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
 
 				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
@@ -5981,7 +5991,7 @@ public class HomeController {
 
 			}
 
-		}
+		}*/
 		
 		return "redirect:projectevents?id="+ String.valueOf(params.get("projectMasterid"));
 	//	return "projectevents";
@@ -6092,4 +6102,16 @@ public class HomeController {
 		projectTemplateMasterService.deletenullrows();		
 		return "redirect:projecttemplate?id="+ obj.getId() + "&sucess";
 	}
+
+	@ResponseBody
+	@PostMapping("getactivitydetails")
+	public ActivityMaster getactivitydetails(@RequestParam("name") int id){
+		
+		ActivityMaster amlist= activityMasterService.findById(id);
+		
+		return amlist;
+		
+	}
+	
+
 }

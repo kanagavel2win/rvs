@@ -79,7 +79,9 @@
 	th:href="@{/app-assets/css/pages/app-email.css}">
 <!-- END: Custom CSS-->
 <style>
-
+.badge-secondary{
+font-size:9px; 
+}
 .table1 td
 {
 border:1px solid #ccc;
@@ -454,18 +456,24 @@ background:#EBEBEB;
 																			<!-- <input type="hidden" value="Project"  th:field="*{mastercategory}" /> -->
 																			<input type="hidden" th:field="*{mastercategoryid}"
 																				id="activityidsourceid" />
+																			<input type="hidden" class="projectMasterid"
+																				name="projectMasterid" />
+																					
+																				
+																			<input type="hidden" th:field="*{status}"
+																				id="actstatus" />
 																			<input type="hidden" name="projectMasterid" class="projectMasterid form-control form-control-sm capitalize" />
 																			
 																			<!-- <input type="hidden"  th:value="'Activity'"  th:field="*{activitycategory}"/> -->
 																			<input type="hidden" th:field="*{activityId}"
-																				th:value="${activityMaster['activityId']}" /> <input
+																				th:value="${activityMaster['activityId']}" id="activityId"/> <input
 																				type="hidden" th:field="*{createdtime}"
-																				th:value="${activityMaster['createdtime']}" /> <input
+																				th:value="${activityMaster['createdtime']}" id="createdtime"/> <input
 																				type="text"
 																				class="form-control  form-control-sm capitalize ActivityTitle"
 																				placeholder="Task details..."
 																				th:field="*{activitytitle}"
-																				th:value="${activityMaster['activitytitle']}" />
+																				th:value="${activityMaster['activitytitle']}" id="activitytitle"/>
 
 																		</div>
 																	</div>
@@ -476,24 +484,24 @@ background:#EBEBEB;
 																			data-toggle="buttons">
 																			<label
 																				th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
-																				onclick="optionshandle(this);" title="Task">
+																				onclick="optionshandle(this);" title="Task" id="actTask">
 																				<input type="radio" name="options"
 																				onclick="optionshandle(this);"
 																				th:field="*{activitytype}" value="Task" id="radio1"><i
 																				class="bx bx-alarm-add"></i>
 																			</label> <label
 																				th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
-																				onclick="optionshandle(this);" title="Call">
+																				onclick="optionshandle(this);" title="Call" id="actCall">
 																				<input type="radio" name="options"
 																				onclick="optionshandle(this);"
 																				th:field="*{activitytype}" value="Call" id="radio2"><i
 																				class="bx bx-phone-call"></i>
 																			</label> <label
-																				th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
-																				onclick="optionshandle(this);" title="Meetings">
+																				th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Meeting' ? 'active' :''} "
+																				onclick="optionshandle(this);" title="Meeting" id="actMeeting">
 																				<input type="radio" onclick="optionshandle(this);"
 																				name="options" th:field="*{activitytype}"
-																				value="Meetings" id="radio3"><i
+																				value="Meeting" id="radio3"><i
 																				class="bx bx-group"></i>
 																			</label>
 																		</div>
@@ -509,7 +517,7 @@ background:#EBEBEB;
 																			<input type="date"
 																				class="form-control  form-control-sm"
 																				th:field="*{startdate}"
-																				th:value="${activityMaster['startdate']}" />
+																				th:value="${activityMaster['startdate']}" id="actstartdate"/>
 																			<div class="form-control-position">
 																				<i class="bx bxs-calendar"></i>
 																			</div>
@@ -524,7 +532,7 @@ background:#EBEBEB;
 																			<input type="time"
 																				class="form-control  form-control-sm"
 																				th:field="*{starttime}"
-																				th:value="${activityMaster['starttime']}" />
+																				th:value="${activityMaster['starttime']}" id="actstarttime"/>
 																			<div class="form-control-position">
 																				<i class="bx bx-time"></i>
 																			</div>
@@ -539,7 +547,7 @@ background:#EBEBEB;
 																			<input type="date"
 																				class="form-control  form-control-sm"
 																				th:field="*{enddate}"
-																				th:value="${activityMaster['enddate']}" />
+																				th:value="${activityMaster['enddate']}" id="actenddate"/>
 																			<div class="form-control-position">
 																				<i class="bx bxs-calendar"></i>
 																			</div>
@@ -554,7 +562,7 @@ background:#EBEBEB;
 																			<input type="time"
 																				class="form-control  form-control-sm"
 																				th:field="*{endtime}"
-																				th:value="${activityMaster['endtime']}" />
+																				th:value="${activityMaster['endtime']}" id="actendtime" />
 																			<div class="form-control-position">
 																				<i class="bx bx-time"></i>
 																			</div>
@@ -593,7 +601,7 @@ background:#EBEBEB;
 																											<select
 																												class="select2 form-control form-control-sm guestStaff"
 																												multiple="multiple"
-																												th:field="*{activityMasterGuest[0].guestid}">
+																												th:field="*{activityMasterGuest[0].guestid}" id="actguestid">
 																												<th:block th:each="str :${employeelist}">
 																													<option th:value="${str.empMasterid}"
 																														th:text="${str.StaffName}"></option>
@@ -609,10 +617,10 @@ background:#EBEBEB;
 																									<label for="addmodel">Location</label>
 																									<div class="position-relative  has-icon-left">
 																										<fieldset class="form-group">
-																											<input type="text" id="notes"
+																											<input type="text"
 																												class="form-control form-control-sm capitalize"
 																												th:field="*{location}"
-																												th:value="${activityMaster['location']}">
+																												th:value="${activityMaster['location']}" id="actlocation">
 																											<div class="form-control-position">
 																												<i class="bx bx-map"></i>
 																											</div>
@@ -630,7 +638,7 @@ background:#EBEBEB;
 																											<textarea
 																												class="form-control form-control-sm"
 																												rows="4" th:field="*{description}"
-																												th:value="${activityMaster['description']}">
+																												th:value="${activityMaster['description']}" id="actdescription">
 																													</textarea>
 																											<div class="form-control-position">
 																												<i class="bx bxs-notepad"></i>
@@ -649,7 +657,7 @@ background:#EBEBEB;
 																											<textarea
 																												class="form-control form-control-sm"
 																												rows="4" th:field="*{notes}"
-																												th:value="${activityMaster['notes']}">
+																												th:value="${activityMaster['notes']}" id="actnotes">
 																													</textarea>
 																											<div class="form-control-position">
 																												<i class="bx bx-book-bookmark"></i>
@@ -676,7 +684,7 @@ background:#EBEBEB;
 																	<div class="position-relative  has-icon-left">
 																		<fieldset class="form-group">
 																			<select class="select2 form-control form-control-sm"
-																				multiple="multiple" id="activityfollowers"
+																				multiple="multiple" id="actactivityfollowers"
 																				th:field="*{activityfollowers}">
 																				<th:block th:each="str :${employeelist}">
 																					<option th:value="${str.empMasterid}"
@@ -694,7 +702,7 @@ background:#EBEBEB;
 																	<div class="position-relative has-icon-left">
 																		<input type="file"
 																			class="form-control  form-control-sm"
-																			name="activityfiles" />
+																			name="activityfiles" id="actactivityfiles" />
 																		<div class="form-control-position">
 																			<i class="bx bx-link"></i>
 																		</div>
@@ -709,7 +717,7 @@ background:#EBEBEB;
 																	style="float: right">Save</button>
 																
 																<div class="checkbox checkbox-success checkbox-glow">
-																	<input type="checkbox" id="checkboxGlow1" name="status">
+																	<input type="checkbox" id="actcheckboxGlow1" name="status">
 																	<label for="checkboxGlow1">Make as done</label>
 																</div>
 															</div>
@@ -925,7 +933,7 @@ background:#EBEBEB;
 																									<!-- ---------------------------- -->
 																									<table class="table1">
 																										<tr>
-																											<th></th><th>Done</th><th>Subject</th><th>Assignee</th><th>Due date</th>																											
+																											<th></th><th>Done</th><th>Subject</th><th>Assignee</th><th>Due date</th><th>-</th>																											
 																										</tr>
 																										<th:block th:each="actobj, id : ${activitymaster}">
 																											<tr th:if="${actobj.mastercategoryid} == ${projecttaskMasterobj.projecttaskid}">
@@ -941,7 +949,17 @@ background:#EBEBEB;
 																													<input type="checkbox" class="checkboxdone" th:id="'customColorCheck'+ ${actobj.activityId}">
 																                                                    
 														                                                        </td>
-																												<td th:text="${actobj.activitytitle}"></td>																											
+																												<td th:text="${actobj.activitytitle}"></td>	
+																												<td>
+																													<th:block th:each="str1: ${#strings.listSplit(actobj['activityfollowers'],',')}">
+																														<div class="badge badge-pill badge-secondary" th:text="${employeemaster.get(str1)}"></div>
+																													</th:block>
+																												</td>
+																												<td th:text="${actobj.duedate}"></td>
+																												<td>
+																												 <span th:if="${actobj.activitytype}=='Task'" class="cursor-pointer edittask" th:name="${actobj.activityId}" style="float: right;"> <i class="bx bxs-pencil"></i></span>
+																												<span th:if="${actobj.activitytype}=='Meeting'" class="cursor-pointer editmeeting" th:name="${actobj.activityId}" style="float: right;"> <i class="bx bxs-pencil"></i></span>	
+																												</td>																											
 																											</tr>
 																										</th:block>
 																									</table>
@@ -1412,7 +1430,9 @@ background:#EBEBEB;
 								$('#ActivityeventsStatusScrollable').modal('toggle');
 
 							});
-
+							
+							//----------------------------------------------------------------------------------------------------------
+							
 							
 							
 							$("#additemallsavebtn")
@@ -1908,6 +1928,84 @@ background:#EBEBEB;
 							});
 							
 							//------------------------------------------------------
+							 $(document).on("click", ".edittask", function() {
+
+									var name = $(this).attr('name');
+									$("#noteactivityidsourceid").val(name);
+									
+									var formData = {
+											name : name,
+											type: "Project"
+										}
+										$.ajax({
+											type : "POST",
+											url : "getactivitydetails",
+											data : formData,
+											success : function(
+													result) {
+												var job = jQuery.parseJSON(result);
+												console.log(job);
+												
+												
+												$('#TaskeventsStatusScrollable').modal('toggle');
+												
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+												
+											}
+										});
+								});
+								
+								$(document).on("click", ".editmeeting", function() {
+
+									var name = $(this).attr('name');
+									$("#activityidsourceid").val(name);
+									
+									
+									var formData = {
+											name : name										
+										}
+										$.ajax({
+											type : "POST",
+											url : "getactivitydetails",
+											data : formData,
+											success : function(
+													result) {
+												var activityobj = JSON.parse(JSON.stringify(result));
+												console.log(activityobj);
+												$('#activityidsourceid').val(activityobj.mastercategoryid);
+												$('#activityId').val(activityobj.activityId);
+												$('#createdtime').val(activityobj.createdtime);
+												$('#activitytitle').val(activityobj.activitytitle);
+												$('#actstartdate').val(activityobj.startdate);
+												$('#actstarttime').val(activityobj.starttime);
+												$('#actenddate').val(activityobj.enddate);
+												$('#actendtime').val(activityobj.endtime);
+												$('#actlocation').val(activityobj.location);
+												$('#actdescription').val(activityobj.description);
+												$('#actnotes').val(activityobj.notes);
+												$('#actstatus').val(activityobj.status);
+												$('#actactivityfollowers').val(activityobj.activityfollowers.split(',')).change();
+												
+												if(activityobj.activityMasterGuest.length>0)
+												{
+													$('#actguestid').val(activityobj.activityMasterGuest[0].guestid.split(',')).change();
+												}
+												$('#actcheckboxGlow1').val(activityobj.actcheckboxGlow1);
+												$('#act'+activityobj.activitytype).click();
+												$('#ActivityeventsStatusScrollable').modal('toggle');
+												
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+												
+											}
+										});
+
+								});
+								//----------------------------------------------------------------------------------------------------------------
+
 						});
 		
 	</script>

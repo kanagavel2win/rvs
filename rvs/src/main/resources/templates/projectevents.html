@@ -375,6 +375,28 @@ background:#EBEBEB;
 													<div class="modal-body">
 														<!-- ------------------------------------------ -->
 														<div class="row">
+															<div class="col-md-12">
+																<label for="addmodel">Task Title</label>
+																<div class="form-group">
+																	<div class="position-relative">
+																		<input type="text"class="form-control  form-control-sm capitalize" placeholder="Task details..."
+																		id="taskactivitytitle"/>
+
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="form-group">
+																	<label for="addmodel">Due Date</label>
+																	<div class="position-relative has-icon-left">
+																		<input type="date" class="form-control  form-control-sm" id="taskduedate"/>
+																		<div class="form-control-position">
+																			<i class="bx bxs-calendar"></i>
+																		</div>
+
+																	</div>
+																</div>
+															</div>
 															<div class="col-sm-12">
 																<div id="full-wrapper">
 																	<div id="full-container">
@@ -382,6 +404,7 @@ background:#EBEBEB;
 																	</div>
 																</div>
 															</div>
+															
 															<div class="col-12" align="center">
 																<div class="form-group col-12 resultdivnote"
 																	style="visibility: hidden">
@@ -456,9 +479,6 @@ background:#EBEBEB;
 																			<!-- <input type="hidden" value="Project"  th:field="*{mastercategory}" /> -->
 																			<input type="hidden" th:field="*{mastercategoryid}"
 																				id="activityidsourceid" />
-																			<input type="hidden" class="projectMasterid"
-																				name="projectMasterid" />
-																					
 																				
 																			<input type="hidden" th:field="*{status}"
 																				id="actstatus" />
@@ -474,6 +494,21 @@ background:#EBEBEB;
 																				placeholder="Task details..."
 																				th:field="*{activitytitle}"
 																				th:value="${activityMaster['activitytitle']}" id="activitytitle"/>
+
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="form-group">
+																		<label for="addmodel">Due Date</label>
+																		<div class="position-relative has-icon-left">
+																			<input type="date"
+																				class="form-control  form-control-sm"
+																				th:field="*{duedate}"
+																				th:value="${activityMaster['duedate']}" id="actduedate"/>
+																			<div class="form-control-position">
+																				<i class="bx bxs-calendar"></i>
+																			</div>
 
 																		</div>
 																	</div>
@@ -718,7 +753,7 @@ background:#EBEBEB;
 																
 																<div class="checkbox checkbox-success checkbox-glow">
 																	<input type="checkbox" id="actcheckboxGlow1" name="status">
-																	<label for="checkboxGlow1">Make as done</label>
+																	<label for="actcheckboxGlow1">Make as done</label>
 																</div>
 															</div>
 															<!-- ------------------------------------------ -->
@@ -737,6 +772,12 @@ background:#EBEBEB;
 												class="btn mb-1 btn-success btn-lg btn-block">Project
 												Info Updated Successfully</button>
 										</div>
+										<div th:if="${param.eventsaved}" class="form-group col-12">
+											<button type="button"
+												class="btn mb-1 btn-success btn-lg btn-block">Event 
+												Info Updated Successfully</button>
+										</div>
+										
 										<div class="form-group col-12">
 											<label class="emptitle" th:text="${projectMaster['Title']}"></label>
 											
@@ -808,7 +849,7 @@ background:#EBEBEB;
 																								th:name="${s.index}" style="float: right;"> <i
 																								class="bx bxs-pencil"></i></span>
 																								 <span
-																								class="cursor-pointer  edudivdelete"
+																								th:class="'cursor-pointer prjdetailsedit edudivdelete edudivdelete' + ${s.index}"
 																								th:name="${s.index}" style="float: right;padding-right:20px;"> <i
 																								class="bx bx-trash"></i>
 																							</span>
@@ -924,7 +965,7 @@ background:#EBEBEB;
 																						</th:block>
 																						<th:block th:each="projecttaskMasterobj, s1 : ${childobj['projecttaskMaster']}">
 																						
-																						<div class="col-12 card collapse-header">
+																						<div th:class="'col-12 card collapse-header edudivdelete' + ${s.index} + ' edudivdeleteacc' + ${s.index}">
 																							  <div th:id="'innerheadingCollapse' + ${projecttaskMasterobj['projecttaskid']}" class="card-header card-headerpdtask" data-toggle="collapse" role="button" th:data-target="'#innercollapse' + ${projecttaskMasterobj['projecttaskid']}" aria-expanded="false" th:aria-controls="'innercollapse' + ${projecttaskMasterobj['projecttaskid']}">
 																							  		<span class="collapse-title" th:text="${projecttaskMasterobj['projecttasktitle']}  "></span>
 																							  </div>
@@ -933,7 +974,7 @@ background:#EBEBEB;
 																									<!-- ---------------------------- -->
 																									<table class="table1">
 																										<tr>
-																											<th></th><th>Done</th><th>Subject</th><th>Assignee</th><th>Due date</th><th>-</th>																											
+																											<th></th><th>Done</th><th>Subject</th><th>Assignee</th><th>Due date</th><th colspan="2"></th>																											
 																										</tr>
 																										<th:block th:each="actobj, id : ${activitymaster}">
 																											<tr th:if="${actobj.mastercategoryid} == ${projecttaskMasterobj.projecttaskid}">
@@ -958,38 +999,26 @@ background:#EBEBEB;
 																												<td th:text="${actobj.duedate}"></td>
 																												<td>
 																												 <span th:if="${actobj.activitytype}=='Task'" class="cursor-pointer edittask" th:name="${actobj.activityId}" style="float: right;"> <i class="bx bxs-pencil"></i></span>
-																												<span th:if="${actobj.activitytype}=='Meeting'" class="cursor-pointer editmeeting" th:name="${actobj.activityId}" style="float: right;"> <i class="bx bxs-pencil"></i></span>	
+																												 <span th:if="${actobj.activitytype}=='Meeting'" class="cursor-pointer editmeeting" th:name="${actobj.activityId}" style="float: right;"> <i class="bx bxs-pencil"></i></span>	
+																												</td>
+																												<td>
+																												 <span
+																														class="cursor-pointer  activitydelete"
+																														th:name="${actobj.activityId}" style="float: right;"> <i
+																														class="bx bx-trash"></i>
+																													</span>
 																												</td>																											
 																											</tr>
 																										</th:block>
 																									</table>
 																									<!-- ---------------------------- -->
 																									<div class="col-12 history">
-																										<div th:class="'col-md-12 edudivdelete' + ${s.index}">
-																											<span class="addtasklink" th:name="${projecttaskMasterobj['projecttaskid']}"> + Task</span>
+																										<div class="col-md-12">
+																											<!-- <span class="addtasklink" th:name="${projecttaskMasterobj['projecttaskid']}"> + Task</span> -->
 																											<span class="addtactivitylink" th:name="${projecttaskMasterobj['projecttaskid']}"> + Activity</span>
 																											<br/>
 																										</div>
-																										<!-- Timeline Widget Starts -->
-																										<!-- <div class="timline-card">
-																											<div class="card ">
-																												<div class="card-header">
-																													<span class="actionitems">Action Items</span>
-																												</div>
-																												<div class="card-content timelinehistory">
-																													<div class="card-body">
-																														<ul  th:class="'widget-timeline his'+ ${projecttaskMasterobj['projecttaskid']}">
-																															<script>
-																															projecttaskid = projecttaskid +"[[${projecttaskMasterobj['projecttaskid']}]],";
-																															
-																															</script>
-																														</ul>
-													
-																													</div>
-																												</div>
-																											</div>
-																										</div> -->
-																										<!-- Timeline Widget Ends -->
+																										
 													
 																									</div>
 																									<!-- ---------------------------- -->
@@ -1416,7 +1445,6 @@ background:#EBEBEB;
 							$(document).on("click", ".addtasklink", function() {
 
 								var name = $(this).attr('name');
-								alert(name);
 								$("#noteactivityidsourceid").val(name);
 								$('#TaskeventsStatusScrollable').modal('toggle');
 
@@ -1425,7 +1453,6 @@ background:#EBEBEB;
 							$(document).on("click", ".addtactivitylink", function() {
 
 								var name = $(this).attr('name');
-								alert(name);
 								$("#activityidsourceid").val(name);
 								$('#ActivityeventsStatusScrollable').modal('toggle');
 
@@ -1604,7 +1631,8 @@ background:#EBEBEB;
 
 													var noteckbox = "false";
 													var mastercategoryid = $("#noteactivityidsourceid").val();
-													
+													var taskduedate = $("#taskduedate").val();
+													var taskactivitytitle=$("#taskactivitytitle").val();
 													var noteactivityid = $("#noteactivityid").val();
 													if ($("#noteckbox").prop("checked")) {
 														noteckbox = "true";
@@ -1616,7 +1644,9 @@ background:#EBEBEB;
 														editor : editor,
 														noteckbox : noteckbox,
 														mastercategoryid : mastercategoryid,
-														noteactivityid : noteactivityid
+														noteactivityid : noteactivityid,
+														taskactivitytitle: taskactivitytitle,
+														taskduedate:taskduedate
 													}
 													$.ajax({	type : "POST",
 																url : "projecteventnotesave",
@@ -1628,7 +1658,11 @@ background:#EBEBEB;
 																	$('#TaskeventsStatusScrollable').modal('toggle');
 																	alert("Note Info Updated Successfully ");
 																	$('.ql-editor').html("");
-																	gettimelinelist(mastercategoryid);
+																	$("#noteactivityidsourceid").val("");
+																	$("#taskduedate").val("");
+																	$("#noteactivityid").val("");
+																	$("#taskactivitytitle").val("");
+																	//gettimelinelist(mastercategoryid);
 																	
 																},
 																error : function(e) {
@@ -1754,15 +1788,15 @@ background:#EBEBEB;
 									"click",
 									".edudivdelete",
 									function() {
-										var id = $(this).attr('name');
-										var deleteid = $(
-												"[name='projectdetailMaster["
-														+ id
-														+ "].projectdetailid")
-												.val();
-										$('.edudivdelete' + id).remove();
-										alert("Removed Successfully...!");
-
+										
+										
+										if(confirm("Are you sure to remove this item from list?"))
+										{
+											var id = $(this).attr('name');
+											var deleteid = $("[name='projectdetailMaster["+ id+ "].projectdetailid").val();
+											$('.edudivdelete' + id).remove();
+											alert("Removed Successfully...!");
+										}
 									});
 							//--------------------------------------------------------------------------------
 							
@@ -1781,6 +1815,7 @@ background:#EBEBEB;
 								$('.edudivdelete' + id +":gt(0)").hide();
 								$(".edudivview" + id).show();
 								$(".edudivhide" + id).hide();
+								$(".edudivdeleteacc" + id).show();
 
 							});
 							//--------------------------------------------------------------------------------
@@ -1943,9 +1978,13 @@ background:#EBEBEB;
 											data : formData,
 											success : function(
 													result) {
-												var job = jQuery.parseJSON(result);
-												console.log(job);
-												
+												var activityobj = JSON.parse(JSON.stringify(result));
+												//console.log(activityobj);
+												$("#noteactivityidsourceid").val(activityobj.mastercategoryid);
+												$("#taskduedate").val(activityobj.duedate);
+												$("#noteactivityid").val(activityobj.activityId);
+												$("#taskactivitytitle").val(activityobj.activitytitle);
+												$('.ql-editor').html(activityobj.htmlnotes);
 												
 												$('#TaskeventsStatusScrollable').modal('toggle');
 												
@@ -1973,11 +2012,12 @@ background:#EBEBEB;
 											success : function(
 													result) {
 												var activityobj = JSON.parse(JSON.stringify(result));
-												console.log(activityobj);
+												//console.log(activityobj);
 												$('#activityidsourceid').val(activityobj.mastercategoryid);
 												$('#activityId').val(activityobj.activityId);
 												$('#createdtime').val(activityobj.createdtime);
 												$('#activitytitle').val(activityobj.activitytitle);
+												$("#actduedate").val(activityobj.duedate);
 												$('#actstartdate').val(activityobj.startdate);
 												$('#actstarttime').val(activityobj.starttime);
 												$('#actenddate').val(activityobj.enddate);
@@ -2005,7 +2045,31 @@ background:#EBEBEB;
 
 								});
 								//----------------------------------------------------------------------------------------------------------------
-
+								$(document).on("click", ".activitydelete", function() {
+									let deletename= $(this).attr("name");
+									if(confirm("Are you sure to remove this item from list?"))
+									{
+										$(this).closest("tr").remove();
+										
+										var formData = {
+												deleteid : deletename
+											}
+											$.ajax({
+												type : "POST",
+												url : "activitydelete",
+												data : formData,
+												success : function(
+														result) {												
+													
+												},
+												error : function(e) {
+													console.log("Error"+ e);
+													
+												}
+											});
+									}
+								});
+								//----------------------------------------------------------------------------------------------------------------
 						});
 		
 	</script>

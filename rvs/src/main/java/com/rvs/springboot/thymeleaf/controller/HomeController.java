@@ -5953,58 +5953,22 @@ public class HomeController {
 		activityMaster.setMastercategory("Project");
 		activityMaster = activityMasterService.save(activityMaster);
 		// --------------------------------------------------
-		//ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(params.get("projectMasterid")));
-		/*List<ContactPerson> cplis = contactPersonService.findAll();
-		List<ContactOrganization> corglis = contactOrganizationService.findAll();
-		ContactPerson contactPersonobj = null;
-		// --------------------------------------------------
-		ArrayList<String> personorgls = new ArrayList<String>();
-		for (ContactPerson cp : cplis) {
 
-			if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase("")) {
-				for (String str1 : (cp.getOrganization().toString()).split(",")) {
-					String temp2 = "";
-					String str2 = nullremover(String.valueOf(str1));
-					if (str2.length() > 0) {
-						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-								.collect(Collectors.toList()).get(0);
-						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname()
-								+ " |";
-						personorgls.add(temp2);
-					} else {
-						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-						personorgls.add(temp2);
-					}
-				}
-			} else {
-				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
-			}
-
-		}
-*/
-		/*if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
-			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
-
-				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
-				contactPersonobj = cplistemp;
-				break;
-
-			}
-
-		}*/
 		
-		return "redirect:projectevents?id="+ String.valueOf(params.get("projectMasterid"));
+		return "redirect:projectevents?id="+ String.valueOf(params.get("projectMasterid")) +"&eventsaved";
 	//	return "projectevents";
 
 	}
 
 	@ResponseBody
 	@PostMapping("projecteventnotesave")
-	public String projecteventnotesave(@RequestParam Map<String, String> params) {
+	public ActivityMaster projecteventnotesave(@RequestParam Map<String, String> params) {
 
 		String editor = params.get("editor");
 		String noteckbox = params.get("noteckbox");
 		String mastercategoryid = params.get("mastercategoryid");
+		String taskduedate = params.get("taskduedate");
+		String taskactivitytitle = params.get("taskactivitytitle");
 		int noteactivityid = Integer.parseInt(params.get("noteactivityid"));
 
 		ActivityMaster activityMaster = new ActivityMaster();
@@ -6016,14 +5980,16 @@ public class HomeController {
 		if (noteckbox.equalsIgnoreCase("true")) {
 			activityMaster.setStatus("Completed");
 		}
-
+		
+		activityMaster.setActivitytitle(taskactivitytitle);
+		activityMaster.setDuedate(taskduedate);
 		activityMaster.setHtmlnotes(editor);
 		activityMaster.setMastercategoryid(mastercategoryid);
 		activityMaster.setActivitycategory("Note");
 		activityMaster.setMastercategory("Project");
 		activityMaster = activityMasterService.save(activityMaster);
 
-		return "Saved";
+		return activityMaster;
 	}
 	
 	@GetMapping("projecttemplatelist")
@@ -6111,6 +6077,13 @@ public class HomeController {
 		
 		return amlist;
 		
+	}
+	
+	@ResponseBody
+	@PostMapping("activitydelete")
+	public void deleteactivityids(@RequestParam("deleteid") int id) {
+		
+		activityMasterService.deletebyid(id);
 	}
 	
 

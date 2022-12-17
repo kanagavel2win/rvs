@@ -186,13 +186,13 @@ background:#EBEBEB;
 
 #progress li {
 	float: left;
-	padding: 10px 5px 10px 15px;
+	padding: 10px 10px 10px 20px;
 	background: #E5E5E5;
 	color: #919191;
 	position: relative;
 	border-top: 1px solid #E5E5E5;
 	border-bottom: 1px solid #E5E5E5;
-	width: 12%;
+	width: 16%;
 	margin: 0 1px;
 }
 
@@ -1129,7 +1129,7 @@ background:#EBEBEB;
 																<div class="position-relative  has-icon-left">
 																	<fieldset class="form-group">
 																		<ul id="progress">
-																			<li class=" la lb lc ld le lf lg lh " title="Unscheduled">Unsched</li>
+																			<li class=" la lb lc ld le lf lg lh " title="Unscheduled">No Plan</li>
 																			<li class=" lb lc ld le lf lg lh " title="Scheduled">Schedu</li>
 																			<li class=" lc ld le lf  lg lh "
 																				title="kick-off">kick</li>
@@ -1862,10 +1862,10 @@ background:#EBEBEB;
 									$(".lf").addClass("active");
 									$('#pipeline').val('Drawing');
 								}else if (title == 'Review') {
-									$(".lf").addClass("active");
+									$(".lg").addClass("active");
 									$('#pipeline').val('Review');
 								}else if (title == 'Delivered') {
-									$(".lf").addClass("active");
+									$(".lh").addClass("active");
 									$('#pipeline').val('Delivered');
 								}
 							}

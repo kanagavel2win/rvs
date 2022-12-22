@@ -183,8 +183,8 @@ public class HomeController {
 
 	@Autowired
 	ProjectMasterService projectMasterService;
-	
-	@Autowired 
+
+	@Autowired
 	ProjectTemplateMasterService projectTemplateMasterService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -5483,26 +5483,53 @@ public class HomeController {
 		List<ProjectMaster> projectmasterls = projectMasterService.findAll();
 		HashMap<Integer, Integer> maptotalamt = new HashMap();
 		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> hispendingmap = new HashMap();
 
 		for (ProjectMaster objg : projectmasterls) {
 			int totalamount = 0;
+			ArrayList<String> projecttaskids= new ArrayList<String>();
+			
 			for (ProjectdetailsMaster objpr : objg.getProjectdetailMaster()) {
 				if (!nullremover(String.valueOf(objpr.getAmount())).equalsIgnoreCase("")) {
 					totalamount += Integer.parseInt(objpr.getAmount());
 				}
+				
+				objpr.getProjecttaskMaster().forEach(rowobj -> {
+					projecttaskids.add(String.valueOf(rowobj.getProjecttaskid()));
+				});
 			}
 			maptotalamt.put(objg.getId(), totalamount);
-
-			// Next Activity & Followers Details
-			List<Map<String, Object>> ls = activityMasterService.nextactivity("Project", String.valueOf(objg.getId()));
-			if (ls.size() > 0) {
-				ls.forEach(rowMap -> {
-					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
-					String activitytype = String.valueOf(rowMap.get("activitytype"));
-					nextactmap.put(objg.getId(), "(" + activitytype + ") - " + activitytitle);
-				});
-			} else {
-				nextactmap.put(objg.getId(), "No");
+			String taskid=String.join(",",projecttaskids);
+			
+			if(!taskid.equalsIgnoreCase(""))
+			{
+				// ---------------------------------------------------------------
+				// Next Activity & Followers Details
+				List<Map<String, Object>> ls = activityMasterService.nextactivity("Project",taskid);
+				if (ls.size() > 0) {
+					ls.forEach(rowMap -> {
+						String activitytitle = String.valueOf(rowMap.get("activitytitle"));
+						String activitytype = String.valueOf(rowMap.get("activitytype"));
+						nextactmap.put(objg.getId(),  activitytitle);
+					});
+				} else {
+					nextactmap.put(objg.getId(), "No");
+				}
+				// ---------------------------------------------------------------
+				// Pending Activity
+				List<Map<String, Object>> pendingls = activityMasterService.historypendingactivity("Project",
+						taskid);
+				if (pendingls.size() > 0) {
+					ArrayList<String> pendingactlist = new ArrayList<String>();
+					pendingls.forEach(rowMap -> {
+						String activitytitle = String.valueOf(rowMap.get("activitytitle"));
+						String activitytype = String.valueOf(rowMap.get("activitytype"));
+						pendingactlist.add(activitytitle);
+					});
+	
+					hispendingmap.put(objg.getId(), String.join(",",pendingactlist));
+				}
+				// ---------------------------------------------------------------
 			}
 		}
 
@@ -5517,6 +5544,7 @@ public class HomeController {
 		themodel.addAttribute("personorgls", personorgls);
 		themodel.addAttribute("maptotalamt", maptotalamt);
 		themodel.addAttribute("nextactmap", nextactmap);
+		themodel.addAttribute("hispendingmap",hispendingmap);
 
 		themodel.addAttribute("todaydate", displaydateFormat.format(new Date()));
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
@@ -5654,13 +5682,13 @@ public class HomeController {
 				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 		}
-		if (projectMaster.getProjectdetailMaster().size() == 0) {
+		/*if (projectMaster.getProjectdetailMaster().size() == 0) {
 			List<ProjectdetailsMaster> dmls = new ArrayList();
 			ProjectdetailsMaster dpmobj = new ProjectdetailsMaster();
-			
+
 			dmls.add(dpmobj);
 			projectMaster.setProjectdetailMaster(dmls);
-		}
+		}*/
 
 		if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
@@ -5683,44 +5711,43 @@ public class HomeController {
 			themodel.addAttribute("employeelistuser", emlist);
 		}
 		// --------------------------------------------------
-		List<ActivityMaster> amlist= new ArrayList<ActivityMaster>();
-		
-		for(ProjectdetailsMaster m : projectMaster.getProjectdetailMaster())
-		{
-			/*if(m.getProjecttaskMaster().size()==0)
-			{
-				List<ProjectTaskMaster> projecttaskMasterls= new ArrayList();
-				projecttaskMasterls.add(new ProjectTaskMaster());
-				m.setProjecttaskMaster(projecttaskMasterls);
-			}*/
-			for(ProjectTaskMaster prjtaskmobj : m.getProjecttaskMaster())
-			{
-				amlist.addAll(activityMasterService.findByMastercategoryAndMastercategoryid("Project",String.valueOf(prjtaskmobj.getProjecttaskid())));
+		List<ActivityMaster> amlist = new ArrayList<ActivityMaster>();
+
+		for (ProjectdetailsMaster m : projectMaster.getProjectdetailMaster()) {
+			/*
+			 * if(m.getProjecttaskMaster().size()==0) { List<ProjectTaskMaster>
+			 * projecttaskMasterls= new ArrayList(); projecttaskMasterls.add(new
+			 * ProjectTaskMaster()); m.setProjecttaskMaster(projecttaskMasterls); }
+			 */
+			if (m.getProjecttaskMaster() != null) {
+				for (ProjectTaskMaster prjtaskmobj : m.getProjecttaskMaster()) {
+					amlist.addAll(activityMasterService.findByMastercategoryAndMastercategoryid("Project",
+							String.valueOf(prjtaskmobj.getProjecttaskid())));
+				}
 			}
 		}
-		themodel.addAttribute("activitymaster",amlist);
+		themodel.addAttribute("activitymaster", amlist);
 		// --------------------------------------------------
 		// Employee Name list
-		HashMap<String,String> empmap=new HashMap<String,String>();
-		
-		for(EmployeeMaster em:employeeMasterService.findAll())
-		{
+		HashMap<String, String> empmap = new HashMap<String, String>();
+
+		for (EmployeeMaster em : employeeMasterService.findAll()) {
 			empmap.put(String.valueOf(em.getEmpMasterid()), em.getStaffName());
 		}
-		themodel.addAttribute("employeemaster",empmap);
-		
+		themodel.addAttribute("employeemaster", empmap);
+
 		// --------------------------------------------------
-		List<ProjectTemplateMaster> projecttemplatemasterobj= projectTemplateMasterService.findAll();
+		List<ProjectTemplateMaster> projecttemplatemasterobj = projectTemplateMasterService.findAll();
 		themodel.addAttribute("projecttemplatemasterobj", projecttemplatemasterobj);
 		// --------------------------------------------------
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
 		themodel.addAttribute("personorgls", personorgls);
-		//System.out.println(projectMaster);
+		// System.out.println(projectMaster);
 		themodel.addAttribute("projectMaster", projectMaster);
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 
@@ -5807,95 +5834,28 @@ public class HomeController {
 			}
 		}
 		// ----------------------------
-		
+
 		projectMaster.setFollowers(followers);
 		projectMaster.setContactPerson(collectpeopleids);
 		projectMaster.setOrganization(collectorgids);
 		projectMaster = projectMasterService.save(projectMaster);
 		// ----------------------------
 
-		List<ContactPerson> cplis = contactPersonService.findAll();
-		List<ContactOrganization> corglis = contactOrganizationService.findAll();
-		ContactPerson contactPersonobj = null;
-		// --------------------------------------------------
-		ArrayList<String> personorgls = new ArrayList<String>();
-		for (ContactPerson cp : cplis) {
-
-			if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase("")) {
-				for (String str1 : (cp.getOrganization().toString()).split(",")) {
-					String temp2 = "";
-					String str2 = nullremover(String.valueOf(str1));
-					if (str2.length() > 0) {
-						ContactOrganization obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-								.collect(Collectors.toList()).get(0);
-						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname()
-								+ " |";
-						personorgls.add(temp2);
-					} else {
-						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-						personorgls.add(temp2);
-					}
-				}
-			} else {
-				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
-			}
-
-		}
-
-		if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
-			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
-
-				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
-				contactPersonobj = cplistemp;
-				break;
-
-			}
-
-		}
-
-		// --------------------------------------------------
-		List<BranchMaster> bmlist = branchMasterService.findAll();
-		themodel.addAttribute("branchlist", bmlist);
-
-		if (nullremover(String.valueOf(projectMaster.getBranch())).length() > 0) {
-			String branchname = branchMasterService.findById(Integer.parseInt(projectMaster.getBranch()))
-					.getBRANCH_NAME();
-			List<EmployeeMaster> emlist = getEmployeelistbasedonbranchbyid(branchname);
-			themodel.addAttribute("employeelistuser", emlist);
-			
-		}
-		// --------------------------------------------------
-		themodel.addAttribute("contactPersonobj", contactPersonobj);
-		themodel.addAttribute("personlist", cplis);
-		themodel.addAttribute("organizationlist", corglis);
-		themodel.addAttribute("personorgls", personorgls);
-		themodel.addAttribute("projectMaster", projectMaster);
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
 		
-		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
-		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
-		List<String> UNITS = itemlistService.findByFieldName("UNITS");
-		themodel.addAttribute("UNITS", UNITS);
 
-		ActivityMaster amobj = new ActivityMaster();
-		amobj.setActivitytype("Task");
-		amobj.setActivityfollowers(contactPersonobj.getFollowers());
-		themodel.addAttribute("activityMaster", amobj);
-
-		themodel.addAttribute("save", true);
-		return "projectevents";
+		return "redirect:projectevents?id=" + String.valueOf(projectMaster.getId()) + "&save";
+		
 	}
-
 
 	@PostMapping("projecteventpart2save")
 	public String projecteventpart2save(@ModelAttribute("activityMaster") ActivityMaster activityMaster,
-			@RequestParam Map<String, String> params, 
+			@RequestParam Map<String, String> params,
 			@RequestParam(name = "activityfiles", required = false) MultipartFile activityfiles,
 			HttpServletRequest request) {
 		// --------------------------------------------------
 		List<ActivityMasterGuest> lsactivityMasterguest = activityMaster.getActivityMasterGuest();
 		String guestStaff = "";
-		
+
 		String status = String.valueOf(params.get("status"));
 		status = status.replace("null", "");
 
@@ -5954,9 +5914,8 @@ public class HomeController {
 		activityMaster = activityMasterService.save(activityMaster);
 		// --------------------------------------------------
 
-		
-		return "redirect:projectevents?id="+ String.valueOf(params.get("projectMasterid")) +"&eventsaved";
-	//	return "projectevents";
+		return "redirect:projectevents?id=" + String.valueOf(params.get("projectMasterid")) + "&eventsaved";
+		// return "projectevents";
 
 	}
 
@@ -5980,7 +5939,7 @@ public class HomeController {
 		if (noteckbox.equalsIgnoreCase("true")) {
 			activityMaster.setStatus("Completed");
 		}
-		
+
 		activityMaster.setActivitytitle(taskactivitytitle);
 		activityMaster.setDuedate(taskduedate);
 		activityMaster.setHtmlnotes(editor);
@@ -5991,47 +5950,49 @@ public class HomeController {
 
 		return activityMaster;
 	}
-	
+
 	@GetMapping("projecttemplatelist")
-	public String projecttemplatelist(Model themodel)
-	{
-		List<ProjectTemplateMaster>prols = projectTemplateMasterService.findAll();
-		themodel.addAttribute("projecttemplatelist",prols);
+	public String projecttemplatelist(Model themodel) {
+		List<ProjectTemplateMaster> prols = projectTemplateMasterService.findAll();
+		themodel.addAttribute("projecttemplatelist", prols);
 		return "projecttemplatelist";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("loadprojecttemplate")
-	public String loadprojecttemplate(@RequestParam Map<String,String> params)
-	{
-		int projecttemplateid= Integer.parseInt(params.get("projecttemplistVal"));
-		int srcprojectdetailid= Integer.parseInt(params.get("srcprojectdetailid"));
-		int projectMasterid= Integer.parseInt(params.get("projectMasterid"));
-		
-		ProjectTemplateMaster obj= projectTemplateMasterService.findById(projecttemplateid);
-		ProjectMaster projectMasterObj= projectMasterService.findById(projectMasterid);
-		
-		List<ProjectTaskMaster> projectTaskMaster= new ArrayList<ProjectTaskMaster>();
-		
+	public String loadprojecttemplate(@RequestParam Map<String, String> params) {
+		int projecttemplateid = Integer.parseInt(params.get("projecttemplistVal"));
+		int srcprojectdetailid = Integer.parseInt(params.get("srcprojectdetailid"));
+		int projectMasterid = Integer.parseInt(params.get("projectMasterid"));
+
+		ProjectTemplateMaster obj = projectTemplateMasterService.findById(projecttemplateid);
+		ProjectMaster projectMasterObj = projectMasterService.findById(projectMasterid);
+
+		List<ProjectTaskMaster> projectTaskMaster = new ArrayList<ProjectTaskMaster>();
+
 		// Create Task from Project Template
-		for(ProjectTemplateTaskMaster pttmobj: obj.getProjectTemplateTaskMaster())
-		{
-			projectTaskMaster.add(new ProjectTaskMaster(0,pttmobj.getTasktitle()));
+		for (ProjectTemplateTaskMaster pttmobj : obj.getProjectTemplateTaskMaster()) {
+			projectTaskMaster.add(new ProjectTaskMaster(0, pttmobj.getTasktitle()));
 		}
-		
-		projectMasterObj.getProjectdetailMaster().stream().filter(C -> C.getProjectdetailid() == srcprojectdetailid).findFirst().ifPresent(C -> C.setProjecttaskMaster(projectTaskMaster));
-		
+
+		projectMasterObj.getProjectdetailMaster().stream().filter(C -> C.getProjectdetailid() == srcprojectdetailid)
+				.findFirst().ifPresent(C -> C.setProjecttaskMaster(projectTaskMaster));
+
 		projectMasterObj = projectMasterService.save(projectMasterObj);
 		// Create Activity from Project Template
-		List<ProjectTaskMaster> ptmstobj= projectMasterObj.getProjectdetailMaster().stream().filter(C -> C.getProjectdetailid() == srcprojectdetailid).collect(Collectors.toList()).get(0).getProjecttaskMaster();
-		
-		List<ActivityMaster> actvitymasterlist= new ArrayList<ActivityMaster>();
-		
-		ProjectTemplateTaskMaster PprojectTemplateTaskMasterobj= null;
-		for(ProjectTaskMaster tempobj: ptmstobj) {
-			PprojectTemplateTaskMasterobj = obj.getProjectTemplateTaskMaster().stream().filter(C -> C.getTasktitle().equalsIgnoreCase(tempobj.getProjecttasktitle())).collect(Collectors.toList()).get(0);
-			for(ProjectTemplateActivityMaster actobj: PprojectTemplateTaskMasterobj.getProjectTemplateActivityMaster())
-			{
+		List<ProjectTaskMaster> ptmstobj = projectMasterObj.getProjectdetailMaster().stream()
+				.filter(C -> C.getProjectdetailid() == srcprojectdetailid).collect(Collectors.toList()).get(0)
+				.getProjecttaskMaster();
+
+		List<ActivityMaster> actvitymasterlist = new ArrayList<ActivityMaster>();
+
+		ProjectTemplateTaskMaster PprojectTemplateTaskMasterobj = null;
+		for (ProjectTaskMaster tempobj : ptmstobj) {
+			PprojectTemplateTaskMasterobj = obj.getProjectTemplateTaskMaster().stream()
+					.filter(C -> C.getTasktitle().equalsIgnoreCase(tempobj.getProjecttasktitle()))
+					.collect(Collectors.toList()).get(0);
+			for (ProjectTemplateActivityMaster actobj : PprojectTemplateTaskMasterobj
+					.getProjectTemplateActivityMaster()) {
 				ActivityMaster am = new ActivityMaster();
 				am.setActivitytype(actobj.getActivitytype());
 				am.setActivitycategory("Activity");
@@ -6040,51 +6001,50 @@ public class HomeController {
 				am.setMastercategoryid(String.valueOf(tempobj.getProjecttaskid()));
 				actvitymasterlist.add(am);
 			}
-			
+
 		}
 		activityMasterService.saveall(actvitymasterlist);
-		
+
 		return "Loaded";
 	}
-	
+
 	@GetMapping("projecttemplate")
-	public String projecttemplate(Model themodel, @RequestParam(name="id", required=false ,defaultValue="0") Integer id)
-	{
-		ProjectTemplateMaster proobj =new ProjectTemplateMaster();
-				
-		if(id >0)
-		{
+	public String projecttemplate(Model themodel,
+			@RequestParam(name = "id", required = false, defaultValue = "0") Integer id) {
+		ProjectTemplateMaster proobj = new ProjectTemplateMaster();
+
+		if (id > 0) {
 			proobj = projectTemplateMasterService.findById(id);
 		}
-		themodel.addAttribute("projecttemplateobject",proobj);
-		
+		themodel.addAttribute("projecttemplateobject", proobj);
+
 		return "projecttemplate";
 	}
-	
+
 	@PostMapping("projecttemplatesave")
-	public String projecttemplatesave(Model themodel, @ModelAttribute("projecttemplateobject") ProjectTemplateMaster obj ) {
-		
-		obj=projectTemplateMasterService.save(obj);
-		projectTemplateMasterService.deletenullrows();		
-		return "redirect:projecttemplate?id="+ obj.getId() + "&sucess";
+	public String projecttemplatesave(Model themodel,
+			@ModelAttribute("projecttemplateobject") ProjectTemplateMaster obj) {
+
+		obj = projectTemplateMasterService.save(obj);
+		projectTemplateMasterService.deletenullrows();
+		return "redirect:projecttemplate?id=" + obj.getId() + "&sucess";
 	}
 
 	@ResponseBody
 	@PostMapping("getactivitydetails")
-	public ActivityMaster getactivitydetails(@RequestParam("name") int id){
-		
-		ActivityMaster amlist= activityMasterService.findById(id);
-		
+	public ActivityMaster getactivitydetails(@RequestParam("name") int id) {
+
+		ActivityMaster amlist = activityMasterService.findById(id);
+
 		return amlist;
-		
+
 	}
-	
+
 	@ResponseBody
 	@PostMapping("activitydelete")
 	public void deleteactivityids(@RequestParam("deleteid") int id) {
-		
+
 		activityMasterService.deletebyid(id);
 	}
-	
 
 }

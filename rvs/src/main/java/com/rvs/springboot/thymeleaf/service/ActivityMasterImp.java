@@ -62,7 +62,8 @@ public class ActivityMasterImp implements ActivityMasterService {
 
 	@Override
 	public List<Map<String, Object>> nextactivity(String mastercategory, String mastercategoryid) {
-		String sql = "SELECT * FROM activitymaster WHERE activitycategory ='Activity' and STR_TO_DATE(startdate,'%Y-%m-%d') >= date_format(curdate(),'%Y-%m-%d') and  mastercategory='"+ mastercategory + "' and mastercategoryid=" + mastercategoryid +" limit 1";
+		String sql = "SELECT * FROM activitymaster WHERE activitycategory ='Activity' and STR_TO_DATE(duedate,'%Y-%m-%d') >= date_format(curdate(),'%Y-%m-%d') and  mastercategory='"+ mastercategory + "' and mastercategoryid in(" + mastercategoryid +") limit 1";
+		//System.out.println(sql);
 		List<Map<String, Object>> result = JdbcTemplate.queryForList(sql);
 		return result;
 		
@@ -84,6 +85,14 @@ public class ActivityMasterImp implements ActivityMasterService {
 	public void deletebyid(int id) {
 		activityRepo.deleteById(id);
 		
+	}
+
+	@Override
+	public List<Map<String, Object>> historypendingactivity(String mastercategory, String mastercategoryid) {
+		String sql = "SELECT * FROM activitymaster WHERE activitycategory ='Activity' and STR_TO_DATE(duedate,'%Y-%m-%d') <= date_format(curdate(),'%Y-%m-%d') and status <> 'Completed' and  mastercategory='"+ mastercategory + "' and mastercategoryid in(" + mastercategoryid +") ";
+		//System.out.println(sql);
+		List<Map<String, Object>> result = JdbcTemplate.queryForList(sql);
+		return result;
 	}
 
 }

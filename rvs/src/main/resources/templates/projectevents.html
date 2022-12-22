@@ -767,7 +767,7 @@ background:#EBEBEB;
 										</div>
 										<!--scrolling content Modal -->
 
-										<div th:if="${save}" class="form-group col-12">
+										<div th:if="${param.save}" class="form-group col-12">
 											<button type="button"
 												class="btn mb-1 btn-success btn-lg btn-block">Project
 												Info Updated Successfully</button>
@@ -951,7 +951,7 @@ background:#EBEBEB;
 																						<script>
 																							edudivadd = edudivadd + 1;
 																						</script>
-																						
+																						<th:block th:if="${childobj['projecttaskMaster']} != null">
 																						<th:block th:if="${#lists.size(childobj['projecttaskMaster'])==0}"> 
 																							 <div th:class="col-md-12">
 																							 Please Select the Project Template
@@ -1026,7 +1026,7 @@ background:#EBEBEB;
 																						</div>
 																						
 																						</th:block>
-																						
+																						</th:block>
 																					</div>
 											                                    </div>
 											                                </div>
@@ -2026,8 +2026,10 @@ background:#EBEBEB;
 												$('#actdescription').val(activityobj.description);
 												$('#actnotes').val(activityobj.notes);
 												$('#actstatus').val(activityobj.status);
-												$('#actactivityfollowers').val(activityobj.activityfollowers.split(',')).change();
-												
+												if(activityobj.activityfollowers != null)
+												{
+													$('#actactivityfollowers').val(activityobj.activityfollowers.split(',')).change();
+												}
 												if(activityobj.activityMasterGuest.length>0)
 												{
 													$('#actguestid').val(activityobj.activityMasterGuest[0].guestid.split(',')).change();

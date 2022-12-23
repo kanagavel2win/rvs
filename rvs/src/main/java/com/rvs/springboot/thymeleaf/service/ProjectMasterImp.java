@@ -1,10 +1,14 @@
 package com.rvs.springboot.thymeleaf.service;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.ProjectMasterRepository;
@@ -79,6 +83,23 @@ public class ProjectMasterImp implements ProjectMasterService {
 		String sql="select distinct(District) from statedistrict where State='"+ state+ "'";
 			
 		return JdbcTemplate.queryForList(sql,String.class);
+	}
+
+	@Override
+	public int addnewtask(int projectdetailid, String taskname) {
+		String sql="INSERT INTO projecttaskmaster(projecttasktitle, projectdetailid) VALUES ('"+ taskname + "','"+ projectdetailid +"')";
+		
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		JdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+		
+		
 	}
 		
 	

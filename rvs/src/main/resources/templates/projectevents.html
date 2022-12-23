@@ -315,6 +315,54 @@ background:#EBEBEB;
 								<div class="card-content">
 									<div class="card-body">
 										<!--scrolling content Modal -->
+										<div class="modal fade" id="ProjectTaskStatusScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="ProjectTaskStatusScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-warning">
+														<h5 class="modal-title white"
+															>New Project Task Name</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel" id="additemalltxt"></label>
+																<div class="position-relative">
+																	<fieldset class="form-group">
+																		<input type="hidden" id="projecttaskdivadd"
+																			class="form-control capitalize">
+																		<input type="text" id="projecttaskdivaddtxt"
+																			class="form-control capitalize">
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-secondary"
+															data-dismiss="modal">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Close</span>
+														</button>
+														<button type="button" class="btn btn-primary ml-1"
+															id="projecttaskdivaddsave">
+															<i class="bx bx-check d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">ADD</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+										<!--scrolling content Modal -->
 										<div class="modal fade" id="VendorStatusScrollable"
 											tabindex="-1" role="dialog"
 											aria-labelledby="VendorStatusScrollableTitle"
@@ -755,10 +803,7 @@ background:#EBEBEB;
 																<button type="submit" class="btn btn-primary mr-1 mb-1"
 																	style="float: right">Save</button>
 																
-																<div class="checkbox checkbox-success checkbox-glow">
-																	<input type="checkbox" id="actcheckboxGlow1" name="status">
-																	<label for="actcheckboxGlow1">Make as done</label>
-																</div>
+																	<br/>
 															</div>
 															<!-- ------------------------------------------ -->
 														</form>
@@ -842,7 +887,14 @@ background:#EBEBEB;
 											                                    	<div class="row">
 												                                    	<div th:class="'col-md-12 edudivdelete' + ${s.index}">
 																							<label class="emptitle"
-																								th:text=" ${s.index+1} + '.Project Details'"></label>
+																								th:text=" ${s.index+1} + '.Project Details'">
+																								
+																								</label>
+																								<button class="btn btn-light-primary btn-sm projecttaskdivadd"
+																									 type="button"
+																									title="Add Project Task Details" th:id="${childobj['projectdetailid']}">
+																									<i class="bx bx-plus"></i>
+																								</button>
 																								 <span
 																								th:class="'cursor-pointer edudivhide  edudivhide'+ ${s.index}"
 																								th:name="${s.index}" style="float: right;"> <i
@@ -989,7 +1041,7 @@ background:#EBEBEB;
 																													<span th:if="${actobj.activitytype}=='Call'"><i class="bx bx-phone-call"></i></span>
 																												</td>
 																												
-																												<td align="center">
+																												<td align="center" th:id="'customColorCheckdiv'+ ${actobj.activityId}">
 																													<th:block th:if="${actobj.status}=='Completed'">
 																														<i class="bx bxs-check-circle green"></i>
 																													</th:block>
@@ -1007,7 +1059,7 @@ background:#EBEBEB;
 																												<td th:text="${actobj.duedate}"></td>
 																												<td>
 																												 <span th:if="${actobj.activitytype}=='Task'" class="cursor-pointer edittask" th:name="${actobj.activityId}" style="float: right;"> <i class="bx bxs-pencil"></i></span>
-																												 <span th:if="${actobj.activitytype}=='Meeting'" class="cursor-pointer editmeeting" th:name="${actobj.activityId}" style="float: right;"> <i class="bx bxs-pencil"></i></span>	
+																												 <span th:unless="${actobj.activitytype}=='Task'" class="cursor-pointer editmeeting" th:name="${actobj.activityId}" style="float: right;"> <i class="bx bxs-pencil"></i></span>	
 																												</td>
 																												<td>
 																												 <span
@@ -1035,6 +1087,7 @@ background:#EBEBEB;
 																						
 																						</th:block>
 																						</th:block>
+																						<span th:id="'projecttaskdivlast' + ${childobj['projectdetailid']}"></span>
 																					</div>
 											                                    </div>
 											                                </div>
@@ -1670,7 +1723,7 @@ background:#EBEBEB;
 																	$("#taskduedate").val("");
 																	$("#noteactivityid").val("");
 																	$("#taskactivitytitle").val("");
-																	//gettimelinelist(mastercategoryid);
+																	document.location.reload();
 																	
 																},
 																error : function(e) {
@@ -1680,7 +1733,11 @@ background:#EBEBEB;
 																}
 															});
 													//---------------------------------------------------------
-												}
+												}else
+													{
+													
+													 alert("Please enter the task details");
+													}
 											});
 							//--------------------------------------------------------------------------------
 							$("#profile-tab").click(function() {
@@ -2020,7 +2077,7 @@ background:#EBEBEB;
 											success : function(
 													result) {
 												var activityobj = JSON.parse(JSON.stringify(result));
-												//console.log(activityobj);
+												console.log(activityobj);
 												$('#activityidsourceid').val(activityobj.mastercategoryid);
 												$('#activityId').val(activityobj.activityId);
 												$('#createdtime').val(activityobj.createdtime);
@@ -2038,14 +2095,18 @@ background:#EBEBEB;
 												{
 													$('#actactivityfollowers').val(activityobj.activityfollowers.split(',')).change();
 												}
-												if(activityobj.activityMasterGuest.length>0)
+												if(activityobj.activityMasterGuest.length > 0)
 												{
-													$('#actguestid').val(activityobj.activityMasterGuest[0].guestid.split(',')).change();
+													if(activityobj.activityMasterGuest[0].guestid != null)
+													{
+														$('#actguestid').val(activityobj.activityMasterGuest[0].guestid.split(',')).change();
+													}
 												}
+												
 												$('#actcheckboxGlow1').val(activityobj.actcheckboxGlow1);
 												$('#act'+activityobj.activitytype).click();
-												$('#ActivityeventsStatusScrollable').modal('toggle');
 												
+												$('#ActivityeventsStatusScrollable').modal('toggle');
 											},
 											error : function(e) {
 												console.log("Error"+ e);
@@ -2078,6 +2139,64 @@ background:#EBEBEB;
 												}
 											});
 									}
+								});
+								//----------------------------------------------------------------------------------------------------------------
+								var projecttaskdivadd=1000;
+								$(document).on("click", ".projecttaskdivadd", function() {
+									id=$(this).attr("id");
+									$('#projecttaskdivadd').val(id);
+									$('#ProjectTaskStatusScrollable').modal('toggle');
+									
+								});
+								
+								$(document).on("click", "#projecttaskdivaddsave", function() {
+									tskid=$('#projecttaskdivadd').val();
+									tskname=$('#projecttaskdivaddtxt').val();
+									projecttaskdivadd++;
+									
+									var formData = {
+											tskid : tskid,
+											tskname: tskname
+										}
+										$.ajax({
+											type : "POST",
+											url : "addtaskdetails",
+											data : formData,
+											success : function(
+													result) {	
+												let tempres='<div class="col-12 card collapse-header edudivdelete' + projecttaskdivadd + ' edudivdeleteacc' + projecttaskdivadd + '"> <div id="innerheadingCollapse' + result +'" class="card-header card-headerpdtask" data-toggle="collapse" role="button" data-target="#innercollapse' + result +'" aria-expanded="false" aria-controls="innercollapse' + result +'"> <span class="collapse-title">' + tskname +'</span> </div> <div id="innercollapse' + result +'" role="tabpanel" aria-labelledby="innerheadingCollapse' + result +'" class="collapse">  <table class="table1"> <tr> <th></th><th>Done</th><th>Subject</th><th>Assignee</th><th>Due date</th><th colspan="2"></th></tr> </table>  <div class="col-12 history"> <div class="col-md-12"> <span class="addtactivitylink" name="' +result + '"> + Activity</span> <br/> </div> </div>  </div> </div>';
+												$("#projecttaskdivlast"+tskid).before(tempres);
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+												
+											}
+										});
+									
+									$('#ProjectTaskStatusScrollable').modal('toggle');
+									
+								});
+								//----------------------------------------------------------------------------------------------------------------
+								$(document).on("click", ".checkboxdone", function() {
+									let activityid=$(this).attr("id").replace('customColorCheck','');
+									
+									var formData = {
+											activityid : activityid
+											
+										}
+										$.ajax({
+											type : "POST",
+											url : "activitymarkascompleted",
+											data : formData,
+											success : function(result) {	
+												$("#customColorCheckdiv"+activityid).html('<i class="bx bxs-check-circle green"></i>');
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+												
+											}
+										});
+									
 								});
 								//----------------------------------------------------------------------------------------------------------------
 						});

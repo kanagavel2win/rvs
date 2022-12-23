@@ -13,4 +13,5 @@ public interface ProjectMasterService {
 	public void updatepipeline(String str,String pipeline, String notes);
 	public List<String> getStateAll();
 	public List<String> getDistrictAll(String state);
+	public int addnewtask(int projectdetailid,String taskname);
 }

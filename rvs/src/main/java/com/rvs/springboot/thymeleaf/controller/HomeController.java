@@ -5074,9 +5074,43 @@ public class HomeController {
 		String ids = String.valueOf(params.get("ids"));
 		String txt = String.valueOf(params.get("txt"));
 		String notes = String.valueOf(params.get("notes")).replace("null", "");
-		;
-
 		dealMasterService.updatepipeline(ids, txt, notes);
+		return "";
+	}
+	
+	@PostMapping("dealsavestage4")
+	@ResponseBody
+	public String dealsavestage4(@RequestParam Map<String, String> params) {
+		String ids = String.valueOf(params.get("ids"));
+		
+		int dealid= Integer.parseInt(ids);
+		DealMaster dmobj=dealMasterService.findById(dealid);
+	
+		ArrayList<ProjectdetailsMaster> ls= new ArrayList<ProjectdetailsMaster>();
+		
+		for(DealProjectMaster dpm : dmobj.getDealProjectMaster())
+		{
+			ProjectdetailsMaster pdm = new ProjectdetailsMaster();
+			pdm.setAmount(dpm.getAmount());
+			pdm.setPrice(dpm.getPrice());
+			pdm.setProjecttype(dpm.getProjecttype());
+			pdm.setQuantity(dpm.getQuantity());
+			pdm.setUnit(dpm.getUnit());
+			ls.add(pdm);
+		}
+		
+		ProjectMaster obj= new ProjectMaster();
+		obj.setProjectdetailMaster(ls);
+		obj.setTitle(dmobj.getTitle());
+		obj.setContactPerson(dmobj.getContactPerson());
+		obj.setOrganization(dmobj.getOrganization());
+		obj.setFollowers(dmobj.getFollower());
+		obj.setDealid(String.valueOf(dmobj.getId()));
+		obj.setCreateddate(displaydatetimeFormat.format(new Date()));
+		obj.setPipeline("Unscheduled");
+		projectMasterService.save(obj);
+		
+		dealMasterService.updatepipeline(ids, "Won", "");
 		return "";
 	}
 
@@ -5856,13 +5890,7 @@ public class HomeController {
 		List<ActivityMasterGuest> lsactivityMasterguest = activityMaster.getActivityMasterGuest();
 		String guestStaff = "";
 
-		String status = String.valueOf(params.get("status"));
-		status = status.replace("null", "");
-
-		// --------------------------------------------------
-		if (!status.equalsIgnoreCase("")) {
-			activityMaster.setStatus("Completed");
-		}
+		
 		// --------------------------------------------------
 		// File Uploading
 		String profilephotouploadRootPath = request.getServletContext().getRealPath("activityfiles");
@@ -6046,5 +6074,14 @@ public class HomeController {
 
 		activityMasterService.deletebyid(id);
 	}
+	
+	@ResponseBody
+	@PostMapping("addtaskdetails")
+	public int addtaskdetails(@RequestParam("tskid") int projectdetailid, @RequestParam("tskname") String taskname) {
+
+		return projectMasterService.addnewtask(projectdetailid, taskname);
+	}
+	
+	
 
 }

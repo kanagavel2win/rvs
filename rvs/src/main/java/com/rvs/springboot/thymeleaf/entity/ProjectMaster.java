@@ -61,6 +61,9 @@ public class ProjectMaster {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "projectId")
 	private List<ProjectdetailsMaster> projectdetailMaster;
+
+
+	
 	
 	
 	

@@ -1355,12 +1355,37 @@ color:green;
 								             
 								         });
 								 
-								 if(ids.length>1)
+								 ids=ids.substring(0,ids.length-1);
+								 if(ids.length>0)
 								 {
-									 ids=ids.substring(0,ids.length-1);
-									 $(".losstitle").text(txt);
-									 $(".lossid").val(ids);
-									 $('#lossbacktoleadinfoScrollable').modal('toggle');
+									 if(txt=='Won')
+									 {
+										 
+										 $("#handle-list-8").html("Won");
+										 var formData = {
+												 ids:ids
+											 }
+										    $.ajax({
+													type : "POST",url : "dealsavestage4",
+													data : formData, success : function(result) {
+														alert("Item moved to Project");														
+													},
+													error : function(e) {
+														console.log("Error" + e);
+														
+													}
+												});  
+										 //-----------------------------------------------------------------
+									 }
+									 else
+									 {
+										 $(".losstitle").text(txt);
+										 $(".lossid").val(ids);
+										 $('#lossbacktoleadinfoScrollable').modal('toggle');
+										 $("#handle-list-7").html("Loss");
+										 $("#handle-list-9").html("Back To Lead");
+									 }
+									 
 								 }
 							
 							}
@@ -1419,8 +1444,6 @@ color:green;
 							 updatedealdashboardexecute("handle-list-4","4rs","4nosdeals");
 							 updatedealdashboardexecute("handle-list-5","5rs","5nosdeals");
 							 updatedealdashboardexecute("handle-list-6","6rs","6nosdeals");
-							 
-							 
 							}
 						
 						 function dbupdate(){
@@ -1430,12 +1453,11 @@ color:green;
 							 updatedealdashboarddbexecute("handle-list-4","Project Evaluvated");
 							 updatedealdashboarddbexecute("handle-list-5","Proposal made");
 							 updatedealdashboarddbexecute("handle-list-6","Negotiations started");
-							 updatedealdashboarddbexecute("handle-list-8","Won");
+							 updatedealdashboarddbexecutewithcomments("handle-list-8","Won");
 							 updatedealdashboarddbexecutewithcomments("handle-list-7","Loss");
 							 updatedealdashboarddbexecutewithcomments("handle-list-9","Back To Lead");
 						 }
 						 updatedealdashboard();
-						 
 						 
 						//------------------------------------------------------------
 							

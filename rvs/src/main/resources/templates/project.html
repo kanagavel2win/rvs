@@ -65,13 +65,13 @@
 .leftredline
 {
 	float:left;
-	height:20px;
+	height:30px;
 	width:2px;
 	background:red;
 	margin-left:-5px;
-	margin-top:-5px;
+	margin-top:5px;
 }
-.bxs-error, .bxs-comment-detail,.bxs-smiley-sad
+.bxs-error, .bx-landscape,.bxs-smiley-sad
 {
 float:right;
 }
@@ -221,7 +221,30 @@ color:green;
 }
 
 </style>
+<style type="text/css">
+a.tooltip {
+	position: relative;
+	text-decoration: none;
+	color: blue;
+}
 
+a.tooltip span {
+	display: none;
+}
+
+a.tooltip:hover span {
+	position: absolute;
+	top: 40px;
+        font-size: 40px;
+	left: 0px;
+	display: block;
+	width: 250px;
+	color: black;
+	background-color: #FFFF40;
+	border: 1px solid black;
+	padding: 5px;
+}
+</style>
 
 
 
@@ -270,7 +293,8 @@ color:green;
 				</div>
 			</div>
 			<div class="content-body">
-
+ <a class="tooltip" href="#">this text<span>This help text is shown in the tooltip. It spans multiple lines and works in all browsers.</span>sds</a>sdsd
+										
 				<!-- Basic Vertical form layout section start -->
 				<section id="basic-vertical-layouts">
 					<div class="row match-height">
@@ -652,7 +676,7 @@ color:green;
 										</div>
 										<!--scrolling content Modal -->
 										
-										
+										 
 										<div class="table-responsive">
 											<!-- ----Start Drag & Drop -->
 											<table>
@@ -669,7 +693,15 @@ color:green;
 																
 																<th:block th:each="obj,stat :${projectmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Unscheduled'">
-																		<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		
+																		<th:block th:unless="${hispendingmap.get(obj.id)} == null">
+																				
+																				<a th:href="'projectevents?id=' + ${obj.id}" class="tooltip-light"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}"> 
+																		</th:block>
+																		<th:block th:if="${hispendingmap.get(obj.id)} == null">
+																				<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		</th:block>
+																		
 																		
 																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" th:id="'projectin'+ ${stat.index}" >
 												
@@ -685,23 +717,20 @@ color:green;
 																			</th:block>
 																			<th:block th:unless="${nextactmap.get(obj.id)} == null" >
 																				<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				 	<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																				</th:block>
 																				<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="green bx bxs-comment-detail"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
+																				 	<i class="green bx bx-landscape tooltip-light"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
 																				</th:block>
 																			</th:block>
 																			<th:block th:if="${nextactmap.get(obj.id)} == null" >
-																				<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																			</th:block>
 																			<br/>
 																			
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																			
-																			<th:block th:unless="${hispendingmap.get(obj.id)} == null">
-																				<i class="red bx bxs-smiley-sad"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}" ></i>
-																				
-																			</th:block>
+																			
 																		
 																			 
 																			
@@ -726,7 +755,13 @@ color:green;
 															<div id="handle-list-2" class="droptarget">
 																<th:block th:each="obj,stat :${projectmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Scheduled'">
-																		<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		<th:block th:unless="${hispendingmap.get(obj.id)} == null">
+																				
+																				<a th:href="'projectevents?id=' + ${obj.id}" class="tooltip-light"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}"> 
+																		</th:block>
+																		<th:block th:if="${hispendingmap.get(obj.id)} == null">
+																				<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		</th:block> 
 																		
 																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" th:id="'projectin'+ ${stat.index}" >
 												
@@ -742,24 +777,19 @@ color:green;
 																			</th:block>
 																			<th:block th:unless="${nextactmap.get(obj.id)} == null" >
 																				<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				 	<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																				</th:block>
 																				<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="green bx bxs-comment-detail"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
+																				 	<i class="green bx bx-landscape tooltip-light"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
 																				</th:block>
 																			</th:block>
 																			<th:block th:if="${nextactmap.get(obj.id)} == null" >
-																				<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																			</th:block>
 																			<br/>
 																			
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																			
-																			<th:block th:unless="${hispendingmap.get(obj.id)} == null">
-																				<i class="red bx bxs-smiley-sad"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}" ></i>
-																				
-																			</th:block>
-																		
 																			 
 																			
 																		</div></a>
@@ -780,7 +810,13 @@ color:green;
 															<div id="handle-list-3" class="droptarget">
 																<th:block th:each="obj,stat :${projectmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='kick-off'">
-																		<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		<th:block th:unless="${hispendingmap.get(obj.id)} == null">
+																				
+																				<a th:href="'projectevents?id=' + ${obj.id}" class="tooltip-light"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}"> 
+																		</th:block>
+																		<th:block th:if="${hispendingmap.get(obj.id)} == null">
+																				<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		</th:block> 
 																		
 																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" th:id="'projectin'+ ${stat.index}" >
 												
@@ -796,24 +832,20 @@ color:green;
 																			</th:block>
 																			<th:block th:unless="${nextactmap.get(obj.id)} == null" >
 																				<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				 	<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																				</th:block>
 																				<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="green bx bxs-comment-detail"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
+																				 	<i class="green bx bx-landscape tooltip-light"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
 																				</th:block>
 																			</th:block>
 																			<th:block th:if="${nextactmap.get(obj.id)} == null" >
-																				<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																			</th:block>
 																			<br/>
 																			
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																			
-																			<th:block th:unless="${hispendingmap.get(obj.id)} == null">
-																				<i class="red bx bxs-smiley-sad"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}" ></i>
-																				
-																			</th:block>
-																		
+																			
 																			 
 																			
 																		</div></a>
@@ -833,7 +865,13 @@ color:green;
 															<div id="handle-list-4" class="droptarget">
 																<th:block th:each="obj,stat :${projectmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Planning'">
-																		<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		<th:block th:unless="${hispendingmap.get(obj.id)} == null">
+																				
+																				<a th:href="'projectevents?id=' + ${obj.id}" class="tooltip-light"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}"> 
+																		</th:block>
+																		<th:block th:if="${hispendingmap.get(obj.id)} == null">
+																				<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		</th:block> 
 																		
 																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" th:id="'projectin'+ ${stat.index}" >
 												
@@ -849,26 +887,19 @@ color:green;
 																			</th:block>
 																			<th:block th:unless="${nextactmap.get(obj.id)} == null" >
 																				<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				 	<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																				</th:block>
 																				<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="green bx bxs-comment-detail"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
+																				 	<i class="green bx bx-landscape tooltip-light"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
 																				</th:block>
 																			</th:block>
 																			<th:block th:if="${nextactmap.get(obj.id)} == null" >
-																				<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																			</th:block>
 																			<br/>
 																			
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
-																			
-																			<th:block th:unless="${hispendingmap.get(obj.id)} == null">
-																				<i class="red bx bxs-smiley-sad"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}" ></i>
-																				
-																			</th:block>
 																		
-																			 
-																			
 																		</div></a>
 																	</th:block>	
 																</th:block>
@@ -886,7 +917,13 @@ color:green;
 															<div id="handle-list-5" class="droptarget">
 																<th:block th:each="obj,stat :${projectmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Field Work'">
-																		<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		<th:block th:unless="${hispendingmap.get(obj.id)} == null">
+																				
+																				<a th:href="'projectevents?id=' + ${obj.id}" class="tooltip-light"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}"> 
+																		</th:block>
+																		<th:block th:if="${hispendingmap.get(obj.id)} == null">
+																				<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		</th:block> 
 																		
 																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" th:id="'projectin'+ ${stat.index}" >
 												
@@ -902,25 +939,18 @@ color:green;
 																			</th:block>
 																			<th:block th:unless="${nextactmap.get(obj.id)} == null" >
 																				<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				 	<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																				</th:block>
 																				<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="green bx bxs-comment-detail"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
+																				 	<i class="green bx bx-landscape tooltip-light"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
 																				</th:block>
 																			</th:block>
 																			<th:block th:if="${nextactmap.get(obj.id)} == null" >
-																				<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																			</th:block>
 																			<br/>
 																			
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
-																			
-																			<th:block th:unless="${hispendingmap.get(obj.id)} == null">
-																				<i class="red bx bxs-smiley-sad"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}" ></i>
-																				
-																			</th:block>
-																		
-																			 
 																			
 																		</div></a>
 																	</th:block>	
@@ -939,7 +969,13 @@ color:green;
 															<div id="handle-list-6" class="droptarget">
 																<th:block th:each="obj,stat :${projectmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Drawing'">
-																		<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		<th:block th:unless="${hispendingmap.get(obj.id)} == null">
+																				
+																				<a th:href="'projectevents?id=' + ${obj.id}" class="tooltip-light"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}"> 
+																		</th:block>
+																		<th:block th:if="${hispendingmap.get(obj.id)} == null">
+																				<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		</th:block> 
 																		
 																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" th:id="'projectin'+ ${stat.index}" >
 												
@@ -955,25 +991,19 @@ color:green;
 																			</th:block>
 																			<th:block th:unless="${nextactmap.get(obj.id)} == null" >
 																				<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				 	<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																				</th:block>
 																				<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="green bx bxs-comment-detail"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
+																				 	<i class="green bx bx-landscape tooltip-light"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
 																				</th:block>
 																			</th:block>
 																			<th:block th:if="${nextactmap.get(obj.id)} == null" >
-																				<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																			</th:block>
 																			<br/>
 																			
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																			
-																			<th:block th:unless="${hispendingmap.get(obj.id)} == null">
-																				<i class="red bx bxs-smiley-sad"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}" ></i>
-																				
-																			</th:block>
-																		
-																			 
 																			
 																		</div></a>
 																	</th:block>	
@@ -992,7 +1022,13 @@ color:green;
 															<div id="handle-list-7" class="droptarget">
 																<th:block th:each="obj,stat :${projectmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Review'">
-																		<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		<th:block th:unless="${hispendingmap.get(obj.id)} == null">
+																				
+																				<a th:href="'projectevents?id=' + ${obj.id}" class="tooltip-light"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}"> 
+																		</th:block>
+																		<th:block th:if="${hispendingmap.get(obj.id)} == null">
+																				<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		</th:block> 
 																		
 																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" th:id="'projectin'+ ${stat.index}" >
 												
@@ -1008,25 +1044,19 @@ color:green;
 																			</th:block>
 																			<th:block th:unless="${nextactmap.get(obj.id)} == null" >
 																				<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				 	<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																				</th:block>
 																				<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="green bx bxs-comment-detail"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
+																				 	<i class="green bx bx-landscape tooltip-light"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
 																				</th:block>
 																			</th:block>
 																			<th:block th:if="${nextactmap.get(obj.id)} == null" >
-																				<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																			</th:block>
 																			<br/>
 																			
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																			
-																			<th:block th:unless="${hispendingmap.get(obj.id)} == null">
-																				<i class="red bx bxs-smiley-sad"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}" ></i>
-																				
-																			</th:block>
-																		
-																			 
 																			
 																		</div></a>
 																	</th:block>	
@@ -1045,7 +1075,13 @@ color:green;
 															<div id="handle-list-8" class="droptarget">
 																<th:block th:each="obj,stat :${projectmasterlist}">
 																	<th:block th:if="${obj.pipeline} =='Delivered'">
-																		<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		<th:block th:unless="${hispendingmap.get(obj.id)} == null">
+																				
+																				<a th:href="'projectevents?id=' + ${obj.id}" class="tooltip-light"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}"> 
+																		</th:block>
+																		<th:block th:if="${hispendingmap.get(obj.id)} == null">
+																				<a th:href="'projectevents?id=' + ${obj.id}"> 
+																		</th:block> 
 																		
 																		<div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" th:id="'projectin'+ ${stat.index}" >
 												
@@ -1061,25 +1097,19 @@ color:green;
 																			</th:block>
 																			<th:block th:unless="${nextactmap.get(obj.id)} == null" >
 																				<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				 	<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																				</th:block>
 																				<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
-																				 	<i class="green bx bxs-comment-detail"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
+																				 	<i class="green bx bx-landscape tooltip-light"  data-toggle="tooltip" th:title="${nextactmap.get(obj.id)}" ></i>
 																				</th:block>
 																			</th:block>
 																			<th:block th:if="${nextactmap.get(obj.id)} == null" >
-																				<i class="red bx bxs-error"  data-toggle="tooltip" title="No Activity" ></i>
+																				<i class="red bx bxs-error tooltip-light"  data-toggle="tooltip" title="No Activity" ></i>
 																			</th:block>
 																			<br/>
 																			
 																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
 																			
-																			<th:block th:unless="${hispendingmap.get(obj.id)} == null">
-																				<i class="red bx bxs-smiley-sad"  data-toggle="tooltip" th:title="'Delayed - ' +${hispendingmap.get(obj.id)}" ></i>
-																				
-																			</th:block>
-																		
-																			 
 																			
 																		</div></a>
 																	</th:block>	
@@ -1147,7 +1177,7 @@ color:green;
 	<!-- BEGIN: Page JS-->
 
 	<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/popover/popover.js}"></script>   
+	<script th:src="@{/app-assets/js/scripts/tooltip/tooltip.js}"></script>   
 	<!-- END: Page JS-->
 
 	<script>

@@ -79,6 +79,10 @@
 	th:href="@{/app-assets/css/pages/app-email.css}">
 <!-- END: Custom CSS-->
 <style>
+.green
+{
+color:green;
+}
 .badge-secondary{
 font-size:9px; 
 }
@@ -986,8 +990,12 @@ background:#EBEBEB;
 																												</td>
 																												
 																												<td align="center">
-																													
-																													<input type="checkbox" class="checkboxdone" th:id="'customColorCheck'+ ${actobj.activityId}">
+																													<th:block th:if="${actobj.status}=='Completed'">
+																														<i class="bx bxs-check-circle green"></i>
+																													</th:block>
+																													<th:block th:unless="${actobj.status}=='Completed'">
+																														<input type="checkbox" class="checkboxdone" th:id="'customColorCheck'+ ${actobj.activityId}">
+																													</th:block>
 																                                                    
 														                                                        </td>
 																												<td th:text="${actobj.activitytitle}"></td>	

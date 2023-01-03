@@ -263,6 +263,16 @@ public class HomeController {
 		}
 
 	}
+	
+
+	@GetMapping("/maintenance")
+	public String maintenance(Model theModel) {
+
+		return "maintaince";
+		
+	}
+	
+	
 
 	private boolean logintype(String expectedrole) {
 

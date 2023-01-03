@@ -27,6 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	
         http.authorizeRequests()
                     .antMatchers(
+                    		"/maintenance",
                     		"/app-assets/**",
                             "/assets/**",
                             "/gulp-tasks/**",
@@ -51,6 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .clearAuthentication(true)
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/login?logout")
+                        
                 .permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/error/401Unaut");

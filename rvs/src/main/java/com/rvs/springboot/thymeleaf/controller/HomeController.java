@@ -35,6 +35,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -197,6 +198,7 @@ public class HomeController {
 		String dataLoginEmpID = "";
 		String dataLoginEmpName = "";
 		String dataLoginrole = "";
+		String dataLoginEmpprofiileimg = "";
 		try {
 
 			try {
@@ -209,21 +211,28 @@ public class HomeController {
 				if (request.getSession().getAttribute("dataLoginrole").toString().equals(null)) {
 					request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
 				}
+				if (request.getSession().getAttribute("dataLoginEmpprofiileimg").toString().equals(null)) {
+					request.getSession().setAttribute("dataLoginEmpprofiileimg", getdataLoginEmpprofiileimg());
+				}
 			} catch (NullPointerException e) {
 				request.getSession().setAttribute("dataLoginEmpID", getLoginempID());
 				request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
 				request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
+				request.getSession().setAttribute("dataLoginEmpprofiileimg", getdataLoginEmpprofiileimg());
 			}
 
 			dataLoginEmpID = request.getSession().getAttribute("dataLoginEmpID").toString();
 			dataLoginEmpName = request.getSession().getAttribute("dataLoginEmpName").toString();
 			dataLoginrole = request.getSession().getAttribute("dataLoginrole").toString();
+			dataLoginEmpprofiileimg = request.getSession().getAttribute("dataLoginEmpprofiileimg").toString();
 		} catch (Exception e) {
 
 		} finally {
 			themodel.addAttribute("dataLoginEmpID", dataLoginEmpID);
 			themodel.addAttribute("dataLoginEmpName", dataLoginEmpName);
 			themodel.addAttribute("dataLoginrole", dataLoginrole);
+			themodel.addAttribute("dataLoginEmpprofiileimg", dataLoginEmpprofiileimg);
+			
 		}
 
 	}
@@ -295,10 +304,29 @@ public class HomeController {
 		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
 		return obj.getStaffName();
 	}
+	public String getdataLoginEmpprofiileimg() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
+		String profilephoto="";
+		if(obj.getEmployeeFiles().size()>0)
+		{
+			List<EmployeeFiles> empfile=obj.getEmployeeFiles().stream().filter(C -> C.getPhoto_Attach() != null).collect(Collectors.toList());
+			if(empfile.size()>0)
+			{
+				profilephoto= empfile.get(0).getPhoto_Attach();
+			}
+		}	
+		
+		
+		return profilephoto;
+	}
 
 	@GetMapping("login")
-	public String login(Model model) {
-
+	public String login(Model model, HttpServletRequest request) {
+		request.getSession().setAttribute("dataLoginEmpID", null);
+		request.getSession().setAttribute("dataLoginEmpName", null);
+		request.getSession().setAttribute("dataLoginrole", null);
+		request.getSession().setAttribute("dataLoginEmpprofiileimg", null);
 		return "login";
 	}
 

@@ -383,7 +383,7 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <span class="fw-semibold d-block lh-1">John Doe</span>
+                              <span class="fw-semibold d-block lh-1" th:text="${dataLoginEmpName}"></span>
                               <small>Admin</small>
                             </div>
                           </div>
@@ -392,8 +392,8 @@
                       <li>
                         <div class="dropdown-divider"></div>
                       </li>
-                      <li>
-                        <a class="dropdown-item" href="pages-profile-user.html">
+                      <li th:if="${dataLoginrole}=='ROLE_ADMIN'">
+                        <a class="dropdown-item" href="rvsemp/">
                           <i class="bx bx-user me-2"></i>
                           <span class="align-middle">My Profile</span>
                         </a>

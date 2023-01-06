@@ -462,6 +462,14 @@ public class HomeController {
 		return "branchlist";
 
 	}
+	@ResponseBody
+	@GetMapping("branchlistjson")
+	public List<BranchMaster> branchListresponsebody(Model themodel) {
+		List<BranchMaster> bmList = branchMasterService.findAll();
+
+		return bmList;
+
+	}
 
 	@GetMapping("editbranch")
 	public String getBranchMassterDetails(Model theModel, @RequestParam("id") int branchid) {

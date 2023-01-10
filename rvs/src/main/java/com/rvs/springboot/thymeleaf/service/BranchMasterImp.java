@@ -16,8 +16,8 @@ public class BranchMasterImp implements BranchMasterService {
 	BranchMasterRepository branchRepo;
 	
 	@Override
-	public void save(BranchMaster obj) {
-		branchRepo.save(obj);
+	public BranchMaster save(BranchMaster obj) {
+	 return	branchRepo.save(obj);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -61,5 +62,18 @@ public class BranchMaster {
 	private String CURRENT_STATUS;
 	@Column
 	private String CLOSED_DATE;
+	
+	@Transient
+	private String BRANCH_IN_CHARGE_img;
+	@Transient
+	private String BRANCH_IN_CHARGE_name;	
+	@Transient
+	private String startdateMMformat;
+	@Transient
+	private String startdatatimeline;
+	@Transient
+	private String BRANCH_Type_2w;
+	@Transient
+	private String COMES_UNDER_name;
 	
 }

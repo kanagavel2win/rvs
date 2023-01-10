@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
@@ -35,7 +37,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -191,6 +192,7 @@ public class HomeController {
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
 	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	DateFormat displaydateFormatFirstMMMddYYY = new SimpleDateFormat("MMM-dd-yyyy");
 
 	@ModelAttribute
 	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
@@ -232,7 +234,7 @@ public class HomeController {
 			themodel.addAttribute("dataLoginEmpName", dataLoginEmpName);
 			themodel.addAttribute("dataLoginrole", dataLoginrole);
 			themodel.addAttribute("dataLoginEmpprofiileimg", dataLoginEmpprofiileimg);
-			
+
 		}
 
 	}
@@ -263,16 +265,13 @@ public class HomeController {
 		}
 
 	}
-	
 
 	@GetMapping("/maintenance")
 	public String maintenance(Model theModel) {
 
 		return "maintaince";
-		
+
 	}
-	
-	
 
 	private boolean logintype(String expectedrole) {
 
@@ -314,20 +313,19 @@ public class HomeController {
 		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
 		return obj.getStaffName();
 	}
+
 	public String getdataLoginEmpprofiileimg() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
-		String profilephoto="";
-		if(obj.getEmployeeFiles().size()>0)
-		{
-			List<EmployeeFiles> empfile=obj.getEmployeeFiles().stream().filter(C -> C.getPhoto_Attach() != null).collect(Collectors.toList());
-			if(empfile.size()>0)
-			{
-				profilephoto= empfile.get(0).getPhoto_Attach();
+		String profilephoto = "";
+		if (obj.getEmployeeFiles().size() > 0) {
+			List<EmployeeFiles> empfile = obj.getEmployeeFiles().stream().filter(C -> C.getPhoto_Attach() != null)
+					.collect(Collectors.toList());
+			if (empfile.size() > 0) {
+				profilephoto = empfile.get(0).getPhoto_Attach();
 			}
-		}	
-		
-		
+		}
+
 		return profilephoto;
 	}
 
@@ -457,29 +455,142 @@ public class HomeController {
 
 		// System.out.println("<---------List of Branch------------->");
 		// System.out.println(bmList);
-
+		themodel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		themodel.addAttribute("branchlist", bmList);
 		return "branchlist";
 
+	}
+
+	@ResponseBody
+	@PostMapping("branchsavejson")
+	public int branchsavejson(@RequestParam Map<String, String> params)
+	{
+		BranchMaster bm= new BranchMaster();
+		bm.setB_TYPE(params.get("branch_type"));
+		bm.setBRANCH_NAME(params.get("branchName"));
+		bm.setBRANCH_IN_CHARGE(params.get("branch_incharge"));
+		bm.setBRANCH_OFFICE_EMAIL_ID(params.get("branchemail"));
+		bm.setSTATED_DATE(params.get("branch_startdate"));
+		bm.setCOMES_UNDER(params.get("branchHierarchy"));
+		bm.setCURRENT_STATUS(params.get("branchstatus"));
+		bm.setOFFICE_PHONE_NUMBER(params.get("branchOfficeContact"));
+		bm= branchMasterService.save(bm);
+		return bm.getId(); 
 	}
 	@ResponseBody
 	@GetMapping("branchlistjson")
 	public List<BranchMaster> branchListresponsebody(Model themodel) {
 		List<BranchMaster> bmList = branchMasterService.findAll();
+		Date todaydate = new Date();
+
+		for (BranchMaster bm : bmList) {
+			
+			if(!bm.getCOMES_UNDER().equalsIgnoreCase("-"))
+			{
+				List<BranchMaster> templist=bmList.stream().filter(C-> C.getId() == Integer.parseInt(bm.getCOMES_UNDER())).collect(Collectors.toList());
+				if(templist.size()>0)
+				{
+					bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
+				}
+			}
+			if (!bm.getB_TYPE().equalsIgnoreCase("")) {
+				bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
+			}
+			if (!nullremover(String.valueOf(bm.getBRANCH_IN_CHARGE())).equalsIgnoreCase("")) {
+				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(bm.getBRANCH_IN_CHARGE()));
+				bm.setBRANCH_IN_CHARGE_img(getemp_photo(empobj));
+				bm.setBRANCH_IN_CHARGE_name(empobj.getStaffName());
+
+			}
+			if (!bm.getSTATED_DATE().equalsIgnoreCase("")) {
+				try {
+					bm.setStartdateMMformat(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(bm.getSTATED_DATE())).toString());
+					bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		}
 
 		return bmList;
 
 	}
 
+	public String getTimeage(String date) {
+
+		String[] arr = date.toString().split("-");
+		LocalDate today = LocalDate.now();
+		 LocalDate starteddate = LocalDate.of(Integer.parseInt(arr[0]), Month.of(Integer.parseInt(arr[1])), Integer.parseInt(arr[2]));
+
+		//LocalDate birthday = LocalDate.of(1960, Month.JANUARY, 1);
+
+		Period period = Period.between(today, starteddate);
+		int years = Math.abs(period.getYears());
+		int months = Math.abs(period.getMonths());
+		int days = Math.abs(period.getDays());
+
+		String timeline = "";
+
+		if (years > 0) {
+			timeline += years + " Years ";
+		}
+		if (months > 0) {
+			timeline += months + " Months ";
+		}
+		if (days > 0) {
+			timeline += days + " Days ";
+		}
+
+		return timeline;
+	}
+
 	@GetMapping("editbranch")
 	public String getBranchMassterDetails(Model theModel, @RequestParam("id") int branchid) {
-		List<BranchMaster> bmlist = branchMasterService.findAll().stream()
-				.filter(c -> c.getB_TYPE().equalsIgnoreCase("Head Office")).collect(Collectors.toList());
-		theModel.addAttribute("Headofficelist", bmlist);
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		
+		BranchMaster bm = branchMasterService.findById(branchid);
+		if(!bm.getCOMES_UNDER().equalsIgnoreCase("-"))
+		{
+			List<BranchMaster> templist=bmlist.stream().filter(C-> C.getId() == Integer.parseInt(bm.getCOMES_UNDER())).collect(Collectors.toList());
+			if(templist.size()>0)
+			{
+				bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
+			}
+		}
+		if (!bm.getB_TYPE().equalsIgnoreCase("")) {
+			bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
+		}
+		if (!nullremover(String.valueOf(bm.getBRANCH_IN_CHARGE())).equalsIgnoreCase("")) {
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(bm.getBRANCH_IN_CHARGE()));
+			bm.setBRANCH_IN_CHARGE_img(getemp_photo(empobj));
+			bm.setBRANCH_IN_CHARGE_name(empobj.getStaffName());
 
-		BranchMaster obj_bm = branchMasterService.findById(branchid);
-		theModel.addAttribute("BranchMaster", obj_bm);
+		}
+		if (!bm.getSTATED_DATE().equalsIgnoreCase("")) {
+
+				try {
+					bm.setStartdateMMformat(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(bm.getSTATED_DATE())).toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
+		}
+		
+		theModel.addAttribute("BranchMaster", bm);
 		return "branchadd";
+	}
+
+	public String getemp_photo(EmployeeMaster obj) {
+		String str = "";
+		List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream().filter(c -> c.getPhoto_Attach() != null)
+				.collect(Collectors.toList());
+		if (validProfilephoto.size() > 0) {
+			str += validProfilephoto.get(0).getPhoto_Attach();
+		}
+		return str;
 	}
 
 	@GetMapping("emplist")
@@ -3719,7 +3830,6 @@ public class HomeController {
 
 							long differ_in_time = todaydate.getTime()
 									- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
-
 							str += insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)) + " |";
 
 						} catch (ParseException e) {
@@ -5123,19 +5233,18 @@ public class HomeController {
 		dealMasterService.updatepipeline(ids, txt, notes);
 		return "";
 	}
-	
+
 	@PostMapping("dealsavestage4")
 	@ResponseBody
 	public String dealsavestage4(@RequestParam Map<String, String> params) {
 		String ids = String.valueOf(params.get("ids"));
-		
-		int dealid= Integer.parseInt(ids);
-		DealMaster dmobj=dealMasterService.findById(dealid);
-	
-		ArrayList<ProjectdetailsMaster> ls= new ArrayList<ProjectdetailsMaster>();
-		
-		for(DealProjectMaster dpm : dmobj.getDealProjectMaster())
-		{
+
+		int dealid = Integer.parseInt(ids);
+		DealMaster dmobj = dealMasterService.findById(dealid);
+
+		ArrayList<ProjectdetailsMaster> ls = new ArrayList<ProjectdetailsMaster>();
+
+		for (DealProjectMaster dpm : dmobj.getDealProjectMaster()) {
 			ProjectdetailsMaster pdm = new ProjectdetailsMaster();
 			pdm.setAmount(dpm.getAmount());
 			pdm.setPrice(dpm.getPrice());
@@ -5144,8 +5253,8 @@ public class HomeController {
 			pdm.setUnit(dpm.getUnit());
 			ls.add(pdm);
 		}
-		
-		ProjectMaster obj= new ProjectMaster();
+
+		ProjectMaster obj = new ProjectMaster();
 		obj.setProjectdetailMaster(ls);
 		obj.setTitle(dmobj.getTitle());
 		obj.setContactPerson(dmobj.getContactPerson());
@@ -5155,7 +5264,7 @@ public class HomeController {
 		obj.setCreateddate(displaydatetimeFormat.format(new Date()));
 		obj.setPipeline("Unscheduled");
 		projectMasterService.save(obj);
-		
+
 		dealMasterService.updatepipeline(ids, "Won", "");
 		return "";
 	}
@@ -5567,38 +5676,36 @@ public class HomeController {
 
 		for (ProjectMaster objg : projectmasterls) {
 			int totalamount = 0;
-			ArrayList<String> projecttaskids= new ArrayList<String>();
-			
+			ArrayList<String> projecttaskids = new ArrayList<String>();
+
 			for (ProjectdetailsMaster objpr : objg.getProjectdetailMaster()) {
 				if (!nullremover(String.valueOf(objpr.getAmount())).equalsIgnoreCase("")) {
 					totalamount += Integer.parseInt(objpr.getAmount());
 				}
-				
+
 				objpr.getProjecttaskMaster().forEach(rowobj -> {
 					projecttaskids.add(String.valueOf(rowobj.getProjecttaskid()));
 				});
 			}
 			maptotalamt.put(objg.getId(), totalamount);
-			String taskid=String.join(",",projecttaskids);
-			
-			if(!taskid.equalsIgnoreCase(""))
-			{
+			String taskid = String.join(",", projecttaskids);
+
+			if (!taskid.equalsIgnoreCase("")) {
 				// ---------------------------------------------------------------
 				// Next Activity & Followers Details
-				List<Map<String, Object>> ls = activityMasterService.nextactivity("Project",taskid);
+				List<Map<String, Object>> ls = activityMasterService.nextactivity("Project", taskid);
 				if (ls.size() > 0) {
 					ls.forEach(rowMap -> {
 						String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 						String activitytype = String.valueOf(rowMap.get("activitytype"));
-						nextactmap.put(objg.getId(),  activitytitle);
+						nextactmap.put(objg.getId(), activitytitle);
 					});
 				} else {
 					nextactmap.put(objg.getId(), "No");
 				}
 				// ---------------------------------------------------------------
 				// Pending Activity
-				List<Map<String, Object>> pendingls = activityMasterService.historypendingactivity("Project",
-						taskid);
+				List<Map<String, Object>> pendingls = activityMasterService.historypendingactivity("Project", taskid);
 				if (pendingls.size() > 0) {
 					ArrayList<String> pendingactlist = new ArrayList<String>();
 					pendingls.forEach(rowMap -> {
@@ -5606,8 +5713,8 @@ public class HomeController {
 						String activitytype = String.valueOf(rowMap.get("activitytype"));
 						pendingactlist.add(activitytitle);
 					});
-	
-					hispendingmap.put(objg.getId(), String.join(",",pendingactlist));
+
+					hispendingmap.put(objg.getId(), String.join(",", pendingactlist));
 				}
 				// ---------------------------------------------------------------
 			}
@@ -5624,7 +5731,7 @@ public class HomeController {
 		themodel.addAttribute("personorgls", personorgls);
 		themodel.addAttribute("maptotalamt", maptotalamt);
 		themodel.addAttribute("nextactmap", nextactmap);
-		themodel.addAttribute("hispendingmap",hispendingmap);
+		themodel.addAttribute("hispendingmap", hispendingmap);
 
 		themodel.addAttribute("todaydate", displaydateFormat.format(new Date()));
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
@@ -5762,13 +5869,13 @@ public class HomeController {
 				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 		}
-		/*if (projectMaster.getProjectdetailMaster().size() == 0) {
-			List<ProjectdetailsMaster> dmls = new ArrayList();
-			ProjectdetailsMaster dpmobj = new ProjectdetailsMaster();
-
-			dmls.add(dpmobj);
-			projectMaster.setProjectdetailMaster(dmls);
-		}*/
+		/*
+		 * if (projectMaster.getProjectdetailMaster().size() == 0) {
+		 * List<ProjectdetailsMaster> dmls = new ArrayList(); ProjectdetailsMaster
+		 * dpmobj = new ProjectdetailsMaster();
+		 * 
+		 * dmls.add(dpmobj); projectMaster.setProjectdetailMaster(dmls); }
+		 */
 
 		if (!nullremover(String.valueOf(projectMaster.getContactPerson())).equalsIgnoreCase("")) {
 			for (String str1 : (projectMaster.getContactPerson().toString()).split(",")) {
@@ -5921,10 +6028,8 @@ public class HomeController {
 		projectMaster = projectMasterService.save(projectMaster);
 		// ----------------------------
 
-		
-
 		return "redirect:projectevents?id=" + String.valueOf(projectMaster.getId()) + "&save";
-		
+
 	}
 
 	@PostMapping("projecteventpart2save")
@@ -5936,7 +6041,6 @@ public class HomeController {
 		List<ActivityMasterGuest> lsactivityMasterguest = activityMaster.getActivityMasterGuest();
 		String guestStaff = "";
 
-		
 		// --------------------------------------------------
 		// File Uploading
 		String profilephotouploadRootPath = request.getServletContext().getRealPath("activityfiles");
@@ -6120,14 +6224,12 @@ public class HomeController {
 
 		activityMasterService.deletebyid(id);
 	}
-	
+
 	@ResponseBody
 	@PostMapping("addtaskdetails")
 	public int addtaskdetails(@RequestParam("tskid") int projectdetailid, @RequestParam("tskname") String taskname) {
 
 		return projectMasterService.addnewtask(projectdetailid, taskname);
 	}
-	
-	
 
 }

@@ -6,7 +6,7 @@ import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 
 public interface BranchMasterService {
 	
-	public void save(BranchMaster obj);
+	public BranchMaster save(BranchMaster obj);
 	public BranchMaster findById(Integer id);
 	public List<BranchMaster> findAll();
 	

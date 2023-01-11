@@ -1,10 +1,15 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -62,6 +67,15 @@ public class BranchMaster {
 	private String CURRENT_STATUS;
 	@Column
 	private String CLOSED_DATE;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private Set<BranchContact> branchContact;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private Set<BranchFiles> branchFiles;
+
 	
 	@Transient
 	private String BRANCH_IN_CHARGE_img;

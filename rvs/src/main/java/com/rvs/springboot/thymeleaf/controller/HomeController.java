@@ -478,6 +478,77 @@ public class HomeController {
 		return bm.getId(); 
 	}
 	@ResponseBody
+	@PostMapping("branchupdatejson")
+	public BranchMaster branchupdatejson(@RequestParam Map<String, String> params)
+	{
+		int branchid=Integer.parseInt(params.get("BranchID"));
+		BranchMaster bm= branchMasterService.findById(branchid);
+		bm.setB_TYPE(params.get("branch_type"));
+		bm.setBRANCH_NAME(params.get("branchName"));
+		bm.setBRANCH_IN_CHARGE(params.get("branch_incharge"));
+		bm.setSTATED_DATE(params.get("branch_startdate"));
+		bm.setCOMES_UNDER(params.get("branchHierarchy"));
+		bm.setCURRENT_STATUS(params.get("branchstatus"));
+		bm= branchMasterService.save(bm);
+		return branchListresponsebody(bm); 
+		
+	}
+
+	@ResponseBody
+	@PostMapping("branchAddressupdatejson")
+	public BranchMaster branchAddressupdatejson(@RequestParam Map<String, String> params)
+	{
+		int branchid=Integer.parseInt(params.get("BranchID"));
+		BranchMaster bm= branchMasterService.findById(branchid);
+		bm.setCOUNTRY(params.get("AddressCountry"));
+		bm.setBRANCH_ADDRESSLINE1(params.get("AddressAddress1"));
+		bm.setBRANCH_ADDRESSLINE2(params.get("AddressAddress2"));
+		bm.setBRANCH_ADDRESSLandMark(params.get("AddressLandmark"));
+		bm.setBRANCH_ADDRESSVillage(params.get("AddressVillage"));
+		bm.setCITY(params.get("AddressCity"));
+		bm.setSTATE(params.get("AddressState"));
+		bm.setZIP_CODE(params.get("AddressZipCode"));
+		bm= branchMasterService.save(bm);
+		return branchListresponsebody(bm); 
+	}
+
+	public BranchMaster branchListresponsebody(BranchMaster bm ) {
+		
+		Date todaydate = new Date();
+		List<BranchMaster> bmList = branchMasterService.findAll();
+			
+			if(!bm.getCOMES_UNDER().equalsIgnoreCase("-"))
+			{
+				List<BranchMaster> templist=bmList.stream().filter(C-> C.getId() == Integer.parseInt(bm.getCOMES_UNDER())).collect(Collectors.toList());
+				if(templist.size()>0)
+				{
+					bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
+				}
+			}
+			if (!bm.getB_TYPE().equalsIgnoreCase("")) {
+				bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
+			}
+			if (!nullremover(String.valueOf(bm.getBRANCH_IN_CHARGE())).equalsIgnoreCase("")) {
+				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(bm.getBRANCH_IN_CHARGE()));
+				bm.setBRANCH_IN_CHARGE_img(getemp_photo(empobj));
+				bm.setBRANCH_IN_CHARGE_name(empobj.getStaffName());
+
+			}
+			if (!bm.getSTATED_DATE().equalsIgnoreCase("")) {
+				try {
+					bm.setStartdateMMformat(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(bm.getSTATED_DATE())).toString());
+					bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		return bm;
+	}
+
+	@ResponseBody
 	@GetMapping("branchlistjson")
 	public List<BranchMaster> branchListresponsebody(Model themodel) {
 		List<BranchMaster> bmList = branchMasterService.findAll();
@@ -580,6 +651,8 @@ public class HomeController {
 		}
 		
 		theModel.addAttribute("BranchMaster", bm);
+		theModel.addAttribute("BranchList", branchMasterService.findAll());		
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		return "branchadd";
 	}
 

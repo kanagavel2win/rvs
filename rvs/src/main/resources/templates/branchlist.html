@@ -139,10 +139,10 @@
                         <span id="basicPost2" class="input-group-text"><i class="bx bxs-briefcase"></i></span>
                         <select class="form-select" id="branch_type" required>
                            <option value="">Select Branch Type</option>
-                           <option value="Head Office">Head Office</option>
+                           <option value="Head-Office">Head Office</option>
                            <option value="Branch">Branch</option>
                            <option value="Sub-Branch">Sub-Branch</option>
-                           <option value="Sub-Branch">Field-Office</option>
+                           <option value="Field-Branch">Field-Office</option>
                          </select>
                           
                           <div class="invalid-feedback">Please enter Branch Type.</div>
@@ -151,15 +151,13 @@
                     <div class="col-sm-12">
                       <label class="form-label" for="basicFullname">BRANCH NAME</label>
                       <div class="input-group input-group-merge has-validation">
-                      
-                        <span id="basicFullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                        <span id="basicFullname2" class="input-group-text"><i class="bx bxs-business"></i></span>
                          <input
                           type="text"
                           id="branchName"
                           class="form-control dt-full-name"
                            required
                         />
-                        
                        <div class="invalid-feedback">Please enter the Branch Name.</div>
                       </div>
                        
@@ -168,7 +166,7 @@
                     <div class="col-sm-12">
                       <label class="form-label" for="basicPost">In-Charge</label>
                       <div class="input-group input-group-merge">
-                        <span id="basicPost2" class="input-group-text"><i class="bx bxs-briefcase"></i></span>
+                        <span id="basicPost2" class="input-group-text"><i class="bx bx-male"></i></span>
                         <select class="form-select" id="branch_incharge" required>
                            <option value="">Select In-Charge</option>
                            <option th:each="emp :${EffectiveEmployee}" th:value="${emp.empMasterid}"  th:text="${emp.StaffName}"></option>
@@ -195,7 +193,7 @@
                     <div class="col-sm-12">
                       <label class="form-label" for="basicPost">Hierarchy</label>
                       <div class="input-group input-group-merge">
-                        <span id="basicPost2" class="input-group-text"><i class="bx bxs-briefcase"></i></span>
+                        <span id="basicPost2" class="input-group-text"><i class="bx bx-sitemap"></i></span>
                         <select class="form-select" id="branchHierarchy" required>
                            <option value="">Select Hierarchy</option>
                            <option th:each="branch :${branchlist}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option>

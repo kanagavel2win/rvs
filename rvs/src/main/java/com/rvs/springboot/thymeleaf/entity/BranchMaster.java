@@ -38,7 +38,14 @@ public class BranchMaster {
 	@Column
 	private String COMES_UNDER;
 	@Column
-	private String BRANCH_ADDRESS;
+	private String BRANCH_ADDRESSLINE1;
+	@Column
+	private String BRANCH_ADDRESSLINE2;
+	@Column
+	private String BRANCH_ADDRESSLandMark;
+	@Column
+	private String BRANCH_ADDRESSVillage;
+
 	@Column
 	private String CITY;
 	@Column

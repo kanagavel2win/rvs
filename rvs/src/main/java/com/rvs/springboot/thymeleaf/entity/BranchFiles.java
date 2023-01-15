@@ -15,7 +15,7 @@ import lombok.ToString;
 
 @Entity
 @Getter @Setter @NoArgsConstructor  @AllArgsConstructor @ToString
-@Table(name="BranchMaster")
+@Table(name="BranchFiles")
 
 public class BranchFiles {
 

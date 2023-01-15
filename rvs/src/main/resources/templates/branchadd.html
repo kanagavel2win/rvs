@@ -134,28 +134,30 @@
                         <ul class="list-unstyled">
                           <li class="mb-3">
                             <span class="fw-bold me-2">Type:</span>
-                            <span th:text="${BranchMaster.B_TYPE}"></span>
+                            <span th:text="${BranchMaster.B_TYPE}" id="Lbl_B_TYPE"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Name:</span>
-                            <span  th:text="${BranchMaster.BRANCH_NAME}"></span>
+                            <span  th:text="${BranchMaster.BRANCH_NAME}" id="Lbl_BRANCH_NAME"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Status:</span>
-                            <span  th:if="${BranchMaster.CURRENT_STATUS} =='Active'" class="badge bg-label-success">Active</span>
-                            <span  th:unless="${BranchMaster.CURRENT_STATUS} =='Active'" class="badge bg-label-danger">In Active</span>
+                            <span  id="Lbl_CURRENT_STATUS">
+	                            <span  th:if="${BranchMaster.CURRENT_STATUS} =='Active'" class="badge bg-label-success">Active</span>
+	                            <span  th:unless="${BranchMaster.CURRENT_STATUS} =='Active'" class="badge bg-label-danger">In Active</span>
+                            </span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">In-Charge Name:</span>
-                            <span th:text="${BranchMaster.BRANCH_IN_CHARGE_name}"></span>
+                            <span th:text="${BranchMaster.BRANCH_IN_CHARGE_name}"  id="Lbl_BRANCH_IN_CHARGE"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Hierarchy:</span>
-                            <span th:text="${BranchMaster.COMES_UNDER_name}"></span>
+                            <span th:text="${BranchMaster.COMES_UNDER_name}"  id="Lbl_COMES_UNDER"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Effect On :</span>
-                            <span th:text="${BranchMaster.startdateMMformat}"></span>
+                            <span th:text="${BranchMaster.startdateMMformat}" id="Lbl_STATED_DATE"></span>
                           </li>
                         
                         </ul>
@@ -165,6 +167,7 @@
                             class="btn btn-primary me-3"
                             data-bs-target="#editBranchdetails"
                             data-bs-toggle="modal"
+                            id="editBranchdetailsbtn"
                             >Edit</a
                           >
                           <a href="javascript:;" class="btn btn-label-danger suspend-user">Suspended</a>
@@ -196,11 +199,7 @@
                         <div class="cardMaster border p-3 rounded mb-3">
                           <div class="d-flex justify-content-between flex-sm-row flex-column">
                             <div class="card-information">
-                              <img
-                                class="mb-3 img-fluid"
-                                src="../../assets/img/icons/payments/mastercard.png"
-                                alt="Master Card"
-                              />
+                              <h6 class="mb-3">Kaith Morrison</h6>
                               <h6 class="mb-1">Kaith Morrison</h6>
                               <span class="card-number"
                                 >&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
@@ -218,7 +217,7 @@
                                 </button><br/>
                                 <button class="btn btn-label-secondary"><i class='bx bxs-trash-alt'></i></button>
                               </div>
-                              <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at 12/26</small>
+                              
                             </div>
                           </div>
                         </div>
@@ -236,35 +235,35 @@
                         <ul class="list-unstyled">
                           <li class="mb-3">
                             <span class="fw-bold me-2">Country:</span>
-                            <span th:text="${BranchMaster.B_TYPE}"></span>
+                            <span th:text="${BranchMaster.COUNTRY}" id="Lbl_AddressCountry"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Address Line 1:</span>
-                            <span  th:text="${BranchMaster.BRANCH_NAME}"></span>
+                            <span  th:text="${BranchMaster.BRANCH_ADDRESSLINE1}"  id="Lbl_AddressAddress1"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Address Line 2:</span>
-                            
+                            <span  th:text="${BranchMaster.BRANCH_ADDRESSLINE2}"  id="Lbl_AddressAddress2"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Landmark:</span>
-                            <span th:text="${BranchMaster.BRANCH_IN_CHARGE_name}"></span>
+                            <span th:text="${BranchMaster.BRANCH_ADDRESSLandMark}"  id="Lbl_AddressLandmark"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Village:</span>
-                            <span th:text="${BranchMaster.COMES_UNDER_name}"></span>
+                            <span th:text="${BranchMaster.BRANCH_ADDRESSVillage}" id="Lbl_AddressVillage"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">City/Town:</span>
-                            <span th:text="${BranchMaster.startdateMMformat}"></span>
+                            <span th:text="${BranchMaster.CITY}"  id="Lbl_AddressCity"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">State:</span>
-                            <span th:text="${BranchMaster.startdateMMformat}"></span>
+                            <span th:text="${BranchMaster.STATE}" id="Lbl_AddressState"></span>
                           </li>
                         <li class="mb-3">
                             <span class="fw-bold me-2">Pin code:</span>
-                            <span th:text="${BranchMaster.startdateMMformat}"></span>
+                            <span th:text="${BranchMaster.ZIP_CODE}" id="Lbl_AddressZipCode"></span>
                           </li>
                         </ul>
                         <div class="d-flex justify-content-center pt-3">
@@ -537,159 +536,171 @@
               <div class="modal fade" id="editBranchdetails" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-simple modal-edit-user">
                   <div class="modal-content p-3 p-md-5">
+                  
                     <div class="modal-body">
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-4">
                         <h3>Edit Branch Information</h3>
                         <p>Update Branch Basic Information</p>
                       </div>
-                      <form id="editBranchdetailsForm" class="row g-3" onsubmit="return false">
+                      <form id="editBranchdetailsForm" th:object="${BranchMaster}" class="row g-3 needs-validation" onsubmit="return false">
+						<input type="hidden" th:value="${BranchMaster['id']}" id="BranchID" th:field="*{id}"/>
 	                    <div class="col-12 row">
 	                    	<div class="col-md-3">
 	                          <div class="form-check custom-option custom-option-icon">
-	                            <label class="form-check-label custom-option-content" for="customRadioIcon1">
+	                            <label class="form-check-label custom-option-content" for="radioHead-Office">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-building"></i>
 	                                <span class="custom-option-title">HO Head Office</span>
 	                                <small> Controls B.O & S.O & T.O.</small>
 	                              </span>
 	                              <input
-	                                name="customRadioIcon"
-	                                class="form-check-input"
+	                                name="Model_B_TYPE"
+	                                
 	                                type="radio"
-	                                value=""
-	                                id="customRadioIcon1"
-	                                checked
+	                                value="Head-Office"
+	                                id="radioHead-Office"
+	                                
 	                              />
 	                            </label>
 	                          </div>
 	                        </div>
 	                        <div class="col-md-3">
 	                          <div class="form-check custom-option custom-option-icon">
-	                            <label class="form-check-label custom-option-content" for="customRadioIcon2">
+	                            <label class="form-check-label custom-option-content" for="radioBranch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-buildings"></i>
 	                                <span class="custom-option-title"> BO Branch Office </span>
 	                                <small> Subordinate to the Head Office. </small>
 	                              </span>
 	                              <input
-	                                name="customRadioIcon"
-	                                class="form-check-input"
+	                                name="Model_B_TYPE"
+	                                
 	                                type="radio"
-	                                value=""
-	                                id="customRadioIcon2"
+	                                value="Branch"
+	                                id="radioBranch"
+	                                
 	                              />
 	                            </label>
 	                          </div>
 	                        </div>
 	                        <div class="col-md-3">
 	                          <div class="form-check custom-option custom-option-icon">
-	                            <label class="form-check-label custom-option-content" for="customRadioIcon3">
+	                            <label class="form-check-label custom-option-content" for="radioSub-Branch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-building-house"></i>
 	                                <span class="custom-option-title"> SO Sub Office </span>
-	                                <small>Comes under HO or BO and reports to the latter office.</small>
+	                                <small>Small Unit Reports to H.O/B.O.</small>
 	                              </span>
 	                              <input
-	                                name="customRadioIcon"
-	                                class="form-check-input"
+	                                name="Model_B_TYPE"
 	                                type="radio"
-	                                value=""
-	                                id="customRadioIcon3"
+	                                value="Sub-Branch"
+	                                id="radioSub-Branch"
+	                                
 	                              />
 	                            </label>
 	                          </div>
 	                        </div>
 	                        <div class="col-md-3">
 	                          <div class="form-check custom-option custom-option-icon">
-	                            <label class="form-check-label custom-option-content" for="customRadioIcon3">
+	                            <label class="form-check-label custom-option-content" for="radioField-Branch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-hard-hat"></i>
 	                                <span class="custom-option-title"> FO Field Office </span>
-	                                <small>A Temporary office serves only to concern projects.</small>
+	                                <small>A Temporary office for  projects.</small>
 	                              </span>
 	                              <input
-	                                name="customRadioIcon"
-	                                class="form-check-input"
+	                                name="Model_B_TYPE"
+	                                
 	                                type="radio"
-	                                value=""
-	                                id="customRadioIcon4"
+	                                value="Field-Branch"
+	                                id="radioField-Branch"
+	                                
 	                              />
+	                              
 	                            </label>
 	                          </div>
 	                        </div>
 	                    	
 	                    </div>
+	                    
                         <div class="col-12 col-md-6">
+                                
+	                              
                           <label class="form-label" for="modaleditBranchdetailsFirstName">Branch Name</label>
                           <input
                             type="text"
-                            id="modaleditBranchdetailsFirstName"
-                            name="modaleditBranchdetailsFirstName"
                             class="form-control"
-                            
-                          />
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="modaleditBranchdetailsLastName">In-Charge Name</label>
-                          <select
-                            id="modaleditBranchdetailsLastName"
-                            name="modaleditBranchdetailsLastName"
-                            class="form-select"
-                            aria-label="Default select example"
-                          >
-                            <option selected>Status</option>
-                            <option value="1">Active</option>
-                            <option value="2">Inactive</option>
-                            <option value="3">Suspended</option>
-                          </select>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="modaleditBranchdetailsName">Started On</label>
-                          <input
-                            type="text"
-                            class="form-control flatpickr-validation"
-                            id="modaleditBranchdetailsName"
+                            id="Model_BRANCH_NAME"
+                            th:value="${BranchMaster['BRANCH_NAME']}"
                             required
                           />
+                          <div class="invalid-feedback">Please enter Branch Name.</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_BRANCH_IN_CHARGE">In-Charge Name</label>
+                          <select
+                            class="form-select"
+                            aria-label="Default select example" 
+                            id="Model_BRANCH_IN_CHARGE"
+                            th:field="*{BRANCH_IN_CHARGE}" 
+                            th:value="${BranchMaster['BRANCH_IN_CHARGE']}"
+                            required
+                          >
+                             <option value="">Select In-Charge</option>
+                             <option th:each="emp :${EffectiveEmployee}" th:value="${emp.empMasterid}"  th:text="${emp.StaffName}"></option>
+                          
+                          </select>
+                          <div class="invalid-feedback">Please Select In-Charge</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_STATED_DATE">Started On</label>
+                          <input
+                            type="date"
+                            class="form-control flatpickr-validation"
+                            id="Model_STATED_DATE"
+                            th:value="${BranchMaster['STATED_DATE']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Started On.</div>
                         </div>
                         <div class="col-12 col-md-6">
                           <label class="form-label" for="modaleditBranchdetailsEmail">Hierarchy </label>
-                          <select class="form-select" id="branchHierarchy" required>
+                          <select class="form-select" id="Model_COMES_UNDER" 
+                          th:field="*{COMES_UNDER}"
+                          th:value="${BranchMaster['COMES_UNDER']}"
+                          required>
                            <option value="">Select Hierarchy</option>
-                           <!-- <option th:each="branch :${branchlist}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option> -->
+                           <option th:each="branch :${BranchList}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option> 
                            
                          </select>
+                         <div class="invalid-feedback">Please enter Hierarchy.</div>
                         </div>
                         <div class="col-12 col-md-6">
-                          <label class="form-label" for="modaleditBranchdetailsStatus">Status</label>
+                          <label class="form-label" for="Model_CURRENT_STATUS">Status</label>
                           <select
-                            id="modaleditBranchdetailsStatus"
-                            name="modaleditBranchdetailsStatus"
+                            id="Model_CURRENT_STATUS"
                             class="form-select"
                             aria-label="Default select example"
-                          >
-                            <option selected>Status</option>
-                            <option value="1">Active</option>
-                            <option value="2">Inactive</option>
-                            <option value="3">Suspended</option>
-                          </select>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="modalEditTaxID">Effect On</label>
-                          <input
-                            type="text"
-                            class="form-control flatpickr-validation"
-                            id="modalEditTaxID"
+                            th:field="*{CURRENT_STATUS}"
+                            th:value="${BranchMaster['CURRENT_STATUS']}"
                             required
-                          />
+                          >
+                            <option value="">Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Suspended">Suspended</option>
+                          </select>
+                          <div class="invalid-feedback">Please enter Status.</div>
                         </div>
+                       
                       
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                          <button type="submit" class="btn btn-primary editbranchdatasubmit me-sm-3 me-1">Submit</button>
                           <button
-                            type="reset"
-                            class="btn btn-label-secondary"
+                            type="button"
+                            class="btn btn-label-secondary editbranchdataclose"
                             data-bs-dismiss="modal"
                             aria-label="Close"
                           >
@@ -703,7 +714,7 @@
               </div>
               <!--/ Edit User Modal -->
 
-              <!-- Add New Credit Card Modal -->
+              <!-- Add New Credit Card Modal -->  
               <div class="modal fade" id="addNewContact" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
                   <div class="modal-content p-3 p-md-5">
@@ -718,7 +729,7 @@
                           <label class="form-label w-100" for="modalAddCard">Department </label>
                           <div class="input-group input-group-merge">
                             <select id="defaultSelect" class="form-select">
-	                          <option>Default select</option>
+	                          <option value="">Default select</option>
 	                          <option value="1">One</option>
 	                          <option value="2">Two</option>
 	                          <option value="3">Three</option>
@@ -749,9 +760,9 @@
                           />
                         </div>
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                          <button type="submit" class="btn  btn-primary me-sm-3 me-1">Submit</button>
                           <button
-                            type="reset"
+                            type="button"
                             class="btn btn-label-secondary btn-reset"
                             data-bs-dismiss="modal"
                             aria-label="Close"
@@ -783,6 +794,7 @@
                             name="modalAddressCountry"
                             class="select2 form-select"
                             data-allow-clear="true"
+                            th:value="${BranchMaster.COUNTRY}"
                           >
                             <option value="">Select</option>
                             <option value="Australia">Australia</option>
@@ -819,6 +831,7 @@
                             name="modalAddressAddress1"
                             class="form-control"
                             placeholder="Flat, House no, Building, Apartment"
+                            th:value="${BranchMaster.BRANCH_ADDRESSLINE1}"
                           />
                         </div>
                         <div class="col-12">
@@ -829,6 +842,7 @@
                             name="modalAddressAddress2"
                             class="form-control"
                             placeholder="Area, Street, Sector"
+                            th:value="${BranchMaster.BRANCH_ADDRESSLINE2}"
                           />
                         </div>
                         <div class="col-12 col-md-6">
@@ -839,16 +853,17 @@
                             name="modalAddressLandmark"
                             class="form-control"
                             placeholder="E.g. near Kovai All India Radio"
+                            th:value="${BranchMaster.BRANCH_ADDRESSLandMark}"
                           />
                         </div>
                         <div class="col-12 col-md-6">
-                          <label class="form-label" for="modalAddressLandmark">Village </label>
+                          <label class="form-label" for="modalAddressVillage">Village </label>
                           <input
                             type="text"
-                            id="modalAddressLandmark"
-                            name="modalAddressLandmark"
+                            id="modalAddressVillage"
+                            name="modalAddressVillage"
                             class="form-control"
-                            
+                            th:value="${BranchMaster.BRANCH_ADDRESSVillage}"
                           />
                         </div>
                         <div class="col-12 col-md-6">
@@ -858,7 +873,7 @@
                             id="modalAddressCity"
                             name="modalAddressCity"
                             class="form-control"
-                            
+                            th:value="${BranchMaster.CITY}"
                           />
                         </div>
                         <div class="col-12 col-md-6">
@@ -868,7 +883,7 @@
                             id="modalAddressState"
                             name="modalAddressState"
                             class="form-control"
-                            
+                            th:value="${BranchMaster.STATE}"
                           />
                         </div>
                         <div class="col-12 col-md-6">
@@ -878,15 +893,15 @@
                             id="modalAddressZipCode"
                             name="modalAddressZipCode"
                             class="form-control"
-                            
+                            th:value="${BranchMaster.ZIP_CODE}"
                           />
                         </div>
                         
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 editbranchAddressdatasubmit">Submit</button>
                           <button
-                            type="reset"
-                            class="btn btn-label-secondary"
+                            type="button"
+                            class="btn btn-label-secondary editbranchAddressdataclose"
                             data-bs-dismiss="modal"
                             aria-label="Close"
                           >
@@ -915,7 +930,7 @@
                           <label class="form-label w-100" for="modalAddCard">Document Type </label>
                           <div class="input-group input-group-merge">
                             <select id="defaultSelect" class="form-select">
-	                          <option>Default select</option>
+	                          <option value="">Default select</option>
 	                          <option value="1">One</option>
 	                          <option value="2">Two</option>
 	                          <option value="3">Three</option>
@@ -944,7 +959,7 @@
                         <div class="col-12 text-center mt-4">
                           <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
                           <button
-                            type="reset"
+                            type="button"
                             class="btn btn-label-secondary btn-reset"
                             data-bs-dismiss="modal"
                             aria-label="Close"
@@ -1011,6 +1026,18 @@
     </div>
     <!-- / Layout wrapper -->
 
+<!-- 
+
+BranchID
+
+Model_B_TYPE
+Model_BRANCH_NAME
+Model_BRANCH_IN_CHARGE
+Model_STATED_DATE
+Model_COMES_UNDER
+Model_CURRENT_STATUS
+
+ -->
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
@@ -1042,10 +1069,11 @@
     <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
     <script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
     <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<!-- Form Validation -->
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
-
+    <script th:src="@{/assets/js/form-validation.js}"></script>
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
 
@@ -1053,5 +1081,158 @@
     <script th:src="@{/assets/js/modal-edit-user.js}"></script>
     <script th:src="@{/assets/js/app-user-view.js}"></script>
     <script th:src="@{/assets/js/app-user-view-account.js}"></script>
-  </body>
-</html>
+    
+	<script>
+    $(document).ready(function() {  
+    	//--------------------------------------------------------------------------------------------------------------------------------------
+    	 var branchtypp="[[${BranchMaster['B_TYPE']}]]";
+    	 document.getElementById("radio"+ branchtypp).checked=true;
+    	 
+    	 var country="[[${BranchMaster['COUNTRY']}]]";
+    	 $('#modalAddressCountry').val(country).change();
+		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+		$(function() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+			});
+		});
+		//--------------------------------------------------------------------------------------------------------------------------------------		 
+	
+
+		 $('.editbranchdatasubmit').on('click', function(event){
+
+		    	  $('.editbranchdatasubmit').prop("disabled",true);
+		    	  
+		    	    if(event.target.checkValidity()){
+		    	    	$('.editbranchdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+		    	    	var BranchID=$("#BranchID").val();
+		    	    	var branchName =$('#Model_BRANCH_NAME').val();
+		  	        	var branch_type =$("input[name=Model_B_TYPE]:checked").val();
+		  	        	var branch_incharge =$('#Model_BRANCH_IN_CHARGE').val();
+		  	        	var branch_startdate =$('#Model_STATED_DATE').val();
+		  	        	var branchHierarchy =$('#Model_COMES_UNDER').val();
+		  	        	var branchcurrentstatus =$('#Model_CURRENT_STATUS').val();
+		  	        	 var formData = {
+		  	        			 BranchID: BranchID,
+		  	        			 branchName : branchName,
+		  	        			 branch_type : branch_type,
+		  	        			 branch_incharge : branch_incharge,
+		  	        			 branch_startdate : branch_startdate,
+		  	        			 branchHierarchy : branchHierarchy,
+		  	        			 branchstatus : branchcurrentstatus
+		  				 }
+		  				 $.ajax({
+		  						type : "POST",url : "branchupdatejson",
+		  						data : formData, success : function(result) {
+		  							var bmobj = JSON.parse(JSON.stringify(result));
+		  							
+		  							$('#Lbl_B_TYPE').text(bmobj.b_TYPE);
+		  							$('#Lbl_BRANCH_NAME').text(bmobj.branch_NAME);
+		  							$('#Lbl_BRANCH_IN_CHARGE').text(bmobj.branch_IN_CHARGE_name);
+		  							$('#Lbl_STATED_DATE').text(bmobj.startdateMMformat);
+		  							$('#Lbl_COMES_UNDER').text(bmobj.comes_UNDER_name);
+		  							
+		  							
+		  							if(bmobj.current_STATUS == 'Active')
+	  								{
+		  								$('#Lbl_CURRENT_STATUS').html('<span  class="badge bg-label-success">Active</span>');
+	  								}else
+  									{
+	  									$('#Lbl_CURRENT_STATUS').html('<span  class="badge bg-label-danger">In Active</span>');
+  									}
+
+		  							validationformreset();
+			  								
+		  						},
+		  						error : function(e) {
+		  							console.log("Error" + e);
+		  						}
+		  					});
+		  	        }	
+		    	    else
+		        	{
+		    	    	$('.editbranchdatasubmit').prop("disabled",false);
+		        	}
+
+
+		    	
+		      });
+	  		//--------------------------------------------------------------------------------------------------------------------------------------		 
+	
+
+		 $('.editbranchAddressdatasubmit').on('click', function(event){
+
+		    	  $('.editbranchAddressdatasubmit').prop("disabled",true);
+		    	  
+		    	    if(event.target.checkValidity()){
+		    	    	$('.editbranchAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+		    	    	var BranchID=$("#BranchID").val();
+		    	    	var modalAddressCountry =$('#modalAddressCountry').val();
+		    	    	var modalAddressAddress1 =$('#modalAddressAddress1').val();
+		    	    	var modalAddressAddress2 =$('#modalAddressAddress2').val();
+		    	    	var modalAddressLandmark =$('#modalAddressLandmark').val();
+		    	    	var modalAddressVillage =$('#modalAddressVillage').val();
+		    	    	var modalAddressCity =$('#modalAddressCity').val();
+		    	    	var modalAddressState =$('#modalAddressState').val();
+		    	    	var modalAddressZipCode =$('#modalAddressZipCode').val();
+		    	    	var formData = {
+		  	        			 BranchID: BranchID,
+		  	        			AddressCountry : modalAddressCountry,
+		  	        			AddressAddress1 : modalAddressAddress1,
+		  	        			AddressAddress2 : modalAddressAddress2,
+		  	        			AddressLandmark : modalAddressLandmark,
+		  	        			AddressVillage : modalAddressVillage,
+		  	        			AddressCity : modalAddressCity,
+		  	        			AddressState : modalAddressState,
+		  	        			AddressZipCode : modalAddressZipCode
+		  				 }
+		  				 $.ajax({
+		  						type : "POST",url : "branchAddressupdatejson",
+		  						data : formData, success : function(result) {
+		  							var bmobj = JSON.parse(JSON.stringify(result));
+		  							console.log(bmobj);
+		  							$('#Lbl_AddressCountry').text(bmobj.Lbl_AddressCountry);
+		  							$('#Lbl_AddressAddress1').text(bmobj.branch_ADDRESSLINE1);
+		  							$('#Lbl_AddressAddress2').text(bmobj.branch_ADDRESSLINE2);
+		  							$('#Lbl_AddressLandmark').text(bmobj.branch_ADDRESSLandMark);
+		  							$('#Lbl_AddressVillage').text(bmobj.branch_ADDRESSVillage);
+		  							$('#Lbl_AddressCity').text(bmobj.city);
+		  							$('#Lbl_AddressState').text(bmobj.state);
+		  							$('#Lbl_AddressZipCode').text(bmobj.zip_CODE);
+									validationformaddressreset();
+		  						},
+		  						error : function(e) {
+		  							console.log("Error" + e);
+		  						}
+		  					});
+		  	        }	
+		    	    else
+		        	{
+		    	    	$('.editbranchAddressdatasubmit').prop("disabled",false);
+		        	}
+		      });
+	  		// --------------------------------------------------------------------
+		   		function validationformreset()
+			   {
+		   				$('.editbranchdataclose').click();
+		   				$('.editbranchdatasubmit').prop("disabled",false);
+			   			$('.editbranchdatasubmit').html("Submit");
+			   }
+		   		function validationformaddressreset()
+				   {
+			   				$('.editbranchAddressdataclose').click();
+			   				$('.editbranchAddressdatasubmit').prop("disabled",false);
+				   			$('.editbranchAddressdatasubmit').html("Submit");
+				   }
+		   	// --------------------------------------------------------------------
+  			   	$("#editBranchdetailsbtn").click(function(){
+	  			   	
+  			   	});	
+  			  // --------------------------------------------------------------------
+		    });
+		   </script>
+		  </body>
+		</html>

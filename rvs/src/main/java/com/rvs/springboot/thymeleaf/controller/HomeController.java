@@ -511,6 +511,35 @@ public class HomeController {
 		bm= branchMasterService.save(bm);
 		return branchListresponsebody(bm); 
 	}
+	
+	@ResponseBody
+	@PostMapping("branchContactupdatejson")
+	public int branchContactupdatejson(@RequestParam Map<String, String> params)
+	{
+		int branchid=Integer.parseInt(params.get("BranchID"));
+		String contacttype = params.get("contacttype");
+		String contactPhone = params.get("contactPhone");
+		String contactemail = params.get("contactemail");
+		String contactid = params.get("contactid");
+		if(contactid.equalsIgnoreCase("-"))
+		{
+			return branchMasterService.insertbranchContact(contacttype, contactPhone, contactemail, branchid);
+		}else
+		{
+			return branchMasterService.updatebranchContact(Integer.parseInt(params.get("contactid")), contacttype, contactPhone, contactemail);
+		}
+		
+	}
+
+	@ResponseBody
+	@PostMapping("branchContactdeletejson")
+	public int branchContactdeletejson1(@RequestParam Map<String, String> params)
+	{
+		int contactid = Integer.parseInt(params.get("contactid"));
+		return branchMasterService.deletebranchContact(contactid);
+		
+		
+	}
 
 	public BranchMaster branchListresponsebody(BranchMaster bm ) {
 		

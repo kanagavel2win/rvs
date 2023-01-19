@@ -1,9 +1,14 @@
 package com.rvs.springboot.thymeleaf.service;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.BranchMasterRepository;
@@ -14,6 +19,9 @@ public class BranchMasterImp implements BranchMasterService {
 
 	@Autowired
 	BranchMasterRepository branchRepo;
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+	
 	
 	@Override
 	public BranchMaster save(BranchMaster obj) {
@@ -40,6 +48,35 @@ public class BranchMasterImp implements BranchMasterService {
 	public List<BranchMaster> findAll() {
 		
 		return branchRepo.findAll();
+	}
+
+	@Override
+	public int insertbranchContact(String dep, String phonenumber, String email,int branchid) {
+
+		final String sql="INSERT INTO `branch_contact`(`department`, `email`, `phonenumber`, `id`) VALUES ('"+ dep +"','"+ email +"','"+ phonenumber +"',"+ branchid +")";
+		
+		KeyHolder keyHolder =new GeneratedKeyHolder();
+		
+		jdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int updatebranchContact(int id, String dep, String phonenumber, String email) {
+		String sql="UPDATE `branch_contact` SET `department`='"+ dep +"',`email`='"+ email +"',`phonenumber`='"+ phonenumber +"' WHERE branchcontactid=" +id ;
+		return jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public int deletebranchContact(int id) {
+		String sql ="DELETE FROM `branch_contact` WHERE  branchcontactid=" +id ;
+		return jdbcTemplate.update(sql);
 	}
 		
 	

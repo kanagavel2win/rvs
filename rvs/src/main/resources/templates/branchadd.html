@@ -183,8 +183,9 @@
                       <h5 class="card-action-title mb-0">Contact
                       <div class="card-action-element" style="float:right">
                         <button
-                          class="btn btn-primary btn-sm"
+                          class="btn btn-primary btn-sm addcontactbtn"
                           type="button"
+                          name="-"
                           data-bs-toggle="modal"
                           data-bs-target="#addNewContact"
                         >
@@ -196,31 +197,32 @@
                     </div>
                     <div class="card-body">
                       <div class="added-cards">
-                        <div class="cardMaster border p-3 rounded mb-3">
+                      	<th:block th:each="contactObj : ${BranchMaster.branchContact}">
+                        <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.branchcontactid}">
                           <div class="d-flex justify-content-between flex-sm-row flex-column">
                             <div class="card-information">
-                              <h6 class="mb-3">Kaith Morrison</h6>
-                              <h6 class="mb-1">Kaith Morrison</h6>
-                              <span class="card-number"
-                                >&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
-                                9856</span
+                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.branchcontactid}" th:text="${contactObj.Department}"></h6>
+                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.branchcontactid}" th:text="${contactObj.Phonenumber}"></h6>
+                              <span th:class="'card-number email'+ ${contactObj.branchcontactid}" th:text="${contactObj.Email}"></span
                               >
+                              
                             </div>
                             <div class="d-flex flex-column text-start text-lg-end">
                               <div class="d-flex order-sm-0 order-1 mt-3">
                                 <button
-                                  class="btn btn-label-primary me-3"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#editCCModal"
+                                  class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.branchcontactid}"
+                                  
                                 >
                                   <i class='bx bxs-edit-alt'></i>
                                 </button><br/>
-                                <button class="btn btn-label-secondary"><i class='bx bxs-trash-alt'></i></button>
+                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.branchcontactid}"><i class='bx bxs-trash-alt'></i></button>
                               </div>
                               
                             </div>
                           </div>
                         </div>
+                       	</th:block>
+                       	<span id="contactaddidv"></span>
                        </div>
                     </div>
                     </div>
@@ -339,8 +341,8 @@
                 <!--/ User Sidebar -->
 
                 <!-- User Content -->
-                <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
-                  <!-- User Pills -->
+               <!--  <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+                  User Pills
                   <ul class="nav nav-pills flex-column flex-md-row mb-3">
                     <li class="nav-item">
                       <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i>Account</a>
@@ -366,9 +368,9 @@
                       >
                     </li>
                   </ul>
-                  <!--/ User Pills -->
+                  / User Pills
 
-                  <!-- Project table -->
+                  Project table
                   <div class="card mb-4">
                     <h5 class="card-header">User's Projects List</h5>
                     <div class="table-responsive mb-3">
@@ -385,9 +387,9 @@
                       </table>
                     </div>
                   </div>
-                  <!-- /Project table -->
+                  /Project table
 
-                  <!-- Activity Timeline -->
+                  Activity Timeline
                   <div class="card mb-4">
                     <h5 class="card-header">User Activity Timeline</h5>
                     <div class="card-body">
@@ -505,9 +507,9 @@
                       </ul>
                     </div>
                   </div>
-                  <!-- /Activity Timeline -->
+                  /Activity Timeline
 
-                  <!-- Invoice table -->
+                  Invoice table
                   <div class="card">
                     <div class="table-responsive mb-3">
                       <table class="table datatable-invoice border-top">
@@ -524,9 +526,9 @@
                       </table>
                     </div>
                   </div>
-                  <!-- /Invoice table -->
+                  /Invoice table
                 </div>
-                <!--/ User Content -->
+                --> <!--/ User Content -->
               	
               
               </div>
@@ -545,14 +547,14 @@
                       </div>
                       <form id="editBranchdetailsForm" th:object="${BranchMaster}" class="row g-3 needs-validation" onsubmit="return false">
 						<input type="hidden" th:value="${BranchMaster['id']}" id="BranchID" th:field="*{id}"/>
-	                    <div class="col-12 row">
-	                    	<div class="col-md-3">
+	                    
+	                    	<div class="col-12 col-md-3">
 	                          <div class="form-check custom-option custom-option-icon">
 	                            <label class="form-check-label custom-option-content" for="radioHead-Office">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-building"></i>
-	                                <span class="custom-option-title">HO Head Office</span>
-	                                <small> Controls B.O & S.O & T.O.</small>
+	                                <span class="custom-option-title">Head Office</span>
+	                                <!-- <small> Controls B.O & S.O & T.O.</small> -->
 	                              </span>
 	                              <input
 	                                name="Model_B_TYPE"
@@ -565,13 +567,13 @@
 	                            </label>
 	                          </div>
 	                        </div>
-	                        <div class="col-md-3">
+	                        <div class="col-12 col-md-3">
 	                          <div class="form-check custom-option custom-option-icon">
 	                            <label class="form-check-label custom-option-content" for="radioBranch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-buildings"></i>
-	                                <span class="custom-option-title"> BO Branch Office </span>
-	                                <small> Subordinate to the Head Office. </small>
+	                                <span class="custom-option-title">Branch Office</span>
+	                                <!-- <small> Subordinate to the Head Office. </small> -->
 	                              </span>
 	                              <input
 	                                name="Model_B_TYPE"
@@ -584,13 +586,13 @@
 	                            </label>
 	                          </div>
 	                        </div>
-	                        <div class="col-md-3">
+	                        <div class="col-12 col-md-3">
 	                          <div class="form-check custom-option custom-option-icon">
 	                            <label class="form-check-label custom-option-content" for="radioSub-Branch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-building-house"></i>
-	                                <span class="custom-option-title"> SO Sub Office </span>
-	                                <small>Small Unit Reports to H.O/B.O.</small>
+	                                <span class="custom-option-title">Sub Office</span>
+	                                <!-- <small>Small Unit Reports to H.O/B.O.</small> -->
 	                              </span>
 	                              <input
 	                                name="Model_B_TYPE"
@@ -602,13 +604,13 @@
 	                            </label>
 	                          </div>
 	                        </div>
-	                        <div class="col-md-3">
+	                        <div class="col-12 col-md-3">
 	                          <div class="form-check custom-option custom-option-icon">
 	                            <label class="form-check-label custom-option-content" for="radioField-Branch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-hard-hat"></i>
-	                                <span class="custom-option-title"> FO Field Office </span>
-	                                <small>A Temporary office for  projects.</small>
+	                                <span class="custom-option-title">Field Office</span>
+	                                <!-- <small>A Temporary office for  projects.</small> -->
 	                              </span>
 	                              <input
 	                                name="Model_B_TYPE"
@@ -623,7 +625,7 @@
 	                          </div>
 	                        </div>
 	                    	
-	                    </div>
+	                    
 	                    
                         <div class="col-12 col-md-6">
                                 
@@ -728,42 +730,48 @@
                         <div class="col-12">
                           <label class="form-label w-100" for="modalAddCard">Department </label>
                           <div class="input-group input-group-merge">
-                            <select id="defaultSelect" class="form-select">
+                            <select id="modalcontacttype" class="form-select">
 	                          <option value="">Default select</option>
-	                          <option value="1">One</option>
-	                          <option value="2">Two</option>
-	                          <option value="3">Three</option>
+	                          <option value="Personal">Personal</option>
+	                          <option value="Work">Work</option>
+	                          <option value="Office">Office</option>
 	                        </select>
-                           
+                           <input
+                              type="hidden"
+                              id="modalcontactid"
+                              name="modalcontactid"
+                              class="form-contro"
+                              
+                            />
                           </div>
                         </div>
                         <div class="col-12">
-                          <label class="form-label" for="modalAddCardName">Phone Number </label>
+                          <label class="form-label" for="modalcontactPhone">Phone Number </label>
                           <div class="input-group input-group-merge">
                             <span class="input-group-text">+91</span>
                             <input
                               type="text"
-                              id="modalEnableOTPPhone"
-                              name="modalEnableOTPPhone"
+                              id="modalcontactPhone"
+                              name="modalcontactPhone"
                               class="form-control phone-number-otp-mask"
                               placeholder="202 555 0111"
                             />
                           </div>
                         </div>
                         <div class="col-12">
-                          <label class="form-label" for="modalAddCardExpiryDate">Email </label>
+                          <label class="form-label" for="modalContactemail">Email </label>
                           <input
                             type="email"
-                            id="modalAddCardExpiryDate"
+                            id="modalContactemail"
                             class="form-control expiry-date-mask"
                             
                           />
                         </div>
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn  btn-primary me-sm-3 me-1">Submit</button>
+                          <button type="submit" class="btn  btn-primary me-sm-3 me-1 contactsavebtn">Submit</button>
                           <button
-                            type="button"
-                            class="btn btn-label-secondary btn-reset"
+                            type="reset"
+                            class="btn btn-label-secondary btn-reset contactclosebtn"
                             data-bs-dismiss="modal"
                             aria-label="Close"
                           >
@@ -1222,17 +1230,126 @@ Model_CURRENT_STATUS
 			   			$('.editbranchdatasubmit').html("Submit");
 			   }
 		   		function validationformaddressreset()
+			   {
+		   				$('.editbranchAddressdataclose').click();
+		   				$('.editbranchAddressdatasubmit').prop("disabled",false);
+			   			$('.editbranchAddressdatasubmit').html("Submit");
+			   }
+		   		function validationformContactreset()
 				   {
-			   				$('.editbranchAddressdataclose').click();
-			   				$('.editbranchAddressdatasubmit').prop("disabled",false);
-				   			$('.editbranchAddressdatasubmit').html("Submit");
+			   				$('.contactclosebtn').click();
+			   				$('.contactsavebtn').prop("disabled",false);
+				   			$('.contactsavebtn').html("Submit");
 				   }
+		   		
 		   	// --------------------------------------------------------------------
-  			   	$("#editBranchdetailsbtn").click(function(){
-	  			   	
-  			   	});	
-  			  // --------------------------------------------------------------------
+		   	 
+  			  $(".addcontactbtn").click(function(){
+  				$('#modalcontactid').val("-");
+  			  });
+  			  
+  			// --------------------------------------------------------------------
+  			
+  			   	$(".contactsavebtn").click(function(){
+
+  			   	 $('.contactsavebtn').prop("disabled",true);
+		    	  
+		    	    if(event.target.checkValidity()){
+		    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+		    	    	var BranchID=$("#BranchID").val();
+		    	    	var modalcontactid =$('#modalcontactid').val();
+		    	    	var modalcontacttype =$('#modalcontacttype').val();
+		    	    	var modalcontactPhone =$('#modalcontactPhone').val();
+		    	    	var modalContactemail =$('#modalContactemail').val();
+		    	    	var formData = {
+		  	        			 BranchID: BranchID,
+		  	        			 contactid: modalcontactid,
+		  	        			 contacttype : modalcontacttype,
+		  	        			 contactPhone : modalcontactPhone,
+		  	        			 contactemail : modalContactemail
+		  				 }
+		  				 $.ajax({
+		  						type : "POST",url : "branchContactupdatejson",
+		  						data : formData, success : function(result) {
+		  							var bmobj = JSON.parse(JSON.stringify(result));
+		  							
+		  							if(modalcontactid == '-')
+	  								{
+		  								let tempresultid=bmobj;
+		  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"'";
+			  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
+			  							tempresult += '<h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
+			  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
+			  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+			  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
+			  							tempresult += '<button class="btn btn-label-secondary contactdeletebtn"  id="'+ tempresultid +'" name="'+ tempresultid +'"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+			  						
+			  							$('#contactaddidv').before(tempresult);
+			  						    
+	  								}
+		  							else
+	  								{
+		  								$('.contacttype'+modalcontactid).text(modalcontacttype);
+		  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
+		  								$('.email'+modalcontactid).text(modalContactemail);
+		  								
+	  									 
+	  								}
+			  							validationformContactreset();
+		  						},
+		  						error : function(e) {
+		  							console.log("Error" + e);
+		  						}
+		  					});
+		  	        }	
+		    	    else
+		        	{
+		    	    	$('.contactsavebtn').prop("disabled",false);
+		        	}
+  			   	});	"src/main/java/com/rvs/springboot/thymeleaf/service/LoginServiceImpl.java"
+  			// --------------------------------------------------------------------
+  			  $('.contacteditbtn').on('click', function(event){
+  				$('.contactsavebtn').prop("disabled",false);
+	   			$('.contactsavebtn').html("Submit");
+	   			
+  				let id=$(this).attr("name");
+  				$('#modalcontactid').val(id);
+				$('#modalcontacttype').val($('.contacttype'+id).text());
+				$('#modalcontactPhone').val($('.phonenumber'+id).text());
+				$('#modalContactemail').val($('.email'+id).text());
+				$('#addNewContact').modal('show');
+  			  });
+  			// --------------------------------------------------------------------
+  			$('.contactdeletebtn').on('click', function(event){
+  			
+  				let id=$(this).attr("name");
+  				
+  				var formData = {
+ 	        			 contactid: id
+ 	        			 
+ 				 }
+ 				 $.ajax({
+ 						type : "POST",url : "branchContactdeletejson",
+ 						data : formData, success : function(result) {
+ 							$('.card'+id).remove();
+ 						},
+ 						error : function(e) {
+ 							console.log("Error" + e);
+ 						}
+ 					});
+  			});
+  			// --------------------------------------------------------------------
+  			
+  		// --------------------------------------------------------------------
 		    });
+    
+    function reply_click(id,t1,t2,t3)
+	{
+	
+		alert(id +"/"+ t1 +"/"+  t2 +"/"+ t3);
+		
+		$('#addNewContact').modal('show');
+	}
 		   </script>
 		  </body>
 		</html>

@@ -578,6 +578,24 @@ public class HomeController {
 	}
 
 	@ResponseBody
+	@GetMapping("employeetagifylist")
+	public ArrayList employeetagifylist(Model themodel) {
+		List<EmployeeMaster> empobj = EffectiveEmployee(employeeMasterService.findAll());
+		ArrayList<HashMap<String,Object>> arrlist = new ArrayList<>();
+		
+		for(EmployeeMaster obj : empobj)
+		{
+			HashMap<String,Object> hmp= new HashMap();
+			hmp.put("value", obj.getEmpMasterid());
+			hmp.put("name", obj.getStaffName());
+			hmp.put("avatar", getemp_photo(obj));
+			arrlist.add(hmp);
+		}
+		
+		return arrlist;
+	}
+	
+	@ResponseBody
 	@GetMapping("branchlistjson")
 	public List<BranchMaster> branchListresponsebody(Model themodel) {
 		List<BranchMaster> bmList = branchMasterService.findAll();

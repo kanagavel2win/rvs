@@ -54,6 +54,10 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
 
@@ -1084,7 +1088,14 @@ Model_CURRENT_STATUS
     <script th:src="@{/assets/js/form-validation.js}"></script>
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
-
+	<!-- Flat Picker -->
+    <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+    <script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+     <script th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+    
     <!-- Page JS -->
     <script th:src="@{/assets/js/modal-edit-user.js}"></script>
     <script th:src="@{/assets/js/app-user-view.js}"></script>
@@ -1392,11 +1403,23 @@ Model_CURRENT_STATUS
            });
     }
   
-    
-  $('.contactdeletebtn').on('click', function(event){
+  //------------------------------------------------------    
+  	  $('.contactdeletebtn').on('click', function(event){
     	  let id=$(this).attr("name");
     	  contactdeleteoperation(id);
       });
+  
+//------------------------------------------------------
+    // Date Format
+   const flatpickrFriendly = document.querySelector('#Model_STATED_DATE');
+	 // Human Friendly
+	  if (flatpickrFriendly) {
+	    flatpickrFriendly.flatpickr({
+	      altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	    });
+	  }
     
     </script>
 		  </body>

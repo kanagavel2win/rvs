@@ -68,6 +68,7 @@ import com.rvs.springboot.thymeleaf.entity.ContactOrganization;
 import com.rvs.springboot.thymeleaf.entity.ContactPerson;
 import com.rvs.springboot.thymeleaf.entity.DealMaster;
 import com.rvs.springboot.thymeleaf.entity.DealProjectMaster;
+import com.rvs.springboot.thymeleaf.entity.EmployeeContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
@@ -715,88 +716,158 @@ public class HomeController {
 
 	@GetMapping("emplist")
 	public String employeelist(Model theModel) {
-		List<String> data = new ArrayList<String>();
-
-		List<EmployeeMaster> ls = new ArrayList<EmployeeMaster>();
-		ls = employeeMasterService.findAll();
-
-		for (EmployeeMaster obj : ls) {
-			String str = "";
-			List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream()
-					.filter(c -> c.getPhoto_Attach() != null).collect(Collectors.toList());
-
-			str += obj.getStaffName() + "|";
-			if (validProfilephoto.size() > 0) {
-				str += validProfilephoto.get(0).getPhoto_Attach() + "|";
-			} else {
-				str += " |";
-			}
-
-			str += obj.getEmpMasterid() + "|";
-
-			// ----------------------------------------------------------------------
-
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = new Date();
-
-			List<EmployeeJobempstatus> objjob = new ArrayList<>();
-			objjob = employeeJobempstatusService.findByEmployeeid(obj.getEmpMasterid());
-			if (objjob.size() > 0) {
-				List<EmployeeJobempstatus> objjobgreen = objjob.stream()
-						.filter(c -> dateFormat.format(date).compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
+		List<String> JobTitle = itemlistService.findByFieldName("JobTitle");
+		theModel.addAttribute("JobTitle", JobTitle);
+		theModel.addAttribute("BranchList", branchMasterService.findAll());
+		
+		
+		return "emplist";
+	}
+	
+	@ResponseBody
+	@GetMapping("employeelistjson")
+	public List<EmployeeMaster> employeelistjson(Model themodel) {
+		List<EmployeeMaster> empList = employeeMasterService.findAll();
+		List<BranchMaster> bmList = branchMasterService.findAll();
+		
+		Date todaydate = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		
+		for (EmployeeMaster em : empList) {
+			
+			// Emp photo
+			em.setT_emp_img(getemp_photo(em));
+			//-------------------------------------------
+			//Contact
+			List<EmployeeContact> conlist= em.getEmployeeContact();
+			em.setT_primary_contactno("");
+			em.setT_primary_email("");
+			if(conlist.size()>0)
+			{
+				List<EmployeeContact> contactobjjobgreen = conlist.stream()
+						.filter(c -> c.getDepartment().equalsIgnoreCase("Personal"))
 						.collect(Collectors.toList());
-				objjobgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
-				if (objjobgreen.size() > 0) {
-
-					str += objjobgreen.get(objjobgreen.size() - 1).getEmpstatus_employmentstatus() + "|";
-				} else {
-					str += " |";
+				if(contactobjjobgreen.size()>0)
+				{
+					em.setT_primary_contactno(contactobjjobgreen.get(0).getPhonenumber());
+					em.setT_primary_email(contactobjjobgreen.get(0).getEmail());
 				}
-
-			} else {
-				str += " |";
 			}
-
+			//-------------------------------------------
+			// Emp Location and Branch
 			List<EmployeeJobinfo> infoobjjob = new ArrayList<>();
-			infoobjjob = employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
+			infoobjjob = employeeJobinfoService.findByEmployeeid(em.getEmpMasterid());
 			if (infoobjjob.size() > 0) {
 				List<EmployeeJobinfo> infoobjjobgreen = infoobjjob.stream()
 						.filter(c -> dateFormat.format(date).compareTo(c.getJobeffectivedate().toString()) >= 0)
 						.collect(Collectors.toList());
 				infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 				if (infoobjjobgreen.size() > 0) {
-					str += infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle() + "|";
-					str += infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation() + "|";
-				} else {
-					str += " | |";
+					em.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
+					em.setT_branch_name(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation() );
 				}
-			} else {
-				str += " | |";
-			}
-
+			} 
+			//-------------------------------------------
+			// Hiring date and timeline 
 			List<EmployeeJobHire> hireobj = new ArrayList<>();
-			hireobj = employeeJobHireService.findByEmployeeid(obj.getEmpMasterid());
+			hireobj = employeeJobHireService.findByEmployeeid(em.getEmpMasterid());
 
 			if (hireobj.size() > 0) {
 				try {
-
-					str += displaydateFormat.format(
-							new SimpleDateFormat("yyyy-MM-dd").parse(hireobj.get(0).getEmployeehiredate().toString()))
-							+ "|";
+					em.setT_joindateMMformat(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse( hireobj.get(0).getEmployeehiredate())).toString());
+					em.setT_joindatetimeline(getTimeage(hireobj.get(0).getEmployeehiredate()));	
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-			} else {
-				str += " |";
 			}
+			//-------------------------------------------			
+			// Salary  
+				List<EmployeeJobcompensation> compenobj = new ArrayList<>();
+				compenobj = employeeJobcompensationService.findByEmployeeid(em.getEmpMasterid());
 
-			// ----------------------------------------------------------------------
+				if (compenobj.size() > 0) {
+					List<EmployeeJobcompensation> Compenobjjobgreen = compenobj.stream()
+							.filter(c -> dateFormat.format(date).compareTo(c.getComeffectivedate().toString()) >= 0)
+							.collect(Collectors.toList());
+					Compenobjjobgreen.sort(Comparator.comparing(EmployeeJobcompensation::getComeffectivedate));
+					if (Compenobjjobgreen.size() > 0) {
+						em.setT_salary(Compenobjjobgreen.get(Compenobjjobgreen.size() - 1).getCompayrate());
+						
+					}
+				} 
+		   //-------------------------------------------
+		  // CurrentStaus  
+				List<EmployeeJobempstatus> jobobj = new ArrayList<>();
+				jobobj = employeeJobempstatusService.findByEmployeeid(em.getEmpMasterid());
 
-			data.add(str);
+				if (jobobj.size() > 0) {
+					List<EmployeeJobempstatus> jobobjjobgreen = jobobj.stream()
+							.filter(c -> dateFormat.format(date).compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
+							.collect(Collectors.toList());
+					jobobjjobgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
+					if (jobobjjobgreen.size() > 0) {
+						em.setT_currentStatus(jobobjjobgreen.get(jobobjjobgreen.size() - 1).getEmpstatus_employmentstatus());
+						
+					}
+				} 
+		   //-------------------------------------------
 		}
-		// System.out.println(data);
-		theModel.addAttribute("emplist", data);
-		return "emplist";
+
+		return empList;
+	}
+	
+	@ResponseBody
+	@PostMapping("employeesavejson")
+	public int employeesavejson(@RequestParam Map<String, String> params)
+	{
+		EmployeeMaster emp = new EmployeeMaster();
+		emp.setStaffName(params.get("firstName"));
+		emp.setFather_HusbandName(params.get("lastName"));
+
+		EmployeeContact contact = new EmployeeContact();
+		contact.setDepartment("Personal");
+		contact.setEmail(params.get("email"));
+		contact.setPhonenumber(params.get("phonenumber"));
+		List<EmployeeContact> scontact= new ArrayList<>();
+		scontact.add(contact);
+		emp.setEmployeeContact(scontact);
+		
+		emp= employeeMasterService.save(emp);
+		int empid= emp.getEmpMasterid();
+		
+		
+		EmployeeJobempstatus empstatus =new EmployeeJobempstatus();
+		empstatus.setEmpstatus_effectivedate(params.get("joiningDate"));
+		empstatus.setEmpstatus_employmentstatus("Full-Time");
+		empstatus.setEmployeeid(empid);
+		employeeJobempstatusService.save(empstatus);
+		
+		
+		EmployeeJobinfo job =new EmployeeJobinfo();
+		job.setJobeffectivedate(params.get("joiningDate"));
+		job.setJoblocation(params.get("branch_name"));
+		job.setJobtitle(params.get("position"));
+		job.setEmployeeid(empid);
+		employeeJobinfoService.save(job);
+		
+		EmployeeJobHire hire = new EmployeeJobHire();
+		hire.setEmployeehiredate(params.get("joiningDate"));
+		hire.setEmployeeid(empid);
+		employeeJobHireService.save(hire);
+		
+		EmployeeJobcompensation comp = new EmployeeJobcompensation();
+		comp.setComeffectivedate(params.get("joiningDate"));
+		comp.setComchangereason("-");
+		comp.setComcomments("");
+		comp.setCompayrate(params.get("salary"));
+		comp.setCompayratetype("Month");
+		comp.setCompaytype("Salary");
+		comp.setComPayschedule("Monthly");
+		comp.setEmployeeid(empid);
+		employeeJobcompensationService.save(comp);
+		
+		return empid; 
 	}
 
 	@GetMapping("empnew")

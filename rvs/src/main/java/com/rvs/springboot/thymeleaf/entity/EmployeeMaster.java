@@ -1,5 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -74,18 +76,7 @@ public class EmployeeMaster {
 	private String Address_ZIP;
 	@Column
 	private String Address_Country;
-	@Column
-	private String Contact_WorkPhone;
-	@Column
-	private String Contact_PersonalPhone;
-	@Column
-	private String Contact_OtherPhone;
-	@Column
-	private String Contact_EmailID;
-	@Column
-	private String Contact_WorkEmail;
-	@Column
-	private String Contact_PersonalEmail;
+	
 	@Column
 	private String RecruitmentSource;
 	@Column
@@ -121,4 +112,27 @@ public class EmployeeMaster {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empMasterid")
 	private Set<EmployeeExperience> employeeExperience;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "empMasterid")
+	private List<EmployeeContact> employeeContact;
+	
+	@Transient
+	private String t_emp_img;
+	@Transient
+	private String t_primary_contactno;
+	@Transient
+	private String t_primary_email;
+	@Transient
+	private String t_branch_name;
+	@Transient
+	private String t_position;
+	@Transient
+	private String t_salary;
+	@Transient
+	private String t_joindateMMformat;
+	@Transient
+	private String t_joindatetimeline;
+	@Transient
+	private String t_currentStatus;
 }

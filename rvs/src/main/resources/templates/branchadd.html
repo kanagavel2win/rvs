@@ -1282,7 +1282,7 @@ Model_CURRENT_STATUS
 			  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
 			  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
 			  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
-			  							tempresult += '<button class="btn btn-label-secondary contactdeletebtn"  id="'+ tempresultid +'" name="'+ tempresultid +'"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+			  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
 			  						
 			  							$('#contactaddidv').before(tempresult);
 			  						    
@@ -1320,7 +1320,7 @@ Model_CURRENT_STATUS
 				$('#addNewContact').modal('show');
   			  });
   			// --------------------------------------------------------------------
-  			$('.contactdeletebtn').on('click', function(event){
+  			$('.contactdeletebtn1').on('click', function(event){
   			
   				let id=$(this).attr("name");
   				
@@ -1343,13 +1343,61 @@ Model_CURRENT_STATUS
   		// --------------------------------------------------------------------
 		    });
     
-    function reply_click(id,t1,t2,t3)
+    function reply_click(id,contacttype,phonenumber,email)
 	{
-	
-		alert(id +"/"+ t1 +"/"+  t2 +"/"+ t3);
-		
+		$('#modalcontactid').val(id);
+		$('#modalcontacttype').val(contacttype);
+		$('#modalcontactPhone').val(phonenumber);
+		$('#modalContactemail').val(email);		
 		$('#addNewContact').modal('show');
 	}
-		   </script>
+		 
+ 
+    function contactdeleteoperation(id){
+    	 Swal.fire({
+             title: 'Are you sure?',
+             text: "You won't be able to revert this!",
+             icon: 'warning',
+             showCancelButton: true,
+             confirmButtonText: 'Yes, delete it!',
+             customClass: {
+               confirmButton: 'btn btn-primary me-3',
+               cancelButton: 'btn btn-label-secondary'
+             },
+             buttonsStyling: false
+           }).then(function (result) {
+             if (result.value) {
+              var formData = {
+           	 contactid: id
+           	 }
+   			 $.ajax({
+   					type : "POST",url : "branchContactdeletejson",
+   					data : formData, success : function(result) {
+   						$('.card'+id).remove();
+   						Swal.fire({
+   				              icon: 'success',
+   				              title: 'Deleted!',
+   				              text: 'Contact has been deleted.',
+   				              customClass: {
+   				                confirmButton: 'btn btn-success'
+   				              }
+   				            });
+   					},
+   					error : function(e) {
+   						console.log("Error" + e);
+   					}
+   				});
+               
+               }
+           });
+    }
+  
+    
+  $('.contactdeletebtn').on('click', function(event){
+    	  let id=$(this).attr("name");
+    	  contactdeleteoperation(id);
+      });
+    
+    </script>
 		  </body>
 		</html>

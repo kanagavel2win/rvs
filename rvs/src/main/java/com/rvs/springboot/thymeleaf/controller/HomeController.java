@@ -494,6 +494,39 @@ public class HomeController {
 		return branchListresponsebody(bm); 
 		
 	}
+	
+	@ResponseBody
+	@PostMapping("branchfileuploadjson")
+	public String branchfileuploadjson(@RequestParam(name = "File_Attach", required = false) MultipartFile branchFiles_Attach, HttpServletRequest request)
+	{
+				// File Uploading
+				String profilephotouploadRootPath = request.getServletContext().getRealPath("branchfiles");
+				// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+				File uploadRootDir = new File(profilephotouploadRootPath);
+				// Create directory if it not exists.
+				if (!uploadRootDir.exists()) {
+					uploadRootDir.mkdirs();
+				}
+
+				if (branchFiles_Attach.getOriginalFilename().toString().length() > 0) {
+					
+					StringBuilder filename = new StringBuilder();
+					String tempfilename = stringdatetime() + branchFiles_Attach.getOriginalFilename();
+					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+					filename.append(tempfilename);
+					//empfiles.setbranchFiles_Attach("branchfiles/" + filename);
+					try {
+						Files.write(fileNameandPath, branchFiles_Attach.getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					
+				}
+				return "sucess";
+
+	}
 
 	@ResponseBody
 	@PostMapping("branchAddressupdatejson")

@@ -934,13 +934,13 @@
                         <h3>Add Document  </h3>
                         <p>Add/Update Branch Legal Documents</p>
                       </div>
-                      <form id="addNewCCForm" class="row g-3" onsubmit="return false">
+                      <form id="addNewdocument" class="row g-3" onsubmit="return false">
                         <div class="col-12">
                           <label class="form-label w-100" for="modalAddCard">Document Type </label>
                           <div class="input-group input-group-merge">
-                            <select id="defaultSelect" class="form-select">
+                            <select id="modalDocumenttype" class="form-select">
 	                          <option value="">Default select</option>
-	                          <option value="1">One</option>
+	                          <option value="GST">GST</option>
 	                          <option value="2">Two</option>
 	                          <option value="3">Three</option>
 	                        </select>
@@ -950,8 +950,8 @@
                         <div class="col-12">
                           <label class="form-label" for="modalAddCardName">Document No </label>
                           <input
-                            type="email"
-                            id="modalAddCardExpiryDate"
+                            type="text"
+                            id="modalDocNo"
                             class="form-control expiry-date-mask"
                             
                           />
@@ -960,13 +960,13 @@
                           <label class="form-label" for="modalAddCardExpiryDate">Upload File </label>
                           <input
                             type="file"
-                            id="modalAddCardExpiryDate"
+                            id="modalFile"
                             class="form-control expiry-date-mask"
                             
                           />
                         </div>
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 documentsave">Submit</button>
                           <button
                             type="button"
                             class="btn btn-label-secondary btn-reset"
@@ -1325,6 +1325,7 @@ Model_CURRENT_STATUS
 				$('#addNewContact').modal('show');
   			  });
   			// --------------------------------------------------------------------
+  			
   			$('.contactdeletebtn1').on('click', function(event){
   			
   				let id=$(this).attr("name");
@@ -1345,7 +1346,6 @@ Model_CURRENT_STATUS
   			});
   			// --------------------------------------------------------------------
   			
-  		// --------------------------------------------------------------------
 		    });
     
     function reply_click(id,contacttype,phonenumber,email)
@@ -1415,6 +1415,39 @@ Model_CURRENT_STATUS
 	    });
 	  }
     
+	// --------------------------------------------------------------------
+	// File uploading 		  
+			 const addNewdocumentForm =document.getElementById("addNewdocument");
+			 const modalFile =document.getElementById("modalFile");
+			 addNewdocumentForm.addEventListener("submit", e =>{
+				const endpoint ="branchfileuploadjson";
+				const formdata= new FormData();
+				console.log(modalFile.files);
+				formdata.append("File_Attach",modalFile.files[0]);
+				
+				/* fetch(endpoint, {
+					method : "post",header,	
+					body: formdata
+				}).catch(console.error);
+				 */
+				 var formData = {
+						 File_Attach: modalFile.files[0]
+			           	 }
+				  $.ajax({
+	   					type : "POST",url : endpoint,
+	   					data : formdata,
+	   					contentType: false,
+	   	              processData: false,
+	   					success : function(result) {
+	   						alert(result);
+	   					},
+	   					error : function(e) {
+	   						console.log("Error" + e);
+	   					}
+	   				}); 
+			 });
+		// --------------------------------------------------------------------
+	
     </script>
 		  </body>
 		</html>

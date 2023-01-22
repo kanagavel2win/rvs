@@ -78,6 +78,28 @@ public class BranchMasterImp implements BranchMasterService {
 		String sql ="DELETE FROM `branch_contact` WHERE  branchcontactid=" +id ;
 		return jdbcTemplate.update(sql);
 	}
+
+	@Override
+	public int insertbranchFiles(String DocumentType, String DocumentNo, String FilePath, int branchid) {
+		final String sql="INSERT INTO `branch_files`(`document_no`, `document_type`, `file_path`, `id`) VALUES ('"+ DocumentNo +"','"+ DocumentType  +"','"+ FilePath +"',"+ branchid +")";
+		
+		KeyHolder keyHolder =new GeneratedKeyHolder();
+		
+		jdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int deletebranchFiles(int id) {
+		String sql ="DELETE FROM `branch_files` WHERE  branchfilesid=" +id ;
+		return jdbcTemplate.update(sql);
+	}
 		
 	
 }

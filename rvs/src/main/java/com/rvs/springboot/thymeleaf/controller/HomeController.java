@@ -59,6 +59,7 @@ import com.rvs.springboot.thymeleaf.entity.AssetMaster;
 import com.rvs.springboot.thymeleaf.entity.AssetMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.AssetService;
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
+import com.rvs.springboot.thymeleaf.entity.BranchFiles;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckIn;
 import com.rvs.springboot.thymeleaf.entity.CheckInFiles;
@@ -497,8 +498,11 @@ public class HomeController {
 	
 	@ResponseBody
 	@PostMapping("branchfileuploadjson")
-	public String branchfileuploadjson(@RequestParam(name = "File_Attach", required = false) MultipartFile branchFiles_Attach, HttpServletRequest request)
+	public BranchFiles branchfileuploadjson(@RequestParam Map<String, String> params,@RequestParam(name = "File_Attach", required = false) MultipartFile branchFiles_Attach, HttpServletRequest request)
 	{
+		StringBuilder filename = new StringBuilder();		
+		if(branchFiles_Attach != null)
+		{
 				// File Uploading
 				String profilephotouploadRootPath = request.getServletContext().getRealPath("branchfiles");
 				// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
@@ -508,26 +512,39 @@ public class HomeController {
 				if (!uploadRootDir.exists()) {
 					uploadRootDir.mkdirs();
 				}
-
+				
 				if (branchFiles_Attach.getOriginalFilename().toString().length() > 0) {
 					
-					StringBuilder filename = new StringBuilder();
+					
 					String tempfilename = stringdatetime() + branchFiles_Attach.getOriginalFilename();
 					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
-					filename.append(tempfilename);
-					//empfiles.setbranchFiles_Attach("branchfiles/" + filename);
+					filename.append("branchfiles/" +tempfilename);
+					
+					
 					try {
 						Files.write(fileNameandPath, branchFiles_Attach.getBytes());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-
-					
 				}
-				return "sucess";
+		}	
+				BranchFiles bfiles= new BranchFiles();
+				
+				int branchid=Integer.parseInt(params.get("BranchID"));
+				String Documenttype=params.get("Documenttype");
+				String DocNo=params.get("DocNo");
+				
+				int id= branchMasterService.insertbranchFiles(Documenttype, DocNo,  filename.toString(), branchid);
+				
+				bfiles.setBranchfilesid(id);
+				bfiles.setDocumentNo(DocNo);
+				bfiles.setDocumentType(Documenttype);
+				bfiles.setFilePath( filename.toString());
+				return bfiles;
 
 	}
 
+	
 	@ResponseBody
 	@PostMapping("branchAddressupdatejson")
 	public BranchMaster branchAddressupdatejson(@RequestParam Map<String, String> params)

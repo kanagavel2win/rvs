@@ -969,7 +969,7 @@
                           <button type="submit" class="btn btn-primary me-sm-3 me-1 documentsave">Submit</button>
                           <button
                             type="button"
-                            class="btn btn-label-secondary btn-reset"
+                            class="btn btn-label-secondary btn-reset documentclose"
                             data-bs-dismiss="modal"
                             aria-label="Close"
                           >
@@ -1247,6 +1247,13 @@ Model_CURRENT_STATUS
 				   			$('.contactsavebtn').html("Submit");
 				   }
 		   		
+		   		function validationformfilereset()
+				   {
+			   				$('.documentclose').click();
+			   				$('.documentsave').prop("disabled",false);
+				   			$('.documentsave').html("Submit");
+				   }
+		   		
 		   	// --------------------------------------------------------------------
 		   	 
   			  $(".addcontactbtn").click(function(){
@@ -1311,7 +1318,7 @@ Model_CURRENT_STATUS
 		        	{
 		    	    	$('.contactsavebtn').prop("disabled",false);
 		        	}
-  			   	});	"src/main/java/com/rvs/springboot/thymeleaf/service/LoginServiceImpl.java"
+  			   	});	
   			// --------------------------------------------------------------------
   			  $('.contacteditbtn').on('click', function(event){
   				$('.contactsavebtn').prop("disabled",false);
@@ -1345,8 +1352,47 @@ Model_CURRENT_STATUS
  					});
   			});
   			// --------------------------------------------------------------------
+  		// --------------------------------------------------------------------
+  			// File uploading 		  
+  					 const addNewdocumentForm =document.getElementById("addNewdocument");
+  					 const modalFile =document.getElementById("modalFile");
+  					 addNewdocumentForm.addEventListener("submit", e =>{
+  						 
+  						$('.documentsave').prop("disabled",true);
+  						$('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+  						const endpoint ="branchfileuploadjson";
+  						const formdata= new FormData();
+  						//console.log(modalFile.files);
+  						formdata.append("File_Attach",modalFile.files[0]);
+  						formdata.append("BranchID",$('#BranchID').val());
+  						formdata.append("Documenttype",$('#modalDocumenttype').val());
+  						formdata.append("DocNo",$('#modalDocNo').val());
+  						
+  						/* fetch(endpoint, {
+  							method : "post",header,	
+  							body: formdata
+  						}).catch(console.error);
+  						 */
+  						 
+  						  $.ajax({
+  			   					type : "POST",url : endpoint,
+  			   					data : formdata,
+  			   					contentType: false,
+  			   	              processData: false,
+  			   					success : function(result) {
+  			   						
+  			   						console.log(JSON.parse(JSON.stringify(result)));
+  			   						
+  			   					validationformfilereset();
+  			   					},
+  			   					error : function(e) {
+  			   						console.log("Error" + e);
+  			   					}
+  			   				}); 
+  					 });
+  				// --------------------------------------------------------------------
   			
-		    });
+		    }); // Jquery
     
     function reply_click(id,contacttype,phonenumber,email)
 	{
@@ -1415,38 +1461,6 @@ Model_CURRENT_STATUS
 	    });
 	  }
     
-	// --------------------------------------------------------------------
-	// File uploading 		  
-			 const addNewdocumentForm =document.getElementById("addNewdocument");
-			 const modalFile =document.getElementById("modalFile");
-			 addNewdocumentForm.addEventListener("submit", e =>{
-				const endpoint ="branchfileuploadjson";
-				const formdata= new FormData();
-				console.log(modalFile.files);
-				formdata.append("File_Attach",modalFile.files[0]);
-				
-				/* fetch(endpoint, {
-					method : "post",header,	
-					body: formdata
-				}).catch(console.error);
-				 */
-				 var formData = {
-						 File_Attach: modalFile.files[0]
-			           	 }
-				  $.ajax({
-	   					type : "POST",url : endpoint,
-	   					data : formdata,
-	   					contentType: false,
-	   	              processData: false,
-	   					success : function(result) {
-	   						alert(result);
-	   					},
-	   					error : function(e) {
-	   						console.log("Error" + e);
-	   					}
-	   				}); 
-			 });
-		// --------------------------------------------------------------------
 	
     </script>
 		  </body>

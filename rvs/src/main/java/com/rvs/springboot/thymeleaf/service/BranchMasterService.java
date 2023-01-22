@@ -12,4 +12,7 @@ public interface BranchMasterService {
 	public int insertbranchContact(String dep,String phonenumber , String email, int branchid);
 	public int updatebranchContact(int id, String dep,String phonenumber , String email);
 	public int deletebranchContact(int id);
+	
+	public int insertbranchFiles(String DocumentType,String DocumentNo , String FilePath, int branchid);
+	public int deletebranchFiles(int id);
 }

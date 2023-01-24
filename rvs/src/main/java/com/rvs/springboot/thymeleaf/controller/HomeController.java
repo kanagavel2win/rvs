@@ -572,6 +572,9 @@ public class HomeController {
 		String contactPhone = params.get("contactPhone");
 		String contactemail = params.get("contactemail");
 		String contactid = params.get("contactid");
+		
+		itemlistService.savesingletxt(contacttype, "CONTACTTYPE");
+		
 		if(contactid.equalsIgnoreCase("-"))
 		{
 			return branchMasterService.insertbranchContact(contacttype, contactPhone, contactemail, branchid);
@@ -589,6 +592,14 @@ public class HomeController {
 		int contactid = Integer.parseInt(params.get("contactid"));
 		return branchMasterService.deletebranchContact(contactid);
 		
+		
+	}
+	@ResponseBody
+	@PostMapping("branchFiledeletejson")
+	public int branchFiledeletejson(@RequestParam Map<String, String> params)
+	{
+		int fileid = Integer.parseInt(params.get("fileid"));
+		return branchMasterService.deletebranchFiles(fileid);		
 		
 	}
 
@@ -747,6 +758,8 @@ public class HomeController {
 				}
 				bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
 		}
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 		
 		theModel.addAttribute("BranchMaster", bm);
 		theModel.addAttribute("BranchList", branchMasterService.findAll());		

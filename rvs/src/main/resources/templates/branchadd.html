@@ -306,35 +306,32 @@
                     </div>
                     <div class="card-body">
                       <div class="added-cards">
-                        <div class="cardMaster border p-3 rounded mb-3">
-                          <div class="d-flex justify-content-between flex-sm-row flex-column">
-                            <div class="card-information">
-                              <img
-                                class="mb-3 img-fluid"
-                                src="../../assets/img/icons/payments/mastercard.png"
-                                alt="Master Card"
-                              />
-                              <h6 class="mb-1">Kaith Morrison</h6>
-                              <span class="card-number"
-                                >&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
-                                9856</span
-                              >
-                            </div>
-                            <div class="d-flex flex-column text-start text-lg-end">
-                              <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button
-                                  class="btn btn-label-primary me-3"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#editCCModal"
-                                >
-                                  <i class='bx bxs-edit-alt'></i>
-                                </button><br/>
-                                <button class="btn btn-label-secondary"><i class='bx bxs-trash-alt'></i></button>
-                              </div>
-                              <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at 12/26</small>
-                            </div>
-                          </div>
-                        </div>
+                        <th:block th:each="fileObj : ${BranchMaster.branchFiles}">
+	                        <div th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.branchfilesid}">
+	                          <div class="d-flex justify-content-between flex-sm-row flex-column">
+	                            <div class="card-information">
+	                              
+	                              <h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
+	                              <span class="card-number" th:text="${fileObj.DocumentNo}"></span>
+	                            </div>
+	                            <div class="d-flex flex-column text-start text-lg-end">
+	                              <div class="d-flex order-sm-0 order-1 mt-3">
+	                                
+	                                <th:block th:if="${fileObj.FilePath != ''}">
+	                                <a th:href="${fileObj.FilePath}" target="_blank"><button
+	                                  class="btn btn-label-primary me-3"
+	                                  ><i class='bx bx-link-alt'></i></button></a>
+	                                </th:block>
+	                                <br/>
+	                                <button class="btn btn-label-secondary filedeletebtn" th:name="${fileObj.branchfilesid}"><i class='bx bxs-trash-alt'></i></button>
+	                              </div>
+	                              
+	                            </div>
+	                          </div>
+	                        </div>
+                       
+                       	</th:block>
+                       	<span id="fileaddidv"></span>
                        </div>
                     </div>
                     </div>
@@ -535,6 +532,7 @@
               </div>
 
               <!-- Modal -->
+              
               <!-- Edit User Modal -->
               <div class="modal fade" id="editBranchdetails" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-simple modal-edit-user">
@@ -717,7 +715,7 @@
               </div>
               <!--/ Edit User Modal -->
 
-              <!-- Add New Credit Card Modal -->  
+              <!-- Add New Contact Modal -->  
               <div class="modal fade" id="addNewContact" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
                   <div class="modal-content p-3 p-md-5">
@@ -727,16 +725,22 @@
                         <h3>Contact Details</h3>
                         <p>Office/department contact details</p>
                       </div>
-                      <form id="addNewCCForm" class="row g-3" onsubmit="return false">
+                      <form id="addContactform" class="row g-3" onsubmit="return false">
                         <div class="col-12">
-                          <label class="form-label w-100" for="modalAddCard">Department </label>
+                          <label class="form-label w-100" for="modalAddCard">Contact Type 
+                          <label class="emptitle additem" name="addmodalcontacttype"><i
+																class="bx bxs-plus-circle ownstyle1"></i></label>
+                          </label>
                           <div class="input-group input-group-merge">
-                            <select id="modalcontacttype" class="form-select">
-	                          <option value="">Default select</option>
-	                          <option value="Personal">Personal</option>
-	                          <option value="Work">Work</option>
-	                          <option value="Office">Office</option>
+                            <select id="modalcontacttype" class="form-select modalcontacttype" required>
+	                         
+	                         <option value="">-</option>
+							<th:block th:each="str :${CONTACTTYPE}">
+								<option  th:value="${str}"  th:text="${str}"></option>
+							</th:block>
+	                         
 	                        </select>
+	                         <div class="invalid-feedback">Please select contact type</div>
                            <input
                               type="hidden"
                               id="modalcontactid"
@@ -755,8 +759,10 @@
                               id="modalcontactPhone"
                               name="modalcontactPhone"
                               class="form-control phone-number-otp-mask"
-                              placeholder="202 555 0111"
+                              placeholder="999 555 0111"
+                              required
                             />
+                            <div class="invalid-feedback">Please enter a valid mobile</div>
                           </div>
                         </div>
                         <div class="col-12">
@@ -765,8 +771,9 @@
                             type="email"
                             id="modalContactemail"
                             class="form-control expiry-date-mask"
-                            
+                            required
                           />
+                          <div class="invalid-feedback">Please enter a valid email</div>
                         </div>
                         <div class="col-12 text-center mt-4">
                           <button type="submit" class="btn  btn-primary me-sm-3 me-1 contactsavebtn">Submit</button>
@@ -982,6 +989,55 @@
                 </div>
               </div>
               <!--/ Add Document -->
+              
+              <!--scrolling content Modal -->
+				<div class="modal fade" id="ItemStatusScrollable"
+					tabindex="-1" role="dialog"
+					aria-labelledby="ItemStatusScrollableTitle"
+					aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable"
+						role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title white"
+									id="ItemStatusScrollableTitle"></h5>
+								<button
+                                  type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                ></button>
+							</div>
+							<div class="modal-body">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="addmodel" id="additemalltxt"></label>
+										<div class="position-relative">
+											<fieldset class="form-group">
+												<input type="text" id="additemall" name="addmodel"
+													class="form-control capitalize">
+											</fieldset>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-light-secondary"
+									data-bs-dismiss="modal">
+									<i class="bx bx-x d-block d-sm-none"></i> <span
+										class="d-none d-sm-block">Close</span>
+								</button>
+								<button type="button" class="btn btn-primary ml-1"
+									id="additemallsavebtn">
+									<i class="bx bx-check d-block d-sm-none"></i> <span
+										class="d-none d-sm-block">ADD</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--scrolling content Modal -->
               <!-- /Modal -->
             </div>
             <!-- / Content -->
@@ -1079,7 +1135,7 @@ Model_CURRENT_STATUS
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
-    <script th:src="@{/assets/js/form-validation.js}"></script>
+    
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
 	<!-- Flat Picker -->
@@ -1094,6 +1150,8 @@ Model_CURRENT_STATUS
     <script th:src="@{/assets/js/modal-edit-user.js}"></script>
     <script th:src="@{/assets/js/app-user-view.js}"></script>
     <script th:src="@{/assets/js/app-user-view-account.js}"></script>
+    
+     
     
 	<script>
     $(document).ready(function() {  
@@ -1262,9 +1320,9 @@ Model_CURRENT_STATUS
   			  
   			// --------------------------------------------------------------------
   			
-  			   	$(".contactsavebtn").click(function(){
-
-  			   	 $('.contactsavebtn').prop("disabled",true);
+  			   	$('#addContactform').on('submit', function(event){
+  			   	 
+  			   		$('.contactsavebtn').prop("disabled",true);
 		    	  
 		    	    if(event.target.checkValidity()){
 		    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
@@ -1352,7 +1410,7 @@ Model_CURRENT_STATUS
  					});
   			});
   			// --------------------------------------------------------------------
-  		// --------------------------------------------------------------------
+  		    // --------------------------------------------------------------------
   			// File uploading 		  
   					 const addNewdocumentForm =document.getElementById("addNewdocument");
   					 const modalFile =document.getElementById("modalFile");
@@ -1368,12 +1426,6 @@ Model_CURRENT_STATUS
   						formdata.append("Documenttype",$('#modalDocumenttype').val());
   						formdata.append("DocNo",$('#modalDocNo').val());
   						
-  						/* fetch(endpoint, {
-  							method : "post",header,	
-  							body: formdata
-  						}).catch(console.error);
-  						 */
-  						 
   						  $.ajax({
   			   					type : "POST",url : endpoint,
   			   					data : formdata,
@@ -1381,8 +1433,21 @@ Model_CURRENT_STATUS
   			   	              processData: false,
   			   					success : function(result) {
   			   						
-  			   						console.log(JSON.parse(JSON.stringify(result)));
+  			   					tempobj =JSON.parse(JSON.stringify(result));
   			   						
+  			   					console.log(tempobj);
+  								
+	  							let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.branchfilesid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
+	  							tempresult += '<h6 class="mb-1">'+ tempobj.documentType +'</h6>';
+	  							tempresult += '<span class="card-number">'+ tempobj.documentNo +'</span></div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+	  							if(tempobj.filePath != '')
+	  							{
+	  								tempresult += '<a href="'+ tempobj.filePath +'" target="_blank"><button class="btn btn-label-primary me-3"><i class="bx bx-link-alt"></i></button></a>';	
+	  							}
+	  							tempresult += '<br/><button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.branchfilesid +'"   onClick="filedeleteoperation('+ tempobj.branchfilesid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+	  								
+	  							$('#fileaddidv').before(tempresult);
+	  							
   			   					validationformfilereset();
   			   					},
   			   					error : function(e) {
@@ -1390,6 +1455,42 @@ Model_CURRENT_STATUS
   			   					}
   			   				}); 
   					 });
+  				// --------------------------------------------------------------------
+  				
+  				$(".additem").click(function() {
+					var name = $(this).attr('name');
+					var labeltext = "";
+					if (name == "addmodalcontacttype") {
+						labeltext = "New Contact Type";
+					}
+					
+					$('#additemalltxt').text(labeltext);
+					$('#ItemStatusScrollable').modal('toggle');
+
+				});
+
+				$("#additemallsavebtn").click(
+						function() {
+					if ($("#additemall").val() != '') {
+						var name = $('#additemalltxt').text();
+						var labeltext = "";
+						if (name == "New Contact Type") {
+							labeltext = "modalcontacttype";
+						}
+						
+						$('.' + labeltext).append(
+								"<option value='"
+										+ $("#additemall").val()
+										+ "'>"
+										+ $("#additemall").val()
+										+ "</option>");
+						//$('.' + labeltext).val($("#additemall").val());
+						$("#additemall").val('');
+						$('#ItemStatusScrollable').modal(
+								'toggle');
+					}
+				});
+  				
   				// --------------------------------------------------------------------
   			
 		    }); // Jquery
@@ -1444,11 +1545,56 @@ Model_CURRENT_STATUS
     }
   
   //------------------------------------------------------    
-  	  $('.contactdeletebtn').on('click', function(event){
+   function filedeleteoperation(id){
+    	 Swal.fire({
+             title: 'Are you sure?',
+             text: "You won't be able to revert this!",
+             icon: 'warning',
+             showCancelButton: true,
+             confirmButtonText: 'Yes, delete it!',
+             customClass: {
+               confirmButton: 'btn btn-primary me-3',
+               cancelButton: 'btn btn-label-secondary'
+             },
+             buttonsStyling: false
+           }).then(function (result) {
+             if (result.value) {
+              var formData = {
+            		  fileid: id
+           	 }
+   			 $.ajax({
+   					type : "POST",url : "branchFiledeletejson",
+   					data : formData, success : function(result) {
+   						$('.filecard'+id).remove();
+   						Swal.fire({
+   				              icon: 'success',
+   				              title: 'Deleted!',
+   				              text: 'File has been deleted.',
+   				              customClass: {
+   				                confirmButton: 'btn btn-success'
+   				              }
+   				            });
+   					},
+   					error : function(e) {
+   						console.log("Error" + e);
+   					}
+   				});
+               
+               }
+           });
+    }
+  
+  //------------------------------------------------------    
+  
+  $('.contactdeletebtn').on('click', function(event){
     	  let id=$(this).attr("name");
     	  contactdeleteoperation(id);
       });
-  
+  	//------------------------------------------------------    
+  	  $('.filedeletebtn').on('click', function(event){
+    	  let id=$(this).attr("name");
+    	  filedeleteoperation(id);
+      });
 //------------------------------------------------------
     // Date Format
    const flatpickrFriendly = document.querySelector('#Model_STATED_DATE');

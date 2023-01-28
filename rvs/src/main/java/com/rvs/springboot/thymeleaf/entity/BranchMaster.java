@@ -1,5 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -83,6 +84,9 @@ public class BranchMaster {
 	@JoinColumn(name = "id")
 	private Set<BranchFiles> branchFiles;
 
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "branchid")
+	private List<BranchAccNo> branchAccNo;
 	
 	@Transient
 	private String BRANCH_IN_CHARGE_img;

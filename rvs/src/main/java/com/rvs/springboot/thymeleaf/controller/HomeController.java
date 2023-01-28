@@ -59,6 +59,7 @@ import com.rvs.springboot.thymeleaf.entity.AssetMaster;
 import com.rvs.springboot.thymeleaf.entity.AssetMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.AssetService;
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
+import com.rvs.springboot.thymeleaf.entity.BranchAccNo;
 import com.rvs.springboot.thymeleaf.entity.BranchFiles;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckIn;
@@ -584,6 +585,25 @@ public class HomeController {
 		}
 		
 	}
+	
+
+	@ResponseBody
+	@PostMapping("branchBankaccupdatejson")
+	public int branchBankaccupdatejson(@RequestParam Map<String, String> params)
+	{
+		int branchid=Integer.parseInt(params.get("BranchID"));
+		int acid=Integer.parseInt(params.get("acid"));
+		
+		String acno = params.get("acno");
+		String acname = params.get("acname");
+		String bankname = params.get("bankname");
+		String branchname = params.get("branchname");
+		String ifsccode = params.get("ifsccode");
+		
+		return branchMasterService.insertbranchAccountdetails(acid,acno,acname,bankname,branchname,ifsccode,branchid);
+		
+		
+	}
 
 	@ResponseBody
 	@PostMapping("branchContactdeletejson")
@@ -732,9 +752,18 @@ public class HomeController {
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		
 		BranchMaster bm = branchMasterService.findById(branchid);
+		if(bm.getBranchAccNo().size() == 0)
+		{
+			List<BranchAccNo> BranchAccNols = new ArrayList();
+			BranchAccNols.add(new BranchAccNo());
+			bm.setBranchAccNo(BranchAccNols);
+			bm = branchMasterService.save(bm);
+		}
+		
 		if(!bm.getCOMES_UNDER().equalsIgnoreCase("-"))
 		{
-			List<BranchMaster> templist=bmlist.stream().filter(C-> C.getId() == Integer.parseInt(bm.getCOMES_UNDER())).collect(Collectors.toList());
+			int comes_underint = Integer.parseInt(bm.getCOMES_UNDER()); 
+			List<BranchMaster> templist=bmlist.stream().filter(C-> C.getId() == comes_underint).collect(Collectors.toList());
 			if(templist.size()>0)
 			{
 				bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());

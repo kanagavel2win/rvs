@@ -100,6 +100,14 @@ public class BranchMasterImp implements BranchMasterService {
 		String sql ="DELETE FROM `branch_files` WHERE  branchfilesid=" +id ;
 		return jdbcTemplate.update(sql);
 	}
+
+	@Override
+	public int insertbranchAccountdetails(int acid, String acno, String acname, String bankname, String branchname,
+			String ifsccode, int branchid) {
+		String sql="UPDATE `branch_acc_no` SET `acname`='"+ acname + "',`acno`='"+ acno + "',`bankname`='"+ bankname + "',`branchname`='"+ branchname + "',`ifsccode`='"+ ifsccode + "',`branchid`='"+ branchid + "' WHERE branch_accnoid="+  acid;
+		return jdbcTemplate.update(sql);
+		
+	}
 		
 	
 }

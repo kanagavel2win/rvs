@@ -13,6 +13,7 @@ public interface BranchMasterService {
 	public int updatebranchContact(int id, String dep,String phonenumber , String email);
 	public int deletebranchContact(int id);
 	
+	public int insertbranchAccountdetails(int acid, String acno,String acname , String bankname,String branchname,String ifsccode, int branchid);
 	public int insertbranchFiles(String DocumentType,String DocumentNo , String FilePath, int branchid);
 	public int deletebranchFiles(int id);
 }

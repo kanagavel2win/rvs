@@ -338,6 +338,52 @@
                   </div>
                
                   <!-- /Document   Card -->
+                 <!-- Bank Account Card -->
+                  
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <h5 class="pb-2 border-bottom mb-4">Bank Details</h5>
+                      <div class="info-container">
+                      
+                      
+                         <ul class="list-unstyled" th:with ="accobj = ${BranchMaster.branchAccNo[0]}">
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">A.C.No:</span>
+	                            <span th:text="${accobj.acno}" id="Lbl_acno"></span>
+	                          </li>
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">Account Name:</span>
+	                            <span  th:text="${accobj.acname}"  id="Lbl_acname"></span>
+	                          </li>
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">Bank Name:</span>
+	                            <span  th:text="${accobj.bankname}"  id="Lbl_bankname"></span>
+	                          </li>
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">Branch Name:</span>
+	                            <span th:text="${accobj.branchname}"  id="Lbl_branchname"></span>
+	                          </li>
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">IFSC Code:</span>
+	                            <span th:text="${accobj.ifsccode}" id="Lbl_ifsccode"></span>
+	                          </li>
+	                        </ul>
+                        
+                        <div class="d-flex justify-content-center pt-3">
+                          <a
+                            href="javascript:;"
+                            class="btn btn-primary me-3"
+                            data-bs-target="#addNewBankDetails"
+                            data-bs-toggle="modal"
+                            >Edit</a
+                          >
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /Bank Account Card -->
+                
                 </div>
                 <!--/ User Sidebar -->
 
@@ -672,7 +718,7 @@
                           th:field="*{COMES_UNDER}"
                           th:value="${BranchMaster['COMES_UNDER']}"
                           required>
-                           <option value="">Select Hierarchy</option>
+                           <option value="-">Select Hierarchy</option>
                            <option th:each="branch :${BranchList}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option> 
                            
                          </select>
@@ -989,7 +1035,91 @@
                 </div>
               </div>
               <!--/ Add Document -->
-              
+             
+                <!-- Add BankDetails -->
+              <div class="modal fade" id="addNewBankDetails" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                  <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="text-center mb-4">
+                        <h3>Bank Details  </h3>
+                        <p>Add/Update Branch Bank information</p>
+                      </div>
+                      <form id="addNewBankDetails" class="row g-3" onsubmit="return false" th:with ="accobj = ${BranchMaster.branchAccNo[0]}">
+                        
+                        <div class="col-12">
+                          <label class="form-label" for="model_acno">A.C.No </label>
+                           <input
+                            type="hidden"
+                            id="model_branchAccnoid"
+                            class="form-control expiry-date-mask" th:value="${accobj.branchAccnoid}" required
+                          />
+                          <input
+                            type="text"
+                            id="model_acno"
+                            class="form-control expiry-date-mask" th:value="${accobj.acno}" required
+                          />
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="model_acno_confirm">Confirm The A.C.No </label>
+                          <input
+                            type="password"
+                            id="model_acno_confirm" 
+                            class="form-control expiry-date-mask" th:value="${accobj.acno}" required
+                          /> 
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="model_acname">Account Name</label>
+                          <input
+                            type="text"
+                            id="model_acname"
+                            class="form-control expiry-date-mask" th:value="${accobj.acname}" required
+                          />
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="model_bankname">Bank Name</label>
+                          <input
+                            type="text"
+                            id="model_bankname"
+                            class="form-control expiry-date-mask" th:value="${accobj.bankname}" required
+                          />
+                        </div>
+                        <div class="col-6">
+                          <label class="form-label" for="model_branchname">Branch Name </label>
+                          <input
+                            type="text"
+                            id="model_branchname"
+                            class="form-control expiry-date-mask" th:value="${accobj.branchname}" required
+                          />
+                        </div>
+                        <div class="col-6">
+                          <label class="form-label" for="model_ifsccode">IFSC Code  </label>
+                          <input
+                            type="text"
+                            id="model_ifsccode"
+                            class="form-control expiry-date-mask" th:value="${accobj.ifsccode}" required
+                          />
+                        </div>
+                        
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 BankDetailssave">Submit</button>
+                          <button
+                            type="button"
+                            class="btn btn-label-secondary btn-reset BankDetailsclose"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Add BankDetails -->
+               
               <!--scrolling content Modal -->
 				<div class="modal fade" id="ItemStatusScrollable"
 					tabindex="-1" role="dialog"
@@ -1135,7 +1265,7 @@ Model_CURRENT_STATUS
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
-    
+     
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
 	<!-- Flat Picker -->
@@ -1147,7 +1277,7 @@ Model_CURRENT_STATUS
     <script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
     
     <!-- Page JS -->
-    <script th:src="@{/assets/js/modal-edit-user.js}"></script>
+    <!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
     <script th:src="@{/assets/js/app-user-view.js}"></script>
     <script th:src="@{/assets/js/app-user-view-account.js}"></script>
     
@@ -1157,7 +1287,7 @@ Model_CURRENT_STATUS
     $(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	 var branchtypp="[[${BranchMaster['B_TYPE']}]]";
-    	 document.getElementById("radio"+ branchtypp).checked=true;
+    	 document.getElementById("radio"+ branchtypp +"").checked=true;
     	 
     	 var country="[[${BranchMaster['COUNTRY']}]]";
     	 $('#modalAddressCountry').val(country).change();
@@ -1264,7 +1394,7 @@ Model_CURRENT_STATUS
 		  						type : "POST",url : "branchAddressupdatejson",
 		  						data : formData, success : function(result) {
 		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							console.log(bmobj);
+		  							//console.log(bmobj);
 		  							$('#Lbl_AddressCountry').text(bmobj.Lbl_AddressCountry);
 		  							$('#Lbl_AddressAddress1').text(bmobj.branch_ADDRESSLINE1);
 		  							$('#Lbl_AddressAddress2').text(bmobj.branch_ADDRESSLINE2);
@@ -1311,6 +1441,12 @@ Model_CURRENT_STATUS
 			   				$('.documentsave').prop("disabled",false);
 				   			$('.documentsave').html("Submit");
 				   }
+		   		function validationformbankaccreset()
+		   		{
+		   			$('.BankDetailsclose').click();
+	   				$('.BankDetailssave').prop("disabled",false);
+		   			$('.BankDetailssave').html("Submit");
+		   		}
 		   		
 		   	// --------------------------------------------------------------------
 		   	 
@@ -1492,6 +1628,54 @@ Model_CURRENT_STATUS
 				});
   				
   				// --------------------------------------------------------------------
+  				
+  			   	$('#addNewBankDetails').on('submit', function(event){
+  			   	 
+  			   		
+  			   		$('.BankDetailssave').prop("disabled",true);
+		    	  
+		    	    if(event.target.checkValidity()){
+		    	    	$('.BankDetailssave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+		    	    	var BranchID=$("#BranchID").val();
+		    	    	var model_acid =$('#model_branchAccnoid').val();
+		    	    	var model_acno =$('#model_acno').val();
+		    	    	var model_acname =$('#model_acname').val();
+		    	    	var model_bankname =$('#model_bankname').val();
+		    	    	var model_branchname =$('#model_branchname').val();
+		    	    	var model_ifsccode =$('#model_ifsccode').val();
+		    	    	var formData = {
+		  	        			BranchID: BranchID,
+		  	        			acid: model_acid,
+		  	        			acno: model_acno,
+		  	        			acname : model_acname,
+		  	        			bankname : model_bankname,
+		  	        			branchname : model_branchname,
+		  	        			ifsccode : model_ifsccode
+		  				 }
+		    	    	
+		  				 $.ajax({
+		  						type : "POST",url : "branchBankaccupdatejson",
+		  						data : formData, success : function(result) {
+		  							var bmobj = JSON.parse(JSON.stringify(result));
+		  							console.log(bmobj);
+		  							$('#Lbl_acno').text(model_acno);
+		  							$('#Lbl_acname').text(model_acname);
+		  							$('#Lbl_bankname').text(model_bankname);
+		  							$('#Lbl_branchname').text(model_branchname);
+		  							$('#Lbl_ifsccode').text(model_ifsccode); 
+		  							validationformbankaccreset();
+		  						},
+		  						error : function(e) {
+		  							console.log("Error" + e);
+		  						}
+		  					});
+		  	        }	
+		    	    else
+		        	{
+		    	    	$('.BankDetailssave').prop("disabled",false);
+		        	}
+  			   	});	
+  			// --------------------------------------------------------------------
   			
 		    }); // Jquery
     

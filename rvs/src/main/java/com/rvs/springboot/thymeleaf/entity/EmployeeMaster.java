@@ -61,6 +61,10 @@ public class EmployeeMaster {
 	@Column
 	private String ShirtSize;
 	@Column
+	private String ShoeSize;
+	@Column
+	private String PantSize;
+	@Column
 	private String Address_Street1;
 	@Column
 	private String Address_Street2;

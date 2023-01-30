@@ -1,1772 +1,576 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
-	data-textdirection="ltr">
 
-<!-- BEGIN: Head-->
+<html
+  xmlns:th="http://www.thymeleaf.org" 
+  lang="en"
+  class="light-style layout-navbar-fixed layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-semi-dark"
+  th:data-assets-path="@{/assets/}"
+  data-template="vertical-menu-template"
+  
+>
+  <head>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="ICC">
-<title>Employee</title>
-<link rel="apple-touch-icon"
-	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
-<link rel="shortcut icon" type="image/x-icon"
-	th:href="@{/app-assets/images/ico/favicon.ico}">
-<link
-	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
-	rel="stylesheet}">
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/vendors.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
-	
-<link rel="stylesheet" type="text/css" th:href="@{/app-assets/vendors/css/editors/quill/quill.snow.css}">
-
-<!-- END: Vendor CSS-->
-
-<!-- BEGIN: Theme CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap-extended.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/colors.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/components.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/dark-layout.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
-
-<!-- END: Theme CSS-->
-
-<!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
-
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
     
-<!-- END: Page CSS-->
-
-<!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/assets/css/style.css}">
-	
-	<link rel="stylesheet" type="text/css" th:href="@{/app-assets/css/pages/app-email.css}">
-<!-- END: Custom CSS-->
-<style>
-.emptitle {
-	color: #527a00;
-	font-size: 15px;
-	line-height: 20px;
-	font-weight: 600;
-	font-family: Fira Sans, Trebuchet MS, sans-serif;
-	cursor: pointer;
-}
-.bxs-file-pdf
-{
-	color:#FF0000;
-	font-size:50px;
-}
-.m2
-{
-	vertical-align:middle;
-	line-height: 20px;
-}
-	
-	.uppercase{
-		text-transform:uppercase;
-	}
-	.capitalize{
-		text-transform:capitalize;
-	}
-		
-	.highlight-error {
-  border-color: red;
-}	
-.error
-{
-	color:red;
-}
-
-</style>
-<script th:inline="javascript">
-	var emplanstat = 0;
-	var emgstat = 0;
-	var languagelist = "";
-	var educationdegreelist = "";
-	var Nomineerelationshiplist = "";
-</script>
-</head>
-<!-- END: Head-->
-
-<!-- BEGIN: Body-->
-
-<body
-	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
-	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
-
-	<!-- BEGIN: Header-->
-	<div th:insert="header"></div>
-	<!-- END: Header-->
-
-
-	<!-- BEGIN: Main Menu-->
-	<div th:insert="menu"></div>
-	<!-- END: Main Menu-->
-
-	<!-- BEGIN: Content-->
-	<!-- BEGIN: Content-->
-	<div class="app-content content">
-		<div class="content-overlay"></div>
-		<div class="content-wrapper">
-			<div class="content-header row">
-				<div class="content-header-left col-12 mb-2 mt-1">
-					<div class="row breadcrumbs-top">
-						<div class="col-12">
-							<a href="empnew" style="float:right"><button type="button" class="btn btn-primary mr-1 mb-1">+ New</button></a>
-							<h5 class="content-header-title float-left pr-1 mb-0">
-								Employee</h5>
-							
-							<div class="breadcrumb-wrapper col-12">
-								<ol class="breadcrumb p-0 mb-0">
-									<li class="breadcrumb-item"><a href="index"><i
-											class="bx bx-home-alt"></i></a></li>
-
-								</ol>
-								
-							</div>
-							
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="content-body">
-
-				<!-- Basic Vertical form layout section start -->
-				<section id="basic-vertical-layouts">
-					<div class="row match-height">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-content">
-									<div class="card-body">
-									<form th:action="@{/employeesave}"
-											th:object="${employeemaster}" method="POST"
-											class="wizard-horizontal" id="formId" enctype="multipart/form-data">
-									
-										<!--scrolling content Modal -->
-													<div class="modal fade" id="employeeStatusScrollable"
-														tabindex="-1" role="dialog"
-														aria-labelledby="employeeStatusScrollableTitle"
-														aria-hidden="true">
-														<div class="modal-dialog modal-dialog-scrollable"
-															role="document">
-															<div class="modal-content">
-																<div class="modal-header bg-warning">
-																	<h5 class="modal-title white"
-																		id="employeeStatusScrollableTitle"></h5>
-																	<button type="button" class="close"
-																		data-dismiss="modal" aria-label="Close">
-																		<i class="bx bx-x"></i>
-																	</button>
-																</div>
-																<div class="modal-body">
-																	<div class="col-md-12">
-																		<div class="form-group">
-																			<label for="addmodel" id="additemalltxt"></label>
-																			<div class="position-relative">
-																				<fieldset class="form-group">
-																					<input type="text" id="additemall" name="addmodel"
-																						class="form-control capitalize">
-																				</fieldset>
-																			</div>
-																		</div>
-																	</div>
-
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-light-secondary"
-																		data-dismiss="modal">
-																		<i class="bx bx-x d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">Close</span>
-																	</button>
-																	<button type="button" class="btn btn-primary ml-1"
-																		id="additemallsavebtn">
-																		<i class="bx bx-check d-block d-sm-none"></i> <span
-																			class="d-none d-sm-block">ADD</span>
-																	</button>
-																</div>
-															</div>
-														</div>
-													</div>
-													<!--scrolling content Modal -->
-										<div th:if="${save}" class="form-group col-12">
-											<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Employee
-												Info Updated Successfully</button>
-										</div>
-					           		 	 <ul class="nav nav-tabs" role="tablist">
-		                                    <li class="nav-item">
-		                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" aria-controls="home" role="tab" aria-selected="true">
-		                                            <i class="bx bx-user align-middle"></i>
-		                                            <span class="align-middle m2">Basic</span>
-		                                        </a>
-		                                    </li>
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="false">
-		                                            <i class="bx bx-home align-middle"></i>
-		                                            <span class="align-middle m2">Address & Contact</span>
-		                                        </a>
-		                                    </li>
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" aria-controls="about" role="tab" aria-selected="false">
-		                                            <i class="bx bxs-graduation align-middle"></i>
-		                                            <span class="align-middle m2">Education & Others</span>
-		                                        </a>
-		                                    </li>
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="about1-tab" data-toggle="tab" href="#about1" aria-controls="about1" role="tab" aria-selected="false">
-		                                            <i class="bx bxs-bank align-middle"></i>
-		                                            <span class="align-middle m2">Bank & Others</span>
-		                                        </a>
-		                                    </li>
-		                                    <li class="nav-item">
-		                                        <a class="nav-link" id="about2-tab" data-toggle="tab" href="#about2" aria-controls="about2" role="tab" aria-selected="false">
-		                                            <i class="bx bx-cloud-upload align-middle"></i>
-		                                            <span class="align-middle m2">Documents & Others</span>
-		                                        </a>
-		                                    </li>
-		                               	 </ul>
-									            
-				            			      <div class="tab-content">
-			                               		 <div class="tab-pane active " id="home" aria-labelledby="home-tab" role="tabpanel">
-			                                    
-								            <div class="row">
-											
-											
-												<div class="col-md-12">
-													<div class="form-group">
-														<label class="emptitle">Basic Information</label>
-													</div>
-												</div>
-												<div class="col-md-3">
-													
-													<div class="form-group">
-														<label for="first-name-icon">Staff Name</label>
-														<div class="position-relative has-icon-left">
-															<input type="hidden"
-																th:value="${employeemaster['empMasterid']}"
-																th:field="*{empMasterid}"> 
-																
-																<input type="hidden"
-																 class="form-control capitalize"
-																 placeholder="E.ID"
-																th:value="${employeemaster['Empid']}"
-																th:field="*{Empid}"  readonly />
-																
-															
-															<input type="text" 
-																id="StaffName"
-																class="form-control capitalize" 
-																placeholder="Staff Name"
-																th:value="${employeemaster['StaffName']}"
-																th:field="*{StaffName}" onkeypress="return onlyAlphabets(event,this);" >
-															<div class="form-control-position">
-																<i class="bx bx-user"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="email-id-icon">Gender</label>
-														<div class="position-relative has-icon-left">
-															<fieldset class="form-group">
-																<select class="form-control"
-																	th:value="${employeemaster['Gender']}"
-																	th:field="*{Gender}">
-																	<option value="-">-</option>
-																	<option value="Male">Male</option>
-																	<option value="Female">Female</option>
-
-																</select>
-																<div class="form-control-position">
-																	<i class="bx bxs-user-voice"></i>
-																</div>
-
-															</fieldset>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="email-id-icon">Marital Status <label
-															class="emptitle additem" name="addmaritalstatusdata"><i
-																class="bx bxs-plus-circle ownstyle1"></i></label>
-														</label>
-														<div class="position-relative has-icon-left">
-															<fieldset class="form-group">
-																<select class="form-control addmaritalstatusdata"
-																	th:value="${employeemaster['MaritalStatus']}"
-																	th:field="*{MaritalStatus}">
-																	<option value="-">-</option>
-																	
-																	<th:block th:each="str :${MARITALSTATUS}">
-																		<option  th:value="${str}"  th:text="${str}"></option>
-																	</th:block>
-																	
-																	
-
-																</select>
-																<div class="form-control-position">
-																	<i class="bx bxl-redux"></i>
-																</div>
-															</fieldset>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Date of Birth</label>
-														<div class="position-relative has-icon-left">
-															<input type="date" class="form-control capitalize"
-																th:value="${employeemaster['DateofBirth']}"
-																th:field="*{DateofBirth}"  />
-															<div class="form-control-position">
-																<i class="bx bx-calendar-event"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Blood Group</label>
-														<div class="position-relative has-icon-left">
-															<select class="form-control"
-																th:value="${employeemaster['BloodGroup']}"
-																th:field="*{BloodGroup}"  >
-																	<option value="-">-</option>
-																	<option value="A+">A+</option>
-																	<option value="A1+">A1+</option>
-																	<option value="O+">O+</option>
-																	<option value="B+">B+</option>
-																	<option value="AB+">AB+</option>
-																	<option value="A-">A-</option>
-																	<option value="A1-">A1-</option>
-																	<option value="O-">O-</option>
-																	<option value="B-">B-</option>
-																	<option value="AB-">AB-</option>
-															</select>
-															<div class="form-control-position">
-																<i class="bx bxs-droplet"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Height (CM)</label>
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="Height"
-																th:value="${employeemaster['Height']}"
-																th:field="*{Height}"  />
-															<div class="form-control-position">
-																<i class="bx bx-up-arrow-alt"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Weight (Kg)</label>
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="Weight"
-																th:value="${employeemaster['Weight']}"
-																th:field="*{Weight}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-cloud"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label for="contact-info-icon">Aadhar No</label>
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="Aadhar No"
-																th:value="${employeemaster['AadharNo']}"
-																th:field="*{AadharNo}"  data-type="adhaar-number" maxLength="14" />
-															<div class="form-control-position">
-																<i class="bx bx-grid-small"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">PAN No</label>
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"
-																placeholder="PAN No"
-																th:value="${employeemaster['PANNo']}"
-																th:field="*{PANNo}" maxlength="10" />
-															<div class="form-control-position">
-																<i class="bx bxs-layout"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">D.L.No</label>
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="D.L.No"
-																th:value="${employeemaster['DLNo']}" th:field="*{DLNo}"  />
-															<div class="form-control-position">
-																<i class="bx bx-border-radius"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Accommodation</label>
-														<div class="position-relative has-icon-left">
-															<select class="form-control"
-																th:value="${employeemaster['Accommodation']}"
-																th:field="*{Accommodation}">
-																<option value="-">-</option>
-																<option value="Office">Office</option>
-																<option value="Self">Self</option>
-															</select>
-															<div class="form-control-position">
-																<i class="bx bxs-bath"></i>
-															</div>
-
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<label for="contact-info-icon">Shirt Size</label>
-														<div class="position-relative has-icon-left">
-															<select class="form-control"
-																th:value="${employeemaster['ShirtSize']}"
-																th:field="*{ShirtSize}">
-																<option value="-">-</option>
-																<option value="Small">Small</option>
-																<option value="Medium">Medium</option>
-																<option value="Large">Large</option>
-																<option value="Xlarge">Xlarge</option>
-																<option value="XXLarge">XXLarge</option>
-															</select>
-															<div class="form-control-position">
-																<i class="bx bxs-t-shirt"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-12">
-													<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 profiletabclick"  style="float:right">Next</button>
-													
-												</div>
-												
-												
-												
-												
-											</div>
-											</div>
-                                   			<div class="tab-pane" id="profile" aria-labelledby="profile-tab" role="tabpanel">
-                                   			 <div class="row">
-											
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle">Address</label>
-													</div>
-												</div>
-
-												<div class="col-md-6">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" 
-																class="form-control capitalize" placeholder="Street 1"
-																th:value="${employeemaster['Address_Street1']}"
-																th:field="*{Address_Street1}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-home"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" 
-																class="form-control capitalize" placeholder="Street 2"
-																th:value="${employeemaster['Address_Street2']}"
-																th:field="*{Address_Street2}"  />
-															<div class="form-control-position">
-																<i class="bx bx-navigation"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" 
-																class="form-control capitalize" placeholder="Village"
-																th:value="${employeemaster['Address_Village']}"
-																th:field="*{Address_Village}"  />
-															<div class="form-control-position">
-																<i class="bx bx-directions"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" 
-																class="form-control capitalize" placeholder="Taluk"
-																th:value="${employeemaster['Address_Taluk']}"
-																th:field="*{Address_Taluk}"  onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bxs-city"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="City"
-																th:value="${employeemaster['Address_City']}"
-																th:field="*{Address_City}"  onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bxs-building-house"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="State"
-																th:value="${employeemaster['Address_State']}"
-																th:field="*{Address_State}" onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bx-stats"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="Zip code"
-																th:value="${employeemaster['Address_ZIP']}"
-																th:field="*{Address_ZIP}"  />
-															<div class="form-control-position">
-																<i class="bx bx-message-alt-dots"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="Country"
-																th:value="${employeemaster['Address_Country']}"
-																th:field="*{Address_Country}" onkeypress="return onlyAlphabets(event,this);"  
-																  />
-															<div class="form-control-position">
-																<i class="bx bxs-flag-alt"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-											
-												<div class="col-md-12">
-													<div class="form-group">
-														<hr />
-														<label class="emptitle">Contact</label>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																id="Work_Phone"
-																placeholder="Work Phone"
-																th:value="${employeemaster['Contact_WorkPhone']}"
-																th:field="*{Contact_WorkPhone}"  />
-															<div class="form-control-position">
-																<i class="bx bx-dialpad"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="Personal Phone"
-																th:value="${employeemaster['Contact_PersonalPhone']}"
-																th:field="*{Contact_PersonalPhone}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-phone"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="Other Phone"
-																th:value="${employeemaster['Contact_OtherPhone']}"
-																th:field="*{Contact_OtherPhone}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-phone"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control  email"
-																placeholder="Email ID"
-																th:value="${employeemaster['Contact_EmailID']}"
-																th:field="*{Contact_EmailID}"  />
-															<div class="form-control-position">
-																<i class="bx bx-mail-send"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control  email"
-																placeholder="Work Email"
-																th:value="${employeemaster['Contact_WorkEmail']}"
-																th:field="*{Contact_WorkEmail}"  />
-															<div class="form-control-position">
-																<i class="bx bx-mail-send"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<div class="position-relative has-icon-left">
-															<input type="email" class="form-control  email"
-																placeholder="Personal Email"
-																th:value="${employeemaster['Contact_PersonalEmail']}"
-																th:field="*{Contact_PersonalEmail}"  />
-															<div class="form-control-position">
-																<i class="bx bx-mail-send"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-12">
-												<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 abouttabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
-												</div>
-												
-												
-												
-												
-											 </div>	
-											 </div>
-                                   			 <div class="tab-pane" id="about" aria-labelledby="about-tab" role="tabpanel">
-                                   			 <div class="row">
-											
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle">Education</label>
-														<button class="btn btn-light-primary btn-sm"
-															id="edudivadd" type="button" title="Add new education">
-															<i class="bx bx-plus"></i>
-														</button>
-													</div>
-												</div>
-
-
-												<div class="col-md-12"></div>
-												<th:block
-													th:each="EmployeeEducation,stat : ${employeeEducation}">
-													
-													  
-													<div th:class="'srctedudiv'+ ${stat.index} + ' col-md-12'"> 
-														<span class="cursor-pointer srcedudivdelete" th:name="'srctedudiv'+ ${stat.index}" style="float:right"> 	
-															<i class="bx bx-x"></i> 	
-														</span>
-													</div>
-													
-													<div th:class="'srctedudiv'+ ${stat.index} + ' col-md-6'">	
-														<div class="form-group">
-															<label for="contact-info-icon">College /
-																Institution</label>
-															<div class="position-relative has-icon-left">
-																<input type="hidden"
-																	th:value="${EmployeeEducation.empEduid}"
-																	name="empEduid"> <input type="text"
-																	class="form-control capitalize"
-																	placeholder="College / Institution"
-																	th:value="${EmployeeEducation.College_Institution}"
-																	name="College_Institution" onkeypress="return onlyAlphabets(event,this);"  
-																	  />
-																<div class="form-control-position">
-																	<i class="bx bx-buildings"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctedudiv'+ ${stat.index} + ' col-md-3'">
-														<div class="form-group">
-															<label for="contact-info-icon">Degree <label
-																class="emptitle additem" name="addDegreedata"><i
-																	class="bx bxs-plus-circle ownstyle1"></i></label>
-
-															</label>
-															<div class="position-relative has-icon-left">
-																<select class="form-control addDegreedata"
-																	th:value="${EmployeeEducation.Degree}" name="Degree">
-																	<option th:if="${EmployeeEducation.Degree} !='' "
-																		th:value="${EmployeeEducation.Degree}"
-																		th:text="${EmployeeEducation.Degree}"></option>
-
-																	<th:block th:each="str :${DEGREE}">
-																		<option  th:value="${str}"  th:text="${str}"></option>
-																		<script>
-																		educationdegreelist += '<option  value=" [[${str}]] "> [[${str}]] </option>';
-																		</script>
-																	</th:block>
-																	
-																</select>
-															</div>
-
-														</div>
-													</div>
-													<div th:class="'srctedudiv'+ ${stat.index} + ' col-md-3'">
-														<div class="form-group">
-															<label for="contact-info-icon">Major /
-																Specialization</label>
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control capitalize"
-																	placeholder="Major / Specialization"
-																	th:value="${EmployeeEducation.MajorSpecialization}"
-																	name="MajorSpecialization" onkeypress="return onlyAlphabets(event,this);"  
-																	  />
-																<div class="form-control-position">
-																	<i class="bx bxs-layer"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctedudiv'+ ${stat.index} + ' col-md-3'">
-														<div class="form-group">
-															<label for="contact-info-icon">Percentage / GPA</label>
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control"
-																	placeholder="Percentage / GPA"
-																	th:value="${EmployeeEducation.Percentage_GPA}"
-																	name="Percentage_GPA"   />
-																<div class="form-control-position">%</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctedudiv'+ ${stat.index} + ' col-md-3'">
-														<div class="form-group">
-															<label for="contact-info-icon">From </label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control"
-																	placeholder="From "
-																	th:value="${EmployeeEducation.FromYear}"
-																	name="FromYear"   />
-																<div class="form-control-position">
-																	<i class="bx bx-calendar"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctedudiv'+ ${stat.index} + ' col-md-3'">
-														<div class="form-group">
-															<label for="contact-info-icon">To</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control"
-																	placeholder="To"
-																	th:value="${EmployeeEducation.ToYear}" name="ToYear"   />
-																<div class="form-control-position">
-																	<i class="bx bx-calendar"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-												</th:block>
-
-												<span id="edudivlast"></span>
-
-											 
-												
-												<div class="col-md-12">
-													<div class="form-group">
-														<hr />
-														<label class="emptitle">Language</label>
-														<button class="btn btn-light-primary btn-sm"
-															id="langudivadd" data-repeater-create type="button"
-															title="Add new language">
-															<i class="bx bx-plus"></i>
-														</button>
-													</div>
-												</div>
-												<table id="langudiv" class="col-md-12">
-
-													
-													<th:block
-														th:each="EmployeeLanguage, emplanstat : ${employeeLanguage}">
-														<tr>
-															<td>
-																<div class="col-md-12">
-																	<div class="form-group">
-																		<label for="contact-info-icon">Language <label
-																			class="emptitle additem" name="addLanguagedata" ><i
-																				class="bx bxs-plus-circle ownstyle1"></i></label>
-
-																		</label>
-																		<div class="position-relative has-icon-left">
-																			<div class="position-relative has-icon-left">
-																				<input type="hidden"
-																					th:value="${EmployeeLanguage.empLanguid}"
-																					name="empLanguid"> <select
-																					class="form-control addLanguagedata"
-																					th:value="${EmployeeLanguage['language']}"
-																					name="language">
-																					<option th:if="${EmployeeLanguage.language} !='' "
-																						th:value="${EmployeeLanguage.language}"
-																						th:text="${EmployeeLanguage.language}"></option>
-																						
-																						<th:block th:each="str :${LANGUAGE}">
-																							<option  th:value="${str}"  th:text="${str}"></option>
-																							<script>
-																								languagelist += '<option  value=" [[${str}]] "> [[${str}]] </option>';
-																							</script>
-																							
-																						</th:block>
-																					
-																				</select> <input type="hidden"
-																					th:value="${emplanstat.index}" name="languageid">
-																			</div>
-
-																		</div>
-																	</div>
-
-																</div>
-															</td>
-															<td>
-																<div class="col-md-12">
-																	<div class="form-group">
-
-																		<br />
-																		<div class="checkbox checkbox-primary checkbox-glow">
-																			<input type="checkbox"
-																				th:id="'lan_read'+ ${emplanstat.index}"
-																				th:checked="${EmployeeLanguage['lan_read']}"
-																				th:name="'lan_read'+ ${emplanstat.index}" /> <label
-																				th:for="'lan_read'+ ${emplanstat.index}">Read</label>
-																		</div>
-																		<div class="checkbox checkbox-primary checkbox-glow">
-																			<input type="checkbox"
-																				th:id="'lan_write'+ ${emplanstat.index}"
-																				th:checked="${EmployeeLanguage['lan_write']}"
-																				th:name="'lan_write'+ ${emplanstat.index}" /> <label
-																				th:for="'lan_write'+ ${emplanstat.index}">Write</label>
-																		</div>
-																		<div class="checkbox checkbox-primary checkbox-glow">
-																			<input type="checkbox"
-																				th:id="'lan_speak'+ ${emplanstat.index}"
-																				th:checked="${EmployeeLanguage['lan_speak']}"
-																				th:name="'lan_speak'+ ${emplanstat.index}" /> <label
-																				th:for="'lan_speak'+ ${emplanstat.index}">Speak</label>
-																		</div>
-																		<span class="cursor-pointer langudivdelete" style="float:right">  <i class="bx bx-x"></i>   </span>  
-																		<script th:inline="javascript">
-																			emplanstat = emplanstat + 1;
-																		</script>
-
-																	</div>
-																</div>
-															</td>
-														</tr>
-
-													</th:block>
-												</table>
-												<div class="col-12">
-												<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 about1tabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 profiletabclick">Previous</button>
-												</div>
-												
-
-
-											</div>
-											</div>
-                                   			 <div class="tab-pane" id="about1" aria-labelledby="about1-tab" role="tabpanel">
-                                   			 <div class="row">
-											
-												
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle">Experience</label>
-														<button class="btn btn-light-primary btn-sm"
-															id="exprdivadd" type="button" title="Add new education">
-															<i class="bx bx-plus"></i>
-														</button>
-													</div>
-												</div>
-												<th:block
-													th:each="EmployeeExperience,stat : ${employeeExperience}">
-													  
-													<div th:class="'srctexpdiv'+ ${stat.index} + ' col-md-12'">
-														<span class="cursor-pointer srcexprdivdelete" th:name="'srctexpdiv'+ ${stat.index}"  style="float:right">  <i class="bx bx-x"></i>   </span>
-													</div>
-													<div th:class="'srctexpdiv'+ ${stat.index} + ' col-md-6'">
-														<div class="form-group">
-															<div class="position-relative has-icon-left">
-																<input type="hidden"
-																	th:value="${EmployeeExperience.empExperienceid}"
-																	name="empExperienceid"> <input type="text"
-																	class="form-control capitalize" placeholder="Company"
-																	th:value="${EmployeeExperience['Company']}"
-																	name="Company" onkeypress="return onlyAlphabets(event,this);"  
-																	  />
-																<div class="form-control-position">
-																	<i class="bx bx-building"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctexpdiv'+ ${stat.index} + ' col-md-6'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control capitalize"
-																	placeholder="Location"
-																	th:value="${EmployeeExperience['Location']}"
-																	name="Location"  onkeypress="return onlyAlphabets(event,this);"  
-																	 />
-																<div class="form-control-position">
-																	<i class="bx bx-target-lock"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctexpdiv'+ ${stat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control capitalize"
-																	placeholder="From"
-																	th:value="${EmployeeExperience['expFromyear']}"
-																	name="expFromyear"   />
-																<div class="form-control-position">
-																	<i class="bx bx-calendar"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctexpdiv'+ ${stat.index} + ' col-md-3'">
-														<div class="form-group">
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control capitalize"
-																	placeholder="To"
-																	th:value="${EmployeeExperience['expToyear']}"
-																	name="expToyear" />
-																<div class="form-control-position">
-																	<i class="bx bx-calendar"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctexpdiv'+ ${stat.index} + ' col-md-6'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control capitalize"
-																	placeholder="JobTitle"
-																	th:value="${EmployeeExperience['JobTitle']}"
-																	name="JobTitle" onkeypress="return onlyAlphabets(event,this);"  
-																	 />
-																<div class="form-control-position">
-																	<i class="bx bx-briefcase-alt"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-												</th:block>
-												<span id="exprdivlast"></span>
-
-
-												<div class="col-md-12">
-													<div class="form-group">
-														<hr />
-														<label class="emptitle">Hiring Source</label>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="Recruitment Source"
-																th:value="${employeemaster['RecruitmentSource']}"
-																th:field="*{RecruitmentSource}" onkeypress="return onlyAlphabets(event,this);"  
-																/>
-															<div class="form-control-position">
-																<i class="bx bxs-news"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control capitalize"
-																placeholder="Institute/Consultant Name"
-																th:value="${employeemaster['RecruInstituteConsultantName']}"
-																th:field="*{RecruInstituteConsultantName}"  onkeypress="return onlyAlphabets(event,this);"  
-																/>
-															<div class="form-control-position">
-																<i class="bx bx-bullseye"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="form-group">
-														<hr />
-														<label class="emptitle">Bank Account Details</label>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="number" class="form-control capitalize"
-																placeholder="A.C.No"
-																th:value="${employeemaster['BankACNo']}"
-																th:field="*{BankACNo}"  />
-															<div class="form-control-position">
-																<i class="bx bxs-bank"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"
-																placeholder="Bank Name"
-																th:value="${employeemaster['BankName']}"
-																th:field="*{BankName}" onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bxs-bookmark-plus"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"
-																placeholder="Branch Name"
-																th:value="${employeemaster['BranchName']}"
-																th:field="*{BranchName}" onkeypress="return onlyAlphabets(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bx-stats"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-															<input type="text" class="form-control uppercase"
-																placeholder="IFSC Code"
-																th:value="${employeemaster['BankIFSCCode']}"
-																th:field="*{BankIFSCCode}" onkeypress="return onlyAlphanumeric(event,this);"   />
-															<div class="form-control-position">
-																<i class="bx bx-code"></i>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-12">
-												<br/>
-													<button type="button" class="btn btn-primary mr-1 mb-1 about2tabclick"  style="float:right">Next</button>
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 abouttabclick">Previous</button>
-												</div>
-												
-												
-												
-											</div>
-											</div>
-                                   			 <div class="tab-pane" id="about2" aria-labelledby="about2-tab" role="tabpanel">
-                                   			 <div class="row">
-											
-											
-												<div class="col-md-12">
-													<div class="form-group">
-														
-														<label class="emptitle">Emergency Contact</label>
-														<button class="btn btn-light-primary btn-sm"
-															id="econtactdivadd" type="button"
-															title="Add new Emergency Contact">
-															<i class="bx bx-plus"></i>
-														</button>
-													</div>
-												</div>
-
-												<th:block
-													th:each="EmployeeEmgContact, emgstat : ${employeeEmgContact}">
-													
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-12'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<fieldset>
-																	<div class="checkbox checkbox-primary checkbox-glow">
-																		<input type="hidden"
-																			th:value="${EmployeeEmgContact.empEmgContactid}"
-																			name="empEmgContactid"> <input type="hidden"
-																			th:value="${emgstat.index}" name="emgid">
-																		<script th:inline="javascript">
-																			emgstat = emgstat + 1;
-																		</script>
-
-																		<input type="checkbox" id="checkboxGlow1"
-																			th:checked="${EmployeeEmgContact['Emg_primarycontact']}"
-																			th:name="'Emg_primarycontact' + ${emgstat.index}" />
-																		<label for="checkboxGlow1">Primary Contact</label>
-																	</div>
-																	<div class="checkbox checkbox-primary checkbox-glow">
-																		<input type="checkbox" id="checkboxGlow2"
-																			th:checked="${EmployeeEmgContact['Emg_InsuranceNominee']}"
-																			th:name="'Emg_InsuranceNominee' + ${emgstat.index}" />
-																		<label for="checkboxGlow2">Insurance Nominee
-																		</label>
-																	</div>
-																	
-																	<span class="cursor-pointer srcecontactdivdelete" th:name="'srctemgdiv'+ ${emgstat.index}"  style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 
-																	
-																</fieldset>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text"  
-																	class="form-control capitalize" placeholder="Name"
-																	th:value="${EmployeeEmgContact['Emg_Name']}"
-																	onkeypress="return onlyAlphabets(event,this);"  name="Emg_Name" />
-																<div class="form-control-position">
-																	<i class="bx bxs-contact"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-
-																<select class="form-control addemgrelationdata"
-																	th:value="${EmployeeEmgContact['Emg_Relation']}"
-																	name="Emg_Relation" >
-																<option
-																	th:if="${EmployeeEmgContact.Emg_Relation} !='' "
-																	th:value="${EmployeeEmgContact.Emg_Relation}"
-																	th:text="${EmployeeEmgContact.Emg_Relation}"></option>
-
-																	
-																	<th:block th:each="str :${RELATION}">
-																		<option  th:value="${str}"  th:text="${str}"></option>
-																		<script>
-																		Nomineerelationshiplist += '<option  value=" [[${str}]] "> [[${str}]] </option>';
-																	</script>
-																																			
-																	</th:block>
-																</select>
-																<div class="form-control-position">
-																	<i class="bx bx-git-repo-forked"></i>
-																</div>
-																<label class="emptitle additem"
-																	name="addemgrelationdata" style="float: right;"><i
-																	class="bx bxs-plus-circle ownstyle1"></i></label>
-
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="number" 
-																	class="form-control capitalize" placeholder="Personal Phone"
-																	th:value="${EmployeeEmgContact['Emg_PersonalPhone']}"
-																	name="Emg_PersonalPhone"  />
-																<div class="form-control-position">
-																	<i class="bx bx-phone-call"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="number" 
-																	class="form-control capitalize" placeholder="Other Phone"
-																	th:value="${EmployeeEmgContact['Emg_OtherPhone']}"
-																	name="Emg_OtherPhone" />
-																<div class="form-control-position">
-																	<i class="bx bx-phone-call"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="email" 
-																	class="form-control" placeholder="Email ID"
-																	th:value="${EmployeeEmgContact['Emg_EmailID']}"
-																	name="Emg_EmailID"  />
-																<div class="form-control-position">
-																	<i class="bx bx-mail-send"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" 
-																	class="form-control capitalize" placeholder="Street 1"
-																	th:value="${EmployeeEmgContact['Emg_Street1']}"
-																	name="Emg_Street1" />
-																<div class="form-control-position">
-																	<i class="bx bxs-home"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" 
-																	class="form-control capitalize" placeholder="Street 2"
-																	th:value="${EmployeeEmgContact['Emg_Street2']}"
-																	name="Emg_Street2"  />
-																<div class="form-control-position">
-																	<i class="bx bx-navigation"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" 
-																	class="form-control capitalize" placeholder="Village"
-																	th:value="${EmployeeEmgContact['Emg_Village']}"
-																	name="Emg_Village" onkeypress="return onlyAlphanumeric(event,this);" 
-																	 />
-																<div class="form-control-position">
-																	<i class="bx bx-directions"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" 
-																	class="form-control capitalize" placeholder="Taluk"
-																	th:value="${EmployeeEmgContact['Emg_Taluk']}"
-																	name="Emg_Taluk" onkeypress="return onlyAlphanumeric(event,this);" 
-																	 />
-																<div class="form-control-position">
-																	<i class="bx bxs-city"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control capitalize"
-																	placeholder="City"
-																	th:value="${EmployeeEmgContact['Emg_City']}"
-																	name="Emg_City" onkeypress="return onlyAlphanumeric(event,this);" 
-																	 />
-																<div class="form-control-position">
-																	<i class="bx bxs-building-house"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control capitalize"
-																	placeholder="State"
-																	th:value="${EmployeeEmgContact['Emg_State']}"
-																	name="Emg_State" onkeypress="return onlyAlphanumeric(event,this);" 
-																	  />
-																<div class="form-control-position">
-																	<i class="bx bx-stats"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="number" class="form-control capitalize"
-																	placeholder="Zip code"
-																	th:value="${EmployeeEmgContact['Emg_ZIP']}"
-																	name="Emg_ZIP" />
-																<div class="form-control-position">
-																	<i class="bx bx-message-alt-dots"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'srctemgdiv'+ ${emgstat.index} + ' col-md-3'">
-														<div class="form-group">
-
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control capitalize"
-																	placeholder="Country"
-																	th:value="${EmployeeEmgContact['Emg_Country']}"
-																	name="Emg_Country" />
-																<div class="form-control-position">
-																	<i class="bx bxs-flag-alt"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-												</th:block>
-
-												<span id="econtactdivlast"></span>
-												<div class="col-md-12">
-													<div class="form-group">
-														<hr />
-														<label class="emptitle">Files</label>
-													</div>
-												</div>
-												<div class="table-responsive">
-												<table class="table zero-configuration">
-													<tr>
-
-														<th>Attachment</th>
-														<th>Name</th>
-														<th>Remove</th>
-													</tr>
-													<th:block th:each="Files,stat : ${employeeFiles}">
-														<tr th:if="${Files['Photo_Attach']}  !=null">
-															<td><img th:src="${Files['Photo_Attach']}"
-																style="width: 100px; height: 100px;" />
-																<input type="hidden" th:value="${Files['empFileid']}" name="photoempFileid"/>
-																<input type="hidden" th:value="${Files['Photo_Attach']}" th:name="photoempFileidstr"/>
-																</td>
-															<td>
-															<span th:text=" ${ #strings.substring(#strings.arraySplit(Files['Photo_Attach'],'/')[1],15) } " ></span>
-															 <br/> <a th:href="${Files['Photo_Attach']}" target="_blank">View & Download</a></td>
-															<td><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-x"></i>   </span></td>
-														</tr>
-														<tr th:if="${Files['Resume_Attach']}  !=null">
-															<td><i class="bx bxs-file-pdf"></i>
-																<input type="hidden" th:value="${Files['empFileid']}" name="resumeempFileid"/>
-																<input type="hidden" th:value="${Files['Resume_Attach']}" th:name="resumeempFileidstr"/>
-															</td>
-															<td>
-																<span th:text=" ${ #strings.substring(#strings.arraySplit(Files['Resume_Attach'],'/')[1],15) } " ></span>
-																 <br/><a th:href="${Files['Resume_Attach']}"  target="_blank">View & Download</a></td>
-															<td><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-x"></i>   </span></td>
-														</tr>
-														<tr th:if="${Files['Certificates_Attach']}  !=null">
-															<td><i class="bx bxs-file-pdf"></i>
-																<input type="hidden" th:value="${Files['empFileid']}" name="certificateempFileid"/>
-																<input type="hidden" th:value="${Files['Certificates_Attach']}" th:name="certificateempFileidstr"/>
-															</td>
-															<td><span th:text=" ${ #strings.substring(#strings.arraySplit(Files['Certificates_Attach'],'/')[1],15) } " ></span> <br/><a th:href="${Files['Certificates_Attach']}" target="_blank">View & Download</a></td>
-															<td><span class="cursor-pointer filedivdelete" style="float:right">  <i class="bx bx-x"></i>   </span></td>
-														</tr>
-													</th:block>
-												</table>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label for="contact-info-icon">Photo</label>
-														<div class="position-relative">
-															<input type="file" class="form-control capitalize"
-																name="Photo_Attach" accept="image/*" />
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label for="contact-info-icon">Resume</label>
-														<div class="position-relative">
-															<input type="file" class="form-control capitalize"
-																name="Resume_Attach" accept=".pdf" />
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label for="contact-info-icon">Certificates</label>
-														<div class="position-relative">
-															<input type="file" class="form-control capitalize"
-																name="Certificates_Attach" accept=".pdf" />
-														</div>
-													</div>
-												</div>
-
-
-
-												<div class="col-md-12">
-													<div class="form-group">
-														<hr />
-														<label class="emptitle">Notes</label>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="form-group">
-
-														<div class="position-relative">
-															<textarea type="text" class="form-control capitalize"
-																th:value="${employeemaster['Notes']}"
-																th:field="*{Notes}" height="100px">
-																
-																</textarea>
-														</div>
-													</div>
-													
-													
-													<button type="button" class="btn btn-light-secondary mr-1 mb-1 about1tabclick">Previous</button>
-												</div>
-												 
-												<div class="col-12 d-flex justify-content-end">
-													
-													<button type="submit" id="submit" style="visibility: hidden;" class="btn btn-primary mr-1 mb-1">Save</button>
-													<button type="button" id="submit_validation"  class="btn btn-primary mr-1 mb-1">Save</button>
-													<button type="reset"
-														class="btn btn-light-secondary mr-1 mb-1">Reset</button>
-													<a href="emplist"><button type="button"
-															class="btn btn-warning mr-1 mb-1">Cancel</button></a>
-												</div>
-												
-											</div>
-                                   			</div>
-                                   		
-										
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-				<!-- // Basic Vertical form layout section end -->
-
-
-			</div>
-		</div>
-	</div>
-	<!-- END: Content-->
-
-
-
-	<div class="sidenav-overlay"></div>
-	<div class="drag-target"></div>
-
-	<!-- BEGIN: Footer-->
-	<footer class="footer footer-static footer-light">
-		<p class="clearfix mb-0">
-			<span class="float-left d-inline-block"></span><span
-				class="float-right d-sm-inline-block d-none"></span>
-			<button class="btn btn-primary btn-icon scroll-top" type="button">
-				<i class="bx bx-up-arrow-alt"></i>
-			</button>
-		</p>
-	</footer>
-	<!-- END: Footer-->
-
-	
-	<!-- BEGIN: Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-	<script
-		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-	<script
-		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-	<!-- BEGIN Vendor JS-->
-
-	<!-- BEGIN: Page Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/forms/validation/jquery.validate.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/editors/quill/quill.min.js}"></script>
-	<!-- END: Page Vendor JS-->
-
-	<!-- BEGIN: Theme JS-->
-	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-	<script th:src="@{/app-assets/js/core/app.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-	<!-- END: Theme JS-->
-
-	<!-- BEGIN: Page JS-->
-	 <script th:src="@{/app-assets/js/scripts/pages/app-email.js}"></script>
-	 <!-- END: Page JS-->
-	<!-- Custom Java script validations -->
-	<script th:src="@{/js/customvalidation.js}"></script>
-
-	<script>
-		$(document).ready(
-				function() {
-		/* 			$('#formId').validate({
-		                ignore: [],
-		                invalidHandler: function (e, validator) {
-		                    if (validator.errorList.length)
-		                    {
-		                        //debugger;
-		                        //$('#shipperConsigneeTabs a[href="#' + jQuery(validator.errorList[0].element).closest(".tab-pane").attr('id') + '"]').tab('show')
-		                    	alert($(validator.errorList[0].element).attr("name") + " Invalid format");
-		                    	//$(validator.errorList[0].element).addClass("highlight-error");
-		                    }
-		                }
-		            });
- */
-		            
-			 	
-					
-					$("#submit_validation").click(function(){
-						
-						var StaffName= $('#StaffName').val();
-						var Work_Phone= $('#Work_Phone').val();
-						
-						if(StaffName =="")
-						{
-							alert("Staff Name should not be empty");
-						}else if(Work_Phone.length < 10)
-						{
-							alert("Work Phone is not valid");
-						}else
-						{
-							$("#submit").click();
-						}
-						
-						
-					});
-					
- 					$(document).on("click", ".additem", function() {
-					
-						var name = $(this).attr('name');
-						var labeltext = "";
-						if (name == "addmaritalstatusdata") {
-							labeltext = "New Marital status";
-						}
-						if (name == "addDegreedata") {
-							labeltext = "New Degree";
-						}
-						if (name == "addLanguagedata") {
-							labeltext = "New Language";
-						}
-						if (name == "addemgrelationdata") {
-							labeltext = "New Relationship";
-						}
-						$('#additemalltxt').text(labeltext);
-						$('#employeeStatusScrollable').modal('toggle');
-
-					});
-
-					$("#additemallsavebtn").click(
-							function() {
-								if ($("#additemall").val() != '') {
-									var name = $('#additemalltxt').text();
-									var labeltext = "";
-									if (name == "New Marital status") {
-										labeltext = "addmaritalstatusdata";
-									}
-									if (name == "New Degree") {
-										labeltext = "addDegreedata";
-									}
-									if (name == "New Language") {
-										labeltext = "addLanguagedata";
-									}
-									if (name == "New Relationship") {
-										labeltext = "addemgrelationdata";
-									}
-									$('.' + labeltext).append(
-											"<option value='"
-													+ $("#additemall").val()
-													+ "'>"
-													+ $("#additemall").val()
-													+ "</option>");
-									//$('.' + labeltext).val($("#additemall").val());
-									$("#additemall").val('');
-									$('#employeeStatusScrollable').modal(
-											'toggle');
-								}
-							});
-				});
-
-		var langudivadd = 2;
-		$("#langudivadd")
-				.click(
-						function() {
-							langudivadd = langudivadd + 1;
-
-							$("#langudiv  tr:last")
-									.after(
-											'<tr><td><div class="col-md-12"><div class="form-group"><label for="contact-info-icon">Language <label class="emptitle additem" name="addLanguagedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label></label><div class="position-relative has-icon-left">   <div class="position-relative has-icon-left">  <input type="hidden"  th:value="${EmployeeLanguage.empLanguid}" name="empLanguid"> <select class="form-control addLanguagedata" name="language"><option value="-">-</option>'+ languagelist +'</select><input type="hidden" value="'+ emplanstat +'"  name="languageid"></div></div></div> </div> </td> <td> <div class="col-md-12"><div class="form-group"><br/><div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Read'+ langudivadd + '" name="lan_read' + emplanstat +'"><label for="Read'+ langudivadd + '">Read</label> </div> <div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Write'+ langudivadd + '" name="lan_write' + emplanstat +'"><label for="Write'+ langudivadd + '">Write</label> </div> <div class="checkbox checkbox-primary checkbox-glow"><input type="checkbox" id="Speak'+ langudivadd + '" name="lan_speak' + emplanstat +'"><label for="Speak'+ langudivadd + '">Speak</label> </div>  <span class="cursor-pointer langudivdelete" style="float:right">  <i class="bx bx-x"></i>   </span>   </div> </div>   </td></tr>');
-							emplanstat = emplanstat + 1;
-						});
-		$(document).on("click", ".langudivdelete", function() {
-			$(this).closest("tr").remove();
-		});
-
-		var edudivadd = 2;
-		$("#edudivadd")
-				.click(
-						function() {
-							edudivadd = edudivadd + 1;
-							$("#edudivlast")
-									.before(
-											'<div class="tedudiv'+ edudivadd +'  col-md-12"> <span class="cursor-pointer edudivdelete" name="'+ edudivadd +'" style="float:right"> 	                                                                    <i class="bx bx-x"></i> 	                                                                </span> 	                                                             </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-6"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">College / Institution</label> 			                                                            <div class="position-relative has-icon-left"><input type="hidden"  th:value="${EmployeeEducation.empEduid}" name="empEduid"><input type="text"  class="form-control capitalize"  placeholder=" College / Institution" name="College_Institution" /> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-buildings"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Degree 			                                                            	<label class="emptitle additem" name="addDegreedata" ><i class="bx bxs-plus-circle ownstyle1"></i></label> 			                                                            </label> 			                                                            <div class="position-relative has-icon-left"> 			                                                                <select class="form-control addDegreedata" name="Degree">    ' + educationdegreelist + '  </select> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Major / Specialization</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control capitalize"  placeholder="Major / Specialization" name="MajorSpecialization"  /> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bxs-layer"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">Percentage / GPA</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control capitalize"  placeholder="Percentage / GPA" name="Percentage_GPA" /> 			                                                                <div class="form-control-position"> 			                                                                    % 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">From </label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control capitalize"  placeholder="From " name="FromYear"  /> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div> 			                                                    <div class="tedudiv'+ edudivadd +'  col-md-3"> 			                                                        <div class="form-group"> 			                                                            <label for="contact-info-icon">To</label> 			                                                             <div class="position-relative has-icon-left"> 			                                                                <input type="text"  class="form-control capitalize"  placeholder="To" name="ToYear"  /> 			                                                                <div class="form-control-position"> 			                                                                    <i class="bx bx-calendar"></i> 			                                                                </div> 			                                                            </div> 			                                                        </div> 			                                                    </div>');
-						});
-
-		$(document).on("click", ".edudivdelete", function() {
-			var id = $(this).attr('name');
-			$('.tedudiv' + id).hide();
-		});
-
-		var exprdivadd = 2;
-		$("#exprdivadd")
-				.click(
-						function() {
-							exprdivadd = exprdivadd + 1;
-							$("#exprdivlast")
-									.before(
-											'<div class="texprdiv'+ exprdivadd +'  col-md-12"><span class="cursor-pointer exprdivdelete" name="'+ exprdivadd +'" style="float:right"> 	                                                   	       <i class="bx bx-x"></i> 	                                                   	 </span>                                                    	</div>                                                    <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left"><input type="hidden"  th:value="${EmployeeExperience.empExperienceid}" name="empExperienceid" /><input type="text"  class="form-control capitalize"  placeholder="Company" name="Company"  />                                                                 <div class="form-control-position">                                                                     <i class="bx bx-building"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control capitalize"  placeholder="Location" name="Location" />                                                                 <div class="form-control-position">                                                                     <i class="bx bx-target-lock"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control capitalize"  placeholder="From " name="expFromyear"  />                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                      <div class="texprdiv'+ exprdivadd +'  col-md-3">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control capitalize"  placeholder="To" name="expToyear"  />                                                                 <div class="form-control-position">                                                                     <i class="bx bx-calendar"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     <div class="texprdiv'+ exprdivadd +'  col-md-6">                                                         <div class="form-group">                                                              <div class="position-relative has-icon-left">                                                                 <input type="text"  class="form-control capitalize"  placeholder="JobTitle" name="JobTitle"  />                                                                 <div class="form-control-position">                                                                     <i class="bx bx-briefcase-alt"></i>                                                                 </div>                                                             </div>                                                         </div>                                                     </div>                                                     ');
-						});
-
-		$(document).on("click", ".exprdivdelete", function() {
-			var id = $(this).attr('name');
-			$('.texprdiv' + id).hide();
-		});
-
-		var econtactdivadd = 2;
-		$("#econtactdivadd")
-				.click(
-						function() {
-							econtactdivadd = econtactdivadd + 1;
-							$("#econtactdivlast")
-									.before(
-											'<div class="tecontactdiv'+ econtactdivadd +'  col-md-12"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 		  <fieldset> 				<div class="checkbox checkbox-primary checkbox-glow"> <input type="hidden"  th:value="${EmployeeEmgContact.empEmgContactid}" name="empEmgContactid"> <input type="hidden" value="' + emgstat + '"  name="emgid" /><input type="checkbox" id="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact' + emgstat + '" /> 					<label for="checkboxGlow'+ econtactdivadd +'" name="Emg_primarycontact">Primary Contact</label> 				</div> 				<div class="checkbox checkbox-primary checkbox-glow"> 					<input type="checkbox" id="checkboxGlowt'+ econtactdivadd +'" name="Emg_InsuranceNominee'+  emgstat +'" /> 					<label for="checkboxGlowt'+ econtactdivadd +'">Insurance Nominee </label> 				</div> 				<span class="cursor-pointer econtactdivdelete" name="'+ econtactdivadd +'" style="float:right"> 				 <i class="bx bx-x"></i> 				</span> 			</fieldset> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Name" name="Emg_Name"  /> 			<div class="form-control-position"> 				<i class="bx bxs-contact"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			 <select class="form-control addemgrelationdata" name="Emg_Relation"> '+ Nomineerelationshiplist +'						</select> 			<div class="form-control-position"> 				<i class="bx bx-git-repo-forked"></i> 			</div> 			<label class="emptitle additem" name="addemgrelationdata" style="float:right;"><i class="bx bxs-plus-circle ownstyle1"></i></label> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Personal Phone"  name="Emg_PersonalPhone"  /> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Other Phone" name="Emg_OtherPhone" /> 			<div class="form-control-position"> 				<i class="bx bx-phone-call"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Email ID" name="Emg_EmailID" /> 			<div class="form-control-position"> 				<i class="bx bx-mail-send"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Street 1" name="Emg_Street1"  /> 			<div class="form-control-position"> 				<i class="bx bxs-home"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Street 2" name="Emg_Street2"  /> 			<div class="form-control-position"> 				<i class="bx bx-navigation"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Village"  name="Emg_Village" /> 			<div class="form-control-position"> 				<i class="bx bx-directions"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Taluk" name="Emg_Taluk" /> 			<div class="form-control-position"> 				<i class="bx bxs-city"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="City" name="Emg_City" /> 			<div class="form-control-position"> 				<i class="bx bxs-building-house"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="State" name="Emg_State" /> 			<div class="form-control-position"> 				<i class="bx bx-stats"></i> 			</div> 		</div> 	</div> </div>  <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="number"  class="form-control capitalize"  placeholder="Zip code"  name="Emg_ZIP" /> 			<div class="form-control-position"> 				<i class="bx bx-message-alt-dots"></i> 			</div> 		</div> 	</div> </div> <div class="tecontactdiv'+ econtactdivadd +'  col-md-3"> 	<div class="form-group"> 		<div class="position-relative has-icon-left"> 			<input type="text"  class="form-control capitalize"  placeholder="Country" name="Emg_Country" /> 			<div class="form-control-position"> 				<i class="bx bxs-flag-alt"></i> 			</div> 		</div> 	</div> </div>  ');
-							emgstat = emgstat + 1;
-						});
-
-		$(document).on("click", ".econtactdivdelete", function() {
-			var id = $(this).attr('name');
-			$('.tecontactdiv' + id).hide();
-		});
-		
-		$(document).on("click", ".srcedudivdelete", function() {
-			var id = $(this).attr('name');
-			$("."+ id).remove();
-		});
-		
-		$(document).on("click", ".srcexprdivdelete", function() {
-			var id = $(this).attr('name');
-			$("."+ id).remove();
-		});
-		$(document).on("click", ".srcecontactdivdelete", function() {
-			var id = $(this).attr('name');
-			$("."+ id).remove();
-		});
-		
-		$(document).on("click", ".filedivdelete", function() {
-			$(this).closest("tr").remove();
-		});
-		
-		$('.hometabclick').click(function(){$('#home-tab').click();});
-		$('.profiletabclick').click(function(){$('#profile-tab').click();});
-		$('.abouttabclick').click(function(){$('#about-tab').click();});
-		$('.about1tabclick').click(function(){$('#about1-tab').click();});
-		$('.about2tabclick').click(function(){$('#about2-tab').click();});
-		
-		
-	</script>
-
-</body>
-<!-- END: Body-->
-
+    <title th:text="${employeemaster.StaffName} + ' Profile'"></title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/pages/page-profile.css}" />
+    <!-- Helpers -->
+    <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script th:src="@{/assets/js/config.js}"></script>
+  </head>
+
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+		<div th:insert="menu"></div>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+
+          <div th:insert="header"></div>
+          
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="py-3 breadcrumb-wrapper mb-4">
+                <span class="text-muted fw-light">User Profile /</span> Profile
+              </h4>
+
+              <!-- Header -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="card mb-4">
+                    <div class="user-profile-header-banner">
+                      <img th:src="@{/assets/img/pages/profile-banner.png}" alt="Banner image" class="rounded-top" />
+                    </div>
+                    <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+                      <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+                        <img
+                          th:src="${employeemaster.t_emp_img}"
+                          alt="user image"
+                          class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img"
+                        />
+                      </div>
+                      <div class="flex-grow-1 mt-3 mt-sm-5">
+                        <div
+                          class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4"
+                        >
+                          <div class="user-profile-info">
+                            <h4 th:text="${employeemaster.StaffName}"></h4>
+                            <ul
+                              class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2"
+                            >
+                              <li class="list-inline-item fw-semibold"><i class="bx bx-pen"></i> <th:block th:text="${employeemaster.t_position}"></th:block></li>
+                              <li class="list-inline-item fw-semibold"><i class="bx bx-map"></i> <th:block th:text="${employeemaster.t_branch_name}"></th:block></li>
+                              <li class="list-inline-item fw-semibold">
+                                <i class="bx bx-calendar-alt"></i> <th:block th:text="'Joined'+ ${employeemaster.t_joindateMMformat}"></th:block>
+                              </li>
+                            </ul>
+                          </div>
+                         <!--  <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
+                            <i class="bx bx-user-check"></i> Connected
+                          </a> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Header -->
+
+              <!-- Navbar pills -->
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="nav nav-pills flex-column flex-sm-row mb-4">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user"></i> Profile</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="pages-profile-teams.html"><i class="bx bx-group"></i> Job Title</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="pages-profile-projects.html"><i class="bx bx-grid-alt"></i> Projects</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="pages-profile-connections.html"
+                        ><i class="bx bx-link-alt"></i> Connections</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <!--/ Navbar pills -->
+
+              <!-- User Profile Content -->
+              <div class="row">
+                <div class="col-xl-4 col-lg-5 col-md-5">
+                  <!-- About User -->
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <small class="text-muted text-uppercase">About</small>
+                      <ul class="list-unstyled mb-4 mt-3">
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-user"></i><span class="fw-semibold mx-2">First Name:</span>
+                          <span th:text="${employeemaster.StaffName}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-check"></i><span class="fw-semibold mx-2">Last Name :</span> 
+                          <span th:text="${employeemaster.Father_HusbandName}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-star"></i><span class="fw-semibold mx-2">GENDER :</span> 
+                          <span th:text="${employeemaster.Gender}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-flag"></i><span class="fw-semibold mx-2">Marital Status:</span> 
+                          <span th:text="${employeemaster.MaritalStatus}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">DOB:</span>
+                          <span th:text="${employeemaster.DateofBirth}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Height(cm):</span>
+                          <span th:text="${employeemaster.Height}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Weight(kg):</span>
+                          <span th:text="${employeemaster.Weight}"></span>
+                        </li><li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Shirt Size:</span>
+                          <span th:text="${employeemaster.ShirtSize}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Shoe Size:</span>
+                          <span th:text="${employeemaster.ShoeSize}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Pant Size:</span>
+                          <span th:text="${employeemaster.PantSize}"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Accommodation:</span>
+                          <span th:text="${employeemaster.Accommodation}"></span>
+                        </li>
+                        
+                      </ul>
+                      <div class="d-flex justify-content-center pt-3">
+	                          <a
+	                            href="javascript:;"
+	                            class="btn btn-primary me-3"
+	                            data-bs-target="#editEmployeedetails"
+	                            data-bs-toggle="modal"
+	                            id="editEmployeedetailsbtn"
+	                            >Edit</a
+	                          >
+	                       
+                        </div>
+                        <div class="divider divider-dark"></div>
+                        
+                      <small class="text-muted text-uppercase">Contacts</small>
+                      <ul class="list-unstyled mb-4 mt-3">
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-phone"></i><span class="fw-semibold mx-2">Contact:</span>
+                          <span>(123) 456-7890</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-chat"></i><span class="fw-semibold mx-2">Skype:</span> <span>john.doe</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-envelope"></i><span class="fw-semibold mx-2">Email:</span>
+                          <span>john.doe@example.com</span>
+                        </li>
+                      </ul>
+                      <small class="text-muted text-uppercase">Teams</small>
+                      <ul class="list-unstyled mt-3 mb-0">
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bxl-github text-primary me-2"></i>
+                          <div class="d-flex flex-wrap">
+                            <span class="fw-semibold me-2">Backend Developer</span><span>(126 Members)</span>
+                          </div>
+                        </li>
+                        <li class="d-flex align-items-center">
+                          <i class="bx bxl-react text-info me-2"></i>
+                          <div class="d-flex flex-wrap">
+                            <span class="fw-semibold me-2">React Developer</span><span>(98 Members)</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!--/ About User -->
+                  <!-- Profile Overview -->
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <small class="text-muted text-uppercase">Overview</small>
+                      <ul class="list-unstyled mt-3 mb-0">
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-check"></i><span class="fw-semibold mx-2">Task Compiled:</span>
+                          <span>13.5k</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <i class="bx bx-customize"></i><span class="fw-semibold mx-2">Projects Compiled:</span>
+                          <span>146</span>
+                        </li>
+                        <li class="d-flex align-items-center">
+                          <i class="bx bx-user"></i><span class="fw-semibold mx-2">Connections:</span> <span>897</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!--/ Profile Overview -->
+                </div>
+                <div class="col-xl-8 col-lg-7 col-md-7">
+                 
+                </div>
+              </div>
+              <!--/ User Profile Content -->
+              
+              <!-- Modal -->
+              <!-- Edit User Modal -->
+              <div class="modal fade" id="editEmployeedetails" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                  <div class="modal-content p-3 p-md-5">
+                  
+                    <div class="modal-body">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="text-center mb-4">
+                        <h3>Edit User Information</h3>
+                        <p>Updating user details will receive a privacy audit</p>
+                      </div>
+                      <form id="editEmployeedetailsForm" th:object="${employeemaster}" class="row g-3 needs-validation" onsubmit="return false">
+						<input type="hidden" th:value="${employeemaster['empMasterid']}" id="empMasterid" />
+	                    	
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_StaffName">First Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_StaffName"
+                            th:value="${employeemaster['StaffName']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter First Name.</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_Father_HusbandName">Last Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_Father_HusbandName"
+                            th:value="${employeemaster['Father_HusbandName']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Last Name.</div>
+                        </div>
+                        <div class="col-12">
+                          <label class="d-block form-label">Gender</label>
+                          <div class="form-check">
+                            <input
+                              type="radio"
+                              id="Model_gender_male"
+                              name="Model_gender"
+                              class="form-check-input"
+                              th:field="*{Gender}" value="Male" 
+                              required
+                            />
+                            <label class="form-check-label" for="Model_gender_male">Male</label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              type="radio"
+                              id="Model_gender_female"
+                              name="Model_gender"
+                              class="form-check-input"
+                              th:field="*{Gender}" value="Female" 
+                              required
+                            />
+                            <label class="form-check-label" for="Model_gender_female">Female</label>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_MaritalStatus">Marital Status</label>
+                          <select
+                            class="form-select"
+                            aria-label="Default select example" 
+                            id="Model_MaritalStatus"
+                            th:field="*{MaritalStatus}" 
+                            th:value="${employeemaster['MaritalStatus']}"
+                            required
+                          >
+                             <option value="">Select Marital Status</option>
+                             <option th:each="str :${MARITALSTATUS}" th:value="${str}"  th:text="${str}"></option>
+                          
+                          </select>
+                          <div class="invalid-feedback">Please Select Marital Status</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_DateofBirth">DOB</label>
+                          <input
+                            type="date"
+                            class="form-control flatpickr-validation"
+                            id="Model_DateofBirth"
+                            th:value="${employeemaster['DateofBirth']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter DOB .</div>
+                        </div>
+                        
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_BloodGroup">Blood Group </label>
+                          <select class="form-select" id="Model_BloodGroup" 
+                          th:field="*{BloodGroup}"
+                          th:value="${employeemaster['BloodGroup']}"
+                          required>
+                            <option value="-">Select Blood Group</option>
+                            <option value="A+">A+</option>
+							<option value="A1+">A1+</option>
+							<option value="O+">O+</option>
+							<option value="B+">B+</option>
+							<option value="AB+">AB+</option>
+							<option value="A-">A-</option>
+							<option value="A1-">A1-</option>
+							<option value="O-">O-</option>
+							<option value="B-">B-</option>
+							<option value="AB-">AB-</option> 
+                           
+                         </select>
+                         <div class="invalid-feedback">Please enter Blood Group.</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_Height">Height(cm)</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_Height"
+                            th:value="${employeemaster['Height']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Height(cm).</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_Weight">Weight(kg)</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_Weight"
+                            th:value="${employeemaster['Weight']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Weight(kg).</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_ShirtSize">Shirt Size</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_ShirtSize"
+                            th:value="${employeemaster['ShirtSize']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Shirt Size.</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_ShoeSize">Shoe Size</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_ShoeSize"
+                            th:value="${employeemaster['ShoeSize']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Shoe Size.</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_PantSize">Pant Size </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_PantSize"
+                            th:value="${employeemaster['PantSize']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Pant Size .</div>
+                        </div>
+                       <div class="mb-3">
+                          <label class="d-block form-label">Accommodation</label>
+                          <div class="form-check mb-2">
+                            <input
+                              type="radio"
+                              id="Model_Accommodation_Self"
+                              name="Model_Accommodation"
+                              class="form-check-input"
+                              th:field="*{Accommodation}" value="Self" 
+                              required
+                            />
+                            <label class="form-check-label" for="Model_Accommodation_Self">Self</label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              type="radio"
+                              id="Model_Accommodation_Office"
+                              name="Model_Accommodation"
+                              class="form-check-input"
+                              th:field="*{Accommodation}" value="Office" 
+                              required
+                            />
+                            <label class="form-check-label" for="Model_Accommodation_Office">Office</label>
+                          </div>
+                        </div>
+                       
+                      
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn btn-primary editbranchdatasubmit me-sm-3 me-1">Submit</button>
+                          <button
+                            type="button"
+                            class="btn btn-label-secondary editbranchdataclose"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Edit User Modal -->
+              
+              <!-- /Modal -->
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , made with ❤️ by
+                  <a href="https://pixinvent.com" target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
+                </div>
+                <div>
+                  <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank"
+                    >License</a
+                  >
+                  <a href="https://1.envato.market/pixinvent_portfolio" target="_blank" class="footer-link me-4"
+                    >More Themes</a
+                  >
+
+                  <a
+                    href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
+                    target="_blank"
+                    class="footer-link me-4"
+                    >Documentation</a
+                  >
+
+                  <a href="https://pixinvent.ticksy.com/" target="_blank" class="footer-link d-none d-sm-inline-block"
+                    >Support</a
+                  >
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+
+      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+      <div class="drag-target"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+    <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+    <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+
+    <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+
+    <script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+    <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+
+    <script th:src="@{/assets/vendor/js/menu.js}"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js}"></script>
+
+    <!-- Main JS -->
+    <script th:src="@{/assets/js/main.js}"></script>
+
+    <!-- Page JS -->
+    <script th:src="@{/assets/js/pages-profile.js}"></script>
+  </body>
 </html>
-
-
-
-
- 
+    

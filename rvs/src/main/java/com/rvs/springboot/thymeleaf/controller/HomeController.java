@@ -1065,60 +1065,21 @@ public class HomeController {
 			@RequestParam Map<String, String> params, HttpServletRequest request, Model themodel) {
 
 		employeemaster.setEmpid("RVS");
-		// System.out.println("empEduid" + Arrays.toString(empEduid));
-		// System.out.println(College_Institution.length);
-		// System.out.println("College_Institution" +
-		// Arrays.toString(College_Institution));
-		// System.out.println("Degree" + Arrays.toString(Degree));
-		// System.out.println("MajorSpecialization" +
-		// Arrays.toString(MajorSpecialization));
-		// System.out.println("Percentage_GPA" + Arrays.toString(Percentage_GPA));
-		// System.out.println("FromYear" + Arrays.toString(FromYear));
-		// System.out.println("ToYear" + Arrays.toString(ToYear));
+
 		// System.out.println("------------------------------------");
-		// System.out.println("language" + Arrays.toString(language));
-		// System.out.println("languageid" + Arrays.toString(languageid));
+		
 		for (int farr = 0; farr < languageid.length; farr++) {
 			String templangurow = languageid[farr];
-			// System.out.println(params.get("lan_read" + templangurow));
-			// System.out.println(params.get("lan_write" + templangurow));
-			// System.out.println(params.get("lan_speak" + templangurow));
 		}
 		// System.out.println("------------------------------------");
-		// System.out.println("empExperienceid" + Arrays.toString(empExperienceid));
-		// System.out.println("Company" + Arrays.toString(Company));
-		// System.out.println("Location" + Arrays.toString(Location));
-		// System.out.println("expFromyear" + Arrays.toString(expFromyear));
-		// System.out.println("expToyear" + Arrays.toString(expToyear));
-		// System.out.println("JobTitle" + Arrays.toString(JobTitle));
-
-		// System.out.println("------------------------------------");
-
-		// System.out.println("------------------------------------");
-		// System.out.println("Emgid" + Arrays.toString(emgid));
-
+		
 		for (int farr = 0; farr < emgid.length; farr++) {
 			String templangurow = emgid[farr];
 			// System.out.println(params.get("Emg_primarycontact" + templangurow));
 			// System.out.println(params.get("Emg_InsuranceNominee" + templangurow));
 
 		}
-		/*
-		 * System.out.println("empEmgContactid" + Arrays.toString(empEmgContactid));
-		 * System.out.println("Emg_Name" + Arrays.toString(Emg_Name));
-		 * System.out.println("Emg_Relation" + Arrays.toString(Emg_Relation));
-		 * System.out.println("Emg_PersonalPhone" + Arrays.toString(Emg_PersonalPhone));
-		 * System.out.println("Emg_OtherPhone" + Arrays.toString(Emg_OtherPhone));
-		 * System.out.println("Emg_EmailID" + Arrays.toString(Emg_EmailID));
-		 * System.out.println("Emg_Street1" + Arrays.toString(Emg_Street1));
-		 * System.out.println("Emg_Street2" + Arrays.toString(Emg_Street2));
-		 * System.out.println("Emg_Village" + Arrays.toString(Emg_Village));
-		 * System.out.println("Emg_Taluk" + Arrays.toString(Emg_Taluk));
-		 * System.out.println("Emg_City" + Arrays.toString(Emg_City));
-		 * System.out.println("Emg_State" + Arrays.toString(Emg_State));
-		 * System.out.println("Emg_ZIP" + Arrays.toString(Emg_ZIP));
-		 * System.out.println("Emg_Country" + Arrays.toString(Emg_Country));
-		 */
+		
 		// System.out.println("------------------------------------");
 		Set<EmployeeEducation> eduls = new LinkedHashSet<EmployeeEducation>();
 		for (int farr = 0; farr < College_Institution.length; farr++) {
@@ -1226,12 +1187,6 @@ public class HomeController {
 		for (int farr = 0; farr < language.length; farr++) {
 			EmployeeLanguage emplang = new EmployeeLanguage();
 			String templangurow = languageid[farr];
-			// System.out.println("params.get(\"lan_read\" + templangurow) " +
-			// params.get("lan_read" + templangurow));
-			// System.out.println("params.get(\"lan_write\" + templangurow) " +
-			// params.get("lan_write" + templangurow));
-			// System.out.println("params.get(\"lan_speak\" + templangurow) " +
-			// params.get("lan_speak" + templangurow));
 			if (params.get("lan_read" + templangurow) != null) {
 				emplang.setLan_read(true);
 			} else {
@@ -1260,13 +1215,7 @@ public class HomeController {
 		}
 		employeemaster.setEmployeeLanguage(langls);
 		// System.out.println("--------------Step 4 end----------------------");
-		// System.out.println(Arrays.toString(photoempFileid));
-		// System.out.println(Arrays.toString(resumeempFileid));
-		// System.out.println(Arrays.toString(certificateempFileid));
-		// System.out.println(Arrays.toString(photoempFileidstr));
-		// System.out.println(Arrays.toString(resumeempFileidstr));
-		// System.out.println(Arrays.toString(certificateempFileidstr));
-
+		
 		Set<EmployeeFiles> filels = new LinkedHashSet<EmployeeFiles>();
 
 		if (photoempFileid != null)
@@ -1458,7 +1407,10 @@ public class HomeController {
 
 	@GetMapping("emp")
 	public String employeedetails(Model themodel, @RequestParam("id") int id) {
-
+		Date todaydate = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		
 		EmployeeMaster employeemasternew = new EmployeeMaster();
 		employeemasternew = employeeMasterService.findById(id);
 		// System.out.println(employeemasternew);
@@ -1510,6 +1462,40 @@ public class HomeController {
 			EmployeeFiles empfiles1 = new EmployeeFiles();
 			filelsnew.add(empfiles1);
 		}
+		
+		//-------------------------------------------
+		// Emp photo
+		employeemasternew.setT_emp_img(getemp_photo(employeemasternew));
+		//-------------------------------------------
+		
+		//-------------------------------------------
+		// Emp Location and Branch
+		List<EmployeeJobinfo> infoobjjob = new ArrayList<>();
+		infoobjjob = employeeJobinfoService.findByEmployeeid(employeemasternew.getEmpMasterid());
+		if (infoobjjob.size() > 0) {
+			List<EmployeeJobinfo> infoobjjobgreen = infoobjjob.stream()
+					.filter(c -> dateFormat.format(date).compareTo(c.getJobeffectivedate().toString()) >= 0)
+					.collect(Collectors.toList());
+			infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+			if (infoobjjobgreen.size() > 0) {
+				employeemasternew.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
+				employeemasternew.setT_branch_name(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation() );
+			}
+		} 
+		//-------------------------------------------
+		// Hiring date and timeline 
+		List<EmployeeJobHire> hireobj = new ArrayList<>();
+		hireobj = employeeJobHireService.findByEmployeeid(employeemasternew.getEmpMasterid());
+
+		if (hireobj.size() > 0) {
+			try {
+				employeemasternew.setT_joindateMMformat(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse( hireobj.get(0).getEmployeehiredate())).toString());
+				employeemasternew.setT_joindatetimeline(getTimeage(hireobj.get(0).getEmployeehiredate()));	
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		//-------------------------------------------	
 
 		List<String> MARITALSTATUS = itemlistService.findByFieldName("MARITAL STATUS");
 		themodel.addAttribute("MARITALSTATUS", MARITALSTATUS);
@@ -1526,6 +1512,8 @@ public class HomeController {
 		themodel.addAttribute("employeeLanguage", langlsnew);
 		themodel.addAttribute("employeeFiles", filelsnew);
 		themodel.addAttribute("employeemaster", employeemasternew);
+		
+		
 		return "empadd";
 	}
 

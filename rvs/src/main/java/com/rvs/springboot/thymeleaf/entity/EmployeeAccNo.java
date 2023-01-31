@@ -14,32 +14,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Table(name="employeefiles")
+@Getter @Setter @NoArgsConstructor  @AllArgsConstructor @ToString
+@Table(name="EmployeeAccNo")
 
-public class EmployeeFiles {
+public class EmployeeAccNo {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int empFileid;
-
+	private int Accnoid;
 	@Column
-	private String DocumentType;
+	private String acno;
 	@Column
-	private String DocumentNo;
+	private String acname;
 	@Column
-	private String FilePath;
-	
-	@Column  
-	private String Photo_Attach;
-	@Column  
-	private String Resume_Attach;
-	@Column  
-	private String Certificates_Attach;
-	
-
-}
+	private String bankname;
+	@Column
+	private String branchname;
+	@Column
+	private String ifsccode;
+	}

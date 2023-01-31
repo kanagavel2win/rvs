@@ -47,12 +47,20 @@
     <link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+   <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
-
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+   
     <!-- Page CSS -->
     <link rel="stylesheet" th:href="@{/assets/vendor/css/pages/page-profile.css}" />
     <!-- Helpers -->
@@ -117,7 +125,7 @@
                               <li class="list-inline-item fw-semibold"><i class="bx bx-pen"></i> <th:block th:text="${employeemaster.t_position}"></th:block></li>
                               <li class="list-inline-item fw-semibold"><i class="bx bx-map"></i> <th:block th:text="${employeemaster.t_branch_name}"></th:block></li>
                               <li class="list-inline-item fw-semibold">
-                                <i class="bx bx-calendar-alt"></i> <th:block th:text="'Joined'+ ${employeemaster.t_joindateMMformat}"></th:block>
+                                <i class="bx bx-calendar-alt"></i> <th:block th:text="'Joined '+ ${employeemaster.t_joindateMMformat}"></th:block>
                               </li>
                             </ul>
                           </div>
@@ -164,47 +172,51 @@
                       <small class="text-muted text-uppercase">About</small>
                       <ul class="list-unstyled mb-4 mt-3">
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-user"></i><span class="fw-semibold mx-2">First Name:</span>
-                          <span th:text="${employeemaster.StaffName}"></span>
+                          <span class="fw-semibold mx-2">First Name:</span>
+                          <span th:text="${employeemaster.StaffName}" id="Lbl_StaffName"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-check"></i><span class="fw-semibold mx-2">Last Name :</span> 
-                          <span th:text="${employeemaster.Father_HusbandName}"></span>
+                          <span class="fw-semibold mx-2">Last Name :</span> 
+                          <span th:text="${employeemaster.Father_HusbandName}" id="Lbl_Father_HusbandName"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-star"></i><span class="fw-semibold mx-2">GENDER :</span> 
-                          <span th:text="${employeemaster.Gender}"></span>
+                          <span class="fw-semibold mx-2">Gender :</span> 
+                          <span th:text="${employeemaster.Gender}" id="Lbl_Gender"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-flag"></i><span class="fw-semibold mx-2">Marital Status:</span> 
-                          <span th:text="${employeemaster.MaritalStatus}"></span>
+                          <span class="fw-semibold mx-2">Marital Status:</span> 
+                          <span th:text="${employeemaster.MaritalStatus}" id="Lbl_MaritalStatus"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">DOB:</span>
-                          <span th:text="${employeemaster.DateofBirth}"></span>
+                          <span class="fw-semibold mx-2">DOB:</span>
+                          <span th:text="${employeemaster.DateofBirth}" id="Lbl_DateofBirth"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Height(cm):</span>
-                          <span th:text="${employeemaster.Height}"></span>
+                          <span class="fw-semibold mx-2">Blood Group:</span>
+                          <span th:text="${employeemaster.BloodGroup}" id="Lbl_BloodGroup"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Weight(kg):</span>
-                          <span th:text="${employeemaster.Weight}"></span>
+                          <span class="fw-semibold mx-2">Height(cm):</span>
+                          <span th:text="${employeemaster.Height}" id="Lbl_Height"></span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                          <span class="fw-semibold mx-2">Weight(kg):</span>
+                          <span th:text="${employeemaster.Weight}" id="Lbl_Weight"></span>
                         </li><li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Shirt Size:</span>
-                          <span th:text="${employeemaster.ShirtSize}"></span>
+                          <span class="fw-semibold mx-2">Shirt Size:</span>
+                          <span th:text="${employeemaster.ShirtSize}" id="Lbl_ShirtSize"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Shoe Size:</span>
-                          <span th:text="${employeemaster.ShoeSize}"></span>
+                          <span class="fw-semibold mx-2">Shoe Size:</span>
+                          <span th:text="${employeemaster.ShoeSize}" id="Lbl_ShoeSize"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Pant Size:</span>
-                          <span th:text="${employeemaster.PantSize}"></span>
+                          <span class="fw-semibold mx-2">Pant Size:</span>
+                          <span th:text="${employeemaster.PantSize}" id="Lbl_PantSize"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-detail"></i><span class="fw-semibold mx-2">Accommodation:</span>
-                          <span th:text="${employeemaster.Accommodation}"></span>
+                          <span class="fw-semibold mx-2">Accommodation:</span>
+                          <span th:text="${employeemaster.Accommodation}" id="Lbl_Accommodation"></span>
                         </li>
                         
                       </ul>
@@ -219,60 +231,228 @@
 	                          >
 	                       
                         </div>
-                        <div class="divider divider-dark"></div>
                         
-                      <small class="text-muted text-uppercase">Contacts</small>
-                      <ul class="list-unstyled mb-4 mt-3">
-                        <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-phone"></i><span class="fw-semibold mx-2">Contact:</span>
-                          <span>(123) 456-7890</span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-chat"></i><span class="fw-semibold mx-2">Skype:</span> <span>john.doe</span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-envelope"></i><span class="fw-semibold mx-2">Email:</span>
-                          <span>john.doe@example.com</span>
-                        </li>
-                      </ul>
-                      <small class="text-muted text-uppercase">Teams</small>
-                      <ul class="list-unstyled mt-3 mb-0">
-                        <li class="d-flex align-items-center mb-3">
-                          <i class="bx bxl-github text-primary me-2"></i>
-                          <div class="d-flex flex-wrap">
-                            <span class="fw-semibold me-2">Backend Developer</span><span>(126 Members)</span>
-                          </div>
-                        </li>
-                        <li class="d-flex align-items-center">
-                          <i class="bx bxl-react text-info me-2"></i>
-                          <div class="d-flex flex-wrap">
-                            <span class="fw-semibold me-2">React Developer</span><span>(98 Members)</span>
-                          </div>
-                        </li>
-                      </ul>
                     </div>
                   </div>
                   <!--/ About User -->
-                  <!-- Profile Overview -->
-                  <div class="card mb-4">
+                  <!-- Contact Card -->
+                  <div class="card  mb-4">
+                    <div class="card-body1">
+                      <div class="card-header align-items-center">
+                      <h5 class="card-action-title mb-0">Contact
+                      <div class="card-action-element" style="float:right">
+                        <button
+                          class="btn btn-primary btn-sm addcontactbtn"
+                          type="button"
+                          name="-"
+                          data-bs-toggle="modal"
+                          data-bs-target="#addNewContact"
+                        >
+                          <i class="bx bx-plus bx-xs me-1"></i>Add Card
+                        </button>
+                      	</div>
+                        </h5>
+                      
+                    </div>
                     <div class="card-body">
-                      <small class="text-muted text-uppercase">Overview</small>
-                      <ul class="list-unstyled mt-3 mb-0">
-                        <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-check"></i><span class="fw-semibold mx-2">Task Compiled:</span>
-                          <span>13.5k</span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <i class="bx bx-customize"></i><span class="fw-semibold mx-2">Projects Compiled:</span>
-                          <span>146</span>
-                        </li>
-                        <li class="d-flex align-items-center">
-                          <i class="bx bx-user"></i><span class="fw-semibold mx-2">Connections:</span> <span>897</span>
-                        </li>
-                      </ul>
+                      <div class="added-cards">
+                      	<th:block th:each="contactObj : ${employeemaster.employeeContact}">
+                        <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.employeecontactid}">
+                          <div class="d-flex justify-content-between flex-sm-row flex-column">
+                            <div class="card-information">
+                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.employeecontactid}" th:text="${contactObj.Department}"></h6>
+                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.employeecontactid}" th:text="${contactObj.Phonenumber}"></h6>
+                              <span th:class="'card-number email'+ ${contactObj.employeecontactid}" th:text="${contactObj.Email}"></span
+                              >
+                              
+                            </div>
+                            <div class="d-flex flex-column text-start text-lg-end">
+                              <div class="d-flex order-sm-0 order-1 mt-3">
+                                <button
+                                  class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.employeecontactid}"
+                                  
+                                >
+                                  <i class='bx bxs-edit-alt'></i>
+                                </button><br/>
+                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.employeecontactid}"><i class='bx bxs-trash-alt'></i></button>
+                              </div>
+                              
+                            </div>
+                          </div>
+                        </div>
+                       	</th:block>
+                       	<span id="contactaddidv"></span>
+                       </div>
+                    </div>
                     </div>
                   </div>
-                  <!--/ Profile Overview -->
+                  <!-- /Contact Card -->
+                   <!-- Address Card -->
+                  
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <h5 class="pb-2 border-bottom mb-4">Address</h5>
+                      <div class="info-container">
+                        <ul class="list-unstyled">
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Country:</span>
+                            <span th:text="${employeemaster.Address_Country}" id="Lbl_AddressCountry"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Address Line 1:</span>
+                            <span  th:text="${employeemaster.Address_Street1}"  id="Lbl_AddressAddress1"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Address Line 2:</span>
+                            <span  th:text="${employeemaster.Address_Street2}"  id="Lbl_AddressAddress2"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Landmark:</span>
+                            <span th:text="${employeemaster.Address_Landmark}"  id="Lbl_AddressLandmark"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Village:</span>
+                            <span th:text="${employeemaster.Address_Village}" id="Lbl_AddressVillage"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">City/Town:</span>
+                            <span th:text="${employeemaster.Address_City}"  id="Lbl_AddressCity"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">State:</span>
+                            <span th:text="${employeemaster.Address_State}" id="Lbl_AddressState"></span>
+                          </li>
+                        <li class="mb-3">
+                            <span class="fw-bold me-2">Pin code:</span>
+                            <span th:text="${employeemaster.Address_ZIP}" id="Lbl_AddressZipCode"></span>
+                          </li>
+                        </ul>
+                        <div class="d-flex justify-content-center pt-3">
+                          <a
+                            href="javascript:;"
+                            class="btn btn-primary me-3"
+                            data-bs-target="#addNewAddress"
+                            data-bs-toggle="modal"
+                            >Edit</a
+                          >
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /Address Card -->
+                  <!-- Document   Card -->
+                   <div class="card  mb-4">
+                    <div class="card-body1">
+                      <div class="card-header align-items-center">
+                      <h5 class="card-action-title mb-0">Document  
+                      <div class="card-action-element" style="float:right">
+                        <button
+                          class="btn btn-primary btn-sm"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#addNewDocument"
+                        >
+                          <i class="bx bx-plus bx-xs me-1"></i>Add Document 
+                        </button>
+                      	</div>
+                        </h5>
+                      
+                    </div>
+                    <div class="card-body">
+                      <div class="added-cards">
+                        <th:block th:each="fileObj : ${employeemaster.employeeFiles}">
+	                        <div th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.empFileid}">
+	                          <div class="d-flex justify-content-between flex-sm-row flex-column">
+	                            <div class="card-information">
+	                              
+	                              <h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
+	                              <span class="card-number" th:text="${fileObj.DocumentNo}"></span>
+	                            </div>
+	                            <div class="d-flex flex-column text-start text-lg-end">
+	                              <div class="d-flex order-sm-0 order-1 mt-3">
+	                                
+	                                <th:block th:if="${fileObj.FilePath != ''}">
+	                                <a th:href="${fileObj.FilePath}" target="_blank"><button
+	                                  class="btn btn-label-primary me-3"
+	                                  ><i class='bx bx-link-alt'></i></button></a>
+	                                </th:block>
+	                                <br/>
+	                                <button class="btn btn-label-secondary filedeletebtn" th:name="${fileObj.empFileid}"><i class='bx bxs-trash-alt'></i></button>
+	                              </div>
+	                              
+	                            </div>
+	                          </div>
+	                        </div>
+                       
+                       	</th:block>
+                       	<span id="fileaddidv"></span>
+                       </div>
+                    </div>
+                    </div>
+                  </div>
+               
+                  <!-- /Document   Card -->
+                 <!-- Bank Account Card -->
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <h5 class="pb-2 border-bottom mb-4">Bank Details
+                       
+                        <div class="card-action-element" style="float:right">
+                        <button
+                          class="btn btn-primary btn-sm"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          href="#bankdetailscollapseExample"
+                          aria-expanded="false"
+                          aria-controls="bankdetailscollapseExample"
+                        >
+                          <i class="bx bx-plus bx-xs me-1"></i> Bank Details
+                        </button>
+                      	</div>
+                      </h5>
+                      
+                      <div class="info-container collapse" id="bankdetailscollapseExample">
+                      
+                      
+                         <ul class="list-unstyled" th:with ="accobj = ${employeemaster.employeeAccNo[0]}">
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">A.C.No:</span>
+	                            <span th:text="${accobj.acno}" id="Lbl_acno"></span>
+	                          </li>
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">Account Name:</span>
+	                            <span  th:text="${accobj.acname}"  id="Lbl_acname"></span>
+	                          </li>
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">Bank Name:</span>
+	                            <span  th:text="${accobj.bankname}"  id="Lbl_bankname"></span>
+	                          </li>
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">Branch Name:</span>
+	                            <span th:text="${accobj.branchname}"  id="Lbl_branchname"></span>
+	                          </li>
+	                          <li class="mb-3">
+	                            <span class="fw-bold me-2">IFSC Code:</span>
+	                            <span th:text="${accobj.ifsccode}" id="Lbl_ifsccode"></span>
+	                          </li>
+	                        </ul>
+                        
+                        <div class="d-flex justify-content-center pt-3">
+                          <a
+                            href="javascript:;"
+                            class="btn btn-primary me-3"
+                            data-bs-target="#addNewBankDetails"
+                            data-bs-toggle="modal"
+                            >Edit</a
+                          >
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /Bank Account Card -->
+                
                 </div>
                 <div class="col-xl-8 col-lg-7 col-md-7">
                  
@@ -301,6 +481,7 @@
                             type="text"
                             class="form-control"
                             id="Model_StaffName"
+                            th:field="*{StaffName}" 
                             th:value="${employeemaster['StaffName']}"
                             required
                           />
@@ -313,6 +494,7 @@
                             class="form-control"
                             id="Model_Father_HusbandName"
                             th:value="${employeemaster['Father_HusbandName']}"
+                            th:field="*{Father_HusbandName}"
                             required
                           />
                           <div class="invalid-feedback">Please enter Last Name.</div>
@@ -365,6 +547,7 @@
                             class="form-control flatpickr-validation"
                             id="Model_DateofBirth"
                             th:value="${employeemaster['DateofBirth']}"
+                            th:field="*{DateofBirth}"
                             required
                           />
                           <div class="invalid-feedback">Please enter DOB .</div>
@@ -397,6 +580,7 @@
                             type="text"
                             class="form-control"
                             id="Model_Height"
+                            th:field="*{Height}"
                             th:value="${employeemaster['Height']}"
                             required
                           />
@@ -408,6 +592,7 @@
                             type="text"
                             class="form-control"
                             id="Model_Weight"
+                            th:field="*{Weight}"
                             th:value="${employeemaster['Weight']}"
                             required
                           />
@@ -419,8 +604,9 @@
                             type="text"
                             class="form-control"
                             id="Model_ShirtSize"
+                            th:field="*{ShirtSize}"
                             th:value="${employeemaster['ShirtSize']}"
-                            required
+                            
                           />
                           <div class="invalid-feedback">Please enter Shirt Size.</div>
                         </div>
@@ -430,8 +616,9 @@
                             type="text"
                             class="form-control"
                             id="Model_ShoeSize"
+                            th:field="*{ShoeSize}"
                             th:value="${employeemaster['ShoeSize']}"
-                            required
+                            
                           />
                           <div class="invalid-feedback">Please enter Shoe Size.</div>
                         </div>
@@ -441,8 +628,9 @@
                             type="text"
                             class="form-control"
                             id="Model_PantSize"
+                            th:field="*{PantSize}"
                             th:value="${employeemaster['PantSize']}"
-                            required
+                            
                           />
                           <div class="invalid-feedback">Please enter Pant Size .</div>
                         </div>
@@ -474,10 +662,10 @@
                        
                       
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary editbranchdatasubmit me-sm-3 me-1">Submit</button>
+                          <button type="submit" class="btn btn-primary edituserdatap1submit me-sm-3 me-1">Submit</button>
                           <button
                             type="button"
-                            class="btn btn-label-secondary editbranchdataclose"
+                            class="btn btn-label-secondary edituserdatap1close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
                           >
@@ -491,6 +679,414 @@
               </div>
               <!--/ Edit User Modal -->
               
+               <!-- Add New Contact Modal -->  
+              <div class="modal fade" id="addNewContact" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                  <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="text-center mb-4">
+                        <h3>Contact Details</h3>
+                        <p>Office/department contact details</p>
+                      </div>
+                      <form id="addContactform" class="row g-3" onsubmit="return false">
+                        <div class="col-12">
+                          <label class="form-label w-100" for="modalAddCard">Contact Type 
+                          <label class="emptitle additem" name="addmodalcontacttype"><i
+																class="bx bxs-plus-circle ownstyle1"></i></label>
+                          </label>
+                          <div class="input-group input-group-merge">
+                            <select id="modalcontacttype" class="form-select modalcontacttype" required>
+	                         
+	                         <option value="">-</option>
+							<th:block th:each="str :${CONTACTTYPE}">
+								<option  th:value="${str}"  th:text="${str}"></option>
+							</th:block>
+	                         
+	                        </select>
+	                         <div class="invalid-feedback">Please select contact type</div>
+                           <input
+                              type="hidden"
+                              id="modalcontactid"
+                              name="modalcontactid"
+                              class="form-contro"
+                              
+                            />
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="modalcontactPhone">Phone Number </label>
+                          <div class="input-group input-group-merge">
+                            <span class="input-group-text">+91</span>
+                            <input
+                              type="text"
+                              id="modalcontactPhone"
+                              name="modalcontactPhone"
+                              class="form-control phone-number-otp-mask"
+                              placeholder="999 555 0111"
+                              required
+                            />
+                            <div class="invalid-feedback">Please enter a valid mobile</div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="modalContactemail">Email </label>
+                          <input
+                            type="email"
+                            id="modalContactemail"
+                            class="form-control expiry-date-mask"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter a valid email</div>
+                        </div>
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn  btn-primary me-sm-3 me-1 contactsavebtn">Submit</button>
+                          <button
+                            type="reset"
+                            class="btn btn-label-secondary btn-reset contactclosebtn"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Add New Credit Card Modal -->
+              <!-- Add New Address Modal -->
+              <div class="modal fade" id="addNewAddress" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
+                  <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="text-center mb-4">
+                        <h3 class="address-title"> Address</h3>
+                        <p class="address-subtitle">Address for express delivery</p>
+                      </div>
+                      <form id="addNewAddressForm" class="row g-3" onsubmit="return false">
+                        <div class="col-12">
+                          <label class="form-label" for="modalAddressCountry">Country</label>
+                          <select
+                            id="modalAddressCountry"
+                            name="modalAddressCountry"
+                            class="select2 form-select"
+                            data-allow-clear="true"
+                            th:value="${employeemaster.Address_Country}"
+                          >
+                            <option value="">Select</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Belarus">Belarus</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Canada">Canada</option>
+                            <option value="China">China</option>
+                            <option value="France">France</option>
+                            <option value="Germany">Germany</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Korea">Korea, Republic of</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Russia">Russian Federation</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States">United States</option>
+                          </select>
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="modalAddressAddress1">Address Line 1</label>
+                          <input
+                            type="text"
+                            id="modalAddressAddress1"
+                            name="modalAddressAddress1"
+                            class="form-control"
+                            placeholder="Flat, House no, Building, Apartment"
+                            th:value="${employeemaster.Address_Street1}"
+                          />
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="modalAddressAddress2">Address Line 2</label>
+                          <input
+                            type="text"
+                            id="modalAddressAddress2"
+                            name="modalAddressAddress2"
+                            class="form-control"
+                            placeholder="Area, Street, Sector"
+                            th:value="${employeemaster.Address_Street2}"
+                          />
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="modalAddressLandmark">Landmark</label>
+                          <input
+                            type="text"
+                            id="modalAddressLandmark"
+                            name="modalAddressLandmark"
+                            class="form-control"
+                            placeholder="E.g. near Kovai All India Radio"
+                            th:value="${employeemaster.Address_Landmark}"
+                          />
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="modalAddressVillage">Village </label>
+                          <input
+                            type="text"
+                            id="modalAddressVillage"
+                            name="modalAddressVillage"
+                            class="form-control"
+                            th:value="${employeemaster.Address_Village}"
+                          />
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="modalAddressCity">City</label>
+                          <input
+                            type="text"
+                            id="modalAddressCity"
+                            name="modalAddressCity"
+                            class="form-control"
+                            th:value="${employeemaster.Address_City}"
+                          />
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="modalAddressLandmark">State</label>
+                          <input
+                            type="text"
+                            id="modalAddressState"
+                            name="modalAddressState"
+                            class="form-control"
+                            th:value="${employeemaster.Address_State}"
+                          />
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="modalAddressZipCode">Zip Code</label>
+                          <input
+                            type="number"
+                            id="modalAddressZipCode"
+                            name="modalAddressZipCode"
+                            class="form-control"
+                            th:value="${employeemaster.Address_ZIP}"
+                          />
+                        </div>
+                        
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 editbranchAddressdatasubmit">Submit</button>
+                          <button
+                            type="button"
+                            class="btn btn-label-secondary editbranchAddressdataclose"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Add New Address Modal -->
+              
+              <!-- Add Document -->
+              <div class="modal fade" id="addNewDocument" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                  <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="text-center mb-4">
+                        <h3>Add Document  </h3>
+                        <p>Add/Update Branch Legal Documents</p>
+                      </div>
+                      <form id="addNewdocument" class="row g-3" onsubmit="return false">
+                        <div class="col-12">
+                          <label class="form-label w-100" for="modalAddCard">Document Type </label>
+                          <div class="input-group input-group-merge">
+                            <select id="modalDocumenttype" class="form-select">
+	                          <option value="">Default select</option>
+	                          <option value="GST">GST</option>
+	                          <option value="2">Two</option>
+	                          <option value="3">Three</option>
+	                        </select>
+                           
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="modalAddCardName">Document No </label>
+                          <input
+                            type="text"
+                            id="modalDocNo"
+                            class="form-control expiry-date-mask"
+                            
+                          />
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="modalAddCardExpiryDate">Upload File </label>
+                          <input
+                            type="file"
+                            id="modalFile"
+                            class="form-control expiry-date-mask"
+                            
+                          />
+                        </div>
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 documentsave">Submit</button>
+                          <button
+                            type="button"
+                            class="btn btn-label-secondary btn-reset documentclose"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Add Document -->
+             
+                <!-- Add BankDetails -->
+              <div class="modal fade" id="addNewBankDetails" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                  <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="text-center mb-4">
+                        <h3>Bank Details  </h3>
+                        <p>Add/Update Branch Bank information</p>
+                      </div>
+                      <form id="addNewBankDetails" class="row g-3" onsubmit="return false" th:with ="accobj = ${employeemaster.employeeAccNo[0]}">
+                        
+                        <div class="col-12">
+                          <label class="form-label" for="model_acno">A.C.No </label>
+                            <input
+                            type="hidden"
+                            id="model_branchAccnoid"
+                            class="form-control expiry-date-mask" th:value="${accobj.Accnoid}" required
+                          />
+                           <input
+                            type="text"
+                            id="model_acno"
+                            class="form-control expiry-date-mask" th:value="${accobj.acno}" required
+                          />
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="model_acno_confirm">Confirm The A.C.No </label>
+                          <input
+                            type="password"
+                            id="model_acno_confirm" 
+                            class="form-control expiry-date-mask" th:value="${accobj.acno}" required
+                          />  
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="model_acname">Account Name</label>
+                          <input
+                            type="text"
+                            id="model_acname"
+                            class="form-control expiry-date-mask" th:value="${accobj.acname}" required
+                          />
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label" for="model_bankname">Bank Name</label>
+                         <input
+                            type="text"
+                            id="model_bankname"
+                            class="form-control expiry-date-mask" th:value="${accobj.bankname}" required
+                          />
+                        </div>
+                        <div class="col-6">
+                          <label class="form-label" for="model_branchname">Branch Name </label>
+                          <input
+                            type="text"
+                            id="model_branchname"
+                            class="form-control expiry-date-mask" th:value="${accobj.branchname}" required
+                          />
+                        </div>
+                        <div class="col-6">
+                          <label class="form-label" for="model_ifsccode">IFSC Code  </label>
+                          <input
+                            type="text"
+                            id="model_ifsccode"
+                            class="form-control expiry-date-mask" th:value="${accobj.ifsccode}" required
+                          /> 
+                        </div>
+                        
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 BankDetailssave">Submit</button>
+                          <button
+                            type="button"
+                            class="btn btn-label-secondary btn-reset BankDetailsclose"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Add BankDetails -->
+            
+             <!--scrolling content Modal -->
+				<div class="modal fade" id="ItemStatusScrollable"
+					tabindex="-1" role="dialog"
+					aria-labelledby="ItemStatusScrollableTitle"
+					aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable"
+						role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title white"
+									id="ItemStatusScrollableTitle"></h5>
+								<button
+                                  type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                ></button>
+							</div>
+							<div class="modal-body">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="addmodel" id="additemalltxt"></label>
+										<div class="position-relative">
+											<fieldset class="form-group">
+												<input type="text" id="additemall" name="addmodel"
+													class="form-control capitalize">
+											</fieldset>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-light-secondary"
+									data-bs-dismiss="modal">
+									<i class="bx bx-x d-block d-sm-none"></i> <span
+										class="d-none d-sm-block">Close</span>
+								</button>
+								<button type="button" class="btn btn-primary ml-1"
+									id="additemallsavebtn">
+									<i class="bx bx-check d-block d-sm-none"></i> <span
+										class="d-none d-sm-block">ADD</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--scrolling content Modal -->
+            
               <!-- /Modal -->
             </div>
             <!-- / Content -->
@@ -545,8 +1141,7 @@
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+       <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
     <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
     <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
     <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
@@ -560,17 +1155,516 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
+    <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js}"></script>
-
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+    <script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+    <script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+    <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+    <script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+    <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<!-- Form Validation -->
+    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+     
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
-
-    <!-- Page JS -->
-    <script th:src="@{/assets/js/pages-profile.js}"></script>
-  </body>
-</html>
     
+	<!-- Flat Picker -->
+    <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+    <script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+     <script th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+    
+    <!-- Page JS -->
+    <!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
+    <script th:src="@{/assets/js/app-user-view.js}"></script>
+    <script th:src="@{/assets/js/app-user-view-account.js}"></script>
+    
+     
+    
+    <script>
+    $(document).ready(function() {  
+    	//--------------------------------------------------------------------------------------------------------------------------------------
+    	
+		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+		$(function() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+			});
+		});
+		//--------------------------------------------------------------------------------------------------------------------------------------
+		function validationformuserp1reset()
+   		{
+   			$('.edituserdatap1close').click();
+			$('.edituserdatap1submit').prop("disabled",false);
+   			$('.edituserdatap1submit').html("Submit");
+   		}
+		//--------------------------------------------------------------------------------------------------------------------------------------		 
+		$('#editEmployeedetailsForm').on('submit', function(event){
+  			   	 
+  			   		$('.edituserdatap1submit').prop("disabled",true);
+  			   	    $('.edituserdatap1submit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+		    	    if(event.target.checkValidity()){
+		    	    
+		    	    	const formdata= new FormData(document.querySelector("#editEmployeedetailsForm"));
+		    	    	formdata.append("empMasterid", $('#empMasterid').val())
+		    	    	$.ajax({
+	  						type : "POST",url : "employeep1json",
+	  						data : formdata, contentType: false,
+			   	              processData: false,success : function(result) {
+			   	            	  
+			   	            	var bmobj = JSON.parse(JSON.stringify(result));
+			   	            	$('#Lbl_StaffName').text(bmobj.staffName);
+			   	            	$('#Lbl_Father_HusbandName').text(bmobj.father_HusbandName);
+			   	            	$('#Lbl_Gender').text(bmobj.gender);
+			   	            	$('#Lbl_MaritalStatus').text(bmobj.maritalStatus);
+			   	            	$('#Lbl_DateofBirth').text(bmobj.dateofBirth);
+			   	            	$('#Lbl_BloodGroup').text(bmobj.bloodGroup);
+			   	            	$('#Lbl_Height').text(bmobj.height);
+			   	            	$('#Lbl_Weight').text(bmobj.weight);
+			   	            	$('#Lbl_ShirtSize').text(bmobj.pantSize);
+			   	            	$('#Lbl_ShoeSize').text(bmobj.shoeSize);
+			   	            	$('#Lbl_PantSize').text(bmobj.pantSize);
+			   	            	$('#Lbl_Accommodation').text(bmobj.accommodation);
+			   	            	validationformuserp1reset();
+	  						},
+			    	    	error : function(e) {
+	  							console.log("Error" + e);
+	  						}
+		    	    	});
+		    	    }
+		});
+		//--------------------------------------------------------------------------------------------------------------------------------------
+		 $('.editbranchAddressdatasubmit').on('click', function(event){
+
+	    	  $('.editbranchAddressdatasubmit').prop("disabled",true);
+	    	  
+	    	    if(event.target.checkValidity()){
+	    	    	$('.editbranchAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+	    	    	var empMasterid=$("#empMasterid").val();
+	    	    	var modalAddressCountry =$('#modalAddressCountry').val();
+	    	    	var modalAddressAddress1 =$('#modalAddressAddress1').val();
+	    	    	var modalAddressAddress2 =$('#modalAddressAddress2').val();
+	    	    	var modalAddressLandmark =$('#modalAddressLandmark').val();
+	    	    	var modalAddressVillage =$('#modalAddressVillage').val();
+	    	    	var modalAddressCity =$('#modalAddressCity').val();
+	    	    	var modalAddressState =$('#modalAddressState').val();
+	    	    	var modalAddressZipCode =$('#modalAddressZipCode').val();
+	    	    	var formData = {
+	  	        			 empMasterid: empMasterid,
+	  	        			AddressCountry : modalAddressCountry,
+	  	        			AddressAddress1 : modalAddressAddress1,
+	  	        			AddressAddress2 : modalAddressAddress2,
+	  	        			AddressLandmark : modalAddressLandmark,
+	  	        			AddressVillage : modalAddressVillage,
+	  	        			AddressCity : modalAddressCity,
+	  	        			AddressState : modalAddressState,
+	  	        			AddressZipCode : modalAddressZipCode,
+	  	        			functiontype : 'Employee'
+	  				 }
+	  				 $.ajax({
+	  						type : "POST",url : "Addressupdatejson",
+	  						data : formData, success : function(result) {
+	  							var bmobj = JSON.parse(JSON.stringify(result));
+	  							console.log(bmobj);
+	  							$('#Lbl_AddressCountry').text(bmobj.address_Country);
+	  							$('#Lbl_AddressAddress1').text(bmobj.address_Street1);
+	  							$('#Lbl_AddressAddress2').text(bmobj.address_Street2);
+	  							$('#Lbl_AddressLandmark').text(bmobj.address_Landmark);
+	  							$('#Lbl_AddressVillage').text(bmobj.address_Village);
+	  							$('#Lbl_AddressCity').text(bmobj.address_City);
+	  							$('#Lbl_AddressState').text(bmobj.address_State);
+	  							$('#Lbl_AddressZipCode').text(bmobj.address_ZIP);
+								validationformaddressreset();
+	  						},
+	  						error : function(e) {
+	  							console.log("Error" + e);
+	  						}
+	  					});
+	  	        }	
+	    	    else
+	        	{
+	    	    	$('.editbranchAddressdatasubmit').prop("disabled",false);
+	        	}
+	      });
+ 		// --------------------------------------------------------------------
+	   		function validationformreset()
+		   {
+	   				$('.editbranchdataclose').click();
+	   				$('.editbranchdatasubmit').prop("disabled",false);
+		   			$('.editbranchdatasubmit').html("Submit");
+		   }
+	   		function validationformaddressreset()
+		   {
+	   				$('.editbranchAddressdataclose').click();
+	   				$('.editbranchAddressdatasubmit').prop("disabled",false);
+		   			$('.editbranchAddressdatasubmit').html("Submit");
+		   }
+	   		function validationformContactreset()
+			   {
+		   				$('.contactclosebtn').click();
+		   				$('.contactsavebtn').prop("disabled",false);
+			   			$('.contactsavebtn').html("Submit");
+			   }
+	   		
+	   		function validationformfilereset()
+			   {
+		   				$('.documentclose').click();
+		   				$('.documentsave').prop("disabled",false);
+			   			$('.documentsave').html("Submit");
+			   }
+	   		function validationformbankaccreset()
+	   		{
+	   			$('.BankDetailsclose').click();
+  				$('.BankDetailssave').prop("disabled",false);
+	   			$('.BankDetailssave').html("Submit");
+	   		}
+	   		
+	   	// --------------------------------------------------------------------
+	   	 
+			  $(".addcontactbtn").click(function(){
+				$('#modalcontactid').val("-");
+			  });
+			  
+			// --------------------------------------------------------------------
+			
+			   	$('#addContactform').on('submit', function(event){
+			   	 
+			   		$('.contactsavebtn').prop("disabled",true);
+	    	  
+	    	    if(event.target.checkValidity()){
+	    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+	    	    	var empMasterid=$("#empMasterid").val();
+	    	    	var modalcontactid =$('#modalcontactid').val();
+	    	    	var modalcontacttype =$('#modalcontacttype').val();
+	    	    	var modalcontactPhone =$('#modalcontactPhone').val();
+	    	    	var modalContactemail =$('#modalContactemail').val();
+	    	    	var formData = {
+	  	        			 empMasterid: empMasterid,
+	  	        			 contactid: modalcontactid,
+	  	        			 contacttype : modalcontacttype,
+	  	        			 contactPhone : modalcontactPhone,
+	  	        			 contactemail : modalContactemail,
+	  	        			 functiontype : 'Employee'
+	  				 }
+	  				 $.ajax({
+	  						type : "POST",url : "Contactupdatejson",
+	  						data : formData, success : function(result) {
+	  							var bmobj = JSON.parse(JSON.stringify(result));
+	  							
+	  							if(modalcontactid == '-')
+ 								{
+	  								let tempresultid=bmobj;
+	  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"'";
+		  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
+		  							tempresult += '<h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
+		  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
+		  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+		  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
+		  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+		  						
+		  							$('#contactaddidv').before(tempresult);
+		  						    
+ 								}
+	  							else
+ 								{
+	  								$('.contacttype'+modalcontactid).text(modalcontacttype);
+	  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
+	  								$('.email'+modalcontactid).text(modalContactemail);
+	  								
+ 									 
+ 								}
+		  							validationformContactreset();
+	  						},
+	  						error : function(e) {
+	  							console.log("Error" + e);
+	  						}
+	  					});
+	  	        }	
+	    	    else
+	        	{
+	    	    	$('.contactsavebtn').prop("disabled",false);
+	        	}
+			   	});	
+			// --------------------------------------------------------------------
+			  $('.contacteditbtn').on('click', function(event){
+				$('.contactsavebtn').prop("disabled",false);
+  			$('.contactsavebtn').html("Submit");
+  			
+				let id=$(this).attr("name");
+				$('#modalcontactid').val(id);
+			$('#modalcontacttype').val($('.contacttype'+id).text());
+			$('#modalcontactPhone').val($('.phonenumber'+id).text());
+			$('#modalContactemail').val($('.email'+id).text());
+			$('#addNewContact').modal('show');
+			  });
+			// --------------------------------------------------------------------
+			
+		
+			// --------------------------------------------------------------------
+		    // --------------------------------------------------------------------
+			// File uploading 		  
+					 const addNewdocumentForm =document.getElementById("addNewdocument");
+					 const modalFile =document.getElementById("modalFile");
+					 addNewdocumentForm.addEventListener("submit", e =>{
+						 
+						$('.documentsave').prop("disabled",true);
+						$('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+						const endpoint ="fileuploadjson";
+						const formdata= new FormData();
+						//console.log(modalFile.files);
+						formdata.append("File_Attach",modalFile.files[0]);
+						formdata.append("empMasterid",$('#empMasterid').val());
+						formdata.append("Documenttype",$('#modalDocumenttype').val());
+						formdata.append("DocNo",$('#modalDocNo').val());
+						formdata.append("functiontype","Employee");
+						  $.ajax({
+			   					type : "POST",url : endpoint,
+			   					data : formdata,
+			   					contentType: false,
+			   	              processData: false,
+			   					success : function(result) {
+			   						
+			   					tempobj =JSON.parse(JSON.stringify(result));
+			   						
+			   					console.log(tempobj);
+								
+ 							let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.empFileid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
+ 							tempresult += '<h6 class="mb-1">'+ tempobj.documentType +'</h6>';
+ 							tempresult += '<span class="card-number">'+ tempobj.documentNo +'</span></div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+ 							if(tempobj.filePath != '')
+ 							{
+ 								tempresult += '<a href="'+ tempobj.filePath +'" target="_blank"><button class="btn btn-label-primary me-3"><i class="bx bx-link-alt"></i></button></a>';	
+ 							}
+ 							tempresult += '<br/><button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.empFileid +'"   onClick="filedeleteoperation('+ tempobj.empFileid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+ 								
+ 							$('#fileaddidv').before(tempresult);
+ 							
+			   					validationformfilereset();
+			   					},
+			   					error : function(e) {
+			   						console.log("Error" + e);
+			   					}
+			   				}); 
+					 });
+				// --------------------------------------------------------------------
+				
+				$(".additem").click(function() {
+				var name = $(this).attr('name');
+				var labeltext = "";
+				if (name == "addmodalcontacttype") {
+					labeltext = "New Contact Type";
+				}
+				
+				$('#additemalltxt').text(labeltext);
+				$('#ItemStatusScrollable').modal('toggle');
+
+			});
+
+			$("#additemallsavebtn").click(
+					function() {
+				if ($("#additemall").val() != '') {
+					var name = $('#additemalltxt').text();
+					var labeltext = "";
+					if (name == "New Contact Type") {
+						labeltext = "modalcontacttype";
+					}
+					
+					$('.' + labeltext).append(
+							"<option value='"
+									+ $("#additemall").val()
+									+ "'>"
+									+ $("#additemall").val()
+									+ "</option>");
+					//$('.' + labeltext).val($("#additemall").val());
+					$("#additemall").val('');
+					$('#ItemStatusScrollable').modal(
+							'toggle');
+				}
+			});
+				
+				// --------------------------------------------------------------------
+				
+			   	$('#addNewBankDetails').on('submit', function(event){
+			   	 
+			   		
+			   		$('.BankDetailssave').prop("disabled",true);
+	    	  
+	    	    if(event.target.checkValidity()){
+	    	    	$('.BankDetailssave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+	    	    	var empMasterid=$("#empMasterid").val();
+	    	    	var model_acid =$('#model_branchAccnoid').val();
+	    	    	var model_acno =$('#model_acno').val();
+	    	    	var model_acname =$('#model_acname').val();
+	    	    	var model_bankname =$('#model_bankname').val();
+	    	    	var model_branchname =$('#model_branchname').val();
+	    	    	var model_ifsccode =$('#model_ifsccode').val();
+	    	    	var formData = {
+	  	        			empMasterid: empMasterid,
+	  	        			acid: model_acid,
+	  	        			acno: model_acno,
+	  	        			acname : model_acname,
+	  	        			bankname : model_bankname,
+	  	        			branchname : model_branchname,
+	  	        			ifsccode : model_ifsccode,
+	  	        			functiontype : 'Employee'
+	  				 }
+	    	    	
+	  				 $.ajax({
+	  						type : "POST",url : "Bankaccupdatejson",
+	  						data : formData, success : function(result) {
+	  							var bmobj = JSON.parse(JSON.stringify(result));
+	  							console.log(bmobj);
+	  							$('#Lbl_acno').text(model_acno);
+	  							$('#Lbl_acname').text(model_acname);
+	  							$('#Lbl_bankname').text(model_bankname);
+	  							$('#Lbl_branchname').text(model_branchname);
+	  							$('#Lbl_ifsccode').text(model_ifsccode); 
+	  							validationformbankaccreset();
+	  						},
+	  						error : function(e) {
+	  							console.log("Error" + e);
+	  						}
+	  					});
+	  	        }	
+	    	    else
+	        	{
+	    	    	$('.BankDetailssave').prop("disabled",false);
+	        	}
+			   	});	
+			// --------------------------------------------------------------------
+			
+	    }); // Jquery
+
+function reply_click(id,contacttype,phonenumber,email)
+{
+	$('#modalcontactid').val(id);
+	$('#modalcontacttype').val(contacttype);
+	$('#modalcontactPhone').val(phonenumber);
+	$('#modalContactemail').val(email);		
+	$('#addNewContact').modal('show');
+}
+	 
+
+function contactdeleteoperation(id){
+	 Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        customClass: {
+          confirmButton: 'btn btn-primary me-3',
+          cancelButton: 'btn btn-label-secondary'
+        },
+        buttonsStyling: false
+      }).then(function (result) {
+        if (result.value) {
+         var formData = {
+      	 contactid: id,
+      	functiontype : 'Employee'
+      	 }
+			 $.ajax({
+					type : "POST",url : "Contactdeletejson",
+					data : formData, success : function(result) {
+						$('.card'+id).remove();
+						Swal.fire({
+				              icon: 'success',
+				              title: 'Deleted!',
+				              text: 'Contact has been deleted.',
+				              customClass: {
+				                confirmButton: 'btn btn-success'
+				              }
+				            });
+					},
+					error : function(e) {
+						console.log("Error" + e);
+					}
+				});
+          
+          }
+      });
+}
+
+//------------------------------------------------------    
+function filedeleteoperation(id){
+	 Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        customClass: {
+          confirmButton: 'btn btn-primary me-3',
+          cancelButton: 'btn btn-label-secondary'
+        },
+        buttonsStyling: false
+      }).then(function (result) {
+        if (result.value) {
+         var formData = {
+       		  fileid: id,
+       		functiontype : 'Employee'
+      	 }
+			 $.ajax({
+					type : "POST",url : "Filedeletejson",
+					data : formData, success : function(result) {
+						$('.filecard'+id).remove();
+						Swal.fire({
+				              icon: 'success',
+				              title: 'Deleted!',
+				              text: 'File has been deleted.',
+				              customClass: {
+				                confirmButton: 'btn btn-success'
+				              }
+				            });
+					},
+					error : function(e) {
+						console.log("Error" + e);
+					}
+				});
+          
+          }
+      });
+}
+
+//------------------------------------------------------    
+
+$('.contactdeletebtn').on('click', function(event){
+	  let id=$(this).attr("name");
+	  contactdeleteoperation(id);
+ });
+	//------------------------------------------------------    
+	  $('.filedeletebtn').on('click', function(event){
+	  let id=$(this).attr("name");
+	  filedeleteoperation(id);
+ });
+//------------------------------------------------------
+// Date Format
+const flatpickrFriendly = document.querySelector('#Model_STATED_DATE');
+// Human Friendly
+ if (flatpickrFriendly) {
+   flatpickrFriendly.flatpickr({
+     altInput: true,
+     altFormat: 'F j, Y',
+     dateFormat: 'Y-m-d'
+   });
+ }
+
+
+</script>
+	  </body>
+	</html>

@@ -69,6 +69,8 @@ public class EmployeeMaster {
 	@Column
 	private String Address_Street2;
 	@Column
+	private String Address_Landmark;
+	@Column
 	private String Address_Village;
 	@Column
 	private String Address_Taluk;
@@ -85,15 +87,8 @@ public class EmployeeMaster {
 	private String RecruitmentSource;
 	@Column
 	private String RecruInstituteConsultantName;
-	@Column
-	private String BankACNo;
-	@Column
-	private String BankName;
-	@Column
-	private String BranchName;
-	@Column
-	private String BankIFSCCode;
-
+	
+	
 	@Column
 	private String Notes;
 
@@ -120,6 +115,11 @@ public class EmployeeMaster {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empMasterid")
 	private List<EmployeeContact> employeeContact;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "empMasterid")
+	private List<EmployeeAccNo> employeeAccNo;
+	
 	
 	@Transient
 	private String t_emp_img;

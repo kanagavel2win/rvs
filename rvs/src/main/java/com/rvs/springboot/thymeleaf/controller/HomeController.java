@@ -70,6 +70,7 @@ import com.rvs.springboot.thymeleaf.entity.ContactOrganization;
 import com.rvs.springboot.thymeleaf.entity.ContactPerson;
 import com.rvs.springboot.thymeleaf.entity.DealMaster;
 import com.rvs.springboot.thymeleaf.entity.DealProjectMaster;
+import com.rvs.springboot.thymeleaf.entity.EmployeeAccNo;
 import com.rvs.springboot.thymeleaf.entity.EmployeeContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
@@ -498,129 +499,274 @@ public class HomeController {
 	}
 	
 	@ResponseBody
-	@PostMapping("branchfileuploadjson")
-	public BranchFiles branchfileuploadjson(@RequestParam Map<String, String> params,@RequestParam(name = "File_Attach", required = false) MultipartFile branchFiles_Attach, HttpServletRequest request)
+	@PostMapping("fileuploadjson")
+	public Object fileuploadjson(@RequestParam Map<String, String> params,@RequestParam(name = "File_Attach", required = false) MultipartFile branchFiles_Attach, HttpServletRequest request)
 	{
-		StringBuilder filename = new StringBuilder();		
-		if(branchFiles_Attach != null)
-		{
-				// File Uploading
-				String profilephotouploadRootPath = request.getServletContext().getRealPath("branchfiles");
-				// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+		
+				
+				if(params.get("functiontype").equalsIgnoreCase("Branch"))
+				{
+					StringBuilder filename = new StringBuilder();		
+					if(branchFiles_Attach != null)
+					{
+							// File Uploading
+							String profilephotouploadRootPath = request.getServletContext().getRealPath("branchfiles");
+							// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
 
-				File uploadRootDir = new File(profilephotouploadRootPath);
-				// Create directory if it not exists.
-				if (!uploadRootDir.exists()) {
-					uploadRootDir.mkdirs();
+							File uploadRootDir = new File(profilephotouploadRootPath);
+							// Create directory if it not exists.
+							if (!uploadRootDir.exists()) {
+								uploadRootDir.mkdirs();
+							}
+							
+							if (branchFiles_Attach.getOriginalFilename().toString().length() > 0) {
+								
+								
+								String tempfilename = stringdatetime() + branchFiles_Attach.getOriginalFilename();
+								Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+								filename.append("branchfiles/" +tempfilename);
+								
+								
+								try {
+									Files.write(fileNameandPath, branchFiles_Attach.getBytes());
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+					}	
+							BranchFiles bfiles= new BranchFiles();
+							
+							int branchid=Integer.parseInt(params.get("BranchID"));
+							String Documenttype=params.get("Documenttype");
+							String DocNo=params.get("DocNo");
+							
+							int id= branchMasterService.insertbranchFiles(Documenttype, DocNo,  filename.toString(), branchid);
+							
+							bfiles.setBranchfilesid(id);
+							bfiles.setDocumentNo(DocNo);
+							bfiles.setDocumentType(Documenttype);
+							bfiles.setFilePath( filename.toString());
+							return bfiles;		
 				}
-				
-				if (branchFiles_Attach.getOriginalFilename().toString().length() > 0) {
-					
-					
-					String tempfilename = stringdatetime() + branchFiles_Attach.getOriginalFilename();
-					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
-					filename.append("branchfiles/" +tempfilename);
-					
-					
-					try {
-						Files.write(fileNameandPath, branchFiles_Attach.getBytes());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				if(params.get("functiontype").equalsIgnoreCase("Employee"))
+				{
+					StringBuilder filename = new StringBuilder();		
+					if(branchFiles_Attach != null)
+					{
+							// File Uploading
+							String profilephotouploadRootPath = request.getServletContext().getRealPath("employeefiles");
+							// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+							File uploadRootDir = new File(profilephotouploadRootPath);
+							// Create directory if it not exists.
+							if (!uploadRootDir.exists()) {
+								uploadRootDir.mkdirs();
+							}
+							
+							if (branchFiles_Attach.getOriginalFilename().toString().length() > 0) {
+								
+								
+								String tempfilename = stringdatetime() + branchFiles_Attach.getOriginalFilename();
+								Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+								filename.append("branchfiles/" +tempfilename);
+								
+								
+								try {
+									Files.write(fileNameandPath, branchFiles_Attach.getBytes());
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+					}	
+							EmployeeFiles bfiles= new EmployeeFiles();
+							
+							int employeeid=Integer.parseInt(params.get("empMasterid"));
+							String Documenttype=params.get("Documenttype");
+							String DocNo=params.get("DocNo");
+							
+							int id= employeeMasterService.insertemployeeFiles(Documenttype, DocNo,  filename.toString(), employeeid);
+							
+							bfiles.setEmpFileid(id);
+							bfiles.setDocumentNo(DocNo);
+							bfiles.setDocumentType(Documenttype);
+							bfiles.setFilePath( filename.toString());
+							return bfiles;		
 				}
-		}	
-				BranchFiles bfiles= new BranchFiles();
-				
-				int branchid=Integer.parseInt(params.get("BranchID"));
-				String Documenttype=params.get("Documenttype");
-				String DocNo=params.get("DocNo");
-				
-				int id= branchMasterService.insertbranchFiles(Documenttype, DocNo,  filename.toString(), branchid);
-				
-				bfiles.setBranchfilesid(id);
-				bfiles.setDocumentNo(DocNo);
-				bfiles.setDocumentType(Documenttype);
-				bfiles.setFilePath( filename.toString());
-				return bfiles;
+				else
+				{
+					throw new RuntimeException("functiontype is invalid");
+				}
 
 	}
 
 	
 	@ResponseBody
-	@PostMapping("branchAddressupdatejson")
-	public BranchMaster branchAddressupdatejson(@RequestParam Map<String, String> params)
+	@PostMapping("Addressupdatejson")
+	public Object Addressupdatejson(@RequestParam Map<String, String> params)
 	{
-		int branchid=Integer.parseInt(params.get("BranchID"));
-		BranchMaster bm= branchMasterService.findById(branchid);
-		bm.setCOUNTRY(params.get("AddressCountry"));
-		bm.setBRANCH_ADDRESSLINE1(params.get("AddressAddress1"));
-		bm.setBRANCH_ADDRESSLINE2(params.get("AddressAddress2"));
-		bm.setBRANCH_ADDRESSLandMark(params.get("AddressLandmark"));
-		bm.setBRANCH_ADDRESSVillage(params.get("AddressVillage"));
-		bm.setCITY(params.get("AddressCity"));
-		bm.setSTATE(params.get("AddressState"));
-		bm.setZIP_CODE(params.get("AddressZipCode"));
-		bm= branchMasterService.save(bm);
-		return branchListresponsebody(bm); 
+		 
+		
+		if(params.get("functiontype").equalsIgnoreCase("Branch"))
+		{
+			int branchid=Integer.parseInt(params.get("BranchID"));
+			BranchMaster bm= branchMasterService.findById(branchid);
+			bm.setCOUNTRY(params.get("AddressCountry"));
+			bm.setBRANCH_ADDRESSLINE1(params.get("AddressAddress1"));
+			bm.setBRANCH_ADDRESSLINE2(params.get("AddressAddress2"));
+			bm.setBRANCH_ADDRESSLandMark(params.get("AddressLandmark"));
+			bm.setBRANCH_ADDRESSVillage(params.get("AddressVillage"));
+			bm.setCITY(params.get("AddressCity"));
+			bm.setSTATE(params.get("AddressState"));
+			bm.setZIP_CODE(params.get("AddressZipCode"));
+			bm= branchMasterService.save(bm);
+			return branchListresponsebody(bm);		
+		}
+		if(params.get("functiontype").equalsIgnoreCase("Employee"))
+		{
+			int empMasterid=Integer.parseInt(params.get("empMasterid"));
+			EmployeeMaster bm= employeeMasterService.findById(empMasterid);
+			bm.setAddress_Country(params.get("AddressCountry"));
+			bm.setAddress_Street1(params.get("AddressAddress1"));
+			bm.setAddress_Street2(params.get("AddressAddress2"));
+			bm.setAddress_Landmark(params.get("AddressLandmark"));
+			bm.setAddress_Village(params.get("AddressVillage"));
+			bm.setAddress_City(params.get("AddressCity"));
+			bm.setAddress_State(params.get("AddressState"));
+			bm.setAddress_ZIP(params.get("AddressZipCode"));
+			bm= employeeMasterService.save(bm);
+			return bm;		
+		}
+		else
+		{
+			throw new RuntimeException("functiontype is invalid");
+		}
 	}
 	
 	@ResponseBody
-	@PostMapping("branchContactupdatejson")
-	public int branchContactupdatejson(@RequestParam Map<String, String> params)
+	@PostMapping("Contactupdatejson")
+	public int Contactupdatejson(@RequestParam Map<String, String> params)
 	{
-		int branchid=Integer.parseInt(params.get("BranchID"));
-		String contacttype = params.get("contacttype");
-		String contactPhone = params.get("contactPhone");
-		String contactemail = params.get("contactemail");
-		String contactid = params.get("contactid");
 		
-		itemlistService.savesingletxt(contacttype, "CONTACTTYPE");
 		
-		if(contactid.equalsIgnoreCase("-"))
+		if(params.get("functiontype").equalsIgnoreCase("Branch"))
 		{
-			return branchMasterService.insertbranchContact(contacttype, contactPhone, contactemail, branchid);
-		}else
+			int branchid=Integer.parseInt(params.get("BranchID"));
+			String contacttype = params.get("contacttype");
+			String contactPhone = params.get("contactPhone");
+			String contactemail = params.get("contactemail");
+			String contactid = params.get("contactid");
+			
+			itemlistService.savesingletxt(contacttype, "CONTACTTYPE");
+			
+			if(contactid.equalsIgnoreCase("-"))
+			{
+				return branchMasterService.insertbranchContact(contacttype, contactPhone, contactemail, branchid);
+			}else
+			{
+				return branchMasterService.updatebranchContact(Integer.parseInt(params.get("contactid")), contacttype, contactPhone, contactemail);
+			}		
+		}
+		if(params.get("functiontype").equalsIgnoreCase("Employee"))
 		{
-			return branchMasterService.updatebranchContact(Integer.parseInt(params.get("contactid")), contacttype, contactPhone, contactemail);
+			int empMasterid=Integer.parseInt(params.get("empMasterid"));
+			String contacttype = params.get("contacttype");
+			String contactPhone = params.get("contactPhone");
+			String contactemail = params.get("contactemail");
+			String contactid = params.get("contactid");
+			
+			itemlistService.savesingletxt(contacttype, "CONTACTTYPE");
+			
+			if(contactid.equalsIgnoreCase("-"))
+			{
+				return employeeMasterService.insertemployeeContact(contacttype, contactPhone, contactemail, empMasterid);
+			}else
+			{
+				return employeeMasterService.updateemployeeContact(Integer.parseInt(params.get("contactid")), contacttype, contactPhone, contactemail);
+			}
+			
+		}
+		else
+		{
+			throw new RuntimeException("functiontype is invalid");
 		}
 		
 	}
 	
 
 	@ResponseBody
-	@PostMapping("branchBankaccupdatejson")
-	public int branchBankaccupdatejson(@RequestParam Map<String, String> params)
+	@PostMapping("Bankaccupdatejson")
+	public int Bankaccupdatejson(@RequestParam Map<String, String> params)
 	{
-		int branchid=Integer.parseInt(params.get("BranchID"));
-		int acid=Integer.parseInt(params.get("acid"));
 		
-		String acno = params.get("acno");
-		String acname = params.get("acname");
-		String bankname = params.get("bankname");
-		String branchname = params.get("branchname");
-		String ifsccode = params.get("ifsccode");
-		
-		return branchMasterService.insertbranchAccountdetails(acid,acno,acname,bankname,branchname,ifsccode,branchid);
-		
-		
+		if(params.get("functiontype").equalsIgnoreCase("Branch"))
+		{
+			int branchid=Integer.parseInt(params.get("BranchID"));
+			int acid=Integer.parseInt(params.get("acid"));
+			String acno = params.get("acno");
+			String acname = params.get("acname");
+			String bankname = params.get("bankname");
+			String branchname = params.get("branchname");
+			String ifsccode = params.get("ifsccode");
+			return branchMasterService.insertbranchAccountdetails(acid,acno,acname,bankname,branchname,ifsccode,branchid);
+					
+		}
+		if(params.get("functiontype").equalsIgnoreCase("Employee"))
+		{
+			int empMasterid=Integer.parseInt(params.get("empMasterid"));
+			int acid=Integer.parseInt(params.get("acid"));
+			String acno = params.get("acno");
+			String acname = params.get("acname");
+			String bankname = params.get("bankname");
+			String branchname = params.get("branchname");
+			String ifsccode = params.get("ifsccode");
+			return branchMasterService.insertbranchAccountdetails(acid,acno,acname,bankname,branchname,ifsccode,empMasterid);
+					
+		}
+		else
+		{
+			throw new RuntimeException("functiontype is invalid");
+		}
 	}
 
 	@ResponseBody
-	@PostMapping("branchContactdeletejson")
-	public int branchContactdeletejson1(@RequestParam Map<String, String> params)
+	@PostMapping("Contactdeletejson")
+	public int Contactdeletejson1(@RequestParam Map<String, String> params)
 	{
-		int contactid = Integer.parseInt(params.get("contactid"));
-		return branchMasterService.deletebranchContact(contactid);
 		
+		if(params.get("functiontype").equalsIgnoreCase("Branch"))
+		{
+			int contactid = Integer.parseInt(params.get("contactid"));
+			return branchMasterService.deletebranchContact(contactid);		
+		}
+		if(params.get("functiontype").equalsIgnoreCase("Employee"))
+		{
+			int contactid = Integer.parseInt(params.get("contactid"));
+			return employeeMasterService.deleteemployeeContact(contactid);		
+		}
+		else
+		{
+			throw new RuntimeException("functiontype is invalid");
+		}
 		
 	}
 	@ResponseBody
-	@PostMapping("branchFiledeletejson")
-	public int branchFiledeletejson(@RequestParam Map<String, String> params)
+	@PostMapping("Filedeletejson")
+	public int Filedeletejson(@RequestParam Map<String, String> params)
 	{
-		int fileid = Integer.parseInt(params.get("fileid"));
-		return branchMasterService.deletebranchFiles(fileid);		
-		
+		if(params.get("functiontype").equalsIgnoreCase("Branch"))
+		{
+			int fileid = Integer.parseInt(params.get("fileid"));
+			return branchMasterService.deletebranchFiles(fileid);		
+		}
+		if(params.get("functiontype").equalsIgnoreCase("Employee"))
+		{
+			int fileid = Integer.parseInt(params.get("fileid"));
+			return employeeMasterService.deleteemployeeFiles(fileid);		
+		}
+		else
+		{
+			throw new RuntimeException("functiontype is invalid");
+		}
 	}
 
 	public BranchMaster branchListresponsebody(BranchMaster bm ) {
@@ -962,6 +1108,29 @@ public class HomeController {
 		return empid; 
 	}
 
+	@ResponseBody
+	@PostMapping("employeep1json")
+	public EmployeeMaster employeeuseredit (@RequestParam Map<String, String> params) {
+	
+		int empMasterid = Integer.parseInt(params.get("empMasterid"));
+		EmployeeMaster emp = employeeMasterService.findById(empMasterid);
+		emp.setStaffName(params.get("StaffName"));
+		emp.setFather_HusbandName(params.get("Father_HusbandName"));
+		emp.setGender(params.get("Gender"));
+		emp.setMaritalStatus(params.get("MaritalStatus"));
+		emp.setDateofBirth(params.get("DateofBirth"));
+		emp.setBloodGroup(params.get("BloodGroup"));
+		emp.setHeight(params.get("Height"));
+		emp.setWeight(params.get("Weight"));
+		emp.setShirtSize(params.get("ShirtSize"));
+		emp.setShoeSize(params.get("ShoeSize"));
+		emp.setPantSize(params.get("PantSize"));
+		emp.setAccommodation(params.get("Accommodation"));
+		
+		//params.entrySet().forEach(el -> { System.out.println(el.getKey() + " " + el.getValue());} );
+		return employeeMasterService.save(emp);
+	}
+	
 	@GetMapping("empnew")
 	public String employeeadd(Model themodel) {
 
@@ -1414,7 +1583,14 @@ public class HomeController {
 		EmployeeMaster employeemasternew = new EmployeeMaster();
 		employeemasternew = employeeMasterService.findById(id);
 		// System.out.println(employeemasternew);
-
+		if(employeemasternew.getEmployeeAccNo().size() == 0)
+		{
+			List<EmployeeAccNo> empAccNols = new ArrayList();
+			empAccNols.add(new EmployeeAccNo());
+			employeemasternew.setEmployeeAccNo(empAccNols);
+			employeemasternew = employeeMasterService.save(employeemasternew);
+		}
+		//-------------------------------------------
 		Set<EmployeeEducation> edulsnew = new LinkedHashSet<EmployeeEducation>();
 		Set<EmployeeEmgContact> emglsnew = new LinkedHashSet<EmployeeEmgContact>();
 		Set<EmployeeExperience> exptrlsnew = new LinkedHashSet<EmployeeExperience>();
@@ -1496,7 +1672,7 @@ public class HomeController {
 			}
 		}
 		//-------------------------------------------	
-
+		
 		List<String> MARITALSTATUS = itemlistService.findByFieldName("MARITAL STATUS");
 		themodel.addAttribute("MARITALSTATUS", MARITALSTATUS);
 		List<String> DEGREE = itemlistService.findByFieldName("DEGREE");
@@ -1505,7 +1681,9 @@ public class HomeController {
 		themodel.addAttribute("RELATION", RELATION);
 		List<String> LANGUAGE = itemlistService.findByFieldName("LANGUAGE");
 		themodel.addAttribute("LANGUAGE", LANGUAGE);
-
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		themodel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+		
 		themodel.addAttribute("employeeEducation", edulsnew);
 		themodel.addAttribute("employeeEmgContact", emglsnew);
 		themodel.addAttribute("employeeExperience", exptrlsnew);

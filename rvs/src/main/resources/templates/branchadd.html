@@ -339,11 +339,25 @@
                
                   <!-- /Document   Card -->
                  <!-- Bank Account Card -->
-                  
                   <div class="card mb-4">
                     <div class="card-body">
-                      <h5 class="pb-2 border-bottom mb-4">Bank Details</h5>
-                      <div class="info-container">
+                      <h5 class="pb-2 border-bottom mb-4">Bank Details
+                       
+                        <div class="card-action-element" style="float:right">
+                        <button
+                          class="btn btn-primary btn-sm"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          href="#bankdetailscollapseExample"
+                          aria-expanded="false"
+                          aria-controls="bankdetailscollapseExample"
+                        >
+                          <i class="bx bx-plus bx-xs me-1"></i> Bank Details
+                        </button>
+                      	</div>
+                      </h5>
+                      
+                      <div class="info-container collapse" id="bankdetailscollapseExample">
                       
                       
                          <ul class="list-unstyled" th:with ="accobj = ${BranchMaster.branchAccNo[0]}">
@@ -1268,6 +1282,7 @@ Model_CURRENT_STATUS
      
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
+    
 	<!-- Flat Picker -->
     <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
     <script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
@@ -1388,10 +1403,11 @@ Model_CURRENT_STATUS
 		  	        			AddressVillage : modalAddressVillage,
 		  	        			AddressCity : modalAddressCity,
 		  	        			AddressState : modalAddressState,
-		  	        			AddressZipCode : modalAddressZipCode
+		  	        			AddressZipCode : modalAddressZipCode,
+		  	        			functiontype : 'Branch'
 		  				 }
 		  				 $.ajax({
-		  						type : "POST",url : "branchAddressupdatejson",
+		  						type : "POST",url : "Addressupdatejson",
 		  						data : formData, success : function(result) {
 		  							var bmobj = JSON.parse(JSON.stringify(result));
 		  							//console.log(bmobj);
@@ -1472,10 +1488,11 @@ Model_CURRENT_STATUS
 		  	        			 contactid: modalcontactid,
 		  	        			 contacttype : modalcontacttype,
 		  	        			 contactPhone : modalcontactPhone,
-		  	        			 contactemail : modalContactemail
+		  	        			 contactemail : modalContactemail,
+		  	        			functiontype : 'Branch'
 		  				 }
 		  				 $.ajax({
-		  						type : "POST",url : "branchContactupdatejson",
+		  						type : "POST",url : "Contactupdatejson",
 		  						data : formData, success : function(result) {
 		  							var bmobj = JSON.parse(JSON.stringify(result));
 		  							
@@ -1527,24 +1544,7 @@ Model_CURRENT_STATUS
   			  });
   			// --------------------------------------------------------------------
   			
-  			$('.contactdeletebtn1').on('click', function(event){
   			
-  				let id=$(this).attr("name");
-  				
-  				var formData = {
- 	        			 contactid: id
- 	        			 
- 				 }
- 				 $.ajax({
- 						type : "POST",url : "branchContactdeletejson",
- 						data : formData, success : function(result) {
- 							$('.card'+id).remove();
- 						},
- 						error : function(e) {
- 							console.log("Error" + e);
- 						}
- 					});
-  			});
   			// --------------------------------------------------------------------
   		    // --------------------------------------------------------------------
   			// File uploading 		  
@@ -1554,13 +1554,14 @@ Model_CURRENT_STATUS
   						 
   						$('.documentsave').prop("disabled",true);
   						$('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-  						const endpoint ="branchfileuploadjson";
+  						const endpoint ="fileuploadjson";
   						const formdata= new FormData();
   						//console.log(modalFile.files);
   						formdata.append("File_Attach",modalFile.files[0]);
   						formdata.append("BranchID",$('#BranchID').val());
   						formdata.append("Documenttype",$('#modalDocumenttype').val());
   						formdata.append("DocNo",$('#modalDocNo').val());
+  						formdata.append("functiontype","Branch");
   						
   						  $.ajax({
   			   					type : "POST",url : endpoint,
@@ -1650,11 +1651,12 @@ Model_CURRENT_STATUS
 		  	        			acname : model_acname,
 		  	        			bankname : model_bankname,
 		  	        			branchname : model_branchname,
-		  	        			ifsccode : model_ifsccode
+		  	        			ifsccode : model_ifsccode,
+		  	        			functiontype : 'Branch'
 		  				 }
 		    	    	
 		  				 $.ajax({
-		  						type : "POST",url : "branchBankaccupdatejson",
+		  						type : "POST",url : "Bankaccupdatejson",
 		  						data : formData, success : function(result) {
 		  							var bmobj = JSON.parse(JSON.stringify(result));
 		  							console.log(bmobj);
@@ -1704,10 +1706,11 @@ Model_CURRENT_STATUS
            }).then(function (result) {
              if (result.value) {
               var formData = {
-           	 contactid: id
+           	 contactid: id,
+           	functiontype : 'Branch'
            	 }
    			 $.ajax({
-   					type : "POST",url : "branchContactdeletejson",
+   					type : "POST",url : "Contactdeletejson",
    					data : formData, success : function(result) {
    						$('.card'+id).remove();
    						Swal.fire({
@@ -1744,10 +1747,11 @@ Model_CURRENT_STATUS
            }).then(function (result) {
              if (result.value) {
               var formData = {
-            		  fileid: id
+            		  fileid: id,
+            		  functiontype : 'Branch'
            	 }
    			 $.ajax({
-   					type : "POST",url : "branchFiledeletejson",
+   					type : "POST",url : "Filedeletejson",
    					data : formData, success : function(result) {
    						$('.filecard'+id).remove();
    						Swal.fire({

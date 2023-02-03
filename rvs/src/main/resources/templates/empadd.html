@@ -454,8 +454,59 @@
                   <!-- /Bank Account Card -->
                 
                 </div>
-                <div class="col-xl-8 col-lg-7 col-md-7">
-                 
+                <div class="col-xl-4 col-lg-5 col-md-5">
+                	 <!-- Contact Card -->
+	                  <div class="card  mb-4">
+	                    <div class="card-body1">
+	                      <div class="card-header align-items-center">
+	                      <h5 class="card-action-title mb-0">Contact
+	                      <div class="card-action-element" style="float:right">
+	                        <button
+	                          class="btn btn-primary btn-sm addcontactbtn"
+	                          type="button"
+	                          name="-"
+	                          data-bs-toggle="modal"
+	                          data-bs-target="#addNewContact"
+	                        >
+	                          <i class="bx bx-plus bx-xs me-1"></i>Add Card
+	                        </button>
+	                      	</div>
+	                        </h5>
+	                      
+	                    </div>
+	                    <div class="card-body">
+	                      <div class="added-cards">
+	                      	<th:block th:each="contactObj : ${employeemaster.employeeContact}">
+	                        <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.employeecontactid}">
+	                          <div class="d-flex justify-content-between flex-sm-row flex-column">
+	                            <div class="card-information">
+	                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.employeecontactid}" th:text="${contactObj.Department}"></h6>
+	                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.employeecontactid}" th:text="${contactObj.Phonenumber}"></h6>
+	                              <span th:class="'card-number email'+ ${contactObj.employeecontactid}" th:text="${contactObj.Email}"></span
+	                              >
+	                              
+	                            </div>
+	                            <div class="d-flex flex-column text-start text-lg-end">
+	                              <div class="d-flex order-sm-0 order-1 mt-3">
+	                                <button
+	                                  class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.employeecontactid}"
+	                                  
+	                                >
+	                                  <i class='bx bxs-edit-alt'></i>
+	                                </button><br/>
+	                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.employeecontactid}"><i class='bx bxs-trash-alt'></i></button>
+	                              </div>
+	                              
+	                            </div>
+	                          </div>
+	                        </div>
+	                       	</th:block>
+	                       	<span id="contactaddidv"></span>
+	                       </div>
+	                    </div>
+	                    </div>
+	                  </div>
+	                  <!-- /Contact Card -->
                 </div>
               </div>
               <!--/ User Profile Content -->

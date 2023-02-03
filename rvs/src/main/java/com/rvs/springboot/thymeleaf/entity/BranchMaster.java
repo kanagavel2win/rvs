@@ -88,6 +88,11 @@ public class BranchMaster {
 	@JoinColumn(name = "branchid")
 	private List<BranchAccNo> branchAccNo;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "branchid")
+	private List<BranchEffective> branchEffective;
+	
+	
 	@Transient
 	private String BRANCH_IN_CHARGE_img;
 	@Transient

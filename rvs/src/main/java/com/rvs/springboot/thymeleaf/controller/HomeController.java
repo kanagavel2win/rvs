@@ -60,6 +60,7 @@ import com.rvs.springboot.thymeleaf.entity.AssetMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.AssetService;
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchAccNo;
+import com.rvs.springboot.thymeleaf.entity.BranchEffective;
 import com.rvs.springboot.thymeleaf.entity.BranchFiles;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckIn;
@@ -464,6 +465,21 @@ public class HomeController {
 		return "branchlist";
 
 	}
+	
+	@GetMapping("checkHeadofficeisPresant")
+	@ResponseBody
+	public boolean checkHeadofficeisPresant()
+	{
+		List<BranchMaster> bmList = branchMasterService.findAll().stream().filter(C-> C.getB_TYPE().equalsIgnoreCase("Head-Office")).collect(Collectors.toList());
+		if(bmList.size()> 0)
+		{
+			return true;
+		}else
+		{
+			return false;
+		}
+	}
+	
 
 	@ResponseBody
 	@PostMapping("branchsavejson")
@@ -478,6 +494,11 @@ public class HomeController {
 		bm.setCOMES_UNDER(params.get("branchHierarchy"));
 		bm.setCURRENT_STATUS(params.get("branchstatus"));
 		bm.setOFFICE_PHONE_NUMBER(params.get("branchOfficeContact"));
+		bm.setBranchCode(params.get("branchcode"));
+		
+		List<BranchEffective> bfls = new ArrayList<BranchEffective>();
+		bfls.add(new BranchEffective(0,params.get("branch_startdate"),params.get("branchstatus")));
+		bm.setBranchEffective(bfls);
 		bm= branchMasterService.save(bm);
 		return bm.getId(); 
 	}

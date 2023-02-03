@@ -60,6 +60,8 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/pickr/pickr-themes.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
      
     <!-- Row Group CSS -->
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css}" />
@@ -78,10 +80,7 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script th:src="@{/assets/js/config.js}"></script>
     <style>
-    #branchName,#branchemail,#branch_startdate
-    {
-    	border-right: solid 1px #d4d8dd;
-    }
+    
     
     </style>
   </head>
@@ -128,11 +127,11 @@
                         <th></th>
                         <th></th>
                         <th>id</th>
-                        <th>BRANCH</th>
+                        <th>Branch</th>
                         <th>In-Charge</th>
                         <th>Off-Contact</th>
                         <th>Off Email</th>
-                        <th>Started At</th>
+                        <th>Started On</th>
                         <th>Hierarchy</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -146,21 +145,21 @@
 			<button class="btnoffcanvas btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd" style="visibility:hidden" ></button>
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
 			  <div class="offcanvas-header">
-			    <h5 id="offcanvasEndLabel" class="offcanvas-title">New Branch</h5>
+			    <h5 id="offcanvasEndLabel" class="offcanvas-title">Add New Branch</h5>
 			    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			  </div>
 			 <div class="offcanvas-body flex-grow-1">
                   <form class="add-new-record pt-0 row g-2 needs-validation" id="form-add-new-record" onsubmit="return false" novalidate>
                      <div class="col-sm-12">
                       <label class="form-label" for="branch_type">TYPE</label>
-                      <div class="input-group input-group-merge">
-                        <span id="basicPost2" class="input-group-text"><i class="bx bxs-briefcase"></i></span>
+                      <div class="">
+                        
                         <select class="form-select" id="branch_type" required>
                            <option value="">Select Branch Type</option>
                            <option value="Head-Office">Head Office</option>
-                           <option value="Branch">Branch</option>
-                           <option value="Sub-Branch">Sub-Branch</option>
-                           <option value="Field-Branch">Field-Office</option>
+                           <option value="Branch">Branch Office</option>
+                           <option value="Sub-Branch">Sub Branch</option>
+                           <option value="Field-Branch">Field Office</option>
                          </select>
                           
                           <div class="invalid-feedback">Please enter Branch Type.</div>
@@ -168,23 +167,41 @@
                     </div> 
                     <div class="col-sm-12">
                       <label class="form-label" for="branchName">BRANCH NAME</label>
-                      <div class="input-group input-group-merge has-validation">
-                        <span id="basicFullname2" class="input-group-text"><i class="bx bxs-business"></i></span>
+                      <div class="has-validation">
+                        
                          <input
                           type="text"
                           id="branchName"
-                          class="form-control dt-full-name"
+                          placeholder="e.g. Coimbatore"
+                          class="form-control"
                            required
                         />
+                        
                        <div class="invalid-feedback">Please enter the Branch Name.</div>
+                      </div>
+                       
+                    </div>
+                    <div class="col-sm-12">
+                      <label class="form-label" for="branchcode">BRANCH Code</label>
+                      <div class="has-validation">
+                        
+                         <input
+                          type="text"
+                          id="branchcode"
+                          placeholder="e.g. CBE"
+                          class="form-control"
+                           required
+                        />
+                        
+                       <div class="invalid-feedback">Please enter the Branch Code.</div>
                       </div>
                        
                     </div>
                     
                     <div class="col-sm-12">
                       <label class="form-label" for="branch_incharge">In-Charge</label>
-                      <div class="input-group input-group-merge">
-                        <span id="basicPost2" class="input-group-text"><i class="bx bx-male"></i></span>
+                      <div class="">
+                        
                         <select class="form-select" id="branch_incharge" required>
                            <option value="">Select In-Charge</option>
                            <option th:each="emp :${EffectiveEmployee}" th:value="${emp.empMasterid}"  th:text="${emp.StaffName}"></option>
@@ -197,23 +214,27 @@
                     
                     <div class="col-sm-12">
                       <label class="form-label" for="branch_startdate">Started On</label>
-                      <div class="input-group input-group-merge">
-                        <span id="basicDate2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                      <div class="has-validation">
+                        
                         <input
                             type="text"
                             class="form-control"
                             id="branch_startdate"
+                            placeholder="e.g. Feb-01-2020"
+                            value=""
                             required
                           />
-                          <div class="invalid-feedback">Please enter a valid Started Date</div>
+                          
+                          
                       </div>
                     </div>
                     <div class="col-sm-12">
                       <label class="form-label" for="branchHierarchy">Hierarchy</label>
-                      <div class="input-group input-group-merge">
-                        <span id="basicPost2" class="input-group-text"><i class="bx bx-sitemap"></i></span>
+                      <div class="">
+                        
                         <select class="form-select" id="branchHierarchy" required>
                            <option value="">Select Hierarchy</option>
+                           <option value="-">Self</option>
                            <option th:each="branch :${branchlist}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option>
                            
                          </select>
@@ -223,7 +244,7 @@
                     
                  
                     <div class="col-sm-12">
-                      <button type="submit" class="btn btn-primary newbranchdatasubmit me-sm-3 me-1">Submit</button>
+                      <button type="submit" class="btn btn-primary newbranchdatasubmit me-sm-3 me-1">ADD</button>
                       <button type="reset" class="btn btn-outline-secondary newbranchdataclose" data-bs-dismiss="offcanvas">Cancel</button>
                     </div>
                   </form>
@@ -297,6 +318,8 @@
     <!-- endbuild -->
 
      <!-- Vendors JS -->
+     <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+    <script th:src="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
@@ -420,8 +443,12 @@
 			            render: function(data, type, full, meta) {
 			            	 $name = full['branch_NAME'];
 			            	 $branch_Type = full['branch_Type_2w'];
-			            	 
-			            	 $row_output ='<a href="editbranch?id='+ full['id'] +'"> '+ $name +" ("+ $branch_Type+ ") </a>";
+			            	 $branchCode="";
+		            		 if(full['branchCode'] !=null)
+		                	{
+		                	 $branchCode= full['branchCode'] + "-"+ full['id'];
+		                	}
+			            	 $row_output ='<a href="editbranch?id='+ full['id'] +'"> '+ $name +" ("+ $branch_Type+ ") </a><br/>"+  $branchCode;
 			            	 return $row_output;
 			            }
 			          },
@@ -539,15 +566,7 @@
 			          searchable: false,
 			          render: function(data, type, full, meta) {
 			            return (
-			              '<div class="d-inline-block">' +
-			              '<a href="javascript:;" class="btn btn-sm text-primary btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>' +
-			              '<ul class="dropdown-menu dropdown-menu-end">' +
-			              '<li><a href="javascript:;" class="dropdown-item">Details</a></li>' +
-			              '<li><a href="javascript:;" class="dropdown-item">Archive</a></li>' +
-			              '<div class="dropdown-divider"></div>' +
-			              '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a></li>' +
-			              '</ul>' +
-			              '</div>' +
+			           
 			              '<a href="editbranch?id='+ full['id'] +'" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
 			            );
 			          }
@@ -647,9 +666,23 @@
 	   }
    	// --------------------------------------------------------------------
       $('.needs-validation').on('submit', function(event){
-    	  $('.newbranchdatasubmit').prop("disabled",true);
     	  
-    	    if(event.target.checkValidity()){
+    	 if($('#branch_startdate').val() == '')
+    	 {
+	    	  Swal.fire({
+			        title: '',
+			        text: 'Start Date Should not be empty!',
+			        confirmButtonText: 'Ok',
+			        customClass: {
+			          confirmButton: 'btn btn-primary'
+			        },
+			        buttonsStyling: false
+			      });
+   		 }else
+   		 {
+    	  
+    	    if(event.target.checkValidity() && $('#branch_startdate').val() !='' ){
+    	    	$('.newbranchdatasubmit').prop("disabled",true);
     	    	$('.newbranchdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
     	    	  
     	    	var branchName =$('#branchName').val();
@@ -657,6 +690,7 @@
 	        	var branch_incharge =$('#branch_incharge').val();
 	        	var branch_startdate =$('#branch_startdate').val();
 	        	var branchHierarchy =$('#branchHierarchy').val();
+	        	var branchCode =$('#branchcode').val();
 	        	
 	        	 var formData = {
 	        			 branchName : branchName,
@@ -666,7 +700,8 @@
 	        			 branch_startdate : branch_startdate,
 	        			 branchHierarchy : branchHierarchy,
 	        			 branchstatus : "Active",
-	        			 branchOfficeContact: ""
+	        			 branchOfficeContact: "",
+	        			 branchcode:branchCode
 				 }
 				 $.ajax({
 						type : "POST",url : "branchsavejson",
@@ -696,105 +731,56 @@
 						
 					});
 	        	
-	        }	
-    	    else
-        	{
-    	    	$('.newbranchdatasubmit').prop("disabled",false);
-        	}
+		        }	
+	    	    else
+	        	{
+	    	    	$('.newbranchdatasubmit').prop("disabled",false);
+	        	}
+   		 }
 	    });
    // --------------------------------------------------------------------
-      /* $('#tv').on('click', function(event){
-    	  alert($("#TagifyUserList"));
-    	  var bmobj = JSON.parse(JSON.stringify($("#TagifyUserList")));
-    	  alert(bmobj.value);
-      }); */
+     
+     $(document).on("change", "#branch_type", function() {	
+			var val=$(this).val();
+			
+			if(val == 'Head-Office')
+			{
 
+				 $.ajax({
+						type : "GET",url : "checkHeadofficeisPresant",
+						data :'' ,success : function(result) {
+								if(result == true)
+									{
+										Swal.fire({
+									        title: '',
+									        text: "We can't add more than one Head Offices",
+									        confirmButtonText: 'Ok',
+									        customClass: {
+									          confirmButton: 'btn btn-primary'
+									        },
+									        buttonsStyling: false
+									      });
+										$('#branch_type').val('').change();
+									}else
+									{
+										$('#branchHierarchy').append('<option value="-">Self</option>');
+										$('#branchHierarchy').val('-').change();
+										$('#branchHierarchy').attr('disabled',true);
+									}
+						 }
+				 });
+				 
+			}else
+				{
+				    $('#branchHierarchy option[value="-"]').remove();
+					$('#branchHierarchy').attr('disabled',false);
+				}
+		});
    //------------------------------------------------------------------------ 		
     		
     	});
   //------------------------------------------------------------------------
-  //normal JS Started
-   /* const TagifyUserListEl = document.querySelector('#TagifyUserList');
-				function tagTemplate(tagData) {
-			      return `
-			      <tag title="${tagData.value}"
-			        contenteditable='false'
-			        spellcheck='false'
-			        tabIndex="-1"
-			        class="${this.settings.classNames.tag} ${tagData.class ? tagData.class : ''}"
-			        ${this.getAttributes(tagData)}
-			      >
-			        <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-			        <div>
-			          <div class='tagify__tag__avatar-wrap'>
-			            <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-			          </div>
-			          <span class='tagify__tag-text'>${tagData.name}</span>
-			        </div>
-			      </tag>
-			    `;
-			    }
-			
-			    function suggestionItemTemplate(tagData) {
-			      return `
-			      <div ${this.getAttributes(tagData)}
-			        class='tagify__dropdown__item align-items-center ${tagData.class ? tagData.class : ''}'
-			        tabindex="0"
-			        role="option"
-			      >
-			        ${
-			          tagData.avatar
-			            ? `<div class='tagify__dropdown__item__avatar-wrap'>
-			            <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-			          </div>`
-			            : ''
-			        }
-			        <strong>${tagData.name}</strong>
-			        
-			      </div>
-			    `;
-			    }
-			
-			  //------------------------------------------------------------------------		    
-    var formData = {}
-	 $.ajax({
-			type : "GET",url : "employeetagifylist",
-			data : formData, success : function(result) {
-				const usersList = result;
-				console.log(result);
-				//----------------------------------------
-				
-			    // initialize Tagify on the above input node reference
-			    let TagifyUserList = new Tagify(TagifyUserListEl, {
-			      tagTextProp: 'name', // very important since a custom template is used with this property as text. allows typing a "value" or a "name" to match input with whitelist
-			      enforceWhitelist: true,
-			      maxTags: 1,
-			      skipInvalid: true, // do not remporarily add invalid tags
-			      dropdown: {
-			        closeOnSelect: false,
-			        enabled: 0,
-			        classname: 'users-list',
-			        searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
-			      },
-			      templates: {
-			        tag: tagTemplate,
-			        dropdownItem: suggestionItemTemplate
-			      },
-			      whitelist: usersList
-			    });
-			
-			    TagifyUserList.on('dropdown:show dropdown:updated', onDropdownShow);
-			    TagifyUserList.on('dropdown:select', onSelectSuggestion);
-			
-			   
-				//----------------------------------------
-			},
-			error : function(e) {
-				console.log("Error" + e);
-				
-			}
-			
-		}); */
+  
     // Users List suggestion
     //------------------------------------------------------
     // Date Format

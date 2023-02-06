@@ -51,9 +51,9 @@ public class BranchMasterImp implements BranchMasterService {
 	}
 
 	@Override
-	public int insertbranchContact(String dep, String phonenumber, String email,int branchid) {
+	public int insertbranchContact(String dep, String phonenumber, String email,int branchid, boolean primary) {
 
-		final String sql="INSERT INTO `branch_contact`(`department`, `email`, `phonenumber`, `id`) VALUES ('"+ dep +"','"+ email +"','"+ phonenumber +"',"+ branchid +")";
+		final String sql="INSERT INTO `branch_contact`(`department`, `email`, `phonenumber`, `id`,primarycontact) VALUES ('"+ dep +"','"+ email +"','"+ phonenumber +"',"+ branchid +","+ primary +")";
 		
 		KeyHolder keyHolder =new GeneratedKeyHolder();
 		
@@ -68,8 +68,8 @@ public class BranchMasterImp implements BranchMasterService {
 	}
 
 	@Override
-	public int updatebranchContact(int id, String dep, String phonenumber, String email) {
-		String sql="UPDATE `branch_contact` SET `department`='"+ dep +"',`email`='"+ email +"',`phonenumber`='"+ phonenumber +"' WHERE branchcontactid=" +id ;
+	public int updatebranchContact(int id, String dep, String phonenumber, String email, boolean primary) {
+		String sql="UPDATE `branch_contact` SET `department`='"+ dep +"',`email`='"+ email +"',`phonenumber`='"+ phonenumber +"',primarycontact="+ primary + " WHERE branchcontactid=" +id ;
 		return jdbcTemplate.update(sql);
 	}
 

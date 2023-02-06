@@ -29,4 +29,7 @@ public class BranchContact {
 	private String Phonenumber;
 	@Column
 	private String Email;
+	@Column(columnDefinition = "boolean default false")	
+	private Boolean primarycontact;	
+	
 	}

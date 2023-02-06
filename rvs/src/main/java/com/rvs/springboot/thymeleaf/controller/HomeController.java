@@ -508,12 +508,21 @@ public class HomeController {
 	{
 		int branchid=Integer.parseInt(params.get("BranchID"));
 		BranchMaster bm= branchMasterService.findById(branchid);
+		
+		if(!bm.getCURRENT_STATUS().equalsIgnoreCase(params.get("branchstatus")))
+		{
+			List<BranchEffective> bfls = bm.getBranchEffective();
+			bfls.add(new BranchEffective(0,params.get("effectiveon") ,params.get("branchstatus")));
+			bm.setBranchEffective(bfls);
+		}
 		bm.setB_TYPE(params.get("branch_type"));
 		bm.setBRANCH_NAME(params.get("branchName"));
 		bm.setBRANCH_IN_CHARGE(params.get("branch_incharge"));
 		bm.setSTATED_DATE(params.get("branch_startdate"));
 		bm.setCOMES_UNDER(params.get("branchHierarchy"));
 		bm.setCURRENT_STATUS(params.get("branchstatus"));
+		bm.setBranchCode(params.get("branchCode"));
+		
 		bm= branchMasterService.save(bm);
 		return branchListresponsebody(bm); 
 		
@@ -676,15 +685,15 @@ public class HomeController {
 			String contactPhone = params.get("contactPhone");
 			String contactemail = params.get("contactemail");
 			String contactid = params.get("contactid");
-			
+			boolean primarycontact =Boolean.parseBoolean(params.get("primarycontact"));
 			itemlistService.savesingletxt(contacttype, "CONTACTTYPE");
 			
 			if(contactid.equalsIgnoreCase("-"))
 			{
-				return branchMasterService.insertbranchContact(contacttype, contactPhone, contactemail, branchid);
+				return branchMasterService.insertbranchContact(contacttype, contactPhone, contactemail, branchid,primarycontact);
 			}else
 			{
-				return branchMasterService.updatebranchContact(Integer.parseInt(params.get("contactid")), contacttype, contactPhone, contactemail);
+				return branchMasterService.updatebranchContact(Integer.parseInt(params.get("contactid")), contacttype, contactPhone, contactemail, primarycontact);
 			}		
 		}
 		if(params.get("functiontype").equalsIgnoreCase("Employee"))
@@ -822,6 +831,20 @@ public class HomeController {
 				}
 
 			}
+			
+			// Branch Effective
+			List<BranchEffective> branchEffective =bm.getBranchEffective();
+			
+			if (branchEffective.size() > 0) {
+				branchEffective.sort(Comparator.comparing(BranchEffective::getEffectivedate));
+				bm.setEffectiveon(branchEffective.get(branchEffective.size()-1).getEffectivedate());
+				try {
+					bm.setEffectiveonMMformat(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(branchEffective.get(branchEffective.size()-1).getEffectivedate())).toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			} 
+			//-------------------------------------------
 
 		return bm;
 	}
@@ -954,6 +977,21 @@ public class HomeController {
 				}
 				bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
 		}
+		
+		//-------------------------------------------
+		// Branch Effective
+				List<BranchEffective> branchEffective = new ArrayList<>();
+				branchEffective =branchMasterService.findById(branchid).getBranchEffective();
+				if (branchEffective.size() > 0) {
+					branchEffective.sort(Comparator.comparing(BranchEffective::getEffectivedate));
+					bm.setEffectiveon(branchEffective.get(branchEffective.size()-1).getEffectivedate());
+					try {
+						bm.setEffectiveonMMformat(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(branchEffective.get(branchEffective.size()-1).getEffectivedate())).toString());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				} 
+		//-------------------------------------------
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 		

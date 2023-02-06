@@ -94,7 +94,7 @@
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="py-3 breadcrumb-wrapper mb-4">
-                <span class="text-muted fw-light">Administration/Branches/</span> View
+                <span class="text-muted fw-light">Administration/<a href="branchlist">Branches</a>/</span> View
               </h4>
               <div class="row gy-4">
                 <!-- User Sidebar -->
@@ -113,7 +113,7 @@
                           />
                           <div class="user-info text-center">
                             <h5 class="mb-2" th:text="${BranchMaster.BRANCH_NAME}"></h5>
-                            <span class="badge bg-label-secondary"  th:text="${BranchMaster.BranchCode}"></span>
+                            <span class="badge bg-label-secondary"  th:text="${BranchMaster.BranchCode} +'-'+ ${BranchMaster.id}"></span>
                           </div>
                         </div>
                       </div>
@@ -141,8 +141,25 @@
                             <span th:text="${BranchMaster.B_TYPE}" id="Lbl_B_TYPE"></span>
                           </li>
                           <li class="mb-3">
-                            <span class="fw-bold me-2">Name:</span>
+                            <span class="fw-bold me-2">Branch Name:</span>
                             <span  th:text="${BranchMaster.BRANCH_NAME}" id="Lbl_BRANCH_NAME"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Branch Code:</span>
+                            <span  th:text="${BranchMaster.BranchCode}" id="Lbl_BranchCode"></span>
+                          </li>
+                          
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">In-Charge Name:</span>
+                            <span th:text="${BranchMaster.BRANCH_IN_CHARGE_name}"  id="Lbl_BRANCH_IN_CHARGE"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Started On :</span>
+                            <span th:text="${BranchMaster.startdateMMformat}" id="Lbl_STATED_DATE"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Hierarchy:</span>
+                            <span th:text="${BranchMaster.COMES_UNDER_name}"  id="Lbl_COMES_UNDER"></span>
                           </li>
                           <li class="mb-3">
                             <span class="fw-bold me-2">Status:</span>
@@ -152,16 +169,8 @@
                             </span>
                           </li>
                           <li class="mb-3">
-                            <span class="fw-bold me-2">In-Charge Name:</span>
-                            <span th:text="${BranchMaster.BRANCH_IN_CHARGE_name}"  id="Lbl_BRANCH_IN_CHARGE"></span>
-                          </li>
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">Hierarchy:</span>
-                            <span th:text="${BranchMaster.COMES_UNDER_name}"  id="Lbl_COMES_UNDER"></span>
-                          </li>
-                          <li class="mb-3">
                             <span class="fw-bold me-2">Effect On :</span>
-                            <span th:text="${BranchMaster.startdateMMformat}" id="Lbl_STATED_DATE"></span>
+                            <span th:text="${BranchMaster.effectiveonMMformat}" id="Lbl_effectiveon"></span>
                           </li>
                         
                         </ul>
@@ -174,7 +183,7 @@
                             id="editBranchdetailsbtn"
                             >Edit</a
                           >
-                          <a href="javascript:;" class="btn btn-label-danger suspend-user">Suspended</a>
+                          
                         </div>
                       </div>
                     </div>
@@ -205,6 +214,7 @@
                         <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.branchcontactid}">
                           <div class="d-flex justify-content-between flex-sm-row flex-column">
                             <div class="card-information">
+                              <input type="hidden" th:class="'primarycontact'+ ${contactObj.branchcontactid}" th:value="${contactObj.primarycontact}"/>
                               <h6 th:class="'mb-3 contacttype'+ ${contactObj.branchcontactid}" th:text="${contactObj.Department}"></h6>
                               <h6 th:class="'mb-1 phonenumber'+ ${contactObj.branchcontactid}" th:text="${contactObj.Phonenumber}"></h6>
                               <span th:class="'card-number email'+ ${contactObj.branchcontactid}" th:text="${contactObj.Email}"></span
@@ -213,13 +223,11 @@
                             </div>
                             <div class="d-flex flex-column text-start text-lg-end">
                               <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button
-                                  class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.branchcontactid}"
-                                  
-                                >
+                                <button class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.branchcontactid}" >
                                   <i class='bx bxs-edit-alt'></i>
                                 </button><br/>
                                 <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.branchcontactid}"><i class='bx bxs-trash-alt'></i></button>
+                                
                               </div>
                               
                             </div>
@@ -345,14 +353,14 @@
                        
                         <div class="card-action-element" style="float:right">
                         <button
-                          class="btn btn-primary btn-sm"
+                          class="btn btn-primary btn-sm collapsetogglebtn"
                           type="button"
                           data-bs-toggle="collapse"
                           href="#bankdetailscollapseExample"
                           aria-expanded="false"
                           aria-controls="bankdetailscollapseExample"
                         >
-                          <i class="bx bx-plus bx-xs me-1"></i> Bank Details
+                          <i id="collapsetoggleicon" class="bx bx-chevron-down bx-xs me-1"></i> Bank Details
                         </button>
                       	</div>
                       </h5>
@@ -608,7 +616,14 @@
 						<input type="hidden" th:value="${BranchMaster['id']}" id="BranchID" th:field="*{id}"/>
 	                    
 	                    	<div class="col-12 col-md-3">
-	                          <div class="form-check custom-option custom-option-icon">
+	                          <div class="form-check custom-option custom-option-icon"
+	                          data-bs-toggle="tooltip"
+	                          data-bs-offset="0,4"
+	                          data-bs-placement="bottom"
+	                          data-bs-html="true"
+	                          title="<span>Controls B.O & S.O & T.O.</span>"
+	                        
+	                          >
 	                            <label class="form-check-label custom-option-content" for="radioHead-Office">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-building"></i>
@@ -621,13 +636,19 @@
 	                                type="radio"
 	                                value="Head-Office"
 	                                id="radioHead-Office"
-	                                
+	                                required
 	                              />
 	                            </label>
 	                          </div>
 	                        </div>
 	                        <div class="col-12 col-md-3">
-	                          <div class="form-check custom-option custom-option-icon">
+	                          <div class="form-check custom-option custom-option-icon"
+	                          data-bs-toggle="tooltip"
+	                          data-bs-offset="0,4"
+	                          data-bs-placement="bottom"
+	                          data-bs-html="true"
+	                          title="<span>Subordinate to the Head Office</span>"
+	                          >
 	                            <label class="form-check-label custom-option-content" for="radioBranch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-buildings"></i>
@@ -640,13 +661,19 @@
 	                                type="radio"
 	                                value="Branch"
 	                                id="radioBranch"
-	                                
+	                                required
 	                              />
 	                            </label>
 	                          </div>
 	                        </div>
 	                        <div class="col-12 col-md-3">
-	                          <div class="form-check custom-option custom-option-icon">
+	                          <div class="form-check custom-option custom-option-icon"
+	                          data-bs-toggle="tooltip"
+	                          data-bs-offset="0,4"
+	                          data-bs-placement="bottom"
+	                          data-bs-html="true"
+	                          title="<span>Comes under HO or BO and reports to the latter office.</span>"
+	                          >
 	                            <label class="form-check-label custom-option-content" for="radioSub-Branch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-building-house"></i>
@@ -658,13 +685,19 @@
 	                                type="radio"
 	                                value="Sub-Branch"
 	                                id="radioSub-Branch"
-	                                
+	                                required
 	                              />
 	                            </label>
 	                          </div>
 	                        </div>
 	                        <div class="col-12 col-md-3">
-	                          <div class="form-check custom-option custom-option-icon">
+	                          <div class="form-check custom-option custom-option-icon"
+	                          data-bs-toggle="tooltip"
+	                          data-bs-offset="0,4"
+	                          data-bs-placement="bottom"
+	                          data-bs-html="true"
+	                          title="<span>A Temporary office serves only to concern projects.</span>"
+	                          >
 	                            <label class="form-check-label custom-option-content" for="radioField-Branch">
 	                              <span class="custom-option-body">
 	                                <i class="bx bx-hard-hat"></i>
@@ -677,7 +710,7 @@
 	                                type="radio"
 	                                value="Field-Branch"
 	                                id="radioField-Branch"
-	                                
+	                                required
 	                              />
 	                              
 	                            </label>
@@ -698,6 +731,19 @@
                             required
                           />
                           <div class="invalid-feedback">Please enter Branch Name.</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                                
+	                              
+                          <label class="form-label" for="modaleditBranchdetailsFirstName">Branch Code</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_BranchCode"
+                            th:value="${BranchMaster['BranchCode']}"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Branch Code.</div>
                         </div>
                         <div class="col-12 col-md-6">
                           <label class="form-label" for="Model_BRANCH_IN_CHARGE">In-Charge Name</label>
@@ -732,7 +778,8 @@
                           th:field="*{COMES_UNDER}"
                           th:value="${BranchMaster['COMES_UNDER']}"
                           required>
-                           <option value="-">Select Hierarchy</option>
+                           <option value="">Select Hierarchy</option>
+                           <option value="-">Self</option>
                            <option th:each="branch :${BranchList}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option> 
                            
                          </select>
@@ -751,11 +798,22 @@
                             <option value="">Status</option>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
-                            <option value="Suspended">Suspended</option>
+                            
                           </select>
                           <div class="invalid-feedback">Please enter Status.</div>
                         </div>
-                       
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="Model_effectiveon">Effect On</label>
+                          <input
+                            type="date"
+                            class="form-control flatpickr-validation"
+                            id="Model_effectiveon"
+                            th:value="${BranchMaster['effectiveon']}"
+                            required
+                          />
+                          
+                         <div class="invalid-feedback">Please enter Effect on.</div>
+                        </div>
                       
                         <div class="col-12 text-center mt-4">
                           <button type="submit" class="btn btn-primary editbranchdatasubmit me-sm-3 me-1">Submit</button>
@@ -783,7 +841,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-4">
                         <h3>Contact Details</h3>
-                        <p>Office/department contact details</p>
+                        <p>Add/Update Contact Information</p>
                       </div>
                       <form id="addContactform" class="row g-3" onsubmit="return false">
                         <div class="col-12">
@@ -831,10 +889,27 @@
                             type="email"
                             id="modalContactemail"
                             class="form-control expiry-date-mask"
-                            required
+                            
                           />
                           <div class="invalid-feedback">Please enter a valid email</div>
                         </div>
+                        
+                        
+                        <div class="col-12">
+                          <label class="switch">
+                            <input type="checkbox" class="switch-input" id="modalcontactprimary"/>
+                            <span class="switch-toggle-slider">
+                              <span class="switch-on">
+                                <i class="bx bx-check"></i>
+                              </span>
+                              <span class="switch-off">
+                                <i class="bx bx-x"></i>
+                              </span>
+                            </span>
+                            <span class="switch-label">Make this as primary contact?</span>
+                          </label>
+                        </div>
+                        
                         <div class="col-12 text-center mt-4">
                           <button type="submit" class="btn  btn-primary me-sm-3 me-1 contactsavebtn">Submit</button>
                           <button
@@ -1318,40 +1393,59 @@ Model_CURRENT_STATUS
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
 	
 
-		 $('.editbranchdatasubmit').on('click', function(event){
+		 $('#editBranchdetailsForm').on('submit', function(event){
 
-		    	  $('.editbranchdatasubmit').prop("disabled",true);
-		    	  
+			 if($('#Model_STATED_DATE').val() == '' || $('#Model_effectiveon').val() == '')
+	    	 {
+		    	  Swal.fire({
+				        title: '',
+				        text: 'Start & Effect Date Should not be empty!',
+				        confirmButtonText: 'Ok',
+				        customClass: {
+				          confirmButton: 'btn btn-primary'
+				        },
+				        buttonsStyling: false
+				      });
+	   		 }else
+	   		 {	
 		    	    if(event.target.checkValidity()){
+		   			
+		    	    	$('.editbranchdatasubmit').prop("disabled",true);
 		    	    	$('.editbranchdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 		    	    	var BranchID=$("#BranchID").val();
 		    	    	var branchName =$('#Model_BRANCH_NAME').val();
 		  	        	var branch_type =$("input[name=Model_B_TYPE]:checked").val();
 		  	        	var branch_incharge =$('#Model_BRANCH_IN_CHARGE').val();
 		  	        	var branch_startdate =$('#Model_STATED_DATE').val();
-		  	        	var branchHierarchy =$('#Model_COMES_UNDER').val();
+		  	        	var Model_COMES_UNDER =$('#Model_COMES_UNDER').val();
+		  	        	var branchCode =$('#Model_BranchCode').val();
+		  	        	var effectiveon =$('#Model_effectiveon').val();
 		  	        	var branchcurrentstatus =$('#Model_CURRENT_STATUS').val();
+		  	        	
 		  	        	 var formData = {
 		  	        			 BranchID: BranchID,
 		  	        			 branchName : branchName,
 		  	        			 branch_type : branch_type,
 		  	        			 branch_incharge : branch_incharge,
 		  	        			 branch_startdate : branch_startdate,
-		  	        			 branchHierarchy : branchHierarchy,
-		  	        			 branchstatus : branchcurrentstatus
+		  	        			 branchHierarchy : Model_COMES_UNDER,
+		  	        			 branchstatus : branchcurrentstatus,
+		  	        			 effectiveon: effectiveon,
+		  	        			 branchCode : branchCode
 		  				 }
 		  				 $.ajax({
 		  						type : "POST",url : "branchupdatejson",
 		  						data : formData, success : function(result) {
 		  							var bmobj = JSON.parse(JSON.stringify(result));
+		  							//console.log(bmobj);
 		  							
 		  							$('#Lbl_B_TYPE').text(bmobj.b_TYPE);
 		  							$('#Lbl_BRANCH_NAME').text(bmobj.branch_NAME);
 		  							$('#Lbl_BRANCH_IN_CHARGE').text(bmobj.branch_IN_CHARGE_name);
 		  							$('#Lbl_STATED_DATE').text(bmobj.startdateMMformat);
 		  							$('#Lbl_COMES_UNDER').text(bmobj.comes_UNDER_name);
-		  							
-		  							
+		  							$('#Lbl_BranchCode').text(bmobj.branchCode);
+		  							$('#Lbl_effectiveon').text(bmobj.effectiveonMMformat);
 		  							if(bmobj.current_STATUS == 'Active')
 	  								{
 		  								$('#Lbl_CURRENT_STATUS').html('<span  class="badge bg-label-success">Active</span>');
@@ -1373,10 +1467,50 @@ Model_CURRENT_STATUS
 		    	    	$('.editbranchdatasubmit').prop("disabled",false);
 		        	}
 
-
+	   		 }
 		    	
 		      });
-	  		//--------------------------------------------------------------------------------------------------------------------------------------		 
+		// --------------------------------------------------------------------
+	     
+	     $(document).on("change", "input[name=Model_B_TYPE]", function() {	
+				var val=$(this).val();
+				
+				if(val == 'Head-Office')
+				{
+
+					 $.ajax({
+							type : "GET",url : "checkHeadofficeisPresant",
+							data :'' ,success : function(result) {
+									if(result == true)
+										{
+											Swal.fire({
+										        title: '',
+										        text: "We can't add more than one Head Offices",
+										        confirmButtonText: 'Ok',
+										        customClass: {
+										          confirmButton: 'btn btn-primary'
+										        },
+										        buttonsStyling: false
+										      });
+											document.getElementById("radioHead-Office").checked=false;
+											
+										}else
+										{
+											
+											$('#Model_COMES_UNDER').append('<option value="-">Self</option>');
+											$('#Model_COMES_UNDER').val('-').change();
+											$('#Model_COMES_UNDER').attr('disabled',true);
+										}
+							 }
+					 });
+					 
+				}else
+					{
+					    $('#Model_COMES_UNDER option[value="-"]').remove();
+						$('#Model_COMES_UNDER').attr('disabled',false);
+					}
+			});
+	   //------------------------------------------------------------------------ 			 
 	
 
 		 $('.editbranchAddressdatasubmit').on('click', function(event){
@@ -1474,6 +1608,7 @@ Model_CURRENT_STATUS
   			
   			   	$('#addContactform').on('submit', function(event){
   			   	 
+  			   
   			   		$('.contactsavebtn').prop("disabled",true);
 		    	  
 		    	    if(event.target.checkValidity()){
@@ -1483,12 +1618,14 @@ Model_CURRENT_STATUS
 		    	    	var modalcontacttype =$('#modalcontacttype').val();
 		    	    	var modalcontactPhone =$('#modalcontactPhone').val();
 		    	    	var modalContactemail =$('#modalContactemail').val();
+		    	    	var primarycontact =$("#modalcontactprimary").is(':checked');
 		    	    	var formData = {
 		  	        			 BranchID: BranchID,
 		  	        			 contactid: modalcontactid,
 		  	        			 contacttype : modalcontacttype,
 		  	        			 contactPhone : modalcontactPhone,
 		  	        			 contactemail : modalContactemail,
+		  	        			 primarycontact: primarycontact,
 		  	        			functiontype : 'Branch'
 		  				 }
 		  				 $.ajax({
@@ -1501,7 +1638,7 @@ Model_CURRENT_STATUS
 		  								let tempresultid=bmobj;
 		  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"'";
 			  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
-			  							tempresult += '<h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
+			  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
 			  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
 			  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
 			  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
@@ -1515,7 +1652,7 @@ Model_CURRENT_STATUS
 		  								$('.contacttype'+modalcontactid).text(modalcontacttype);
 		  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
 		  								$('.email'+modalcontactid).text(modalContactemail);
-		  								
+		  								$('.primarycontact'+modalcontactid).val(primarycontact);
 	  									 
 	  								}
 			  							validationformContactreset();
@@ -1678,7 +1815,11 @@ Model_CURRENT_STATUS
 		        	}
   			   	});	
   			// --------------------------------------------------------------------
-  			
+  			$('.collapsetogglebtn').click(function(){
+  				 $('#collapsetoggleicon').toggleClass('bx-chevron-down bx-chevron-up'); 
+  			});
+  			// --------------------------------------------------------------------
+  			  
 		    }); // Jquery
     
     function reply_click(id,contacttype,phonenumber,email)
@@ -1794,6 +1935,17 @@ Model_CURRENT_STATUS
 	      dateFormat: 'Y-m-d'
 	    });
 	  }
+	 
+	// Date Format
+	   const flatpickrFriendly1 = document.querySelector('#Model_effectiveon');
+		 // Human Friendly
+		  if (flatpickrFriendly1) {
+		    flatpickrFriendly1.flatpickr({
+		      altInput: true,
+		      altFormat: 'F j, Y',
+		      dateFormat: 'Y-m-d'
+		    });
+		  }
     
 	
     </script>

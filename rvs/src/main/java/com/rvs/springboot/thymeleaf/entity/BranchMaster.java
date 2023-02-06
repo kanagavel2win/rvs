@@ -106,4 +106,8 @@ public class BranchMaster {
 	@Transient
 	private String COMES_UNDER_name;
 	
+	@Transient
+	private String effectiveon;
+	@Transient
+	private String effectiveonMMformat;	
 }

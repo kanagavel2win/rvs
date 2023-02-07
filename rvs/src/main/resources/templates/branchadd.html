@@ -5,7 +5,7 @@
   lang="en"
   class="light-style layout-navbar-fixed layout-menu-fixed"
   dir="ltr"
-  data-theme="theme-semi-dark"
+  data-theme="theme-default"
   th:data-assets-path="@{/assets/}"
   data-template="vertical-menu-template"
   
@@ -994,7 +994,7 @@
                             class="form-control"
                             placeholder="Flat, House no, Building, Apartment"
                             th:value="${BranchMaster.BRANCH_ADDRESSLINE1}"
-                            
+                            required
                           />
                         </div>
                         <div class="col-12">
@@ -1037,6 +1037,7 @@
                             name="modalAddressCity"
                             class="form-control"
                             th:value="${BranchMaster.CITY}"
+                            required
                           />
                         </div>
                         <div class="col-12 col-md-6">
@@ -1058,7 +1059,7 @@
                             name="modalAddressZipCode"
                             class="form-control"
                             th:value="${BranchMaster.ZIP_CODE}"
-                            required
+                            
                           />
                         </div>
                         
@@ -1128,7 +1129,7 @@
                         <div class="col-12 text-center mt-4">
                           <button type="submit" class="btn btn-primary me-sm-3 me-1 documentsave">ADD</button>
                           <button
-                            type="button"
+                            type="reset"
                             class="btn btn-label-secondary btn-reset documentclose"
                             data-bs-dismiss="modal"
                             aria-label="Close"
@@ -1151,7 +1152,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-4">
                         <h3>Bank Details  </h3>
-                        <p>Add/Update Branch Information</p>
+                        <p>Add/Update Bank Information</p>
                       </div>
                       <form id="addNewBankDetails" class="row g-3" onsubmit="return false" th:with ="accobj = ${BranchMaster.branchAccNo[0]}">
                         
@@ -1283,12 +1284,7 @@
             <footer class="content-footer footer bg-footer-theme">
               <div class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                 <div class="mb-2 mb-md-0">
-                  Â©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  , made with â¤ï¸ by
-                  <a href="https://pixinvent.com" target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
+                
                 </div>
                 <div>
 
@@ -1723,7 +1719,7 @@ Model_CURRENT_STATUS
   				    	 {
   					    	  Swal.fire({
   							        title: '',
-  							        text: 'Document No or Upload file Should not be empty!',
+  							        text: 'Either Document No (or) Upload file is mandatory!',
   							        confirmButtonText: 'Ok',
   							        customClass: {
   							          confirmButton: 'btn btn-primary'

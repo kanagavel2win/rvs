@@ -815,7 +815,7 @@ public class HomeController {
 				}
 			}else
 			{
-				bm.setCOMES_UNDER_name("self");
+				bm.setCOMES_UNDER_name("Self");
 			}
 			if (!bm.getB_TYPE().equalsIgnoreCase("")) {
 				bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");

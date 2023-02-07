@@ -157,9 +157,9 @@
                         <select class="form-select" id="branch_type" required>
                            <option value="">Select Branch Type</option>
                            <option value="Head-Office">Head Office</option>
-                           <option value="Branch">Branch Office</option>
-                           <option value="Sub-Branch">Sub Branch</option>
-                           <option value="Field-Branch">Field Office</option>
+                           <option value="Branch-Office">Branch Office</option>
+                           <option value="Sub-Office">Sub Office</option>
+                           <option value="Field-Office">Field Office</option>
                          </select>
                           
                           <div class="invalid-feedback">Please enter Branch Type.</div>
@@ -448,7 +448,7 @@
 		                	{
 		                	 $branchCode= full['branchCode'] + "-"+ full['id'];
 		                	}
-			            	 $row_output ='<a href="editbranch?id='+ full['id'] +'"> '+ $name +" ("+ $branch_Type+ ") </a><br/>"+  $branchCode;
+			            	 $row_output ='<a href="editbranch?id='+ full['id'] +'"> '+ $name +" ("+ $branch_Type+ ") </a><br/><small class='emp_post text-truncate text-muted'>"+  $branchCode + "</span>";
 			            	 return $row_output;
 			            }
 			          },
@@ -581,7 +581,7 @@
 			        {
 			          extend: 'collection',
 			          className: 'btn btn-label-primary dropdown-toggle me-2',
-			          text: '<i class="bx bx-show me-2"></i>Export',
+			          text: '<i class="bx bx-export me-2"></i>Export',
 			          buttons: [
 			            {
 			              extend: 'print',

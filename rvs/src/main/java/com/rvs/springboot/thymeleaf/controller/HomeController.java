@@ -569,7 +569,7 @@ public class HomeController {
 							int branchid=Integer.parseInt(params.get("BranchID"));
 							String Documenttype=params.get("Documenttype");
 							String DocNo=params.get("DocNo");
-							
+							itemlistService.savesingletxt(Documenttype, "Documenttype");
 							int id= branchMasterService.insertbranchFiles(Documenttype, DocNo,  filename.toString(), branchid);
 							
 							bfiles.setBranchfilesid(id);
@@ -613,6 +613,8 @@ public class HomeController {
 							int employeeid=Integer.parseInt(params.get("empMasterid"));
 							String Documenttype=params.get("Documenttype");
 							String DocNo=params.get("DocNo");
+							
+							itemlistService.savesingletxt(Documenttype, "Documenttype");
 							
 							int id= employeeMasterService.insertemployeeFiles(Documenttype, DocNo,  filename.toString(), employeeid);
 							
@@ -994,6 +996,9 @@ public class HomeController {
 		//-------------------------------------------
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+		
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
 		
 		theModel.addAttribute("BranchMaster", bm);
 		theModel.addAttribute("BranchList", branchMasterService.findAll());		

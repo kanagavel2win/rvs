@@ -234,7 +234,7 @@
                         
                         <select class="form-select" id="branchHierarchy" required>
                            <option value="">Select Hierarchy</option>
-                           <option value="-">Self</option>
+                           <option value="Self">Self</option>
                            <option th:each="branch :${branchlist}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option>
                            
                          </select>
@@ -753,7 +753,7 @@
 									{
 										Swal.fire({
 									        title: '',
-									        text: "We can't add more than one Head Offices",
+									        text: "A company can only have one head and it already exists",
 									        confirmButtonText: 'Ok',
 									        customClass: {
 									          confirmButton: 'btn btn-primary'

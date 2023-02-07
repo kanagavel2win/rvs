@@ -806,13 +806,16 @@ public class HomeController {
 		Date todaydate = new Date();
 		List<BranchMaster> bmList = branchMasterService.findAll();
 			
-			if(!bm.getCOMES_UNDER().equalsIgnoreCase("-"))
+			if(!bm.getCOMES_UNDER().equalsIgnoreCase("Self"))
 			{
 				List<BranchMaster> templist=bmList.stream().filter(C-> C.getId() == Integer.parseInt(bm.getCOMES_UNDER())).collect(Collectors.toList());
 				if(templist.size()>0)
 				{
 					bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
 				}
+			}else
+			{
+				bm.setCOMES_UNDER_name("self");
 			}
 			if (!bm.getB_TYPE().equalsIgnoreCase("")) {
 				bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");

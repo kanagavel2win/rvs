@@ -880,13 +880,16 @@ public class HomeController {
 
 		for (BranchMaster bm : bmList) {
 			
-			if(!bm.getCOMES_UNDER().equalsIgnoreCase("-"))
+			if(!bm.getCOMES_UNDER().equalsIgnoreCase("Self"))
 			{
 				List<BranchMaster> templist=bmList.stream().filter(C-> C.getId() == Integer.parseInt(bm.getCOMES_UNDER())).collect(Collectors.toList());
 				if(templist.size()>0)
 				{
 					bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
 				}
+			}else
+			{
+				bm.setCOMES_UNDER_name("Self");
 			}
 			if (!bm.getB_TYPE().equalsIgnoreCase("")) {
 				bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
@@ -955,7 +958,7 @@ public class HomeController {
 			bm = branchMasterService.save(bm);
 		}
 		
-		if(!bm.getCOMES_UNDER().equalsIgnoreCase("-"))
+		if(!bm.getCOMES_UNDER().equalsIgnoreCase("Self"))
 		{
 			int comes_underint = Integer.parseInt(bm.getCOMES_UNDER()); 
 			List<BranchMaster> templist=bmlist.stream().filter(C-> C.getId() == comes_underint).collect(Collectors.toList());
@@ -963,6 +966,9 @@ public class HomeController {
 			{
 				bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
 			}
+		}else
+		{
+			bm.setCOMES_UNDER_name("Self");
 		}
 		if (!bm.getB_TYPE().equalsIgnoreCase("")) {
 			bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");

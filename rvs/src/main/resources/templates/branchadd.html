@@ -826,7 +826,7 @@
                         </div>
                       
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary editbranchdatasubmit me-sm-3 me-1">Submit</button>
+                          <button type="submit" class="btn btn-primary editbranchdatasubmit me-sm-3 me-1">Update</button>
                           <button
                             type="button"
                             class="btn btn-label-secondary editbranchdataclose"
@@ -956,6 +956,7 @@
                             class="select2 form-select"
                             data-allow-clear="true"
                             th:value="${BranchMaster.COUNTRY}"
+                            required
                           >
                             <option value="">Select</option>
                             <option value="Australia">Australia</option>
@@ -993,6 +994,7 @@
                             class="form-control"
                             placeholder="Flat, House no, Building, Apartment"
                             th:value="${BranchMaster.BRANCH_ADDRESSLINE1}"
+                            
                           />
                         </div>
                         <div class="col-12">
@@ -1045,6 +1047,7 @@
                             name="modalAddressState"
                             class="form-control"
                             th:value="${BranchMaster.STATE}"
+                            required
                           />
                         </div>
                         <div class="col-12 col-md-6">
@@ -1055,11 +1058,12 @@
                             name="modalAddressZipCode"
                             class="form-control"
                             th:value="${BranchMaster.ZIP_CODE}"
+                            required
                           />
                         </div>
                         
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1 editbranchAddressdatasubmit">Submit</button>
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 editbranchAddressdatasubmit">Update</button>
                           <button
                             type="button"
                             class="btn btn-label-secondary editbranchAddressdataclose"
@@ -1122,7 +1126,7 @@
                           />
                         </div>
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1 documentsave">Submit</button>
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 documentsave">ADD</button>
                           <button
                             type="button"
                             class="btn btn-label-secondary btn-reset documentclose"
@@ -1206,7 +1210,7 @@
                         </div>
                         
                         <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1 BankDetailssave">Submit</button>
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 BankDetailssave">Update</button>
                           <button
                             type="button"
                             class="btn btn-label-secondary btn-reset BankDetailsclose"

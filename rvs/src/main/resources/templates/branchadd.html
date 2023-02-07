@@ -189,57 +189,7 @@
                     </div>
                   </div>
                   <!-- /User Card -->
-                  <!-- Contact Card -->
-                  <div class="card  mb-4">
-                    <div class="card-body1">
-                      <div class="card-header align-items-center">
-                      <h5 class="card-action-title mb-0">Contact
-                      <div class="card-action-element" style="float:right">
-                        <button
-                          class="btn btn-primary btn-sm addcontactbtn"
-                          type="button"
-                          name="-"
-                          data-bs-toggle="modal"
-                          data-bs-target="#addNewContact"
-                        >
-                          <i class="bx bx-plus bx-xs me-1"></i>Add Card
-                        </button>
-                      	</div>
-                        </h5>
-                      
-                    </div>
-                    <div class="card-body">
-                      <div class="added-cards">
-                      	<th:block th:each="contactObj : ${BranchMaster.branchContact}">
-                        <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.branchcontactid}">
-                          <div class="d-flex justify-content-between flex-sm-row flex-column">
-                            <div class="card-information">
-                              <input type="hidden" th:class="'primarycontact'+ ${contactObj.branchcontactid}" th:value="${contactObj.primarycontact}"/>
-                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.branchcontactid}" th:text="${contactObj.Department}"></h6>
-                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.branchcontactid}" th:text="${contactObj.Phonenumber}"></h6>
-                              <span th:class="'card-number email'+ ${contactObj.branchcontactid}" th:text="${contactObj.Email}"></span
-                              >
-                              
-                            </div>
-                            <div class="d-flex flex-column text-start text-lg-end">
-                              <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.branchcontactid}" >
-                                  <i class='bx bxs-edit-alt'></i>
-                                </button><br/>
-                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.branchcontactid}"><i class='bx bxs-trash-alt'></i></button>
-                                
-                              </div>
-                              
-                            </div>
-                          </div>
-                        </div>
-                       	</th:block>
-                       	<span id="contactaddidv"></span>
-                       </div>
-                    </div>
-                    </div>
-                  </div>
-                  <!-- /Contact Card -->
+                  
                    <!-- Address Card -->
                   
                   <div class="card mb-4">
@@ -294,6 +244,57 @@
                     </div>
                   </div>
                   <!-- /Address Card -->
+                  <!-- Contact Card -->
+                  <div class="card  mb-4">
+                    <div class="card-body1">
+                      <div class="card-header align-items-center">
+                      <h5 class="card-action-title mb-0">Contact
+                      <div class="card-action-element" style="float:right">
+                        <button
+                          class="btn btn-primary btn-sm addcontactbtn"
+                          type="button"
+                          name="-"
+                          data-bs-toggle="modal"
+                          data-bs-target="#addNewContact"
+                        >
+                          <i class="bx bx-plus bx-xs me-1"></i>Contact
+                        </button>
+                      	</div>
+                        </h5>
+                      
+                    </div>
+                    <div class="card-body">
+                      <div class="added-cards">
+                      	<th:block th:each="contactObj : ${BranchMaster.branchContact}">
+                        <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.branchcontactid}">
+                          <div class="d-flex justify-content-between flex-sm-row flex-column">
+                            <div class="card-information">
+                              <input type="hidden" th:class="'primarycontact'+ ${contactObj.branchcontactid}" th:value="${contactObj.primarycontact}"/>
+                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.branchcontactid}" th:text="${contactObj.Department}"></h6>
+                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.branchcontactid}" th:text="${contactObj.Phonenumber}"></h6>
+                              <span th:class="'card-number email'+ ${contactObj.branchcontactid}" th:text="${contactObj.Email}"></span
+                              >
+                             <span th:class="'primarycontactlablecontainer'+ ${contactObj.branchcontactid}"> <span th:if="${contactObj.primarycontact}" class="badge bg-label-primary">Primary</span></span>
+                            </div>
+                            <div class="d-flex flex-column text-start text-lg-end">
+                              <div class="d-flex order-sm-0 order-1 mt-3">
+                                <button class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.branchcontactid}" >
+                                  <i class='bx bxs-edit-alt'></i>
+                                </button><br/>
+                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.branchcontactid}"><i class='bx bxs-trash-alt'></i></button>
+                                
+                              </div>
+                              
+                            </div>
+                          </div>
+                        </div>
+                       	</th:block>
+                       	<span id="contactaddidv"></span>
+                       </div>
+                    </div>
+                    </div>
+                  </div>
+                  <!-- /Contact Card -->
                   <!-- Document   Card -->
                    <div class="card  mb-4">
                     <div class="card-body1">
@@ -773,7 +774,7 @@
                           <div class="invalid-feedback">Please enter Started On.</div>
                         </div>
                         <div class="col-12 col-md-6">
-                          <label class="form-label" for="modaleditBranchdetailsEmail">Hierarchy </label>
+                          <label class="form-label" for="Model_COMES_UNDER">Hierarchy </label>
                           <select class="form-select" id="Model_COMES_UNDER" 
                           th:field="*{COMES_UNDER}"
                           th:value="${BranchMaster['COMES_UNDER']}"
@@ -880,7 +881,7 @@
                               placeholder="999 555 0111"
                               required
                             />
-                            <div class="invalid-feedback">Please enter a valid mobile</div>
+                            
                           </div>
                         </div>
                         <div class="col-12">
@@ -935,7 +936,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-4">
                         <h3 class="address-title"> Address</h3>
-                        <p class="address-subtitle">Address for express delivery</p>
+                        <p class="address-subtitle">Add/Update Address Details</p>
                       </div>
                       <form id="addNewAddressForm" class="row g-3" onsubmit="return false">
                         <div class="col-12">
@@ -996,7 +997,7 @@
                             th:value="${BranchMaster.BRANCH_ADDRESSLINE2}"
                           />
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12">
                           <label class="form-label" for="modalAddressLandmark">Landmark</label>
                           <input
                             type="text"
@@ -1078,9 +1079,13 @@
                       </div>
                       <form id="addNewdocument" class="row g-3" onsubmit="return false">
                         <div class="col-12">
-                          <label class="form-label w-100" for="modalAddCard">Document Type </label>
+                          <label class="form-label w-100" for="modalAddCard">Document Type
+                          	<label class="emptitle additem" name="addmodaldocumenttype">
+                          		<i class="bx bxs-plus-circle ownstyle1"></i></label>
+                          		
+                           </label>
                           <div class="input-group input-group-merge">
-                            <select id="modalDocumenttype" class="form-select">
+                            <select id="modalDocumenttype" class="form-select modalDocumenttype">
 	                          <option value="">Default select</option>
 	                          <option value="GST">GST</option>
 	                          <option value="2">Two</option>
@@ -1619,6 +1624,13 @@ Model_CURRENT_STATUS
 		    	    	var modalcontactPhone =$('#modalcontactPhone').val();
 		    	    	var modalContactemail =$('#modalContactemail').val();
 		    	    	var primarycontact =$("#modalcontactprimary").is(':checked');
+		    	    	/* if(primarycontact == 'true'){
+		    	    		primarycontact=1;
+		    	    	}else
+			    	    {
+		    	    		primarycontact=0;
+			    	    } */
+		    	    	
 		    	    	var formData = {
 		  	        			 BranchID: BranchID,
 		  	        			 contactid: modalcontactid,
@@ -1640,6 +1652,13 @@ Model_CURRENT_STATUS
 			  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
 			  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
 			  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
+			  							
+			  							tempresult += '<span class="primarycontactlablecontainer'+  tempresultid +'">';
+			  							if(primarycontact)
+		  								{
+			  								tempresult += '<span class="primarycontacttxt'+  tempresultid +'"><span class="badge bg-label-primary ">Primary</span></span>';
+		  								}
+			  							tempresult += '</span>'; 
 			  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
 			  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
 			  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
@@ -1653,7 +1672,13 @@ Model_CURRENT_STATUS
 		  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
 		  								$('.email'+modalcontactid).text(modalContactemail);
 		  								$('.primarycontact'+modalcontactid).val(primarycontact);
-	  									 
+		  								if(primarycontact)
+		  								{
+		  									$('.primarycontactlablecontainer'+modalcontactid).html("<span class='badge bg-label-primary'>Primary</span>");
+		  								}else
+	  									{
+		  									$('.primarycontactlablecontainer'+modalcontactid).html("");
+	  									}
 	  								}
 			  							validationformContactreset();
 		  						},
@@ -1677,6 +1702,14 @@ Model_CURRENT_STATUS
 				$('#modalcontacttype').val($('.contacttype'+id).text());
 				$('#modalcontactPhone').val($('.phonenumber'+id).text());
 				$('#modalContactemail').val($('.email'+id).text());
+				if($('.primarycontact'+id).val()=='true')
+				{
+					$('#modalcontactprimary').prop("checked",true);	
+				}else
+				{
+					$('#modalcontactprimary').prop("checked",false);
+				}
+				 
 				$('#addNewContact').modal('show');
   			  });
   			// --------------------------------------------------------------------
@@ -1736,6 +1769,9 @@ Model_CURRENT_STATUS
 					var labeltext = "";
 					if (name == "addmodalcontacttype") {
 						labeltext = "New Contact Type";
+					}else if(name == "addmodaldocumenttype")
+					{
+						labeltext = "New Document Type";
 					}
 					
 					$('#additemalltxt').text(labeltext);
@@ -1750,6 +1786,8 @@ Model_CURRENT_STATUS
 						var labeltext = "";
 						if (name == "New Contact Type") {
 							labeltext = "modalcontacttype";
+						}else if (name == "New Document Type") {
+							labeltext = "modalDocumenttype";
 						}
 						
 						$('.' + labeltext).append(
@@ -1946,7 +1984,16 @@ Model_CURRENT_STATUS
 		      dateFormat: 'Y-m-d'
 		    });
 		  }
-    
+	// Phone
+		 const phoneMask = document.querySelector('.phone-number-otp-mask');
+
+	    // Phone Number Input Mask
+	    if (phoneMask) {
+	      new Cleave(phoneMask, {
+	        phone: true,
+	        phoneRegionCode: 'US'
+	      });
+	    }    
 	
     </script>
 		  </body>

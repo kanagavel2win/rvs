@@ -54,7 +54,7 @@ public class BranchMasterImp implements BranchMasterService {
 	public int insertbranchContact(String dep, String phonenumber, String email,int branchid, boolean primary) {
 
 		final String sql="INSERT INTO `branch_contact`(`department`, `email`, `phonenumber`, `id`,primarycontact) VALUES ('"+ dep +"','"+ email +"','"+ phonenumber +"',"+ branchid +","+ primary +")";
-		
+		System.out.println(sql);
 		KeyHolder keyHolder =new GeneratedKeyHolder();
 		
 		jdbcTemplate.update(connection -> {
@@ -70,6 +70,7 @@ public class BranchMasterImp implements BranchMasterService {
 	@Override
 	public int updatebranchContact(int id, String dep, String phonenumber, String email, boolean primary) {
 		String sql="UPDATE `branch_contact` SET `department`='"+ dep +"',`email`='"+ email +"',`phonenumber`='"+ phonenumber +"',primarycontact="+ primary + " WHERE branchcontactid=" +id ;
+		System.out.println(sql);
 		return jdbcTemplate.update(sql);
 	}
 

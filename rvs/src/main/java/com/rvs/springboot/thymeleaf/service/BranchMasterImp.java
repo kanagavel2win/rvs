@@ -70,7 +70,7 @@ public class BranchMasterImp implements BranchMasterService {
 	@Override
 	public int updatebranchContact(int id, String dep, String phonenumber, String email, boolean primary) {
 		String sql="UPDATE `branch_contact` SET `department`='"+ dep +"',`email`='"+ email +"',`phonenumber`='"+ phonenumber +"',primarycontact="+ primary + " WHERE branchcontactid=" +id ;
-		System.out.println(sql);
+		
 		return jdbcTemplate.update(sql);
 	}
 

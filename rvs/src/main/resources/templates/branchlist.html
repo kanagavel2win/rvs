@@ -746,6 +746,7 @@
 			if(val == 'Head-Office')
 			{
 
+				
 				 $.ajax({
 						type : "GET",url : "checkHeadofficeisPresant",
 						data :'' ,success : function(result) {
@@ -763,8 +764,8 @@
 										$('#branch_type').val('').change();
 									}else
 									{
-										$('#branchHierarchy').append('<option value="-">Self</option>');
-										$('#branchHierarchy').val('-').change();
+										$('#branchHierarchy').append('<option value="Self">Self</option>');
+										$('#branchHierarchy').val('Self').change();
 										$('#branchHierarchy').attr('disabled',true);
 									}
 						 }
@@ -772,7 +773,7 @@
 				 
 			}else
 				{
-				    $('#branchHierarchy option[value="-"]').remove();
+				    $('#branchHierarchy option[value="Self"]').remove();
 					$('#branchHierarchy').attr('disabled',false);
 				}
 		});

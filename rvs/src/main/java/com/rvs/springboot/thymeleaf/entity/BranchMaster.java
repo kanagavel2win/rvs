@@ -63,12 +63,7 @@ public class BranchMaster {
 	private String PAN;
 	@Column
 	private String BRANCH_IN_CHARGE;
-	@Column
-	private String IN_CHARGE_CONTACT_DETAILS;
-	@Column
-	private String OFFICE_PHONE_NUMBER;
-	@Column
-	private String BRANCH_OFFICE_EMAIL_ID;
+	
 	@Column
 	private String STATED_DATE;
 	@Column
@@ -109,5 +104,13 @@ public class BranchMaster {
 	@Transient
 	private String effectiveon;
 	@Transient
-	private String effectiveonMMformat;	
+	private String effectiveonMMformat;
+	
+	@Transient
+	private String OFFICE_PHONE_NUMBER;
+	@Transient
+	private String BRANCH_OFFICE_EMAIL_ID;
+	@Transient
+	private String IN_CHARGE_CONTACT_DETAILS;
+	
 }

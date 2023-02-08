@@ -789,7 +789,7 @@
                           th:value="${BranchMaster['COMES_UNDER']}"
                           required>
                            <option value="">Select Hierarchy</option>
-                           <option value="-">Self</option>
+                           <option value="Self">Self</option>
                            <option th:each="branch :${BranchList}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option> 
                            
                          </select>
@@ -1379,6 +1379,9 @@ Model_CURRENT_STATUS
     	 
     	 var country="[[${BranchMaster['COUNTRY']}]]";
     	 $('#modalAddressCountry').val(country).change();
+    	 
+    	 
+    	 
 		//--------------------------------------------------------------------------------------------------------------------------------------		 		
 
 		$(function() {
@@ -1475,15 +1478,18 @@ Model_CURRENT_STATUS
 				
 				if(val == 'Head-Office')
 				{
-
+					let branchid = $("#BranchID").val();
+					formData={
+							branchid : branchid
+					}
 					 $.ajax({
 							type : "GET",url : "checkHeadofficeisPresant",
-							data :'' ,success : function(result) {
+							data :formData ,success : function(result) {
 									if(result == true)
 										{
 											Swal.fire({
 										        title: '',
-										        text: "We can't add more than one Head Offices",
+										        text: "A company can only have one head and it already exists",
 										        confirmButtonText: 'Ok',
 										        customClass: {
 										          confirmButton: 'btn btn-primary'
@@ -1495,8 +1501,8 @@ Model_CURRENT_STATUS
 										}else
 										{
 											
-											$('#Model_COMES_UNDER').append('<option value="-">Self</option>');
-											$('#Model_COMES_UNDER').val('-').change();
+											$('#Model_COMES_UNDER').append('<option value="Self">Self</option>');
+											$('#Model_COMES_UNDER').val('Self').change();
 											$('#Model_COMES_UNDER').attr('disabled',true);
 										}
 							 }
@@ -1504,7 +1510,7 @@ Model_CURRENT_STATUS
 					 
 				}else
 					{
-					    $('#Model_COMES_UNDER option[value="-"]').remove();
+					    $('#Model_COMES_UNDER option[value="Self"]').remove();
 						$('#Model_COMES_UNDER').attr('disabled',false);
 					}
 			});
@@ -1605,85 +1611,109 @@ Model_CURRENT_STATUS
   			// --------------------------------------------------------------------
   			
   			   	$('#addContactform').on('submit', function(event){
-  			   	 
-  			   
-  			   		$('.contactsavebtn').prop("disabled",true);
-		    	  
-		    	    if(event.target.checkValidity()){
-		    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-		    	    	var BranchID=$("#BranchID").val();
-		    	    	var modalcontactid =$('#modalcontactid').val();
-		    	    	var modalcontacttype =$('#modalcontacttype').val();
-		    	    	var modalcontactPhone =$('#modalcontactPhone').val();
-		    	    	var modalContactemail =$('#modalContactemail').val();
-		    	    	var primarycontact =$("#modalcontactprimary").is(':checked');
-		    	    	/* if(primarycontact == 'true'){
-		    	    		primarycontact=1;
-		    	    	}else
-			    	    {
-		    	    		primarycontact=0;
-			    	    } */
-		    	    	
-		    	    	var formData = {
-		  	        			 BranchID: BranchID,
-		  	        			 contactid: modalcontactid,
-		  	        			 contacttype : modalcontacttype,
-		  	        			 contactPhone : modalcontactPhone,
-		  	        			 contactemail : modalContactemail,
-		  	        			 primarycontact: primarycontact,
-		  	        			functiontype : 'Branch'
-		  				 }
-		  				 $.ajax({
-		  						type : "POST",url : "Contactupdatejson",
-		  						data : formData, success : function(result) {
-		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							
-		  							if(modalcontactid == '-')
-	  								{
-		  								let tempresultid=bmobj;
-		  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"'";
-			  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
-			  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
-			  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
-			  							
-			  							tempresult += '<span class="primarycontactlablecontainer'+  tempresultid +'">';
-			  							if(primarycontact)
-		  								{
-			  								tempresult += '<span class="primarycontacttxt'+  tempresultid +'"><span class="badge bg-label-primary ">Primary</span></span>';
-		  								}
-			  							tempresult += '</span>'; 
-			  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
-			  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
-			  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
-			  						
-			  							$('#contactaddidv').before(tempresult);
-			  						    
-	  								}
-		  							else
-	  								{
-		  								$('.contacttype'+modalcontactid).text(modalcontacttype);
-		  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
-		  								$('.email'+modalcontactid).text(modalContactemail);
-		  								$('.primarycontact'+modalcontactid).val(primarycontact);
-		  								if(primarycontact)
-		  								{
-		  									$('.primarycontactlablecontainer'+modalcontactid).html("<span class='badge bg-label-primary'>Primary</span>");
-		  								}else
-	  									{
-		  									$('.primarycontactlablecontainer'+modalcontactid).html("");
-	  									}
-	  								}
-			  							validationformContactreset();
-		  						},
-		  						error : function(e) {
-		  							console.log("Error" + e);
-		  						}
-		  					});
-		  	        }	
-		    	    else
-		        	{
-		    	    	$('.contactsavebtn').prop("disabled",false);
-		        	}
+  			   	formData={
+						branchid : $("#BranchID").val(),
+						src : "Branch",
+						modalcontactid : $('#modalcontactid').val()								
+				}
+  			  $.ajax({
+				type : "GET",url : "checkPrimaryContactisPresant",
+				data :formData ,success : function(result) {
+						if(result == true)
+							{
+								Swal.fire({
+							        title: '',
+							        text: "Primary Contact it already exists",
+							        confirmButtonText: 'Ok',
+							        customClass: {
+							          confirmButton: 'btn btn-primary'
+							        },
+							        buttonsStyling: false
+							      });
+								document.getElementById("radioHead-Office").checked=false;
+								
+							}else
+							{
+  			   	
+					  			   		$('.contactsavebtn').prop("disabled",true);
+							    	  
+							    	    if(event.target.checkValidity()){
+							    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+							    	    	var BranchID=$("#BranchID").val();
+							    	    	var modalcontactid =$('#modalcontactid').val();
+							    	    	var modalcontacttype =$('#modalcontacttype').val();
+							    	    	var modalcontactPhone =$('#modalcontactPhone').val();
+							    	    	var modalContactemail =$('#modalContactemail').val();
+							    	    	var primarycontact =$("#modalcontactprimary").is(':checked');
+							    	  
+							    	    	
+							    	    	var formData = {
+							  	        			 BranchID: BranchID,
+							  	        			 contactid: modalcontactid,
+							  	        			 contacttype : modalcontacttype,
+							  	        			 contactPhone : modalcontactPhone,
+							  	        			 contactemail : modalContactemail,
+							  	        			 primarycontact: primarycontact,
+							  	        			functiontype : 'Branch'
+							  				 }
+							  				 $.ajax({
+							  						type : "POST",url : "Contactupdatejson",
+							  						data : formData, success : function(result) {
+							  							var bmobj = JSON.parse(JSON.stringify(result));
+							  							
+							  							if(modalcontactid == '-')
+						  								{
+							  								let tempresultid=bmobj;
+							  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"'";
+								  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
+								  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
+								  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
+								  							
+								  							tempresult += '<span class="primarycontactlablecontainer'+  tempresultid +'">';
+								  							if(primarycontact)
+							  								{
+								  								tempresult += '<span class="primarycontacttxt'+  tempresultid +'"><span class="badge bg-label-primary ">Primary</span></span>';
+							  								}
+								  							tempresult += '</span>'; 
+								  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+								  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
+								  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+								  						
+								  							$('#contactaddidv').before(tempresult);
+								  						    
+						  								}
+							  							else
+						  								{
+							  								
+							  								if(primarycontact)
+							  								{
+							  									$('.primarycontactlablecontainer'+modalcontactid).html("<span class='badge bg-label-primary'>Primary</span>");
+							  									
+							  								}else
+						  									{
+							  									$('.primarycontactlablecontainer'+modalcontactid).html("");
+							  										 
+						  									}
+							  								$('.contacttype'+modalcontactid).text(modalcontacttype);
+							  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
+							  								$('.email'+modalcontactid).text(modalContactemail);
+							  								$('.primarycontact'+modalcontactid).val(primarycontact);
+							  								
+						  								}
+								  							validationformContactreset();
+							  						},
+							  						error : function(e) {
+							  							console.log("Error" + e);
+							  						}
+							  					});
+							  	        }	
+							    	    else
+							        	{
+							    	    	$('.contactsavebtn').prop("disabled",false);
+							        	}
+									}
+							 }
+					 });
   			   	});	
   			// --------------------------------------------------------------------
   			  $('.contacteditbtn').on('click', function(event){

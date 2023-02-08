@@ -60,6 +60,7 @@ import com.rvs.springboot.thymeleaf.entity.AssetMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.AssetService;
 import com.rvs.springboot.thymeleaf.entity.AttendanceMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchAccNo;
+import com.rvs.springboot.thymeleaf.entity.BranchContact;
 import com.rvs.springboot.thymeleaf.entity.BranchEffective;
 import com.rvs.springboot.thymeleaf.entity.BranchFiles;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
@@ -468,12 +469,27 @@ public class HomeController {
 	
 	@GetMapping("checkHeadofficeisPresant")
 	@ResponseBody
-	public boolean checkHeadofficeisPresant()
+	public boolean checkHeadofficeisPresant(@RequestParam Map<String, String> params)
 	{
+		
 		List<BranchMaster> bmList = branchMasterService.findAll().stream().filter(C-> C.getB_TYPE().equalsIgnoreCase("Head-Office")).collect(Collectors.toList());
 		if(bmList.size()> 0)
 		{
-			return true;
+			
+			if(params.get("branchid") != null)
+			{
+				if(bmList.get(0).getId() == Integer.parseInt(params.get("branchid")))
+				{
+					return false;	
+				}else
+				{
+					return true;		
+				}
+			}else
+			{
+				return true;	
+			}
+			
 		}else
 		{
 			return false;
@@ -481,6 +497,43 @@ public class HomeController {
 	}
 	
 
+	@GetMapping("checkPrimaryContactisPresant")
+	@ResponseBody
+	public boolean checkPrimaryContactisPresant(@RequestParam Map<String, String> params)
+	{
+		if(params.get("src").equalsIgnoreCase("Branch"))
+		{
+			
+			List<BranchContact> bmList = branchMasterService.findById(Integer.parseInt(params.get("branchid"))).getBranchContact().stream().filter(C-> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if(bmList.size()> 0)
+			{
+				
+				if(params.get("modalcontactid") != null && (!params.get("modalcontactid").equalsIgnoreCase("-")))
+				{
+					if(bmList.get(0).getBranchcontactid() == Integer.parseInt(params.get("modalcontactid")))
+					{
+						return false;	
+					}else
+					{
+						return true;		
+					}
+				}else
+				{
+					return true;	
+				}
+				
+			}else
+			{
+				return false;
+			}
+		
+		}else
+		{
+			return false;
+		}
+		
+	}
+		
 	@ResponseBody
 	@PostMapping("branchsavejson")
 	public int branchsavejson(@RequestParam Map<String, String> params)
@@ -850,6 +903,20 @@ public class HomeController {
 				}
 			} 
 			//-------------------------------------------
+			List<BranchContact> bcls= bm.getBranchContact().stream().filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if(bcls.size() >0 )
+			{
+				bm.setOFFICE_PHONE_NUMBER(bcls.get(0).getPhonenumber());
+				bm.setBRANCH_OFFICE_EMAIL_ID(bcls.get(0).getEmail());
+			}
+			//-------------------------------------------
+			List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(bm.getBRANCH_IN_CHARGE())).getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if(ecls.size() >0 )
+			{
+				bm.setIN_CHARGE_CONTACT_DETAILS(ecls.get(0).getPhonenumber());
+				
+			}
+			//-------------------------------------------
 
 		return bm;
 	}
@@ -910,6 +977,25 @@ public class HomeController {
 				}
 
 			}
+			
+			//Set primary contact 
+			
+			List<BranchContact> bcls= bm.getBranchContact().stream().filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if(bcls.size() >0 )
+			{
+				bm.setOFFICE_PHONE_NUMBER(bcls.get(0).getPhonenumber());
+				bm.setBRANCH_OFFICE_EMAIL_ID(bcls.get(0).getEmail());
+			}
+			//-------------------
+			//Set primary contact 
+			List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(bm.getBRANCH_IN_CHARGE())).getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if(ecls.size() >0 )
+			{
+				bm.setIN_CHARGE_CONTACT_DETAILS(ecls.get(0).getPhonenumber());
+				
+			}
+			//-------------------
+			
 
 		}
 
@@ -957,7 +1043,17 @@ public class HomeController {
 			bm.setBranchAccNo(BranchAccNols);
 			bm = branchMasterService.save(bm);
 		}
-		
+		//---------------------------------------
+		// Get Primary contact
+		List<BranchContact> branchContactls = bm.getBranchContact().stream().filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+		if(branchContactls.size() ==0)
+		{
+			theModel.addAttribute("primaryContact", false);
+		}else
+		{
+			theModel.addAttribute("primaryContact", true);
+		}
+		//---------------------------------------
 		if(!bm.getCOMES_UNDER().equalsIgnoreCase("Self"))
 		{
 			int comes_underint = Integer.parseInt(bm.getCOMES_UNDER()); 
@@ -1003,6 +1099,7 @@ public class HomeController {
 					}
 				} 
 		//-------------------------------------------
+		//-------------------------------------------
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 		
@@ -1014,7 +1111,7 @@ public class HomeController {
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		return "branchadd";
 	}
-
+	
 	public String getemp_photo(EmployeeMaster obj) {
 		String str = "";
 		List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream().filter(c -> c.getPhoto_Attach() != null)

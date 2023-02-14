@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.ContactOrganizationRepository;
-import com.rvs.springboot.thymeleaf.entity.ContactOrganization;
+import com.rvs.springboot.thymeleaf.entity.OrganizationContacts;
 
 @Service
 public class ContactOrganizationImp implements ContactOrganizationService {
@@ -15,16 +16,18 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 	@Autowired
 	ContactOrganizationRepository contactOrganizationRepo;
 	
+	
+	
 	@Override
-	public ContactOrganization save(ContactOrganization obj) {
+	public OrganizationContacts save(OrganizationContacts obj) {
 		return contactOrganizationRepo.save(obj);
 	}
 
 	@Override
-	public ContactOrganization findById(Integer id) {
-		Optional<ContactOrganization> obj=contactOrganizationRepo.findById(id);
+	public OrganizationContacts findById(Integer id) {
+		Optional<OrganizationContacts> obj=contactOrganizationRepo.findById(id);
 		
-		ContactOrganization bm=null;
+		OrganizationContacts bm=null;
 		
 		if(obj.isPresent())
 		{	
@@ -37,14 +40,20 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 	}
 
 	@Override
-	public List<ContactOrganization> findAll() {
+	public List<OrganizationContacts> findAll() {
 		
 		return contactOrganizationRepo.findAll();
 	}
 
 	@Override
-	public List<ContactOrganization> saveall(List<ContactOrganization> objList) {
+	public List<OrganizationContacts> saveall(List<OrganizationContacts> objList) {
 		return contactOrganizationRepo.saveAll(objList);
+	}
+
+	@Override
+	public List<OrganizationContacts> findbyOrgname(String str) {
+
+		return contactOrganizationRepo.findByOrgname(str);
 	}
 		
 	

@@ -54,7 +54,7 @@ public class BranchMasterImp implements BranchMasterService {
 	public int insertbranchContact(String dep, String phonenumber, String email,int branchid, boolean primary) {
 
 		final String sql="INSERT INTO `branch_contact`(`department`, `email`, `phonenumber`, `id`,primarycontact) VALUES ('"+ dep +"','"+ email +"','"+ phonenumber +"',"+ branchid +","+ primary +")";
-		System.out.println(sql);
+		
 		KeyHolder keyHolder =new GeneratedKeyHolder();
 		
 		jdbcTemplate.update(connection -> {

@@ -23,7 +23,9 @@
 
     <title>Branch View</title>
 
-    <meta name="description" content="" />
+	  <meta name="description" content="" />
+	  
+	  
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
@@ -72,6 +74,12 @@
     <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script th:src="@{/assets/js/config.js}"></script>
+
+<style type="text/css">
+
+
+</style>
+
   </head>
 
   <body>
@@ -332,8 +340,8 @@
                                 		<th:block th:unless="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
                                 			<img th:src="@{/assets/img/icons/misc/jpg.png}" alt="PDF image" width="20" class="me-2">
                                 		</th:block>
-                                		<span class="text-body" th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15) }">
-                                		</span>
+                                		<small class="text-body" th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
+                                		</small>
                                 	</a>
                                 </th:block>
 	                                
@@ -1587,6 +1595,7 @@ Model_CURRENT_STATUS
 			   				$('.contactclosebtn').click();
 			   				$('.contactsavebtn').prop("disabled",false);
 				   			$('.contactsavebtn').html("Submit");
+				   			$('#modalcontactid').val("-");
 				   }
 		   		
 		   		function validationformfilereset()
@@ -1611,7 +1620,8 @@ Model_CURRENT_STATUS
   			// --------------------------------------------------------------------
   			
   			   	$('#addContactform').on('submit', function(event){
-  			   	formData={
+  			   	
+  			   		formData={
 						branchid : $("#BranchID").val(),
 						src : "Branch",
 						modalcontactid : $('#modalcontactid').val()								
@@ -1619,7 +1629,7 @@ Model_CURRENT_STATUS
   			  $.ajax({
 				type : "GET",url : "checkPrimaryContactisPresant",
 				data :formData ,success : function(result) {
-						if(result == true)
+						if(result == true && $("#modalcontactprimary").is(':checked'))
 							{
 								Swal.fire({
 							        title: '',

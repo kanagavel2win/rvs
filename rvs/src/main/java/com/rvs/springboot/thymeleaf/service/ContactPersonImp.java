@@ -1,9 +1,14 @@
 package com.rvs.springboot.thymeleaf.service;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.ContactPersonRepository;
@@ -14,6 +19,8 @@ public class ContactPersonImp implements ContactPersonService {
 
 	@Autowired
 	ContactPersonRepository contactpersonRepo;
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 	
 	@Override
 	public ContactPerson save(ContactPerson obj) {
@@ -47,5 +54,64 @@ public class ContactPersonImp implements ContactPersonService {
 		return contactpersonRepo.saveAll(objList);
 	}
 		
+	@Override
+	public int insertContact(String dep, String phonenumber, String email,int contactid, boolean primary) {
+
+		final String sql="INSERT INTO `contact_person_contact`(`department`, `email`, `phonenumber`, `id`,primarycontact) VALUES ('"+ dep +"','"+ email +"','"+ phonenumber +"',"+ contactid +","+ primary +")";
+		
+		KeyHolder keyHolder =new GeneratedKeyHolder();
+		
+		jdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int updateContact(int id, String dep, String phonenumber, String email, boolean primary) {
+		String sql="UPDATE `contact_person_contact` SET `department`='"+ dep +"',`email`='"+ email +"',`phonenumber`='"+ phonenumber +"',primarycontact="+ primary + " WHERE contactid=" +id ;
+		
+		return jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public int deleteContact(int id) {
+		String sql ="DELETE FROM `contact_person_contact` WHERE  contactid=" +id ;
+		return jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int contactid) {
+		final String sql="INSERT INTO `contact_person_files`(`document_no`, `document_type`, `file_path`, `id`) VALUES ('"+ DocumentNo +"','"+ DocumentType  +"','"+ FilePath +"',"+ contactid +")";
+		
+		KeyHolder keyHolder =new GeneratedKeyHolder();
+		
+		jdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int deleteFiles(int id) {
+		String sql ="DELETE FROM `contact_person_files` WHERE  filesid=" +id ;
+		return jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public int insertAccountdetails(int acid, String acno, String acname, String bankname, String branchname,
+			String ifsccode, int contactid) {
+		String sql="UPDATE `contact_person_acc_no` SET `acname`='"+ acname + "',`acno`='"+ acno + "',`bankname`='"+ bankname + "',`branchname`='"+ branchname + "',`ifsccode`='"+ ifsccode + "',`id`='"+ contactid + "' WHERE accnoid="+  acid;
+		return jdbcTemplate.update(sql);
+		
+	}
 	
 }

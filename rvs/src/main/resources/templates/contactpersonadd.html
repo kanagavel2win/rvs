@@ -538,8 +538,12 @@
                           <div class="invalid-feedback">Please enter Designation.</div>
                         </div>
                         <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_memberin">Member in</label>
-                          <select class="form-select" id="Model_memberin" 
+                          <label class="form-label" for="Model_memberin">Member in
+                          	<label class="emptitle additem" name="addModel_memberin">
+                          		<i class="bx bxs-plus-circle ownstyle1"></i></label>
+                          		
+                          </label>
+                          <select class="form-select addModel_memberin" id="Model_memberin" 
                           th:field="*{memberin}"
                           th:value="${ContactPerson['memberin']}"
                           >
@@ -551,7 +555,7 @@
                          <div class="invalid-feedback">Please enter Member in.</div>
                         </div>
                         <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_memberin">Member in</label>
+                          <label class="form-label" for="Model_memberin">RM</label>
                          
                         <select class="form-select" id="Model_Relationmanger"   th:field="*{followers}"
                           th:value="${ContactPerson['followers']}" required>
@@ -559,7 +563,7 @@
                            <option th:each="obj : ${EffectiveEmployee}" th:value="${obj.empMasterid}" th:text="${obj.StaffName}"></option>
                            
                          </select>
-                         <div class="invalid-feedback">Please enter Member in.</div>
+                         <div class="invalid-feedback">Please enter RM.</div>
                         </div>
                        
                         <div class="col-12 text-center mt-4">
@@ -1487,6 +1491,9 @@ Model_CURRENT_STATUS
 					}else if(name == "addmodaldocumenttype")
 					{
 						labeltext = "New Document Type";
+					}else if(name == "addModel_memberin")
+					{
+						labeltext = "New Member In";
 					}
 					
 					$('#additemalltxt').text(labeltext);
@@ -1503,6 +1510,8 @@ Model_CURRENT_STATUS
 							labeltext = "modalcontacttype";
 						}else if (name == "New Document Type") {
 							labeltext = "modalDocumenttype";
+						}else if (name == "New Member In") {
+							labeltext = "addModel_memberin";
 						}
 						
 						$('.' + labeltext).append(
@@ -1694,7 +1703,7 @@ Model_CURRENT_STATUS
 		    	  filedeleteoperation(id);
 		      });
 		//------------------------------------------------------
-	   // Date Format
+	  /* // Date Format
 	   const flatpickrFriendly = document.querySelector('#Model_designation');
 		 // Human Friendly
 		  if (flatpickrFriendly) {
@@ -1714,7 +1723,7 @@ Model_CURRENT_STATUS
 			      altFormat: 'F j, Y',
 			      dateFormat: 'Y-m-d'
 			    });
-			  }
+			  }*/
 		// Phone
 			 const phoneMask = document.querySelector('.phone-number-otp-mask');
 
@@ -1727,19 +1736,26 @@ Model_CURRENT_STATUS
 		    }    
 	 // List
 		  const TagifyCustomListSuggestionEl = document.querySelector('#Model_organization');
-		   const whitelist = ['ITS', "RVS"];
-		    
-		    // List
-		    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
-		      whitelist: whitelist,
-		      maxTags: 1,
-		      dropdown: {
-		        maxItems: 20,
-		        classname: '',
-		        enabled: 0,
-		        closeOnSelect: false
-		      }
-		    });
+		  
+		  $.ajax({
+					type : "GET",url : "organizationNameList",
+					data : '', success : function(result) {
+						
+						 // List
+					    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
+					      whitelist: result,
+					      maxTags: 1,
+					      dropdown: {
+					        maxItems: 20,
+					        classname: '',
+					        enabled: 0,
+					        closeOnSelect: false
+					      }
+					    });
+						 
+					}
+		  });
+		   
 		  //--------------------------	 
     </script>
 		  </body>

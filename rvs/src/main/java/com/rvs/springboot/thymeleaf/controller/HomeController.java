@@ -519,11 +519,11 @@ public class HomeController {
 				return false;
 			}
 
-		}else if (params.get("src").equalsIgnoreCase("ContactPerson")) {
+		} else if (params.get("src").equalsIgnoreCase("ContactPerson")) {
 
-			List<ContactPersonContact> cpList = contactPersonService.findById(Integer.parseInt(params.get("contactPersonid")))
-					.getContactPersonContact().stream().filter(C -> C.getPrimarycontact() == true)
-					.collect(Collectors.toList());
+			List<ContactPersonContact> cpList = contactPersonService
+					.findById(Integer.parseInt(params.get("contactPersonid"))).getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
 			if (cpList.size() > 0) {
 
 				if (params.get("modalcontactid") != null
@@ -637,7 +637,7 @@ public class HomeController {
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
 			return bfiles;
-		}else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
 			StringBuilder filename = new StringBuilder();
 			if (Files_Attach != null) {
 				// File Uploading
@@ -676,7 +676,7 @@ public class HomeController {
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
 			return bfiles;
-		}else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			StringBuilder filename = new StringBuilder();
 			if (Files_Attach != null) {
 				// File Uploading
@@ -740,8 +740,8 @@ public class HomeController {
 			bm.setZIP_CODE(params.get("AddressZipCode"));
 			bm = branchMasterService.save(bm);
 			return branchListresponsebody(bm);
-		}else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
-			
+		} else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
+
 			int ContactPersonID = Integer.parseInt(params.get("ContactPersonID"));
 			ContactPerson cp = contactPersonService.findById(ContactPersonID);
 			cp.setAddressCountry(params.get("AddressCountry"));
@@ -755,7 +755,7 @@ public class HomeController {
 			cp = contactPersonService.save(cp);
 			return ContactPersonobjectfiller(cp);
 		}
-		
+
 		else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int empMasterid = Integer.parseInt(params.get("empMasterid"));
 			EmployeeMaster bm = employeeMasterService.findById(empMasterid);
@@ -794,7 +794,7 @@ public class HomeController {
 				return branchMasterService.updatebranchContact(Integer.parseInt(params.get("contactid")), contacttype,
 						contactPhone, contactemail, primarycontact);
 			}
-		}else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
 			int ContactPersonID = Integer.parseInt(params.get("ContactPersonID"));
 			String contacttype = params.get("contacttype");
 			String contactPhone = params.get("contactPhone");
@@ -810,7 +810,7 @@ public class HomeController {
 				return contactPersonService.updateContact(Integer.parseInt(params.get("contactid")), contacttype,
 						contactPhone, contactemail, primarycontact);
 			}
-		}else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int empMasterid = Integer.parseInt(params.get("empMasterid"));
 			String contacttype = params.get("contacttype");
 			String contactPhone = params.get("contactPhone");
@@ -848,7 +848,7 @@ public class HomeController {
 			return branchMasterService.insertbranchAccountdetails(acid, acno, acname, bankname, branchname, ifsccode,
 					branchid);
 
-		}else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
 			int ContactPersonID = Integer.parseInt(params.get("ContactPersonID"));
 			int acid = Integer.parseInt(params.get("acid"));
 			String acno = params.get("acno");
@@ -859,7 +859,7 @@ public class HomeController {
 			return contactPersonService.insertAccountdetails(acid, acno, acname, bankname, branchname, ifsccode,
 					ContactPersonID);
 
-		}else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int empMasterid = Integer.parseInt(params.get("empMasterid"));
 			int acid = Integer.parseInt(params.get("acid"));
 			String acno = params.get("acno");
@@ -882,10 +882,10 @@ public class HomeController {
 		if (params.get("functiontype").equalsIgnoreCase("Branch")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
 			return branchMasterService.deletebranchContact(contactid);
-		}else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
 			return employeeMasterService.deleteemployeeContact(contactid);
-		}else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
 			return contactPersonService.deleteContact(contactid);
 		} else {
@@ -900,10 +900,10 @@ public class HomeController {
 		if (params.get("functiontype").equalsIgnoreCase("Branch")) {
 			int fileid = Integer.parseInt(params.get("fileid"));
 			return branchMasterService.deletebranchFiles(fileid);
-		}else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int fileid = Integer.parseInt(params.get("fileid"));
 			return employeeMasterService.deleteemployeeFiles(fileid);
-		}else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
 			int fileid = Integer.parseInt(params.get("fileid"));
 			return contactPersonService.deleteFiles(fileid);
 		} else {
@@ -1077,9 +1077,10 @@ public class HomeController {
 
 			// branch name
 			cp.setBranchName(branchMasterService.findById(cp.getBranchid()).getBRANCH_NAME());
-			// Organization Name 
-			cp.setOrganizationname(contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
-			
+			// Organization Name
+			cp.setOrganizationname(
+					contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
+
 			// Set primary contact
 			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
 					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
@@ -4785,14 +4786,14 @@ public class HomeController {
 
 		ContactPerson cp = ContactPersonobjectfiller(contactPersonService.findById(id));
 		// Get Primary contact
-		List<ContactPersonContact> branchContactls = cp.getContactPersonContact().stream().filter(C -> C.getPrimarycontact() == true)
-				.collect(Collectors.toList());
+		List<ContactPersonContact> branchContactls = cp.getContactPersonContact().stream()
+				.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
 		if (branchContactls.size() == 0) {
 			theModel.addAttribute("primaryContact", false);
 		} else {
 			theModel.addAttribute("primaryContact", true);
 		}
-				
+
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 
@@ -4800,29 +4801,43 @@ public class HomeController {
 		theModel.addAttribute("Documenttype", Documenttype);
 		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
 		theModel.addAttribute("MEMBERIN", MEMBERIN);
-		
+
 		theModel.addAttribute("ContactPerson", cp);
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
 		
-
+		// ---------------------------
 		return "contactpersonadd";
 	}
 
-	public ContactPerson ContactPersonobjectfiller(ContactPerson cp ) {
+	
+	@ResponseBody
+	@GetMapping("organizationNameList")
+	public List<String> organizationList ()
+	{
+		List<String> orglist = new ArrayList();
+		for (OrganizationContacts o : contactOrganizationService.findAll()) {
+			orglist.add( o.getOrgname());
+		}
+		return orglist;
+	}
+	
+	public ContactPerson ContactPersonobjectfiller(ContactPerson cp) {
 		if (cp.getContactPersonAccNo().size() == 0) {
 			List<ContactPersonAccNo> ContactPersonAccNols = new ArrayList();
 			ContactPersonAccNols.add(new ContactPersonAccNo());
 			cp.setContactPersonAccNo(ContactPersonAccNols);
 			cp = contactPersonService.save(cp);
 		}
-		
+
 		// ---------------------------------------
 		// branch name
 		cp.setBranchName(branchMasterService.findById(cp.getBranchid()).getBRANCH_NAME());
-		// Organization Name 
-		cp.setOrganizationname(contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
-		
+		// Organization Name
+		cp.setOrganizationname(
+				contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
+
 		// Set primary contact
 		List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
 				.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
@@ -4837,25 +4852,24 @@ public class HomeController {
 			cp.setFollowername(empobj.getStaffName());
 		}
 		// Set primary contact
-			List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
-					.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
-					.collect(Collectors.toList());
-			if (ecls.size() > 0) {
-				cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
-	
-			}
+		List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
+				.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+		if (ecls.size() > 0) {
+			cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+
+		}
 		// -------------------------------------------
-			return cp;
+		return cp;
 	}
-	
+
 	@ResponseBody
 	@PostMapping("contactPersonupdatejson")
 	public ContactPerson contactPersonupdatejson(@RequestParam Map<String, String> params) {
 		int cpid = Integer.parseInt(params.get("ContactPersonID"));
 		ContactPerson cp = contactPersonService.findById(cpid);
-		
+
 		String organization = params.get("organization").replace("[{\"value\":\"", "").replace("\"}]", "");
-		
+
 		cp.setBranchid(Integer.parseInt(params.get("Model_branchid")));
 		cp.setPeoplename(params.get("peoplename"));
 		cp.setCustomer_supplier(params.get("customer_supplier"));
@@ -4877,7 +4891,7 @@ public class HomeController {
 		return ContactPersonobjectfiller(cp);
 
 	}
-	
+
 	@ResponseBody
 	@PostMapping("contactpersonsavejson")
 	public int contactpersonsavejson(@RequestParam Map<String, String> params) {

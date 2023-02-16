@@ -338,19 +338,25 @@
     
  // List
 	  const TagifyCustomListSuggestionEl = document.querySelector('#organization');
-	   const whitelist = ['ITS', "RVS"];
-	    
-	    // List
-	    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
-	      whitelist: whitelist,
-	      maxTags: 1,
-	      dropdown: {
-	        maxItems: 20,
-	        classname: '',
-	        enabled: 0,
-	        closeOnSelect: false
-	      }
-	    });
+
+	  $.ajax({
+				type : "GET",url : "organizationNameList",
+				data : '', success : function(result) {
+					
+					 // List
+				    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
+				      whitelist: result,
+				      maxTags: 1,
+				      dropdown: {
+				        maxItems: 20,
+				        classname: '',
+				        enabled: 0,
+				        closeOnSelect: false
+				      }
+				    });
+					 
+				}
+	  });
 	  //--------------------------	    
     $(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------

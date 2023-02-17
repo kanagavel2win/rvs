@@ -79,6 +79,8 @@ public class ContactPerson {
 	@Transient
 	private String branchName;
 	@Transient
+	private String branchCode;
+	@Transient
 	private String followername;
 	@Transient
 	private String followerprimarymob;

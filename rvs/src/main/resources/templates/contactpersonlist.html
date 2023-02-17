@@ -21,7 +21,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Person List</title>
+    <title>People List</title>
 
     <meta name="description" content="" />
 
@@ -110,7 +110,7 @@
           <div class="content-wrapper">
             <!-- Content -->
 				 <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Administration/ </span>Person</h4>
+              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Administration/ </span>People</h4>
 
 
 
@@ -127,18 +127,17 @@
                         <th></th>
                         <th>Id</th>
                         <th>Branch</th>
-                        <th>Type</th>
                         <th>People</th>
                         <th>Prim-Contact</th>
-                        <th>Prim-Email</th>
                         <th>Organization</th>
-                        <th>RM</th>
+                        <th>Relationship Manager</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                   </table>
                 </div>
               </div>
+              
              
              <!-- End Offcanvas -->
 			<button class="btnoffcanvas btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd" style="visibility:hidden" ></button>
@@ -204,7 +203,7 @@
                             name="organization"
                             class="form-control"
                             placeholder="select Organization"
-                            required
+                            
                           />
                         
                           
@@ -232,7 +231,7 @@
                       <div class="">
                         
                         <select class="form-select" id="Relationmanger" required>
-                           <option value="">Select Person Type</option>
+                           <option value="">Select RM</option>
                            <option th:each="obj : ${empls}" th:value="${obj.empMasterid}" th:text="${obj.StaffName}"></option>
                            
                          </select>
@@ -400,10 +399,8 @@
 			        { data: 'id' },
 			        { data: 'id' },
 			        { data: 'branchName' },
-			        { data: 'customer_supplier' },
 			        { data: 'peoplename' },
 			        { data: 'primarymob' },
-			        { data: 'primaryemail' },
 			        { data: 'organizationname' },
 			        { data: 'followername' },
 			        { data: '' }
@@ -447,7 +444,7 @@
 			            	 
 			            	 $contactpersonCode="";
 		            		 
-			            	 $row_output ='<a href="contactpersonview?id='+ full['id'] +'"> '+ $name +" </a><br/><small class='emp_post text-truncate text-muted'>"+  $contactpersonCode + "</span>";
+			            	 $row_output ='<a href="contactpersonview?id='+ full['id'] +'"> '+ $name +" </a><br/><small class='emp_post text-truncate text-muted'>"+  full['branchCode'] + "</span>";
 			            	 return $row_output;
 			            }
 			          },
@@ -457,13 +454,36 @@
 			       
 			        {
 			          
-			          targets: 5
+			          targets: 4,
+			          render: function(data, type, full, meta) {
+			            	 $name = full['peoplename'];
+			            	 
+			            	 $contactpersonCode="";
+		            		 
+			            	 $row_output = $name +"<br/><small class='emp_post text-truncate text-muted'>"+  full['customer_supplier'] + "</span>";
+			            	 return $row_output;
+			            }
 			        },
-			      
+			        {
+				          
+				          targets: 5,
+				          render: function(data, type, full, meta) {
+				            	 $name = full['primarymob'];
+				            	 
+				            	 $primaryemail=full['primaryemail'];
+				            	 if($primaryemail ==null)
+				                	{
+				                	 $primaryemail="";
+				                	}
+			            		 
+				            	 $row_output = $name +"<br/><small class='emp_post text-truncate text-muted'>"+  $primaryemail + "</span>";
+				            	 return $row_output;
+				            }
+				        },
 			        {
 			            // Avatar image/badge, Name and post
-			            targets: 9,
-			            responsivePriority: 9,
+			            targets: 7,
+			            responsivePriority: 7,
 			            render: function(data, type, full, meta) {
 			              var $user_img = full['followerimg'],
 			                $name = full['followername'];
@@ -518,7 +538,7 @@
 			          render: function(data, type, full, meta) {
 			            return (
 			           
-			              '<a href="editcontactperson?id='+ full['id'] +'" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
+			              '<a href="contactpersonview?id='+ full['id'] +'" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
 			            );
 			          }
 			        }
@@ -604,7 +624,7 @@
 			        }
 			      }
 			    });
-			    $('div.head-label').html('<h5 class="card-title mb-0">Person</h5>');
+			    $('div.head-label').html('<h5 class="card-title mb-0">People</h5>');
   		}
    // --------------------------------------------------------------------
    		function validationformreset()
@@ -646,10 +666,7 @@
 							Swal.fire({
 						        title: 'Congratulations!',
 						        text: 'Your New Person is Added Successfully',
-						        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-						        imageWidth: 400,
-						        imageAlt: 'Custom image',
-						        confirmButtonText: 'Welcome',
+						        confirmButtonText: 'Ok',
 						        customClass: {
 						          confirmButton: 'btn btn-primary'
 						        },

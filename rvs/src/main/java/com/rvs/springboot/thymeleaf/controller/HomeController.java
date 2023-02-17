@@ -1076,7 +1076,9 @@ public class HomeController {
 			}
 
 			// branch name
-			cp.setBranchName(branchMasterService.findById(cp.getBranchid()).getBRANCH_NAME());
+			BranchMaster bm = branchMasterService.findById(cp.getBranchid());
+			cp.setBranchName(bm.getBRANCH_NAME());
+			cp.setBranchCode(bm.getBranchCode());
 			// Organization Name
 			cp.setOrganizationname(
 					contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
@@ -4755,7 +4757,7 @@ public class HomeController {
 		List<BranchMaster> branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", branchls);
 
-		List<EmployeeMaster> empls = employeeMasterService.findAll();
+		List<EmployeeMaster> empls = EffectiveEmployee(employeeMasterService.findAll());
 		themodel.addAttribute("empls", empls);
 
 		List<OrganizationContacts> orgList = contactOrganizationService.findAll();
@@ -4806,23 +4808,21 @@ public class HomeController {
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		// ---------------------------
-		
+
 		// ---------------------------
 		return "contactpersonadd";
 	}
 
-	
 	@ResponseBody
 	@GetMapping("organizationNameList")
-	public List<String> organizationList ()
-	{
+	public List<String> organizationList() {
 		List<String> orglist = new ArrayList();
 		for (OrganizationContacts o : contactOrganizationService.findAll()) {
-			orglist.add( o.getOrgname());
+			orglist.add(o.getOrgname());
 		}
 		return orglist;
 	}
-	
+
 	public ContactPerson ContactPersonobjectfiller(ContactPerson cp) {
 		if (cp.getContactPersonAccNo().size() == 0) {
 			List<ContactPersonAccNo> ContactPersonAccNols = new ArrayList();
@@ -4877,16 +4877,20 @@ public class HomeController {
 		cp.setDesignation(params.get("designation"));
 		cp.setMemberin(params.get("memberin"));
 
-		List<OrganizationContacts> conOrgls = contactOrganizationService.findbyOrgname(organization);
-		if (conOrgls.size() > 0) {
-			cp.setOrganization(String.valueOf(conOrgls.get(0).getId()));
-		} else {
-			OrganizationContacts contactOrganization = new OrganizationContacts();
-			contactOrganization.setOrgname(organization);
-			contactOrganization = contactOrganizationService.save(contactOrganization);
-			cp.setOrganization(String.valueOf(contactOrganization.getId()));
-		}
+		if (organization != null) {
 
+			List<OrganizationContacts> conOrgls = contactOrganizationService.findbyOrgname(organization);
+			if (conOrgls.size() > 0) {
+				cp.setOrganization(String.valueOf(conOrgls.get(0).getId()));
+			} else {
+				OrganizationContacts contactOrganization = new OrganizationContacts();
+				contactOrganization.setOrgname(organization);
+				contactOrganization = contactOrganizationService.save(contactOrganization);
+				cp.setOrganization(String.valueOf(contactOrganization.getId()));
+			}
+		} else {
+			cp.setOrganization("");
+		}
 		cp = contactPersonService.save(cp);
 		return ContactPersonobjectfiller(cp);
 
@@ -4911,16 +4915,20 @@ public class HomeController {
 		cpcls.add(cpc);
 		cp.setContactPersonContact(cpcls);
 
-		List<OrganizationContacts> conOrgls = contactOrganizationService.findbyOrgname(organization);
-		if (conOrgls.size() > 0) {
-			cp.setOrganization(String.valueOf(conOrgls.get(0).getId()));
-		} else {
-			OrganizationContacts contactOrganization = new OrganizationContacts();
-			contactOrganization.setOrgname(organization);
-			contactOrganization = contactOrganizationService.save(contactOrganization);
-			cp.setOrganization(String.valueOf(contactOrganization.getId()));
-		}
+		if (organization != null) {
 
+			List<OrganizationContacts> conOrgls = contactOrganizationService.findbyOrgname(organization);
+			if (conOrgls.size() > 0) {
+				cp.setOrganization(String.valueOf(conOrgls.get(0).getId()));
+			} else {
+				OrganizationContacts contactOrganization = new OrganizationContacts();
+				contactOrganization.setOrgname(organization);
+				contactOrganization = contactOrganizationService.save(contactOrganization);
+				cp.setOrganization(String.valueOf(contactOrganization.getId()));
+			}
+		} else {
+			cp.setOrganization("");
+		}
 		return contactPersonService.save(cp).getId();
 
 	}

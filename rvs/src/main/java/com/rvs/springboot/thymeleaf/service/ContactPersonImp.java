@@ -114,4 +114,10 @@ public class ContactPersonImp implements ContactPersonService {
 		
 	}
 	
+	@Override
+	public List<ContactPerson> contactpersonlistbyorgname(String organizationname) {
+		
+		List<ContactPerson> cpls = contactpersonRepo.findByOrganization(organizationname);
+		return cpls;
+	}	
 }

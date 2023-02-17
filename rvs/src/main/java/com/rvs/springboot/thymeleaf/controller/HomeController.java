@@ -95,6 +95,7 @@ import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
+import com.rvs.springboot.thymeleaf.entity.OrganizationAccNo;
 import com.rvs.springboot.thymeleaf.entity.OrganizationContact;
 import com.rvs.springboot.thymeleaf.entity.OrganizationContacts;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
@@ -1080,8 +1081,11 @@ public class HomeController {
 			cp.setBranchName(bm.getBRANCH_NAME());
 			cp.setBranchCode(bm.getBranchCode());
 			// Organization Name
-			cp.setOrganizationname(
-					contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
+			if(!cp.getOrganization().equalsIgnoreCase("")) {
+				cp.setOrganizationname(
+						contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());	
+			}
+			
 
 			// Set primary contact
 			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
@@ -1100,6 +1104,42 @@ public class HomeController {
 
 			}
 			// -------------------
+
+		}
+
+		return cpList;
+
+	}
+	
+	@ResponseBody
+	@GetMapping("contactorganizationlistjson")
+	public List<OrganizationContacts> contactorganizationlistjson(Model themodel) {
+		List<OrganizationContacts> cpList = contactOrganizationService.findAll();
+		Date todaydate = new Date();
+
+		for (OrganizationContacts cp : cpList) {
+
+			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
+				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()));
+				cp.setFollowerimg(getemp_photo(empobj));
+				cp.setFollowername(empobj.getStaffName());
+				
+				// Set primary contact
+				List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
+						.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+						.collect(Collectors.toList());
+				if (ecls.size() > 0) {
+					cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+
+				}
+			}
+			// branch name
+			BranchMaster bm = branchMasterService.findById(cp.getBranchid());
+			cp.setBranchName(bm.getBRANCH_NAME());
+			cp.setBranchCode(bm.getBranchCode());
+			// -------------------
+			cp.setCplist(contactPersonService.contactpersonlistbyorgname(cp.getOrgname()));
+			
 
 		}
 
@@ -4480,43 +4520,7 @@ public class HomeController {
 		return "assetaudit";
 	}
 
-	/*
-	 * @GetMapping("assetservice") public String assetservice(@RequestParam("id")
-	 * int id, Model themodel, ModelAndView themodelandview) {
-	 * 
-	 * AssetMaster AssetMasterobj = assetMasterService.findById(id);
-	 * List<AssetService> AssetServiceobjlist =
-	 * assetserviceService.findByAssetId(String.valueOf(id)); AssetService
-	 * AssetServiceobj = new AssetService(); if (AssetServiceobjlist.size() > 0) {
-	 * AssetServiceobj = AssetServiceobjlist.get(0); } else {
-	 * AssetServiceobj.setAssetId(String.valueOf(AssetMasterobj.getAssetId())); }
-	 * 
-	 * List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
-	 * themodel.addAttribute("ServiceItem", ServiceItem);
-	 * 
-	 * themodel.addAttribute("AssetServiceobj", AssetServiceobj);
-	 * themodel.addAttribute("AssetMasterobj", AssetMasterobj);
-	 * 
-	 * return "assetservice"; }
-	 * 
-	 * @PostMapping("assetservicesave") public String assetservicesave(Model
-	 * themodel, @ModelAttribute("AssetServiceobj") AssetService AssetServiceobj) {
-	 * 
-	 * itemlistService.savesingletxt(AssetServiceobj.getServiceItem(),
-	 * "ServiceItem");
-	 * 
-	 * AssetService AssetServicesave = assetserviceService.save(AssetServiceobj);
-	 * AssetMaster AssetMasterobj =
-	 * assetMasterService.findById(Integer.parseInt(AssetServiceobj.getAssetId()));
-	 * themodel.addAttribute("AssetServiceobj", AssetServicesave);
-	 * themodel.addAttribute("AssetMasterobj", AssetMasterobj);
-	 * themodel.addAttribute("save", true);
-	 * 
-	 * List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
-	 * themodel.addAttribute("ServiceItem", ServiceItem);
-	 * 
-	 * return "assetservice"; }
-	 */
+	
 	@GetMapping("insurancelist")
 	public String insurancelist(Model theModel) {
 		List<String> datastaff = new ArrayList<String>();
@@ -4885,6 +4889,9 @@ public class HomeController {
 			} else {
 				OrganizationContacts contactOrganization = new OrganizationContacts();
 				contactOrganization.setOrgname(organization);
+				contactOrganization.setBranchid(Integer.parseInt(params.get("Model_branchid")));
+				contactOrganization.setCustomer_supplier(params.get("customer_supplier"));
+				contactOrganization.setFollowers(params.get("Relationmanger"));
 				contactOrganization = contactOrganizationService.save(contactOrganization);
 				cp.setOrganization(String.valueOf(contactOrganization.getId()));
 			}
@@ -4923,7 +4930,11 @@ public class HomeController {
 			} else {
 				OrganizationContacts contactOrganization = new OrganizationContacts();
 				contactOrganization.setOrgname(organization);
+				contactOrganization.setBranchid(Integer.parseInt(params.get("Branch")));
+				contactOrganization.setCustomer_supplier(params.get("customer_supplier"));
+				contactOrganization.setFollowers(params.get("Relationmanger"));
 				contactOrganization = contactOrganizationService.save(contactOrganization);
+				
 				cp.setOrganization(String.valueOf(contactOrganization.getId()));
 			}
 		} else {
@@ -4933,65 +4944,70 @@ public class HomeController {
 
 	}
 
-	@PostMapping("contactpersonsave")
-	public String contactpersonsave(Model themodel, @ModelAttribute("contactperson") ContactPerson contactperson) {
 
-		String collectorgids = "";
-		String srcOrg = String.valueOf(contactperson.getOrganization()).replace("null", "");
-		if (srcOrg.length() > 0) {
-			for (String str : srcOrg.split(",")) {
-				if (NumberUtils.isParsable(str)) {
-					collectorgids += str + ",";
-				} else {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(str);
+	@GetMapping("contactsorganizationslist")
+	public String contactsorganizationslist(Model themodel) {
 
-					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
-				}
+		List<BranchMaster> branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", branchls);
+
+		List<EmployeeMaster> empls = EffectiveEmployee(employeeMasterService.findAll());
+		themodel.addAttribute("empls", empls);
+
+				
+		return "contactorganizationlist";
+	}
+	
+	public OrganizationContacts OrganizationContactsobjectfiller(OrganizationContacts corg) {
+		if (!nullremover(String.valueOf(corg.getFollowers())).equalsIgnoreCase("")) {
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(corg.getFollowers()));
+			corg.setFollowerimg(getemp_photo(empobj));
+			corg.setFollowername(empobj.getStaffName());
+			
+			// Set primary contact
+			List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(corg.getFollowers()))
+					.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+					.collect(Collectors.toList());
+			if (ecls.size() > 0) {
+				corg.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+
 			}
 		}
-		if (collectorgids.length() > 0) {
-			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
+		// branch name
+		BranchMaster bm = branchMasterService.findById(corg.getBranchid());
+		corg.setBranchName(bm.getBRANCH_NAME());
+		corg.setBranchCode(bm.getBranchCode());
+		// -------------------
+		corg.setCplist(contactPersonService.contactpersonlistbyorgname(corg.getOrgname()));
+		return corg;
+	}
+
+
+	@GetMapping("contactorganizationview")
+	public String contactOrganizationview(Model theModel, @RequestParam("id") int id) {
+
+		
+		List<OrganizationContacts> cplist = contactOrganizationService.findAll();
+
+		OrganizationContacts corg = OrganizationContactsobjectfiller(contactOrganizationService.findById(id));
+		if(corg.getOrganizationAccNo().size() ==0)
+		{
+			List<OrganizationAccNo> oanls= new ArrayList<OrganizationAccNo>();
+			oanls.add(new OrganizationAccNo());
+			corg.setOrganizationAccNo(oanls);
 		}
-		contactperson.setOrganization(collectorgids);
 
-		// itemlistService.savesingletxt(contactperson.getTypeofindustry(),
-		// "TYPEOFINDUSTRY");
-		itemlistService.savesingletxt(contactperson.getMemberin(), "MEMBERIN");
-		contactperson = contactPersonService.save(contactperson);
-		// -------------------------------
-		mappersonstoOrganization(collectorgids, contactperson.getId());
-		// --------------------------------
-		themodel.addAttribute("contactperson", contactperson);
-		List<String> TYPEOFINDUSTRY = itemlistService.findByFieldName("TYPEOFINDUSTRY");
-		themodel.addAttribute("TYPEOFINDUSTRY", TYPEOFINDUSTRY);
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 
-		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
-		themodel.addAttribute("MEMBERIN", MEMBERIN);
-		themodel.addAttribute("save", true);
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		themodel.addAttribute("organizationlist", contactOrganizationService.findAll());
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+		
+		theModel.addAttribute("OrganizationContacts", corg);
+		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
 
-		return "contactpersonadd";
-	}
-
-	@GetMapping("contactsOrganizationadd")
-	public String contactsOrganizationadd(Model themodel) {
-
-		OrganizationContacts contactOrganization = new OrganizationContacts();
-		themodel.addAttribute("contactOrganization", contactOrganization);
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		themodel.addAttribute("personlist", contactPersonService.findAll());
-		return "contactorganizationadd";
-	}
-
-	@GetMapping("contactOrganizationview")
-	public String contactOrganizationview(Model themodel, @RequestParam("id") int id) {
-
-		OrganizationContacts contactOrganization = contactOrganizationService.findById(id);
-		themodel.addAttribute("contactOrganization", contactOrganization);
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		themodel.addAttribute("personlist", contactPersonService.findAll());
 
 		return "contactorganizationadd";
 	}
@@ -5000,30 +5016,10 @@ public class HomeController {
 	public String contactOrganizationsave(Model themodel,
 			@ModelAttribute("contactOrganization") OrganizationContacts contactOrganization) {
 
-		String collectpeopleids = "";
-		String srcPer = String.valueOf(contactOrganization.getPersonid()).replace("null", "");
-		if (srcPer.length() > 0) {
-			for (String str : srcPer.split(",")) {
-				if (NumberUtils.isParsable(str)) {
-					collectpeopleids += str + ",";
-				} else {
-					ContactPerson contactperson = new ContactPerson();
-					contactperson.setPeoplename(str);
-					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
-				}
-			}
-		}
-		if (collectpeopleids.length() > 0) {
-			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
-		}
-		contactOrganization.setPersonid(collectpeopleids);
 
 		contactOrganization = contactOrganizationService.save(contactOrganization);
 
-		// -------------------------------
-		mapOrganizationtopersons(collectpeopleids, contactOrganization.getId());
-		// --------------------------------
-
+		
 		themodel.addAttribute("contactOrganization", contactOrganization);
 		themodel.addAttribute("save", true);
 		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
@@ -5033,7 +5029,7 @@ public class HomeController {
 
 	public void mappersonstoOrganization(String collectorgids, int personId) {
 
-		final String perid = String.valueOf(personId);
+		/*final String perid = String.valueOf(personId);
 		if (!collectorgids.equalsIgnoreCase("")) {
 			for (String s : collectorgids.split(",")) {
 				OrganizationContacts contactOrganization1 = contactOrganizationService.findById(Integer.parseInt(s));
@@ -5049,7 +5045,7 @@ public class HomeController {
 				}
 				contactOrganizationService.save(contactOrganization1);
 			}
-		}
+		}*/
 	}
 
 	public void mapOrganizationtopersons(String collectpeopleids, int orgId) {
@@ -5076,14 +5072,7 @@ public class HomeController {
 		// --------------------------------
 	}
 
-	@GetMapping("contactsorganizationslist")
-	public String contactsorganizationslist(Model themodel) {
-
-		List<OrganizationContacts> contactOrganizationlist = contactOrganizationService.findAll();
-		themodel.addAttribute("contactOrganizationlist", contactOrganizationlist);
-
-		return "contactorganizationlist";
-	}
+	
 
 	@GetMapping("leadlist")
 	public String leadlist(Model themodel) {

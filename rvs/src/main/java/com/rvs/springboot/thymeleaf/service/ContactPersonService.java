@@ -17,4 +17,6 @@ public interface ContactPersonService {
 	public int insertAccountdetails(int acid, String acno,String acname , String bankname,String name,String ifsccode, int id);
 	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id);
 	public int deleteFiles(int id);
+	public List<ContactPerson> contactpersonlistbyorgname(String organizationname);
+	
 }

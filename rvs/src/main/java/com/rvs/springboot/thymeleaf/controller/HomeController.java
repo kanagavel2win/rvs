@@ -98,6 +98,7 @@ import com.rvs.springboot.thymeleaf.entity.LoginRegistrationDto;
 import com.rvs.springboot.thymeleaf.entity.OrganizationAccNo;
 import com.rvs.springboot.thymeleaf.entity.OrganizationContact;
 import com.rvs.springboot.thymeleaf.entity.OrganizationContacts;
+import com.rvs.springboot.thymeleaf.entity.OrganizationFiles;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTaskMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateActivityMaster;
@@ -542,6 +543,28 @@ public class HomeController {
 				return false;
 			}
 
+		}else if (params.get("src").equalsIgnoreCase("OrganizationContacts")) {
+
+			List<OrganizationContact> cpList = contactOrganizationService
+					.findById(Integer.parseInt(params.get("organizationid"))).getOrganizationContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (cpList.size() > 0) {
+
+				if (params.get("modalcontactid") != null
+						&& (!params.get("modalcontactid").toString().equalsIgnoreCase("-"))) {
+					if (cpList.get(0).getContactid() == Integer.parseInt(params.get("modalcontactid"))) {
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					return true;
+				}
+
+			} else {
+				return false;
+			}
+
 		} else {
 			return false;
 		}
@@ -677,6 +700,45 @@ public class HomeController {
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
 			return bfiles;
+		} else if (params.get("functiontype").equalsIgnoreCase("OrganizationContacts")) {
+			StringBuilder filename = new StringBuilder();
+			if (Files_Attach != null) {
+				// File Uploading
+				String profilephotouploadRootPath = request.getServletContext().getRealPath("organizationcontactsfiles");
+				// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+				File uploadRootDir = new File(profilephotouploadRootPath);
+				// Create directory if it not exists.
+				if (!uploadRootDir.exists()) {
+					uploadRootDir.mkdirs();
+				}
+
+				if (Files_Attach.getOriginalFilename().toString().length() > 0) {
+
+					String tempfilename = stringdatetime() + Files_Attach.getOriginalFilename();
+					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+					filename.append("organizationcontactsfiles/" + tempfilename);
+
+					try {
+						Files.write(fileNameandPath, Files_Attach.getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			OrganizationFiles bfiles = new OrganizationFiles();
+
+			int Organizationid = Integer.parseInt(params.get("OrganizationContactsID"));
+			String Documenttype = params.get("Documenttype");
+			String DocNo = params.get("DocNo");
+			itemlistService.savesingletxt(Documenttype, "Documenttype");
+			int id = contactOrganizationService.insertFiles(Documenttype, DocNo, filename.toString(), Organizationid);
+
+			bfiles.setFilesid(id);
+			bfiles.setDocumentNo(DocNo);
+			bfiles.setDocumentType(Documenttype);
+			bfiles.setFilePath(filename.toString());
+			return bfiles;
 		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			StringBuilder filename = new StringBuilder();
 			if (Files_Attach != null) {
@@ -755,6 +817,20 @@ public class HomeController {
 			cp.setAddressZIP(params.get("AddressZipCode"));
 			cp = contactPersonService.save(cp);
 			return ContactPersonobjectfiller(cp);
+		}else if (params.get("functiontype").equalsIgnoreCase("OrganizationContacts")) {
+
+			int OrganizationContactsID = Integer.parseInt(params.get("OrganizationContactsID"));
+			OrganizationContacts corg = contactOrganizationService.findById(OrganizationContactsID);
+			corg.setAddressCountry(params.get("AddressCountry"));
+			corg.setAddressStreet1(params.get("AddressAddress1"));
+			corg.setAddressStreet2(params.get("AddressAddress2"));
+			corg.setAddressLankmark(params.get("AddressLandmark"));
+			corg.setAddressVillage(params.get("AddressVillage"));
+			corg.setAddressCity(params.get("AddressCity"));
+			corg.setAddressState(params.get("AddressState"));
+			corg.setAddressZIP(params.get("AddressZipCode"));
+			corg = contactOrganizationService.save(corg);
+			return OrganizationContactsobjectfiller(corg);
 		}
 
 		else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
@@ -811,6 +887,22 @@ public class HomeController {
 				return contactPersonService.updateContact(Integer.parseInt(params.get("contactid")), contacttype,
 						contactPhone, contactemail, primarycontact);
 			}
+		}else if (params.get("functiontype").equalsIgnoreCase("OrganizationContacts")) {
+			int OrganizationContactID = Integer.parseInt(params.get("OrganizationContactsID"));
+			String contacttype = params.get("contacttype");
+			String contactPhone = params.get("contactPhone");
+			String contactemail = params.get("contactemail");
+			String contactid = params.get("contactid");
+			boolean primarycontact = Boolean.parseBoolean(params.get("primarycontact"));
+			itemlistService.savesingletxt(contacttype, "CONTACTTYPE");
+
+			if (contactid.equalsIgnoreCase("-")) {
+				return contactOrganizationService.insertContact(contacttype, contactPhone, contactemail, OrganizationContactID,
+						primarycontact);
+			} else {
+				return contactOrganizationService.updateContact(Integer.parseInt(params.get("contactid")), contacttype,
+						contactPhone, contactemail, primarycontact);
+			}
 		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int empMasterid = Integer.parseInt(params.get("empMasterid"));
 			String contacttype = params.get("contacttype");
@@ -859,6 +951,17 @@ public class HomeController {
 			String ifsccode = params.get("ifsccode");
 			return contactPersonService.insertAccountdetails(acid, acno, acname, bankname, branchname, ifsccode,
 					ContactPersonID);
+
+		}  else if (params.get("functiontype").equalsIgnoreCase("OrganizationContacts")) {
+			int OrganizationContactsID = Integer.parseInt(params.get("OrganizationContactsID"));
+			int acid = Integer.parseInt(params.get("acid"));
+			String acno = params.get("acno");
+			String acname = params.get("acname");
+			String bankname = params.get("bankname");
+			String branchname = params.get("branchname");
+			String ifsccode = params.get("ifsccode");
+			return contactOrganizationService.insertAccountdetails(acid, acno, acname, bankname, branchname, ifsccode,
+					OrganizationContactsID);
 
 		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int empMasterid = Integer.parseInt(params.get("empMasterid"));
@@ -4902,6 +5005,25 @@ public class HomeController {
 		return ContactPersonobjectfiller(cp);
 
 	}
+	
+	@ResponseBody
+	@PostMapping("organizationupdatejson")
+	public OrganizationContacts organizationupdatejson(@RequestParam Map<String, String> params) {
+		int corgid = Integer.parseInt(params.get("OrganizationContactsID"));
+		OrganizationContacts corg = contactOrganizationService.findById(corgid);
+		corg.setBranchid(Integer.parseInt(params.get("Model_branchid")));
+		corg.setOrgname(params.get("orgname"));
+		corg.setCustomer_supplier(params.get("customer_supplier"));
+		corg.setFollowers(params.get("Relationmanger"));
+		corg.setWebsite(params.get("website"));
+		corg.setIndustry_type(params.get("industry_type"));
+		corg = contactOrganizationService.save(corg);
+		
+		itemlistService.savesingletxt(corg.getIndustry_type(), "industry_type");
+		
+		return OrganizationContactsobjectfiller(corg);
+
+	}
 
 	@ResponseBody
 	@PostMapping("contactpersonsavejson")
@@ -5002,6 +5124,9 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
+		
+		List<String> industry_type = itemlistService.findByFieldName("industry_type");
+		theModel.addAttribute("industry_type", industry_type);
 		
 		theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());

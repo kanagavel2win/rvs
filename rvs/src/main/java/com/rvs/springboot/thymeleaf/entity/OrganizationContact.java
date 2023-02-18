@@ -23,8 +23,6 @@ public class OrganizationContact {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int contactid;
 	@Column
-	private int branchid;
-	@Column
 	private String Department;
 	@Column
 	private String Phonenumber;

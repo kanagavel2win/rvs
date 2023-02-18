@@ -433,8 +433,8 @@
                     <div class="modal-body">
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-4">
-                        <h3>Edit Person Information</h3>
-                        <p>Update Person Basic Information</p>
+                        <h3>Edit Organization Information</h3>
+                        <p>Update Organization Basic Information</p>
                       </div>
                       <form id="editOrganizationContactsdetailsForm" th:object="${OrganizationContacts}" class="row g-3 needs-validation" onsubmit="return false">
 						<input type="hidden" th:value="${OrganizationContacts['id']}" id="OrganizationContactsID" th:field="*{id}"/>
@@ -533,7 +533,7 @@
                           >
                            <option value="">Select Industry Type</option>
                            
-                           <option th:each="str :${INDUSTRYTYPE}" th:value="${str}"  th:text="${str}"></option> 
+                           <option th:each="str :${industry_type}" th:value="${str}"  th:text="${str}"></option> 
                            
                          </select>
                          <div class="invalid-feedback">Please enter Member in.</div>
@@ -1122,7 +1122,6 @@ Model_CURRENT_STATUS
 		    	    	var Model_branchid =$('#Model_branchid').val();
 		  	        	var customer_supplier =$("input[name=customer_supplier]:checked").val();
 		  	        	var Model_orgname =$('#Model_orgname').val();
-		  	        	var Model_organization =$('#Model_organization').val();
 		  	        	var Model_website =$('#Model_website').val();
 		  	        	var Model_industry_type =$('#Model_industry_type').val();
 		  	        	var Model_Relationmanger =$('#Model_Relationmanger').val();
@@ -1133,7 +1132,6 @@ Model_CURRENT_STATUS
 		  	        			Model_branchid : Model_branchid,
 		  	        			customer_supplier : customer_supplier,
 		  	        			orgname : Model_orgname,
-		  	        			organization : Model_organization,
 		  	        			website : Model_website,
 		  	        			industry_type : Model_industry_type,
 		  	        			Relationmanger: Model_Relationmanger
@@ -1477,7 +1475,7 @@ Model_CURRENT_STATUS
 						labeltext = "New Document Type";
 					}else if(name == "addModel_industry_type")
 					{
-						labeltext = "New Member In";
+						labeltext = "New Industry Type";
 					}
 					
 					$('#additemalltxt').text(labeltext);
@@ -1494,7 +1492,7 @@ Model_CURRENT_STATUS
 							labeltext = "modalcontacttype";
 						}else if (name == "New Document Type") {
 							labeltext = "modalDocumenttype";
-						}else if (name == "New Member In") {
+						}else if (name == "New Industry Type") {
 							labeltext = "addModel_industry_type";
 						}
 						
@@ -1687,27 +1685,7 @@ Model_CURRENT_STATUS
 		    	  filedeleteoperation(id);
 		      });
 		//------------------------------------------------------
-	  /* // Date Format
-	   const flatpickrFriendly = document.querySelector('#Model_website');
-		 // Human Friendly
-		  if (flatpickrFriendly) {
-		    flatpickrFriendly.flatpickr({
-		      altInput: true,
-		      altFormat: 'F j, Y',
-		      dateFormat: 'Y-m-d'
-		    });
-		  } 
-		 
-		// Date Format
-		   const flatpickrFriendly1 = document.querySelector('#Model_effectiveon');
-			 // Human Friendly
-			  if (flatpickrFriendly1) {
-			    flatpickrFriendly1.flatpickr({
-			      altInput: true,
-			      altFormat: 'F j, Y',
-			      dateFormat: 'Y-m-d'
-			    });
-			  }*/
+	
 		// Phone
 			 const phoneMask = document.querySelector('.phone-number-otp-mask');
 
@@ -1718,27 +1696,7 @@ Model_CURRENT_STATUS
 		        phoneRegionCode: 'US'
 		      });
 		    }    
-	 // List
-		  const TagifyCustomListSuggestionEl = document.querySelector('#Model_organization');
-		  
-		  $.ajax({
-					type : "GET",url : "organizationNameList",
-					data : '', success : function(result) {
-						
-						 // List
-					    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
-					      whitelist: result,
-					      maxTags: 1,
-					      dropdown: {
-					        maxItems: 20,
-					        classname: '',
-					        enabled: 0,
-					        closeOnSelect: false
-					      }
-					    });
-						 
-					}
-		  });
+	 
 		   
 		  //--------------------------	 
     </script>

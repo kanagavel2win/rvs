@@ -188,7 +188,49 @@
                     </div>
                   </div>
                   <!-- /User Card -->
-                  
+                                    <!-- Connected Accounts -->
+                  <div class="card mb-4">
+                    <h5 class="card-header">Connected People
+                    <div class="card-action-element" style="float:right">
+                        <button
+                          class="btn btn-primary btn-sm"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#addNewperson"
+                        >
+                          <i class="bx bx-plus bx-xs me-1"></i> 
+                        </button>
+                      	</div>
+                    </h5>
+                    <div class="card-body">
+                      <div class="d-flex mb-3" th:each="obj : ${cpls}">
+                        <div class="flex-grow-1 row">
+                          <div class="col-9 mb-sm-0 mb-2">
+                           <a th:href="'contactpersonview?id='+ ${obj.id}" target="_blank"> <h6 class="mb-0" th:text="${obj.peoplename}"></h6></a>
+                            <small class="text-muted" th:text="${obj.primarymob} +' '+${obj.designation}"></small>
+                          </div>
+                          <div class="col-3 text-end">
+                            <label class="switch me-0">
+                              <input type="checkbox" class="switch-input" th:name="${obj.id}" th:onclick="'makeprimarycontactperson(this)'"  th:checked="${obj.primaryperson}"/>
+                              <span class="switch-toggle-slider">
+                                <span class="switch-on">
+                                  <i class="bx bx-check"></i>
+                                </span>
+                                <span class="switch-off">
+                                  <i class="bx bx-x"></i>
+                                </span>
+                              </span>
+                              <span class="switch-label"></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div id="contactpeopleaddidv"></div>
+                      
+                    </div>
+                  </div>
+                  <!-- /Connected Accounts -->
                    <!-- Address Card -->
                   
                   <div class="card mb-4">
@@ -568,6 +610,61 @@
               </div>
               <!--/ Edit User Modal -->
 
+           <!-- Edit People Modal -->
+              <div class="modal fade" id="addNewperson" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                  <div class="modal-content p-3 p-md-5">
+                  
+                    <div class="modal-body">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="text-center mb-4">
+                        <h3>Edit People Information</h3>
+                        <p>Update People Basic Information</p>
+                      </div>
+                      <form id="editPeopledetailsForm" class="row g-3 needs-validation" onsubmit="return false">
+						
+                        <div class="col-12 ">
+                                
+	                              
+                          <label class="form-label" for="Model_peoplename">Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Model_peoplename"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Person Name.</div>
+                        </div>
+                        
+                        <div class="col-12">
+                          <label class="form-label" for="Model_peoplecontact">Contact Number </label>
+                          <input
+                            type="text"
+                            class="form-control phone-number-otp-mask"
+                            id="Model_peoplecontact"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Contact.</div>
+                        </div>
+                        
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn btn-primary editpeopledatasubmit me-sm-3 me-1">ADD</button>
+                          <button
+                            type="reset"
+                            class="btn btn-label-secondary editpeopledataclose"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Edit People Modal -->
+          
               <!-- Add New Contact Modal -->  
               <div class="modal fade" id="addNewContact" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
@@ -1577,7 +1674,57 @@ Model_CURRENT_STATUS
   				 $('#collapsetoggleicon').toggleClass('bx-chevron-down bx-chevron-up'); 
   			});
   			// --------------------------------------------------------------------
-  			  
+  			function validationformreset()
+	   {
+   				$('.editpeopledataclose').click();
+   				$('.editpeopledatasubmit').prop("disabled",false);
+	   			$('.editpeopledatasubmit').html("Submit");
+	   }
+  			  // --------------------------------------------------------------------
+      $('#editPeopledetailsForm').on('submit', function(event){
+    	  
+    	 
+    	    if(event.target.checkValidity()){
+    	    	$('.editpeopledatasubmit').prop("disabled",true);
+    	    	$('.editpeopledatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+    	    	  
+    	    	var OrganizationContactsID  =$('#OrganizationContactsID').val();
+	        	var peoplename =$('#Model_peoplename').val();
+	        	var phonenumber =$('#Model_peoplecontact').val();
+	        	
+	        	 var formData = {
+	        			 OrganizationContactsID :OrganizationContactsID,
+	        			 peoplename :peoplename,
+	        			 phonenumber :phonenumber
+	        			 
+
+				 }
+				 $.ajax({
+						type : "POST",url : "orgcontactpersonsavejson",
+						data : formData, success : function(result) {
+							validationformreset();
+							var bmobj = JSON.parse(JSON.stringify(result));
+  							
+  							let temphtml= '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='+ bmobj +'" target="_blank"> <h6 class="mb-0">'+ peoplename +'</h6></a> <small class="text-muted">'+ phonenumber +'</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'+ result +'" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+							$('#contactpeopleaddidv').before(temphtml);
+							
+						},
+						error : function(e) {
+							console.log("Error" + e);
+							
+						}
+						
+					});
+	        	
+		        }	
+	    	    else
+	        	{
+	    	    	$('.editpeopledatasubmit').prop("disabled",false);
+	        	}
+   		 
+	    });
+   // --------------------------------------------------------------------
+      
 	  			
 		   	//-------------------------------------------
 		    }); // Jquery
@@ -1671,6 +1818,26 @@ Model_CURRENT_STATUS
 		               
 		               }
 		           });
+		    }
+		  
+		  //------------------------------------------------------    
+		  //------------------------------------------------------    
+		   function makeprimarycontactperson(elem){
+			  
+			  
+			  var formData = {
+            		  personid: elem.getAttribute("name"),
+            		  primarystatus : elem.checked
+           	 }
+   			 $.ajax({
+   					type : "POST",url : "makeprimarycontactperson",
+   					data : formData, success : function(result) {
+   						
+   					},
+   					error : function(e) {
+   						console.log("Error" + e);
+   					}
+   				});
 		    }
 		  
 		  //------------------------------------------------------    

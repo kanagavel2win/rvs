@@ -46,6 +46,9 @@ public class ContactPerson {
 	private String memberin;
 	@Column
 	private String followers;
+	@Column(columnDefinition = "boolean default false")	
+	private Boolean primaryperson;	
+	
 	@Column
 	private String addressStreet1;
 	@Column

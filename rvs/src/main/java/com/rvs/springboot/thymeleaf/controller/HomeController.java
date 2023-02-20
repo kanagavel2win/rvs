@@ -1241,7 +1241,7 @@ public class HomeController {
 			cp.setBranchName(bm.getBRANCH_NAME());
 			cp.setBranchCode(bm.getBranchCode());
 			// -------------------
-			cp.setCplist(contactPersonService.contactpersonlistbyorgname(cp.getOrgname()));
+			cp.setCplist(contactPersonService.contactpersonlistbyorgname(String.valueOf(cp.getId())));
 			
 
 		}

@@ -115,8 +115,8 @@
 
 
 
-
-
+   
+	                   
               <!-- DataTable with Buttons -->
               <div class="card">
                 <div class="card-datatable table-responsive pt-0">
@@ -416,11 +416,38 @@
 				          render: function(data, type, full, meta) {
 				            	 $cplist = full['cplist'];
 				            	 
+				            	 $row_outputs2="";
 				            	 
-				            	 $row_output = $cplist;
+				            	 $row_outputs1="";
+				            	 
+				            		 for (var i = 0; i < $cplist.length; i++) {
+				            			    console.log($cplist[i]);
+				            			  var bmobj = JSON.parse(JSON.stringify($cplist[i]));
+				            			  if(i ==0 )
+			            				  {
+				            				  $row_outputs1=bmobj.peoplename;
+			            				  }else
+		            					  {
+			            					  
+			            					  $row_outputs2 =$row_outputs2+" "+ (i+1)+")."+bmobj.peoplename;
+				            			  }
+			            		 }
+				            	 
+				            	if($row_outputs2 !="")
+			            		{
+				            		$row_outputs2 = 'data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="bottom" data-bs-html="true" title="'+ $row_outputs2 +'"';
+
+			            		}
+				            	 $row_output = '<div '+ $row_outputs2 +' >'+ $row_outputs1;
+				            	 if($row_outputs2 !="")
+				            		{
+				            		 $row_output += " & " + (($cplist.length)-1) +" More ";
+				            		}
+				            	 
+				            	 $row_output +=  '</div>';
 				            	 return $row_output;
-				            }
-				        },
+				          }    
+				    },
 			        {
 			            // Avatar image/badge, Name and post
 			            targets: 7,

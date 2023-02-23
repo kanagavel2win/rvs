@@ -421,11 +421,15 @@
 				            	 $row_outputs1="";
 				            	 
 				            		 for (var i = 0; i < $cplist.length; i++) {
-				            			    console.log($cplist[i]);
+				            			    
 				            			  var bmobj = JSON.parse(JSON.stringify($cplist[i]));
 				            			  if(i ==0 )
 			            				  {
-				            				  $row_outputs1=bmobj.peoplename;
+				            				  if(bmobj.peoplename != null)
+				            					  {
+				            					  $row_outputs1=bmobj.peoplename;  
+				            					  }
+				            				  
 			            				  }else
 		            					  {
 			            					  
@@ -619,7 +623,9 @@
 	        	 var formData = {
 	        			 Branch :Branch,
 	        			 customer_supplier :customer_supplier,
-	        			 orgname :orgname,
+	        			 organization :orgname,
+	        			 peoplename : "",
+	        			 phonenumber : "",
 	        			 Relationmanger :Relationmanger
 
 				 }

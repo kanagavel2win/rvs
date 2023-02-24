@@ -120,6 +120,8 @@ public class EmployeeMaster {
 	@JoinColumn(name = "empMasterid")
 	private List<EmployeeAccNo> employeeAccNo;
 	
+	@Transient
+	private String dobMMformat;
 	
 	@Transient
 	private String t_emp_img;

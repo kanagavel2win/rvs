@@ -189,7 +189,7 @@
                         </li>
                         <li class="d-flex align-items-center mb-3">
                           <span class="fw-semibold mx-2">DOB:</span>
-                          <span th:text="${employeemaster.DateofBirth}" id="Lbl_DateofBirth"></span>
+                          <span th:text="${employeemaster.dobMMformat}" id="Lbl_DateofBirth"></span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
                           <span class="fw-semibold mx-2">Blood Group:</span>
@@ -239,7 +239,7 @@
                   <div class="card  mb-4">
                     <div class="card-body1">
                       <div class="card-header align-items-center">
-                      <h5 class="card-action-title mb-0">Contact
+                      <h5 class="card-action-title mb-0">Contacts
                       <div class="card-action-element" style="float:right">
                         <button
                           class="btn btn-primary btn-sm addcontactbtn"
@@ -248,7 +248,7 @@
                           data-bs-toggle="modal"
                           data-bs-target="#addNewContact"
                         >
-                          <i class="bx bx-plus bx-xs me-1"></i>Add Card
+                          <i class="bx bx-plus bx-xs me-1"></i>
                         </button>
                       	</div>
                         </h5>
@@ -256,25 +256,24 @@
                     </div>
                     <div class="card-body">
                       <div class="added-cards">
-                      	<th:block th:each="contactObj : ${employeemaster.employeeContact}">
+					<th:block th:each="contactObj : ${employeemaster.employeeContact}">
                         <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.employeecontactid}">
                           <div class="d-flex justify-content-between flex-sm-row flex-column">
                             <div class="card-information">
-                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.employeecontactid}" th:text="${contactObj.Department}"></h6>
-                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.employeecontactid}" th:text="${contactObj.Phonenumber}"></h6>
-                              <span th:class="'card-number email'+ ${contactObj.employeecontactid}" th:text="${contactObj.Email}"></span
+                              <input type="hidden" th:class="'primarycontact'+ ${contactObj.employeecontactid}"  th:value="${contactObj.primarycontact}"/>
+                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.employeecontactid}"  th:text="${contactObj.Department}"></h6>
+                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.employeecontactid}"  th:text="${contactObj.Phonenumber}"></h6>
+                              <span th:class="'card-number email'+ ${contactObj.employeecontactid}"  th:text="${contactObj.Email}"></span
                               >
-                              
+                             <span th:class="'primarycontactlablecontainer'+ ${contactObj.employeecontactid}" > <span th:if="${contactObj.primarycontact}" class="badge bg-label-primary">Primary</span></span>
                             </div>
                             <div class="d-flex flex-column text-start text-lg-end">
                               <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button
-                                  class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.employeecontactid}"
-                                  
-                                >
+                                <button class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.employeecontactid}"  >
                                   <i class='bx bxs-edit-alt'></i>
                                 </button><br/>
-                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.employeecontactid}"><i class='bx bxs-trash-alt'></i></button>
+                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.employeecontactid}" ><i class='bx bxs-trash-alt'></i></button>
+                                
                               </div>
                               
                             </div>
@@ -287,6 +286,7 @@
                     </div>
                   </div>
                   <!-- /Contact Card -->
+                 
                    <!-- Address Card -->
                   
                   <div class="card mb-4">
@@ -456,56 +456,7 @@
                 </div>
                 <div class="col-xl-4 col-lg-5 col-md-5">
                 	 <!-- Contact Card -->
-	                  <div class="card  mb-4">
-	                    <div class="card-body1">
-	                      <div class="card-header align-items-center">
-	                      <h5 class="card-action-title mb-0">Contact
-	                      <div class="card-action-element" style="float:right">
-	                        <button
-	                          class="btn btn-primary btn-sm addcontactbtn"
-	                          type="button"
-	                          name="-"
-	                          data-bs-toggle="modal"
-	                          data-bs-target="#addNewContact"
-	                        >
-	                          <i class="bx bx-plus bx-xs me-1"></i>Add Card
-	                        </button>
-	                      	</div>
-	                        </h5>
-	                      
-	                    </div>
-	                    <div class="card-body">
-	                      <div class="added-cards">
-	                      	<th:block th:each="contactObj : ${employeemaster.employeeContact}">
-	                        <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.employeecontactid}">
-	                          <div class="d-flex justify-content-between flex-sm-row flex-column">
-	                            <div class="card-information">
-	                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.employeecontactid}" th:text="${contactObj.Department}"></h6>
-	                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.employeecontactid}" th:text="${contactObj.Phonenumber}"></h6>
-	                              <span th:class="'card-number email'+ ${contactObj.employeecontactid}" th:text="${contactObj.Email}"></span
-	                              >
-	                              
-	                            </div>
-	                            <div class="d-flex flex-column text-start text-lg-end">
-	                              <div class="d-flex order-sm-0 order-1 mt-3">
-	                                <button
-	                                  class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.employeecontactid}"
-	                                  
-	                                >
-	                                  <i class='bx bxs-edit-alt'></i>
-	                                </button><br/>
-	                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.employeecontactid}"><i class='bx bxs-trash-alt'></i></button>
-	                              </div>
-	                              
-	                            </div>
-	                          </div>
-	                        </div>
-	                       	</th:block>
-	                       	<span id="contactaddidv"></span>
-	                       </div>
-	                    </div>
-	                    </div>
-	                  </div>
+	                
 	                  <!-- /Contact Card -->
                 </div>
               </div>
@@ -777,7 +728,7 @@
                               placeholder="999 555 0111"
                               required
                             />
-                            <div class="invalid-feedback">Please enter a valid mobile</div>
+                            
                           </div>
                         </div>
                         <div class="col-12">
@@ -786,9 +737,23 @@
                             type="email"
                             id="modalContactemail"
                             class="form-control expiry-date-mask"
-                            required
+                            
                           />
                           <div class="invalid-feedback">Please enter a valid email</div>
+                        </div>
+                        <div class="col-12">
+                          <label class="switch">
+                            <input type="checkbox" class="switch-input" id="modalcontactprimary"/>
+                            <span class="switch-toggle-slider">
+                              <span class="switch-on">
+                                <i class="bx bx-check"></i>
+                              </span>
+                              <span class="switch-off">
+                                <i class="bx bx-x"></i>
+                              </span>
+                            </span>
+                            <span class="switch-label">Make this as primary contact?</span>
+                          </label>
                         </div>
                         <div class="col-12 text-center mt-4">
                           <button type="submit" class="btn  btn-primary me-sm-3 me-1 contactsavebtn">Submit</button>
@@ -817,7 +782,7 @@
                         <h3 class="address-title"> Address</h3>
                         <p class="address-subtitle">Address for express delivery</p>
                       </div>
-                      <form id="addNewAddressForm" class="row g-3" onsubmit="return false">
+                      <form id="addNewAddressForm" th:object="${employeemaster}" class="row g-3" onsubmit="return false">
                         <div class="col-12">
                           <label class="form-label" for="modalAddressCountry">Country</label>
                           <select
@@ -825,6 +790,7 @@
                             name="modalAddressCountry"
                             class="select2 form-select"
                             data-allow-clear="true"
+                            th:field="*{Address_Country}"
                             th:value="${employeemaster.Address_Country}"
                           >
                             <option value="">Select</option>
@@ -1283,7 +1249,7 @@
 			   	            	$('#Lbl_Father_HusbandName').text(bmobj.father_HusbandName);
 			   	            	$('#Lbl_Gender').text(bmobj.gender);
 			   	            	$('#Lbl_MaritalStatus').text(bmobj.maritalStatus);
-			   	            	$('#Lbl_DateofBirth').text(bmobj.dateofBirth);
+			   	            	$('#Lbl_DateofBirth').text(bmobj.dobMMformat);
 			   	            	$('#Lbl_BloodGroup').text(bmobj.bloodGroup);
 			   	            	$('#Lbl_Height').text(bmobj.height);
 			   	            	$('#Lbl_Weight').text(bmobj.weight);
@@ -1393,76 +1359,133 @@
 			  
 			// --------------------------------------------------------------------
 			
-			   	$('#addContactform').on('submit', function(event){
-			   	 
-			   		$('.contactsavebtn').prop("disabled",true);
-	    	  
-	    	    if(event.target.checkValidity()){
-	    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-	    	    	var empMasterid=$("#empMasterid").val();
-	    	    	var modalcontactid =$('#modalcontactid').val();
-	    	    	var modalcontacttype =$('#modalcontacttype').val();
-	    	    	var modalcontactPhone =$('#modalcontactPhone').val();
-	    	    	var modalContactemail =$('#modalContactemail').val();
-	    	    	var formData = {
-	  	        			 empMasterid: empMasterid,
-	  	        			 contactid: modalcontactid,
-	  	        			 contacttype : modalcontacttype,
-	  	        			 contactPhone : modalcontactPhone,
-	  	        			 contactemail : modalContactemail,
-	  	        			 functiontype : 'Employee'
-	  				 }
-	  				 $.ajax({
-	  						type : "POST",url : "Contactupdatejson",
-	  						data : formData, success : function(result) {
-	  							var bmobj = JSON.parse(JSON.stringify(result));
-	  							
-	  							if(modalcontactid == '-')
- 								{
-	  								let tempresultid=bmobj;
-	  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"'";
-		  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
-		  							tempresult += '<h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
-		  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
-		  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
-		  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
-		  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
-		  						
-		  							$('#contactaddidv').before(tempresult);
-		  						    
- 								}
-	  							else
- 								{
-	  								$('.contacttype'+modalcontactid).text(modalcontacttype);
-	  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
-	  								$('.email'+modalcontactid).text(modalContactemail);
-	  								
- 									 
- 								}
-		  							validationformContactreset();
-	  						},
-	  						error : function(e) {
-	  							console.log("Error" + e);
-	  						}
-	  					});
-	  	        }	
-	    	    else
-	        	{
-	    	    	$('.contactsavebtn').prop("disabled",false);
-	        	}
-			   	});	
+			 
+	  			   	$('#addContactform').on('submit', function(event){
+	  			   	
+	  			   		formData={
+	  			    	    empMasterid: $("#empMasterid").val(),
+							src : "Employee",
+							modalcontactid : $('#modalcontactid').val()								
+					}
+	  			  $.ajax({
+					type : "GET",url : "checkPrimaryContactisPresant",
+					data :formData ,success : function(result) {
+							if(result == true && $("#modalcontactprimary").is(':checked'))
+								{
+									Swal.fire({
+								        title: '',
+								        text: "Primary Contact it already exists",
+								        confirmButtonText: 'Ok',
+								        customClass: {
+								          confirmButton: 'btn btn-primary'
+								        },
+								        buttonsStyling: false
+								      });
+									document.getElementById("radioHead-Office").checked=false;
+									
+								}else
+								{
+	  			   	
+						  			   		$('.contactsavebtn').prop("disabled",true);
+								    	  
+								    	    if(event.target.checkValidity()){
+								    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+								    	    	var empMasterid=$("#empMasterid").val();
+								    	    	var modalcontactid =$('#modalcontactid').val();
+								    	    	var modalcontacttype =$('#modalcontacttype').val();
+								    	    	var modalcontactPhone =$('#modalcontactPhone').val();
+								    	    	var modalContactemail =$('#modalContactemail').val();
+								    	    	var primarycontact =$("#modalcontactprimary").is(':checked');
+								    	  
+								    	    	
+								    	    	var formData = {
+								  	        			 empMasterid: empMasterid,
+								  	        			 contactid: modalcontactid,
+								  	        			 contacttype : modalcontacttype,
+								  	        			 contactPhone : modalcontactPhone,
+								  	        			 contactemail : modalContactemail,
+								  	        			 primarycontact: primarycontact,
+								  	        			functiontype : 'Employee'
+								  				 }
+								  				 $.ajax({
+								  						type : "POST",url : "Contactupdatejson",
+								  						data : formData, success : function(result) {
+								  							var bmobj = JSON.parse(JSON.stringify(result));
+								  							
+								  							if(modalcontactid == '-')
+							  								{
+								  								let tempresultid=bmobj;
+								  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"'";
+									  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
+									  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
+									  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
+									  							
+									  							tempresult += '<span class="primarycontactlablecontainer'+  tempresultid +'">';
+									  							if(primarycontact)
+								  								{
+									  								tempresult += '<span class="primarycontacttxt'+  tempresultid +'"><span class="badge bg-label-primary ">Primary</span></span>';
+								  								}
+									  							tempresult += '</span>'; 
+									  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+									  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
+									  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+									  						
+									  							$('#contactaddidv').before(tempresult);
+									  						    
+							  								}
+								  							else
+							  								{
+								  								
+								  								if(primarycontact)
+								  								{
+								  									$('.primarycontactlablecontainer'+modalcontactid).html("<span class='badge bg-label-primary'>Primary</span>");
+								  									
+								  								}else
+							  									{
+								  									$('.primarycontactlablecontainer'+modalcontactid).html("");
+								  										 
+							  									}
+								  								$('.contacttype'+modalcontactid).text(modalcontacttype);
+								  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
+								  								$('.email'+modalcontactid).text(modalContactemail);
+								  								$('.primarycontact'+modalcontactid).val(primarycontact);
+								  								
+							  								}
+									  							validationformContactreset();
+								  						},
+								  						error : function(e) {
+								  							console.log("Error" + e);
+								  						}
+								  					});
+								  	        }	
+								    	    else
+								        	{
+								    	    	$('.contactsavebtn').prop("disabled",false);
+								        	}
+										}
+								 }
+						 });
+	  			   	});	
 			// --------------------------------------------------------------------
-			  $('.contacteditbtn').on('click', function(event){
-				$('.contactsavebtn').prop("disabled",false);
-  			$('.contactsavebtn').html("Submit");
-  			
-				let id=$(this).attr("name");
-				$('#modalcontactid').val(id);
-			$('#modalcontacttype').val($('.contacttype'+id).text());
-			$('#modalcontactPhone').val($('.phonenumber'+id).text());
-			$('#modalContactemail').val($('.email'+id).text());
-			$('#addNewContact').modal('show');
-			  });
+			   $('.contacteditbtn').on('click', function(event){
+	  				$('.contactsavebtn').prop("disabled",false);
+		   			$('.contactsavebtn').html("Submit");
+		   			
+	  				let id=$(this).attr("name");
+	  				$('#modalcontactid').val(id);
+					$('#modalcontacttype').val($('.contacttype'+id).text());
+					$('#modalcontactPhone').val($('.phonenumber'+id).text());
+					$('#modalContactemail').val($('.email'+id).text());
+					if($('.primarycontact'+id).val()=='true')
+					{
+						$('#modalcontactprimary').prop("checked",true);	
+					}else
+					{
+						$('#modalcontactprimary').prop("checked",false);
+					}
+					 
+					$('#addNewContact').modal('show');
+	  			  });
 			// --------------------------------------------------------------------
 			
 		
@@ -1715,6 +1738,17 @@ const flatpickrFriendly = document.querySelector('#Model_STATED_DATE');
    });
  }
 
+
+//Phone
+ const phoneMask = document.querySelector('.phone-number-otp-mask');
+
+// Phone Number Input Mask
+if (phoneMask) {
+  new Cleave(phoneMask, {
+    phone: true,
+    phoneRegionCode: 'US'
+  });
+}    
 
 </script>
 	  </body>

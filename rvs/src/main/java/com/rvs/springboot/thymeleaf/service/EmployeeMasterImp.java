@@ -50,8 +50,8 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 	}
 
 	@Override
-	public int insertemployeeContact(String dep, String phonenumber, String email, int employeeid) {
-		final String sql="INSERT INTO `employee_contact`(`department`, `email`, `phonenumber`, `emp_masterid`) VALUES('"+ dep +"','"+ email +"','"+ phonenumber +"',"+ employeeid +")";
+	public int insertemployeeContact(String dep, String phonenumber, String email, int employeeid, boolean primary) {
+		final String sql="INSERT INTO `employee_contact`(`department`, `email`, `phonenumber`, `emp_masterid`,primarycontact) VALUES('"+ dep +"','"+ email +"','"+ phonenumber +"',"+ employeeid +","+ primary +")";
 		
 		KeyHolder keyHolder =new GeneratedKeyHolder();
 		
@@ -66,8 +66,8 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 	}
 
 	@Override
-	public int updateemployeeContact(int id, String dep, String phonenumber, String email) {
-		String sql="UPDATE `employee_contact` SET `department`='"+ dep +"',`email`='"+ email +"',`phonenumber`='"+ phonenumber +"' WHERE employeecontactid=" +id ;
+	public int updateemployeeContact(int id, String dep, String phonenumber, String email, boolean primary) {
+		String sql="UPDATE `employee_contact` SET `department`='"+ dep +"',`email`='"+ email +"',`phonenumber`='"+ phonenumber +"',primarycontact="+ primary + "  WHERE employeecontactid=" +id ;
 		return jdbcTemplate.update(sql);
 	}
 

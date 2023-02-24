@@ -521,6 +521,28 @@ public class HomeController {
 				return false;
 			}
 
+		} else if (params.get("src").equalsIgnoreCase("Employee")) {
+
+			List<EmployeeContact> empList = employeeMasterService.findById(Integer.parseInt(params.get("empMasterid")))
+					.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+					.collect(Collectors.toList());
+			if (empList.size() > 0) {
+
+				if (params.get("modalcontactid") != null
+						&& (!params.get("modalcontactid").toString().equalsIgnoreCase("-"))) {
+					if (empList.get(0).getEmployeecontactid() == Integer.parseInt(params.get("modalcontactid"))) {
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					return true;
+				}
+
+			} else {
+				return false;
+			}
+
 		} else if (params.get("src").equalsIgnoreCase("ContactPerson")) {
 
 			List<ContactPersonContact> cpList = contactPersonService
@@ -910,15 +932,15 @@ public class HomeController {
 			String contactPhone = params.get("contactPhone");
 			String contactemail = params.get("contactemail");
 			String contactid = params.get("contactid");
-
+			boolean primarycontact = Boolean.parseBoolean(params.get("primarycontact"));
 			itemlistService.savesingletxt(contacttype, "CONTACTTYPE");
 
 			if (contactid.equalsIgnoreCase("-")) {
 				return employeeMasterService.insertemployeeContact(contacttype, contactPhone, contactemail,
-						empMasterid);
+						empMasterid,primarycontact);
 			} else {
 				return employeeMasterService.updateemployeeContact(Integer.parseInt(params.get("contactid")),
-						contacttype, contactPhone, contactemail);
+						contacttype, contactPhone, contactemail, primarycontact);
 			}
 
 		} else {
@@ -1542,6 +1564,12 @@ public class HomeController {
 
 		// params.entrySet().forEach(el -> { System.out.println(el.getKey() + " " +
 		// el.getValue());} );
+		try {
+			emp.setDobMMformat(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(params.get("DateofBirth"))).toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		return employeeMasterService.save(emp);
 	}
 
@@ -1996,7 +2024,14 @@ public class HomeController {
 
 		EmployeeMaster employeemasternew = new EmployeeMaster();
 		employeemasternew = employeeMasterService.findById(id);
-		// System.out.println(employeemasternew);
+		// DOB MM DD format
+		try {
+			employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
 		if (employeemasternew.getEmployeeAccNo().size() == 0) {
 			List<EmployeeAccNo> empAccNols = new ArrayList();
 			empAccNols.add(new EmployeeAccNo());
@@ -4939,10 +4974,12 @@ public class HomeController {
 		// ---------------------------------------
 		// branch name
 		cp.setBranchName(branchMasterService.findById(cp.getBranchid()).getBRANCH_NAME());
-		// Organization Name
-		cp.setOrganizationname(
-				contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
 
+		if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase("")) {
+			// Organization Name
+			cp.setOrganizationname(
+					contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
+		}
 		if (nullremover(String.valueOf(cp.getDesignation())).equalsIgnoreCase("")) {
 			cp.setDesignation("");
 		}

@@ -10,8 +10,8 @@ public interface EmployeeMasterService {
 	public EmployeeMaster findById(Integer id);
 	public List<EmployeeMaster> findAll();
 	
-	public int insertemployeeContact(String dep,String phonenumber , String email, int employeeid);
-	public int updateemployeeContact(int id, String dep,String phonenumber , String email);
+	public int insertemployeeContact(String dep,String phonenumber , String email, int employeeid, boolean primarycontact);
+	public int updateemployeeContact(int id, String dep,String phonenumber , String email, boolean primarycontact);
 	public int deleteemployeeContact(int id);
 	
 	public int insertemployeeAccountdetails(int acid, String acno,String acname , String bankname,String employeename,String ifsccode, int employeeid);

@@ -331,10 +331,10 @@ public class HomeController {
 		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
 		String profilephoto = "";
 		if (obj.getEmployeeFiles().size() > 0) {
-			List<EmployeeFiles> empfile = obj.getEmployeeFiles().stream().filter(C -> C.getPhoto_Attach() != null)
+			List<EmployeeFiles> empfile = obj.getEmployeeFiles().stream().filter(C -> C.getDocumentType().equalsIgnoreCase("Photo"))
 					.collect(Collectors.toList());
 			if (empfile.size() > 0) {
-				profilephoto = empfile.get(0).getPhoto_Attach();
+				profilephoto = empfile.get(0).getFilePath();
 			}
 		}
 
@@ -994,7 +994,7 @@ public class HomeController {
 			String bankname = params.get("bankname");
 			String branchname = params.get("branchname");
 			String ifsccode = params.get("ifsccode");
-			return branchMasterService.insertbranchAccountdetails(acid, acno, acname, bankname, branchname, ifsccode,
+			return employeeMasterService.insertemployeeAccountdetails(acid, acno, acname, bankname, branchname, ifsccode,
 					empMasterid);
 
 		} else {
@@ -1384,10 +1384,10 @@ public class HomeController {
 
 	public String getemp_photo(EmployeeMaster obj) {
 		String str = "";
-		List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream().filter(c -> c.getPhoto_Attach() != null)
+		List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream().filter(c -> c.getDocumentType().equalsIgnoreCase("Photo"))
 				.collect(Collectors.toList());
 		if (validProfilephoto.size() > 0) {
-			str += validProfilephoto.get(0).getPhoto_Attach();
+			str += validProfilephoto.get(0).getFilePath();
 		}
 		return str;
 	}
@@ -1836,7 +1836,7 @@ public class HomeController {
 				if (photoempFileid[farr] != null) {
 					obj.setEmpFileid(Integer.parseInt(photoempFileid[farr]));
 				}
-				obj.setPhoto_Attach(photoempFileidstr[farr]);
+				obj.setFilePath(photoempFileidstr[farr]);
 				filels.add(obj);
 			}
 
@@ -1847,7 +1847,7 @@ public class HomeController {
 				if (resumeempFileid[farr] != null) {
 					obj.setEmpFileid(Integer.parseInt(resumeempFileid[farr]));
 				}
-				obj.setResume_Attach(resumeempFileidstr[farr]);
+				obj.setFilePath(resumeempFileidstr[farr]);
 				filels.add(obj);
 			}
 
@@ -1858,7 +1858,7 @@ public class HomeController {
 				if (certificateempFileid[farr] != null) {
 					obj.setEmpFileid(Integer.parseInt(certificateempFileid[farr]));
 				}
-				obj.setCertificates_Attach(certificateempFileidstr[farr]);
+				obj.setFilePath(certificateempFileidstr[farr]);
 				filels.add(obj);
 			}
 
@@ -1894,7 +1894,7 @@ public class HomeController {
 			String tempfilename = stringdatetime() + Photo_Attach.getOriginalFilename();
 			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
 			filename.append(tempfilename);
-			empfiles.setPhoto_Attach("employeeprofilephoto/" + filename);
+			empfiles.setFilePath("employeeprofilephoto/" + filename);
 			try {
 				Files.write(fileNameandPath, Photo_Attach.getBytes());
 			} catch (IOException e) {
@@ -1910,7 +1910,7 @@ public class HomeController {
 			String tempfilename = stringdatetime() + Resume_Attach.getOriginalFilename();
 			Path fileNameandPath = Paths.get(resumeuploadRootPath, tempfilename);
 			filename.append(tempfilename);
-			empfiles.setResume_Attach("employeeresume/" + filename);
+			empfiles.setFilePath("employeeresume/" + filename);
 			try {
 				Files.write(fileNameandPath, Resume_Attach.getBytes());
 			} catch (IOException e) {
@@ -1926,7 +1926,7 @@ public class HomeController {
 			String tempfilename = stringdatetime() + Certificates_Attach.getOriginalFilename();
 			Path fileNameandPath = Paths.get(certificateuploadRootPath, tempfilename);
 			filename.append(tempfilename);
-			empfiles.setCertificates_Attach("employeecertification/" + filename);
+			empfiles.setFilePath("employeecertification/" + filename);
 			try {
 				Files.write(fileNameandPath, Certificates_Attach.getBytes());
 			} catch (IOException e) {
@@ -2132,6 +2132,8 @@ public class HomeController {
 		themodel.addAttribute("LANGUAGE", LANGUAGE);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		themodel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		themodel.addAttribute("Documenttype", Documenttype);
 
 		themodel.addAttribute("employeeEducation", edulsnew);
 		themodel.addAttribute("employeeEmgContact", emglsnew);

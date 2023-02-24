@@ -353,7 +353,7 @@
                           data-bs-toggle="modal"
                           data-bs-target="#addNewDocument"
                         >
-                          <i class="bx bx-plus bx-xs me-1"></i>Add Document 
+                          <i class="bx bx-plus bx-xs me-1"></i> 
                         </button>
                       	</div>
                         </h5>
@@ -368,16 +368,25 @@
 	                              
 	                              <h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
 	                              <span class="card-number" th:text="${fileObj.DocumentNo}"></span>
+                              	
+                              	<th:block th:if="${fileObj.FilePath != ''}">
+                              	<br/>
+                                	<a th:href="${fileObj.FilePath}" target="_blank">
+                                		<th:block th:if="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
+                                			<img th:src="@{/assets/img/icons/misc/pdf.png}" alt="PDF image" width="20" class="me-2">
+                                		</th:block>
+                                		<th:block th:unless="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
+                                			<img th:src="@{/assets/img/icons/misc/jpg.png}" alt="PDF image" width="20" class="me-2">
+                                		</th:block>
+                                		<small class="text-body" th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
+                                		</small>
+                                	</a>
+                                </th:block>
+	                                
 	                            </div>
 	                            <div class="d-flex flex-column text-start text-lg-end">
 	                              <div class="d-flex order-sm-0 order-1 mt-3">
 	                                
-	                                <th:block th:if="${fileObj.FilePath != ''}">
-	                                <a th:href="${fileObj.FilePath}" target="_blank"><button
-	                                  class="btn btn-label-primary me-3"
-	                                  ><i class='bx bx-link-alt'></i></button></a>
-	                                </th:block>
-	                                <br/>
 	                                <button class="btn btn-label-secondary filedeletebtn" th:name="${fileObj.empFileid}"><i class='bx bxs-trash-alt'></i></button>
 	                              </div>
 	                              
@@ -400,14 +409,14 @@
                        
                         <div class="card-action-element" style="float:right">
                         <button
-                          class="btn btn-primary btn-sm"
+                          class="btn btn-primary btn-sm collapsetogglebtn"
                           type="button"
                           data-bs-toggle="collapse"
                           href="#bankdetailscollapseExample"
                           aria-expanded="false"
                           aria-controls="bankdetailscollapseExample"
                         >
-                          <i class="bx bx-plus bx-xs me-1"></i> Bank Details
+                          <i id="collapsetoggleicon" class="bx bx-chevron-down bx-xs me-1"></i>
                         </button>
                       	</div>
                       </h5>
@@ -920,17 +929,20 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-4">
                         <h3>Add Document  </h3>
-                        <p>Add/Update Branch Legal Documents</p>
+                        <p>Attach Files / Documents / Image</p>
                       </div>
                       <form id="addNewdocument" class="row g-3" onsubmit="return false">
                         <div class="col-12">
-                          <label class="form-label w-100" for="modalAddCard">Document Type </label>
+                          <label class="form-label w-100" for="modalAddCard">Document Type 
+                          <label class="emptitle additem" name="addmodaldocumenttype">
+                          		<i class="bx bxs-plus-circle ownstyle1"></i></label>
+                          </label>
                           <div class="input-group input-group-merge">
                             <select id="modalDocumenttype" class="form-select">
 	                          <option value="">Default select</option>
-	                          <option value="GST">GST</option>
-	                          <option value="2">Two</option>
-	                          <option value="3">Three</option>
+	                           <th:block th:each="str :${Documenttype}">
+								<option  th:value="${str}"  th:text="${str}"></option>
+							</th:block>
 	                        </select>
                            
                           </div>
@@ -1490,6 +1502,9 @@
 			
 		
 			// --------------------------------------------------------------------
+  			$('.collapsetogglebtn').click(function(){
+  				 $('#collapsetoggleicon').toggleClass('bx-chevron-down bx-chevron-up'); 
+  			});
 		    // --------------------------------------------------------------------
 			// File uploading 		  
 					 const addNewdocumentForm =document.getElementById("addNewdocument");
@@ -1542,6 +1557,9 @@
 				var labeltext = "";
 				if (name == "addmodalcontacttype") {
 					labeltext = "New Contact Type";
+				}else if(name == "addmodaldocumenttype")
+				{
+					labeltext = "New Document Type";
 				}
 				
 				$('#additemalltxt').text(labeltext);
@@ -1556,6 +1574,8 @@
 					var labeltext = "";
 					if (name == "New Contact Type") {
 						labeltext = "modalcontacttype";
+					}else if (name == "New Document Type") {
+						labeltext = "modalDocumenttype";
 					}
 					
 					$('.' + labeltext).append(
@@ -1575,50 +1595,64 @@
 				
 			   	$('#addNewBankDetails').on('submit', function(event){
 			   	 
-			   		
+		   		if($('#model_acno').val() ==  $('#model_acno_confirm').val())
+  		    	 {
 			   		$('.BankDetailssave').prop("disabled",true);
 	    	  
-	    	    if(event.target.checkValidity()){
-	    	    	$('.BankDetailssave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-	    	    	var empMasterid=$("#empMasterid").val();
-	    	    	var model_acid =$('#model_branchAccnoid').val();
-	    	    	var model_acno =$('#model_acno').val();
-	    	    	var model_acname =$('#model_acname').val();
-	    	    	var model_bankname =$('#model_bankname').val();
-	    	    	var model_branchname =$('#model_branchname').val();
-	    	    	var model_ifsccode =$('#model_ifsccode').val();
-	    	    	var formData = {
-	  	        			empMasterid: empMasterid,
-	  	        			acid: model_acid,
-	  	        			acno: model_acno,
-	  	        			acname : model_acname,
-	  	        			bankname : model_bankname,
-	  	        			branchname : model_branchname,
-	  	        			ifsccode : model_ifsccode,
-	  	        			functiontype : 'Employee'
-	  				 }
-	    	    	
-	  				 $.ajax({
-	  						type : "POST",url : "Bankaccupdatejson",
-	  						data : formData, success : function(result) {
-	  							var bmobj = JSON.parse(JSON.stringify(result));
-	  							console.log(bmobj);
-	  							$('#Lbl_acno').text(model_acno);
-	  							$('#Lbl_acname').text(model_acname);
-	  							$('#Lbl_bankname').text(model_bankname);
-	  							$('#Lbl_branchname').text(model_branchname);
-	  							$('#Lbl_ifsccode').text(model_ifsccode); 
-	  							validationformbankaccreset();
-	  						},
-	  						error : function(e) {
-	  							console.log("Error" + e);
-	  						}
-	  					});
-	  	        }	
-	    	    else
-	        	{
-	    	    	$('.BankDetailssave').prop("disabled",false);
-	        	}
+		    	    if(event.target.checkValidity()){
+		    	    	$('.BankDetailssave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+		    	    	var empMasterid=$("#empMasterid").val();
+		    	    	var model_acid =$('#model_branchAccnoid').val();
+		    	    	var model_acno =$('#model_acno').val();
+		    	    	var model_acname =$('#model_acname').val();
+		    	    	var model_bankname =$('#model_bankname').val();
+		    	    	var model_branchname =$('#model_branchname').val();
+		    	    	var model_ifsccode =$('#model_ifsccode').val();
+		    	    	var formData = {
+		  	        			empMasterid: empMasterid,
+		  	        			acid: model_acid,
+		  	        			acno: model_acno,
+		  	        			acname : model_acname,
+		  	        			bankname : model_bankname,
+		  	        			branchname : model_branchname,
+		  	        			ifsccode : model_ifsccode,
+		  	        			functiontype : 'Employee'
+		  				 }
+		    	    	
+		  				 $.ajax({
+		  						type : "POST",url : "Bankaccupdatejson",
+		  						data : formData, success : function(result) {
+		  							var bmobj = JSON.parse(JSON.stringify(result));
+		  							console.log(bmobj);
+		  							$('#Lbl_acno').text(model_acno);
+		  							$('#Lbl_acname').text(model_acname);
+		  							$('#Lbl_bankname').text(model_bankname);
+		  							$('#Lbl_branchname').text(model_branchname);
+		  							$('#Lbl_ifsccode').text(model_ifsccode); 
+		  							validationformbankaccreset();
+		  						},
+		  						error : function(e) {
+		  							console.log("Error" + e);
+		  						}
+		  					});
+		  	        }	
+		    	    else
+		        	{
+		    	    	$('.BankDetailssave').prop("disabled",false);
+		        	}
+	    	    
+  		    	 }else{
+  		   			 Swal.fire({
+				        title: '',
+					        text: 'Account number is not match!',
+					        confirmButtonText: 'Ok',
+					        customClass: {
+					          confirmButton: 'btn btn-primary'
+					        },
+					        buttonsStyling: false
+					      });
+		   		 }
+		   		
 			   	});	
 			// --------------------------------------------------------------------
 			

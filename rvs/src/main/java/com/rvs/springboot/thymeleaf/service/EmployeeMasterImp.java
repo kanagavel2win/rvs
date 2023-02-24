@@ -80,7 +80,7 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 	@Override
 	public int insertemployeeAccountdetails(int acid, String acno, String acname, String bankname, String branchname,
 			String ifsccode, int employeeid) {
-		String sql="UPDATE `employee_acc_no` SET `acname`='"+ acname + "',`acno`='"+ acno + "',`bankname`='"+ bankname + "',`branchname`='"+ branchname + "',`ifsccode`='"+ ifsccode + "',`branchid`='"+ employeeid + "' WHERE branch_accnoid="+  acid;
+		String sql="UPDATE `employee_acc_no` SET `acname`='"+ acname + "',`acno`='"+ acno + "',`bankname`='"+ bankname + "',`branchname`='"+ branchname + "',`ifsccode`='"+ ifsccode + "',`emp_masterid`='"+ employeeid + "' WHERE accnoid="+  acid;
 		return jdbcTemplate.update(sql);
 	}
 

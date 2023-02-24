@@ -34,12 +34,7 @@ public class EmployeeFiles {
 	@Column
 	private String FilePath;
 	
-	@Column  
-	private String Photo_Attach;
-	@Column  
-	private String Resume_Attach;
-	@Column  
-	private String Certificates_Attach;
+	
 	
 
 }

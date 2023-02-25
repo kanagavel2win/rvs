@@ -444,7 +444,7 @@
 			            	 
 			            	 $contactpersonCode="";
 		            		 
-			            	 $row_output ='<a href="contactpersonview?id='+ full['id'] +'"> '+ $name +" </a><br/><small class='emp_post text-truncate text-muted'>"+  full['branchCode'] + "</span>";
+			            	 $row_output ='<a href="editbranch?id='+ full['branchid'] +'"> '+ $name +" </a><br/><small class='emp_post text-truncate text-muted'>"+  full['branchCode'] + "</span>";
 			            	 return $row_output;
 			            }
 			          },
@@ -458,9 +458,8 @@
 			          render: function(data, type, full, meta) {
 			            	 $name = full['peoplename'];
 			            	 
-			            	 $contactpersonCode="";
-		            		 
-			            	 $row_output = $name +"<br/><small class='emp_post text-truncate text-muted'>"+  full['customer_supplier'] + "</span>";
+			            	 
+			            	 $row_output ='<a href="contactpersonview?id='+ full['id'] +'">'+ $name +"</a><br/><small class='emp_post text-truncate text-muted'>"+  full['customer_supplier'] + "</span>";
 			            	 return $row_output;
 			            }
 			        },
@@ -468,7 +467,11 @@
 				          
 				          targets: 5,
 				          render: function(data, type, full, meta) {
-				            	 $name = full['primarymob'];
+				            	 $primarymob = full['primarymob'];
+				            	 if($primarymob ==null)
+				                	{
+				                	 $primarymob="";
+				                	}
 				            	 
 				            	 $primaryemail=full['primaryemail'];
 				            	 if($primaryemail ==null)
@@ -476,10 +479,20 @@
 				                	 $primaryemail="";
 				                	}
 			            		 
-				            	 $row_output = $name +"<br/><small class='emp_post text-truncate text-muted'>"+  $primaryemail + "</span>";
+				            	 $row_output = $primarymob +"<br/><small class='emp_post text-truncate text-muted'>"+  $primaryemail + "</span>";
 				            	 return $row_output;
 				            }
 				        },
+				        
+				        {
+					          
+					          targets: 6,
+					          render: function(data, type, full, meta) {
+					        	  $name = full['organizationname'];
+					              $row_output ='<a href="contactorganizationview?id='+ full['organization'] +'">'+ $name +"</a>";
+					              return $row_output;
+					            }
+					        },
 			        {
 			            // Avatar image/badge, Name and post
 			            targets: 7,
@@ -516,8 +529,8 @@
 			                '</div>' +
 			                '<div class="d-flex flex-column">' +
 			                '<span class="emp_name text-truncate">' +
-			                $name +
-			                '</span>' +
+			                '<a href="emp?id='+ full['followers'] +'">'+  $name +
+			                '<a></span>' +
 			                '<small class="emp_post text-truncate text-muted">' +
 			                $contactpersonOfficeContact +
 			                '</small>' +
@@ -549,7 +562,11 @@
 			      displayLength: 10,
 			      lengthMenu: [10, 25, 50, 75, 100],
 			      buttons: [
-			        {
+			    	  {
+				          text: '<span class="d-none d-lg-inline-block" >Organization List</span>',
+				          className: 'navigatetoorg btn btn-secondary'
+				      },
+			    	  {
 			          extend: 'collection',
 			          className: 'btn btn-label-primary dropdown-toggle me-2',
 			          text: '<i class="bx bx-export me-2"></i>Export',
@@ -590,6 +607,7 @@
 			          text: '<i class="bx bx-plus me-2"></i> <span class="d-none d-lg-inline-block" >Person </span>',
 			          className: 'create-new btn btn-primary'
 			        }
+			       
 			      ],
 			      responsive: {
 			        details: {
@@ -636,6 +654,11 @@
 	   			$('.newcontactpersondatasubmit').html("Submit");
 	   }
    	// --------------------------------------------------------------------
+   		$(".navigatetoorg").click(function(){
+   			window.location.href ="contactsorganizationslist";
+   		});
+   	// --------------------------------------------------------------------
+   	
       $('.needs-validation').on('submit', function(event){
     	  
     	 

@@ -390,7 +390,7 @@
 			            	 
 			            	 $contactpersonCode="";
 		            		 
-			            	 $row_output ='<a href="contactorganizationview?id='+ full['id'] +'"> '+ $name +" </a><br/><small class='emp_post text-truncate text-muted'>"+  full['branchCode'] + "</span>";
+			            	 $row_output ='<a href="editbranch?id='+ full['branchid'] +'"> '+ $name +" </a><br/><small class='emp_post text-truncate text-muted'>"+  full['branchCode'] + "</span>";
 			            	 return $row_output;
 			            }
 			          },
@@ -406,7 +406,7 @@
 			            	 
 			            	 $contactpersonCode="";
 		            		 
-			            	 $row_output = $name +"<br/><small class='emp_post text-truncate text-muted'>"+  full['customer_supplier'] + "</span>";
+			            	 $row_output = '<a href="contactorganizationview?id='+ full['id'] +'"> '+ $name +"</a><br/><small class='emp_post text-truncate text-muted'>"+  full['customer_supplier'] + "</span>";
 			            	 return $row_output;
 			            }
 			        },
@@ -419,7 +419,7 @@
 				            	 $row_outputs2="";
 				            	 
 				            	 $row_outputs1="";
-				            	 
+				            	 $row_outputsid="";
 				            		 for (var i = 0; i < $cplist.length; i++) {
 				            			    
 				            			  var bmobj = JSON.parse(JSON.stringify($cplist[i]));
@@ -428,6 +428,7 @@
 				            				  if(bmobj.peoplename != null)
 				            					  {
 				            					  $row_outputs1=bmobj.peoplename;  
+				            					  $row_outputsid=bmobj.id;
 				            					  }
 				            				  
 			            				  }else
@@ -442,7 +443,7 @@
 				            		$row_outputs2 = 'data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="bottom" data-bs-html="true" title="'+ $row_outputs2 +'"';
 
 			            		}
-				            	 $row_output = '<div '+ $row_outputs2 +' >'+ $row_outputs1;
+				            	 $row_output = '<div '+ $row_outputs2 +' ><a href="contactpersonview?id='+$row_outputsid +'">'+ $row_outputs1 +'</a>';
 				            	 if($row_outputs2 !="")
 				            		{
 				            		 $row_output += " & " + (($cplist.length)-1) +" More ";
@@ -488,8 +489,8 @@
 			                '</div>' +
 			                '<div class="d-flex flex-column">' +
 			                '<span class="emp_name text-truncate">' +
-			                $name +
-			                '</span>' +
+			                '<a href="emp?id='+ full['followers'] +'">'+$name +
+			                '</a></span>' +
 			                '<small class="emp_post text-truncate text-muted">' +
 			                $contactpersonOfficeContact +
 			                '</small>' +
@@ -521,12 +522,17 @@
 			      displayLength: 10,
 			      lengthMenu: [10, 25, 50, 75, 100],
 			      buttons: [
+			    	{
+			          text: '<span class="d-none d-lg-inline-block" >People List</span>',
+			          className: 'navigatetocontactperson btn btn-secondary'
+			        }, 
 			        {
 			          extend: 'collection',
 			          className: 'btn btn-label-primary dropdown-toggle me-2',
 			          text: '<i class="bx bx-export me-2"></i>Export',
 			          buttons: [
-			            {
+			        	  
+			        	  {
 			              extend: 'print',
 			              text: '<i class="bx bx-printer me-2" ></i>Print',
 			              className: 'dropdown-item',
@@ -608,6 +614,11 @@
 	   			$('.newcontactpersondatasubmit').html("Submit");
 	   }
    	// --------------------------------------------------------------------
+   	$(".navigatetocontactperson").click(function(){
+   			window.location.href ="contactspersonlist";
+   		});
+   	// --------------------------------------------------------------------
+   	
       $('.needs-validation').on('submit', function(event){
     	  
     	 

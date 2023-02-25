@@ -1191,9 +1191,8 @@ public class HomeController {
 	@ResponseBody
 	@GetMapping("contactpersonlistjson")
 	public List<ContactPerson> contactpersonlistjson(Model themodel) {
-		List<ContactPerson> cpList = contactPersonService.findAll();
-		Date todaydate = new Date();
-
+		List<ContactPerson> cpList = contactPersonService.findAll().stream().filter(C-> C.getPeoplename() != null).collect(Collectors.toList());
+		
 		for (ContactPerson cp : cpList) {
 
 			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {

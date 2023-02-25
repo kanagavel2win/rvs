@@ -1,7 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

@@ -1008,6 +1008,8 @@ public class HomeController {
 
 		if (params.get("functiontype").equalsIgnoreCase("Branch")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
+			
+			
 			return branchMasterService.deletebranchContact(contactid);
 		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
@@ -5023,7 +5025,7 @@ public class HomeController {
 		cp.setDesignation(params.get("designation"));
 		cp.setMemberin(params.get("memberin"));
 
-		if (organization != null) {
+		if (organization != null && (!nullremover(String.valueOf(params.get("organization"))).equalsIgnoreCase("")) ) {
 
 			List<OrganizationContacts> conOrgls = contactOrganizationService.findbyOrgname(organization);
 			if (conOrgls.size() > 0) {
@@ -5207,7 +5209,7 @@ public class HomeController {
 			cpls.add(ContactPersonobjectfiller(obj));
 		}
 		theModel.addAttribute("cpls", cpls);
-
+		
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 

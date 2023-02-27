@@ -708,7 +708,7 @@
                               type="text"
                               id="modalcontactPhone"
                               name="modalcontactPhone"
-                              class="form-control phone-number-otp-mask"
+                              class="form-control phone-number-otp-mask1"
                               placeholder="999 555 0111"
                               required
                             />
@@ -1866,7 +1866,16 @@ Model_CURRENT_STATUS
 		      });
 		    }    
 	 
-		   
+			// Phone
+			 const phoneMask1 = document.querySelector('.phone-number-otp-mask1');
+
+		    // Phone Number Input Mask
+		    if (phoneMask1) {
+		      new Cleave(phoneMask1, {
+		        phone: true,
+		        phoneRegionCode: 'US'
+		      });
+		    }     
 		  //--------------------------	 
     </script>
 		  </body>

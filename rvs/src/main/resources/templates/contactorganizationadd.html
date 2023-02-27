@@ -200,6 +200,14 @@
                         >
                           <i class="bx bx-plus bx-xs me-1"></i> 
                         </button>
+                         <button
+                          class="btn btn-primary btn-sm"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#linkperson"
+                        >
+                          <i class="bx bx-link bx-xs me-1"></i> 
+                        </button>
                       	</div>
                     </h5>
                     <div class="card-body">
@@ -207,7 +215,7 @@
                         <div class="flex-grow-1 row">
                           <div class="col-9 mb-sm-0 mb-2">
                            <a th:href="'contactpersonview?id='+ ${obj.id}" target="_blank"> <h6 class="mb-0" th:text="${obj.peoplename}"></h6></a>
-                            <small class="text-muted" th:text="${obj.primarymob} +' '+${obj.designation}"></small>
+                            <small class="text-muted" th:text="${obj.primarymob}"></small>
                           </div>
                           <div class="col-3 text-end">
                             <label class="switch me-0">
@@ -618,7 +626,7 @@
                     <div class="modal-body">
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-4">
-                        <h3>Edit People Information</h3>
+                        <h3>Create People Information</h3>
                         <p>Update People Basic Information</p>
                       </div>
                       <form id="editPeopledetailsForm" class="row g-3 needs-validation" onsubmit="return false">
@@ -652,6 +660,54 @@
                           <button
                             type="reset"
                             class="btn btn-label-secondary editpeopledataclose"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Edit People Modal -->
+                <!-- Edit People Modal -->
+              <div class="modal fade" id="linkperson" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                  <div class="modal-content p-3 p-md-5">
+                  
+                    <div class="modal-body">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="text-center mb-4">
+                        <h3>Link People Information</h3>
+                        <p>Update People Basic Information</p>
+                      </div>
+                      <form id="linkPeopledetailsForm" class="row g-3" onsubmit="return false">
+						
+                        <div class="col-12 ">
+                                
+	                              
+                          <label class="form-label" for="Model_linkpeoplename">People Name</label>
+                         
+                          <select
+                            class="form-select"
+                            aria-label="Default select example" 
+                            id="Model_linkpeoplename"
+                            required>
+                             
+                             <option th:each="obj : ${contactPeopleList}" th:value="${obj.id}" th:text="${obj.peoplename}"></option>
+                          
+                          </select>
+                          
+                        </div>
+                        
+                        
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
+                          <button
+                            type="reset"
+                            class="btn btn-label-secondary linkpeopledataclose"
                             data-bs-dismiss="modal"
                             aria-label="Close"
                           >
@@ -1215,6 +1271,12 @@ Model_CURRENT_STATUS
    				$('.editorganizationdatasubmit').prop("disabled",false);
 	   			$('.editorganizationdatasubmit').html("Submit");
 	   }
+   		function validationlinkformreset()
+ 	   {
+ 			$('.linkpeopledataclose').click();
+   			$('.linkpeopledatasubmit').prop("disabled",false);
+ 	   		$('.linkpeopledatasubmit').html("Submit");
+ 	   }
    		function validationformaddressreset()
 	   {
    				$('.editorganizationAddressdataclose').click();
@@ -1682,7 +1744,7 @@ Model_CURRENT_STATUS
    				$('.editpeopledatasubmit').prop("disabled",false);
 	   			$('.editpeopledatasubmit').html("Submit");
 	   }
-  			  // --------------------------------------------------------------------
+	// --------------------------------------------------------------------
       $('#editPeopledetailsForm').on('submit', function(event){
     	  
     	 
@@ -1722,6 +1784,50 @@ Model_CURRENT_STATUS
 	    	    else
 	        	{
 	    	    	$('.editpeopledatasubmit').prop("disabled",false);
+	        	}
+   		 
+	    });
+   // --------------------------------------------------------------------
+      $('#linkPeopledetailsForm').on('submit', function(event){
+    	  
+    	 
+    	    if(event.target.checkValidity()){
+    	    	$('.linkpeopledatasubmit').prop("disabled",true);
+    	    	$('.linkpeopledatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+    	    	var OrganizationContactsID  =$('#OrganizationContactsID').val(); 
+    	    	var linkpeoplename  =$('#Model_linkpeoplename').val();
+	        	
+	        	 var formData = {
+	        			 OrganizationContactsID :OrganizationContactsID,
+	        			 linkpeoplename :linkpeoplename,
+	        			 peoplename : ""
+	        	}
+				 $.ajax({
+						type : "POST",url : "orgcontactlinkpersonsavejson",
+						data : formData, success : function(result) {
+							
+							var bmobj = JSON.parse(JSON.stringify(result));
+  							let primarymob=""
+  							if(bmobj.primarymob != null)
+							{
+  								primarymob=bmobj.primarymob;
+							}
+							
+  							let temphtml= '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='+ bmobj.id +'" target="_blank"> <h6 class="mb-0">'+ bmobj.peoplename +'</h6></a> <small class="text-muted">'+ primarymob +'</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'+ bmobj.id  +'" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+							$('#contactpeopleaddidv').before(temphtml);
+							validationlinkformreset();
+						},
+						error : function(e) {
+							console.log("Error" + e);
+							
+						}
+						
+					});
+	        	
+		        }	
+	    	    else
+	        	{
+	    	    	$('.linkpeopledatasubmit').prop("disabled",false);
 	        	}
    		 
 	    });

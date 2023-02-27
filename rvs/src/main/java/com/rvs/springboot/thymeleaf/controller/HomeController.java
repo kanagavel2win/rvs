@@ -331,8 +331,8 @@ public class HomeController {
 		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
 		String profilephoto = "";
 		if (obj.getEmployeeFiles().size() > 0) {
-			List<EmployeeFiles> empfile = obj.getEmployeeFiles().stream().filter(C -> C.getDocumentType().equalsIgnoreCase("Photo"))
-					.collect(Collectors.toList());
+			List<EmployeeFiles> empfile = obj.getEmployeeFiles().stream()
+					.filter(C -> C.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
 			if (empfile.size() > 0) {
 				profilephoto = empfile.get(0).getFilePath();
 			}
@@ -936,8 +936,8 @@ public class HomeController {
 			itemlistService.savesingletxt(contacttype, "CONTACTTYPE");
 
 			if (contactid.equalsIgnoreCase("-")) {
-				return employeeMasterService.insertemployeeContact(contacttype, contactPhone, contactemail,
-						empMasterid,primarycontact);
+				return employeeMasterService.insertemployeeContact(contacttype, contactPhone, contactemail, empMasterid,
+						primarycontact);
 			} else {
 				return employeeMasterService.updateemployeeContact(Integer.parseInt(params.get("contactid")),
 						contacttype, contactPhone, contactemail, primarycontact);
@@ -994,8 +994,8 @@ public class HomeController {
 			String bankname = params.get("bankname");
 			String branchname = params.get("branchname");
 			String ifsccode = params.get("ifsccode");
-			return employeeMasterService.insertemployeeAccountdetails(acid, acno, acname, bankname, branchname, ifsccode,
-					empMasterid);
+			return employeeMasterService.insertemployeeAccountdetails(acid, acno, acname, bankname, branchname,
+					ifsccode, empMasterid);
 
 		} else {
 			throw new RuntimeException("functiontype is invalid");
@@ -1008,8 +1008,7 @@ public class HomeController {
 
 		if (params.get("functiontype").equalsIgnoreCase("Branch")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
-			
-			
+
 			return branchMasterService.deletebranchContact(contactid);
 		} else if (params.get("functiontype").equalsIgnoreCase("Employee")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
@@ -1193,8 +1192,9 @@ public class HomeController {
 	@ResponseBody
 	@GetMapping("contactpersonlistjson")
 	public List<ContactPerson> contactpersonlistjson(Model themodel) {
-		List<ContactPerson> cpList = contactPersonService.findAll().stream().filter(C-> C.getPeoplename() != null).collect(Collectors.toList());
-		
+		List<ContactPerson> cpList = contactPersonService.findAll().stream().filter(C -> C.getPeoplename() != null)
+				.collect(Collectors.toList());
+
 		for (ContactPerson cp : cpList) {
 
 			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
@@ -1385,8 +1385,8 @@ public class HomeController {
 
 	public String getemp_photo(EmployeeMaster obj) {
 		String str = "";
-		List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream().filter(c -> c.getDocumentType().equalsIgnoreCase("Photo"))
-				.collect(Collectors.toList());
+		List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream()
+				.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
 		if (validProfilephoto.size() > 0) {
 			str += validProfilephoto.get(0).getFilePath();
 		}
@@ -5025,7 +5025,7 @@ public class HomeController {
 		cp.setDesignation(params.get("designation"));
 		cp.setMemberin(params.get("memberin"));
 
-		if (organization != null && (!nullremover(String.valueOf(params.get("organization"))).equalsIgnoreCase("")) ) {
+		if (organization != null && (!nullremover(String.valueOf(params.get("organization"))).equalsIgnoreCase(""))) {
 
 			List<OrganizationContacts> conOrgls = contactOrganizationService.findbyOrgname(organization);
 			if (conOrgls.size() > 0) {
@@ -5138,23 +5138,43 @@ public class HomeController {
 
 		OrganizationContacts organization = contactOrganizationService
 				.findById(Integer.parseInt(params.get("OrganizationContactsID")));
-		ContactPerson cp = new ContactPerson();
-		cp.setBranchid(organization.getBranchid());
+
+			ContactPerson cp = new ContactPerson();
+			cp.setBranchid(organization.getBranchid());
+			cp.setOrganization(String.valueOf(organization.getId()));
+			cp.setPeoplename(params.get("peoplename"));
+			cp.setCustomer_supplier(organization.getCustomer_supplier());
+			cp.setFollowers(organization.getFollowers());
+
+			ContactPersonContact cpc = new ContactPersonContact();
+			cpc.setDepartment("Personal");
+			cpc.setPhonenumber(params.get("phonenumber"));
+			cpc.setPrimarycontact(true);
+			List<ContactPersonContact> cpcls = new ArrayList();
+			cpcls.add(cpc);
+			cp.setContactPersonContact(cpcls);
+
+			return contactPersonService.save(cp).getId();
+		
+	}
+	
+	@ResponseBody
+	@PostMapping("orgcontactlinkpersonsavejson")
+	public ContactPerson orgcontactlinkpersonsavejson(@RequestParam Map<String, String> params) {
+
+		OrganizationContacts organization = contactOrganizationService
+				.findById(Integer.parseInt(params.get("OrganizationContactsID")));
+		ContactPerson cp =contactPersonService.findById(Integer.parseInt(params.get("linkpeoplename")));
 		cp.setOrganization(String.valueOf(organization.getId()));
-		cp.setPeoplename(params.get("peoplename"));
-		cp.setCustomer_supplier(organization.getCustomer_supplier());
-		cp.setFollowers(organization.getFollowers());
-
-		ContactPersonContact cpc = new ContactPersonContact();
-		cpc.setDepartment("Personal");
-		cpc.setPhonenumber(params.get("phonenumber"));
-		cpc.setPrimarycontact(true);
-		List<ContactPersonContact> cpcls = new ArrayList();
-		cpcls.add(cpc);
-		cp.setContactPersonContact(cpcls);
-
-		return contactPersonService.save(cp).getId();
-
+		// Set primary contact
+		List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+				.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+		if (bcls.size() > 0) {
+			cp.setPrimarymob(bcls.get(0).getPhonenumber());
+			cp.setPrimaryemail(bcls.get(0).getEmail());
+		}
+		return contactPersonService.save(cp);
+		
 	}
 
 	@GetMapping("contactsorganizationslist")
@@ -5209,7 +5229,7 @@ public class HomeController {
 			cpls.add(ContactPersonobjectfiller(obj));
 		}
 		theModel.addAttribute("cpls", cpls);
-		
+
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 
@@ -5220,6 +5240,7 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("OrganizationContacts", corg);
+		theModel.addAttribute("contactPeopleList", contactPersonService.findAll());
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		// ---------------------------

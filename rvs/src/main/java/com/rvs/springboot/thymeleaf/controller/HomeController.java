@@ -5116,6 +5116,21 @@ public class HomeController {
 	}
 
 	@ResponseBody
+	@PostMapping("contactorgsavejson")
+	public int contactorgsavejson(@RequestParam Map<String, String> params) {
+
+		String organization = params.get("organization").replace("[{\"value\":\"", "").replace("\"}]", "");
+		OrganizationContacts contactOrganization = new OrganizationContacts();
+		contactOrganization.setOrgname(organization);
+		contactOrganization.setBranchid(Integer.parseInt(params.get("Branch")));
+		contactOrganization.setCustomer_supplier(params.get("customer_supplier"));
+		contactOrganization.setFollowers(params.get("Relationmanger"));
+		contactOrganization = contactOrganizationService.save(contactOrganization);
+		return contactOrganizationService.save(contactOrganization).getId();
+
+	}
+
+	@ResponseBody
 	@PostMapping("orgcontactpersonsavejson")
 	public int orgcontactpersonsavejson(@RequestParam Map<String, String> params) {
 

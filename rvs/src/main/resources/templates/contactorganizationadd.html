@@ -1207,12 +1207,46 @@ Model_CURRENT_STATUS
 				xhr.setRequestHeader(header, token);
 			});
 		});
+		// --------------------------------------------------------------------
+   		function validationformreset()
+	   {
+			
+   				$('.editorganizationdataclose').click();
+   				$('.editorganizationdatasubmit').prop("disabled",false);
+	   			$('.editorganizationdatasubmit').html("Submit");
+	   }
+   		function validationformaddressreset()
+	   {
+   				$('.editorganizationAddressdataclose').click();
+   				$('.editorganizationAddressdatasubmit').prop("disabled",false);
+	   			$('.editorganizationAddressdatasubmit').html("Submit");
+	   }
+   		function validationformContactreset()
+		   {
+	   				$('.contactclosebtn').click();
+	   				$('.contactsavebtn').prop("disabled",false);
+		   			$('.contactsavebtn').html("Submit");
+		   			$('#modalcontactid').val("-");
+		   }
+   		
+   		function validationformfilereset()
+		   {
+	   				$('.documentclose').click();
+	   				$('.documentsave').prop("disabled",false);
+		   			$('.documentsave').html("Submit");
+		   }
+   		function validationformbankaccreset()
+   		{
+   			$('.BankDetailsclose').click();
+				$('.BankDetailssave').prop("disabled",false);
+   			$('.BankDetailssave').html("Submit");
+   		}
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
 	
 
 		 $('#editOrganizationContactsdetailsForm').on('submit', function(event){
-		    	    if(event.target.checkValidity()){
-		
+			 
+			 if(event.target.checkValidity()){
 		    	    	$('.editorganizationdatasubmit').prop("disabled",true);
 		    	    	$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 		    	    	var OrganizationContactsID=$("#OrganizationContactsID").val();
@@ -1222,8 +1256,7 @@ Model_CURRENT_STATUS
 		  	        	var Model_website =$('#Model_website').val();
 		  	        	var Model_industry_type =$('#Model_industry_type').val();
 		  	        	var Model_Relationmanger =$('#Model_Relationmanger').val();
-		  	        	
-		  	        	
+
 		  	        	 var formData = {
 		  	        			OrganizationContactsID: OrganizationContactsID,
 		  	        			Model_branchid : Model_branchid,
@@ -1238,7 +1271,7 @@ Model_CURRENT_STATUS
 		  						type : "POST",url : "organizationupdatejson",
 		  						data : formData, success : function(result) {
 		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							//console.log(bmobj);
+		  							console.log(bmobj);
 		  							
 		  							$('#Lbl_Branch').text(bmobj.branchName);
 		  							$('#Lbl_customer_supplier').text(bmobj.customer_supplier);
@@ -1248,8 +1281,9 @@ Model_CURRENT_STATUS
 		  							$('#Lbl_industry_type').text(bmobj.industry_type);
 		  							$('#Lbl_followername').text(bmobj.followername);
 		  							
-
-		  							validationformreset();
+		  							$('.editorganizationdataclose').click();
+		  			   				$('.editorganizationdatasubmit').prop("disabled",false);
+		  				   			$('.editorganizationdatasubmit').html("Submit");
 			  								
 		  						},
 		  						error : function(e) {
@@ -1320,39 +1354,7 @@ Model_CURRENT_STATUS
 		      });
 
 		
-	  		// --------------------------------------------------------------------
-		   		function validationformreset()
-			   {
-		   				$('.editorganizationdataclose').click();
-		   				$('.editorganizationdatasubmit').prop("disabled",false);
-			   			$('.editorganizationdatasubmit').html("Submit");
-			   }
-		   		function validationformaddressreset()
-			   {
-		   				$('.editorganizationAddressdataclose').click();
-		   				$('.editorganizationAddressdatasubmit').prop("disabled",false);
-			   			$('.editorganizationAddressdatasubmit').html("Submit");
-			   }
-		   		function validationformContactreset()
-				   {
-			   				$('.contactclosebtn').click();
-			   				$('.contactsavebtn').prop("disabled",false);
-				   			$('.contactsavebtn').html("Submit");
-				   			$('#modalcontactid').val("-");
-				   }
-		   		
-		   		function validationformfilereset()
-				   {
-			   				$('.documentclose').click();
-			   				$('.documentsave').prop("disabled",false);
-				   			$('.documentsave').html("Submit");
-				   }
-		   		function validationformbankaccreset()
-		   		{
-		   			$('.BankDetailsclose').click();
-	   				$('.BankDetailssave').prop("disabled",false);
-		   			$('.BankDetailssave').html("Submit");
-		   		}
+	  		
 		   	// --------------------------------------------------------------------
 			   	 
 	  			  $(".addcontactbtn").click(function(){

@@ -45,9 +45,9 @@ public class EmployeeEmgContact {
 	@Column  
 	private String Emg_Street2;
 	@Column  
-	private String Emg_Village;
+	private String Emg_Landmark;
 	@Column  
-	private String Emg_Taluk;
+	private String Emg_Village;	
 	@Column  
 	private String Emg_City;
 	@Column  

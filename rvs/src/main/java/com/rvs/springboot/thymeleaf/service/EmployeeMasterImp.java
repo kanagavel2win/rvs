@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.EmployeeMasterRepository;
+import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 
 @Service
@@ -103,6 +104,28 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 	@Override
 	public int deleteemployeeFiles(int id) {
 		String sql ="DELETE FROM `employeefiles` WHERE  emp_fileid=" +id ;
+		return jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public int insertemployeeEmgContact(int id, EmployeeEmgContact emg) {
+	final String sql="INSERT INTO `employeeemgcontact`( `emg_city`, `emg_country`, `emg_insurance_nominee`, `emg_name`, `emg_personal_phone`, `emg_relation`, `emg_state`, `emg_street1`, `emg_street2`, `emg_village`, `emg_zip`, `emp_masterid`, `emg_landmark`) VALUES ('"+ emg.getEmg_City() + "','" + emg.getEmg_Country() + "','" + emg.getEmg_InsuranceNominee() + "','" + emg.getEmg_Name() + "','" + emg.getEmg_PersonalPhone() + "','" + emg.getEmg_Relation() + "','" + emg.getEmg_State() + "','" + emg.getEmg_Street1() + "','" + emg.getEmg_Street2() + "','" + emg.getEmg_Village() + "','" + emg.getEmg_ZIP() + "'," + id + ",'" + emg.getEmg_Landmark() + "')";
+		
+		KeyHolder keyHolder =new GeneratedKeyHolder();
+		
+		jdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int updateemployeeEmgContact(EmployeeEmgContact emg) {
+		String sql="UPDATE `employeeemgcontact` SET `emg_city`='"+ emg.getEmg_City() + "',`emg_country`='"+ emg.getEmg_Country() + "',`emg_insurance_nominee`='"+ emg.getEmg_InsuranceNominee() + "',`emg_name`='"+ emg.getEmg_Name() + ",`emg_personal_phone`='"+ emg.getEmg_PersonalPhone() + "',`emg_relation`='"+ emg.getEmg_Relation() + "',`emg_state`='"+ emg.getEmg_State() + "',`emg_street1`='"+ emg.getEmg_Street1() + "',`emg_street2`='"+ emg.getEmg_Street2() + "',`emg_village`='"+ emg.getEmg_Village() + "',`emg_zip`='"+ emg.getEmg_ZIP() + "',`emg_landmark`='"+ emg.getEmg_Landmark() + "' WHERE `emp_emg_contactid`="+ emg.getEmpEmgContactid() ;
 		return jdbcTemplate.update(sql);
 	}
 

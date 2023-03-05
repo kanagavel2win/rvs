@@ -1,1228 +1,1429 @@
 <!DOCTYPE html>
 
-<html
-  xmlns:th="http://www.thymeleaf.org" 
-  lang="en"
-  class="light-style layout-navbar-fixed layout-menu-fixed"
-  dir="ltr"
-  data-theme="theme-semi-dark"
-  th:data-assets-path="@{/assets/}"
-  data-template="vertical-menu-template"
-  
->
-  <head>
-	<meta name="_csrf" th:content="${_csrf.token}" />
-	<!-- default header name is X-CSRF-TOKEN -->
-	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr"
+	data-theme="theme-semi-dark" th:data-assets-path="@{/assets/}"
+	data-template="vertical-menu-template">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
-    
-    <title th:text="${employeemaster.StaffName} + ' Profile'"></title>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <meta name="description" content="" />
+<title th:text="${employeemaster.StaffName} + ' Profile'"></title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
+<meta name="description" content="" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	th:href="@{/assets/img/favicon/favicon.ico}" />
 
-    <!-- Icons -->
-    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
 
-    <!-- Core CSS -->
-    <link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css" />
-    <link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
+<!-- Icons -->
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
 
-    <!-- Vendors CSS -->
-   <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
-   
-    <!-- Page CSS -->
-    <link rel="stylesheet" th:href="@{/assets/vendor/css/pages/page-profile.css}" />
-    <!-- Helpers -->
-    <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+<!-- Core CSS -->
+<link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}"
+	class="template-customizer-core-css" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/rtl/theme-default.css}"
+	class="template-customizer-theme-css" />
+<link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
 
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script th:src="@{/assets/js/config.js}"></script>
-  </head>
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/select2/select2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
 
-  <body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-        <!-- Menu -->
-		<div th:insert="menu"></div>
-        <!-- / Menu -->
+<!-- Page CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/pages/page-profile.css}" />
+<!-- Helpers -->
+<script th:src="@{/assets/vendor/js/helpers.js}"></script>
 
-        <!-- Layout container -->
-        <div class="layout-page">
-          <!-- Navbar -->
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+<script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script th:src="@{/assets/js/config.js}"></script>
+<style>
+.bx-check-circle{
+color:green;
+}
 
-          <div th:insert="header"></div>
-          
-          <!-- / Navbar -->
+</style>
+</head>
 
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-            <!-- Content -->
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<!-- Menu -->
+			<div th:insert="menu"></div>
+			<!-- / Menu -->
 
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="py-3 breadcrumb-wrapper mb-4">
-                <span class="text-muted fw-light">User Profile /</span> Profile
-              </h4>
+			<!-- Layout container -->
+			<div class="layout-page">
+				<!-- Navbar -->
 
-              <!-- Header -->
-              <div class="row">
-                <div class="col-12">
-                  <div class="card mb-4">
-                    <div class="user-profile-header-banner">
-                      <img th:src="@{/assets/img/pages/profile-banner.png}" alt="Banner image" class="rounded-top" />
-                    </div>
-                    <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
-                      <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                        <img
-                          th:src="${employeemaster.t_emp_img}"
-                          alt="user image"
-                          class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img"
-                        />
-                      </div>
-                      <div class="flex-grow-1 mt-3 mt-sm-5">
-                        <div
-                          class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4"
-                        >
-                          <div class="user-profile-info">
-                            <h4 th:text="${employeemaster.StaffName}"></h4>
-                            <ul
-                              class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2"
-                            >
-                              <li class="list-inline-item fw-semibold"><i class="bx bx-pen"></i> <th:block th:text="${employeemaster.t_position}"></th:block></li>
-                              <li class="list-inline-item fw-semibold"><i class="bx bx-map"></i> <th:block th:text="${employeemaster.t_branch_name}"></th:block></li>
-                              <li class="list-inline-item fw-semibold">
-                                <i class="bx bx-calendar-alt"></i> <th:block th:text="'Joined '+ ${employeemaster.t_joindateMMformat}"></th:block>
-                              </li>
-                            </ul>
-                          </div>
-                         <!--  <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
+				<div th:insert="header"></div>
+
+				<!-- / Navbar -->
+
+				<!-- Content wrapper -->
+				<div class="content-wrapper">
+					<!-- Content -->
+
+					<div class="container-xxl flex-grow-1 container-p-y">
+						<h4 class="py-3 breadcrumb-wrapper mb-4">
+							<span class="text-muted fw-light">User Profile /</span> Profile
+						</h4>
+
+						<!-- Header -->
+						<div class="row">
+							<div class="col-12">
+								<div class="card mb-4">
+									<div class="user-profile-header-banner">
+										<img th:src="@{/assets/img/pages/profile-banner.png}"
+											alt="Banner image" class="rounded-top" />
+									</div>
+									<div
+										class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+										<div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+											<img th:src="${employeemaster.t_emp_img}" alt="user image"
+												class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img" />
+										</div>
+										<div class="flex-grow-1 mt-3 mt-sm-5">
+											<div
+												class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
+												<div class="user-profile-info">
+													<h4 th:text="${employeemaster.StaffName}"></h4>
+													<ul
+														class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+														<li class="list-inline-item fw-semibold"><i
+															class="bx bx-pen"></i> <th:block
+																th:text="${employeemaster.t_position}"></th:block></li>
+														<li class="list-inline-item fw-semibold"><i
+															class="bx bx-map"></i> <th:block
+																th:text="${employeemaster.t_branch_name}"></th:block></li>
+														<li class="list-inline-item fw-semibold"><i
+															class="bx bx-calendar-alt"></i> <th:block
+																th:text="'Joined '+ ${employeemaster.t_joindateMMformat}"></th:block>
+														</li>
+													</ul>
+												</div>
+												<!--  <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
                             <i class="bx bx-user-check"></i> Connected
                           </a> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--/ Header -->
-
-              <!-- Navbar pills -->
-              <div class="row">
-                <div class="col-md-12">
-                  <ul class="nav nav-pills flex-column flex-sm-row mb-4">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user"></i> Profile</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="pages-profile-teams.html"><i class="bx bx-group"></i> Job Title</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="pages-profile-projects.html"><i class="bx bx-grid-alt"></i> Projects</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="pages-profile-connections.html"
-                        ><i class="bx bx-link-alt"></i> Connections</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--/ Navbar pills -->
-
-              <!-- User Profile Content -->
-              <div class="row">
-                <div class="col-xl-4 col-lg-5 col-md-5">
-                  <!-- About User -->
-                  <div class="card mb-4">
-                    <div class="card-body">
-                      <small class="text-muted text-uppercase">About</small>
-                      <ul class="list-unstyled mb-4 mt-3">
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">First Name:</span>
-                          <span th:text="${employeemaster.StaffName}" id="Lbl_StaffName"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Last Name :</span> 
-                          <span th:text="${employeemaster.Father_HusbandName}" id="Lbl_Father_HusbandName"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Gender :</span> 
-                          <span th:text="${employeemaster.Gender}" id="Lbl_Gender"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Marital Status:</span> 
-                          <span th:text="${employeemaster.MaritalStatus}" id="Lbl_MaritalStatus"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">DOB:</span>
-                          <span th:text="${employeemaster.dobMMformat}" id="Lbl_DateofBirth"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Blood Group:</span>
-                          <span th:text="${employeemaster.BloodGroup}" id="Lbl_BloodGroup"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Height(cm):</span>
-                          <span th:text="${employeemaster.Height}" id="Lbl_Height"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Weight(kg):</span>
-                          <span th:text="${employeemaster.Weight}" id="Lbl_Weight"></span>
-                        </li><li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Shirt Size:</span>
-                          <span th:text="${employeemaster.ShirtSize}" id="Lbl_ShirtSize"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Shoe Size:</span>
-                          <span th:text="${employeemaster.ShoeSize}" id="Lbl_ShoeSize"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Pant Size:</span>
-                          <span th:text="${employeemaster.PantSize}" id="Lbl_PantSize"></span>
-                        </li>
-                        <li class="d-flex align-items-center mb-3">
-                          <span class="fw-semibold mx-2">Accommodation:</span>
-                          <span th:text="${employeemaster.Accommodation}" id="Lbl_Accommodation"></span>
-                        </li>
-                        
-                      </ul>
-                      <div class="d-flex justify-content-center pt-3">
-	                          <a
-	                            href="javascript:;"
-	                            class="btn btn-primary me-3"
-	                            data-bs-target="#editEmployeedetails"
-	                            data-bs-toggle="modal"
-	                            id="editEmployeedetailsbtn"
-	                            >Edit</a
-	                          >
-	                       
-                        </div>
-                        
-                    </div>
-                  </div>
-                  <!--/ About User -->
-                  <!-- Contact Card -->
-                  <div class="card  mb-4">
-                    <div class="card-body1">
-                      <div class="card-header align-items-center">
-                      <h5 class="card-action-title mb-0">Contacts
-                      <div class="card-action-element" style="float:right">
-                        <button
-                          class="btn btn-primary btn-sm addcontactbtn"
-                          type="button"
-                          name="-"
-                          data-bs-toggle="modal"
-                          data-bs-target="#addNewContact"
-                        >
-                          <i class="bx bx-plus bx-xs me-1"></i>
-                        </button>
-                      	</div>
-                        </h5>
-                      
-                    </div>
-                    <div class="card-body">
-                      <div class="added-cards">
-					<th:block th:each="contactObj : ${employeemaster.employeeContact}">
-                        <div th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.employeecontactid}">
-                          <div class="d-flex justify-content-between flex-sm-row flex-column">
-                            <div class="card-information">
-                              <input type="hidden" th:class="'primarycontact'+ ${contactObj.employeecontactid}"  th:value="${contactObj.primarycontact}"/>
-                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.employeecontactid}"  th:text="${contactObj.Department}"></h6>
-                              <h6 th:class="'mb-1 phonenumber'+ ${contactObj.employeecontactid}"  th:text="${contactObj.Phonenumber}"></h6>
-                              <span th:class="'card-number email'+ ${contactObj.employeecontactid}"  th:text="${contactObj.Email}"></span
-                              >
-                             <span th:class="'primarycontactlablecontainer'+ ${contactObj.employeecontactid}" > <span th:if="${contactObj.primarycontact}" class="badge bg-label-primary">Primary</span></span>
-                            </div>
-                            <div class="d-flex flex-column text-start text-lg-end">
-                              <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.employeecontactid}"  >
-                                  <i class='bx bxs-edit-alt'></i>
-                                </button><br/>
-                                <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.employeecontactid}" ><i class='bx bxs-trash-alt'></i></button>
-                                
-                              </div>
-                              
-                            </div>
-                          </div>
-                        </div>
-                       	</th:block>
-                       	<span id="contactaddidv"></span>
-                       </div>
-                    </div>
-                    </div>
-                  </div>
-                  <!-- /Contact Card -->
-                 
-                   <!-- Address Card -->
-                  
-                  <div class="card mb-4">
-                    <div class="card-body">
-                      <h5 class="pb-2 border-bottom mb-4">Address</h5>
-                      <div class="info-container">
-                        <ul class="list-unstyled">
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">Country:</span>
-                            <span th:text="${employeemaster.Address_Country}" id="Lbl_AddressCountry"></span>
-                          </li>
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">Address Line 1:</span>
-                            <span  th:text="${employeemaster.Address_Street1}"  id="Lbl_AddressAddress1"></span>
-                          </li>
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">Address Line 2:</span>
-                            <span  th:text="${employeemaster.Address_Street2}"  id="Lbl_AddressAddress2"></span>
-                          </li>
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">Landmark:</span>
-                            <span th:text="${employeemaster.Address_Landmark}"  id="Lbl_AddressLandmark"></span>
-                          </li>
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">Village:</span>
-                            <span th:text="${employeemaster.Address_Village}" id="Lbl_AddressVillage"></span>
-                          </li>
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">City/Town:</span>
-                            <span th:text="${employeemaster.Address_City}"  id="Lbl_AddressCity"></span>
-                          </li>
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">State:</span>
-                            <span th:text="${employeemaster.Address_State}" id="Lbl_AddressState"></span>
-                          </li>
-                        <li class="mb-3">
-                            <span class="fw-bold me-2">Pin code:</span>
-                            <span th:text="${employeemaster.Address_ZIP}" id="Lbl_AddressZipCode"></span>
-                          </li>
-                        </ul>
-                        <div class="d-flex justify-content-center pt-3">
-                          <a
-                            href="javascript:;"
-                            class="btn btn-primary me-3"
-                            data-bs-target="#addNewAddress"
-                            data-bs-toggle="modal"
-                            >Edit</a
-                          >
-                          
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /Address Card -->
-                  <!-- Document   Card -->
-                   <div class="card  mb-4">
-                    <div class="card-body1">
-                      <div class="card-header align-items-center">
-                      <h5 class="card-action-title mb-0">Document  
-                      <div class="card-action-element" style="float:right">
-                        <button
-                          class="btn btn-primary btn-sm"
-                          type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#addNewDocument"
-                        >
-                          <i class="bx bx-plus bx-xs me-1"></i> 
-                        </button>
-                      	</div>
-                        </h5>
-                      
-                    </div>
-                    <div class="card-body">
-                      <div class="added-cards">
-                        <th:block th:each="fileObj : ${employeemaster.employeeFiles}">
-	                        <div th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.empFileid}">
-	                          <div class="d-flex justify-content-between flex-sm-row flex-column">
-	                            <div class="card-information">
-	                              
-	                              <h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
-	                              <span class="card-number" th:text="${fileObj.DocumentNo}"></span>
-                              	
-                              	<th:block th:if="${fileObj.FilePath != ''}">
-                              	<br/>
-                                	<a th:href="${fileObj.FilePath}" target="_blank">
-                                		<th:block th:if="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
-                                			<img th:src="@{/assets/img/icons/misc/pdf.png}" alt="PDF image" width="20" class="me-2">
-                                		</th:block>
-                                		<th:block th:unless="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
-                                			<img th:src="@{/assets/img/icons/misc/jpg.png}" alt="PDF image" width="20" class="me-2">
-                                		</th:block>
-                                		<small class="text-body" th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
-                                		</small>
-                                	</a>
-                                </th:block>
-	                                
-	                            </div>
-	                            <div class="d-flex flex-column text-start text-lg-end">
-	                              <div class="d-flex order-sm-0 order-1 mt-3">
-	                                
-	                                <button class="btn btn-label-secondary filedeletebtn" th:name="${fileObj.empFileid}"><i class='bx bxs-trash-alt'></i></button>
-	                              </div>
-	                              
-	                            </div>
-	                          </div>
-	                        </div>
-                       
-                       	</th:block>
-                       	<span id="fileaddidv"></span>
-                       </div>
-                    </div>
-                    </div>
-                  </div>
-               
-                  <!-- /Document   Card -->
-                 <!-- Bank Account Card -->
-                  <div class="card mb-4">
-                    <div class="card-body">
-                      <h5 class="pb-2 border-bottom mb-4">Bank Details
-                       
-                        <div class="card-action-element" style="float:right">
-                        <button
-                          class="btn btn-primary btn-sm collapsetogglebtn"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          href="#bankdetailscollapseExample"
-                          aria-expanded="false"
-                          aria-controls="bankdetailscollapseExample"
-                        >
-                          <i id="collapsetoggleicon" class="bx bx-chevron-down bx-xs me-1"></i>
-                        </button>
-                      	</div>
-                      </h5>
-                      
-                      <div class="info-container collapse" id="bankdetailscollapseExample">
-                      
-                      
-                         <ul class="list-unstyled" th:with ="accobj = ${employeemaster.employeeAccNo[0]}">
-	                          <li class="mb-3">
-	                            <span class="fw-bold me-2">A.C.No:</span>
-	                            <span th:text="${accobj.acno}" id="Lbl_acno"></span>
-	                          </li>
-	                          <li class="mb-3">
-	                            <span class="fw-bold me-2">Account Name:</span>
-	                            <span  th:text="${accobj.acname}"  id="Lbl_acname"></span>
-	                          </li>
-	                          <li class="mb-3">
-	                            <span class="fw-bold me-2">Bank Name:</span>
-	                            <span  th:text="${accobj.bankname}"  id="Lbl_bankname"></span>
-	                          </li>
-	                          <li class="mb-3">
-	                            <span class="fw-bold me-2">Branch Name:</span>
-	                            <span th:text="${accobj.branchname}"  id="Lbl_branchname"></span>
-	                          </li>
-	                          <li class="mb-3">
-	                            <span class="fw-bold me-2">IFSC Code:</span>
-	                            <span th:text="${accobj.ifsccode}" id="Lbl_ifsccode"></span>
-	                          </li>
-	                        </ul>
-                        
-                        <div class="d-flex justify-content-center pt-3">
-                          <a
-                            href="javascript:;"
-                            class="btn btn-primary me-3"
-                            data-bs-target="#addNewBankDetails"
-                            data-bs-toggle="modal"
-                            >Edit</a
-                          >
-                          
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /Bank Account Card -->
-                
-                </div>
-                <div class="col-xl-4 col-lg-5 col-md-5">
-                	 <!-- Contact Card -->
-	                
-	                  <!-- /Contact Card -->
-                </div>
-              </div>
-              <!--/ User Profile Content -->
-              
-              <!-- Modal -->
-              <!-- Edit User Modal -->
-              <div class="modal fade" id="editEmployeedetails" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-simple modal-edit-user">
-                  <div class="modal-content p-3 p-md-5">
-                  
-                    <div class="modal-body">
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      <div class="text-center mb-4">
-                        <h3>Edit User Information</h3>
-                        <p>Updating user details will receive a privacy audit</p>
-                      </div>
-                      <form id="editEmployeedetailsForm" th:object="${employeemaster}" class="row g-3 needs-validation" onsubmit="return false">
-						<input type="hidden" th:value="${employeemaster['empMasterid']}" id="empMasterid" />
-	                    	
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_StaffName">First Name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Model_StaffName"
-                            th:field="*{StaffName}" 
-                            th:value="${employeemaster['StaffName']}"
-                            required
-                          />
-                          <div class="invalid-feedback">Please enter First Name.</div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_Father_HusbandName">Last Name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Model_Father_HusbandName"
-                            th:value="${employeemaster['Father_HusbandName']}"
-                            th:field="*{Father_HusbandName}"
-                            required
-                          />
-                          <div class="invalid-feedback">Please enter Last Name.</div>
-                        </div>
-                        <div class="col-12">
-                          <label class="d-block form-label">Gender</label>
-                          <div class="form-check">
-                            <input
-                              type="radio"
-                              id="Model_gender_male"
-                              name="Model_gender"
-                              class="form-check-input"
-                              th:field="*{Gender}" value="Male" 
-                              required
-                            />
-                            <label class="form-check-label" for="Model_gender_male">Male</label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              type="radio"
-                              id="Model_gender_female"
-                              name="Model_gender"
-                              class="form-check-input"
-                              th:field="*{Gender}" value="Female" 
-                              required
-                            />
-                            <label class="form-check-label" for="Model_gender_female">Female</label>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_MaritalStatus">Marital Status</label>
-                          <select
-                            class="form-select"
-                            aria-label="Default select example" 
-                            id="Model_MaritalStatus"
-                            th:field="*{MaritalStatus}" 
-                            th:value="${employeemaster['MaritalStatus']}"
-                            required
-                          >
-                             <option value="">Select Marital Status</option>
-                             <option th:each="str :${MARITALSTATUS}" th:value="${str}"  th:text="${str}"></option>
-                          
-                          </select>
-                          <div class="invalid-feedback">Please Select Marital Status</div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_DateofBirth">DOB</label>
-                          <input
-                            type="date"
-                            class="form-control flatpickr-validation"
-                            id="Model_DateofBirth"
-                            th:value="${employeemaster['DateofBirth']}"
-                            th:field="*{DateofBirth}"
-                            required
-                          />
-                          <div class="invalid-feedback">Please enter DOB .</div>
-                        </div>
-                        
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_BloodGroup">Blood Group </label>
-                          <select class="form-select" id="Model_BloodGroup" 
-                          th:field="*{BloodGroup}"
-                          th:value="${employeemaster['BloodGroup']}"
-                          required>
-                            <option value="-">Select Blood Group</option>
-                            <option value="A+">A+</option>
-							<option value="A1+">A1+</option>
-							<option value="O+">O+</option>
-							<option value="B+">B+</option>
-							<option value="AB+">AB+</option>
-							<option value="A-">A-</option>
-							<option value="A1-">A1-</option>
-							<option value="O-">O-</option>
-							<option value="B-">B-</option>
-							<option value="AB-">AB-</option> 
-                           
-                         </select>
-                         <div class="invalid-feedback">Please enter Blood Group.</div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_Height">Height(cm)</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Model_Height"
-                            th:field="*{Height}"
-                            th:value="${employeemaster['Height']}"
-                            required
-                          />
-                          <div class="invalid-feedback">Please enter Height(cm).</div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_Weight">Weight(kg)</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Model_Weight"
-                            th:field="*{Weight}"
-                            th:value="${employeemaster['Weight']}"
-                            required
-                          />
-                          <div class="invalid-feedback">Please enter Weight(kg).</div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_ShirtSize">Shirt Size</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Model_ShirtSize"
-                            th:field="*{ShirtSize}"
-                            th:value="${employeemaster['ShirtSize']}"
-                            
-                          />
-                          <div class="invalid-feedback">Please enter Shirt Size.</div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_ShoeSize">Shoe Size</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Model_ShoeSize"
-                            th:field="*{ShoeSize}"
-                            th:value="${employeemaster['ShoeSize']}"
-                            
-                          />
-                          <div class="invalid-feedback">Please enter Shoe Size.</div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="Model_PantSize">Pant Size </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Model_PantSize"
-                            th:field="*{PantSize}"
-                            th:value="${employeemaster['PantSize']}"
-                            
-                          />
-                          <div class="invalid-feedback">Please enter Pant Size .</div>
-                        </div>
-                       <div class="mb-3">
-                          <label class="d-block form-label">Accommodation</label>
-                          <div class="form-check mb-2">
-                            <input
-                              type="radio"
-                              id="Model_Accommodation_Self"
-                              name="Model_Accommodation"
-                              class="form-check-input"
-                              th:field="*{Accommodation}" value="Self" 
-                              required
-                            />
-                            <label class="form-check-label" for="Model_Accommodation_Self">Self</label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              type="radio"
-                              id="Model_Accommodation_Office"
-                              name="Model_Accommodation"
-                              class="form-check-input"
-                              th:field="*{Accommodation}" value="Office" 
-                              required
-                            />
-                            <label class="form-check-label" for="Model_Accommodation_Office">Office</label>
-                          </div>
-                        </div>
-                       
-                      
-                        <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary edituserdatap1submit me-sm-3 me-1">Submit</button>
-                          <button
-                            type="button"
-                            class="btn btn-label-secondary edituserdatap1close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--/ Edit User Modal -->
-              
-               <!-- Add New Contact Modal -->  
-              <div class="modal fade" id="addNewContact" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-                  <div class="modal-content p-3 p-md-5">
-                    <div class="modal-body">
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      <div class="text-center mb-4">
-                        <h3>Contact Details</h3>
-                        <p>Add/Update Contact Information</p>
-                      </div>
-                      <form id="addContactform" class="row g-3" onsubmit="return false">
-                        <div class="col-12">
-                          <label class="form-label w-100" for="modalAddCard">Contact Type 
-                          <label class="emptitle additem" name="addmodalcontacttype"><i
-																class="bx bxs-plus-circle ownstyle1"></i></label>
-                          </label>
-                          <div class="input-group input-group-merge">
-                            <select id="modalcontacttype" class="form-select modalcontacttype" required>
-	                         
-	                         <option value="">-</option>
-							<th:block th:each="str :${CONTACTTYPE}">
-								<option  th:value="${str}"  th:text="${str}"></option>
-							</th:block>
-	                         
-	                        </select>
-	                         <div class="invalid-feedback">Please select contact type</div>
-                           <input
-                              type="hidden"
-                              id="modalcontactid"
-                              name="modalcontactid"
-                              class="form-contro"
-                              
-                            />
-                          </div>
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="modalcontactPhone">Phone Number </label>
-                          <div class="input-group input-group-merge">
-                            <span class="input-group-text">+91</span>
-                            <input
-                              type="text"
-                              id="modalcontactPhone"
-                              name="modalcontactPhone"
-                              class="form-control phone-number-otp-mask"
-                              placeholder="999 555 0111"
-                              required
-                            />
-                            
-                          </div>
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="modalContactemail">Email </label>
-                          <input
-                            type="email"
-                            id="modalContactemail"
-                            class="form-control expiry-date-mask"
-                            
-                          />
-                          <div class="invalid-feedback">Please enter a valid email</div>
-                        </div>
-                        <div class="col-12">
-                          <label class="switch">
-                            <input type="checkbox" class="switch-input" id="modalcontactprimary"/>
-                            <span class="switch-toggle-slider">
-                              <span class="switch-on">
-                                <i class="bx bx-check"></i>
-                              </span>
-                              <span class="switch-off">
-                                <i class="bx bx-x"></i>
-                              </span>
-                            </span>
-                            <span class="switch-label">Make this as primary contact?</span>
-                          </label>
-                        </div>
-                        <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn  btn-primary me-sm-3 me-1 contactsavebtn">Submit</button>
-                          <button
-                            type="reset"
-                            class="btn btn-label-secondary btn-reset contactclosebtn"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--/ Add New Credit Card Modal -->
-              <!-- Add New Address Modal -->
-              <div class="modal fade" id="addNewAddress" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
-                  <div class="modal-content p-3 p-md-5">
-                    <div class="modal-body">
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      <div class="text-center mb-4">
-                        <h3 class="address-title"> Address</h3>
-                        <p class="address-subtitle">Address for express delivery</p>
-                      </div>
-                      <form id="addNewAddressForm" th:object="${employeemaster}" class="row g-3" onsubmit="return false">
-                        <div class="col-12">
-                          <label class="form-label" for="modalAddressCountry">Country</label>
-                          <select
-                            id="modalAddressCountry"
-                            name="modalAddressCountry"
-                            class="select2 form-select"
-                            data-allow-clear="true"
-                            th:field="*{Address_Country}"
-                            th:value="${employeemaster.Address_Country}"
-                          >
-                            <option value="">Select</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Bangladesh">Bangladesh</option>
-                            <option value="Belarus">Belarus</option>
-                            <option value="Brazil">Brazil</option>
-                            <option value="Canada">Canada</option>
-                            <option value="China">China</option>
-                            <option value="France">France</option>
-                            <option value="Germany">Germany</option>
-                            <option value="India">India</option>
-                            <option value="Indonesia">Indonesia</option>
-                            <option value="Israel">Israel</option>
-                            <option value="Italy">Italy</option>
-                            <option value="Japan">Japan</option>
-                            <option value="Korea">Korea, Republic of</option>
-                            <option value="Mexico">Mexico</option>
-                            <option value="Philippines">Philippines</option>
-                            <option value="Russia">Russian Federation</option>
-                            <option value="South Africa">South Africa</option>
-                            <option value="Thailand">Thailand</option>
-                            <option value="Turkey">Turkey</option>
-                            <option value="Ukraine">Ukraine</option>
-                            <option value="United Arab Emirates">United Arab Emirates</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="United States">United States</option>
-                          </select>
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="modalAddressAddress1">Address Line 1</label>
-                          <input
-                            type="text"
-                            id="modalAddressAddress1"
-                            name="modalAddressAddress1"
-                            class="form-control"
-                            placeholder="Flat, House no, Building, Apartment"
-                            th:value="${employeemaster.Address_Street1}"
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="modalAddressAddress2">Address Line 2</label>
-                          <input
-                            type="text"
-                            id="modalAddressAddress2"
-                            name="modalAddressAddress2"
-                            class="form-control"
-                            placeholder="Area, Street, Sector"
-                            th:value="${employeemaster.Address_Street2}"
-                          />
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="modalAddressLandmark">Landmark</label>
-                          <input
-                            type="text"
-                            id="modalAddressLandmark"
-                            name="modalAddressLandmark"
-                            class="form-control"
-                            placeholder="E.g. near Kovai All India Radio"
-                            th:value="${employeemaster.Address_Landmark}"
-                          />
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="modalAddressVillage">Village </label>
-                          <input
-                            type="text"
-                            id="modalAddressVillage"
-                            name="modalAddressVillage"
-                            class="form-control"
-                            th:value="${employeemaster.Address_Village}"
-                          />
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="modalAddressCity">City</label>
-                          <input
-                            type="text"
-                            id="modalAddressCity"
-                            name="modalAddressCity"
-                            class="form-control"
-                            th:value="${employeemaster.Address_City}"
-                          />
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="modalAddressLandmark">State</label>
-                          <input
-                            type="text"
-                            id="modalAddressState"
-                            name="modalAddressState"
-                            class="form-control"
-                            th:value="${employeemaster.Address_State}"
-                          />
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label" for="modalAddressZipCode">Zip Code</label>
-                          <input
-                            type="number"
-                            id="modalAddressZipCode"
-                            name="modalAddressZipCode"
-                            class="form-control"
-                            th:value="${employeemaster.Address_ZIP}"
-                          />
-                        </div>
-                        
-                        <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1 editbranchAddressdatasubmit">Submit</button>
-                          <button
-                            type="button"
-                            class="btn btn-label-secondary editbranchAddressdataclose"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--/ Add New Address Modal -->
-              
-              <!-- Add Document -->
-              <div class="modal fade" id="addNewDocument" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-                  <div class="modal-content p-3 p-md-5">
-                    <div class="modal-body">
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      <div class="text-center mb-4">
-                        <h3>Add Document  </h3>
-                        <p>Attach Files / Documents / Image</p>
-                      </div>
-                      <form id="addNewdocument" class="row g-3" onsubmit="return false">
-                        <div class="col-12">
-                          <label class="form-label w-100" for="modalAddCard">Document Type 
-                          <label class="emptitle additem" name="addmodaldocumenttype">
-                          		<i class="bx bxs-plus-circle ownstyle1"></i></label>
-                          </label>
-                          <div class="input-group input-group-merge">
-                            <select id="modalDocumenttype" class="form-select">
-	                          <option value="">Default select</option>
-	                           <th:block th:each="str :${Documenttype}">
-								<option  th:value="${str}"  th:text="${str}"></option>
-							</th:block>
-	                        </select>
-                           
-                          </div>
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="modalAddCardName">Document No </label>
-                          <input
-                            type="text"
-                            id="modalDocNo"
-                            class="form-control expiry-date-mask"
-                            
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="modalAddCardExpiryDate">Upload File </label>
-                          <input
-                            type="file"
-                            id="modalFile"
-                            class="form-control expiry-date-mask"
-                            
-                          />
-                        </div>
-                        <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1 documentsave">Submit</button>
-                          <button
-                            type="button"
-                            class="btn btn-label-secondary btn-reset documentclose"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--/ Add Document -->
-             
-                <!-- Add BankDetails -->
-              <div class="modal fade" id="addNewBankDetails" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-                  <div class="modal-content p-3 p-md-5">
-                    <div class="modal-body">
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      <div class="text-center mb-4">
-                        <h3>Bank Details  </h3>
-                        <p>Add/Update Branch Bank information</p>
-                      </div>
-                      <form id="addNewBankDetails" class="row g-3" onsubmit="return false" th:with ="accobj = ${employeemaster.employeeAccNo[0]}">
-                        
-                        <div class="col-12">
-                          <label class="form-label" for="model_acno">A.C.No </label>
-                            <input
-                            type="hidden"
-                            id="model_branchAccnoid"
-                            class="form-control expiry-date-mask" th:value="${accobj.Accnoid}" required
-                          />
-                           <input
-                            type="text"
-                            id="model_acno"
-                            class="form-control expiry-date-mask" th:value="${accobj.acno}" required
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="model_acno_confirm">Confirm The A.C.No </label>
-                          <input
-                            type="password"
-                            id="model_acno_confirm" 
-                            class="form-control expiry-date-mask" th:value="${accobj.acno}" required
-                          />  
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="model_acname">Account Name</label>
-                          <input
-                            type="text"
-                            id="model_acname"
-                            class="form-control expiry-date-mask" th:value="${accobj.acname}" required
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label" for="model_bankname">Bank Name</label>
-                         <input
-                            type="text"
-                            id="model_bankname"
-                            class="form-control expiry-date-mask" th:value="${accobj.bankname}" required
-                          />
-                        </div>
-                        <div class="col-6">
-                          <label class="form-label" for="model_branchname">Branch Name </label>
-                          <input
-                            type="text"
-                            id="model_branchname"
-                            class="form-control expiry-date-mask" th:value="${accobj.branchname}" required
-                          />
-                        </div>
-                        <div class="col-6">
-                          <label class="form-label" for="model_ifsccode">IFSC Code  </label>
-                          <input
-                            type="text"
-                            id="model_ifsccode"
-                            class="form-control expiry-date-mask" th:value="${accobj.ifsccode}" required
-                          /> 
-                        </div>
-                        
-                        <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1 BankDetailssave">Submit</button>
-                          <button
-                            type="button"
-                            class="btn btn-label-secondary btn-reset BankDetailsclose"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--/ Add BankDetails -->
-            
-             <!--scrolling content Modal -->
-				<div class="modal fade" id="ItemStatusScrollable"
-					tabindex="-1" role="dialog"
-					aria-labelledby="ItemStatusScrollableTitle"
-					aria-hidden="true">
-					<div class="modal-dialog modal-dialog-scrollable"
-						role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title white"
-									id="ItemStatusScrollableTitle"></h5>
-								<button
-                                  type="button"
-                                  class="btn-close"
-                                  data-bs-dismiss="modal"
-                                  aria-label="Close"
-                                ></button>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="modal-body">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="addmodel" id="additemalltxt"></label>
-										<div class="position-relative">
-											<fieldset class="form-group">
-												<input type="text" id="additemall" name="addmodel"
-													class="form-control capitalize">
-											</fieldset>
+						</div>
+						<!--/ Header -->
+
+						<!-- Navbar pills -->
+						<div class="row">
+							<div class="col-md-12">
+								<ul class="nav nav-pills flex-column flex-sm-row mb-4">
+									<li class="nav-item"><a class="nav-link active"
+										href="javascript:void(0);"><i class="bx bx-user"></i>
+											Profile</a></li>
+									<li class="nav-item"><a class="nav-link"
+										href="pages-profile-teams.html"><i class="bx bx-group"></i>
+											Job Title</a></li>
+									<li class="nav-item"><a class="nav-link"
+										href="pages-profile-projects.html"><i
+											class="bx bx-grid-alt"></i> Projects</a></li>
+									<li class="nav-item"><a class="nav-link"
+										href="pages-profile-connections.html"><i
+											class="bx bx-link-alt"></i> Connections</a></li>
+								</ul>
+							</div>
+						</div>
+						<!--/ Navbar pills -->
+
+						<!-- User Profile Content -->
+						<div class="row">
+							<div class="col-xl-4 col-lg-5 col-md-5">
+								<!-- About User -->
+								<div class="card mb-4">
+									<div class="card-body">
+										<small class="text-muted text-uppercase">About</small>
+										<ul class="list-unstyled mb-4 mt-3">
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">First Name:</span> <span
+												th:text="${employeemaster.StaffName}" id="Lbl_StaffName"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Last Name :</span> <span
+												th:text="${employeemaster.Father_HusbandName}"
+												id="Lbl_Father_HusbandName"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Gender :</span> <span
+												th:text="${employeemaster.Gender}" id="Lbl_Gender"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Marital Status:</span> <span
+												th:text="${employeemaster.MaritalStatus}"
+												id="Lbl_MaritalStatus"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">DOB:</span> <span
+												th:text="${employeemaster.dobMMformat}" id="Lbl_DateofBirth"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Blood Group:</span> <span
+												th:text="${employeemaster.BloodGroup}" id="Lbl_BloodGroup"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Height(cm):</span> <span
+												th:text="${employeemaster.Height}" id="Lbl_Height"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Weight(kg):</span> <span
+												th:text="${employeemaster.Weight}" id="Lbl_Weight"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Shirt Size:</span> <span
+												th:text="${employeemaster.ShirtSize}" id="Lbl_ShirtSize"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Shoe Size:</span> <span
+												th:text="${employeemaster.ShoeSize}" id="Lbl_ShoeSize"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Pant Size:</span> <span
+												th:text="${employeemaster.PantSize}" id="Lbl_PantSize"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Accommodation:</span> <span
+												th:text="${employeemaster.Accommodation}"
+												id="Lbl_Accommodation"></span></li>
+
+										</ul>
+										<div class="d-flex justify-content-center pt-3">
+											<a href="javascript:;" class="btn btn-primary me-3"
+												data-bs-target="#editEmployeedetails" data-bs-toggle="modal"
+												id="editEmployeedetailsbtn">Edit</a>
+
+										</div>
+
+									</div>
+								</div>
+								<!--/ About User -->
+								<!-- Contact Card -->
+								<div class="card  mb-4">
+									<div class="card-body1">
+										<div class="card-header align-items-center">
+											<h5 class="card-action-title mb-0">
+												Contacts
+												<div class="card-action-element" style="float: right">
+													<button class="btn btn-primary btn-sm addcontactbtn"
+														type="button" name="-" data-bs-toggle="modal"
+														data-bs-target="#addNewContact">
+														<i class="bx bx-plus bx-xs me-1"></i>
+													</button>
+												</div>
+											</h5>
+
+										</div>
+										<div class="card-body">
+											<div class="added-cards">
+												<th:block
+													th:each="contactObj : ${employeemaster.employeeContact}">
+													<div
+														th:class="'cardMaster border p-3 rounded mb-3 card'+ ${contactObj.employeecontactid}">
+														<div
+															class="d-flex justify-content-between flex-sm-row flex-column">
+															<div class="card-information">
+																<input type="hidden"
+																	th:class="'primarycontact'+ ${contactObj.employeecontactid}"
+																	th:value="${contactObj.primarycontact}" />
+																<h6
+																	th:class="'mb-3 contacttype'+ ${contactObj.employeecontactid}"
+																	th:text="${contactObj.Department}"></h6>
+																<h6
+																	th:class="'mb-1 phonenumber'+ ${contactObj.employeecontactid}"
+																	th:text="${contactObj.Phonenumber}"></h6>
+																<span
+																	th:class="'card-number email'+ ${contactObj.employeecontactid}"
+																	th:text="${contactObj.Email}"></span> <span
+																	th:class="'primarycontactlablecontainer'+ ${contactObj.employeecontactid}">
+																	<span th:if="${contactObj.primarycontact}"
+																	class="badge bg-label-primary">Primary</span>
+																</span>
+															</div>
+															<div class="d-flex flex-column text-start text-lg-end">
+																<div class="d-flex order-sm-0 order-1 mt-3">
+																	<button
+																		class="btn btn-label-primary me-3 contacteditbtn"
+																		th:name="${contactObj.employeecontactid}">
+																		<i class='bx bxs-edit-alt'></i>
+																	</button>
+																	<br />
+																	<button
+																		class="btn btn-label-secondary contactdeletebtn"
+																		th:name="${contactObj.employeecontactid}">
+																		<i class='bx bxs-trash-alt'></i>
+																	</button>
+
+																</div>
+
+															</div>
+														</div>
+													</div>
+												</th:block>
+												<span id="contactaddidv"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Contact Card -->
+
+								<!-- Address Card -->
+
+								<div class="card mb-4">
+									<div class="card-body">
+										<h5 class="pb-2 border-bottom mb-4">Address</h5>
+										<div class="info-container">
+											<ul class="list-unstyled">
+												<li class="mb-3"><span class="fw-bold me-2">Country:</span>
+													<span th:text="${employeemaster.Address_Country}"
+													id="Lbl_AddressCountry"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Address
+														Line 1:</span> <span th:text="${employeemaster.Address_Street1}"
+													id="Lbl_AddressAddress1"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Address
+														Line 2:</span> <span th:text="${employeemaster.Address_Street2}"
+													id="Lbl_AddressAddress2"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Landmark:</span>
+													<span th:text="${employeemaster.Address_Landmark}"
+													id="Lbl_AddressLandmark"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Village:</span>
+													<span th:text="${employeemaster.Address_Village}"
+													id="Lbl_AddressVillage"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">City/Town:</span>
+													<span th:text="${employeemaster.Address_City}"
+													id="Lbl_AddressCity"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">State:</span>
+													<span th:text="${employeemaster.Address_State}"
+													id="Lbl_AddressState"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Pin
+														code:</span> <span th:text="${employeemaster.Address_ZIP}"
+													id="Lbl_AddressZipCode"></span></li>
+											</ul>
+											<div class="d-flex justify-content-center pt-3">
+												<a href="javascript:;" class="btn btn-primary me-3"
+													data-bs-target="#addNewAddress" data-bs-toggle="modal">Edit</a>
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Address Card -->
+								<!-- Document   Card -->
+								<div class="card  mb-4">
+									<div class="card-body1">
+										<div class="card-header align-items-center">
+											<h5 class="card-action-title mb-0">
+												Document
+												<div class="card-action-element" style="float: right">
+													<button class="btn btn-primary btn-sm" type="button"
+														data-bs-toggle="modal" data-bs-target="#addNewDocument">
+														<i class="bx bx-plus bx-xs me-1"></i>
+													</button>
+												</div>
+											</h5>
+
+										</div>
+										<div class="card-body">
+											<div class="added-cards">
+												<th:block
+													th:each="fileObj : ${employeemaster.employeeFiles}">
+													<div
+														th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.empFileid}">
+														<div
+															class="d-flex justify-content-between flex-sm-row flex-column">
+															<div class="card-information">
+
+																<h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
+																<span class="card-number"
+																	th:text="${fileObj.DocumentNo}"></span>
+
+																<th:block th:if="${fileObj.FilePath != ''}">
+																	<br />
+																	<a th:href="${fileObj.FilePath}" target="_blank"> <th:block
+																			th:if="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
+																			<img th:src="@{/assets/img/icons/misc/pdf.png}"
+																				alt="PDF image" width="20" class="me-2">
+																		</th:block> <th:block
+																			th:unless="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
+																			<img th:src="@{/assets/img/icons/misc/jpg.png}"
+																				alt="PDF image" width="20" class="me-2">
+																		</th:block> <small class="text-body"
+																		th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
+																	</small>
+																	</a>
+																</th:block>
+
+															</div>
+															<div class="d-flex flex-column text-start text-lg-end">
+																<div class="d-flex order-sm-0 order-1 mt-3">
+
+																	<button class="btn btn-label-secondary filedeletebtn"
+																		th:name="${fileObj.empFileid}">
+																		<i class='bx bxs-trash-alt'></i>
+																	</button>
+																</div>
+
+															</div>
+														</div>
+													</div>
+
+												</th:block>
+												<span id="fileaddidv"></span>
+											</div>
 										</div>
 									</div>
 								</div>
 
+								<!-- /Document   Card -->
+								<!-- Bank Account Card -->
+								<div class="card mb-4">
+									<div class="card-body">
+										<h5 class="pb-2 border-bottom mb-4">
+											Bank Details
+
+											<div class="card-action-element" style="float: right">
+												<button class="btn btn-primary btn-sm collapsetogglebtn"
+													type="button" data-bs-toggle="collapse"
+													href="#bankdetailscollapseExample" aria-expanded="false"
+													aria-controls="bankdetailscollapseExample">
+													<i id="collapsetoggleicon"
+														class="bx bx-chevron-down bx-xs me-1"></i>
+												</button>
+											</div>
+										</h5>
+
+										<div class="info-container collapse"
+											id="bankdetailscollapseExample">
+
+
+											<ul class="list-unstyled"
+												th:with="accobj = ${employeemaster.employeeAccNo[0]}">
+												<li class="mb-3"><span class="fw-bold me-2">A.C.No:</span>
+													<span th:text="${accobj.acno}" id="Lbl_acno"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Account
+														Name:</span> <span th:text="${accobj.acname}" id="Lbl_acname"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Bank
+														Name:</span> <span th:text="${accobj.bankname}" id="Lbl_bankname"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Branch
+														Name:</span> <span th:text="${accobj.branchname}"
+													id="Lbl_branchname"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">IFSC
+														Code:</span> <span th:text="${accobj.ifsccode}" id="Lbl_ifsccode"></span>
+												</li>
+											</ul>
+
+											<div class="d-flex justify-content-center pt-3">
+												<a href="javascript:;" class="btn btn-primary me-3"
+													data-bs-target="#addNewBankDetails" data-bs-toggle="modal">Edit</a>
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Bank Account Card -->
+
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i> <span
-										class="d-none d-sm-block">Close</span>
-								</button>
-								<button type="button" class="btn btn-primary ml-1"
-									id="additemallsavebtn">
-									<i class="bx bx-check d-block d-sm-none"></i> <span
-										class="d-none d-sm-block">ADD</span>
-								</button>
+							<!-- <div class="col-xl-4 col-lg-5 col-md-5"> -->
+							<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+								<!-- Billing Address -->
+								<div class="card card-action mb-4">
+									<div class="card-header align-items-center">
+										<h5 class="card-action-title mb-0">Emergency Contact</h5>
+										<div class="card-action-element" style="float:right">
+											<button class="btn btn-primary btn-sm edit-address"
+												type="button" data-bs-toggle="modal"
+												data-bs-target="#addNewEmgAddress">
+												<i class="bx bx-plus bx-xs me-1"></i>
+											</button>
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="row">
+										<hr/>
+										<th:block th:each="emg : ${employeemaster.employeeEmgContact}">
+											<div class="col-xl-7 col-12">
+												<dl class="row mb-0">
+													<dt class="col-sm-4 mb-3 text-nowrap">Name:
+														<input type="hidden" th:id="'empEmgContactid' + ${emg.empEmgContactid}" th:value="${empEmgContactid}" >
+														<input type="hidden" th:id="'Emg_InsuranceNominee' + ${emg.empEmgContactid}" th:value="${emg.Emg_InsuranceNominee}" >
+													</dt>
+													<dd class="col-sm-8">
+														<span th:id="'Emg_Name' + ${emg.empEmgContactid}" th:text="${emg.Emg_Name}"></span>
+														
+														<span th:if="${emg.Emg_InsuranceNominee}"><br/><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>
+														
+														
+													</dd>
+													
+													<dt class="col-sm-4 mb-3 text-nowrap">Relationship:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_Relation' + ${emg.empEmgContactid}"  th:text="${emg.Emg_Relation}"></dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">Address Line1:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_Street1' + ${emg.empEmgContactid}"  th:text="${emg.Emg_Street1}"></dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">Address Line2:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_Street2' + ${emg.empEmgContactid}"  th:text="${emg.Emg_Street2}"></dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_Landmark' + ${emg.empEmgContactid}"  th:text="${emg.Emg_Landmark}"></dd>
+												</dl>
+											</div>
+											<div class="col-xl-5 col-12">
+												<dl class="row mb-0">
+													<dt class="col-sm-4 mb-3 text-nowrap">Contact No:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_PersonalPhone' + ${emg.empEmgContactid}"  th:text="${emg.Emg_PersonalPhone}"></dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">Village:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_Village' + ${emg.empEmgContactid}"  th:text="${emg.Emg_Village}"></dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">City:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_City' + ${emg.empEmgContactid}"  th:text="${emg.Emg_City}"></dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">State:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_State' + ${emg.empEmgContactid}"  th:text="${emg.Emg_State}"></dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt>
+													<dd class="col-sm-8"  th:id="'Emg_ZIP' + ${emg.empEmgContactid}"  th:text="${emg.Emg_ZIP}"></dd>
+												</dl>
+											</div>
+										</th:block>
+										</div>
+									</div>
+								</div>
+								<!--/ Billing Address -->
+								 <!-- Project table -->
+			                  	<div class="card  mb-4">
+			                    <!-- Notifications -->
+			                    <h5 class="card-header">Languages</h5>
+			                    <div class="table-responsive">
+			                      <table class="table table-striped table-borderless">
+			                        <thead>
+			                          <tr>
+			                            <th class="text-nowrap">Language</th>
+			                            <th class="text-nowrap text-center">Read</th>
+			                            <th class="text-nowrap text-center">Write</th>
+			                            <th class="text-nowrap text-center">Speak</th>
+			                          </tr>
+			                        </thead>
+			                        <tbody>
+			                        
+			                          <tr th:each="lan : ${employeemaster.employeeLanguage}">
+			                            <td class="text-nowrap" th:text="${lan.language}"></td>
+			                            <td class="text-center">
+			                                <i th:if="${lan.lan_read}" class="bx bx-check-circle"> </i>
+			                            </td>
+			                            <td  class="text-center">
+			                                <i th:if="${lan.lan_write}" class="bx bx-check-circle"> </i>
+			                            </td>
+			                            <td  class="text-center">
+			                                <i th:if="${lan.lan_speak}" class="bx bx-check-circle"> </i>
+			                            </td>
+			                          </tr>
+			                         
+			                          
+			                        </tbody>
+			                      </table>
+			                    </div>
+			                   
+			                    <!-- /Notifications -->
+			                  </div>
+			                  <!-- /Project table -->
+			                  
+			                   <!-- Timeline Advanced-->
+			                <div class="col-xl-12">
+			                  <div class="card  mb-4">
+			                    <h5 class="card-header">Qualification</h5>
+			                    <div class="card-body">
+			                      <ul class="timeline timeline-dashed mt-4">
+			                        
+			                        <li th:each="obj : ${employeemaster.employeeEducation}" class="timeline-item timeline-item-primary mb-4">
+			                          <span class="timeline-indicator timeline-indicator-primary">
+			                            <i class="bx bxs-graduation"></i>
+			                          </span>
+			                          <div class="timeline-event">
+			                            <div class="timeline-header border-bottom mb-3">
+			                              <h6 class="mb-0" th:text ="${obj.Degree} + ' - '+ ${obj.MajorSpecialization}"></h6>
+			                              <small class="text-muted" th:text ="${obj.FromYear} +' - ' + ${obj.ToYear}"></small>
+			                            </div>
+			                            <div class="d-flex justify-content-between flex-wrap mb-2">
+			                              <div>
+			                                <span  th:text ="${obj.College_Institution}"></span>
+			                              </div>
+			                              <div>
+			                                <span  th:text ="${obj.Percentage_GPA}"></span>
+			                              </div>
+			                              
+			                            </div>
+			                            <!-- <a href="javascript:void(0)">
+			                              <i class="bx bx-link"></i>
+			                              bookingCard.pdf
+			                            </a> -->
+			                          </div>
+			                        </li>
+			                       
+			                      </ul>
+			                    </div>
+			                  </div>
+			                </div>
+			                <!-- /Timeline Advanced-->
+			                 <!-- Timeline Left-->
+			                <div class="col-xl-12">
+			                  <div class="card  mb-4">
+			                    <h5 class="card-header">Experience</h5>
+			                    <div class="card-body">
+			                      <ul class="timeline mt-3">
+			                        <li  th:each="obj : ${employeemaster.employeeExperience}" class="timeline-item timeline-item-transparent">
+			                          <span class="timeline-point timeline-point-primary"></span>
+			                          <div class="timeline-event">
+			                            <div class="timeline-header border-bottom mb-3">
+			                              <h6 class="mb-0" th:text="${obj.JobTitle}"></h6>
+			                              <small class="text-muted" th:text="${obj.expFromyear} +' - '+ ${obj.expToyear}"></small>
+			                            </div>
+			                            <div class="d-flex justify-content-between flex-wrap mb-2">
+			                              <div>
+			                                <span th:text="${obj.Company}"></span>
+			                              </div>
+			                              <div>
+			                                <span class="text-muted" th:text="${obj.Location}"></span>
+			                              </div>
+			                            </div>
+			                          </div>
+			                        </li>
+			                       
+			                      </ul>
+			                    </div>
+			                  </div>
+			                </div>
+			                <!-- /Timeline Left -->
+							</div>
+							
+							
+						</div>
+						<!--/ User Profile Content -->
+
+						<!-- Modal -->
+						<!-- Edit User Modal -->
+						<div class="modal fade" id="editEmployeedetails" tabindex="-1"
+							aria-hidden="true">
+							<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Edit User Information</h3>
+											<p>Updating user details will receive a privacy audit</p>
+										</div>
+										<form id="editEmployeedetailsForm"
+											th:object="${employeemaster}"
+											class="row g-3 needs-validation" onsubmit="return false">
+											<input type="hidden"
+												th:value="${employeemaster['empMasterid']}" id="empMasterid" />
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_StaffName">First
+													Name</label> <input type="text" class="form-control"
+													id="Model_StaffName" th:field="*{StaffName}"
+													th:value="${employeemaster['StaffName']}" required />
+												<div class="invalid-feedback">Please enter First Name.</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_Father_HusbandName">Last
+													Name</label> <input type="text" class="form-control"
+													id="Model_Father_HusbandName"
+													th:value="${employeemaster['Father_HusbandName']}"
+													th:field="*{Father_HusbandName}" required />
+												<div class="invalid-feedback">Please enter Last Name.</div>
+											</div>
+											<div class="col-12">
+												<label class="d-block form-label">Gender</label>
+												<div class="form-check">
+													<input type="radio" id="Model_gender_male"
+														name="Model_gender" class="form-check-input"
+														th:field="*{Gender}" value="Male" required />
+													<label class="form-check-label" for="Model_gender_male">Male</label>
+												</div>
+												<div class="form-check">
+													<input type="radio" id="Model_gender_female"
+														name="Model_gender" class="form-check-input"
+														th:field="*{Gender}" value="Female" required />
+													<label class="form-check-label" for="Model_gender_female">Female</label>
+												</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_MaritalStatus">Marital
+													Status</label> <select class="form-select"
+													aria-label="Default select example"
+													id="Model_MaritalStatus" th:field="*{MaritalStatus}"
+													th:value="${employeemaster['MaritalStatus']}" required>
+													<option value="">Select Marital Status</option>
+													<option th:each="str :${MARITALSTATUS}" th:value="${str}"
+														th:text="${str}"></option>
+
+												</select>
+												<div class="invalid-feedback">Please Select Marital
+													Status</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_DateofBirth">DOB</label>
+												<input type="date" class="form-control flatpickr-validation"
+													id="Model_DateofBirth"
+													th:value="${employeemaster['DateofBirth']}"
+													th:field="*{DateofBirth}" required />
+												<div class="invalid-feedback">Please enter DOB .</div>
+											</div>
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_BloodGroup">Blood
+													Group </label> <select class="form-select" id="Model_BloodGroup"
+													th:field="*{BloodGroup}"
+													th:value="${employeemaster['BloodGroup']}" required>
+													<option value="-">Select Blood Group</option>
+													<option value="A+">A+</option>
+													<option value="A1+">A1+</option>
+													<option value="O+">O+</option>
+													<option value="B+">B+</option>
+													<option value="AB+">AB+</option>
+													<option value="A-">A-</option>
+													<option value="A1-">A1-</option>
+													<option value="O-">O-</option>
+													<option value="B-">B-</option>
+													<option value="AB-">AB-</option>
+
+												</select>
+												<div class="invalid-feedback">Please enter Blood
+													Group.</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_Height">Height(cm)</label>
+												<input type="text" class="form-control" id="Model_Height"
+													th:field="*{Height}" th:value="${employeemaster['Height']}"
+													required />
+												<div class="invalid-feedback">Please enter Height(cm).</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_Weight">Weight(kg)</label>
+												<input type="text" class="form-control" id="Model_Weight"
+													th:field="*{Weight}" th:value="${employeemaster['Weight']}"
+													required />
+												<div class="invalid-feedback">Please enter Weight(kg).</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_ShirtSize">Shirt
+													Size</label> <input type="text" class="form-control"
+													id="Model_ShirtSize" th:field="*{ShirtSize}"
+													th:value="${employeemaster['ShirtSize']}" />
+												<div class="invalid-feedback">Please enter Shirt Size.</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_ShoeSize">Shoe
+													Size</label> <input type="text" class="form-control"
+													id="Model_ShoeSize" th:field="*{ShoeSize}"
+													th:value="${employeemaster['ShoeSize']}" />
+												<div class="invalid-feedback">Please enter Shoe Size.</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_PantSize">Pant
+													Size </label> <input type="text" class="form-control"
+													id="Model_PantSize" th:field="*{PantSize}"
+													th:value="${employeemaster['PantSize']}" />
+												<div class="invalid-feedback">Please enter Pant Size .</div>
+											</div>
+											<div class="mb-3">
+												<label class="d-block form-label">Accommodation</label>
+												<div class="form-check mb-2">
+													<input type="radio" id="Model_Accommodation_Self"
+														name="Model_Accommodation" class="form-check-input"
+														th:field="*{Accommodation}" value="Self" required />
+													<label class="form-check-label"
+														for="Model_Accommodation_Self">Self</label>
+												</div>
+												<div class="form-check">
+													<input type="radio" id="Model_Accommodation_Office"
+														name="Model_Accommodation" class="form-check-input"
+														th:field="*{Accommodation}" value="Office" required />
+													<label class="form-check-label"
+														for="Model_Accommodation_Office">Office</label>
+												</div>
+											</div>
+
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary edituserdatap1submit me-sm-3 me-1">Submit</button>
+												<button type="button"
+													class="btn btn-label-secondary edituserdatap1close"
+													data-bs-dismiss="modal" aria-label="Close">
+													Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				<!--scrolling content Modal -->
-            
-              <!-- /Modal -->
-            </div>
-            <!-- / Content -->
+						<!--/ Edit User Modal -->
 
-            <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                <div class="mb-2 mb-md-0">
-                  ©
-                  <script>
+						<!-- Add New Contact Modal -->
+						<div class="modal fade" id="addNewContact" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Contact Details</h3>
+											<p>Add/Update Contact Information</p>
+										</div>
+										<form id="addContactform" class="row g-3"
+											onsubmit="return false">
+											<div class="col-12">
+												<label class="form-label w-100" for="modalAddCard">Contact
+													Type <label class="emptitle additem"
+													name="addmodalcontacttype"><i
+														class="bx bxs-plus-circle ownstyle1"></i></label>
+												</label>
+												<div class="input-group input-group-merge">
+													<select id="modalcontacttype"
+														class="form-select modalcontacttype" required>
+
+														<option value="">-</option>
+														<th:block th:each="str :${CONTACTTYPE}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+
+													</select>
+													<div class="invalid-feedback">Please select contact
+														type</div>
+													<input type="hidden" id="modalcontactid"
+														name="modalcontactid" class="form-contro" />
+												</div>
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="modalcontactPhone">Phone
+													Number </label>
+												<div class="input-group input-group-merge">
+													<span class="input-group-text">+91</span> <input
+														type="text" id="modalcontactPhone"
+														name="modalcontactPhone"
+														class="form-control phone-number-otp-mask"
+														placeholder="999 555 0111" required />
+
+												</div>
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="modalContactemail">Email
+												</label> <input type="email" id="modalContactemail"
+													class="form-control expiry-date-mask" />
+												<div class="invalid-feedback">Please enter a valid
+													email</div>
+											</div>
+											<div class="col-12">
+												<label class="switch"> <input type="checkbox"
+													class="switch-input" id="modalcontactprimary" /> <span
+													class="switch-toggle-slider"> <span
+														class="switch-on"> <i class="bx bx-check"></i>
+													</span> <span class="switch-off"> <i class="bx bx-x"></i>
+													</span>
+												</span> <span class="switch-label">Make this as primary
+														contact?</span>
+												</label>
+											</div>
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn  btn-primary me-sm-3 me-1 contactsavebtn">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary btn-reset contactclosebtn"
+													data-bs-dismiss="modal" aria-label="Close">
+													Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add New Credit Card Modal -->
+						<!-- Add New Address Modal -->
+						<div class="modal fade" id="addNewAddress" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-lg modal-simple modal-add-new-address">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3 class="address-title">Address</h3>
+											<p class="address-subtitle">Address for express delivery</p>
+										</div>
+										<form id="addNewAddressForm" th:object="${employeemaster}"
+											class="row g-3" onsubmit="return false">
+											<div class="col-12">
+												<label class="form-label" for="modalAddressCountry">Country</label>
+												<select id="modalAddressCountry" name="modalAddressCountry"
+													class="select2 form-select" data-allow-clear="true"
+													th:field="*{Address_Country}"
+													th:value="${employeemaster.Address_Country}">
+													<option value="">Select</option>
+													<option value="Australia">Australia</option>
+													<option value="Bangladesh">Bangladesh</option>
+													<option value="Belarus">Belarus</option>
+													<option value="Brazil">Brazil</option>
+													<option value="Canada">Canada</option>
+													<option value="China">China</option>
+													<option value="France">France</option>
+													<option value="Germany">Germany</option>
+													<option value="India">India</option>
+													<option value="Indonesia">Indonesia</option>
+													<option value="Israel">Israel</option>
+													<option value="Italy">Italy</option>
+													<option value="Japan">Japan</option>
+													<option value="Korea">Korea, Republic of</option>
+													<option value="Mexico">Mexico</option>
+													<option value="Philippines">Philippines</option>
+													<option value="Russia">Russian Federation</option>
+													<option value="South Africa">South Africa</option>
+													<option value="Thailand">Thailand</option>
+													<option value="Turkey">Turkey</option>
+													<option value="Ukraine">Ukraine</option>
+													<option value="United Arab Emirates">United Arab
+														Emirates</option>
+													<option value="United Kingdom">United Kingdom</option>
+													<option value="United States">United States</option>
+												</select>
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="modalAddressAddress1">Address
+													Line 1</label> <input type="text" id="modalAddressAddress1"
+													name="modalAddressAddress1" class="form-control"
+													placeholder="Flat, House no, Building, Apartment"
+													th:value="${employeemaster.Address_Street1}" />
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="modalAddressAddress2">Address
+													Line 2</label> <input type="text" id="modalAddressAddress2"
+													name="modalAddressAddress2" class="form-control"
+													placeholder="Area, Street, Sector"
+													th:value="${employeemaster.Address_Street2}" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressLandmark">Landmark</label>
+												<input type="text" id="modalAddressLandmark"
+													name="modalAddressLandmark" class="form-control"
+													placeholder="E.g. near Kovai All India Radio"
+													th:value="${employeemaster.Address_Landmark}" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressVillage">Village
+												</label> <input type="text" id="modalAddressVillage"
+													name="modalAddressVillage" class="form-control"
+													th:value="${employeemaster.Address_Village}" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressCity">City</label>
+												<input type="text" id="modalAddressCity"
+													name="modalAddressCity" class="form-control"
+													th:value="${employeemaster.Address_City}" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressLandmark">State</label>
+												<input type="text" id="modalAddressState"
+													name="modalAddressState" class="form-control"
+													th:value="${employeemaster.Address_State}" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressZipCode">Zip
+													Code</label> <input type="number" id="modalAddressZipCode"
+													name="modalAddressZipCode" class="form-control"
+													th:value="${employeemaster.Address_ZIP}" />
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary me-sm-3 me-1 editbranchAddressdatasubmit">Submit</button>
+												<button type="button"
+													class="btn btn-label-secondary editbranchAddressdataclose"
+													data-bs-dismiss="modal" aria-label="Close">
+													Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add New Address Modal -->
+						<!-- Add New Emf Address Modal -->
+						<div class="modal fade" id="addNewEmgAddress" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-lg modal-simple modal-add-new-address">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3 class="address-title">Address</h3>
+											<p class="address-subtitle">Address for express Emergency
+												contact</p>
+										</div>
+										<form id="addNewEmgAddressForm"
+											th:object="${employeeEmgAddress}" class="row g-3"
+											onsubmit="return false">
+											<div class="col-12 col-md-6">
+												<div class="form-check">
+												<br/>
+													<input class="form-check-input" type="checkbox" id="InsuranceNominee"
+														th:field="*{Emg_InsuranceNominee}" /> <label
+														class="form-check-label" for="InsuranceNominee">
+														Insurance Nominee </label>
+													<input type="hidden" id="empEmgContactid"
+													th:field="*{empEmgContactid}" />
+													
+												</div>
+
+											</div>
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalEmg_Name">Name</label>
+												<input type="text" id="modalEmg_Name" th:field="*{Emg_Name}"
+													class="form-control" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalEmg_PersonalPhone">Contact
+													No</label> <input type="text" id="modalEmg_PersonalPhone"
+													th:field="*{Emg_PersonalPhone}" class="form-control"
+													placeholder="999 555 0111" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalEmg_RelationEmg">Relation</label>
+												<select id="modalEmg_RelationEmg" class="select2 form-select"
+													data-allow-clear="true" th:field="*{Emg_Relation}">
+													<option value="">Select</option>
+													<option th:each="str :${RELATION}" th:value="${str}"
+														th:text="${str}"></option>
+
+												</select>
+											</div>
+
+											<div class="col-12">
+												<label class="form-label" for="modalAddressCountryEmg">Country</label>
+												<select id="modalAddressCountryEmg" class="select2 form-select"
+													data-allow-clear="true" th:field="*{Emg_Country}">
+													<option value="">Select</option>
+													<option value="Australia">Australia</option>
+													<option value="Bangladesh">Bangladesh</option>
+													<option value="Belarus">Belarus</option>
+													<option value="Brazil">Brazil</option>
+													<option value="Canada">Canada</option>
+													<option value="China">China</option>
+													<option value="France">France</option>
+													<option value="Germany">Germany</option>
+													<option value="India">India</option>
+													<option value="Indonesia">Indonesia</option>
+													<option value="Israel">Israel</option>
+													<option value="Italy">Italy</option>
+													<option value="Japan">Japan</option>
+													<option value="Korea">Korea, Republic of</option>
+													<option value="Mexico">Mexico</option>
+													<option value="Philippines">Philippines</option>
+													<option value="Russia">Russian Federation</option>
+													<option value="South Africa">South Africa</option>
+													<option value="Thailand">Thailand</option>
+													<option value="Turkey">Turkey</option>
+													<option value="Ukraine">Ukraine</option>
+													<option value="United Arab Emirates">United Arab
+														Emirates</option>
+													<option value="United Kingdom">United Kingdom</option>
+													<option value="United States">United States</option>
+												</select>
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="modalAddressAddress1Emg">Address
+													Line 1</label> <input type="text" id="modalAddressAddress1Emg"
+													th:field="*{Emg_Street1}" class="form-control"
+													placeholder="Flat, House no, Building, Apartment" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressAddress2Emg">Address
+													Line 2</label> <input type="text" id="modalAddressAddress2Emg"
+													th:field="*{Emg_Street2}" class="form-control"
+													placeholder="Area, Street, Sector" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressLandmarkEmg">Landmark</label>
+												<input type="text" id="modalAddressLandmarkEmg"
+													th:field="*{Emg_Landmark}" class="form-control"
+													placeholder="E.g. near Kovai All India Radio" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressVillageEmg">Village
+												</label> <input type="text" id="modalAddressVillageEmg"
+													th:field="*{Emg_Village}" class="form-control" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressCityEmg">City</label>
+												<input type="text" id="modalAddressCityEmg"
+													class="form-control" th:field="*{Emg_City}" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressLandmarkEmg">State</label>
+												<input type="text" id="modalAddressStateEmg"
+													class="form-control" th:field="*{Emg_State}" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalAddressZipCodeEmg">Zip
+													Code</label> <input type="number" id="modalAddressZipCodeEmg"
+													class="form-control" th:field="*{Emg_ZIP}" />
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary me-sm-3 me-1 editemgAddressdatasubmit">Submit</button>
+												<button type="button"
+													class="btn btn-label-secondary editemgAddressdataclose"
+													data-bs-dismiss="modal" aria-label="Close">
+													Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add New Emg Address Modal -->
+						<!-- Add Document -->
+						<div class="modal fade" id="addNewDocument" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Add Document</h3>
+											<p>Attach Files / Documents / Image</p>
+										</div>
+										<form id="addNewdocument" class="row g-3"
+											onsubmit="return false">
+											<div class="col-12">
+												<label class="form-label w-100" for="modalAddCard">Document
+													Type <label class="emptitle additem"
+													name="addmodaldocumenttype"> <i
+														class="bx bxs-plus-circle ownstyle1"></i></label>
+												</label>
+												<div class="input-group input-group-merge">
+													<select id="modalDocumenttype" class="form-select">
+														<option value="">Default select</option>
+														<th:block th:each="str :${Documenttype}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+													</select>
+
+												</div>
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="modalAddCardName">Document
+													No </label> <input type="text" id="modalDocNo"
+													class="form-control expiry-date-mask" />
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="modalAddCardExpiryDate">Upload
+													File </label> <input type="file" id="modalFile"
+													class="form-control expiry-date-mask" />
+											</div>
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary me-sm-3 me-1 documentsave">Submit</button>
+												<button type="button"
+													class="btn btn-label-secondary btn-reset documentclose"
+													data-bs-dismiss="modal" aria-label="Close">
+													Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add Document -->
+
+						<!-- Add BankDetails -->
+						<div class="modal fade" id="addNewBankDetails" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Bank Details</h3>
+											<p>Add/Update Branch Bank information</p>
+										</div>
+										<form id="addNewBankDetails" class="row g-3"
+											onsubmit="return false"
+											th:with="accobj = ${employeemaster.employeeAccNo[0]}">
+
+											<div class="col-12">
+												<label class="form-label" for="model_acno">A.C.No </label> <input
+													type="hidden" id="model_branchAccnoid"
+													class="form-control expiry-date-mask"
+													th:value="${accobj.Accnoid}" required />
+												<input type="text" id="model_acno"
+													class="form-control expiry-date-mask"
+													th:value="${accobj.acno}" required />
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="model_acno_confirm">Confirm
+													The A.C.No </label> <input type="password" id="model_acno_confirm"
+													class="form-control expiry-date-mask"
+													th:value="${accobj.acno}" required />
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="model_acname">Account
+													Name</label> <input type="text" id="model_acname"
+													class="form-control expiry-date-mask"
+													th:value="${accobj.acname}" required />
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="model_bankname">Bank
+													Name</label> <input type="text" id="model_bankname"
+													class="form-control expiry-date-mask"
+													th:value="${accobj.bankname}" required />
+											</div>
+											<div class="col-6">
+												<label class="form-label" for="model_branchname">Branch
+													Name </label> <input type="text" id="model_branchname"
+													class="form-control expiry-date-mask"
+													th:value="${accobj.branchname}" required />
+											</div>
+											<div class="col-6">
+												<label class="form-label" for="model_ifsccode">IFSC
+													Code </label> <input type="text" id="model_ifsccode"
+													class="form-control expiry-date-mask"
+													th:value="${accobj.ifsccode}" required />
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary me-sm-3 me-1 BankDetailssave">Submit</button>
+												<button type="button"
+													class="btn btn-label-secondary btn-reset BankDetailsclose"
+													data-bs-dismiss="modal" aria-label="Close">
+													Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add BankDetails -->
+
+						<!--scrolling content Modal -->
+						<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
+							role="dialog" aria-labelledby="ItemStatusScrollableTitle"
+							aria-hidden="true">
+							<div class="modal-dialog modal-dialog-scrollable" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="addmodel" id="additemalltxt"></label>
+												<div class="position-relative">
+													<fieldset class="form-group">
+														<input type="text" id="additemall" name="addmodel"
+															class="form-control capitalize">
+													</fieldset>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-light-secondary"
+											data-bs-dismiss="modal">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Close</span>
+										</button>
+										<button type="button" class="btn btn-primary ml-1"
+											id="additemallsavebtn">
+											<i class="bx bx-check d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">ADD</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--scrolling content Modal -->
+
+						<!-- /Modal -->
+					</div>
+					<!-- / Content -->
+
+					<!-- Footer -->
+					<footer class="content-footer footer bg-footer-theme">
+						<div
+							class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+							<div class="mb-2 mb-md-0">
+								©
+								<script>
                     document.write(new Date().getFullYear());
                   </script>
-                  , made with ❤️ by
-                  <a href="https://pixinvent.com" target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
-                </div>
-                <div>
-                  <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank"
-                    >License</a
-                  >
-                  <a href="https://1.envato.market/pixinvent_portfolio" target="_blank" class="footer-link me-4"
-                    >More Themes</a
-                  >
+								, made with ❤️ by <a href="https://pixinvent.com"
+									target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
+							</div>
+							<div>
+								<a href="https://themeforest.net/licenses/standard"
+									class="footer-link me-4" target="_blank">License</a>
+								<a href="https://1.envato.market/pixinvent_portfolio"
+									target="_blank" class="footer-link me-4">More
+									Themes</a> <a
+									href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
+									target="_blank" class="footer-link me-4">Documentation</a>
 
-                  <a
-                    href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
-                    target="_blank"
-                    class="footer-link me-4"
-                    >Documentation</a
-                  >
+								<a href="https://pixinvent.ticksy.com/" target="_blank"
+									class="footer-link d-none d-sm-inline-block">Support</a>
+							</div>
+						</div>
+					</footer>
+					<!-- / Footer -->
 
-                  <a href="https://pixinvent.ticksy.com/" target="_blank" class="footer-link d-none d-sm-inline-block"
-                    >Support</a
-                  >
-                </div>
-              </div>
-            </footer>
-            <!-- / Footer -->
+					<div class="content-backdrop fade"></div>
+				</div>
+				<!-- Content wrapper -->
+			</div>
+			<!-- / Layout page -->
+		</div>
 
-            <div class="content-backdrop fade"></div>
-          </div>
-          <!-- Content wrapper -->
-        </div>
-        <!-- / Layout page -->
-      </div>
+		<!-- Overlay -->
+		<div class="layout-overlay layout-menu-toggle"></div>
 
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
+		<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+		<div class="drag-target"></div>
+	</div>
+	<!-- / Layout wrapper -->
 
-      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-      <div class="drag-target"></div>
-    </div>
-    <!-- / Layout wrapper -->
+	<!-- Core JS -->
+	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
-    <!-- Core JS -->
-       <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
-    <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
-    <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
-    <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
-    <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+	<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+	<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 
-    <script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
-    <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+	<script th:src="@{/assets/vendor/js/menu.js}"></script>
+	<!-- endbuild -->
 
-    <script th:src="@{/assets/vendor/js/menu.js}"></script>
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-    <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
-    <script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
-    <script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
-    <script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
-    <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
-    <script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
-    <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<!-- Vendors JS -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+	<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
 	<!-- Form Validation -->
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
-     
-    <!-- Main JS -->
-    <script th:src="@{/assets/js/main.js}"></script>
-    
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+
+	<!-- Main JS -->
+	<script th:src="@{/assets/js/main.js}"></script>
+
 	<!-- Flat Picker -->
-    <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-    <script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
-     <script th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
-    <script th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
-    <script th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
-    <script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
-    
-    <!-- Page JS -->
-    <!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
-    <script th:src="@{/assets/js/app-user-view.js}"></script>
-    <script th:src="@{/assets/js/app-user-view-account.js}"></script>
-    
-     
-    
-    <script>
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+
+	<!-- Page JS -->
+	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
+	<script th:src="@{/assets/js/app-user-view.js}"></script>
+	<script th:src="@{/assets/js/app-user-view-account.js}"></script>
+
+
+
+	<script>
     $(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	
@@ -1242,6 +1443,29 @@
 			$('.edituserdatap1submit').prop("disabled",false);
    			$('.edituserdatap1submit').html("Submit");
    		}
+		//--------------------------------------------------------------------------------------------------------------------------------------
+		$('#addNewEmgAddressForm').on('submit', function(event){
+			$('.editemgAddressdatasubmit').prop("disabled",true);
+		   	$('.editemgAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+    	    if(event.target.checkValidity()){
+    	    
+    	    	const formdata= new FormData(document.querySelector("#addNewEmgAddressForm"));
+    	    	formdata.append("empMasterid", $('#empMasterid').val())
+    	    	$.ajax({
+						type : "POST",url : "employeeemgaddressjson",
+						data : formdata, contentType: false,
+	   	              processData: false,success : function(result) {
+	   	            	  
+	   	            	var bmobj = JSON.parse(JSON.stringify(result));
+	   	            	console.log(bmobj);
+	   	            	validationformempemgreset();
+						},
+	    	    	error : function(e) {
+							console.log("Error" + e);
+						}
+    	    	});
+    	    }
+		});
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
 		$('#editEmployeedetailsForm').on('submit', function(event){
   			   	 
@@ -1331,6 +1555,12 @@
 	        	}
 	      });
  		// --------------------------------------------------------------------
+ 			function validationformempemgreset()
+			{
+				$('.editemgAddressdataclose').click();
+  				$('.editemgAddressdatasubmit').prop("disabled",false);
+	   			$('.editemgAddressdatasubmit').html("Submit");
+			}
 	   		function validationformreset()
 		   {
 	   				$('.editbranchdataclose').click();
@@ -1785,5 +2015,5 @@ if (phoneMask) {
 }    
 
 </script>
-	  </body>
-	</html>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.rvs.springboot.thymeleaf.service;
 
 import java.util.List;
 
+import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 
 public interface EmployeeMasterService {
@@ -17,5 +18,9 @@ public interface EmployeeMasterService {
 	public int insertemployeeAccountdetails(int acid, String acno,String acname , String bankname,String employeename,String ifsccode, int employeeid);
 	public int insertemployeeFiles(String DocumentType,String DocumentNo , String FilePath, int employeeid);
 	public int deleteemployeeFiles(int id);
+	
+	public int insertemployeeEmgContact(int id,EmployeeEmgContact emg);
+	public int updateemployeeEmgContact(EmployeeEmgContact emg);
+	
 	
 }

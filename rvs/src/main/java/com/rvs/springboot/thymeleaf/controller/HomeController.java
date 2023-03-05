@@ -1621,6 +1621,22 @@ public class HomeController {
 		return "empadd";
 	}
 
+	@ResponseBody
+	@PostMapping("employeeemgaddressjson")
+	public int employeeemgaddressjson(@RequestParam Map<String, String> params,@ModelAttribute("employeemaster") EmployeeEmgContact emg) {
+		
+		int empMasterid = Integer.parseInt(params.get("empMasterid"));
+		EmployeeMaster emp = employeeMasterService.findById(empMasterid);
+		
+		if(emg.getEmpEmgContactid() == 0)
+		{
+			return employeeMasterService.insertemployeeEmgContact(empMasterid, emg);			
+		}else
+		{
+			return employeeMasterService.updateemployeeEmgContact(emg);
+		}
+		
+	}
 	@PostMapping("employeesave")
 	public String employeesave(HttpServletRequest req, @ModelAttribute("employeemaster") EmployeeMaster employeemaster,
 			@RequestParam(name = "empEduid", required = false) String[] empEduid,
@@ -1760,8 +1776,7 @@ public class HomeController {
 				empcont.setEmg_Street1(Emg_Street1[farr]);
 			if (Emg_Street2.length > 0)
 				empcont.setEmg_Street2(Emg_Street2[farr]);
-			if (Emg_Taluk.length > 0)
-				empcont.setEmg_Taluk(Emg_Taluk[farr]);
+			
 			if (Emg_Village.length > 0)
 				empcont.setEmg_Village(Emg_Village[farr]);
 			if (Emg_ZIP.length > 0)
@@ -2136,6 +2151,7 @@ public class HomeController {
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		themodel.addAttribute("Documenttype", Documenttype);
 
+		themodel.addAttribute("employeeEmgAddress", new EmployeeEmgContact());
 		themodel.addAttribute("employeeEducation", edulsnew);
 		themodel.addAttribute("employeeEmgContact", emglsnew);
 		themodel.addAttribute("employeeExperience", exptrlsnew);

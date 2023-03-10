@@ -1,974 +1,959 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
 
-<!-- BEGIN: Head-->
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr"
+	data-theme="theme-semi-dark" th:data-assets-path="@{/assets/}"
+	data-template="vertical-menu-template">
 <head>
-<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf" th:content="${_csrf.token}" />
 <!-- default header name is X-CSRF-TOKEN -->
-<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="ICC">
-<title>Employee Job</title>
-<link rel="apple-touch-icon"
-	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
-<link rel="shortcut icon" type="image/x-icon"
-	th:href="@{/app-assets/images/ico/favicon.ico}">
+	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+<title>Empolyee </title>
+
+<meta name="description" content="" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	th:href="@{/assets/img/favicon/favicon.ico}" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
-	rel="stylesheet}">
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/vendors.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
-<!-- END: Vendor CSS-->
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
 
-<!-- BEGIN: Theme CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap-extended.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/colors.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/components.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/dark-layout.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
-<!-- END: Theme CSS-->
+<!-- Icons -->
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
 
-<!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
-<!-- END: Page CSS-->
+<!-- Core CSS -->
+<link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}"
+	class="template-customizer-core-css" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/rtl/theme-default.css}"
+	class="template-customizer-theme-css" />
+<link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
 
-<!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
-<!-- END: Custom CSS-->
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/select2/select2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+
+<!-- Page CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/pages/page-profile.css}" />
+<!-- Helpers -->
+<script th:src="@{/assets/vendor/js/helpers.js}"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+<script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script th:src="@{/assets/js/config.js}"></script>
 <style>
-	.emptitle
-	{
-		color: #527a00;
-		font-size: 15px;
-	    line-height: 20px;
-	    font-weight: 600;
-	    font-family: Fira Sans,Trebuchet MS,sans-serif;
-	    cursor:pointer;
-	}
-	thead
-	{
-		background-color: #ebebeb;
-		border-color: transparent;
-	    color: #555;
-	    font-weight: 700;
-	    padding: 12px 16px 11px;
-	    transition: background-color .15s ease-in-out;
-	}
-	tbody{
-		color: #222;
-	}
-	
-	.empnametitle
-	{
-		color: #FF4500;
-		font-size: 15px;
-	    line-height: 20px;
-	    font-weight: 600;
-	    font-family: Fira Sans,Trebuchet MS,sans-serif;
-	}
-	.ownstyle{
-		font-size:30px;
-		position: absolute;
-		left:-20px;
-		top:-5px;
-		cursor:pointer;
-	}
-	.ownstyle1{
-		font-size:25px;
-		top:-2px;
-		cursor:pointer;
-	}
-	.iconalign
-	{
-	 text-align:right;
-	 font-size:20px;
-	 width: 200px;
-	 right:0px;
-	 color:#fff;
-	}
-	tbody>tr:hover .iconalign
-	{
-		color:#527a00;
-		cursor:pointer;
-	}
-	
-	.bullet.bullet-success {
-    background-color: #527a00;
-	}
-	
-	.e1
-	{
-		max-width:200px;
-	
-	}
-	.e2
-	{
-		min-width:100px;
-		min-height:25px;
-	}
-	.modal-footer
-	{
-		border-top: none;
-	}
-	
+.bx-check-circle{
+color:green;
+}
+
 </style>
-<script>
-var tblemployeeJobempstatusid=0;
-var tblemployeeJobinfoid=0;
-var tblemployeecompensationid=0; 
-</script>
 </head>
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
 
-<body
-	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
-	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<!-- Menu -->
+			<div th:insert="menu"></div>
+			<!-- / Menu -->
 
-		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
-		<!-- END: Header-->
+			<!-- Layout container -->
+			<div class="layout-page">
+				<!-- Navbar -->
 
+				<div th:insert="header"></div>
+				
+			<div class="content-wrapper">
+					<!-- Content -->
 
-		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
-		<!-- END: Main Menu-->
+					<div class="container-xxl flex-grow-1 container-p-y">
+						<h4 class="py-3 breadcrumb-wrapper mb-4">
+							<span class="text-muted fw-light">User Profile /</span> Employee Job
+						</h4>
 
-			<!-- BEGIN: Content-->
-				<!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Employee Job</h5>
-                            <div class="breadcrumb-wrapper col-12">
-                                <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
-                                    </li>
-                                    
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-body">
-              
-                <!-- Basic Vertical form layout section start -->
-                <section id="basic-vertical-layouts">
+						<!-- Header -->
+						<section id="basic-vertical-layouts">
                     <div class="row match-height">
                         <div class="col-12">
                        
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                    	<div class="col-md-12">
-                                    		<div class="form-group">
-                                               <label class="empnametitle"><span  th:text="${emptitle}"></span>
-                                               <input type="hidden" th:value='${empid}' id="empid" />
-                                               </label>
-                                             </div>
-                                         </div>
-                                   	 
-                                        <div class="col-md-12">
-                                         	<div class="form-group">
-                                              <label class="emptitle"> <i class="bx bx-briefcase-alt-2 ownstyle"></i> JOB</label>
-                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-		                                        
-		                                         	<div class="form-group">
-		                                                  <label for="contact-info-icon">Hire Date</label>
-		                                                  <div class="form-group">
-		                                                  <div class="position-relative has-icon-left">
-		                                                      <input type="hidden"  class="e1 form-control"  id="hiredateid" />
-		                                                      <input type="date"  class="e1 form-control" th:value="${employeeJobemphiredate}" id="hiredate" />
-		                                                      <div class="form-control-position">
-		                                                          <i class="bx bx-calendar-event"></i>
-		                                                      </div>
-		                                                </div>       
-		                                           		</div>
-		                                            </div>
-		                                         
-		                                         	<div class="form-group">
-		                                             		<button type="button" class="e2 position-relative  btn btn-primary ml-1" id="hiredatebtn">
-		                                                     Save
-		                                                 	</button>
-			                                      	</div>
-		                                            
-		                                  </div>
-                                         <hr/>
-                                    	<div class="col-md-12">
-                                    		
-                                    		
-                                    						<!--scrolling content Modal -->
-					                                       		 <div class="modal fade" id="addnewitemmodelScrollable" tabindex="-1" role="dialog" aria-labelledby="addnewitemmodelScrollableTitle" aria-hidden="true">
-							                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
-							                                                <div class="modal-content">
-							                                                    <div class="modal-header bg-warning">
-							                                                        <h5 class="modal-title white" id="addnewitemmodelScrollableTitle"></h5>
-							                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							                                                            <i class="bx bx-x"></i>
-							                                                        </button>
-							                                                    </div>
-							                                                    <div class="modal-body">
-							                                                        <div class="col-md-12">
-								                                                        <div class="form-group">
-								                                                            <label for="addmodel" id="temp"></label>
-								                                                            <div class="position-relative">
-								                                                                <fieldset class="form-group">
-												                                                   <input type="text" id="temp" name="addmodel" class="form-control" >
-												                                                </fieldset>
-								                                                            </div>
-								                                                        </div>
-								                                                    </div>
-								                                                  
-							                                                    </div>
-							                                                    <div class="modal-footer">
-							                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-							                                                            <i class="bx bx-x d-block d-sm-none"></i>
-							                                                            <span class="d-none d-sm-block">Close</span>
-							                                                        </button>
-							                                                        <button type="button" class="btn btn-primary ml-1" id="tempsavebtn">
-							                                                            <i class="bx bx-check d-block d-sm-none"></i>
-							                                                            <span class="d-none d-sm-block">ADD</span>
-							                                                        </button>
-							                                                    </div>
-							                                                </div>
-							                                            </div>
-							                                        </div>
-					                                        	 <!--scrolling content Modal -->
-                                            
-                                            
-                                             
-                                             
-                                            <div class="form-group">
-                                            	
-                                               <label class="emptitle"> <i class="bx bxs-id-card ownstyle"></i> Employment Status</label>
-                                               	<div class="form-group" style="float:right"> 
-                                               		<label class="emptitle newemplstatus" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
-                                             	</div>
-                                             </div>
-                                             <!--scrolling content Modal -->
-                                       		 <div class="modal fade" id="employeeStatusScrollable" tabindex="-1" role="dialog" aria-labelledby="employeeStatusScrollableTitle" aria-hidden="true">
-		                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
-		                                                <div class="modal-content">
-		                                                    <div class="modal-header bg-warning">
-		                                                        <h5 class="modal-title white" id="employeeStatusScrollableTitle">Employment Status</h5>
-		                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		                                                            <i class="bx bx-x"></i>
-		                                                        </button>
-		                                                    </div>
-		                                                    <div class="modal-body">
-		                                                        <div class="col-md-12">
-			                                                        <div class="form-group">
-			                                                            <label for="email-id-icon">Employment Status
-			                                                            	<label class="emptitle additem" name="addemployeestatusdata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
-			                                                            </label>
-			                                                            <div class="position-relative has-icon-left">
-			                                                                <fieldset class="form-group">
-			                                                                	<input type="hidden"  id="employeeJobempstatusid"/>
-							                                                    <input type="hidden"  id="employeeJobempstatusidrow"/>
-							                                                    <select class="form-control addemployeestatusdata" id="empstatus_employmentstatus">
-							                                                        <option>-</option>
-							                                                        <th:block th:each="str :${EmploymentStatus}">
-																						<option  th:value="${str}"  th:text="${str}"></option>
-																					</th:block>
-							                                                      </select>
-							                                                </fieldset>
-			                                                            </div>
-			                                                        </div>
-			                                                    </div>
-			                                                   
-			                                                   <div class="Termination col-md-12">
-			                                                        <div class="form-group">
-			                                                            <label for="email-id-icon">Termination Type
-			                                                            	<label class="emptitle additem" name="addterminationtypedata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
-			                                                            </label>
-			                                                            <div class="position-relative has-icon-left">
-			                                                                <fieldset class="form-group">
-							                                                    <select class="form-control addterminationtypedata" id="empstatus_terminationtype">
-							                                                        <option>-</option>
-							                                                        <th:block th:each="str :${TerminationType}">
-																						<option  th:value="${str}"  th:text="${str}"></option>
-																					</th:block>
-							                                                        
-							                                                      </select>
-							                                                </fieldset>
-			                                                            </div>
-			                                                        </div>
-			                                                    </div>
-			                                                    <div class="Termination col-md-12">
-			                                                        <div class="form-group">
-			                                                            <label for="email-id-icon">Termination Reason
-			                                                            	<label class="emptitle additem" name="addterminationreasondata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
-			                                                            </label>
-			                                                            <div class="position-relative has-icon-left">
-			                                                                <fieldset class="form-group">
-			                                                                	
-							                                                    <select class="form-control addterminationreasondata" id="empstatus_terminationreason">
-							                                                        <option>-</option>
-							                                                        <th:block th:each="str :${TerminationReason}">
-																						<option  th:value="${str}"  th:text="${str}"></option>
-																					</th:block>
-							                                                        
-							                                                      </select>
-							                                                </fieldset>
-			                                                            </div>
-			                                                        </div>
-			                                                    </div>
-			                                                    <div class="Termination col-md-12">
-			                                                        <div class="form-group">
-			                                                            <label for="email-id-icon">Eligible for rehire
-			                                                            	
-			                                                            </label>
-			                                                            <div class="position-relative has-icon-left">
-			                                                                <fieldset class="form-group">
-							                                                    <select class="form-control" id="empstatus_rehire">
-							                                                        <option>-</option>
-							                                                        <option>Yes</option>
-							                                                        <option>No</option>
-							                                                        <option>Upon review </option>
-							                                                        
-							                                                      </select>
-							                                                </fieldset>
-			                                                            </div>
-			                                                        </div>
-			                                                    </div>
-			                                                    
-			                                                    
-			                                                    <div class="col-md-12">
-			                                                        <div class="form-group">
-			                                                            <label for="contact-info-icon">Effective Date</label>
-			                                                            <div class="position-relative has-icon-left">
-			                                                                <input type="date"  class="form-control" id="empstatus_effectivedate">
-			                                                                <div class="form-control-position">
-			                                                                    <i class="bx bx-calendar-event"></i>
-			                                                                </div>
-			                                                            </div>
-			                                                        </div>
-			                                                    </div>
-			                                                     <div class="col-md-12">
-			                                                        <div class="form-group">
-			                                                            <label for="contact-info-icon">Remarks</label>
-			                                                            <div class="position-relative has-icon-left">
-			                                                                <input type="text"  class="form-control" id="empstatus_remarks">
-			                                                                <div class="form-control-position">
-			                                                                    <i class="bx bx-comment"></i>
-			                                                                </div>
-			                                                            </div>
-			                                                        </div>
-			                                                    </div>
-			                                                    
-		                                                    </div>
-		                                                    <div class="modal-footer">
-		                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-		                                                            <i class="bx bx-x d-block d-sm-none"></i>
-		                                                            <span class="d-none d-sm-block">Close</span>
-		                                                        </button>
-		                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_EMPLOYMENTSTATUS_save">
-		                                                            <i class="bx bx-check d-block d-sm-none"></i>
-		                                                            <span class="d-none d-sm-block">Save</span>
-		                                                        </button>
-		                                                    </div>
-		                                                </div>
-		                                            </div>
-		                                        </div>
-                                        	 <!--scrolling content Modal -->
-                                       </div>
-                                     	<div class="table-responsive" id="tbl_EMPLOYMENTSTATUS">
-		                                    <table class="table table-hover mb-0">
-		                                        <thead>
-		                                            <tr>
-		                                                <th>Effective Date</th>
-		                                                <th>Employment Status</th>
-		                                                <th colspan="2">Remarks</th>
-		                                               	
-		                                            </tr>
-		                                        </thead>
-		                                        <tbody>
-		                                            <tr th:each="emp,stat : ${employeeJobempstatus}">
-		                                                <td class="text-bold-500">
-		                                                <th:block th:if="${emp.employeejobempstatusid} == ${greenpointemployementstatus}">
-		                                                	<span class="bullet bullet-sm bullet-success"></span>
-		                                                </th:block>
-		                                                
-		                                                <input type="hidden" th:value="${emp.employeejobempstatusid}" th:id="'tblemployeeJobempstatusid' + ${stat.index}"/>
-		                                                <input type="hidden" th:id="'tblempstatus_effectivedate' + ${stat.index}" th:value="${emp.empstatus_effectivedate}" />
-		                                               	<th:block th:if="${emp.empstatus_effectivedate} !=''">
-		                                               		<span  th:text="${#strings.arraySplit(emp.empstatus_effectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[0]}"></span>
-		                                                </th:block>
-		                                                	
-		                                                </td>
-		                                                <td>
-		                                                	<span th:id="'tblempstatus_employmentstatus' + ${stat.index}" th:text="${emp.empstatus_employmentstatus}"></span>
-		                                                	<input type="hidden" th:value="${emp.empstatus_terminationtype}" th:id="'tblempstatus_terminationtype' + ${stat.index}"/>
-		                                                	<input type="hidden" th:value="${emp.empstatus_terminationreason}" th:id="'tblempstatus_terminationreason' + ${stat.index}"/>
-		                                                	<input type="hidden" th:value="${emp.empstatus_rehire}" th:id="'tblempstatus_rehire' + ${stat.index}"/>
-		                                                
-		                                                </td>
-		                                                <td class="text-bold-500">
-		                                                	<span th:id="'tblempstatus_remarks' + ${stat.index}" th:text="${emp.empstatus_remarks}"></span>
-		                                                </td>
-		                                                <td width="110px"><span class="iconalign">
-		                                               	 	
-		                                               	 	<span  data-toggle="modal" data-target="#employeeStatusScrollable" th:name="${stat.index}" class="updateemplstatus"><i class="bx bxs-pencil"></i></span>
-		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobempstatusid}" th:id="${stat.index}" class="deleteemplstatus"><i class="bx bxs-trash-alt"></i></span>
-		                                                	
-		                                                	<span>
-		                                                </td>
-		                                                <script>
-															tblemployeeJobempstatusid=tblemployeeJobempstatusid+1;
-															</script>
-		                                            </tr>
-		                                            
-		                                           </tbody>
-		                                    </table>
-		                                </div>
-                                     	<br/><hr/><br/>
-                                     	<div class="col-md-12">
-                                            <div class="form-group">
-                                            	
-                                               <label class="emptitle"> <i class="bx bxs-briefcase-alt-2 ownstyle"></i>Job Information</label>
-                                               	<div class="form-group" style="float:right"> 
-                                               		<label class="emptitle newemplinfostatus"  data-toggle="modal" data-target="#jobInformationScrollable"> <i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
-                                             	</div>
-                                             </div>
-                                             <!--scrolling content Modal -->
-                                       		 <div class="modal fade" id="jobInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="jobInformationScrollableTitle" aria-hidden="true">
-	                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
-	                                                <div class="modal-content">
-	                                                    <div class="modal-header bg-warning">
-	                                                        <h5 class="modal-title white" id="jobInformationScrollableTitle">Job Information</h5>
-	                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                                                            <i class="bx bx-x"></i>
-	                                                        </button>
-	                                                    </div>
-	                                                    <div class="modal-body">
-	                                                        
-		                                                    <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="contact-info-icon">Effective Date</label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                            	<input type="hidden"  class="form-control" id="employeejobinfoid">
-		                                                            	<input type="hidden" class="form-control" id="employeejobinfoidrow">
-		                                                                <input type="date"  class="form-control" id="jobeffectivedate">
-		                                                                <div class="form-control-position">
-		                                                                    <i class="bx bx-calendar-event"></i>
-		                                                                </div>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-		                                                    <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Location</label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="joblocation">
-						                                                        <th:block th:each="obj : ${branchls}">
-						                                                        	<option th:text="${obj.BRANCH_NAME}"></option>
-						                                                        </th:block>
-						                                                       </select>
-						                                                </fieldset>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-		                                                    <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Department
-		                                                            	<label class="emptitle additem" name="adddepartmentdata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
-		                                                            </label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control adddepartmentdata"  id="jobdeparment">
-						                                                        <option>-</option>
-						                                                       <th:block th:each="str :${Department}">
-																					<option  th:value="${str}"  th:text="${str}"></option>
-																				</th:block>
-						                                                      </select>
-						                                                </fieldset>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-		                                                    <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Job Title
-		                                                            	<label class="emptitle additem" name="addjobtitledata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
-		                                                            </label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control addjobtitledata"  id="jobtitle">
-						                                                        <option>-</option>
-						                                                        <th:block th:each="str :${JobTitle}">
-																					<option  th:value="${str}"  th:text="${str}"></option>
-																				</th:block>
-						                                                        
-						                                                        
-						                                                      </select>
-						                                                </fieldset>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-		                                                     <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="contact-info-icon">Reports To</label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                                
-		                                                                <select class="form-control" id="jobreportsto">
-					                                                        <option>-</option>
-					                                                       <th:block th:each="str :${EffectiveEmployee}">
-																				<option  th:value="${str.StaffName +'-'+ str.empMasterid}"  th:text="${str.StaffName}"></option>
-																			</th:block>
-					                                                      </select>
-		                                                                
-		                                                                <div class="form-control-position">
-		                                                                    <i class="bx bx-comment"></i>
-		                                                                </div>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-		                                                    
-	                                                    </div>
-	                                                    <div class="modal-footer">
-	                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-	                                                            <i class="bx bx-x d-block d-sm-none"></i>
-	                                                            <span class="d-none d-sm-block">Close</span>
-	                                                        </button>
-	                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_jobinfo_save">
-	                                                            <i class="bx bx-check d-block d-sm-none"></i>
-	                                                            <span class="d-none d-sm-block">Save</span>
-	                                                        </button>
-	                                                    </div>
-	                                                </div>
-	                                            </div>
-	                                         </div>
-                                        	 <!--scrolling content Modal -->
-                                             
-                                        </div>
-                                     	<div class="table-responsive">
-		                                    <table class="table table-hover mb-0" id="tbl_JOB_information">
-		                                        <thead>
-		                                            <tr>
-		                                                <th>Effective Date</th>
-		                                                <th>Location</th>
-		                                                <th>Department</th>
-		                                                <th>Job Title</th>
-		                                                <th colspan="2">Reports To</th>
-		                                                
-		                                            </tr>
-		                                        </thead>
-		                                        <tbody>
-		                                            <tr th:each="emp,stat : ${employeeJobinfomation}">
-		                                                <td class="text-bold-500">
-		                                                 <th:block th:if="${emp.employeejobinfoid} == ${greenpointjobstatus}">
-		                                                	<span class="bullet bullet-sm bullet-success"></span>
-		                                                </th:block>
-		                                               	<input type="hidden" th:value="${emp.employeejobinfoid}" th:id="'tblemployeejobinfoid' + ${stat.index}"/>
-		                                               	<input type="hidden" th:value="${emp.jobeffectivedate}" th:id="'tbljobeffectivedate' + ${stat.index}"/>
-														
-														<th:block th:if="${emp.jobeffectivedate} !=''">
-		                                               		<span  th:text="${#strings.arraySplit(emp.jobeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[0]}"></span>
-		                                                </th:block>
-		                                                
-		                                                </td>
-		                                                <td>
-		                                                	<span th:id="'tbljoblocation' + ${stat.index}" th:text="${emp.joblocation}"></span>
-		                                                </td>
-		                                                <td>
-		                                                	<span th:id="'tbljobdeparment' + ${stat.index}" th:text="${emp.jobdeparment}"></span>
-		                                                </td>
-		                                                <td>
-		                                                	<span th:id="'tbljobtitle' + ${stat.index}" th:text="${emp.jobtitle}"></span>
-		                                                </td>
-		                                                <td>
-		                                                	<span th:id="'tbljobreportsto' + ${stat.index}" th:text="${emp.jobreportsto}"></span>
-		                                                </td>
-		                                                <td><span class="iconalign">
-															<span  data-toggle="modal" data-target="#jobInformationScrollable" th:name="${stat.index}" class="updatejobinfostatus"><i class="bx bxs-pencil"></i></span>
-		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobinfoid}"  th:id="${stat.index}" class="deletejobinfostatus"><i class="bx bxs-trash-alt"></i></span>
-														</span></td>
-														 <script>
-														 tblemployeeJobinfoid=tblemployeeJobinfoid+1;
-															</script>
-		                                            </tr>
-		                                            </tbody>
-		                                    </table>
-		                                </div>
-                                     	<br/><hr/><br/>
-                                     	<div class="col-md-12">
-                                            <div class="form-group">
-                                               <label class="emptitle"> <i class="bx bx-dollar-circle ownstyle"></i>Compensation</label>
-                                               	<div class="form-group" style="float:right"> 
-                                               		<label class="emptitle newempcompensationstatus"  data-toggle="modal" data-target="#compensationScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
-                                             	</div>
-                                             </div>
-                                              <!--scrolling content Modal -->
-                                       		 <div class="modal fade" id="compensationScrollable" tabindex="-1" role="dialog" aria-labelledby="compensationScrollableTitle" aria-hidden="true">
-		                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
-		                                                <div class="modal-content">
-		                                                    <div class="modal-header bg-warning">
-		                                                        <h5 class="modal-title white" id="compensationScrollableTitle">Compensation</h5>
-		                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		                                                            <i class="bx bx-x"></i>
-		                                                        </button>
-		                                                    </div>
-		                                                    <div class="modal-body">
-		                                                        <div class="col-md-12">
-			                                                        <div class="form-group">
-			                                                            <label for="contact-info-icon">Effective Date</label>
-			                                                            <div class="position-relative has-icon-left">
-			                                                                <input type="hidden"  class="form-control" id="employeejobcompensationid">
-		                                                            		<input type="hidden" class="form-control" id="employeejobcompensationidrow">
-		                                                                    <input type="date"  class="form-control" id="comeffectivedate">
-			                                                                <div class="form-control-position">
-			                                                                    <i class="bx bx-calendar-event"></i>
-			                                                                </div>
-			                                                            </div>
-			                                                        </div>
-			                                                    </div>
-			                                                  <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Pay Schedule</label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="comPayschedule">
-						                                                        <option>-</option>
-						                                                        <option>Monthly</option>
-						                                                        <option>Weekly</option>
-						                                                        <option>Day</option>
-						                                                       </select>
-						                                                </fieldset>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-		                                                    <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Pay Type</label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control"  id="compaytype">
-						                                                        <option>-</option>
-						                                                        <option>Salary</option>
-						                                                     </select>
-						                                                     
-						                                                </fieldset>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-		                                                    <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Pay Rate
-		                                                            	<!-- <label class="emptitle additem" name="addpayratedata"><i class="bx bxs-plus-circle ownstyle1"></i></label> -->
-		                                                            </label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                                <fieldset class="form-group">
-						                                                    <input type="text"  class="form-control"  style="width:50%;float:left;" id="compayrate">
-				                                                             <div class="form-control-position">
-			                                                                    <i class="bx bx-money"></i>
-			                                                                </div>
-						                                                
-						                                                    <select class="form-control addpayratedata"  style="width:50%;float:right" id="compayratetype">
-						                                                        <option>-</option>
-						                                                        <option>Day</option>
-						                                                        <option>Month</option>
-						                                                        <option>Year</option>
-						                                                       </select>
-						                                                </fieldset>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-		                                                    <div class="col-md-12">
-		                                                        <div class="form-group">
-		                                                            <label for="email-id-icon">Change Reason
-		                                                            	<label class="emptitle additem" name="addchangereasondata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
-		                                                            </label>
-		                                                            <div class="position-relative has-icon-left">
-		                                                                <fieldset class="form-group">
-						                                                    <select class="form-control addchangereasondata"  id="comchangereason">
-						                                                        <option>-</option>
-						                                                        <th:block th:each="str :${PAYCHANGEREASON}">
-																					<option  th:value="${str}"  th:text="${str}"></option>
-																				</th:block>
-						                                                        
-						                                                       </select>
-						                                                </fieldset>
-		                                                            </div>
-		                                                        </div>
-		                                                    </div>
-			                                                     <div class="col-md-12">
-			                                                        <div class="form-group">
-			                                                            <label for="contact-info-icon">Comments</label>
-			                                                            <div class="position-relative has-icon-left">
-			                                                                <input type="text"  class="form-control" id="comcomments">
-			                                                                <div class="form-control-position">
-			                                                                    <i class="bx bx-comment"></i>
-			                                                                </div>
-			                                                            </div>
-			                                                        </div>
-			                                                    </div>
-			                                                    
-		                                                    </div>
-		                                                    <div class="modal-footer">
-		                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-		                                                            <i class="bx bx-x d-block d-sm-none"></i>
-		                                                            <span class="d-none d-sm-block">Close</span>
-		                                                        </button>
-		                                                        <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_jobcompensation_save">
-		                                                            <i class="bx bx-check d-block d-sm-none"></i>
-		                                                            <span class="d-none d-sm-block">Save</span>
-		                                                        </button>
-		                                                    </div>
-		                                                </div>
-		                                            </div>
-		                                        </div>
-                                        	 <!--scrolling content Modal -->
-                                       </div>
-                                    	 <div class="table-responsive">
-		                                    <table class="table table-hover mb-0" id="tbl_compensation_information">
-		                                        <thead>
-		                                            <tr>
-		                                                <th>Effective Date</th>
-		                                                <th>Pay Schedule</th>
-		                                                <th>Pay Type</th>
-		                                                <th>Pay Rate</th>
-		                                                <th>Change Reason</th>
-		                                                <th  colspan="2">Comments</th>
-		                                            </tr>
-		                                        </thead>
-		                                        <tbody>
-		                                            <tr th:each="emp,stat : ${employeecompensation}">
-		                                                <td class="text-bold-500">
-		                                                 <th:block th:if="${emp.employeejobcompensationid} == ${greenpointcompensationstatus}">
-		                                                	<span class="bullet bullet-sm bullet-success"></span>
-		                                                </th:block>
-		                                                <input type="hidden" th:value="${emp.employeejobcompensationid}" th:id="'tblemployeejobcompensationid' + ${stat.index}"/>
-		                                                <input type="hidden" th:value="${emp.comeffectivedate}" th:id="'tblcomeffectivedate' + ${stat.index}"/>
-		                                                <th:block th:if="${emp.comeffectivedate} !=''">
-		                                               		<span  th:text="${#strings.arraySplit(emp.comeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[0]}"></span>
-		                                                </th:block>
-		                                                
-		                                                </td>
-		                                                <td>
-		                                                <span th:id="'tblcomPayschedule' + ${stat.index}" th:text="${emp.comPayschedule}"></span>
-		                                                </td>
-		                                                <td>
-		                                                <span th:id="'tblcompaytype' + ${stat.index}" th:text="${emp.compaytype}"></span>
-		                                                </td>
-		                                                <td>
-		                                                <span th:id="'tblcompayrate' + ${stat.index}" th:text="${emp.compayrate}"></span>
-		                                                <span th:id="'tblcompayratetype' + ${stat.index}" th:text="${emp.compayratetype}"></span>
-		                                                </td>
-		                                                <td>
-		                                                <span th:id="'tblcomchangereason' + ${stat.index}" th:text="${emp.comchangereason}"></span>
-		                                                </td>
-		                                                <td>
-		                                                <span th:id="'tblcomcomments' + ${stat.index}" th:text="${emp.comcomments}"></span>
-		                                                </td>
-		                                                <td><span class="iconalign">
-															<span  data-toggle="modal" data-target="#compensationScrollable" th:name="${stat.index}"  class="updatejobcompensationstatus"><i class="bx bxs-pencil"></i></span>
-		                                               	 	<span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobcompensationid}"  th:id="${stat.index}" class="deletecompensationstatus"><i class="bx bxs-trash-alt"></i></span>
-														</span></td>
-														<script>
-														 	tblemployeecompensationid=tblemployeecompensationid+1;
-														</script>
-		                                            </tr>
-		                                            </tbody>
-		                                    </table>
-		                                </div>
-                                     
-                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- // Basic Vertical form layout section end -->
+                          <div class="card">
+     <div class="card-content">
+<div class="card-body">
+<div class="col-md-12">
+<div class="form-group">
+  <label class="empnametitle"><span  th:text="${emptitle}"></span>
+  <input type="hidden" th:value='${empid}' id="empid" />
+  </label>
+</div>
+     </div>
+         
+    <div class="col-md-12">
+     <div class="form-group">
+ <label class="emptitle"> <i class="bx bx-briefcase-alt-2 ownstyle"></i> JOB</label>
+</div>
+    </div>
+    <div class="col-md-12">
+    
+     <div class="form-group">
+     <label for="contact-info-icon">Hire Date</label>
+     <div class="form-group">
+     <div class="position-relative has-icon-left">
+<input type="hidden"  class="e1 form-control"  id="hiredateid" />
+<input type="date"  class="e1 form-control" th:value="${employeeJobemphiredate}" id="hiredate" />
 
-				<!--scrolling content Modal -->
-                	<div class="modal fade" id="deleteInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="deleteInformationScrollableTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-scrollable" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header bg-danger">
-                                  <h5 class="modal-title white" id="deleteInformationScrollableTitle">Delete Row</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <i class="bx bx-x"></i>
-                                  </button>
-                              </div>
-                              <div class="modal-body">
-                                  
-                               <div class="col-md-12">
-                                   <div class="form-group">
-                                       <label for="contact-info-icon">Are you sure you want to delete this row?</label>
-                                       <input type="hidden" id="deleteid" />
-                                       <input type="hidden" id="deletetype" />
-                                       <input type="hidden" id="deleteindex" />
-                                   </div>
-                               </div>
-                               
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-                                      <i class="bx bx-x d-block d-sm-none"></i>
-                                      <span class="d-none d-sm-block">Cancel</span>
-                                  </button>
-                                  <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="deleteidbtn">
-                                      <i class="bx bx-check d-block d-sm-none"></i>
-                                      <span class="d-none d-sm-block">Yes</span>
-                                  </button>
-                               </div>
-                           </div>
-                       </div>
-                    </div>
-                  	 <!--scrolling content Modal -->
-                  	 
-                  	 
-            </div>
+<!-- <div class="form-control-position">
+    <i class="bx bx-calendar-event"></i>
+</div> -->
+
+   </div>       
+       </div>
+        </div>
+     
+     <div class="form-group mt-2">
+<button type="button" class="e2 position-relative  btn btn-primary ml-1" id="hiredatebtn">
+        Save
+    </button>
+  </div>
+        
+       </div>
+     <hr/>
+<div class="col-md-12">
+
+
+<!--scrolling content Modal -->
+    <div class="modal fade" id="addnewitemmodelScrollable" tabindex="-1" role="dialog" aria-labelledby="addnewitemmodelScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+   <div class="modal-content">
+       <div class="modal-header bg-warning">
+  <h5 class="modal-title white" id="addnewitemmodelScrollableTitle"></h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <i class="bx bx-x"></i>
+  </button>
+       </div>
+       <div class="modal-body">
+  <div class="col-md-12">
+  <div class="form-group">
+      <label for="addmodel" id="temp"></label>
+      <div class="position-relative">
+ <fieldset class="form-group">
+      <input type="text" id="temp" name="addmodel" class="form-control" >
+   </fieldset>
+      </div>
+  </div>
+       </div>
+     
+       </div>
+       <div class="modal-footer">
+  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+      <i class="bx bx-x d-block d-sm-none"></i>
+      <span class="d-none d-sm-block">Close</span>
+  </button>
+  <button type="button" class="btn btn-primary ml-1" id="tempsavebtn">
+      <i class="bx bx-check d-block d-sm-none"></i>
+      <span class="d-none d-sm-block">ADD</span>
+  </button>
+       </div>
+   </div>
         </div>
     </div>
-			<!-- END: Content-->
+     <!--scrolling content Modal -->
+        
+        
 
 
-		
-		<div class="sidenav-overlay"></div>
-		<div class="drag-target"></div>
+        <div class="form-group">
+        
+  <label class="emptitle"> <i class="bx bxs-id-card ownstyle"></i> Employment Status</label>
+  <div class="form-group" style="float:right"> 
+  <label class="emptitle newemplstatus" data-toggle="modal" data-target="#employeeStatusScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+</div>
+</div>
+<!--scrolling content Modal -->
+    <div class="modal fade" id="employeeStatusScrollable" tabindex="-1" role="dialog" aria-labelledby="employeeStatusScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+   <div class="modal-content">
+       <div class="modal-header bg-warning">
+  <h5 class="modal-title white" id="employeeStatusScrollableTitle">Employment Status</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <i class="bx bx-x"></i>
+  </button>
+       </div>
+       <div class="modal-body">
+  <div class="col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Employment Status
+      <label class="emptitle additem" name="addemployeestatusdata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+      </label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+ <input type="hidden"  id="employeeJobempstatusid"/>
+       <input type="hidden"  id="employeeJobempstatusidrow"/>
+       <select class="form-control addemployeestatusdata" id="empstatus_employmentstatus">
+  <option>-</option>
+  <th:block th:each="str :${EmploymentStatus}">
+<option  th:value="${str}"  th:text="${str}"></option>
+</th:block>
+</select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+      
+      <div class="Termination col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Termination Type
+      <label class="emptitle additem" name="addterminationtypedata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+      </label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <select class="form-control addterminationtypedata" id="empstatus_terminationtype">
+  <option>-</option>
+  <th:block th:each="str :${TerminationType}">
+<option  th:value="${str}"  th:text="${str}"></option>
+</th:block>
+  
+</select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+       <div class="Termination col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Termination Reason
+      <label class="emptitle additem" name="addterminationreasondata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+      </label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+ 
+       <select class="form-control addterminationreasondata" id="empstatus_terminationreason">
+  <option>-</option>
+  <th:block th:each="str :${TerminationReason}">
+<option  th:value="${str}"  th:text="${str}"></option>
+</th:block>
+  
+</select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+       <div class="Termination col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Eligible for rehire
+      
+      </label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <select class="form-control" id="empstatus_rehire">
+  <option>-</option>
+  <option>Yes</option>
+  <option>No</option>
+  <option>Upon review </option>
+  
+</select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+       
+       
+       <div class="col-md-12">
+  <div class="form-group">
+      <label for="contact-info-icon">Effective Date</label>
+      <div class="position-relative has-icon-left">
+ <input type="date"  class="form-control" id="empstatus_effectivedate">
+ <div class="form-control-position">
+     <i class="bx bx-calendar-event"></i>
+ </div>
+      </div>
+  </div>
+       </div>
+        <div class="col-md-12">
+  <div class="form-group">
+      <label for="contact-info-icon">Remarks</label>
+      <div class="position-relative has-icon-left">
+ <input type="text"  class="form-control" id="empstatus_remarks">
+ <div class="form-control-position">
+     <i class="bx bx-comment"></i>
+ </div>
+      </div>
+  </div>
+       </div>
+       
+       </div>
+       <div class="modal-footer">
+  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+      <i class="bx bx-x d-block d-sm-none"></i>
+      <span class="d-none d-sm-block">Close</span>
+  </button>
+  <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_EMPLOYMENTSTATUS_save">
+      <i class="bx bx-check d-block d-sm-none"></i>
+      <span class="d-none d-sm-block">Save</span>
+  </button>
+       </div>
+   </div>
+        </div>
+    </div>
+     <!--scrolling content Modal -->
+   </div>
+ <div class="table-responsive mt-2" id="tbl_EMPLOYMENTSTATUS">
+<table class="table table-hover table-bordered mb-0">
+    <thead>
+        <tr>
+   <th>Effective Date</th>
+   <th>Employment Status</th>
+   <th colspan="2">Remarks</th>
+  
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="emp,stat : ${employeeJobempstatus}">
+   <td class="text-bold-500">
+   <th:block th:if="${emp.employeejobempstatusid} == ${greenpointemployementstatus}">
+   <span class="bullet bullet-sm bullet-success"></span>
+   </th:block>
+   
+   <input type="hidden" th:value="${emp.employeejobempstatusid}" th:id="'tblemployeeJobempstatusid' + ${stat.index}"/>
+   <input type="hidden" th:id="'tblempstatus_effectivedate' + ${stat.index}" th:value="${emp.empstatus_effectivedate}" />
+  <th:block th:if="${emp.empstatus_effectivedate} !=''">
+  <span  th:text="${#strings.arraySplit(emp.empstatus_effectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[0]}"></span>
+   </th:block>
+   
+   </td>
+   <td>
+   <span th:id="'tblempstatus_employmentstatus' + ${stat.index}" th:text="${emp.empstatus_employmentstatus}"></span>
+   <input type="hidden" th:value="${emp.empstatus_terminationtype}" th:id="'tblempstatus_terminationtype' + ${stat.index}"/>
+   <input type="hidden" th:value="${emp.empstatus_terminationreason}" th:id="'tblempstatus_terminationreason' + ${stat.index}"/>
+   <input type="hidden" th:value="${emp.empstatus_rehire}" th:id="'tblempstatus_rehire' + ${stat.index}"/>
+   
+   </td>
+   <td class="text-bold-500">
+   <span th:id="'tblempstatus_remarks' + ${stat.index}" th:text="${emp.empstatus_remarks}"></span>
+   </td>
+   <td width="110px"><span class="iconalign">
+   
+   <span  data-toggle="modal" data-target="#employeeStatusScrollable" th:name="${stat.index}" class="updateemplstatus"><i class="bx bxs-pencil"></i></span>
+   <span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobempstatusid}" th:id="${stat.index}" class="deleteemplstatus"><i class="bx bxs-trash-alt"></i></span>
+   
+   <span>
+   </td>
+   <script>
+tblemployeeJobempstatusid=tblemployeeJobempstatusid+1;
+</script>
+        </tr>
+        
+       </tbody>
+</table>
+     </div>
+ <br/><hr/><br/>
+ <div class="col-md-12">
+        <div class="form-group">
+        
+  <label class="emptitle"> <i class="bx bxs-briefcase-alt-2 ownstyle"></i>Job Information</label>
+  <div class="form-group" style="float:right"> 
+  <label class="emptitle newemplinfostatus"  data-toggle="modal" data-target="#jobInformationScrollable"> <i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+</div>
+</div>
+<!--scrolling content Modal -->
+    <div class="modal fade" id="jobInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="jobInformationScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+   <div class="modal-content">
+       <div class="modal-header bg-warning">
+  <h5 class="modal-title white" id="jobInformationScrollableTitle">Job Information</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <i class="bx bx-x"></i>
+  </button>
+       </div>
+       <div class="modal-body">
+  
+       <div class="col-md-12">
+  <div class="form-group">
+      <label for="contact-info-icon">Effective Date</label>
+      <div class="position-relative has-icon-left">
+      <input type="hidden"  class="form-control" id="employeejobinfoid">
+      <input type="hidden" class="form-control" id="employeejobinfoidrow">
+ <input type="date"  class="form-control" id="jobeffectivedate">
+ <div class="form-control-position">
+     <i class="bx bx-calendar-event"></i>
+ </div>
+      </div>
+  </div>
+       </div>
+       <div class="col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Location</label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <select class="form-control"  id="joblocation">
+  <th:block th:each="obj : ${branchls}">
+  <option th:text="${obj.BRANCH_NAME}"></option>
+  </th:block>
+ </select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+       <div class="col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Department
+      <label class="emptitle additem" name="adddepartmentdata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+      </label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <select class="form-control adddepartmentdata"  id="jobdeparment">
+  <option>-</option>
+ <th:block th:each="str :${Department}">
+<option  th:value="${str}"  th:text="${str}"></option>
+</th:block>
+</select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+       <div class="col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Job Title
+      <label class="emptitle additem" name="addjobtitledata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+      </label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <select class="form-control addjobtitledata"  id="jobtitle">
+  <option>-</option>
+  <th:block th:each="str :${JobTitle}">
+<option  th:value="${str}"  th:text="${str}"></option>
+</th:block>
+  
+  
+</select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+        <div class="col-md-12">
+  <div class="form-group">
+      <label for="contact-info-icon">Reports To</label>
+      <div class="position-relative has-icon-left">
+ 
+ <select class="form-control" id="jobreportsto">
+  <option>-</option>
+ <th:block th:each="str :${EffectiveEmployee}">
+<option  th:value="${str.StaffName +'-'+ str.empMasterid}"  th:text="${str.StaffName}"></option>
+</th:block>
+</select>
+ 
+ <div class="form-control-position">
+     <i class="bx bx-comment"></i>
+ </div>
+      </div>
+  </div>
+       </div>
+       
+       </div>
+       <div class="modal-footer">
+  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+      <i class="bx bx-x d-block d-sm-none"></i>
+      <span class="d-none d-sm-block">Close</span>
+  </button>
+  <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_jobinfo_save">
+      <i class="bx bx-check d-block d-sm-none"></i>
+      <span class="d-none d-sm-block">Save</span>
+  </button>
+       </div>
+   </div>
+        </div>
+     </div>
+     <!--scrolling content Modal -->
+
+    </div>
+ <div class="table-responsive mt-2">
+<table class="table table-hover table-bordered mb-0" id="tbl_JOB_information">
+    <thead>
+        <tr>
+   <th>Effective Date</th>
+   <th>Location</th>
+   <th>Department</th>
+   <th>Job Title</th>
+   <th colspan="2">Reports To</th>
+   
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="emp,stat : ${employeeJobinfomation}">
+   <td class="text-bold-500">
+    <th:block th:if="${emp.employeejobinfoid} == ${greenpointjobstatus}">
+   <span class="bullet bullet-sm bullet-success"></span>
+   </th:block>
+  <input type="hidden" th:value="${emp.employeejobinfoid}" th:id="'tblemployeejobinfoid' + ${stat.index}"/>
+  <input type="hidden" th:value="${emp.jobeffectivedate}" th:id="'tbljobeffectivedate' + ${stat.index}"/>
+
+<th:block th:if="${emp.jobeffectivedate} !=''">
+  <span  th:text="${#strings.arraySplit(emp.jobeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[0]}"></span>
+   </th:block>
+   
+   </td>
+   <td>
+   <span th:id="'tbljoblocation' + ${stat.index}" th:text="${emp.joblocation}"></span>
+   </td>
+   <td>
+   <span th:id="'tbljobdeparment' + ${stat.index}" th:text="${emp.jobdeparment}"></span>
+   </td>
+   <td>
+   <span th:id="'tbljobtitle' + ${stat.index}" th:text="${emp.jobtitle}"></span>
+   </td>
+   <td>
+   <span th:id="'tbljobreportsto' + ${stat.index}" th:text="${emp.jobreportsto}"></span>
+   </td>
+   <td><span class="iconalign">
+<span  data-toggle="modal" data-target="#jobInformationScrollable" th:name="${stat.index}" class="updatejobinfostatus"><i class="bx bxs-pencil"></i></span>
+   <span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobinfoid}"  th:id="${stat.index}" class="deletejobinfostatus"><i class="bx bxs-trash-alt"></i></span>
+</span></td>
+ <script>
+ tblemployeeJobinfoid=tblemployeeJobinfoid+1;
+</script>
+        </tr>
+        </tbody>
+</table>
+     </div>
+ <br/><hr/><br/>
+ <div class="col-md-12">
+        <div class="form-group">
+  <label class="emptitle"> <i class="bx bx-dollar-circle ownstyle"></i>Compensation</label>
+  <div class="form-group" style="float:right"> 
+  <label class="emptitle newempcompensationstatus"  data-toggle="modal" data-target="#compensationScrollable"><i class="bx bxs-plus-circle ownstyle1"></i>Update</label>
+</div>
+</div>
+ <!--scrolling content Modal -->
+    <div class="modal fade" id="compensationScrollable" tabindex="-1" role="dialog" aria-labelledby="compensationScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+   <div class="modal-content">
+       <div class="modal-header bg-warning">
+  <h5 class="modal-title white" id="compensationScrollableTitle">Compensation</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <i class="bx bx-x"></i>
+  </button>
+       </div>
+       <div class="modal-body">
+  <div class="col-md-12">
+  <div class="form-group">
+      <label for="contact-info-icon">Effective Date</label>
+      <div class="position-relative has-icon-left">
+ <input type="hidden"  class="form-control" id="employeejobcompensationid">
+      <input type="hidden" class="form-control" id="employeejobcompensationidrow">
+     <input type="date"  class="form-control" id="comeffectivedate">
+ <div class="form-control-position">
+     <i class="bx bx-calendar-event"></i>
+ </div>
+      </div>
+  </div>
+       </div>
+     <div class="col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Pay Schedule</label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <select class="form-control"  id="comPayschedule">
+  <option>-</option>
+  <option>Monthly</option>
+  <option>Weekly</option>
+  <option>Day</option>
+ </select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+       <div class="col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Pay Type</label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <select class="form-control"  id="compaytype">
+  <option>-</option>
+  <option>Salary</option>
+        </select>
+        
+   </fieldset>
+      </div>
+  </div>
+       </div>
+       <div class="col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Pay Rate
+      <!-- <label class="emptitle additem" name="addpayratedata"><i class="bx bxs-plus-circle ownstyle1"></i></label> -->
+      </label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <input type="text"  class="form-control"  style="width:50%;float:left;" id="compayrate">
+       <div class="form-control-position">
+     <i class="bx bx-money"></i>
+ </div>
+   
+       <select class="form-control addpayratedata"  style="width:50%;float:right" id="compayratetype">
+  <option>-</option>
+  <option>Day</option>
+  <option>Month</option>
+  <option>Year</option>
+ </select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+       <div class="col-md-12">
+  <div class="form-group">
+      <label for="email-id-icon">Change Reason
+      <label class="emptitle additem" name="addchangereasondata"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+      </label>
+      <div class="position-relative has-icon-left">
+ <fieldset class="form-group">
+       <select class="form-control addchangereasondata"  id="comchangereason">
+  <option>-</option>
+  <th:block th:each="str :${PAYCHANGEREASON}">
+<option  th:value="${str}"  th:text="${str}"></option>
+</th:block>
+  
+ </select>
+   </fieldset>
+      </div>
+  </div>
+       </div>
+        <div class="col-md-12">
+  <div class="form-group">
+      <label for="contact-info-icon">Comments</label>
+      <div class="position-relative has-icon-left">
+ <input type="text"  class="form-control" id="comcomments">
+ <div class="form-control-position">
+     <i class="bx bx-comment"></i>
+ </div>
+      </div>
+  </div>
+       </div>
+       
+       </div>
+       <div class="modal-footer">
+  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+      <i class="bx bx-x d-block d-sm-none"></i>
+      <span class="d-none d-sm-block">Close</span>
+  </button>
+  <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="tbl_jobcompensation_save">
+      <i class="bx bx-check d-block d-sm-none"></i>
+      <span class="d-none d-sm-block">Save</span>
+  </button>
+       </div>
+   </div>
+        </div>
+    </div>
+     <!--scrolling content Modal -->
+   </div>
+ <div class="table-responsive mt-2">
+<table class="table table-hover table-bordered mb-0" id="tbl_compensation_information">
+    <thead>
+        <tr>
+   <th>Effective Date</th>
+   <th>Pay Schedule</th>
+   <th>Pay Type</th>
+   <th>Pay Rate</th>
+   <th>Change Reason</th>
+   <th  colspan="2">Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="emp,stat : ${employeecompensation}">
+   <td class="text-bold-500">
+    <th:block th:if="${emp.employeejobcompensationid} == ${greenpointcompensationstatus}">
+   <span class="bullet bullet-sm bullet-success"></span>
+   </th:block>
+   <input type="hidden" th:value="${emp.employeejobcompensationid}" th:id="'tblemployeejobcompensationid' + ${stat.index}"/>
+   <input type="hidden" th:value="${emp.comeffectivedate}" th:id="'tblcomeffectivedate' + ${stat.index}"/>
+   <th:block th:if="${emp.comeffectivedate} !=''">
+  <span  th:text="${#strings.arraySplit(emp.comeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[0]}"></span>
+   </th:block>
+   
+   </td>
+   <td>
+   <span th:id="'tblcomPayschedule' + ${stat.index}" th:text="${emp.comPayschedule}"></span>
+   </td>
+   <td>
+   <span th:id="'tblcompaytype' + ${stat.index}" th:text="${emp.compaytype}"></span>
+   </td>
+   <td>
+   <span th:id="'tblcompayrate' + ${stat.index}" th:text="${emp.compayrate}"></span>
+   <span th:id="'tblcompayratetype' + ${stat.index}" th:text="${emp.compayratetype}"></span>
+   </td>
+   <td>
+   <span th:id="'tblcomchangereason' + ${stat.index}" th:text="${emp.comchangereason}"></span>
+   </td>
+   <td>
+   <span th:id="'tblcomcomments' + ${stat.index}" th:text="${emp.comcomments}"></span>
+   </td>
+   <td><span class="iconalign">
+<button  data-toggle="modal" data-target="#compensationScrollable" th:name="${stat.index}"  class="updatejobcompensationstatus"><i class="bx bxs-pencil"></i></button>
+   <span  data-toggle="modal" data-target="#deleteInformationScrollable" th:name="${emp.employeejobcompensationid}"  th:id="${stat.index}" class="deletecompensationstatus"><i class="bx bxs-trash-alt"></i></span>
+</span></td>
+<script>
+ tblemployeecompensationid=tblemployeecompensationid+1;
+</script>
+        </tr>
+        </tbody>
+</table>
+     </div>
+
+ 
+ </div>
+     </div>
+ </div>
+ 
+                                      </div>
+                                     </div>
+                                  </section>
+                                  
+					</div>
+					</div>
+            
+				</div>
+				</div>
+				</div>
+				
+	
+    <!--scrolling content Modal -->
+       <div class="modal fade" id="deleteInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="deleteInformationScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+   <div class="modal-header bg-danger">
+       <h5 class="modal-title white" id="deleteInformationScrollableTitle">Delete Row</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  <i class="bx bx-x"></i>
+       </button>
+   </div>
+   <div class="modal-body">
+       
+    <div class="col-md-12">
+        <div class="form-group">
+   <label for="contact-info-icon">Are you sure you want to delete this row?</label>
+   <input type="hidden" id="deleteid" />
+   <input type="hidden" id="deletetype" />
+   <input type="hidden" id="deleteindex" />
+        </div>
+    </div>
+    
+   <div class="modal-footer">
+       <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+  <i class="bx bx-x d-block d-sm-none"></i>
+  <span class="d-none d-sm-block">Cancel</span>
+       </button>
+       <button type="button" class="btn btn-primary ml-1" data-dismiss="modal" id="deleteidbtn">
+  <i class="bx bx-check d-block d-sm-none"></i>
+  <span class="d-none d-sm-block">Yes</span>
+       </button>
+    </div>
+</div>
+     </div>
+  </div>
+ <!--scrolling content Modal -->
+ 
+ 
+   </div>
+        </div>
+    </div>
+<!-- END: Content-->
 
 
-								<!--scrolling content Modal -->
-                              		 <div class="modal fade" id="newadditemScrollable" tabindex="-1" role="dialog" aria-labelledby="newadditemScrollableTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-primary">
-                                                    <h5 class="modal-title white" id="newadditemScrollableTitle"></h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <i class="bx bx-x"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="col-md-12">
-                                                     <div class="form-group">
-                                                         <label for="addmodel" id="additemalltxt"></label>
-                                                         <div class="position-relative">
-                                                             <fieldset class="form-group">
-	                                                   <input type="text" id="additemall" name="addmodel" class="form-control" >
-	                                                </fieldset>
-                                                         </div>
-                                                     </div>
-                                                 </div>
-                                               
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-                                                        <i class="bx bx-x d-block d-sm-none"></i>
-                                                        <span class="d-none d-sm-block">Close</span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
-                                                        <i class="bx bx-check d-block d-sm-none"></i>
-                                                        <span class="d-none d-sm-block">ADD</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                  	 <!--scrolling content Modal -->
-                                       
-                                       
-		<!-- BEGIN: Footer-->
-		<footer class="footer footer-static footer-light">
-		<p class="clearfix mb-0">
-			<span class="float-left d-inline-block"></span><span
-				class="float-right d-sm-inline-block d-none"></span>
-			<button class="btn btn-primary btn-icon scroll-top" type="button">
-				<i class="bx bx-up-arrow-alt"></i>
-			</button>
-		</p>
-		</footer>
-		
-		 <!--scrolling content Modal -->
-               	<div class="modal fade" id="jqueryInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="jqueryInformationScrollableTitle" aria-hidden="true">
-                     <div class="modal-dialog modal-dialog-scrollable" role="document">
-                         <div class="modal-content">
-                             <div class="modal-header bg-success">
-                                 <h5 class="modal-title white" id="jqueryInformationScrollableTitle"></h5>
-                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                     <i class="bx bx-x"></i>
-                                 </button>
-                             </div>
-                             <div class="modal-body">
-                                 
-                              <div class="col-md-12">
-                                  <div class="form-group">
-                                      <center>
-                                      	<label for="contact-info-icon" id="modeljqueryresult" style="font-weight:bold"></label>
-                                      </center>
-                                  </div>
-                              </div>
-                              
-                             <div class="modal-footer">
-                                 
-                                 <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
-                                     <i class="bx bx-check d-block d-sm-none"></i>
-                                     <span class="d-none d-sm-block">Ok</span>
-                                 </button>
-                              </div>
-                          </div>
-                      </div>
-                   </div>
-                	 <!--scrolling content Modal -->
+
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+
+<!--scrolling content Modal -->
+    <div class="modal fade" id="newadditemScrollable" tabindex="-1" role="dialog" aria-labelledby="newadditemScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+   <div class="modal-header bg-primary">
+       <h5 class="modal-title white" id="newadditemScrollableTitle"></h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  <i class="bx bx-x"></i>
+       </button>
+   </div>
+   <div class="modal-body">
+       <div class="col-md-12">
+        <div class="form-group">
+   <label for="addmodel" id="additemalltxt"></label>
+   <div class="position-relative">
+       <fieldset class="form-group">
+      <input type="text" id="additemall" name="addmodel" class="form-control" >
+   </fieldset>
+   </div>
+        </div>
+    </div>
+  
+   </div>
+   <div class="modal-footer">
+       <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+  <i class="bx bx-x d-block d-sm-none"></i>
+  <span class="d-none d-sm-block">Close</span>
+       </button>
+       <button type="button" class="btn btn-primary ml-1" id="additemallsavebtn">
+  <i class="bx bx-check d-block d-sm-none"></i>
+  <span class="d-none d-sm-block">ADD</span>
+       </button>
+   </div>
+        </div>
+    </div>
+</div>
+        <!--scrolling content Modal -->
+   
+   
+<!-- BEGIN: Footer-->
+<footer class="footer footer-static footer-light">
+<p class="clearfix mb-0">
+<span class="float-left d-inline-block"></span><span
+class="float-right d-sm-inline-block d-none"></span>
+<button class="btn btn-primary btn-icon scroll-top" type="button">
+<i class="bx bx-up-arrow-alt"></i>
+</button>
+</p>
+</footer>
+
+ <!--scrolling content Modal -->
+      <div class="modal fade" id="jqueryInformationScrollable" tabindex="-1" role="dialog" aria-labelledby="jqueryInformationScrollableTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-scrollable" role="document">
+       <div class="modal-content">
+  <div class="modal-header bg-success">
+      <h5 class="modal-title white" id="jqueryInformationScrollableTitle"></h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+ <i class="bx bx-x"></i>
+      </button>
+  </div>
+  <div class="modal-body">
+      
+   <div class="col-md-12">
+       <div class="form-group">
+  <center>
+  <label for="contact-info-icon" id="modeljqueryresult" style="font-weight:bold;"></label>
+  </center>
+       </div>
+   </div>
+   
+  <div class="modal-footer">
+      
+      <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+ <i class="bx bx-check d-block d-sm-none"></i>
+ <span class="d-none d-sm-block">Ok</span>
+      </button>
+   </div>
+        </div>
+    </div>
+ </div>
+        <!--scrolling content Modal -->
+
+	
+                	
 		<!-- END: Footer-->
 
 
 		<!-- BEGIN: Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-		<script
-			th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-		<!-- BEGIN Vendor JS-->
+    <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
-		<!-- BEGIN: Page Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-		<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-		<!-- END: Page Vendor JS-->
+	<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
-		<!-- BEGIN: Theme JS-->
-		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-		<script th:src="@{/app-assets/js/core/app.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-		<!-- END: Theme JS-->
+	<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+	<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 
-		<!-- BEGIN: Page JS-->
-		<script
-			th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
-			<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
-		<!-- END: Page JS-->
+	<script th:src="@{/assets/vendor/js/menu.js}"></script>
+	<!-- endbuild -->
+
+	<!-- Vendors JS -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+	<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<!-- Form Validation -->
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+
+	<!-- Main JS -->
+	<script th:src="@{/assets/js/main.js}"></script>
+
+	<!-- Flat Picker -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+
+	<!-- Page JS -->
+	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
+	<script th:src="@{/assets/js/app-user-view.js}"></script>
+	<script th:src="@{/assets/js/app-user-view-account.js}"></script>
+
 </body>
 <!-- END: Body-->
 	<script>

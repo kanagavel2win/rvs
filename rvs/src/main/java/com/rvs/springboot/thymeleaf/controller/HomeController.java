@@ -2167,17 +2167,125 @@ public class HomeController {
 		Date date = new Date();
 		return dateFormat.format(date);
 	}
+	
+	public EmployeeMaster fillemployeeobject(int empid) {
+		
+		Date todaydate = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+
+		EmployeeMaster employeemasternew = new EmployeeMaster();
+		employeemasternew = employeeMasterService.findById(empid);
+		// DOB MM DD format
+		try {
+			employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		if (employeemasternew.getEmployeeAccNo().size() == 0) {
+			List<EmployeeAccNo> empAccNols = new ArrayList();
+			empAccNols.add(new EmployeeAccNo());
+			employeemasternew.setEmployeeAccNo(empAccNols);
+			employeemasternew = employeeMasterService.save(employeemasternew);
+		}
+		// -------------------------------------------
+		Set<EmployeeEducation> edulsnew = new LinkedHashSet<EmployeeEducation>();
+		Set<EmployeeEmgContact> emglsnew = new LinkedHashSet<EmployeeEmgContact>();
+		Set<EmployeeExperience> exptrlsnew = new LinkedHashSet<EmployeeExperience>();
+		Set<EmployeeLanguage> langlsnew = new LinkedHashSet<EmployeeLanguage>();
+		Set<EmployeeFiles> filelsnew = new LinkedHashSet<EmployeeFiles>();
+
+		// System.out.println(employeemasternew.getEmployeeEducation().size());
+		if (employeemasternew.getEmployeeEducation().size() > 0) {
+			edulsnew.addAll(employeemasternew.getEmployeeEducation());
+		} else {
+			EmployeeEducation empedu = new EmployeeEducation();
+			empedu.setDegree("-");
+			edulsnew.add(empedu);
+
+		}
+
+		// System.out.println(employeemasternew.getEmployeeEmgContact().size());
+		if (employeemasternew.getEmployeeEmgContact().size() > 0) {
+			emglsnew.addAll(employeemasternew.getEmployeeEmgContact());
+		} else {
+			EmployeeEmgContact empcont = new EmployeeEmgContact();
+			empcont.setEmg_Relation("-");
+			emglsnew.add(empcont);
+
+		}
+		// System.out.println(employeemasternew.getEmployeeExperience().size());
+		if (employeemasternew.getEmployeeExperience().size() > 0) {
+			exptrlsnew.addAll(employeemasternew.getEmployeeExperience());
+		} else {
+			EmployeeExperience empexper = new EmployeeExperience();
+			exptrlsnew.add(empexper);
+
+		}
+		if (employeemasternew.getEmployeeLanguage().size() > 0) {
+			langlsnew.addAll(employeemasternew.getEmployeeLanguage());
+		} else {
+			EmployeeLanguage emplang = new EmployeeLanguage();
+			emplang.setLanguage("-");
+			langlsnew.add(emplang);
+
+		}
+		if (employeemasternew.getEmployeeFiles().size() > 0) {
+			filelsnew.addAll(employeemasternew.getEmployeeFiles());
+		} else {
+			EmployeeFiles empfiles1 = new EmployeeFiles();
+			filelsnew.add(empfiles1);
+		}
+
+		// -------------------------------------------
+		// Emp photo
+		employeemasternew.setT_emp_img(getemp_photo(employeemasternew));
+		// -------------------------------------------
+
+		// -------------------------------------------
+		// Emp Location and Branch
+		List<EmployeeJobinfo> infoobjjob = new ArrayList<>();
+		infoobjjob = employeeJobinfoService.findByEmployeeid(employeemasternew.getEmpMasterid());
+		if (infoobjjob.size() > 0) {
+			List<EmployeeJobinfo> infoobjjobgreen = infoobjjob.stream()
+					.filter(c -> dateFormat.format(date).compareTo(c.getJobeffectivedate().toString()) >= 0)
+					.collect(Collectors.toList());
+			infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+			if (infoobjjobgreen.size() > 0) {
+				employeemasternew.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
+				employeemasternew.setT_branch_name(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());
+			}
+		}
+		// -------------------------------------------
+		// Hiring date and timeline
+		List<EmployeeJobHire> hireobj = new ArrayList<>();
+		hireobj = employeeJobHireService.findByEmployeeid(employeemasternew.getEmpMasterid());
+
+		if (hireobj.size() > 0) {
+			try {
+				employeemasternew.setT_joindateMMformat(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(hireobj.get(0).getEmployeehiredate())).toString());
+				employeemasternew.setT_joindatetimeline(getTimeage(hireobj.get(0).getEmployeehiredate()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		// -------------------------------------------
+		return employeemasternew;
+	}
 
 	@GetMapping("empjob")
 	public String employeejob(Model theModel, @RequestParam("id") int empid) {
-
+		
+		EmployeeMaster emobj = fillemployeeobject(empid);
+		
 		int greenpointemployementstatus = 0;
 		int greenpointjobstatus = 0;
 		int greenpointcompensationstatus = 0;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
-
-		EmployeeMaster emobj = employeeMasterService.findById(empid);
 
 		List<EmployeeJobempstatus> obj = new ArrayList<>();
 		obj = employeeJobempstatusService.findByEmployeeid(empid);
@@ -2240,7 +2348,6 @@ public class HomeController {
 		theModel.addAttribute("PAYCHANGEREASON", PAYCHANGEREASON);
 
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
-
 		theModel.addAttribute("greenpointemployementstatus", greenpointemployementstatus);
 		theModel.addAttribute("greenpointjobstatus", greenpointjobstatus);
 		theModel.addAttribute("greenpointcompensationstatus", greenpointcompensationstatus);
@@ -2250,6 +2357,8 @@ public class HomeController {
 		theModel.addAttribute("employeeJobinfomation", infoobj);
 		theModel.addAttribute("employeecompensation", comoobj);
 		theModel.addAttribute("empid", empid);
+		theModel.addAttribute("employeemaster",emobj);
+		
 		theModel.addAttribute("emptitle",
 				emobj.getEmpid() + "000" + emobj.getEmpMasterid() + " - " + emobj.getStaffName());
 		return "empjob";

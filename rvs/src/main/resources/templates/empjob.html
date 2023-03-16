@@ -85,7 +85,14 @@
 	color: green;
 }
 </style>
+
+<script type="text/javascript">
+var tblemployeeJobempstatusid=0;
+var tblemployeeJobinfoid=0;
+var tblemployeecompensationid=0;
+</script>
 </head>
+
 
 <body>
 	<!-- Layout wrapper -->
@@ -234,8 +241,8 @@
 															th:id="'tblempstatus_remarks' + ${stat.index}"
 															th:text="${emp.empstatus_remarks}"></span></td>
 														<td width="110px"><span class="iconalign"> <span
-																data-toggle="modal"
-																data-target="#employeeStatusScrollable"
+																data-bs-toggle="modal"
+																data-bs-target="#editEmployeestatus"
 																th:name="${stat.index}" class="updateemplstatus"><i
 																	class="bx bxs-pencil"></i></span> <span data-toggle="modal"
 																data-target="#deleteInformationScrollable"
@@ -303,8 +310,8 @@
 														<td><span th:id="'tbljobreportsto' + ${stat.index}"
 															th:text="${emp.jobreportsto}"></span></td>
 														<td><span class="iconalign"> <span
-																data-toggle="modal"
-																data-target="#jobInformationScrollable"
+																data-bs-toggle="modal"
+																data-bs-target="#jobInformationScrollable"
 																th:name="${stat.index}" class="updatejobinfostatus"><i
 																	class="bx bxs-pencil"></i></span> <span data-toggle="modal"
 																data-target="#deleteInformationScrollable"
@@ -378,8 +385,8 @@
 														<td><span th:id="'tblcomcomments' + ${stat.index}"
 															th:text="${emp.comcomments}"></span></td>
 														<td><span class="iconalign"> <span
-																data-toggle="modal"
-																data-target="#compensationScrollable"
+																data-bs-toggle="modal"
+																data-bs-target="#compensationScrollable"
 																th:name="${stat.index}"
 																class="updatejobcompensationstatus"> <i
 																	class="bx bxs-pencil"></i>
@@ -418,21 +425,26 @@
 										<div class="text-center mb-4">
 											<h5>Employment Status</h5>
 										</div>
+										<form id="addempstatus" class="needs-validation" novalidate>
 										<div class="col-12">
+										
+										
 											<label class="form-label" for="empstatus_employmentstatus">Employment
 												Status <label class="emptitle additem"
-												name="addemployeestatusdata"><i
+												name="addemployeestatusdata" ><i
 													class="bx bxs-plus-circle ownstyle1"></i></label>
 											</label> <input type="hidden" id="employeeJobempstatusid" /> <input
 												type="hidden" id="employeeJobempstatusidrow" /> <select
 												class="form-select addemployeestatusdata"
-												id="empstatus_employmentstatus">
+												id="empstatus_employmentstatus" required>
 												<option>-</option>
 												<th:block th:each="str :${EmploymentStatus}">
 													<option th:value="${str}" th:text="${str}"></option>
 												</th:block>
+												
 											</select>
-
+											<div class="invalid-feedback">Please choose a Status.</div>
+	
 										</div>
 										<div class="Termination col-12">
 											<label class="form-label" for="empstatus_terminationtype">Termination
@@ -445,6 +457,7 @@
 												<th:block th:each="str :${TerminationType}">
 													<option th:value="${str}" th:text="${str}"></option>
 												</th:block>
+												
 											</select>
 
 										</div>
@@ -461,6 +474,7 @@
 												</th:block>
 
 											</select>
+											<div class="invalid-feedback">Please choose a Reason.</div>
 
 										</div>
 										<div class="Termination col-12 ">
@@ -473,12 +487,14 @@
 												<option>Upon review</option>
 
 											</select>
+											<div class="invalid-feedback">Please choose a rehire.</div>
 
 										</div>
 										<div class="col-12 ">
 											<label class="form-label" for="empstatus_effectivedate">Effective
 												Date </label> <input type="date" class="form-control"
-												id="empstatus_effectivedate">
+												id="empstatus_effectivedate" required>
+												<div class="invalid-feedback">Please choose a Date.</div>
 										</div>
 										<div class="col-12">
 											<label class="form-label" for="empstatus_remarks">Remarks</label>
@@ -489,16 +505,19 @@
 										<div class="col-12 text-center mt-4">
 											<button type="button" class="btn btn-primary me-sm-3 me-1"
 												id="tbl_EMPLOYMENTSTATUS_save">Submit</button>
-											<button type="button"
+											<button type="reset"
 												class="btn btn-label-secondary tbl_EMPLOYMENTSTATUS_close"
 												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
 										</div>
-
+										</form>
+	
 									</div>
 								</div>
 							</div>
 						</div>
 						<!--/ Edit EMPLOYMENT STATUS Modal -->
+
+
 
 						<!-- Edit JOB INFORMATION Modal -->
 						<div class="modal fade" id="jobInformationScrollable"
@@ -755,6 +774,38 @@
 
 
 	<script>
+	
+	// Date Format
+	
+	const flatpickrFriendly = flatpickr("#empstatus_effectivedate", {
+		  altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	     });
+	
+	
+	// Date Format
+	 const flatpickrFriendlyjobeffectivedate = document.querySelector('#jobeffectivedate');
+	 // Human Friendly
+	  if (flatpickrFriendlyjobeffectivedate) {
+	    flatpickrFriendlyjobeffectivedate.flatpickr({
+	      altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	    });
+	  }
+	 
+	// Date Format
+		 const flatpickrFriendlycomeffectivedate = document.querySelector('#comeffectivedate');
+		 // Human Friendly
+		  if (flatpickrFriendlycomeffectivedate) {
+		    flatpickrFriendlycomeffectivedate.flatpickr({
+		      altInput: true,
+		      altFormat: 'F j, Y',
+		      dateFormat: 'Y-m-d'
+		    });
+		  }
+		 
 	$(document)
 			.ready(
 					function() {
@@ -958,7 +1009,7 @@
 														data : formData,
 														success : function(
 																result) {
-
+													console.log(result);
 															var objid = result
 																	.replace(
 																			"Success",
@@ -983,7 +1034,7 @@
 																html += '<span id="tblempstatus_remarks'+ tblemployeeJobempstatusid +'">'
 																		+ empstatus_remarks
 																		+ '</span>           </td>                    <td width="110px"><span class="iconalign">';
-																html += '<span  data-toggle="modal" data-target="#employeeStatusScrollable" name="'+ tblemployeeJobempstatusid +'" class="updateemplstatus"><i class="bx bxs-pencil"></i></span>';
+																html += '<span  data-bs-toggle="modal" data-bs-target="#editEmployeestatus" name="'+ tblemployeeJobempstatusid +'" class="updateemplstatus"><i class="bx bxs-pencil"></i></span>';
 																html += '<span  data-toggle="modal" data-target="#deleteInformationScrollable" id="'+ tblemployeeJobempstatusid +'" name="'+objid+'" class="deleteemplstatus"><i class="bx bxs-trash-alt"></i></span>                    	                    	<span>                    </td>                                    </tr>';
 
 																$(
@@ -991,6 +1042,8 @@
 																		.append(
 																				html);
 																tblemployeeJobempstatusid = tblemployeeJobempstatusid + 1;
+																$('#editEmployeestatus').modal('hide');
+																$('#addempstatus')[0].reset();
 															} else {
 
 																$(
@@ -1023,6 +1076,8 @@
 																				+ employeeJobempstatusidrow)
 																		.text(
 																				empstatus_remarks);
+																$('#editEmployeestatus').modal('hide');
+																$('#addempstatus')[0].reset();
 															}
 														},
 														error : function(e) {
@@ -1031,6 +1086,7 @@
 																	.text(
 																			"Error"
 																					+ e);
+															//$('#addempstatus')[0].reset();
 														}
 													});
 
@@ -1045,12 +1101,14 @@
 										function() {
 
 											var id = $(this).attr('name');
+											
 											$('#employeeJobempstatusid')
 													.val(
 															$(
 																	'#tblemployeeJobempstatusid'
 																			+ id)
 																	.val());
+											
 											$('#employeeJobempstatusidrow')
 													.val(id);
 											$('#empstatus_employmentstatus')
@@ -1086,6 +1144,9 @@
 																	'#tblempstatus_effectivedate'
 																			+ id)
 																	.val());
+											
+											console.log(flatpickrFriendly);
+											flatpickrFriendly.setDate($('#tblempstatus_effectivedate'+ id).val());
 											$('#empstatus_remarks').val(
 													$(
 															'#tblempstatus_remarks'
@@ -1573,38 +1634,7 @@
 						//--------------------------------------------------------------------------------------------------------------------------------------
 					});
 	
-	// Date Format
-	const flatpickrFriendly = document.querySelector('#empstatus_effectivedate');
-	// Human Friendly
-	 if (flatpickrFriendly) {
-	   flatpickrFriendly.flatpickr({
-	     altInput: true,
-	     altFormat: 'F j, Y',
-	     dateFormat: 'Y-m-d'
-	   });
-	 }
-	
-	// Date Format
-	 const flatpickrFriendlyjobeffectivedate = document.querySelector('#jobeffectivedate');
-	 // Human Friendly
-	  if (flatpickrFriendlyjobeffectivedate) {
-	    flatpickrFriendlyjobeffectivedate.flatpickr({
-	      altInput: true,
-	      altFormat: 'F j, Y',
-	      dateFormat: 'Y-m-d'
-	    });
-	  }
-	 
-	// Date Format
-		 const flatpickrFriendlycomeffectivedate = document.querySelector('#comeffectivedate');
-		 // Human Friendly
-		  if (flatpickrFriendlycomeffectivedate) {
-		    flatpickrFriendlycomeffectivedate.flatpickr({
-		      altInput: true,
-		      altFormat: 'F j, Y',
-		      dateFormat: 'Y-m-d'
-		    });
-		  }
+
 </script>
 </body>
 </html>

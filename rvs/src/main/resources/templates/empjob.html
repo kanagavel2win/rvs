@@ -1241,9 +1241,10 @@ var tblemployeecompensationid=0;
 																		'#tbl_JOB_information tbody')
 																		.append(
 																				html);
+																$('#jobInformationScrollable').modal('hide');
+																$('#JobInformation')[0].reset();
 																tblemployeeJobinfoid = tblemployeeJobinfoid + 1;
-																$('#JobInformation').modal('hide');
-																$('#jobInformationScrollable')[0].reset();
+															
 															} else {
 
 																$(
@@ -1271,8 +1272,8 @@ var tblemployeecompensationid=0;
 																				+ employeejobinfoidrow)
 																		.text(
 																				jobreportsto);
-																$('#JobInformation').modal('hide');
-																$('#jobInformationScrollable')[0].reset();
+																$('#jobInformationScrollable').modal('hide');
+																$('#JobInformation')[0].reset();
 
 															}
 														},
@@ -1425,9 +1426,10 @@ var tblemployeecompensationid=0;
 																		'#tbl_compensation_information tbody')
 																		.append(
 																				html);
-																tblemployeecompensationid = tblemployeecompensationid + 1;
 																$('#compensationScrollable').modal('hide');
 																$('#CompensationInformation')[0].reset();
+																tblemployeecompensationid = tblemployeecompensationid + 1;
+																
 															} else {
 
 																$(

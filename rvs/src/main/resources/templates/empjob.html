@@ -83,6 +83,14 @@
 <style>
 .bx-check-circle {
 	color: green;
+	
+}
+
+.bxs-trash-alt, .bxs-pencil
+{
+	cursor:pointer;
+	padding-left:10px;
+	
 }
 </style>
 
@@ -191,7 +199,7 @@ var tblemployeecompensationid=0;
 										<h6 class="card-action-title mb-0">
 											EMPLOYMENT STATUS
 											<div class="card-action-element" style="float: right">
-												<button class="btn btn-primary btn-sm" type="button"
+												<button class="btn btn-primary btn-sm newemplstatus" type="button"
 													name="-" data-bs-toggle="modal"
 													data-bs-target="#editEmployeestatus">
 													<i class="bx bx-plus bx-xs me-1"></i>
@@ -248,7 +256,8 @@ var tblemployeecompensationid=0;
 																data-target="#deleteInformationScrollable"
 																th:name="${emp.employeejobempstatusid}"
 																th:id="${stat.index}" class="deleteemplstatus"><i
-																	class="bx bxs-trash-alt"></i></span> <span></td>
+																	class="bx bxs-trash-alt"></i></span> </span>
+																	</td>
 														<script>
 																	tblemployeeJobempstatusid = tblemployeeJobempstatusid + 1;
 																</script>
@@ -265,7 +274,7 @@ var tblemployeecompensationid=0;
 										<h6 class="card-action-title mb-0">
 											JOB INFORMATION
 											<div class="card-action-element" style="float: right">
-												<button class="btn btn-primary btn-sm addcontactbtn"
+												<button class="btn btn-primary btn-sm newemplinfostatus"
 													type="button" name="-" data-bs-toggle="modal"
 													data-bs-target="#jobInformationScrollable">
 													<i class="bx bx-plus bx-xs me-1"></i>
@@ -334,7 +343,7 @@ var tblemployeecompensationid=0;
 										<h6 class="card-action-title mb-0">
 											COMPENSATION
 											<div class="card-action-element" style="float: right">
-												<button class="btn btn-primary btn-sm addcontactbtn"
+												<button class="btn btn-primary btn-sm newempcompensationstatus"
 													type="button" name="-" data-bs-toggle="modal"
 													data-bs-target="#compensationScrollable">
 													<i class="bx bx-plus bx-xs me-1"></i>
@@ -1352,8 +1361,7 @@ var tblemployeecompensationid=0;
 													'#compayratetype').val();
 											var comchangereason = $(
 													'#comchangereason').val();
-											var comcomments = $('#comcomments')
-													.val();
+											var comcomments = "";
 
 											var comeffectivedate_new = "";
 											if (comeffectivedate != "") {
@@ -1550,103 +1558,100 @@ var tblemployeecompensationid=0;
 						$(document).on('click', ".deleteemplstatus",
 								function() {
 									var id = $(this).attr('name');
-									cleandelete();
-									$("#deleteid").val(id);
-									$("#deletetype").val("employmentstatus");
-									$('#deleteindex').val($(this).attr('id'));
+									deleteoperation(id,"employmentstatus",$(this).attr('id'))
+									
 
 								});
 
 						$(document).on('click', ".deletejobinfostatus",
 								function() {
 									var id = $(this).attr('name');
-									cleandelete();
-									$("#deleteid").val(id);
-									$("#deletetype").val("jobinformation");
-									$('#deleteindex').val($(this).attr('id'));
+									deleteoperation(id,"jobinformation",$(this).attr('id'))
+									
 								});
 
 						$(document).on('click', ".deletecompensationstatus",
 								function() {
 
 									var id = $(this).attr('name');
-									cleandelete();
-									$("#deleteid").val(id);
-									$("#deletetype").val("compensation");
-									$('#deleteindex').val($(this).attr('id'));
+									deleteoperation(id,"compensation",$(this).attr('id'))
+									
 								});
 
-						function cleandelete() {
-							$("#deleteid").val("");
-							$("#deletetype").val("");
-							$("#deleteindex").val("");
-						}
-
-						$("#deleteidbtn")
-								.click(
-										function() {
-											var deleteid = $("#deleteid").val();
-											var deletetype = $("#deletetype")
-													.val();
-											var deleteindex = $('#deleteindex')
-													.val();
-											var formData = {
-												deletetype : deletetype,
-												deleteid : deleteid
-
-											}
-											$
-													.ajax({
-														type : "POST",
-														url : "employeedelete",
-														data : formData,
-														success : function(
-																result) {
-
-															$(
-																	'#modeljqueryresult')
-																	.text(
-																			"Data removed successfully");
-
-															if (deletetype == "employmentstatus") {
-																$(
-																		$("#tblemployeeJobempstatusid"
-																				+ deleteindex))
-																		.closest(
-																				'tr')
-																		.remove();
-
-															} else if (deletetype == "jobinformation") {
-																$(
-																		$("#tblemployeejobinfoid"
-																				+ deleteindex))
-																		.closest(
-																				'tr')
-																		.remove();
-															} else if (deletetype == "compensation") {
-																$(
-																		$("#tblemployeejobcompensationid"
-																				+ deleteindex))
-																		.closest(
-																				'tr')
-																		.remove();
-															}
-
-														},
-														error : function(e) {
-															$(
-																	'#modeljqueryresult')
-																	.text(
-																			"Error"
-																					+ e);
-														}
-													});
-
-											$('#jqueryInformationScrollable')
-													.modal('toggle');
-										});
-						//--------------------------------------------------------------------------------------------------------------------------------------		 
-						//--------------------------------------------------------------------------------------------------------------------------------------
+						
+						
+						  //------------------------------------------------------------------------------------------------------------    
+						   function deleteoperation(deleteid,deletetype,deleteindex){
+						    	 Swal.fire({
+						             title: 'Are you sure?',
+						             text: "You won't be able to revert this!",
+						             icon: 'warning',
+						             showCancelButton: true,
+						             confirmButtonText: 'Yes, delete it!',
+						             customClass: {
+						               confirmButton: 'btn btn-primary me-3',
+						               cancelButton: 'btn btn-label-secondary'
+						             },
+						             buttonsStyling: false
+						           }).then(function (result) {
+						             if (result.value) {
+						              var formData = {
+						            		  deletetype : deletetype,
+											  deleteid : deleteid
+						           	 }
+						   			 $.ajax({
+						   					type : "POST",url : "employeedelete",
+						   					data : formData, success : function(result) {
+						   						
+						   						Swal.fire({
+						   				              icon: 'success',
+						   				              title: 'Deleted!',
+						   				              text: 'Data has been deleted.',
+						   				              customClass: {
+						   				                confirmButton: 'btn btn-success'
+						   				              }
+						   				            });
+						   						
+						   						$(
+												'#modeljqueryresult')
+												.text(
+														"Data removed successfully");
+						   							//-------------------------------
+													if (deletetype == "employmentstatus") {
+														$(
+																$("#tblemployeeJobempstatusid"
+																		+ deleteindex))
+																.closest(
+																		'tr')
+																.remove();
+			
+													} else if (deletetype == "jobinformation") {
+														$(
+																$("#tblemployeejobinfoid"
+																		+ deleteindex))
+																.closest(
+																		'tr')
+																.remove();
+													} else if (deletetype == "compensation") {
+														$(
+																$("#tblemployeejobcompensationid"
+																		+ deleteindex))
+																.closest(
+																		'tr')
+																.remove();
+													}
+													//-------------------------------
+						   					},
+						   					error : function(e) {
+						   						console.log("Error" + e);
+						   					}
+						   				});
+						               
+						               }
+						           });
+						    }
+						  
+						  //------------------------------------------------------------------------------------------------------------
 					});
 	
 

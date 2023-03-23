@@ -50,6 +50,8 @@
 	th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+
+
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
 <link rel="stylesheet"
@@ -142,13 +144,24 @@
 {
 	color:#4169E1;
 }
-.sunday
+ .sunday
 {
 	background:#FFE4E1;
 	
 }
 
+td.sunday
+{
+	background:#FFE4E1;
+	
+}
 .holiday
+{
+	background:#EEEEE0;
+	
+}
+
+td.holiday
 {
 	background:#EEEEE0;
 	
@@ -162,6 +175,14 @@
 .note{
 	padding:10px;
 	
+}
+
+.card-datatable  button
+{
+background:#EEEEE0;
+border: none;
+padding:5px;
+color: #9C9C9C;
 }
 </style>
 
@@ -237,7 +258,7 @@
 													</th:block>
 													<div class="card-datatable table-responsive pt-0">
                   										<table class="datatables-basic table table-bordered" id="empattendancereport">
-															<thead>
+															<thead class="">
 																<tr>
 																	<th class="sticky-col first-col">#</th>
 																	<th class="sticky-col second-col">Name</th>
@@ -284,7 +305,7 @@
 																			<td
 																				th:if="${#lists.contains(holidaylist,'|'+ i +'|')}"
 																				th:text="${#strings.arraySplit(rpt,'~')[i+1] }"
-																				th:class="${#strings.arraySplit(rpt,'~')[i+1] } +' holiday'"></td>
+																				th:class="${#strings.arraySplit(rpt,'~')[i+1] } + 'holiday'"></td>
 																			<td
 																				th:unless="${#lists.contains(holidaylist,'|'+ i +'|')}"
 																				th:text="${#strings.arraySplit(rpt,'~')[i+1] }"
@@ -402,7 +423,15 @@
 
 <script>
 $(document).ready(function () {
-    $('#empattendancereport').DataTable();
+    
+    var table = $('#empattendancereport').DataTable( {
+        lengthChange: true,
+        buttons: [ 'copy', 'csv', 'pdf' ]
+    } );
+ 
+
+    table.buttons().container()
+        .appendTo( '.card-datatable' );
 });
 </script>
 

@@ -17,4 +17,9 @@ public class DocsContoller {
 		return parentpath+"branch";
 	}
 	
+	@GetMapping("add")
+	public String adddoc(Model themodel)
+	{
+		return parentpath+"branch";
+	}
 }

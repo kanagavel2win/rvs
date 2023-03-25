@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "/webjars/**",
                             "/ajax","/js/**","/","/index").permitAll()
                     .antMatchers("/rvsemp/**",
+                    		"/docs/**",
                             "/employeeprofilephoto/**",
                     		"/employeeresume/**",
                     		"/employeecertification/**").access("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")

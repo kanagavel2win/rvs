@@ -80,6 +80,9 @@
 <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script th:src="@{/assets/js/config.js}"></script>
+
+
+
 <style>
 .bx-check-circle {
 	color: green;
@@ -483,14 +486,14 @@
 											</button>
 										</div>
 									</div>
-									<div class="card-body">
-										<div class="row">
+									<div class="card-body" id="addNewEmg">
+										<div class="row editemg">
 											<hr />
 											<th:block
 												th:each="emg : ${employeemaster.employeeEmgContact}">
 												<div class="col-xl-7 col-12">
 													<dl class="row mb-0">
-														<dt class="col-sm-4 mb-3 text-nowrap">
+														<dt class="col-sm-4 mb-3 text-nowrap" >
 															Name: <input type="hidden"
 																th:id="'empEmgContactid' + ${emg.empEmgContactid}"
 																th:value="${empEmgContactid}"> <input
@@ -500,7 +503,7 @@
 														</dt>
 														<dd class="col-sm-8">
 															<span th:id="'Emg_Name' + ${emg.empEmgContactid}"
-																th:text="${emg.Emg_Name}"></span> <span
+																th:text="${emg.Emg_Name}" onclick="editemgAddressdata(event);"></span> <span
 																th:if="${emg.Emg_InsuranceNominee}"><br />
 															<button type="button"
 																	class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>
@@ -674,7 +677,7 @@
 										<div class="card-body">
 											<ul class="timeline mt-3 timeline-exp">
 												<li th:each="obj : ${employeemaster.employeeExperience}"
-													class="timeline-item timeline-item-transparent" onclick="editExperience(event);><span
+													class="timeline-item timeline-item-transparent" onclick="editExperience(event);"><span
 													class="timeline-point timeline-point-primary"></span>
 													<div class="timeline-event">
 														<div class="timeline-header border-bottom mb-3">
@@ -1067,7 +1070,7 @@
 										</div>
 										<form id="addNewEmgAddressForm"
 											th:object="${employeeEmgAddress}" class="row g-3"
-											onsubmit="return false">
+											onsubmit="emgAddressdata(event);">
 											<div class="col-12 col-md-6">
 												<div class="form-check">
 													<br /> <input class="form-check-input" type="checkbox"
@@ -1177,8 +1180,8 @@
 
 											<div class="col-12 text-center mt-4">
 												<button type="submit"
-													class="btn btn-primary me-sm-3 me-1 editemgAddressdatasubmit">Submit</button>
-												<button type="button"
+													class="btn btn-primary me-sm-3 me-1 editemgAddressdatasubmit" onclick="">Submit</button>
+												<button type="reset"
 													class="btn btn-label-secondary editemgAddressdataclose"
 													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
 											</div>
@@ -1683,6 +1686,8 @@
 	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
 	<script th:src="@{/assets/js/app-user-view.js}"></script>
 	<script th:src="@{/assets/js/app-user-view-account.js}"></script>
+	
+	
 
 
 
@@ -2349,7 +2354,7 @@ function addQualificationitem(e){
 		  data[key] = value;
 	  }
 	 $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);"><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0">${data.Degree
-} _ ${data.Major}</h6><small class="text-muted">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span> ${data.Institution}</span></div><div><span >${data.Percentage}</span></div></div></div></li`);
+} _ ${data.Major}</h6><small class="text-muted">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span> ${data.Institution}</span></div><div><span >${data.Percentage}</span></div></div></div></li>`);
 	 $(e.target)[0].reset();
 	 $('#AddQualification').modal('hide');
  
@@ -2447,7 +2452,79 @@ function editExperience(e){
 	$(parent).children().find('span').each(function(){
 		texts.push($(this).text());
 	})
+	
+	var date =  texts[1].split('_');
+	Experiencefrom.setDate(date[0]);
+	Experiencento.setDate(date[1]);
+	$('#Company').val(texts[2].trim());
+	$('#Location').val(texts[3].trim());
+	$('#Role').val(texts[0].trim());
+	$('#AddExperience').modal('show');
 	console.log(texts);
+}
+
+function emgAddressdata(e){
+	e.preventDefault();
+	const formData = new FormData(e.target);
+	const obj = {};
+	  for (const [key, value] of formData.entries()) {
+		  obj[key] = value;
+	  }
+	  console.log(obj);
+	  
+ var text = `<div class="row editemg"><hr><div class="col-xl-7 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Name: <input type="hidden" id="empEmgContactid2" value=""> <input type="hidden" id="Emg_InsuranceNominee2" value="true"></dt><dd class="col-sm-8"><span id="Emg_Name2" onclick="editemgAddressdata(event);">${obj.Emg_Name}</span>`;
+ 
+ if($('#InsuranceNominee').is(':checked'))
+	{
+	 text+=`<span><br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>`;
+	}
+ 
+ text+=`</dd><dt class="col-sm-4 mb-3 text-nowrap">Relationship:</dt><dd class="col-sm-8" id="Emg_Relation2">${obj.Emg_Relation}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line1:</dt><dd class="col-sm-8" id="Emg_Street12">${obj.Emg_Street1}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line2:</dt><dd class="col-sm-8" id="Emg_Street22">${obj.Emg_Street2}</dd><dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt><dd class="col-sm-8" id="Emg_Landmark2">${obj.Emg_Landmark}</dd></dl></div><div class="col-xl-5 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Contact No:</dt><dd class="col-sm-8" id="Emg_PersonalPhone2">${obj.Emg_PersonalPhone}</dd><dt class="col-sm-4 mb-3 text-nowrap">Village:</dt><dd class="col-sm-8" id="Emg_Village2">${obj.Emg_Village}</dd><dt class="col-sm-4 mb-3 text-nowrap">City:</dt><dd class="col-sm-8" id="Emg_City2">${obj.Emg_City}</dd><dt class="col-sm-4 mb-3 text-nowrap">State:</dt><dd class="col-sm-8" id="Emg_State2">${obj.Emg_State}</dd><dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt><dd class="col-sm-8" id="Emg_ZIP2">${obj.Emg_ZIP}</dd></dl></div></div>`;
+ 
+ $('#addNewEmg').append(text);
+ $(e.target)[0].reset();
+ $('#addNewEmgAddress').modal('hide');
+	
+}
+
+function editemgAddressdata(e){
+	const parent = $(e.target).parents('.editemg');
+	console.log(parent);
+	const texts = [];
+	$(parent).children().find('dd').each(function(){
+		texts.push($(this).text());
+	})
+	
+	$(parent).children().find('span').each(function(){
+		texts.push($(this).text());
+	})
+	
+	$(parent).children().find('button').each(function(){
+		texts.push($(this).text());
+	})
+	
+	    if(texts[12] != '')
+		{
+	    	$('#InsuranceNominee').attr('checked', true );
+		}
+	    else
+	    {
+	    	$('#InsuranceNominee').attr('checked', false );
+	    }
+	$('#modalEmg_Name').val(texts[10]);
+	$('#modalEmg_PersonalPhone').val(texts[5]);
+	$('#modalEmg_RelationEmg').val(texts[1]);
+	$('#modalAddressAddress1Emg').val(texts[2]);
+	$('#modalAddressAddress2Emg').val(texts[3]);
+	$('#modalAddressLandmarkEmg').val(texts[4]);
+	$('#modalAddressVillageEmg').val(texts[6]);
+	$('#modalAddressCityEmg').val(texts[7]);
+	$('#modalAddressStateEmg').val(texts[8]);
+	$('#modalAddressZipCodeEmg').val(texts[9]);
+	$('#addNewEmgAddress').modal('show');
+	
+	console.log(texts);
+	
 }
 </script>
 </body>

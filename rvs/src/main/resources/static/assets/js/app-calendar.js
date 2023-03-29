@@ -115,8 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event start (flatpicker)
     if (eventStartDate) {
       var start = eventStartDate.flatpickr({
-        enableTime: true,
-        altFormat: 'Y-m-dTH:i:S',
+        altFormat: 'Y-m-d',
         onReady: function (selectedDates, dateStr, instance) {
           if (instance.isMobile) {
             instance.mobileInput.setAttribute('step', null);
@@ -128,8 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event end (flatpicker)
     if (eventEndDate) {
       var end = eventEndDate.flatpickr({
-        enableTime: true,
-        altFormat: 'Y-m-dTH:i:S',
+        altFormat: 'Y-m-d',
         onReady: function (selectedDates, dateStr, instance) {
           if (instance.isMobile) {
             instance.mobileInput.setAttribute('step', null);

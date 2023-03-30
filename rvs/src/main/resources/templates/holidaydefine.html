@@ -206,7 +206,7 @@
                 <select class="select2 form-select" id="Branch" name="Branch">
                
                 <option value="">-</option>
-                <option value="pollachi">pollachi</option>
+                <option th:each="bls : ${branchlist}" th:value="${bls.id}" th:text="${bls.BRANCH_NAME}"></option>
                  <option value="All">All</option>
               
               </select>

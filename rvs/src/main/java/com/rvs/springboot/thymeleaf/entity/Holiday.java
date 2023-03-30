@@ -14,12 +14,16 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name ="holiday")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@Table(name = "holiday")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Holiday {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column
 	private String title;
@@ -37,6 +41,7 @@ public class Holiday {
 	private String color;
 	@Column
 	private String description;
-	
-	
+	@Column
+	private String branch;
+
 }

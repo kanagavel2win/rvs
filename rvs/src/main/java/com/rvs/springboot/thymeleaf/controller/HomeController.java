@@ -1623,20 +1623,20 @@ public class HomeController {
 
 	@ResponseBody
 	@PostMapping("employeeemgaddressjson")
-	public int employeeemgaddressjson(@RequestParam Map<String, String> params,@ModelAttribute("employeemaster") EmployeeEmgContact emg) {
-		
+	public int employeeemgaddressjson(@RequestParam Map<String, String> params,
+			@ModelAttribute("employeemaster") EmployeeEmgContact emg) {
+
 		int empMasterid = Integer.parseInt(params.get("empMasterid"));
 		EmployeeMaster emp = employeeMasterService.findById(empMasterid);
-		
-		if(emg.getEmpEmgContactid() == 0)
-		{
-			return employeeMasterService.insertemployeeEmgContact(empMasterid, emg);			
-		}else
-		{
+
+		if (emg.getEmpEmgContactid() == 0) {
+			return employeeMasterService.insertemployeeEmgContact(empMasterid, emg);
+		} else {
 			return employeeMasterService.updateemployeeEmgContact(emg);
 		}
-		
+
 	}
+
 	@PostMapping("employeesave")
 	public String employeesave(HttpServletRequest req, @ModelAttribute("employeemaster") EmployeeMaster employeemaster,
 			@RequestParam(name = "empEduid", required = false) String[] empEduid,
@@ -1776,7 +1776,7 @@ public class HomeController {
 				empcont.setEmg_Street1(Emg_Street1[farr]);
 			if (Emg_Street2.length > 0)
 				empcont.setEmg_Street2(Emg_Street2[farr]);
-			
+
 			if (Emg_Village.length > 0)
 				empcont.setEmg_Village(Emg_Village[farr]);
 			if (Emg_ZIP.length > 0)
@@ -2167,9 +2167,9 @@ public class HomeController {
 		Date date = new Date();
 		return dateFormat.format(date);
 	}
-	
+
 	public EmployeeMaster fillemployeeobject(int empid) {
-		
+
 		Date todaydate = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
@@ -2278,9 +2278,9 @@ public class HomeController {
 
 	@GetMapping("empjob")
 	public String employeejob(Model theModel, @RequestParam("id") int empid) {
-		
+
 		EmployeeMaster emobj = fillemployeeobject(empid);
-		
+
 		int greenpointemployementstatus = 0;
 		int greenpointjobstatus = 0;
 		int greenpointcompensationstatus = 0;
@@ -2357,8 +2357,8 @@ public class HomeController {
 		theModel.addAttribute("employeeJobinfomation", infoobj);
 		theModel.addAttribute("employeecompensation", comoobj);
 		theModel.addAttribute("empid", empid);
-		theModel.addAttribute("employeemaster",emobj);
-		
+		theModel.addAttribute("employeemaster", emobj);
+
 		theModel.addAttribute("emptitle",
 				emobj.getEmpid() + "000" + emobj.getEmpMasterid() + " - " + emobj.getStaffName());
 		return "empjob";
@@ -2767,11 +2767,9 @@ public class HomeController {
 	public String holidaysave(@RequestParam Map<String, String> param) {
 
 		Holiday obj = new Holiday();
-
 		if (param.get("calid") != null && (!param.get("calid").equalsIgnoreCase(""))) {
 			obj.setId(Integer.parseInt(param.get("calid").toString()));
 		}
-
 		obj.setTitle(param.get("title").toString());
 		obj.setStart(param.get("fromdate").toString());
 		obj.setEnd(param.get("todate").toString());
@@ -2780,14 +2778,26 @@ public class HomeController {
 		obj.setBorderColor(param.get("holidaycolor").toString());
 		obj.setColor(param.get("color").toString());
 		obj.setDescription(param.get("description"));
-		holidayService.save(obj);
+		if (!nullremover(String.valueOf(param.get("Branch"))).equalsIgnoreCase("All")) {
+			obj.setBranch(param.get("Branch"));
+			holidayService.save(obj);
 
-		return String.valueOf(obj.getId());
+		} else {
+			for(BranchMaster bm :  branchMasterService.findAll())
+			{
+				obj.setBranch(String.valueOf(bm.getId()));
+				holidayService.save(obj);	
+			}
+		}
+		return "Save";
 
 	}
 
 	@GetMapping("holidaydefine")
 	public String holidaydefine(Model theModel) {
+		List<BranchMaster> bmList = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmList);
+
 		return "holidaydefine";
 	}
 
@@ -5264,32 +5274,32 @@ public class HomeController {
 		OrganizationContacts organization = contactOrganizationService
 				.findById(Integer.parseInt(params.get("OrganizationContactsID")));
 
-			ContactPerson cp = new ContactPerson();
-			cp.setBranchid(organization.getBranchid());
-			cp.setOrganization(String.valueOf(organization.getId()));
-			cp.setPeoplename(params.get("peoplename"));
-			cp.setCustomer_supplier(organization.getCustomer_supplier());
-			cp.setFollowers(organization.getFollowers());
+		ContactPerson cp = new ContactPerson();
+		cp.setBranchid(organization.getBranchid());
+		cp.setOrganization(String.valueOf(organization.getId()));
+		cp.setPeoplename(params.get("peoplename"));
+		cp.setCustomer_supplier(organization.getCustomer_supplier());
+		cp.setFollowers(organization.getFollowers());
 
-			ContactPersonContact cpc = new ContactPersonContact();
-			cpc.setDepartment("Personal");
-			cpc.setPhonenumber(params.get("phonenumber"));
-			cpc.setPrimarycontact(true);
-			List<ContactPersonContact> cpcls = new ArrayList();
-			cpcls.add(cpc);
-			cp.setContactPersonContact(cpcls);
+		ContactPersonContact cpc = new ContactPersonContact();
+		cpc.setDepartment("Personal");
+		cpc.setPhonenumber(params.get("phonenumber"));
+		cpc.setPrimarycontact(true);
+		List<ContactPersonContact> cpcls = new ArrayList();
+		cpcls.add(cpc);
+		cp.setContactPersonContact(cpcls);
 
-			return contactPersonService.save(cp).getId();
-		
+		return contactPersonService.save(cp).getId();
+
 	}
-	
+
 	@ResponseBody
 	@PostMapping("orgcontactlinkpersonsavejson")
 	public ContactPerson orgcontactlinkpersonsavejson(@RequestParam Map<String, String> params) {
 
 		OrganizationContacts organization = contactOrganizationService
 				.findById(Integer.parseInt(params.get("OrganizationContactsID")));
-		ContactPerson cp =contactPersonService.findById(Integer.parseInt(params.get("linkpeoplename")));
+		ContactPerson cp = contactPersonService.findById(Integer.parseInt(params.get("linkpeoplename")));
 		cp.setOrganization(String.valueOf(organization.getId()));
 		// Set primary contact
 		List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
@@ -5299,7 +5309,7 @@ public class HomeController {
 			cp.setPrimaryemail(bcls.get(0).getEmail());
 		}
 		return contactPersonService.save(cp);
-		
+
 	}
 
 	@GetMapping("contactsorganizationslist")
@@ -7394,10 +7404,10 @@ public class HomeController {
 
 		return projectMasterService.addnewtask(projectdetailid, taskname);
 	}
-	
+
 	@GetMapping("leaverequest")
 	public String leaverequest() {
-	 return "leaverequest";
+		return "leaverequest";
 	}
 
 }

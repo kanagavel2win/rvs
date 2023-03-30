@@ -14,7 +14,6 @@ let prevMonth = date.getMonth() === 11 ? new Date(date.getFullYear() - 1, 0, 1) 
 let events = [
   {
     id: 1,
-    url: '',
     title: 'Mohammed Work',
     start: date,
     end: nextDay,

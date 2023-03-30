@@ -7394,5 +7394,10 @@ public class HomeController {
 
 		return projectMasterService.addnewtask(projectdetailid, taskname);
 	}
+	
+	@GetMapping("leaverequest")
+	public String leaverequest() {
+	 return "leaverequest";
+	}
 
 }

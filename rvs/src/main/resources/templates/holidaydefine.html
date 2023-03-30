@@ -163,9 +163,15 @@
         </div>
         <div class="offcanvas-body">
           <form class="event-form pt-0" id="eventForm" onsubmit="return false">
+          
+          <div class="mb-3">
+              <label class="form-label" for="eventTitle">Title</label>
+              <input type="text" class="form-control" id="eventTitle" name="eventTitle" placeholder="Event Title">
+            <div class="fv-plugins-message-container invalid-feedback"></div></div>
+            
             <div class="mb-3">
-              <label class="form-label" for="eventTitle">Holiday Type</label>
-               <select class="select2 form-select" id="Type" name="Type">
+              <label class="form-label" for="eventType">Type</label>
+               <select class="select2 form-select" id="eventType" name="Type">
                
                 <option value="">-</option>
                 <option>National holiday</option>
@@ -196,11 +202,12 @@
             
             
             <div class="mb-3">
-              <label class="form-label" for="eventLocation">Branches</label>
-                <select class="select2 form-select" id="Branches" name="Branches">
+              <label class="form-label" for="eventLocation">Branch</label>
+                <select class="select2 form-select" id="Branch" name="Branch">
                
                 <option value="">-</option>
                 <option value="pollachi">pollachi</option>
+                 <option value="All">All</option>
               
               </select>
             </div>

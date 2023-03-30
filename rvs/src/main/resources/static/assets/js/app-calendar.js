@@ -38,12 +38,11 @@ document.addEventListener('DOMContentLoaded', function () {
       eventTitle = document.querySelector('#eventTitle'),
       eventStartDate = document.querySelector('#eventStartDate'),
       eventEndDate = document.querySelector('#eventEndDate'),
-      eventUrl = document.querySelector('#eventURL'),
       eventLabel = $('#eventLabel'), // ! Using jquery vars due to select2 jQuery dependency
-      eventGuests = $('#eventGuests'), // ! Using jquery vars due to select2 jQuery dependency
-      eventLocation = document.querySelector('#eventLocation'),
+      Type = document.querySelector('#eventType'), // ! Using jquery vars due to select2 jQuery dependency
+      Branch = document.querySelector('#Branch'),
       eventDescription = document.querySelector('#eventDescription'),
-      allDaySwitch = document.querySelector('.allDay-switch'),
+   
       selectAll = document.querySelector('.select-all'),
       filterInput = [].slice.call(document.querySelectorAll('.input-filter')),
       inlineCalendar = document.querySelector('.inline-calendar');
@@ -80,42 +79,14 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
-    // Event Guests (select2)
-    if (eventGuests.length) {
-      function renderGuestAvatar(option) {
-        if (!option.id) {
-          return option.text;
-        }
-        var $avatar =
-          "<div class='d-flex flex-wrap align-items-center'>" +
-          "<div class='avatar avatar-xs me-2'>" +
-          "<img src='" +
-          assetsPath +
-          'img/avatars/' +
-          $(option.element).data('avatar') +
-          "' alt='avatar' class='rounded-circle' />" +
-          '</div>' +
-          option.text +
-          '</div>';
-
-        return $avatar;
-      }
-      eventGuests.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
-        dropdownParent: eventGuests.parent(),
-        closeOnSelect: false,
-        templateResult: renderGuestAvatar,
-        templateSelection: renderGuestAvatar,
-        escapeMarkup: function (es) {
-          return es;
-        }
-      });
-    }
+    
 
     // Event start (flatpicker)
     if (eventStartDate) {
       var start = eventStartDate.flatpickr({
-        altFormat: 'Y-m-d',
+    	  enableTime: !0,
+    	  altFormat: 'F j, Y',
+	      dateFormat: 'F j, Y',
         onReady: function (selectedDates, dateStr, instance) {
           if (instance.isMobile) {
             instance.mobileInput.setAttribute('step', null);
@@ -127,7 +98,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event end (flatpicker)
     if (eventEndDate) {
       var end = eventEndDate.flatpickr({
-        altFormat: 'Y-m-d',
+    	  enableTime: !0,
+    	  altFormat: 'F j, Y',
+	      dateFormat: 'F j, Y',
         onReady: function (selectedDates, dateStr, instance) {
           if (instance.isMobile) {
             instance.mobileInput.setAttribute('step', null);
@@ -154,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
       bsAddEventSidebar.show();
       // For update event set offcanvas title text: Update Event
       if (offcanvasTitle) {
-        offcanvasTitle.innerHTML = 'Update Event';
+        offcanvasTitle.innerHTML = 'Update Holiday';
       }
       btnSubmit.innerHTML = 'Update';
       btnSubmit.classList.add('btn-update-event');
@@ -162,18 +135,22 @@ document.addEventListener('DOMContentLoaded', function () {
       btnDeleteEvent.classList.remove('d-none');
 
       eventTitle.value = eventToUpdate.title;
-      start.setDate(eventToUpdate.start, true, 'Y-m-d');
-      eventToUpdate.allDay === true ? (allDaySwitch.checked = true) : (allDaySwitch.checked = false);
+      start.setDate(eventToUpdate.start, true, 'F j, Y');
+      //eventToUpdate.allDay === true ? (allDaySwitch.checked = true) : (allDaySwitch.checked = false);
       eventToUpdate.end !== null
-        ? end.setDate(eventToUpdate.end, true, 'Y-m-d')
-        : end.setDate(eventToUpdate.start, true, 'Y-m-d');
+        ? end.setDate(eventToUpdate.end, true, 'F j, Y')
+        : end.setDate(eventToUpdate.start, true, 'F j, Y');
       eventLabel.val(eventToUpdate.extendedProps.calendar).trigger('change');
-      eventToUpdate.extendedProps.location !== undefined
-        ? (eventLocation.value = eventToUpdate.extendedProps.location)
-        : null;
-      eventToUpdate.extendedProps.guests !== undefined
-        ? eventGuests.val(eventToUpdate.extendedProps.guests).trigger('change')
-        : null;
+      
+      
+     // eventToUpdate.extendedProps.location !== undefined
+        //? (eventLocation.value = eventToUpdate.extendedProps.location)
+        //: null;
+      //eventToUpdate.extendedProps.guests !== undefined
+        //? eventGuests.val(eventToUpdate.extendedProps.guests).trigger('change')
+        //: null;
+      eventToUpdate.extendedProps.type !== undefined ? (Type.value = eventToUpdate.extendedProps.type) : null;
+      eventToUpdate.extendedProps.branch !== undefined ? (Branch.value = eventToUpdate.extendedProps.branch) : null;
       eventToUpdate.extendedProps.description !== undefined
         ? (eventDescription.value = eventToUpdate.extendedProps.description)
         : null;
@@ -275,13 +252,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return ['fc-event-' + colorName];
       },
       dateClick: function (info) {
-        let date = moment(info.date).format('YYYY-MM-DD');
+    	  console.log(info);
+        let date = moment(info.date).format('MMMM D, YYYY');
         resetValues();
         bsAddEventSidebar.show();
 
         // For new event set offcanvas title text: Add Event
         if (offcanvasTitle) {
-          offcanvasTitle.innerHTML = 'Add Event';
+          offcanvasTitle.innerHTML = 'Add Holiday';
         }
         btnSubmit.innerHTML = 'Add';
         btnSubmit.classList.remove('btn-update-event');
@@ -329,7 +307,21 @@ document.addEventListener('DOMContentLoaded', function () {
               message: 'Please enter end date '
             }
           }
-        }
+        },
+        Type: {
+            validators: {
+              notEmpty: {
+                message: 'Please enter  Type'
+              }
+            }
+          },
+        Branch: {
+            validators: {
+              notEmpty: {
+                message: 'Please enter Branch'
+              }
+            }
+          }
       },
       plugins: {
         trigger: new FormValidation.plugins.Trigger(),
@@ -450,26 +442,23 @@ document.addEventListener('DOMContentLoaded', function () {
           let newEvent = {
             id: calendar.getEvents().length + 1,
             title: eventTitle.value,
-            start: eventStartDate.value,
-            end: eventEndDate.value,
+            start: moment(eventStartDate.value).format('YYYY-MM-DD h:mm:ss'),
+            end: moment(eventEndDate.value).format('YYYY-MM-DD h:mm:ss'),
             startStr: eventStartDate.value,
             endStr: eventEndDate.value,
             display: 'block',
             extendedProps: {
-              location: eventLocation.value,
-              guests: eventGuests.val(),
+              type :Type.value,
+              branch :Branch.value,
               calendar: eventLabel.val(),
               description: eventDescription.value
             }
           };
-          if (eventUrl.value) {
-            newEvent.url = eventUrl.value;
-          }
-          if (allDaySwitch.checked) {
-            newEvent.allDay = true;
-          }
+          
+          
           addEvent(newEvent);
           bsAddEventSidebar.hide();
+          console.log(currentEvents);
         }
       } else {
         // Update event
@@ -478,19 +467,19 @@ document.addEventListener('DOMContentLoaded', function () {
           let eventData = {
             id: eventToUpdate.id,
             title: eventTitle.value,
-            start: eventStartDate.value,
-            end: eventEndDate.value,
-            url: eventUrl.value,
+            start: moment(eventStartDate.value).format('YYYY-MM-DD h:mm:ss'),
+            end: moment(eventEndDate.value).format('YYYY-MM-DD h:mm:ss'),
+           
             extendedProps: {
-              location: eventLocation.value,
-              guests: eventGuests.val(),
-              calendar: eventLabel.val(),
-              description: eventDescription.value
+            	type :Type.value,
+                branch :Branch.value,
+                calendar: eventLabel.val(),
+                description: eventDescription.value
             },
             display: 'block',
-            allDay: allDaySwitch.checked ? true : false
+      
           };
-
+          console.log(currentEvents);
           updateEvent(eventData);
           bsAddEventSidebar.hide();
         }
@@ -507,14 +496,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Reset event form inputs values
     // ------------------------------------------------
     function resetValues() {
+      eventTitle.value='';
       eventEndDate.value = '';
-      eventUrl.value = '';
       eventStartDate.value = '';
-      eventTitle.value = '';
-      eventLocation.value = '';
-      allDaySwitch.checked = false;
-      eventGuests.val('').trigger('change');
-      eventDescription.value = '';
+      Type.value='';
+      eventDescription.value='';
+      Branch.value='';
     }
 
     // When modal hides reset input values

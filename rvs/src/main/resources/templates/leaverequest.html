@@ -132,7 +132,8 @@
                         <th>Leave Type</th>
                         <th>Time</th>
                         <th>Note</th>
-                        <th>Status &amp; Comments</th>
+                        <th>Status</th>
+                        <th>Comments</th>
                         
                       </tr>
                     </thead>
@@ -144,17 +145,17 @@
 			<button class="btnoffcanvas btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd" style="visibility:hidden" ></button>
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
 			  <div class="offcanvas-header">
-			    <h5 id="offcanvasEndLabel" class="offcanvas-title">Add Leave Request</h5>
+			    <h5 id="offcanvasEndLabel" class="offcanvas-title">Leave Request Form</h5>
 			    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			  </div>
 			 <div class="offcanvas-body flex-grow-1">
                   <form class="add-new-record pt-0 row g-2 needs-validation" id="form-add-new-record" onsubmit="return false" novalidate>
                      
-                    <div class="col-lg-12 col-md-12 mb-4">
+                    <div class="col-lg-12 col-md-12">
                       <label class="form-label" for="startdate">FROM DATE</label>
                       <div class="has-validation">
                         
-                         <input  type="text" id="startdate"  class="form-control" required />
+                         <input  type="text" id="startdate"  class="form-control" placeholder="e.g. March 7, 2023" required />
                         
                        <div class="invalid-feedback">Please enter the Branch Name.</div>
                       </div>
@@ -162,22 +163,22 @@
                     </div>
                     
                     
-                    <div class="col-lg-12 col-md-12 mb-4">
+                    <div class="col-lg-12 col-md-12">
                       <label class="form-label" for="enddate">TO DATE</label>
                       <div class="has-validation">
                         
-                         <input  type="text" id="enddate" class="form-control" required />
+                         <input  type="text" id="enddate" class="form-control" placeholder="e.g. March 7, 2023" required />
                         
                        <div class="invalid-feedback">Please enter the Branch Name.</div>
                       </div>
                        
                     </div>
                     
-                    <div class="col-lg-12 col-md-12 mb-4">
+                    <div class="col-lg-12 col-md-12">
                       <label class="form-label" for="leavetype">LEAVE TYPE</label>
                       <div class="has-validation">
                         
-                         <select class="form-control" id="leavetype" name="leavetype" required>
+                         <select class="form-select" id="leavetype" name="leavetype" required>
                                <option value="">-</option>
 	                          <option value="Personal">Personal</option>
 	                          <option value="Sick">Sick</option>
@@ -190,7 +191,7 @@
                        
                     </div>
                     
-            <div class="col-lg-12 col-md-12 mb-4">
+            <div class="col-lg-12 col-md-12">
             <label class="switch">
               <input type="checkbox" class="switch-input" onclick="halfhaldle(event);" required/>
               <span class="switch-toggle-slider">
@@ -203,11 +204,11 @@
                     
                     <div class="half" style="display:none;">
                     
-                     <div class="col-lg-12 col-md-12 mb-4">
+                     <div class="col-lg-12 col-md-12">
                       <label class="form-label" for="starttime">START TIME</label>
                       <div class="has-validation">
                         
-                         <input  type="text" id="starttime" class="form-control" readonly />
+                         <input  type="text" id="starttime" class="form-control" placeholder="e.g. 12:00 PM" readonly />
                         
                        <div class="invalid-feedback">Please enter the Start Time.</div>
                       </div>
@@ -216,11 +217,11 @@
                     
                     
                     
-                     <div class="col-lg-12 col-md-12 mb-4">
+                     <div class="col-lg-12 col-md-12">
                       <label class="form-label" for="endtime">END TIME</label>
                       <div class="has-validation">
                         
-                         <input  type="text" id="endtime" class="form-control" readonly />
+                         <input  type="text" id="endtime" class="form-control" placeholder="e.g. 12:00 PM" readonly />
                         
                        <div class="invalid-feedback">Please enter the End Time.</div>
                       </div>
@@ -228,11 +229,11 @@
                     </div>
                     </div>
                     
-                     <div class="col-lg-12 col-md-12 mb-4">
+                     <div class="col-lg-12 col-md-12">
                       <label class="form-label" for="notes">NOTES</label>
                       <div class="has-validation">
                       
-                    <input type="text" class="form-control" id="notes" name="notes" required />
+                    <input type="text" class="form-control" id="notes" name="notes" placeholder="e.g. notes" required />
                     
                      <div class="invalid-feedback">Please enter the  Notes.</div>
                       </div>
@@ -240,7 +241,7 @@
                     </div>
                  
                     <div class="col-sm-12">
-                      <button type="submit" class="btn btn-primary newbranchdatasubmit me-sm-3 me-1">ADD</button>
+                      <button type="submit" class="btn btn-primary newbranchdatasubmit me-sm-3 me-1">Submit</button>
                       <button type="reset" class="btn btn-outline-secondary newbranchdataclose" data-bs-dismiss="offcanvas">Cancel</button>
                     </div>
                   </form>
@@ -383,7 +384,12 @@
 
 			  if (dt_basic_table.length) {
 			    var dt_basic = dt_basic_table.DataTable({
-			  
+			    	ajax: {
+			             "url": "branchlistjson",
+			             "type": "GET",
+			             "dataSrc": "",
+			         },
+			         
 			      columns: [
 			        { data: '' },
 			        { data: 'id' },
@@ -397,6 +403,7 @@
 			        { data: 'current_STATUS' },
 			        { data: '' }
 			      ],
+			       
 			      columnDefs: [
 			        {
 			          // For Responsive
@@ -607,7 +614,7 @@
 			          ]
 			        },
 			        {
-			          text: '<i class="bx bx-plus me-2"></i> <span class="d-none d-lg-inline-block" >Raise Request </span>',
+			          text: '<i class="bx bx-plus me-2"></i> <span class="d-none d-lg-inline-block" >Apply Leave </span>',
 			          className: 'create-new btn btn-primary'
 			        }
 			      ],

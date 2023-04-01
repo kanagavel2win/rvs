@@ -89,6 +89,7 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
+import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadMaster;
@@ -2779,20 +2780,29 @@ public class HomeController {
 		obj.setStart(param.get("fromdate").toString());
 		obj.setEnd(param.get("todate").toString());
 		obj.setAllDay(Boolean.valueOf(param.get("allDay")));
-		obj.setBackgroundColor(param.get("holidaycolor").toString());
-		obj.setBorderColor(param.get("holidaycolor").toString());
-		obj.setColor(param.get("color").toString());
-		obj.setDescription(param.get("description"));
+		
+		List<HolidayextendedProps> exlist = new ArrayList();
+		
+		
 		if (!nullremover(String.valueOf(param.get("Branch"))).equalsIgnoreCase("All")) {
-			obj.setBranch(param.get("Branch"));
+			HolidayextendedProps exobj= new HolidayextendedProps();
+			exobj.setDescription(param.get("description"));
+			exobj.setBranch(param.get("Branch"));
+			exlist.add(exobj);
+			obj.setExtendedProps(exlist);
 			holidayService.save(obj);
 
 		} else {
 			for(BranchMaster bm :  branchMasterService.findAll())
 			{
-				obj.setBranch(String.valueOf(bm.getId()));
-				holidayService.save(obj);	
+				HolidayextendedProps exobj= new HolidayextendedProps();
+				exobj.setDescription(param.get("description"));
+				exobj.setBranch(String.valueOf(bm.getId()));
+				exlist.add(exobj);
+				
 			}
+			obj.setExtendedProps(exlist);
+			holidayService.save(obj);	
 		}
 		return "Save";
 

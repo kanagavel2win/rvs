@@ -2353,6 +2353,11 @@ public class HomeController {
 		theModel.addAttribute("greenpointcompensationstatus", greenpointcompensationstatus);
 		theModel.addAttribute("branchls", branchls);
 		theModel.addAttribute("employeeJobemphiredate", stringhiredate);
+		
+		obj.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate).reversed());
+		infoobj.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate).reversed());
+		comoobj.sort(Comparator.comparing(EmployeeJobcompensation::getComeffectivedate).reversed());
+
 		theModel.addAttribute("employeeJobempstatus", obj);
 		theModel.addAttribute("employeeJobinfomation", infoobj);
 		theModel.addAttribute("employeecompensation", comoobj);

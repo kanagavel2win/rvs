@@ -81,7 +81,8 @@
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script th:src="@{/assets/js/config.js}"></script>
 <style>
-.bx-check-circle {
+
+.bxs-check-circle {
 	color: green;
 	
 }
@@ -222,10 +223,7 @@ var tblemployeecompensationid=0;
 												</thead>
 												<tbody>
 													<tr th:each="emp,stat : ${employeeJobempstatus}">
-														<td class="text-bold-500"><th:block
-																th:if="${emp.employeejobempstatusid} == ${greenpointemployementstatus}">
-																<span class="bullet bullet-sm bullet-success"></span>
-															</th:block> <input type="hidden"
+														<td class="text-bold-500"><input type="hidden"
 															th:value="${emp.employeejobempstatusid}"
 															th:id="'tblemployeeJobempstatusid' + ${stat.index}" /> <input
 															type="hidden"
@@ -234,7 +232,14 @@ var tblemployeecompensationid=0;
 																th:if="${emp.empstatus_effectivedate} !=''">
 																<span
 																	th:text="${#strings.arraySplit(emp.empstatus_effectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[0]}"></span>
-															</th:block></td>
+															</th:block>
+															
+															<th:block
+																th:if="${emp.employeejobempstatusid} == ${greenpointemployementstatus}">
+																<span class="bx bxs-check-circle"></span>
+															</th:block> 
+															
+															</td>
 														<td><span
 															th:id="'tblempstatus_employmentstatus' + ${stat.index}"
 															th:text="${emp.empstatus_employmentstatus}"></span> <input
@@ -299,17 +304,20 @@ var tblemployeecompensationid=0;
 												</thead>
 												<tbody>
 													<tr th:each="emp,stat : ${employeeJobinfomation}">
-														<td class="text-bold-500"><th:block
-																th:if="${emp.employeejobinfoid} == ${greenpointjobstatus}">
-																<span class="bullet bullet-sm bullet-success"></span>
-															</th:block> <input type="hidden" th:value="${emp.employeejobinfoid}"
+														<td class="text-bold-500"> <input type="hidden" th:value="${emp.employeejobinfoid}"
 															th:id="'tblemployeejobinfoid' + ${stat.index}" /> <input
 															type="hidden" th:value="${emp.jobeffectivedate}"
 															th:id="'tbljobeffectivedate' + ${stat.index}" /> <th:block
 																th:if="${emp.jobeffectivedate} !=''">
 																<span
 																	th:text="${#strings.arraySplit(emp.jobeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[0]}"></span>
-															</th:block></td>
+															</th:block>
+															
+															<th:block
+																th:if="${emp.employeejobinfoid} == ${greenpointjobstatus}">
+																<span class="bx bxs-check-circle"></span>
+															</th:block>
+															</td>
 														<td><span th:id="'tbljoblocation' + ${stat.index}"
 															th:text="${emp.joblocation}"></span></td>
 														<td><span th:id="'tbljobdeparment' + ${stat.index}"
@@ -368,10 +376,7 @@ var tblemployeecompensationid=0;
 												</thead>
 												<tbody>
 													<tr th:each="emp,stat : ${employeecompensation}">
-														<td class="text-bold-500"><th:block
-																th:if="${emp.employeejobcompensationid} == ${greenpointcompensationstatus}">
-																<span class="bullet bullet-sm bullet-success"></span>
-															</th:block> <input type="hidden"
+														<td class="text-bold-500"> <input type="hidden"
 															th:value="${emp.employeejobcompensationid}"
 															th:id="'tblemployeejobcompensationid' + ${stat.index}" />
 															<input type="hidden" th:value="${emp.comeffectivedate}"
@@ -379,7 +384,12 @@ var tblemployeecompensationid=0;
 																th:if="${emp.comeffectivedate} !=''">
 																<span
 																	th:text="${#strings.arraySplit(emp.comeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[0]}"></span>
-															</th:block></td>
+															</th:block>
+															<th:block
+																th:if="${emp.employeejobcompensationid} == ${greenpointcompensationstatus}">
+																<span class="bx bxs-check-circle"></span>
+															</th:block>
+															</td>
 														<td><span th:id="'tblcomPayschedule' + ${stat.index}"
 															th:text="${emp.comPayschedule}"></span></td>
 														<td><span th:id="'tblcompaytype' + ${stat.index}"

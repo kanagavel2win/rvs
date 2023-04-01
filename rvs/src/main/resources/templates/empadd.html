@@ -87,6 +87,17 @@
 .bx-check-circle {
 	color: green;
 }
+.pop_cursor
+{
+cursor:pointer;
+
+}
+
+.pop_cursor:hover{
+
+font-weight:bold;
+
+}
 </style>
 </head>
 
@@ -502,7 +513,7 @@
 																th:value="${emg.Emg_InsuranceNominee}">
 														</dt>
 														<dd class="col-sm-8">
-															<span th:id="'Emg_Name' + ${emg.empEmgContactid}"
+															<span th:id="'Emg_Name' + ${emg.empEmgContactid}" class="pop_cursor"
 																th:text="${emg.Emg_Name}" onclick="editemgAddressdata(event);"></span> <span
 																th:if="${emg.Emg_InsuranceNominee}"><br />
 															<button type="button"
@@ -593,7 +604,7 @@
 											<tbody>
 
 												<tr th:each="lan : ${employeemaster.employeeLanguage}" >
-													<td class="text-nowrap" th:text="${lan.language}" onclick="editlang(event);"></td>
+													<td class="text-nowrap pop_cursor" th:text="${lan.language}" onclick="editlang(event);"></td>
 													<td class="text-center"><i th:if="${lan.lan_read}"
 														class="bx bx-check-circle"> </i></td>
 													<td class="text-center"><i th:if="${lan.lan_write}"
@@ -628,13 +639,13 @@
 											<ul class="timeline timeline-dashed mt-4 timelinequf">
 
 												<li th:each="obj : ${employeemaster.employeeEducation}"
-													class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);"><span
+													class="timeline-item timeline-item-primary mb-4 " onclick="editExper(event);"><span
 													class="timeline-indicator timeline-indicator-primary">
 														<i class="bx bxs-graduation"></i>
 												</span>
 													<div class="timeline-event">
 														<div class="timeline-header border-bottom mb-3">
-															<h6 class="mb-0"
+															<h6 class="mb-0 pop_cursor"
 																th:text="${obj.Degree} + ' _ '+ ${obj.MajorSpecialization}"></h6>
 															<small class="text-muted"
 																th:text="${obj.FromYear} +'_' + ${obj.ToYear}"></small>
@@ -677,11 +688,11 @@
 										<div class="card-body">
 											<ul class="timeline mt-3 timeline-exp">
 												<li th:each="obj : ${employeemaster.employeeExperience}"
-													class="timeline-item timeline-item-transparent" onclick="editExperience(event);"><span
+													class="timeline-item timeline-item-transparent " onclick="editExperience(event);"><span
 													class="timeline-point timeline-point-primary"></span>
 													<div class="timeline-event">
 														<div class="timeline-header border-bottom mb-3">
-															<h6 class="mb-0" th:text="${obj.JobTitle}"></h6>
+															<h6 class="mb-0 pop_cursor" th:text="${obj.JobTitle}"></h6>
 															<small class="text-muted"
 																th:text="${obj.expFromyear} +'_'+ ${obj.expToyear}"></small>
 														</div>
@@ -1737,29 +1748,6 @@
 			$('.edituserdatap1submit').prop("disabled",false);
    			$('.edituserdatap1submit').html("Submit");
    		}
-		//--------------------------------------------------------------------------------------------------------------------------------------
-		$('#addNewEmgAddressForm').on('submit', function(event){
-			$('.editemgAddressdatasubmit').prop("disabled",true);
-		   	$('.editemgAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-    	    if(event.target.checkValidity()){
-    	    
-    	    	const formdata= new FormData(document.querySelector("#addNewEmgAddressForm"));
-    	    	formdata.append("empMasterid", $('#empMasterid').val())
-    	    	$.ajax({
-						type : "POST",url : "employeeemgaddressjson",
-						data : formdata, contentType: false,
-	   	              processData: false,success : function(result) {
-	   	            	  
-	   	            	var bmobj = JSON.parse(JSON.stringify(result));
-	   	            	console.log(bmobj);
-	   	            	validationformempemgreset();
-						},
-	    	    	error : function(e) {
-							console.log("Error" + e);
-						}
-    	    	});
-    	    }
-		});
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
 		$('#editEmployeedetailsForm').on('submit', function(event){
   			   	 

@@ -11,6 +11,9 @@
 
 'use strict';
 
+
+
+
 let direction = 'ltr';
 
 if (isRtl) {
@@ -51,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function () {
       currentEvents = events, // Assign app-calendar-events.js file events (assume events from API) to currentEvents (browser store/object) to manage and update calender events
       isFormValid = false,
       inlineCalInstance;
+    
+    
 
     // Init event Offcanvas
     const bsAddEventSidebar = new bootstrap.Offcanvas(addEventSidebar);
@@ -193,42 +198,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // AXIOS: fetchEvents
     // * This will be called by fullCalendar to fetch events. Also this can be used to refetch events.
     // --------------------------------------------------------------------------------------------------
-    function fetchEvents(info, successCallback) {
-      // Fetch Events from API endpoint reference
-      /* $.ajax(
-        {
-          url: '../../../app-assets/data/app-calendar-events.js',
-          type: 'GET',
-          success: function (result) {
-            // Get requested calendars as Array
-            var calendars = selectedCalendars();
 
-            return [result.events.filter(event => calendars.includes(event.extendedProps.calendar))];
-          },
-          error: function (error) {
-            console.log(error);
-          }
-        }
-      ); */
-
-      let calendars = selectedCalendars();
-      // We are reading event object from app-calendar-events.js file directly by including that file above app-calendar file.
-      // You should make an API call, look into above commented API call for reference
-      let selectedEvents = currentEvents.filter(function (event) {
-        // console.log(event.extendedProps.calendar.toLowerCase());
-        return calendars.includes(event.extendedProps.calendar.toLowerCase());
-      });
-      // if (selectedEvents.length > 0) {
-      successCallback(selectedEvents);
-      // }
-    }
 
     // Init FullCalendar
     // ------------------------------------------------
     let { dayGrid, interaction, timeGrid, list } = calendarPlugins;
     let calendar = new Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      events: fetchEvents,
+      events: 'events',
       plugins: [interaction, dayGrid, timeGrid, list],
       editable: true,
       dragScroll: true,
@@ -455,8 +432,33 @@ document.addEventListener('DOMContentLoaded', function () {
             }
           };
           
+          var formData = {
+				   calid : null,
+				   fromdate : moment(eventStartDate.value).format('YYYY-MM-DD h:mm:ss'),
+				   todate : moment(eventEndDate.value).format('YYYY-MM-DD h:mm:ss'),
+				   title : eventTitle.value,
+				   allDay : false,
+				   type :Type.value,
+				   branch :Branch.value,
+				   calendar: eventLabel.val(),
+				   description: eventDescription.value,	
+			}
           
-          addEvent(newEvent);
+			$.ajax({
+				type : "POST",
+				url : "holidaysave",
+				data : formData,
+				success : function(result) {
+					//console.log(result);
+					calendar.refetchEvents();
+				},
+				error : function(e) {
+					alert("Error" + e);
+				}
+			});
+          
+          
+          //addEvent(newEvent);
           bsAddEventSidebar.hide();
           console.log(currentEvents);
         }
@@ -479,8 +481,34 @@ document.addEventListener('DOMContentLoaded', function () {
             display: 'block',
       
           };
+          
+          var formData = {
+				   calid : eventToUpdate.id,
+				   fromdate : moment(eventStartDate.value).format('YYYY-MM-DD h:mm:ss'),
+				   todate : moment(eventEndDate.value).format('YYYY-MM-DD h:mm:ss'),
+				   title : eventTitle.value,
+				   allDay : false,
+				   type :Type.value,
+				   branch :Branch.value,
+				   calendar: eventLabel.val(),
+				   description: eventDescription.value,	
+			}
+         
+			$.ajax({
+				type : "POST",
+				url : "holidaysave",
+				data : formData,
+				success : function(result) {
+					console.log(result);
+					calendar.refetchEvents();
+				},
+				error : function(e) {
+					alert("Error" + e);
+				}
+			});
+          
           console.log(currentEvents);
-          updateEvent(eventData);
+          //updateEvent(eventData);
           bsAddEventSidebar.hide();
         }
       }
@@ -488,8 +516,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Call removeEvent function
     btnDeleteEvent.addEventListener('click', e => {
-      removeEvent(parseInt(eventToUpdate.id));
-      // eventToUpdate.remove();
+     // removeEvent(parseInt(eventToUpdate.id));
+      // eventToUpdate.remove()
+      
+      
+      var formData = {
+			   calid : eventToUpdate.id
+		}
+    	$.ajax({
+			type : "POST",
+			url : "holidaydelete",
+			data : formData,
+			success : function(result) {
+				console.log(result);
+				calendar.refetchEvents();
+			},
+			error : function(e) {
+				alert("Error" + e);
+			}
+		});
+      
       bsAddEventSidebar.hide();
     });
 

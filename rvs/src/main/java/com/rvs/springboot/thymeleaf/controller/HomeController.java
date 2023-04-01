@@ -2772,6 +2772,7 @@ public class HomeController {
 	@PostMapping("holidaysave")
 	public String holidaysave(@RequestParam Map<String, String> param) {
 
+		//System.out.println(param);
 		Holiday obj = new Holiday();
 		if (param.get("calid") != null && (!param.get("calid").equalsIgnoreCase(""))) {
 			obj.setId(Integer.parseInt(param.get("calid").toString()));
@@ -2788,7 +2789,7 @@ public class HomeController {
 		holiextra.setType(param.get("type").toString());
 		
 		obj.setExtendedProps(holiextra);
-		
+		holidayService.save(obj);
 		return "Save";
 
 	}

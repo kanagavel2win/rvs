@@ -7,20 +7,16 @@
 let date = new Date();
 let nextDay = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 // prettier-ignore
-let nextMonth = date.getMonth() === 11 ? new Date(date.getFullYear() + 1, 0, 1) : new Date(date.getFullYear(), date.getMonth() + 1, 1);
+let nextMonth = date.getMonth() === 11 ? new Date(date.getFullYear() + 1, 0, 1)
+		: new Date(date.getFullYear(), date.getMonth() + 1, 1);
 // prettier-ignore
-let prevMonth = date.getMonth() === 11 ? new Date(date.getFullYear() - 1, 0, 1) : new Date(date.getFullYear(), date.getMonth() - 1, 1);
+let prevMonth = date.getMonth() === 11 ? new Date(date.getFullYear() - 1, 0, 1)
+		: new Date(date.getFullYear(), date.getMonth() - 1, 1);
+let events;
 
-let events = [
-  {
-    id: 1,
-    title: 'Mohammed Work',
-    start: date,
-    end: nextDay,
-    allDay: false,
-    extendedProps: {
-      calendar: 'Holiday'
-    }
-  },
-  
-];
+
+
+
+
+        
+

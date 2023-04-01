@@ -2782,7 +2782,7 @@ public class HomeController {
 		obj.setAllDay(Boolean.valueOf(param.get("allDay")));
 		
 		List<HolidayextendedProps> exlist = new ArrayList();
-		
+		/*
 		
 		if (!nullremover(String.valueOf(param.get("Branch"))).equalsIgnoreCase("All")) {
 			HolidayextendedProps exobj= new HolidayextendedProps();
@@ -2803,7 +2803,7 @@ public class HomeController {
 			}
 			obj.setExtendedProps(exlist);
 			holidayService.save(obj);	
-		}
+		}*/
 		return "Save";
 
 	}

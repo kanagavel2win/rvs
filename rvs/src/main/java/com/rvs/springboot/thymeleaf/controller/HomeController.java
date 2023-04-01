@@ -2781,29 +2781,14 @@ public class HomeController {
 		obj.setEnd(param.get("todate").toString());
 		obj.setAllDay(Boolean.valueOf(param.get("allDay")));
 		
-		List<HolidayextendedProps> exlist = new ArrayList();
-		/*
+		HolidayextendedProps holiextra = new HolidayextendedProps();
+		holiextra.setBranch(param.get("branch").toString());
+		holiextra.setCalendar(param.get("calendar").toString());
+		holiextra.setDescription(param.get("description").toString());
+		holiextra.setType(param.get("type").toString());
 		
-		if (!nullremover(String.valueOf(param.get("Branch"))).equalsIgnoreCase("All")) {
-			HolidayextendedProps exobj= new HolidayextendedProps();
-			exobj.setDescription(param.get("description"));
-			exobj.setBranch(param.get("Branch"));
-			exlist.add(exobj);
-			obj.setExtendedProps(exlist);
-			holidayService.save(obj);
-
-		} else {
-			for(BranchMaster bm :  branchMasterService.findAll())
-			{
-				HolidayextendedProps exobj= new HolidayextendedProps();
-				exobj.setDescription(param.get("description"));
-				exobj.setBranch(String.valueOf(bm.getId()));
-				exlist.add(exobj);
-				
-			}
-			obj.setExtendedProps(exlist);
-			holidayService.save(obj);	
-		}*/
+		obj.setExtendedProps(holiextra);
+		
 		return "Save";
 
 	}

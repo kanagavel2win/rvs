@@ -50,11 +50,11 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}">
-   <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}">
-   <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-select-bs5/select.bootstrap5.css}">
-   <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}">
-   <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css}">
-  <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-select-bs5/select.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css}">
 
     <!-- Page CSS -->
 
@@ -171,53 +171,103 @@
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
-    <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
-    <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
-    <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
-
-    <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
-
-    <script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
-    <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
-
-    <script th:src="@{/assets/vendor/js/menu.js}"></script>
-    <!-- endbuild -->
-
-     <!-- Vendors JS -->
-     <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
-    <script th:src="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+  <!-- build:js assets/vendor/js/core.js -->
+  <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+  <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+  <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+  <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
   
-    <!-- Flat Picker -->
-    <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-    <script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
-     <script th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
-    <script th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
-    <script th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
-    <script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
-    
-    <!-- Row Group JS -->
-    <script th:src="@{/assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js}"></script>
-    <script th:src="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js}"></script>
-    <script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
-    <script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
-    <!-- Form Validation -->
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+  <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+  
 
-    <!-- Main JS -->
-    <script th:src="@{/assets/js/main.js}"></script>
+  <script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+  <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+  
+  <script th:src="@{/assets/vendor/js/menu.js}"></script>
+  <!-- endbuild -->
 
-    <!-- Page JS -->
-     <script th:src="@{/assets/js/tables-datatables-extensions.js}"></script> 
+  <!-- Vendors JS -->
+  <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+  <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+  <script th:src="@{/assets/vendor/libs/datatables-fixedcolumns/datatables.fixedcolumns.js}"></script>
+
+  <!-- Main JS -->
+  <script th:src="@{/assets/js/main.js}"></script>
+
+  <!-- Page JS -->
   
     
     <script>
-  
+      var dt_fixedcolumns = $('.dt-fixedcolumns').DataTable({
+        ajax: assetsPath + 'json/table-datatable.json',
+        columns: [
+          { data: 'full_name' },
+          { data: 'post' },
+          { data: 'email' },
+          { data: 'city' },
+          { data: 'start_date' },
+          { data: 'salary' },
+          { data: 'age' },
+          { data: 'experience' },
+          { data: 'status' },
+          { data: 'id' }
+        ],
+        columnDefs: [
+          {
+            // Label
+            targets: -2,
+            render: function (data, type, full, meta) {
+              var $status_number = full['status'];
+              var $status = {
+                1: { title: 'Current', class: 'bg-label-primary' },
+                2: { title: 'Professional', class: ' bg-label-success' },
+                3: { title: 'Rejected', class: ' bg-label-danger' },
+                4: { title: 'Resigned', class: ' bg-label-info' },
+                5: { title: 'Applied', class: ' bg-label-dark' }
+              };
+              if (typeof $status[$status_number] === 'undefined') {
+                return data;
+              }
+              return (
+                '<span class="badge rounded-pill ' +
+                $status[$status_number].class +
+                '">' +
+                $status[$status_number].title +
+                '</span>'
+              );
+            }
+          },
+          {
+            // Actions
+            targets: -1,
+            title: 'Actions',
+            searchable: false,
+            orderable: false,
+            render: function (data, type, full, meta) {
+              return (
+                '<div class="d-inline-block">' +
+                '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>' +
+                '<div class="dropdown-menu dropdown-menu-end m-0">' +
+                '<a href="javascript:;" class="dropdown-item">Details</a>' +
+                '<a href="javascript:;" class="dropdown-item">Archive</a>' +
+                '<div class="dropdown-divider"></div>' +
+                '<a href="javascript:;" class="dropdown-item text-danger delete-record"></i>Delete</a>' +
+                '</div>' +
+                '</div>' +
+                '<a href="javascript:;" class="item-edit text-body"><i class="bx bxs-edit"></i></a>'
+              );
+            }
+          }
+        ],
+        dom: '<"d-flex justify-content-between align-items-center row"<"col-sm-12 col-md-2 d-flex"f><"col-sm-12 col-md-10 d-none"i>>t',
+        scrollY: 300,
+        scrollX: true,
+        scrollCollapse: true,
+        paging: true,
+        info: true,
+        fixedColumns: true,
+      });
+
     </script>
   </body>
 </html>

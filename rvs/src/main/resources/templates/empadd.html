@@ -603,14 +603,17 @@ font-weight:bold;
 											</thead>
 											<tbody>
 
-												<tr th:each="lan : ${employeemaster.employeeLanguage}" >
-													<td class="text-nowrap pop_cursor" th:text="${lan.language}" onclick="editlang(event);"></td>
-													<td class="text-center"><i th:if="${lan.lan_read}"
+												<tr th:each="lan : ${employeemaster.employeeLanguage}" th:id="${lan.empLanguid}">
+												
+													<td class="text-nowrap pop_cursor" th:text="${lan.language}" th:id="'language' + ${lan.empLanguid}" onclick="editlang(event);"></td>
+													<td class="text-center" th:id="'lan_read' + ${lan.empLanguid}"><i th:if="${lan.lan_read}"
 														class="bx bx-check-circle"> </i></td>
-													<td class="text-center"><i th:if="${lan.lan_write}"
+													<td class="text-center" th:id="'lan_write' + ${lan.empLanguid}"><i th:if="${lan.lan_write}"
 														class="bx bx-check-circle"> </i></td>
-													<td class="text-center"><i th:if="${lan.lan_speak}"
+													<td class="text-center" th:id="'lan_speak' + ${lan.empLanguid}"><i th:if="${lan.lan_speak}"
 														class="bx bx-check-circle"> </i></td>
+														
+														
 												</tr>
 
 
@@ -1343,7 +1346,7 @@ font-weight:bold;
 							        <form id="LanguageAdd" class="row" onsubmit="addlang(event);">
 							       
 							          <div class="col-lg-12 col-md-12">
-							   
+							   			<input type="hidden" id="lanid"  />
 							            <label class="form-label" for="Language">Language </label> 
 							              <input id="Language" name="Language" class="form-control" type="text" placeholder="Language"/>
 							         
@@ -2300,37 +2303,79 @@ if (phoneMask) {
 function addlang(e){
 	e.preventDefault();
 	const formData = new FormData(e.target);
+	var lanid = $('#lanid').val();
 	var Language = $('#Language').val();
-	var data =`<tr ><td class="text-nowrap" onclick="editlang(event);">${Language}</td>`;
+	
+	if(lanid !=''){
+		$('#language'+lanid).text(Language);
+		if($('#Read').is(':checked'))
+		{
+		$('#lan_read'+lanid).html('<i class="bx bx-check-circle"></i>');
+		}
+		else
+		{
+			$('#lan_read'+lanid).html('');	
+		}
+		if($('#Write').is(':checked'))
+		{
+		$('#lan_write'+lanid).html('<i class="bx bx-check-circle"></i>');
+		}
+		else
+		{
+			$('#lan_write'+lanid).html('');	
+		}
+		 
+		if($('#Speak').is(':checked'))
+		{
+		$('#lan_speak'+lanid).html('<i class="bx bx-check-circle"></i>');
+		}
+		else
+		{
+			$('#lan_speak'+lanid).html('');	
+		}
+		 
+		 
+	}
+	else
+	{
+		
+	
+	var len  = $(`#Languagetable tr:last`).attr('id');
+	len =Number(len)+1;
+	
+	var data =`<tr id="${len}"><td class="text-nowrap" onclick="editlang(event);" id="language${len}">${Language}</td>`;
 	  if($('#Read').is(':checked'))
 		{
-		  data+=`<td class="text-center"><i class="bx bx-check-circle"></i></td>`;
+		  data+=`<td class="text-center" id="lan_read${len}"><i class="bx bx-check-circle"></i></td>`;
 		}
 	    else
 		  {
-		  data+=`<td></td>`;
+		  data+=`<td id="lan_read${len}"></td>`;
 		  }
 	  
 	   if($('#Write').is(':checked'))
 		{
-		  data+=`<td class="text-center"><i class="bx bx-check-circle"></i></td>`;
+		  data+=`<td class="text-center" id="lan_write${len}"><i class="bx bx-check-circle"></i></td>`;
 		}
 	   else
 		  {
-		  data+=`<td></td>`;
+		  data+=`<td id="lan_write${len}"></td>`;
 		  }
 	   
 	    if($('#Speak').is(':checked'))
 		{
-		  data+=`<td class="text-center"><i class="bx bx-check-circle"></i></td>`;
+		  data+=`<td class="text-center" id="lan_speak${len}"><i class="bx bx-check-circle"></i></td>`;
 		}
 	   else
 		  {
-		  data+=`<td></td>`;
+		  data+=`<td id="lan_speak${len}"></td>`;
 		  }
 	    data+=`</tr>`;
 	$(`#Languagetable tbody`).append(data);
+	}
+	langclose();
 	$(e.target)[0].reset();
+	$('#lanid').val('');
 	$('#AddLanguages').modal('hide');
 }
 
@@ -2362,6 +2407,7 @@ function editlang(e){
 		texts.push(innerText);
 		}
 	})
+	$('#lanid').val($(parent).attr('id'));
 	$('#Language').val(texts[0]);
 	    if(texts[1] != '')
 		{

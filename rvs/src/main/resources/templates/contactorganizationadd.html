@@ -77,7 +77,10 @@
     <script th:src="@{/assets/js/config.js}"></script>
 
 <style type="text/css">
-
+.contacteditbtn
+{
+cursor:pointer;
+}
 
 </style>
 
@@ -321,7 +324,7 @@
                           <div class="d-flex justify-content-between flex-sm-row flex-column">
                             <div class="card-information">
                               <input type="hidden" th:class="'primarycontact'+ ${contactObj.contactid}" th:value="${contactObj.primarycontact}"/>
-                              <h6 th:class="'mb-3 contacttype'+ ${contactObj.contactid}" th:text="${contactObj.Department}"></h6>
+                              <h6 th:class="'mb-3 contacteditbtn contacttype'+ ${contactObj.contactid}" th:name="${contactObj.contactid}" th:text="${contactObj.Department}"></h6>
                               <h6 th:class="'mb-1 phonenumber'+ ${contactObj.contactid}" th:text="${contactObj.Phonenumber}"></h6>
                               <span th:class="'card-number email'+ ${contactObj.contactid}" th:text="${contactObj.Email}"></span
                               >
@@ -329,9 +332,7 @@
                             </div>
                             <div class="d-flex flex-column text-start text-lg-end">
                               <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button class="btn btn-label-primary me-3 contacteditbtn" th:name="${contactObj.contactid}" >
-                                  <i class='bx bxs-edit-alt'></i>
-                                </button><br/>
+                               
                                 <button class="btn btn-label-secondary contactdeletebtn" th:name="${contactObj.contactid}"><i class='bx bxs-trash-alt'></i></button>
                                 
                               </div>
@@ -1482,9 +1483,9 @@ Model_CURRENT_STATUS
 								  							if(modalcontactid == '-')
 							  								{
 								  								let tempresultid=bmobj;
-								  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"'";
+								  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"','"+ primarycontact +"'";
 									  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
-									  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacttype'+  tempresultid +'" >'+ modalcontacttype +'</h6>';
+									  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacteditbtn contacttype'+  tempresultid +'"  name="'+ tempresultid +'" onClick="reply_click('+ parameters +')">'+ modalcontacttype +'</h6>';
 									  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
 									  							
 									  							tempresult += '<span class="primarycontactlablecontainer'+  tempresultid +'">';
@@ -1494,7 +1495,7 @@ Model_CURRENT_STATUS
 								  								}
 									  							tempresult += '</span>'; 
 									  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
-									  							tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
+									  							//tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
 									  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
 									  						
 									  							$('#contactaddidv').before(tempresult);
@@ -1839,12 +1840,19 @@ Model_CURRENT_STATUS
 		   	//-------------------------------------------
 		    }); // Jquery
     
-		    function reply_click(id,contacttype,phonenumber,email)
+		    function reply_click(id,contacttype,phonenumber,email,primarycontact)
 			{
 				$('#modalcontactid').val(id);
 				$('#modalcontacttype').val(contacttype);
 				$('#modalcontactPhone').val(phonenumber);
 				$('#modalContactemail').val(email);		
+				if(primarycontact=='true')
+				{
+					$('#modalcontactprimary').prop("checked",true);	
+				}else
+				{
+					$('#modalcontactprimary').prop("checked",false);
+				}
 				$('#addNewContact').modal('show');
 			}
 				 

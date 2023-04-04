@@ -1017,7 +1017,10 @@ public class HomeController {
 		} else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
 			return contactPersonService.deleteContact(contactid);
-		} else {
+		} else if (params.get("functiontype").equalsIgnoreCase("OrganizationContacts")) {
+			int contactid = Integer.parseInt(params.get("contactid"));
+			return contactOrganizationService.deleteContact(contactid);
+		}else {
 			throw new RuntimeException("functiontype is invalid");
 		}
 
@@ -3053,50 +3056,47 @@ public class HomeController {
 		return "leavereview";
 	}
 
-	@GetMapping("leavehistory")
-	public String leavehistory(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
-			@RequestParam(name = "enddate", required = false) String enddate) {
-
+	@ResponseBody
+	@GetMapping("leavehistoryjson")
+	public Object leavehistoryjson(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
+			@RequestParam(name = "enddate", required = false) String enddate) 
+	{
 		List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
+		return lmhistory;
+	}
+	@GetMapping("leavehistory")
+	public String leavehistory() {
 
-		ArrayList<String> leavhistorylist = new ArrayList<String>();
-
-		lmhistory.forEach(rowMap -> {
-
-			String tempstr = "";
-
-			tempstr += rowMap.get("empname").toString() + " ~";
-			String fromdate[] = rowMap.get("fromadate").toString().split("-");
-			String todate[] = rowMap.get("todate").toString().split("-");
-			tempstr += fromdate[2] + "-" + fromdate[1] + "-" + fromdate[0] + " ~";
-			tempstr += todate[2] + "-" + todate[1] + "-" + todate[0] + " ~";
-			tempstr += rowMap.get("halfday").toString() + " ~";
-			tempstr += rowMap.get("leavetype").toString() + " ~";
-			tempstr += rowMap.get("status").toString() + " ~";
-			tempstr += rowMap.get("notes").toString() + " ~";
-			tempstr += rowMap.get("permissionstarttime").toString() + " ~";
-			tempstr += rowMap.get("permissionendtime").toString() + " ~";
-
-			if (!(rowMap.get("approvername") == null)) {
-				tempstr += rowMap.get("approvername").toString() + " ~";
-			} else {
-				tempstr += " ~";
-			}
-			if (!(rowMap.get("approverejectdate") == null)) {
-				tempstr += rowMap.get("approverejectdate").toString() + " ~";
-			} else {
-				tempstr += " ~";
-			}
-			if (!(rowMap.get("approvercomments") == null)) {
-				tempstr += rowMap.get("approvercomments").toString() + " ~";
-			} else {
-				tempstr += " ~";
-			}
-
-			leavhistorylist.add(tempstr);
-
-		});
-		theModel.addAttribute("leavhistorylist", leavhistorylist);
+		/*List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
+		 * ArrayList<String> leavhistorylist = new ArrayList<String>();
+		 * 
+		 * lmhistory.forEach(rowMap -> {
+		 * 
+		 * String tempstr = "";
+		 * 
+		 * tempstr += rowMap.get("empname").toString() + " ~"; String fromdate[] =
+		 * rowMap.get("fromadate").toString().split("-"); String todate[] =
+		 * rowMap.get("todate").toString().split("-"); tempstr += fromdate[2] + "-" +
+		 * fromdate[1] + "-" + fromdate[0] + " ~"; tempstr += todate[2] + "-" +
+		 * todate[1] + "-" + todate[0] + " ~"; tempstr +=
+		 * rowMap.get("halfday").toString() + " ~"; tempstr +=
+		 * rowMap.get("leavetype").toString() + " ~"; tempstr +=
+		 * rowMap.get("status").toString() + " ~"; tempstr +=
+		 * rowMap.get("notes").toString() + " ~"; tempstr +=
+		 * rowMap.get("permissionstarttime").toString() + " ~"; tempstr +=
+		 * rowMap.get("permissionendtime").toString() + " ~";
+		 * 
+		 * if (!(rowMap.get("approvername") == null)) { tempstr +=
+		 * rowMap.get("approvername").toString() + " ~"; } else { tempstr += " ~"; } if
+		 * (!(rowMap.get("approverejectdate") == null)) { tempstr +=
+		 * rowMap.get("approverejectdate").toString() + " ~"; } else { tempstr += " ~";
+		 * } if (!(rowMap.get("approvercomments") == null)) { tempstr +=
+		 * rowMap.get("approvercomments").toString() + " ~"; } else { tempstr += " ~"; }
+		 * 
+		 * leavhistorylist.add(tempstr);
+		 * 
+		 * }); theModel.addAttribute("leavhistorylist", leavhistorylist);
+		 */
 
 		return "leavehistory";
 	}

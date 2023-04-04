@@ -21,7 +21,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Branches List</title>
+    <title>Leave Approval</title>
 
     <meta name="description" content="" />
 
@@ -55,7 +55,8 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}">
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css}">
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css}">
-
+	
+	 <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}">
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -92,32 +93,59 @@
           <div class="content-wrapper">
             <!-- Content -->
 				 <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Administration/ </span>Branches</h4>
+              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Administration/HR Management/Attendance/ </span>Leave Approval</h4>
 
  
-           <!-- Fixed Columns -->
+<!-- Advanced Search -->
 <div class="card">
-  <h5 class="card-header">Fixed Columns</h5>
-  <div class="card-datatable text-nowrap">
-    <table class="dt-fixedcolumns table table-bordered">
+  <h5 class="card-header">Leave Approval</h5>
+  <!--Search Form -->
+  <div class="card-body">
+    <form class="dt_adv_search" method="POST">
+      <div class="row">
+        <div class="col-12">
+          <div class="row g-3">
+           
+            <div class="col-12 col-sm-12 col-lg-6">
+              <label class="form-label">Date:</label>
+              <div class="mb-0">
+                <input type="text" class="form-control dt-date flatpickr-range dt-input" data-column="3" placeholder="StartDate to EndDate" data-column-index="4" name="dt_date" />
+                <input type="hidden" class="form-control dt-date start_date dt-input" data-column="2" data-column-index="4" name="value_from_start_date" />
+                <input type="hidden" class="form-control dt-date end_date dt-input" name="value_from_end_date" data-column="3" data-column-index="4" />
+              </div>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <hr class="mt-0">
+  <div class="card-datatable table-responsive">
+    <table class="dt-advanced-search table table-bordered">
       <thead>
-        <tr>
-          <th>Name</th>
-          <th>Position</th>
-          <th>Email</th>
-          <th>City</th>
-          <th>Date</th>
-          <th>Salary</th>
-          <th>Age</th>
-          <th>Experience</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
+       <tr>
+                                                    	<th>S.No</th>
+                                                    	<th>Name</th>
+                                                    	<th>FromDate</th>
+                                                    	<th>To Date</th>
+                                                    	<th>Leave Type</th>
+                                                    	<th>Status</th>
+                                                    	<th>Note</th>
+                                                    	<th>P Starttime</th>
+                                                    	<th>P Endtime</th>
+                                                    	<th>Approver Name</th>
+                                                    	<th>Approver Comments</th>
+                                                    	<th>Modified Time</th>
+                                                    </tr>
       </thead>
+   <tbody>
+   </tbody>
     </table>
   </div>
 </div>
-<!--/ Fixed Columns -->
+<!--/ Advanced Search -->
+
              
              
 
@@ -185,7 +213,9 @@
   
   <script th:src="@{/assets/vendor/js/menu.js}"></script>
   <!-- endbuild -->
+<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
 
+<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
   <!-- Vendors JS -->
   <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
   <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
@@ -193,81 +223,240 @@
 
   <!-- Main JS -->
   <script th:src="@{/assets/js/main.js}"></script>
+  
+  <!-- Page JS-->
+  <script th:src="@{/assets/js/tables-datatables-advanced.js}"></script> 
+ 
 
-  <!-- Page JS -->
   
     
     <script>
-      var dt_fixedcolumns = $('.dt-fixedcolumns').DataTable({
-        ajax: assetsPath + 'json/table-datatable.json',
-        columns: [
-          { data: 'full_name' },
-          { data: 'post' },
-          { data: 'email' },
-          { data: 'city' },
-          { data: 'start_date' },
-          { data: 'salary' },
-          { data: 'age' },
-          { data: 'experience' },
-          { data: 'status' },
-          { data: 'id' }
-        ],
-        columnDefs: [
-          {
-            // Label
-            targets: -2,
-            render: function (data, type, full, meta) {
-              var $status_number = full['status'];
-              var $status = {
-                1: { title: 'Current', class: 'bg-label-primary' },
-                2: { title: 'Professional', class: ' bg-label-success' },
-                3: { title: 'Rejected', class: ' bg-label-danger' },
-                4: { title: 'Resigned', class: ' bg-label-info' },
-                5: { title: 'Applied', class: ' bg-label-dark' }
-              };
-              if (typeof $status[$status_number] === 'undefined') {
-                return data;
-              }
-              return (
-                '<span class="badge rounded-pill ' +
-                $status[$status_number].class +
-                '">' +
-                $status[$status_number].title +
-                '</span>'
-              );
-            }
-          },
-          {
-            // Actions
-            targets: -1,
-            title: 'Actions',
-            searchable: false,
-            orderable: false,
-            render: function (data, type, full, meta) {
-              return (
-                '<div class="d-inline-block">' +
-                '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>' +
-                '<div class="dropdown-menu dropdown-menu-end m-0">' +
-                '<a href="javascript:;" class="dropdown-item">Details</a>' +
-                '<a href="javascript:;" class="dropdown-item">Archive</a>' +
-                '<div class="dropdown-divider"></div>' +
-                '<a href="javascript:;" class="dropdown-item text-danger delete-record"></i>Delete</a>' +
-                '</div>' +
-                '</div>' +
-                '<a href="javascript:;" class="item-edit text-body"><i class="bx bxs-edit"></i></a>'
-              );
-            }
-          }
-        ],
-        dom: '<"d-flex justify-content-between align-items-center row"<"col-sm-12 col-md-2 d-flex"f><"col-sm-12 col-md-10 d-none"i>>t',
-        scrollY: 300,
-        scrollX: true,
-        scrollCollapse: true,
-        paging: true,
-        info: true,
-        fixedColumns: true,
-      });
+    
+ 
 
+    
+    var dt_adv_filter_table  = $('.dt-advanced-search');
+    var startDateEle = $('.start_date'),endDateEle = $('.end_date');
+      
+    dt_adv_filter_table.DataTable({
+          dom: "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6 dataTables_pager'p>>",
+          ajax: {
+	             "url": "leavehistoryjson?startdate=2022-01-01&enddate=2023-01-01",
+	             "type": "GET",
+	             "dataSrc": "",
+	         },
+          
+	         columnDefs: [
+	        	 {
+	        		 targets: 0,
+	        		 data:"id",
+	        		 
+	        	 },  
+	        	 
+	        	 {
+	        		 targets: 1,
+	        		 data:"empname",
+	        		 
+	        	 }, 
+	        	 
+	        	 {
+	        		 targets: 2,
+	        		 render: function(data, type, full, meta) {
+	        			 var fromadate = full.fromadate;
+	        			var txt = '';
+	        			 if(full.halfday)
+	        				 {
+	        				  txt+=`<br><span class="badge rounded-pill bg-label-danger">halfday</span>`;
+	        				 }
+	        			 else
+	        				{
+	        				 txt+='';
+	        				}
+	        			 return  `<span>${moment(fromadate).format('MM/DD/YYYY')}${txt}</span>`;
+	        		 },
+	        		 
+	        		 
+	        	 },
+	        	 
+	        	 {
+	        		 targets: 3,
+	        		 render: function(data, type, full, meta) {
+	        			 var todate = full.todate;
+	        			 return moment(todate).format('MM/DD/YYYY');
+	        		 },
+	        		 
+	        	 },
+	        	 
+	        	 {
+	        		 targets: 4,
+	        		 data:"leavetype",
+	        		 
+	        	 },
+	        	 {
+	        		 targets: 5,
+	        		  render: function(data, type, full, meta) {
+	        			  var st = full.status;
+	        			  var status = [];
+	        			     status['Approved'] = ' bg-label-success';
+				             status['Rejected'] = ' bg-label-danger';
+				             status['Pending'] = ' bg-label-warning';
+				            console.log(full);
+				            console.log(st);
+				            if (typeof status[st] === 'undefined') {
+				              return data;
+				            }
+				            return (
+				              '<span class="badge rounded-pill ' +
+				              status[st]+
+				              '">' +
+				             st+
+				              '</span>'
+				            );
+				          },
+	        		 
+	        	 },
+	        	 {
+	        		 targets: 6,
+	        		 data:"notes",
+	        		 
+	        	 },
+	        	 
+	        	 {
+	        		 targets: 7,
+	        		 data:"permissionstarttime",
+	        		 
+	        	 },
+	        	 {
+	        		 targets: 8,
+	        		 data:"permissionendtime",
+	        		 
+	        	 },
+	        	 {
+	        		 targets: 9,
+	        		 data:"approvername",
+	        		 
+	        	 },
+	        	 {
+	        		 targets: 10,
+	        		 data:"approvercomments",
+	        		 
+	        	 },
+	        	 {
+	        		 targets: 11,
+	        		 data:"approverejectdate",
+	        		 
+	        	 },
+	        	 
+	        	 
+			  ],
+			  orderCellsTop: true,
+		      responsive: {
+		        details: {
+		        
+		          type: 'column',
+		          renderer: function (api, rowIdx, columns) {
+		            var data = $.map(columns, function (col, i) {
+		              return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
+		                ? '<tr data-dt-row="' +
+		                    col.rowIndex +
+		                    '" data-dt-column="' +
+		                    col.columnIndex +
+		                    '">' +
+		                    '<td>' +
+		                    col.title +
+		                    ':' +
+		                    '</td> ' +
+		                    '<td>' +
+		                    col.data +
+		                    '</td>' +
+		                    '</tr>'
+		                : '';
+		            }).join('');
+
+		            return data ? $('<table class="table"/><tbody />').append(data) : false;
+		          }
+		        }
+		      },
+         
+      })
+      
+ 
+    var rangePickr = $('.flatpickr-range'),
+    dateFormat = 'MM/DD/YYYY';
+
+  if (rangePickr.length) {
+    rangePickr.flatpickr({
+      mode: 'range',
+      dateFormat: 'm/d/Y',
+      orientation: isRtl ? 'auto right' : 'auto left',
+      locale: {
+        format: dateFormat
+      },
+      onClose: function (selectedDates, dateStr, instance) {
+        var startDate = '',
+          endDate = new Date();
+        if (selectedDates[0] != undefined) {
+          startDate = moment(selectedDates[0]).format('MM/DD/YYYY');
+          startDateEle.val(startDate);
+        }
+        if (selectedDates[1] != undefined) {
+          endDate = moment(selectedDates[1]).format('MM/DD/YYYY');
+          endDateEle.val(endDate);
+        }
+        $(rangePickr).trigger('change').trigger('keyup');
+      }
+    });
+  }
+
+  // Filter column wise function
+  function filterColumn(i, val) {
+    if (i == 3) {
+      var startDate = startDateEle.val(),
+        endDate = endDateEle.val();
+      if (startDate !== '' && endDate !== '') {
+        $.fn.dataTableExt.afnFiltering.length = 0; // Reset datatable filter
+        dt_adv_filter_table.dataTable().fnDraw(); // Draw table after filter
+        filterByDate(i, startDate, endDate); // We call our filter function
+        console.log(i, startDate, endDate);
+      }
+      dt_adv_filter_table.dataTable().fnDraw();
+    } else {
+      dt_adv_filter_table.DataTable().column(i).search(val, false, true).draw();
+    }
+  }
+ 
+  
+  var filterByDate = function (column, startDate, endDate) {
+	    // Custom filter syntax requires pushing the new filter to the global filter array
+	    $.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
+	      var rowDate = normalizeDate(aData[column]),
+	        start = normalizeDate(startDate),
+	        end = normalizeDate(endDate);
+
+	      // If our date from the row is between the start and end
+	      if (start <= rowDate && rowDate <= end) {
+	        return true;
+	      } else if (rowDate >= start && end === '' && start !== '') {
+	        return true;
+	      } else if (rowDate <= end && start === '' && end !== '') {
+	        return true;
+	      } else {
+	        return false;
+	      }
+	    });
+	  };
+	  
+	  var normalizeDate = function (dateString) {
+		    var date = new Date(dateString);
+		    var normalized =
+		      date.getFullYear() + '' + ('0' + (date.getMonth() + 1)).slice(-2) + '' + ('0' + date.getDate()).slice(-2);
+		    return normalized;
+		  };
+	  
+      $('input.dt-input').on('keyup', function () {
+          filterColumn($(this).attr('data-column'), $(this).val());
+        });
+      
     </script>
   </body>
 </html>

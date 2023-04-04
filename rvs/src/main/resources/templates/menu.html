@@ -23,6 +23,10 @@
 				class="menu-icon tf-icons bx bx-home-circle"></i>
 				<div data-i18n="Dashboards">Dashboards</div>
 		</a></li>
+		<li th:if="${dataLoginrole}=='ROLE_ADMIN'" class="menu-item"><a href="rvsemp/" class="menu-link"> <i
+				class="menu-icon tf-icons bx bxs-left-arrow-square"></i>
+				<div data-i18n="Personal Portal">Personal Portal</div>
+		</a></li>
 
 		<!-- Layouts -->
 		<li class="menu-item"><a href="javascript:void(0);"
@@ -50,20 +54,20 @@
 						<li class="menu-item"><a href="emplist" class="menu-link">
 								<div data-i18n="Employee">Employee</div>
 						</a></li>
-						<li class="menu-item"><a href=""
-							class="menu-link">
+						<li class="menu-item"><a href="" class="menu-link">
 								<div data-i18n="Insurance">Insurance</div>
 						</a></li>
-						<li class="menu-item">
-							 <a href="javascript:void(0);" class="menu-link menu-toggle">
-									<div data-i18n="Attendance">Attendance</div>
-							</a>
+						<li class="menu-item"><a href="javascript:void(0);"
+							class="menu-link menu-toggle">
+								<div data-i18n="Attendance">Attendance</div>
+						</a>
 							<ul class="menu-sub">
 								<li class="menu-item"><a href="empattendance"
 									class="menu-link">
 										<div data-i18n="Daily Attendance">Daily Attendance</div>
 								</a></li>
-								<li class="menu-item"><a href="attendancereport" class="menu-link">
+								<li class="menu-item"><a href="attendancereport"
+									class="menu-link">
 										<div data-i18n="Attendance Report">Attendance Report</div>
 								</a></li>
 								<li class="menu-item"><a href="holidaydefine"
@@ -74,13 +78,12 @@
 									class="menu-link">
 										<div data-i18n="Leave Approval">Leave Approval</div>
 								</a></li>
-								<li class="menu-item"><a
-									href="leavehistory" class="menu-link">
+								<li class="menu-item"><a href="leavehistory"
+									class="menu-link">
 										<div data-i18n="Leave History">Leave History</div>
 								</a></li>
 							</ul></li>
-						<li class="menu-item"><a
-							href="payroll" class="menu-link">
+						<li class="menu-item"><a href="payroll" class="menu-link">
 								<div data-i18n="Payroll">Payroll</div>
 						</a></li>
 					</ul></li>
@@ -156,16 +159,14 @@
 							class="menu-link">
 								<div data-i18n="Security">Security</div>
 						</a></li>
-						<li class="menu-item"><a href=""
-							class="menu-link">
+						<li class="menu-item"><a href="" class="menu-link">
 								<div data-i18n="Billing & Plans">Billing & Plans</div>
 						</a></li>
 						<li class="menu-item"><a
 							href="app-user-view-notifications.html" class="menu-link">
 								<div data-i18n="Notifications">Notifications</div>
 						</a></li>
-						<li class="menu-item"><a
-							href="" class="menu-link">
+						<li class="menu-item"><a href="" class="menu-link">
 								<div data-i18n="Connections">Connections</div>
 						</a></li>
 					</ul></li>

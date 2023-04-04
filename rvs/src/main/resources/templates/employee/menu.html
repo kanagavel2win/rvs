@@ -1,43 +1,51 @@
-    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
-        <div class="navbar-header">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item mr-auto"><a class="navbar-brand" href="index">
-                        
-                        <h2 class="brand-text mb-0"><b>RVS</b></h2>
-                    </a></li>
-                <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="bx bx-x d-block d-xl-none font-medium-4 primary"></i><i class="toggle-icon bx bx-disc font-medium-4 d-none d-xl-block primary" data-ticon="bx-disc"></i></a></li>
-            </ul>
-        </div>
-        
-        <div class="main-menu-content">
-            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="">
-                <li class=" nav-item"><a href="index"><i class="bx bx-home-alt"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>					
-                </li>
-                <li th:if="${dataLoginrole}=='ROLE_ADMIN'" class=" nav-item"><a href="../">
-	                <i class="bx bxs-left-arrow-square"></i><span class="menu-title">Admin Portal</span></a>
-                </li>
-                
-                <li class=" navigation-header"><span>Apps</span>
-                </li>
-                
-                <li class=" nav-item"><a href="leaverequest"><i class="bx bxs-calendar-x"></i><span class="menu-title" data-i18n="Invoice">Leave Request</span></a>
-                </li>
-                <li class=" nav-item"><a href="leavereqlist"><i class="bx bx-list-ul"></i><span class="menu-title" data-i18n="Invoice">Leave Request List</span></a>
-                </li>
-                
-                 <li class=" navigation-header"><span>Profile</span>
-                </li>
-                
-                <li class=" nav-item"><a href="viewprofile"><i class="bx bxs-user-detail"></i><span class="menu-title" data-i18n="Invoice">Personal Details</span></a>
-                </li>
-                
-                <li class=" nav-item"><a href="viewjob"><i class="bx bx-book-open"></i><span class="menu-title" data-i18n="Invoice">Job Details</span></a>
-                </li>
-                
-                <li class=" nav-item"><a href="changepassword"><i class="bx bxs-key"></i><span class="menu-title" data-i18n="Invoice">Change Password</span></a>
-                </li>
-                
-               
-			 </ul>
-        </div>
-    </div>
+
+<aside id="layout-menu"
+	class="layout-menu menu-vertical menu bg-menu-theme">
+	<div class="app-brand demo">
+		<a href="index" class="app-brand-link"> <span
+			class="app-brand-logo demo"> <img
+				th:src="@{/assets/img/logo/favicon.ico}" />
+		</span> <span class="app-brand-text demo menu-text fw-bold ms-2">RVSLS</span>
+		</a> <a href="javascript:void(0);"
+			class="layout-menu-toggle menu-link text-large ms-auto"> <i
+			class="bx menu-toggle-icon d-none d-xl-block fs-4 align-middle"></i>
+			<i class="bx bx-x d-block d-xl-none bx-sm align-middle"></i>
+		</a>
+	</div>
+
+	<div class="menu-divider mt-0"></div>
+
+	<div class="menu-inner-shadow"></div>
+
+	<ul class="menu-inner py-1">
+		<!-- Dashboards -->
+		<li class="menu-item"><a href="index" class="menu-link"> <i
+				class="menu-icon tf-icons bx bx-home-circle"></i>
+				<div data-i18n="Dashboards">Dashboards</div>
+		</a></li>
+		<li th:if="${dataLoginrole}=='ROLE_ADMIN'" class="menu-item"><a
+			href="../" class="menu-link"> <i
+				class="menu-icon tf-icons bx bxs-left-arrow-square"></i>
+				<div data-i18n="Admin Portal">Admin Portal</div>
+		</a></li>
+
+		<!-- Layouts -->
+		<li class="menu-item"><a href="javascript:void(0);"
+			class="menu-link menu-toggle"> <i
+				class="menu-icon fa-solid fa-users-gear"></i>
+				<div>Apps</div>
+		</a>
+
+			<ul class="menu-sub">
+				<li class="menu-item"><a href="leaverequest" class="menu-link">
+						<div data-i18n="Leave Request">Leave Request</div>
+				</a></li>
+				<li class="menu-item"><a href="leavereqlist" class="menu-link">
+						<div data-i18n="Leave Request List">Leave Request List</div>
+				</a></li>
+				
+			</ul></li>
+		<!-- Layouts -->
+
+	</ul>
+</aside>

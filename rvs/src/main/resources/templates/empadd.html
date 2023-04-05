@@ -648,23 +648,23 @@ cursor:pointer;
 
 												<li th:each="obj : ${employeemaster.employeeEducation}"
 													class="timeline-item timeline-item-primary mb-4 "
-													onclick="editExper(event);" id="${obj.empEduid}"><span
+													onclick="editExper(event);" th:id="${obj.empEduid}"><span
 													class="timeline-indicator timeline-indicator-primary">
 														<i class="bx bxs-graduation"></i>
 												</span>
 													<div class="timeline-event">
 														<div class="timeline-header border-bottom mb-3">
 															<h6 class="mb-0 pop_cursor"
-																th:text="${obj.Degree} + ' _ '+ ${obj.MajorSpecialization}"></h6>
+																th:text="${obj.Degree} + ' _ '+ ${obj.MajorSpecialization}" th:id="'h6' + ${obj.empEduid}"></h6>
 															<small class="text-muted"
-																th:text="${obj.FromYear} +'_' + ${obj.ToYear}"></small>
+																th:text="${obj.FromYear} +'_' + ${obj.ToYear}" th:id="'small' + ${obj.empEduid}"></small>
 														</div>
 														<div class="d-flex justify-content-between flex-wrap mb-2">
 															<div>
-																<span th:text="${obj.College_Institution}"></span>
+																<span th:text="${obj.College_Institution}" th:id="'span1_' + ${obj.empEduid}"></span>
 															</div>
 															<div>
-																<span th:text="${obj.Percentage_GPA}"></span>
+																<span th:text="${obj.Percentage_GPA}" th:id="'span2_' + ${obj.empEduid}"></span>
 															</div>
 
 														</div>
@@ -696,20 +696,20 @@ cursor:pointer;
 											<ul class="timeline mt-3 timeline-exp">
 												<li th:each="obj : ${employeemaster.employeeExperience}"
 													class="timeline-item timeline-item-transparent "
-													onclick="editExperience(event);"><span
+													onclick="editExperience(event);" th:id="${obj.empExperienceid}"><span
 													class="timeline-point timeline-point-primary"></span>
 													<div class="timeline-event">
 														<div class="timeline-header border-bottom mb-3">
-															<h6 class="mb-0 pop_cursor" th:text="${obj.JobTitle}"></h6>
+															<h6 class="mb-0 pop_cursor" th:text="${obj.JobTitle}" th:id="'Exph6'+${obj.empExperienceid}"></h6>
 															<small class="text-muted"
-																th:text="${obj.expFromyear} +'_'+ ${obj.expToyear}"></small>
+																th:text="${obj.expFromyear} +'_'+ ${obj.expToyear}" th:id="'Expsmall'+${obj.empExperienceid}"></small>
 														</div>
 														<div class="d-flex justify-content-between flex-wrap mb-2">
 															<div>
-																<span th:text="${obj.Company}"></span>
+																<span th:text="${obj.Company}" th:id="'Expspan1'+${obj.empExperienceid}"></span>
 															</div>
 															<div>
-																<span class="text-muted" th:text="${obj.Location}"></span>
+																<span class="text-muted" th:text="${obj.Location}" th:id="'Expspan2'+${obj.empExperienceid}"></span>
 															</div>
 														</div>
 													</div></li>
@@ -1434,7 +1434,7 @@ cursor:pointer;
 										</div>
 										<form id="Qualificationform" class="row g-3"
 											onsubmit="addQualificationitem(event);">
-
+										<input type="hidden" id="Qualid" />
 											<div class="mb-3 col-lg-12 col-md-12">
 												<label class="form-label" for="Institution">College
 													/ Institution </label> <input type="text" class="form-control"
@@ -1518,7 +1518,7 @@ cursor:pointer;
 										</div>
 										<form id="Experienceform" class="row g-3"
 											onsubmit="addExper(event);">
-
+										<input type="hidden" id="expid" />
 											<div class="mb-3 col-lg-6 col-md-12">
 												<label class="form-label" for="Company">Company </label> <input
 													type="text" class="form-control" id="Company"
@@ -2408,15 +2408,31 @@ function addlang(e){
 
 function addQualificationitem(e){
 	e.preventDefault();
+	var Qualid = $(`#Qualid`).val();
 	const formData = new FormData(e.target);
 	const data = {};
 	  for (const [key, value] of formData.entries()) {
 		  data[key] = value;
 	  }
+	  if(Qualid !=''){
+		  $('#h6'+Qualid).text(`${data.Degree
+					} _ ${data.Major}`);
+		  $('#small'+Qualid).text(`${data.Qualificationfrom} _ ${data.Qualificationto}`);
+		  $('#span1_'+Qualid).text(`${data.Institution}`);
+		  $('#span2_'+Qualid).text(`${data.Percentage}`);
+	  }
+	  else
+		  {
+	      console.log(data);
+		  var len  = $(`.timelinequf li:first`).attr('id');
+		  len =Number(len)+1;
+		  
+		 $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);" id='${len}'><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0" id="h6${len}">${data.Degree
+	} _ ${data.Major}</h6><small class="text-muted" id="small${len}">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="span1_${len}"> ${data.Institution}</span></div><div><span id="span2_${len}">${data.Percentage}</span></div></div></div></li>`);
+}
 	  
-	 $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);"><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0">${data.Degree
-} _ ${data.Major}</h6><small class="text-muted">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span> ${data.Institution}</span></div><div><span >${data.Percentage}</span></div></div></div></li>`);
 	 $(e.target)[0].reset();
+	 $('#Qualid').val('');
 	 $('#AddQualification').modal('hide');
  
 }
@@ -2479,6 +2495,7 @@ function editExper(e){
 	$(parent).children().find('span').each(function(){
 		texts.push($(this).text());
 	})
+	$('#Qualid').val($(parent).attr('id'));
 	var Degree =  texts[0].split('_');
 	$('#Degree').val(Degree[0].trim());
 	$('#Major').val(Degree[1].trim());
@@ -2494,13 +2511,28 @@ function editExper(e){
 
 function addExper(e){
 	e.preventDefault();
+	var expid = $(`#expid`).val();
 	const formData = new FormData(e.target);
 	const obj = {};
 	  for (const [key, value] of formData.entries()) {
 		  obj[key] = value;
 	  }
-	  $('.timeline-exp').append(`<li class="timeline-item timeline-item-transparent" onclick="editExperience(event);"><spanclass="timeline-point timeline-point-primary"></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0" >${obj.Role}</h6><small class="text-muted">${obj.Experiencefrom}_ ${obj.Experiencento}</small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span>${obj.Company}</span></div><div><span class="text-muted" >${obj.Location}</span></div></div></div></li>`);
+	  if(expid !=''){
+		  $('#Exph6'+expid).text(`${obj.Role}`);
+		  $('#Expsmall'+expid).text(`${obj.Experiencefrom}_ ${obj.Experiencento}`);
+		  $('#Expspan1'+expid).text(`${obj.Company}`);
+		  $('#Expspan2'+expid).text(`${obj.Location}`);
+	  }
+	  else
+		  {
+		  var len  = $(`.timeline-exp li:first`).attr('id');
+		  len =Number(len)+1;
+		  
+	  $('.timeline-exp').append(`<li class="timeline-item timeline-item-transparent" onclick="editExperience(event);" id="${len}"><spanclass="timeline-point timeline-point-primary"></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0" id="Exph6${len}">${obj.Role}</h6><small class="text-muted" id="Expsmall${len}">${obj.Experiencefrom}_ ${obj.Experiencento}</small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="Expspan1${len}">${obj.Company}</span></div><div><span class="text-muted" id="Expspan2${len}">${obj.Location}</span></div></div></div></li>`);
+		  }
+	  
 	  $(e.target)[0].reset();
+	  $(`#expid`).val('');
 	  $('#AddExperience').modal('hide');
 }
 
@@ -2514,7 +2546,7 @@ function editExperience(e){
 	$(parent).children().find('span').each(function(){
 		texts.push($(this).text());
 	})
-	
+	$('#expid').val($(parent).attr('id'));
 	var date =  texts[1].split('_');
 	Experiencefrom.setDate(date[0]);
 	Experiencento.setDate(date[1]);

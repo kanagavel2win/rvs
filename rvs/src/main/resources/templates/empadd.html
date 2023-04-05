@@ -494,10 +494,10 @@ cursor:pointer;
 										</div>
 									</div>
 									<div class="card-body" id="addNewEmg">
-										<div class="row editemg">
+									<th:block th:each="emg : ${employeemaster.employeeEmgContact}">
+										<div class="row editemg" th:id="${emg.empEmgContactid}">
 											<hr />
-											<th:block
-												th:each="emg : ${employeemaster.employeeEmgContact}">
+											
 												<div class="col-xl-7 col-12">
 													<dl class="row mb-0">
 														<dt class="col-sm-4 mb-3 text-nowrap">
@@ -568,8 +568,9 @@ cursor:pointer;
 															th:text="${emg.Emg_ZIP}"></dd>
 													</dl>
 												</div>
-											</th:block>
+											
 										</div>
+										</th:block>
 									</div>
 								</div>
 								<!--/ Billing Address -->
@@ -1096,7 +1097,7 @@ cursor:pointer;
 														id="InsuranceNominee" th:field="*{Emg_InsuranceNominee}" />
 													<label class="form-check-label" for="InsuranceNominee">
 														Insurance Nominee </label> <input type="hidden"
-														id="empEmgContactid" th:field="*{empEmgContactid}" />
+														id="empEmgContactid" />
 
 												</div>
 
@@ -2370,7 +2371,7 @@ function addlang(e){
 	var len  = $(`#Languagetable tr:last`).attr('id');
 	len =Number(len)+1;
 	
-	var data =`<tr id="${len}"><td class="text-nowrap" onclick="editlang(event);" id="language${len}">${Language}</td>`;
+	var data =`<tr id="${len}"><td class="text-nowrap pop_cursor" onclick="editlang(event);" id="language${len}">${Language}</td>`;
 	  if($('#Read').is(':checked'))
 		{
 		  data+=`<td class="text-center" id="lan_read${len}"><i class="bx bx-check-circle"></i></td>`;
@@ -2427,7 +2428,7 @@ function addQualificationitem(e){
 		  var len  = $(`.timelinequf li:first`).attr('id');
 		  len =Number(len)+1;
 		  
-		 $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);" id='${len}'><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0" id="h6${len}">${data.Degree
+		 $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);" id='${len}'><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="h6${len}">${data.Degree
 	} _ ${data.Major}</h6><small class="text-muted" id="small${len}">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="span1_${len}"> ${data.Institution}</span></div><div><span id="span2_${len}">${data.Percentage}</span></div></div></div></li>`);
 }
 	  
@@ -2528,7 +2529,7 @@ function addExper(e){
 		  var len  = $(`.timeline-exp li:first`).attr('id');
 		  len =Number(len)+1;
 		  
-	  $('.timeline-exp').append(`<li class="timeline-item timeline-item-transparent" onclick="editExperience(event);" id="${len}"><spanclass="timeline-point timeline-point-primary"></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0" id="Exph6${len}">${obj.Role}</h6><small class="text-muted" id="Expsmall${len}">${obj.Experiencefrom}_ ${obj.Experiencento}</small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="Expspan1${len}">${obj.Company}</span></div><div><span class="text-muted" id="Expspan2${len}">${obj.Location}</span></div></div></div></li>`);
+	  $('.timeline-exp').append(`<li class="timeline-item timeline-item-transparent" onclick="editExperience(event);" id="${len}"><spanclass="timeline-point timeline-point-primary"></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="Exph6${len}">${obj.Role}</h6><small class="text-muted" id="Expsmall${len}">${obj.Experiencefrom}_ ${obj.Experiencento}</small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="Expspan1${len}">${obj.Company}</span></div><div><span class="text-muted" id="Expspan2${len}">${obj.Location}</span></div></div></div></li>`);
 		  }
 	  
 	  $(e.target)[0].reset();
@@ -2564,19 +2565,40 @@ function emgAddressdata(e){
 	  for (const [key, value] of formData.entries()) {
 		  obj[key] = value;
 	  }
-	  console.log(obj);
 	  
- var text = `<div class="row editemg"><hr><div class="col-xl-7 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Name: <input type="hidden" id="empEmgContactid2" value=""> <input type="hidden" id="Emg_InsuranceNominee2" value="true"></dt><dd class="col-sm-8"><span id="Emg_Name2" onclick="editemgAddressdata(event);">${obj.Emg_Name}</span>`;
+	  console.log(obj);
+	 var eid =  $('#empEmgContactid').val();
+	 if(eid !=''){
+		  $('#Emg_Name'+eid).text(`${obj.Emg_Name}`);
+		  $('#Emg_Relation'+eid).text(`${obj.Emg_Relation}`);
+		  $('#Emg_Street1'+eid).text(`${obj.Emg_Street1}`);
+		  $('#Emg_Street2'+eid).text(`${obj.Emg_Street2}`);
+		  $('#Emg_Landmark'+eid).text(`${obj.Emg_Landmark}`);
+		  $('#Emg_PersonalPhone'+eid).text(`${obj.Emg_PersonalPhone}`);
+		  $('#Emg_Village'+eid).text(`${obj.Emg_Village}`);
+		  $('#Emg_City'+eid).text(`${obj.Emg_City}`);
+		  $('#Emg_State'+eid).text(`${obj.Emg_State}`);
+		  $('#Emg_ZIP'+eid).text(`${obj.Emg_ZIP}`);
+	 }
+	 
+	 else
+     {
+	 var len  = $(`#addNewEmg .editemg:last`).attr('id');
+	  len =Number(len)+1;
+	
+ var text = `<div class="row editemg" id="${len}"><hr><div class="col-xl-7 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Name: <input type="hidden" id="empEmgContactid2" value=""> <input type="hidden" id="Emg_InsuranceNominee${len}" value="true"></dt><dd class="col-sm-8"><span id="Emg_Name${len}" class="pop_cursor" onclick="editemgAddressdata(event);">${obj.Emg_Name}</span>`;
  
  if($('#InsuranceNominee').is(':checked'))
 	{
 	 text+=`<span><br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>`;
 	}
  
- text+=`</dd><dt class="col-sm-4 mb-3 text-nowrap">Relationship:</dt><dd class="col-sm-8" id="Emg_Relation2">${obj.Emg_Relation}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line1:</dt><dd class="col-sm-8" id="Emg_Street12">${obj.Emg_Street1}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line2:</dt><dd class="col-sm-8" id="Emg_Street22">${obj.Emg_Street2}</dd><dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt><dd class="col-sm-8" id="Emg_Landmark2">${obj.Emg_Landmark}</dd></dl></div><div class="col-xl-5 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Contact No:</dt><dd class="col-sm-8" id="Emg_PersonalPhone2">${obj.Emg_PersonalPhone}</dd><dt class="col-sm-4 mb-3 text-nowrap">Village:</dt><dd class="col-sm-8" id="Emg_Village2">${obj.Emg_Village}</dd><dt class="col-sm-4 mb-3 text-nowrap">City:</dt><dd class="col-sm-8" id="Emg_City2">${obj.Emg_City}</dd><dt class="col-sm-4 mb-3 text-nowrap">State:</dt><dd class="col-sm-8" id="Emg_State2">${obj.Emg_State}</dd><dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt><dd class="col-sm-8" id="Emg_ZIP2">${obj.Emg_ZIP}</dd></dl></div></div>`;
+ text+=`</dd><dt class="col-sm-4 mb-3 text-nowrap">Relationship:</dt><dd class="col-sm-8" id="Emg_Relation${len}">${obj.Emg_Relation}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line1:</dt><dd class="col-sm-8" id="Emg_Street1${len}">${obj.Emg_Street1}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line2:</dt><dd class="col-sm-8" id="Emg_Street2${len}">${obj.Emg_Street2}</dd><dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt><dd class="col-sm-8" id="Emg_Landmark${len}">${obj.Emg_Landmark}</dd></dl></div><div class="col-xl-5 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Contact No:</dt><dd class="col-sm-8" id="Emg_PersonalPhone${len}">${obj.Emg_PersonalPhone}</dd><dt class="col-sm-4 mb-3 text-nowrap">Village:</dt><dd class="col-sm-8" id="Emg_Village${len}">${obj.Emg_Village}</dd><dt class="col-sm-4 mb-3 text-nowrap">City:</dt><dd class="col-sm-8" id="Emg_City${len}">${obj.Emg_City}</dd><dt class="col-sm-4 mb-3 text-nowrap">State:</dt><dd class="col-sm-8" id="Emg_State${len}">${obj.Emg_State}</dd><dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt><dd class="col-sm-8" id="Emg_ZIP${len}">${obj.Emg_ZIP}</dd></dl></div></div>`;
  
  $('#addNewEmg').append(text);
+     }
  $(e.target)[0].reset();
+ $('#empEmgContactid').val('');
  $('#addNewEmgAddress').modal('hide');
 	
 }
@@ -2585,6 +2607,7 @@ function editemgAddressdata(e){
 	const parent = $(e.target).parents('.editemg');
 	console.log(parent);
 	const texts = [];
+	$('#empEmgContactid').val($(parent).attr('id'));
 	$(parent).children().find('dd').each(function(){
 		texts.push($(this).text());
 	})

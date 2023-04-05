@@ -19,10 +19,12 @@ public class MyErrorController implements ErrorController {
 	}
 
 	@RequestMapping("/error")
-	public String handleError(HttpServletRequest request) {
+	public String handleError(HttpServletRequest request, Model themodel) {
 		// get error status
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-
+		Object Errormessage = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
+		themodel.addAttribute("Errormessage", Errormessage);
+		
 		// TODO: log error details here
 
 		if (status != null) {
@@ -30,6 +32,7 @@ public class MyErrorController implements ErrorController {
 
 			// display specific error page
 			if (statusCode == HttpStatus.UNAUTHORIZED.value()) {
+				
 				return "error/401Unaut";
 			} else if (statusCode == HttpStatus.NOT_FOUND.value()) {
 				return "error/404Pagenotfound";
@@ -44,16 +47,5 @@ public class MyErrorController implements ErrorController {
 		return "error";
 	}
 
-	/*@GetMapping("login")
-	public String login(Model model) {
-
-		return "login";
-	}
-*/
-/*	@GetMapping("403")
-	public String accessDenied(Model model) {
-
-		return "403";
-	}
-*/
+	
 }

@@ -146,7 +146,7 @@
                       <label class="form-label" for="startdate">FROM DATE</label>
                       <div class="has-validation">
                         
-                         <input  type="text" id="startdate"  class="form-control" placeholder="e.g. March 7, 2023" required />
+                         <input  type="text" id="startdate" name="startdate"  class="form-control" placeholder="e.g. March 7, 2023" required />
                         
                        <div class="invalid-feedback">Please enter the Branch Name.</div>
                       </div>
@@ -158,7 +158,7 @@
                       <label class="form-label" for="enddate">TO DATE</label>
                       <div class="has-validation">
                         
-                         <input  type="text" id="enddate" class="form-control" placeholder="e.g. March 7, 2023" required />
+                         <input  type="text" id="enddate" class="form-control" name="enddate" placeholder="e.g. March 7, 2023" required />
                         
                        <div class="invalid-feedback">Please enter the Branch Name.</div>
                       </div>
@@ -184,7 +184,7 @@
                     
             <div class="col-lg-12 col-md-12">
             <label class="switch">
-              <input type="checkbox" class="switch-input" onclick="halfhaldle(event);" />
+              <input type="checkbox" name="halfday" class="switch-input" onclick="halfhaldle(event);" />
               <span class="switch-toggle-slider">
                 <span class="switch-on"></span>
                 <span class="switch-off"></span>
@@ -199,7 +199,7 @@
                       <label class="form-label" for="starttime">START TIME</label>
                       <div class="has-validation">
                         
-                         <input  type="text" id="starttime" class="form-control" placeholder="e.g. 12:00 PM" readonly />
+                         <input  type="text" id="starttime" name="starttime" class="form-control" placeholder="e.g. 12:00 PM" readonly />
                         
                        <div class="invalid-feedback">Please enter the Start Time.</div>
                       </div>
@@ -212,7 +212,7 @@
                       <label class="form-label" for="endtime">END TIME</label>
                       <div class="has-validation">
                         
-                         <input  type="text" id="endtime" class="form-control" placeholder="e.g. 12:00 PM" readonly />
+                         <input  type="text" id="endtime" name="endtime" class="form-control" placeholder="e.g. 12:00 PM" readonly />
                         
                        <div class="invalid-feedback">Please enter the End Time.</div>
                       </div>

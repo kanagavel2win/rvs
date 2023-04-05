@@ -324,8 +324,13 @@ var tblemployeecompensationid=0;
 															th:text="${emp.jobdeparment}"></span></td>
 														<td><span th:id="'tbljobtitle' + ${stat.index}"
 															th:text="${emp.jobtitle}"></span></td>
-														<td><span th:id="'tbljobreportsto' + ${stat.index}"
-															th:text="${emp.jobreportsto}"></span></td>
+														<td><input type="hidden" th:id="'tbljobreportsto' + ${stat.index}"
+															th:value="${emp.jobreportsto}"/>
+															
+															<span th:id="'tblreportstoname' + ${stat.index}"
+															th:text="${emp.reportstoname}"></span>
+															
+															</td>
 														<td><span class="iconalign"> <span
 																data-bs-toggle="modal"
 																data-bs-target="#jobInformationScrollable"
@@ -570,6 +575,17 @@ var tblemployeecompensationid=0;
 											</select>
 										</div>
 										<div class="col-12 ">
+											<label for="email-id-icon">Department <label
+												class="emptitle additem" name="adddepartmentdata"><i
+													class="bx bxs-plus-circle ownstyle1"></i></label>
+											</label> <select class="form-select adddepartmentdata" id="jobdeparment">
+												<option>-</option>
+												<th:block th:each="str :${Department}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+										</div>
+										<div class="col-12 ">
 											<label for="email-id-icon">Job Title <label
 												class="emptitle additem" name="addjobtitledata"><i
 													class="bx bxs-plus-circle ownstyle1"></i></label>
@@ -585,7 +601,7 @@ var tblemployeecompensationid=0;
 												class="form-control" id="jobreportsto">
 												<option>-</option>
 												<th:block th:each="str :${EffectiveEmployee}">
-													<option th:value="${str.StaffName +'-'+ str.empMasterid}"
+													<option th:value="${str.empMasterid}"
 														th:text="${str.StaffName}"></option>
 												</th:block>
 											</select>
@@ -1192,8 +1208,9 @@ var tblemployeecompensationid=0;
 											var jobdeparment = $(
 													'#jobdeparment').val();
 											var jobtitle = $('#jobtitle').val();
-											var jobreportsto = $(
-													'#jobreportsto').val();
+											
+											
+											var jobreportsto = $('#jobreportsto').val();
 
 											var jobeffectivedate_new = "";
 											if (jobeffectivedate != "") {
@@ -1223,10 +1240,9 @@ var tblemployeecompensationid=0;
 														success : function(
 																result) {
 
-															var objid = result
-																	.replace(
-																			"Success",
-																			"");
+															var bmobj = JSON.parse(JSON.stringify(result));
+															
+															var objid =bmobj.employeejobinfoid;
 															$(
 																	'#modeljqueryresult')
 																	.text(
@@ -1250,8 +1266,8 @@ var tblemployeecompensationid=0;
 																html += '	<span id="tbljobtitle' + tblemployeeJobinfoid  + '" >'
 																		+ jobtitle
 																		+ '</span>                                    </td>                                    <td>';
-																html += '<span id="tbljobreportsto' + tblemployeeJobinfoid  + '">'
-																		+ jobreportsto
+																html += '<input type="hidden" id="tbljobreportsto' + tblemployeeJobinfoid  + '" value="'+ bmobj.jobreportsto +'"/><span id="tblreportstoname' + tblemployeeJobinfoid  + '">'
+																		+ bmobj.reportstoname
 																		+ '</span>                                    </td>                                    <td><span class="iconalign">';
 																html += '	<span  data-bs-toggle="modal" data-bs-target="#jobInformationScrollable" name="' + tblemployeeJobinfoid  + '" class="updatejobinfostatus"><i class="bx bxs-pencil"></i></span>';
 																html += '<span  data-bs-toggle="modal" data-bs-target="#deleteInformationScrollable" id="' + tblemployeeJobinfoid  + '"  name="'+objid+'"  class="deletejobinfostatus"><i class="bx bxs-trash-alt"></i></span>                                    </span></td>                                </tr>';
@@ -1289,8 +1305,10 @@ var tblemployeecompensationid=0;
 																$(
 																		'#tbljobreportsto'
 																				+ employeejobinfoidrow)
-																		.text(
+																		.val(
 																				jobreportsto);
+																$('#tblreportstoname'+ employeejobinfoidrow).text( bmobj.reportstoname);
+																
 																$('#jobInformationScrollable').modal('hide');
 																$('#JobInformation')[0].reset();
 
@@ -1326,8 +1344,7 @@ var tblemployeecompensationid=0;
 											$('#tbljobeffectivedate' + id)
 													.val());
 									
-									flatpickrFriendlyjobeffectivedate.setDate($('#tbljobeffectivedate' + id)
-													.val());
+									
 									$('#joblocation').val(
 											$('#tbljoblocation' + id).text())
 											.change();
@@ -1338,8 +1355,8 @@ var tblemployeecompensationid=0;
 											$('#tbljobtitle' + id).text())
 											.change();
 									$('#jobreportsto').val(
-											$('#tbljobreportsto' + id).text());
-
+											$('#tbljobreportsto' + id).val());
+									flatpickrFriendlyjobeffectivedate.setDate($('#tbljobeffectivedate' + id).val());
 								});
 
 						$(".newemplinfostatus").click(function() {

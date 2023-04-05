@@ -1020,7 +1020,7 @@ public class HomeController {
 		} else if (params.get("functiontype").equalsIgnoreCase("OrganizationContacts")) {
 			int contactid = Integer.parseInt(params.get("contactid"));
 			return contactOrganizationService.deleteContact(contactid);
-		}else {
+		} else {
 			throw new RuntimeException("functiontype is invalid");
 		}
 
@@ -2304,7 +2304,16 @@ public class HomeController {
 		}
 
 		List<EmployeeJobinfo> infoobj = new ArrayList<>();
-		infoobj = employeeJobinfoService.findByEmployeeid(empid);
+		 
+		for (EmployeeJobinfo stmojb : employeeJobinfoService.findByEmployeeid(empid)) {
+
+			if (!stmojb.getJobreportsto().equalsIgnoreCase("")) {
+				stmojb.setReportstoname(
+						employeeMasterService.findById(Integer.parseInt(stmojb.getJobreportsto())).getStaffName());
+			}
+			infoobj.add(stmojb);
+		}
+
 		if (infoobj.size() > 0) {
 			List<EmployeeJobinfo> infoobjgreen = infoobj.stream()
 					.filter(c -> dateFormat.format(date).compareTo(c.getJobeffectivedate().toString()) >= 0)
@@ -2357,7 +2366,7 @@ public class HomeController {
 		theModel.addAttribute("greenpointcompensationstatus", greenpointcompensationstatus);
 		theModel.addAttribute("branchls", branchls);
 		theModel.addAttribute("employeeJobemphiredate", stringhiredate);
-		
+
 		obj.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate).reversed());
 		infoobj.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate).reversed());
 		comoobj.sort(Comparator.comparing(EmployeeJobcompensation::getComeffectivedate).reversed());
@@ -2417,7 +2426,7 @@ public class HomeController {
 
 	@PostMapping("employeejobinformationupdate")
 	@ResponseBody
-	public String employeejobinformationupdate(@RequestParam Map<String, String> params) {
+	public EmployeeJobinfo employeejobinformationupdate(@RequestParam Map<String, String> params) {
 		EmployeeJobinfo obj = new EmployeeJobinfo();
 
 		obj.setEmployeeid(Integer.parseInt(params.get("empid")));
@@ -2434,7 +2443,13 @@ public class HomeController {
 		itemlistService.savesingletxt(obj.getJobdeparment(), "Department");
 		itemlistService.savesingletxt(obj.getJobtitle(), "JobTitle");
 		employeeJobinfoService.save(obj);
-		return "Success" + obj.getEmployeejobinfoid();
+
+		if (!params.get("jobreportsto").equalsIgnoreCase("")) {
+			obj.setReportstoname(
+					employeeMasterService.findById(Integer.parseInt(params.get("jobreportsto"))).getStaffName());
+		}
+
+		return obj;
 	}
 
 	@PostMapping("employeecompensationupdate")
@@ -2775,7 +2790,7 @@ public class HomeController {
 	@PostMapping("holidaysave")
 	public String holidaysave(@RequestParam Map<String, String> param) {
 
-		//System.out.println(param);
+		// System.out.println(param);
 		Holiday obj = new Holiday();
 		if (param.get("calid") != null && (!param.get("calid").equalsIgnoreCase(""))) {
 			obj.setId(Integer.parseInt(param.get("calid").toString()));
@@ -2784,13 +2799,13 @@ public class HomeController {
 		obj.setStart(param.get("fromdate").toString());
 		obj.setEnd(param.get("todate").toString());
 		obj.setAllDay(Boolean.valueOf(param.get("allDay")));
-		
+
 		HolidayextendedProps holiextra = new HolidayextendedProps();
 		holiextra.setBranch(param.get("branch").toString());
 		holiextra.setCalendar(param.get("calendar").toString());
 		holiextra.setDescription(param.get("description").toString());
 		holiextra.setType(param.get("type").toString());
-		
+
 		obj.setExtendedProps(holiextra);
 		holidayService.save(obj);
 		return "Save";
@@ -3059,15 +3074,14 @@ public class HomeController {
 	@ResponseBody
 	@GetMapping("leavehistoryjson")
 	public Object leavehistoryjson(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
-			@RequestParam(name = "enddate", required = false) String enddate) 
-	{
+			@RequestParam(name = "enddate", required = false) String enddate) {
 		List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
 		return lmhistory;
 	}
+
 	@GetMapping("leavehistory")
 	public String leavehistory() {
 
-		
 		return "leavehistory";
 	}
 
@@ -7357,7 +7371,6 @@ public class HomeController {
 	public ActivityMaster getactivitydetails(@RequestParam("name") int id) {
 
 		ActivityMaster amlist = activityMasterService.findById(id);
-
 		return amlist;
 
 	}
@@ -7375,11 +7388,5 @@ public class HomeController {
 
 		return projectMasterService.addnewtask(projectdetailid, taskname);
 	}
-
-	@GetMapping("leaverequest")
-	public String leaverequest() {
-		return "leaverequest";
-	}
-	
 
 }

@@ -109,11 +109,42 @@ public class EmployeeController {
 		return "employee/leaverequest";
 	}
 
-	@PostMapping("leaverequest")
-	public String leaverequestsave(Model theModel, @ModelAttribute("leavemaster") LeaveMaster leaveMasterobj,
+	@ResponseBody
+	@PostMapping("leaverequestlistjson")
+	public List<LeaveMaster> leaverequestlistjson(Model theModel, HttpSession session, HttpServletRequest request) {
+		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
+		LeaveMaster leavemaster = new LeaveMaster();
+		List<LeaveMaster> leaveMasterlist = leaveMasterService.findByEmpid(empid);
+		Collections.sort(leaveMasterlist, Collections.reverseOrder());
+		return leaveMasterlist;
+
+	}
+
+	@ResponseBody
+	@PostMapping("leaverequestsave")
+	public LeaveMaster leaverequestsave(Model theModel,@RequestParam Map<String, String> params,
 			HttpSession session, HttpServletRequest request) {
 
+		
 		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
+		
+		LeaveMaster leaveMasterobj = new LeaveMaster();
+		//params.get("branch_type")
+		
+		
+		leaveMasterobj.setFromadate(params.get("startdate"));
+		leaveMasterobj.setTodate(params.get("enddate"));
+		
+		leaveMasterobj.setHalfday(Boolean.parseBoolean(params.get("halfday")));
+		leaveMasterobj.setLeavetype(params.get("leavetype"));
+		leaveMasterobj.setNotes(params.get("notes"));
+		leaveMasterobj.setPermissionendtime(params.get("endtime"));
+		leaveMasterobj.setPermissionstarttime(params.get("starttime"));
+		
+		leaveMasterobj.setApprover(params.get(""));
+		leaveMasterobj.setApprovercomments(params.get(""));
+		leaveMasterobj.setApproverejectdate(params.get(""));
+				
 		List<Map<String, Object>> history = leaveMasterService.findByDatesEmpid(empid, leaveMasterobj.getFromadate(),
 				leaveMasterobj.getTodate());
 
@@ -121,51 +152,39 @@ public class EmployeeController {
 			leaveMasterobj.setStatus("Pending");
 			leaveMasterobj.setEmpid(empid);
 			LeaveMaster leaveMasterobjtemp = leaveMasterService.save(leaveMasterobj);
-			theModel.addAttribute("leavemaster", leaveMasterobjtemp);
-			theModel.addAttribute("save", "save");
-		}else
-		{
-			if(leaveMasterobj.isHalfday())
-			{
+			return leaveMasterobjtemp;
+		} else {
+			if (leaveMasterobj.isHalfday()) {
 				if (history.size() == 1) {
 					leaveMasterobj.setStatus("Pending");
 					leaveMasterobj.setEmpid(empid);
 					LeaveMaster leaveMasterobjtemp = leaveMasterService.save(leaveMasterobj);
-					theModel.addAttribute("leavemaster", leaveMasterobjtemp);
-					theModel.addAttribute("save", "save");
-				}else
-				{
-					theModel.addAttribute("leavemaster", leaveMasterobj);
-					theModel.addAttribute("historyerror", "historyerror");	
-				}
-								
-			}else
-			{
-				theModel.addAttribute("leavemaster", leaveMasterobj);
-				theModel.addAttribute("historyerror", "historyerror");	
-			}
-			
-			
-		}
-		List<LeaveMaster> leaveMasterlist = leaveMasterService.findByEmpid(empid);
-		Collections.sort(leaveMasterlist, Collections.reverseOrder());
+					return leaveMasterobjtemp;
 
-		
-		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
-		
-		return "employee/leaverequest";
+				} else {
+					new RuntimeException("Already Leave raised for this Date");
+					return leaveMasterobj;
+				}
+
+			} else {
+				new RuntimeException("Already Leave raised for this Date");
+				return leaveMasterobj;
+			}
+
+		}
+
 	}
-	
+
 	@PostMapping("requestcancelled")
 	@ResponseBody
-	public String requestcancelled(@RequestParam("cancelid") int id)
-	{
+	public String requestcancelled(@RequestParam("cancelid") int id) {
 		LeaveMaster obj = leaveMasterService.findById(id);
 		obj.setStatus("Cancelled");
 		leaveMasterService.save(obj);
-		
+
 		return "Success";
 	}
+
 	@GetMapping("leavereqlist")
 	public String leavereqlist(Model theModel, HttpSession session, HttpServletRequest request) {
 

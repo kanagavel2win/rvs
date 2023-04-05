@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,4 +38,7 @@ public class EmployeeJobinfo {
 	String jobreportsto;
 	@Column
 	int employeeid;
+	
+	@Transient
+	private String  reportstoname;
 }

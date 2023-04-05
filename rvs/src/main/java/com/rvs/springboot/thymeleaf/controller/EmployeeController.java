@@ -110,7 +110,7 @@ public class EmployeeController {
 	}
 
 	@ResponseBody
-	@PostMapping("leaverequestlistjson")
+	@GetMapping("leaverequestlistjson")
 	public List<LeaveMaster> leaverequestlistjson(Model theModel, HttpSession session, HttpServletRequest request) {
 		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
 		LeaveMaster leavemaster = new LeaveMaster();
@@ -125,7 +125,8 @@ public class EmployeeController {
 	public LeaveMaster leaverequestsave(Model theModel,@RequestParam Map<String, String> params,
 			HttpSession session, HttpServletRequest request) {
 
-		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
 		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
 		
 		LeaveMaster leaveMasterobj = new LeaveMaster();
@@ -133,15 +134,27 @@ public class EmployeeController {
 		
 		
 		leaveMasterobj.setFromadate(params.get("startdate"));
-		leaveMasterobj.setTodate(params.get("enddate"));
-		
+		leaveMasterobj.setTodate(params.get("enddate"));		
 		leaveMasterobj.setHalfday(Boolean.parseBoolean(params.get("halfday")));
 		leaveMasterobj.setLeavetype(params.get("leavetype"));
 		leaveMasterobj.setNotes(params.get("notes"));
 		leaveMasterobj.setPermissionendtime(params.get("endtime"));
 		leaveMasterobj.setPermissionstarttime(params.get("starttime"));
 		
-		leaveMasterobj.setApprover(params.get(""));
+		// Emp Location and Branch
+		List<EmployeeJobinfo> infoobjjob = new ArrayList<>();
+		infoobjjob = employeeJobinfoService.findByEmployeeid(empid);
+		if (infoobjjob.size() > 0) {
+			List<EmployeeJobinfo> infoobjjobgreen = infoobjjob.stream()
+					.filter(c -> dateFormat.format(date).compareTo(c.getJobeffectivedate().toString()) >= 0)
+					.collect(Collectors.toList());
+			infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+			if (infoobjjobgreen.size() > 0) {
+				leaveMasterobj.setApprover(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobreportsto());
+				
+			}
+		}
+		//------------------------------------------
 		leaveMasterobj.setApprovercomments(params.get(""));
 		leaveMasterobj.setApproverejectdate(params.get(""));
 				

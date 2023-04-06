@@ -109,8 +109,8 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 
 	@Override
 	public int insertemployeeEmgContact(int id, EmployeeEmgContact emg) {
-	final String sql="INSERT INTO `employeeemgcontact`( `emg_city`, `emg_country`, `emg_insurance_nominee`, `emg_name`, `emg_personal_phone`, `emg_relation`, `emg_state`, `emg_street1`, `emg_street2`, `emg_village`, `emg_zip`, `emp_masterid`, `emg_landmark`) VALUES ('"+ emg.getEmg_City() + "','" + emg.getEmg_Country() + "','" + emg.getEmg_InsuranceNominee() + "','" + emg.getEmg_Name() + "','" + emg.getEmg_PersonalPhone() + "','" + emg.getEmg_Relation() + "','" + emg.getEmg_State() + "','" + emg.getEmg_Street1() + "','" + emg.getEmg_Street2() + "','" + emg.getEmg_Village() + "','" + emg.getEmg_ZIP() + "'," + id + ",'" + emg.getEmg_Landmark() + "')";
-		
+	final String sql="INSERT INTO `employeeemgcontact`( `emg_city`, `emg_country`, `emg_insurance_nominee`, `emg_name`, `emg_personal_phone`, `emg_relation`, `emg_state`, `emg_street1`, `emg_street2`, `emg_village`, `emg_zip`, `emp_masterid`, `emg_landmark`) VALUES ('"+ emg.getEmg_City() + "','" + emg.getEmg_Country() + "'," + emg.getEmg_InsuranceNominee() + ",'" + emg.getEmg_Name() + "','" + emg.getEmg_PersonalPhone() + "','" + emg.getEmg_Relation() + "','" + emg.getEmg_State() + "','" + emg.getEmg_Street1() + "','" + emg.getEmg_Street2() + "','" + emg.getEmg_Village() + "','" + emg.getEmg_ZIP() + "'," + id + ",'" + emg.getEmg_Landmark() + "')";
+		//System.out.println(sql);
 		KeyHolder keyHolder =new GeneratedKeyHolder();
 		
 		jdbcTemplate.update(connection -> {
@@ -125,7 +125,8 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 
 	@Override
 	public int updateemployeeEmgContact(EmployeeEmgContact emg) {
-		String sql="UPDATE `employeeemgcontact` SET `emg_city`='"+ emg.getEmg_City() + "',`emg_country`='"+ emg.getEmg_Country() + "',`emg_insurance_nominee`='"+ emg.getEmg_InsuranceNominee() + "',`emg_name`='"+ emg.getEmg_Name() + ",`emg_personal_phone`='"+ emg.getEmg_PersonalPhone() + "',`emg_relation`='"+ emg.getEmg_Relation() + "',`emg_state`='"+ emg.getEmg_State() + "',`emg_street1`='"+ emg.getEmg_Street1() + "',`emg_street2`='"+ emg.getEmg_Street2() + "',`emg_village`='"+ emg.getEmg_Village() + "',`emg_zip`='"+ emg.getEmg_ZIP() + "',`emg_landmark`='"+ emg.getEmg_Landmark() + "' WHERE `emp_emg_contactid`="+ emg.getEmpEmgContactid() ;
+		String sql="UPDATE `employeeemgcontact` SET `emg_city`='"+ emg.getEmg_City() + "',`emg_country`='"+ emg.getEmg_Country() + "',`emg_insurance_nominee`="+ emg.getEmg_InsuranceNominee() + ",`emg_name`='"+ emg.getEmg_Name() + "',`emg_personal_phone`='"+ emg.getEmg_PersonalPhone() + "',`emg_relation`='"+ emg.getEmg_Relation() + "',`emg_state`='"+ emg.getEmg_State() + "',`emg_street1`='"+ emg.getEmg_Street1() + "',`emg_street2`='"+ emg.getEmg_Street2() + "',`emg_village`='"+ emg.getEmg_Village() + "',`emg_zip`='"+ emg.getEmg_ZIP() + "',`emg_landmark`='"+ emg.getEmg_Landmark() + "' WHERE `emp_emg_contactid`="+ emg.getEmpEmgContactid() ;
+		System.out.println(sql);
 		return jdbcTemplate.update(sql);
 	}
 

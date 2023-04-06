@@ -37,6 +37,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,6 +47,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -1627,15 +1629,39 @@ public class HomeController {
 
 	@ResponseBody
 	@PostMapping("employeeemgaddressjson")
-	public int employeeemgaddressjson(@RequestParam Map<String, String> params,
-			@ModelAttribute("employeemaster") EmployeeEmgContact emg) {
+	public int employeeemgaddressjson(@RequestParam Map<String, String> params) {
 
-		int empMasterid = Integer.parseInt(params.get("empMasterid"));
+		
+		EmployeeEmgContact emg = new EmployeeEmgContact();
+		
+		emg.setEmg_Country(params.get("emgcontact[Emg_Country]"));
+		//emg.setEmg_EmailID(params.get("emgcontact[]"));
+		if(String.valueOf(params.get("emgcontact[Emg_InsuranceNominee]")).equalsIgnoreCase("true")) {
+			emg.setEmg_InsuranceNominee(true);	
+		}else
+		{
+			emg.setEmg_InsuranceNominee(false);	
+		}
+		
+		emg.setEmg_Landmark(params.get("emgcontact[Emg_Landmark]"));
+		emg.setEmg_Name(params.get("emgcontact[Emg_Name]"));
+		//emg.setEmg_OtherPhone(params.get("emgcontact[]"));
+		emg.setEmg_PersonalPhone(params.get("emgcontact[Emg_PersonalPhone]"));
+		emg.setEmg_State(params.get("emgcontact[Emg_State]"));
+		emg.setEmg_Street1(params.get("emgcontact[Emg_Street1]"));
+		emg.setEmg_Street2(params.get("emgcontact[Emg_Street2]"));
+		emg.setEmg_Village(params.get("emgcontact[Emg_Village]"));
+		emg.setEmg_ZIP(params.get("emgcontact[Emg_ZIP]"));
+		emg.setEmg_City(params.get("emgcontact[Emg_City]"));
+		emg.setEmg_Relation(params.get("emgcontact[Emg_Relation]"));
+
+		int empMasterid = Integer.parseInt(params.get("emgcontact[empMasterid]"));
 		EmployeeMaster emp = employeeMasterService.findById(empMasterid);
 
-		if (emg.getEmpEmgContactid() == 0) {
+		if (params.get("emgcontact[empEmgContactid]").equalsIgnoreCase("")) {
 			return employeeMasterService.insertemployeeEmgContact(empMasterid, emg);
 		} else {
+			emg.setEmpEmgContactid(Integer.parseInt(params.get("emgcontact[empEmgContactid]")));
 			return employeeMasterService.updateemployeeEmgContact(emg);
 		}
 
@@ -2304,7 +2330,7 @@ public class HomeController {
 		}
 
 		List<EmployeeJobinfo> infoobj = new ArrayList<>();
-		 
+
 		for (EmployeeJobinfo stmojb : employeeJobinfoService.findByEmployeeid(empid)) {
 
 			if (!stmojb.getJobreportsto().equalsIgnoreCase("")) {

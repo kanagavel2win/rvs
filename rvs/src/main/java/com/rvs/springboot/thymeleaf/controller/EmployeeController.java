@@ -117,30 +117,28 @@ public class EmployeeController {
 		List<LeaveMaster> leaveMasterlist = leaveMasterService.findByEmpid(empid);
 		Collections.sort(leaveMasterlist, Collections.reverseOrder());
 		return leaveMasterlist;
-
 	}
 
 	@ResponseBody
 	@PostMapping("leaverequestsave")
-	public LeaveMaster leaverequestsave(Model theModel,@RequestParam Map<String, String> params,
-			HttpSession session, HttpServletRequest request) {
+	public LeaveMaster leaverequestsave(Model theModel, @RequestParam Map<String, String> params, HttpSession session,
+			HttpServletRequest request) {
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
-		
+
 		LeaveMaster leaveMasterobj = new LeaveMaster();
-		//params.get("branch_type")
-		
-		
+		// params.get("branch_type")
+
 		leaveMasterobj.setFromadate(params.get("startdate"));
-		leaveMasterobj.setTodate(params.get("enddate"));		
+		leaveMasterobj.setTodate(params.get("enddate"));
 		leaveMasterobj.setHalfday(Boolean.parseBoolean(params.get("halfday")));
 		leaveMasterobj.setLeavetype(params.get("leavetype"));
 		leaveMasterobj.setNotes(params.get("notes"));
 		leaveMasterobj.setPermissionendtime(params.get("endtime"));
 		leaveMasterobj.setPermissionstarttime(params.get("starttime"));
-		
+
 		// Emp Location and Branch
 		List<EmployeeJobinfo> infoobjjob = new ArrayList<>();
 		infoobjjob = employeeJobinfoService.findByEmployeeid(empid);
@@ -151,13 +149,13 @@ public class EmployeeController {
 			infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 			if (infoobjjobgreen.size() > 0) {
 				leaveMasterobj.setApprover(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobreportsto());
-				
+
 			}
 		}
-		//------------------------------------------
+		// ------------------------------------------
 		leaveMasterobj.setApprovercomments(params.get(""));
 		leaveMasterobj.setApproverejectdate(params.get(""));
-				
+
 		List<Map<String, Object>> history = leaveMasterService.findByDatesEmpid(empid, leaveMasterobj.getFromadate(),
 				leaveMasterobj.getTodate());
 

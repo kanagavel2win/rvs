@@ -140,7 +140,7 @@
 			    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			  </div>
 			 <div class="offcanvas-body flex-grow-1">
-                  <form class="add-new-record pt-0 row g-2 needs-validation" id="form-add-new-record" onsubmit="return false" novalidate>
+                  <form class="add-new-record pt-0 row g-2 needs-validation" id="form-add-leave" onsubmit="return false" novalidate>
                      
                     <div class="col-lg-12 col-md-12">
                       <label class="form-label" for="startdate">FROM DATE</label>
@@ -184,7 +184,7 @@
                     
             <div class="col-lg-12 col-md-12">
             <label class="switch">
-              <input type="checkbox" name="halfday" class="switch-input" onclick="halfhaldle(event);" />
+              <input type="checkbox" name="halfday" class="switch-input" onclick="halfhaldle(event);" value="0"/>
               <span class="switch-toggle-slider">
                 <span class="switch-on"></span>
                 <span class="switch-off"></span>
@@ -232,8 +232,8 @@
                     </div>
                  
                     <div class="col-sm-12">
-                      <button type="submit" class="btn btn-primary newbranchdatasubmit me-sm-3 me-1">Submit</button>
-                      <button type="reset" class="btn btn-outline-secondary newbranchdataclose" data-bs-dismiss="offcanvas">Cancel</button>
+                      <button type="submit" class="btn btn-primary newleavesubmit me-sm-3 me-1">Submit</button>
+                      <button type="reset" class="btn btn-outline-secondary  newleaveclose" data-bs-dismiss="offcanvas">Cancel</button>
                     </div>
                   </form>
                 </div>
@@ -343,7 +343,39 @@
  
     <script th:src="@{/assets/js/form-validation.js}"></script> 
     <script>
-    $(document).ready(function() {  
+     
+    const flatpickrFriendly = document.querySelector('#startdate');
+	 // Human Friendly
+	  if (flatpickrFriendly) {
+	    flatpickrFriendly.flatpickr({
+	      altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	    });
+	  }
+	  const flatpickrFriendly1 = document.querySelector('#enddate');
+		 // Human Friendly
+		  if (flatpickrFriendly1) {
+			  flatpickrFriendly1.flatpickr({
+		      altInput: true,
+		      altFormat: 'F j, Y',
+		      dateFormat: 'Y-m-d'
+		    });
+		  }
+		 
+		  const flatpickrFriendly3 = flatpickr("#endtime", {
+			   enableTime: !0,
+		        noCalendar: !0,
+		        altInput: true,
+		     });
+		
+		const flatpickrFriendly2 = flatpickr("#starttime", {
+			enableTime: !0,
+	        noCalendar: !0,
+	        altInput: true,
+		     });
+		
+		
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	let fv;
     	
@@ -356,16 +388,58 @@
     	
     	//--------------------------------------------------------------------------------------------------------------------------------------		 		
 
-		$(function() {
+
 			var token = $("meta[name='_csrf']").attr("content");
 			var header = $("meta[name='_csrf_header']").attr("content");
 			$(document).ajaxSend(function(e, xhr, options) {
 				xhr.setRequestHeader(header, token);
 			});
-		});
+			
+			
+	
+    	
+    	
+    	
+		 $('#form-add-leave').submit(function(e){
+			 var form = $('#form-add-leave')[0];
+	    	  const formData = new FormData(form);
+	    	  formData.append("halfday",$(`[name="halfday"]`).val());
+	    	  const obj = {};
+	    	  for (const [key, value] of formData.entries()) {
+	    		  obj[key] = value;
+	    	  }
+	    	  console.log(obj);
+	    	  $('.newleavesubmit').prop("disabled",true);
+	    	  $.ajax({
+					type : "POST",
+					url : "leaverequestsave",
+					data : obj, 
+					success : function(result) {
+						validationformreset(); 
+					},
+					error : function(e) {
+						console.log("Error" + e);
+						validationformreset();
+					}
+				});
+	   
+	   //------------------------------------------------------------------------ 		
+	    		
+	    	});
+		 
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
 		
 
+		 function validationformreset()
+	   {
+   				$('.newleaveclose').click();
+   				$('.newleavesubmit').prop("disabled",false);
+	   			$('.needs-validation').removeClass("was-validated");
+	   			$('.needs-validation').trigger("reset");
+	   			 
+	   }
+		
+		
     	  var dt_basic_table = $('.datatables-basic');
 
     	  	// DataTable with buttons
@@ -645,129 +719,18 @@
 			    $('div.head-label').html('<h5 class="card-title mb-0">Branches</h5>');
   		}
    // --------------------------------------------------------------------
-   		function validationformreset()
-	   {
-   				$('.newbranchdataclose').click();
-   				$('.newbranchdatasubmit').prop("disabled",false);
-	   			$('.needs-validation').removeClass("was-validated");
-	   			$('.needs-validation').trigger("reset");
-	   			$('.newbranchdatasubmit').html("Submit");
-	   }
+   		
    	// --------------------------------------------------------------------
-      $('.needs-validation').on('submit', function(event){
-    	  
-    	 if($('#startdate').val() == '')
-    	 {
-	    	  Swal.fire({
-			        title: '',
-			        text: 'Start Date Should not be empty!',
-			        confirmButtonText: 'Ok',
-			        customClass: {
-			          confirmButton: 'btn btn-primary'
-			        },
-			        buttonsStyling: false
-			      });
-   		 }else
-   		 {
-    	  
-    	    if(event.target.checkValidity() && $('#branch_startdate').val() !='' ){
-    	    	$('.newbranchdatasubmit').prop("disabled",true);
-    	    	$('.newbranchdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-    	    	  
-    	    	var branchName =$('#branchName').val();
-	        	var branch_type =$('#branch_type').val();
-	        	var branch_incharge =$('#branch_incharge').val();
-	        	var branch_startdate =$('#branch_startdate').val();
-	        	var branchHierarchy =$('#branchHierarchy').val();
-	        	var branchCode =$('#branchcode').val();
-	        	
-	        	 var formData = {
-	        			 branchName : branchName,
-	        			 branch_type : branch_type,
-	        			 branch_incharge : branch_incharge,
-	        			 branchemail : "",
-	        			 branch_startdate : branch_startdate,
-	        			 branchHierarchy : branchHierarchy,
-	        			 branchstatus : "Active",
-	        			 branchOfficeContact: "",
-	        			 branchcode:branchCode
-				 }
-				 $.ajax({
-						type : "POST",url : "branchsavejson",
-						data : formData, success : function(result) {
-							validationformreset();
-							Swal.fire({
-						        title: 'Congratulations!',
-						        text: 'Your New Branch is Added Successfully',
-						        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-						        imageWidth: 400,
-						        imageAlt: 'Custom image',
-						        confirmButtonText: 'Welcome',
-						        customClass: {
-						          confirmButton: 'btn btn-primary'
-						        },
-						        buttonsStyling: false
-						      });
-							
-							$('.datatables-basic').DataTable().ajax.reload();
-							
-							
-						},
-						error : function(e) {
-							console.log("Error" + e);
-							
-						}
-						
-					});
-	        	
-		        }	
-	    	    else
-	        	{
-	    	    	$('.newbranchdatasubmit').prop("disabled",false);
-	        	}
-   		 }
-	    });
-   
-   //------------------------------------------------------------------------ 		
-    		
-    	});
+     
   //------------------------------------------------------------------------
   
     // Users List suggestion
     //------------------------------------------------------
     // Date Format
-   const flatpickrFriendly = document.querySelector('#startdate');
-	 // Human Friendly
-	  if (flatpickrFriendly) {
-	    flatpickrFriendly.flatpickr({
-	      altInput: true,
-	      altFormat: 'F j, Y',
-	      dateFormat: 'Y-m-d'
-	    });
-	  }
-	  const flatpickrFriendly1 = document.querySelector('#enddate');
-		 // Human Friendly
-		  if (flatpickrFriendly1) {
-			  flatpickrFriendly1.flatpickr({
-		      altInput: true,
-		      altFormat: 'F j, Y',
-		      dateFormat: 'Y-m-d'
-		    });
-		  }
-		 
+  
 	
 				 
-				  const flatpickrFriendly3 = flatpickr("#endtime", {
-					   enableTime: !0,
-				        noCalendar: !0,
-				        altInput: true,
-				     });
 				
-				const flatpickrFriendly2 = flatpickr("#starttime", {
-					enableTime: !0,
-			        noCalendar: !0,
-			        altInput: true,
-				     });
 				
 				
 	
@@ -777,12 +740,14 @@
 	   if($(e.target).is(':checked'))
 		{
 		$('.half').show();
+		$(e.target).val('1');
 		flatpickrFriendly2.setDate('');
 		flatpickrFriendly3.setDate('');
 		}
 	   else
 		   {
-		   $('.half').hide();
+		    $('.half').hide();
+		    $(e.target).val('0');
 		    flatpickrFriendly2.setDate('');
 			flatpickrFriendly3.setDate('');
 		   }

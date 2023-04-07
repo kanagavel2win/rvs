@@ -1,6 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,6 +51,6 @@ public class CheckIn {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CheckInID")
-	private Set<CheckInFiles> checkInFiles;
+	private List<CheckInFiles> checkInFiles;
 	
 }

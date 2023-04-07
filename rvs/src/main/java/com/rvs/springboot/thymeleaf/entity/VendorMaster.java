@@ -1,6 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -77,11 +77,11 @@ public class VendorMaster {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "vendormasterid")
-	private Set<VendorEmgContact> vendorEmgContact;
+	private List<VendorEmgContact> vendorEmgContact;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "vendormasterid")
-	private Set<VendorFiles> vendorFiles;
+	private List<VendorFiles> vendorFiles;
 
 	
 }

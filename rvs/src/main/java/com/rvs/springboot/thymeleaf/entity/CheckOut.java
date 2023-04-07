@@ -1,6 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,5 +54,5 @@ public class CheckOut {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CheckOutID")
-	private Set<CheckOutFiles> checkoutFiles;
+	private List<CheckOutFiles> checkoutFiles;
 }

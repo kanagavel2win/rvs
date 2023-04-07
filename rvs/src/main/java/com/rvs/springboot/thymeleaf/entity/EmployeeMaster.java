@@ -1,7 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -94,26 +94,32 @@ public class EmployeeMaster {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empMasterid")
-	private Set<EmployeeEducation> employeeEducation;
+	@OrderBy("FromYear ASC")
+	private List<EmployeeEducation> employeeEducation;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empMasterid")
-	private Set<EmployeeEmgContact> employeeEmgContact;
+	@OrderBy("empEmgContactid ASC")
+	private List<EmployeeEmgContact> employeeEmgContact;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empMasterid")
-	private Set<EmployeeFiles> employeeFiles;
+	@OrderBy("empFileid ASC")
+	private List<EmployeeFiles> employeeFiles;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empMasterid")
-	private Set<EmployeeLanguage> employeeLanguage;
+	@OrderBy("empLanguid ASC")
+	private List<EmployeeLanguage> employeeLanguage;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empMasterid")
-	private Set<EmployeeExperience> employeeExperience;
+	@OrderBy("expFromyear ASC")
+	private List<EmployeeExperience> employeeExperience;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empMasterid")
+	@OrderBy("employeecontactid ASC")
 	private List<EmployeeContact> employeeContact;
 	
 	@OneToMany(cascade = CascadeType.ALL)

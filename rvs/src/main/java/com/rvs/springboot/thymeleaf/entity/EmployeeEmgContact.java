@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name="employeeemgcontact")
-public class EmployeeEmgContact {
+public class EmployeeEmgContact implements Comparable<EmployeeEmgContact>{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -56,5 +56,10 @@ public class EmployeeEmgContact {
 	private String Emg_ZIP;
 	@Column  
 	private String Emg_Country;
+	@Override
+	public int compareTo(EmployeeEmgContact o) {
+		
+		return this.getEmpEmgContactid() - o.getEmpEmgContactid();
+	}
 
 }

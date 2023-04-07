@@ -1,6 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,6 +49,6 @@ public class AssetAudit {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AssetAuditID")
-	private Set<AssetAuditFiles> assetauditFiles;
+	private List<AssetAuditFiles> assetauditFiles;
 	
 }

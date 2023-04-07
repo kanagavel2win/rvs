@@ -1,7 +1,7 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -63,6 +63,6 @@ public class HireMaster {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")
 	@OrderBy("questionid ASC")
-	private Set<HireMasterQuestions> hireMasterQuestions = new HashSet<HireMasterQuestions>();
+	private List<HireMasterQuestions> hireMasterQuestions = new ArrayList<HireMasterQuestions>();
 
 }

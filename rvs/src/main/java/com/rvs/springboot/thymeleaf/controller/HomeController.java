@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1820,7 +1820,7 @@ public class HomeController {
 		}
 
 		// System.out.println("------------------------------------");
-		Set<EmployeeEducation> eduls = new LinkedHashSet<EmployeeEducation>();
+		List<EmployeeEducation> eduls = new ArrayList<EmployeeEducation>();
 		for (int farr = 0; farr < College_Institution.length; farr++) {
 			EmployeeEducation empedu = new EmployeeEducation();
 
@@ -1845,7 +1845,7 @@ public class HomeController {
 		employeemaster.setEmployeeEducation(eduls);
 		// System.out.println("--------------Step 1 end----------------------");
 
-		Set<EmployeeEmgContact> emgls = new LinkedHashSet<EmployeeEmgContact>();
+		List<EmployeeEmgContact> emgls = new ArrayList<EmployeeEmgContact>();
 		for (int farr = 0; farr < Emg_Name.length; farr++) {
 			EmployeeEmgContact empcont = new EmployeeEmgContact();
 
@@ -1897,7 +1897,7 @@ public class HomeController {
 		employeemaster.setEmployeeEmgContact(emgls);
 		// System.out.println("--------------Step 2 End----------------------");
 
-		Set<EmployeeExperience> exptrls = new LinkedHashSet<EmployeeExperience>();
+		List<EmployeeExperience> exptrls = new ArrayList<EmployeeExperience>();
 		if (!Objects.isNull(Company)) {
 
 			for (int farr = 0; farr < Company.length; farr++) {
@@ -1921,7 +1921,7 @@ public class HomeController {
 		employeemaster.setEmployeeExperience(exptrls);
 
 		// System.out.println("--------------Step 3 end----------------------");
-		Set<EmployeeLanguage> langls = new LinkedHashSet<EmployeeLanguage>();
+		List<EmployeeLanguage> langls = new ArrayList<EmployeeLanguage>();
 		for (int farr = 0; farr < language.length; farr++) {
 			EmployeeLanguage emplang = new EmployeeLanguage();
 			String templangurow = languageid[farr];
@@ -1954,7 +1954,7 @@ public class HomeController {
 		employeemaster.setEmployeeLanguage(langls);
 		// System.out.println("--------------Step 4 end----------------------");
 
-		Set<EmployeeFiles> filels = new LinkedHashSet<EmployeeFiles>();
+		List<EmployeeFiles> filels = new ArrayList<EmployeeFiles>();
 
 		if (photoempFileid != null)
 			for (int farr = 0; farr < photoempFileid.length; farr++) {
@@ -2075,11 +2075,11 @@ public class HomeController {
 		employeemasternew = employeeMasterService.save(employeemaster);
 		// System.out.println(employeemasternew);
 
-		Set<EmployeeEducation> edulsnew = new LinkedHashSet<EmployeeEducation>();
-		Set<EmployeeEmgContact> emglsnew = new LinkedHashSet<EmployeeEmgContact>();
-		Set<EmployeeExperience> exptrlsnew = new LinkedHashSet<EmployeeExperience>();
-		Set<EmployeeLanguage> langlsnew = new LinkedHashSet<EmployeeLanguage>();
-		Set<EmployeeFiles> filelsnew = new LinkedHashSet<EmployeeFiles>();
+		List<EmployeeEducation> edulsnew = new ArrayList<EmployeeEducation>();
+		List<EmployeeEmgContact> emglsnew = new ArrayList<EmployeeEmgContact>();
+		List<EmployeeExperience> exptrlsnew = new ArrayList<EmployeeExperience>();
+		List<EmployeeLanguage> langlsnew = new ArrayList<EmployeeLanguage>();
+		List<EmployeeFiles> filelsnew = new ArrayList<EmployeeFiles>();
 
 		// System.out.println(employeemasternew.getEmployeeEducation().size());
 		if (employeemasternew.getEmployeeEducation().size() > 0) {
@@ -2166,11 +2166,11 @@ public class HomeController {
 			employeemasternew = employeeMasterService.save(employeemasternew);
 		}
 		// -------------------------------------------
-		Set<EmployeeEducation> edulsnew = new LinkedHashSet<EmployeeEducation>();
-		Set<EmployeeEmgContact> emglsnew = new LinkedHashSet<EmployeeEmgContact>();
-		Set<EmployeeExperience> exptrlsnew = new LinkedHashSet<EmployeeExperience>();
-		Set<EmployeeLanguage> langlsnew = new LinkedHashSet<EmployeeLanguage>();
-		Set<EmployeeFiles> filelsnew = new LinkedHashSet<EmployeeFiles>();
+		List<EmployeeEducation> edulsnew = new ArrayList<EmployeeEducation>();
+		List<EmployeeEmgContact> emglsnew = new ArrayList<EmployeeEmgContact>();
+		List<EmployeeExperience> exptrlsnew = new ArrayList<EmployeeExperience>();
+		List<EmployeeLanguage> langlsnew = new ArrayList<EmployeeLanguage>();
+		List<EmployeeFiles> filelsnew = new ArrayList<EmployeeFiles>();
 
 		// System.out.println(employeemasternew.getEmployeeEducation().size());
 		if (employeemasternew.getEmployeeEducation().size() > 0) {
@@ -2185,8 +2185,8 @@ public class HomeController {
 
 		// System.out.println(employeemasternew.getEmployeeEmgContact().size());
 		if (employeemasternew.getEmployeeEmgContact().size() > 0) {
-			Set<EmployeeEmgContact> emglsnewtemp = employeemasternew.getEmployeeEmgContact().stream()
-					.sorted(Comparator.comparing(EmployeeEmgContact::getEmpEmgContactid)).collect(Collectors.toSet());
+			List<EmployeeEmgContact> emglsnewtemp = employeemasternew.getEmployeeEmgContact().stream()
+					.sorted(Comparator.comparing(EmployeeEmgContact::getEmpEmgContactid)).collect(Collectors.toList());
 			emglsnew.addAll(emglsnewtemp);
 			// System.out.println(emglsnewtemp);
 			// employeemasternew.setEmployeeEmgContact(emglsnewtemp);
@@ -2273,6 +2273,8 @@ public class HomeController {
 		themodel.addAttribute("employeeExperience", exptrlsnew);
 		themodel.addAttribute("employeeLanguage", langlsnew);
 		themodel.addAttribute("employeeFiles", filelsnew);
+		
+		
 		themodel.addAttribute("employeemaster", employeemasternew);
 
 		return "empadd";
@@ -2307,11 +2309,11 @@ public class HomeController {
 			employeemasternew = employeeMasterService.save(employeemasternew);
 		}
 		// -------------------------------------------
-		Set<EmployeeEducation> edulsnew = new LinkedHashSet<EmployeeEducation>();
-		Set<EmployeeEmgContact> emglsnew = new LinkedHashSet<EmployeeEmgContact>();
-		Set<EmployeeExperience> exptrlsnew = new LinkedHashSet<EmployeeExperience>();
-		Set<EmployeeLanguage> langlsnew = new LinkedHashSet<EmployeeLanguage>();
-		Set<EmployeeFiles> filelsnew = new LinkedHashSet<EmployeeFiles>();
+		List<EmployeeEducation> edulsnew = new ArrayList<EmployeeEducation>();
+		List<EmployeeEmgContact> emglsnew = new ArrayList<EmployeeEmgContact>();
+		List<EmployeeExperience> exptrlsnew = new ArrayList<EmployeeExperience>();
+		List<EmployeeLanguage> langlsnew = new ArrayList<EmployeeLanguage>();
+		List<EmployeeFiles> filelsnew = new ArrayList<EmployeeFiles>();
 
 		// System.out.println(employeemasternew.getEmployeeEducation().size());
 		if (employeemasternew.getEmployeeEducation().size() > 0) {
@@ -2961,7 +2963,7 @@ public class HomeController {
 			 * List<HireMasterQuestions> list = new
 			 * ArrayList<HireMasterQuestions>(obj.getHireMasterQuestions());
 			 * Collections.sort(list); obj.setHireMasterQuestions(new
-			 * HashSet<HireMasterQuestions>(list));
+			 * HashList<HireMasterQuestions>(list));
 			 */
 		}
 
@@ -3013,7 +3015,7 @@ public class HomeController {
 			hireMaster.setCreateddate(formatterdate.format(currentdate));
 		}
 
-		Set<HireMasterQuestions> setHireMasterQuestions = new HashSet<HireMasterQuestions>();
+		List<HireMasterQuestions> setHireMasterQuestions = new ArrayList<HireMasterQuestions>();
 
 		if (shortans != null)
 			for (int i = 0; i < shortans.length; i++) {
@@ -3695,8 +3697,8 @@ public class HomeController {
 		VendorMaster vendormasternew = new VendorMaster();
 		vendormasternew = vendorMasterService.findById(id);
 
-		Set<VendorEmgContact> emglsnew = new LinkedHashSet<VendorEmgContact>();
-		Set<VendorFiles> filelsnew = new LinkedHashSet<VendorFiles>();
+		List<VendorEmgContact> emglsnew = new ArrayList<VendorEmgContact>();
+		List<VendorFiles> filelsnew = new ArrayList<VendorFiles>();
 
 		if (vendormasternew.getVendorEmgContact().size() > 0) {
 			emglsnew.addAll(vendormasternew.getVendorEmgContact());
@@ -3740,7 +3742,7 @@ public class HomeController {
 
 		// Systven.out.println("--------------Step 1 end----------------------");
 
-		Set<VendorEmgContact> vengls = new LinkedHashSet<VendorEmgContact>();
+		List<VendorEmgContact> vengls = new ArrayList<VendorEmgContact>();
 		for (int farr = 0; farr < Emg_Name.length; farr++) {
 			VendorEmgContact venpcont = new VendorEmgContact();
 
@@ -3771,9 +3773,9 @@ public class HomeController {
 			vengls.add(venpcont);
 		}
 		vendormaster.setVendorEmgContact(vengls);
-		// Systven.out.println("--------------Step 2 End----------------------");
+		// Systven.out.println("--------------Step 2 End------v----------------");
 
-		Set<VendorFiles> filels = new LinkedHashSet<VendorFiles>();
+		List<VendorFiles> filels = new ArrayList<VendorFiles>();
 
 		if (filesempFileid != null)
 			for (int farr = 0; farr < filesempFileid.length; farr++) {
@@ -3824,8 +3826,8 @@ public class HomeController {
 		itemlistService.savesingletxt(vendormaster.getAssetType(), "ASSETTYPE");
 		vendormasternew = vendorMasterService.save(vendormaster);
 
-		Set<VendorEmgContact> venglsnew = new LinkedHashSet<VendorEmgContact>();
-		Set<VendorFiles> filelsnew = new LinkedHashSet<VendorFiles>();
+		List<VendorEmgContact> venglsnew = new ArrayList<VendorEmgContact>();
+		List<VendorFiles> filelsnew = new ArrayList<VendorFiles>();
 
 		// Systven.out.println(vendormasternew.getVendorEmgContact().size());
 		if (vendormasternew.getVendorEmgContact().size() > 0) {
@@ -3938,7 +3940,7 @@ public class HomeController {
 			setassetSevice.add(new AssetService());
 			assetmaster.setAssetService(setassetSevice);
 		}
-		Set<AssetMasterFiles> filelsnew = new LinkedHashSet<AssetMasterFiles>();
+		List<AssetMasterFiles> filelsnew = new ArrayList<AssetMasterFiles>();
 
 		if (assetmaster.getAssetMasterFiles().size() > 0) {
 			filelsnew.addAll(assetmaster.getAssetMasterFiles());
@@ -4042,7 +4044,7 @@ public class HomeController {
 		assetmaster.setAssetService(setassetSevicetemp);
 		assetmasternew = assetMasterService.save(assetmaster);
 
-		Set<AssetMasterFiles> filelsnew = new LinkedHashSet<AssetMasterFiles>();
+		List<AssetMasterFiles> filelsnew = new ArrayList<AssetMasterFiles>();
 
 		if (assetmasternew.getAssetMasterFiles().size() > 0) {
 			filelsnew.addAll(assetmasternew.getAssetMasterFiles());
@@ -4369,7 +4371,7 @@ public class HomeController {
 			// -----------------------------------------------------
 			if (Photo_Attach.length > 0) {
 				if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
-					Set<CheckOutFiles> checkMasterfiles = new LinkedHashSet<CheckOutFiles>();
+					List<CheckOutFiles> checkMasterfiles = new ArrayList<CheckOutFiles>();
 					CheckOutFiles chekinfiles = new CheckOutFiles();
 					StringBuilder filename = new StringBuilder();
 					String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
@@ -4576,7 +4578,7 @@ public class HomeController {
 
 				if (Photo_Attach.length > 0) {
 					if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
-						Set<CheckInFiles> checkMasterfiles = new LinkedHashSet<CheckInFiles>();
+						List<CheckInFiles> checkMasterfiles = new ArrayList<CheckInFiles>();
 						CheckInFiles chekinfiles = new CheckInFiles();
 						StringBuilder filename = new StringBuilder();
 						String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
@@ -4706,7 +4708,7 @@ public class HomeController {
 
 				if (Photo_Attach.length > 0) {
 					if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
-						Set<CheckInFiles> checkMasterfiles = new LinkedHashSet<CheckInFiles>();
+						List<CheckInFiles> checkMasterfiles = new ArrayList<CheckInFiles>();
 						CheckInFiles chekinfiles = new CheckInFiles();
 						StringBuilder filename = new StringBuilder();
 						String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();
@@ -4829,7 +4831,7 @@ public class HomeController {
 
 			if (Photo_Attach.length > 0) {
 				if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
-					Set<AssetAuditFiles> assetauditMasterfiles = new LinkedHashSet<AssetAuditFiles>();
+					List<AssetAuditFiles> assetauditMasterfiles = new ArrayList<AssetAuditFiles>();
 					AssetAuditFiles assetauditfiles = new AssetAuditFiles();
 					StringBuilder filename = new StringBuilder();
 					String tempfilename = stringdatetime() + Photo_Attach[i].getOriginalFilename();

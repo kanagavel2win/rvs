@@ -212,11 +212,11 @@ public class EmployeeController {
 		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
 		EmployeeMaster empobj = employeeMasterService.findById(empid);
 
-		Set<EmployeeEducation> eduls = empobj.getEmployeeEducation();
-		Set<EmployeeEmgContact> emgls = empobj.getEmployeeEmgContact();
-		Set<EmployeeExperience> exptrls = empobj.getEmployeeExperience();
-		Set<EmployeeLanguage> langls = empobj.getEmployeeLanguage();
-		Set<EmployeeFiles> filels = empobj.getEmployeeFiles();
+		List<EmployeeEducation> eduls = empobj.getEmployeeEducation();
+		List<EmployeeEmgContact> emgls = empobj.getEmployeeEmgContact();
+		List<EmployeeExperience> exptrls = empobj.getEmployeeExperience();
+		List<EmployeeLanguage> langls = empobj.getEmployeeLanguage();
+		List<EmployeeFiles> filels = empobj.getEmployeeFiles();
 
 		themodel.addAttribute("employeeEducation", eduls);
 		themodel.addAttribute("employeeEmgContact", emgls);

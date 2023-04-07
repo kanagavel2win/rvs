@@ -3168,7 +3168,7 @@ public class HomeController {
 			exextendedProps.put("status", String.valueOf(rowMap.get("status")));
 			exextendedProps.put("approver", String.valueOf(rowMap.get("approver")));
 			exextendedProps.put("approvername", String.valueOf(rowMap.get("approvername")));
-			cf.setExextendedProps(exextendedProps);
+			cf.setExtendedProps(exextendedProps);
 			calformate.add(cf);
 			
 		});

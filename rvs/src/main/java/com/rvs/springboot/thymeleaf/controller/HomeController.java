@@ -19,16 +19,12 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -37,7 +33,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +42,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -3115,58 +3109,21 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping("holidaydelete")
 	public String holidaydelete(@RequestParam Map<String, String> param) {
-
 		holidayService.deleteByid(Integer.parseInt(param.get("calid")));
-
 		return "deleted";
-
 	}
 
 	@GetMapping("leaveapprove")
 	public String leaveapprove(Model theModel) {
-
-		LeaveMaster leavemaster = new LeaveMaster();
-		List<LeaveMaster> leaveMasterlist = leaveMasterService.findAll().stream()
-				.filter(c -> c.getStatus().equalsIgnoreCase("Pending")).collect(Collectors.toList());
-		Collections.sort(leaveMasterlist, Collections.reverseOrder());
-		List<EmployeeMaster> em = employeeMasterService.findAll();
-
-		Map<Integer, String> emmap = em.stream()
-				.collect(Collectors.toMap(EmployeeMaster::getEmpMasterid, EmployeeMaster::getStaffName));
-
-		Date date = new Date();
-		SimpleDateFormat formatteryear = new SimpleDateFormat("yyyy");
-		SimpleDateFormat formattermonth = new SimpleDateFormat("MM");
-		SimpleDateFormat formatterdate = new SimpleDateFormat("yyyy-MM-dd");
-
-		int currentyear = Integer.parseInt(formatteryear.format(date).toString());
-		int currentmonth = Integer.parseInt(formattermonth.format(date).toString());
-
-		Calendar nxtcal = Calendar.getInstance();
-		nxtcal.set(currentyear, currentmonth - 1, 1);
-		nxtcal.add(Calendar.MONTH, 6);
-
-		Calendar precal = Calendar.getInstance();
-		precal.set(currentyear, currentmonth - 1, 1);
-		precal.add(Calendar.MONTH, -6);
-		String preDate = formatterdate.format(precal.getTime()).toString();
-		String nxtDate = formatterdate.format(nxtcal.getTime()).toString();
-
-		theModel.addAttribute("range", "?sd=" + preDate + "&ed=" + nxtDate);
-		theModel.addAttribute("emmap", emmap);
-		theModel.addAttribute("leavemaster", leavemaster);
-		theModel.addAttribute("leaveMasterlist", leaveMasterlist);
 		return "leaveapprove";
 	}
 
 	@GetMapping("leavereview")
 	public String leavereview(Model theModel, @RequestParam("id") int id) {
-
 		LeaveMaster leaveMaster = leaveMasterService.findById(id);
 		EmployeeMaster emp = employeeMasterService.findById(leaveMaster.getEmpid());
 		theModel.addAttribute("emmap", emp);
 		theModel.addAttribute("leavemaster", leaveMaster);
-
 		return "leavereview";
 	}
 
@@ -3181,7 +3138,6 @@ public class HomeController {
 		theModel.addAttribute("emmap", emp);
 		theModel.addAttribute("leavemaster", leaveMaster);
 		theModel.addAttribute("save", "save");
-
 		return "leavereview";
 	}
 
@@ -3198,7 +3154,28 @@ public class HomeController {
 
 		return "leavehistory";
 	}
+	
+	@ResponseBody
+	@PostMapping("leavereject")
+	public String leavereject(@RequestParam Map<String, String> param) {
 
+		LeaveMaster obj = leaveMasterService.findById(Integer.parseInt(param.get("calid")));
+		obj.setStatus("Rejected");
+		leaveMasterService.save(obj);
+		return "Rejected";
+
+	}
+
+	@ResponseBody
+	@PostMapping("leaveapprove")
+	public String leaveapprove(@RequestParam Map<String, String> param) {
+
+		LeaveMaster obj = leaveMasterService.findById(Integer.parseInt(param.get("calid")));
+		obj.setStatus("Approved");
+		leaveMasterService.save(obj);
+		return "Approved";
+
+	}
 	@GetMapping("payroll")
 	public String payrollget(Model themodel) {
 
@@ -3606,27 +3583,7 @@ public class HomeController {
 		return monthNames[month];
 	}
 
-	@ResponseBody
-	@PostMapping("leavereject")
-	public String leavereject(@RequestParam Map<String, String> param) {
 
-		LeaveMaster obj = leaveMasterService.findById(Integer.parseInt(param.get("calid")));
-		obj.setStatus("Rejected");
-		leaveMasterService.save(obj);
-		return "Rejected";
-
-	}
-
-	@ResponseBody
-	@PostMapping("leaveapprove")
-	public String leaveapprove(@RequestParam Map<String, String> param) {
-
-		LeaveMaster obj = leaveMasterService.findById(Integer.parseInt(param.get("calid")));
-		obj.setStatus("Approved");
-		leaveMasterService.save(obj);
-		return "Approved";
-
-	}
 
 	@GetMapping("vendorlist")
 	public String vendorlist(Model theModel) {

@@ -503,7 +503,7 @@
 														<dt class="col-sm-4 mb-3 text-nowrap">
 															Name: <input type="hidden"
 																th:id="'empEmgContactid' + ${emg.empEmgContactid}"
-																th:value="${empEmgContactid}" name="empEmgContactid">
+																th:value="${emg.empEmgContactid}" name="empEmgContactid">
 															<input type="hidden"
 																th:id="'Emg_InsuranceNominee' + ${emg.empEmgContactid}"
 																th:value="${emg.Emg_InsuranceNominee}">
@@ -512,10 +512,12 @@
 															<span th:id="'Emg_Name' + ${emg.empEmgContactid}"
 																class="pop_cursor" th:text="${emg.Emg_Name}"
 																onclick="editemgAddressdata(event);"></span> <span
+																th:id="'Emg_Nominee' + ${emg.empEmgContactid}"> <span
 																th:if="${emg.Emg_InsuranceNominee}"><br />
-																<button type="button"
-																	class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>
-
+																	<button type="button"
+																		class="btn btn-xs rounded-pill btn-label-dark">Nominee</button>
+															</span>
+															</span>
 
 														</dd>
 
@@ -566,12 +568,12 @@
 														<dd class="col-sm-8"
 															th:id="'Emg_ZIP' + ${emg.empEmgContactid}"
 															th:text="${emg.Emg_ZIP}"></dd>
-															
+
 														<dt class="col-sm-4 mb-3 text-nowrap">Country:</dt>
 														<dd class="col-sm-8"
 															th:id="'Emg_Country' + ${emg.empEmgContactid}"
 															th:text="${emg.Emg_Country}"></dd>
-															
+
 													</dl>
 												</div>
 
@@ -1130,9 +1132,11 @@
 													placeholder="999 555 0111" />
 											</div>
 											<div class="col-12 col-md-6">
-												<label class="form-label" for="modalEmg_RelationEmg">Relation</label>
+												<label class="form-label" for="modalEmg_RelationEmg">Relation
+												<label class="emptitle additem" name="addmodalrelation"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+												</label>
 												<select id="modalEmg_RelationEmg"
-													class="select2 form-select" data-allow-clear="true"
+													class="select2 form-select modalrelation" data-allow-clear="true"
 													th:field="*{Emg_Relation}">
 													<option value="">Select</option>
 													<option th:each="str :${RELATION}" th:value="${str}"
@@ -1371,10 +1375,19 @@
 										<form id="LanguageAdd" class="row" onsubmit="addlang(event);">
 
 											<div class="col-lg-12 col-md-12">
-												<input type="hidden" id="lanid" /> <label
-													class="form-label" for="Language">Language </label> <input
-													id="Language" name="Language" class="form-control"
-													type="text" placeholder="Language" />
+												<input type="hidden" id="lanid" name="lanid" /> <label
+													class="form-label" for="Language">Language
+													<label class="emptitle additem" name="addmodallanguage"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+													 </label> 													
+													<select id="Language" name="Language" 
+														class="form-select modallanguage" required>
+
+														<option value="">-</option>
+														<th:block th:each="str :${LANGUAGE}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+
+													</select>
 
 											</div>
 
@@ -1450,7 +1463,7 @@
 										</div>
 										<form id="Qualificationform" class="row g-3"
 											onsubmit="addQualificationitem(event);">
-											<input type="hidden" id="Qualid" />
+											<input type="hidden" id="Qualid"  name="Qualid"/>
 											<div class="mb-3 col-lg-12 col-md-12">
 												<label class="form-label" for="Institution">College
 													/ Institution </label> <input type="text" class="form-control"
@@ -1461,15 +1474,15 @@
 
 											<div class="mb-3 col-lg-6 col-md-12">
 												<input type="hidden" id="empEduid"> <label
-													class="form-label" for="Degree">Degree</label> <select
-													class="form-control" id="Degree" name="Degree">
+													class="form-label" for="Degree">Degree
+													<label class="emptitle additem" name="addmodaldegree"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+													</label> <select
+													class="form-control modaldegree" id="Degree" name="Degree">
 													<option value="">-</option>
+														 <th:block th:each="str :${DEGREE}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
 
-													<option value="Bachelor">Bachelor</option>
-													<option value="Master">Master</option>
-													<option value="Delploma">Delploma</option>
-													<option value="ITI">ITI</option>
-													<option value="Doctorate">Doctorate</option>
 												</select>
 											</div>
 
@@ -1534,7 +1547,7 @@
 										</div>
 										<form id="Experienceform" class="row g-3"
 											onsubmit="addExper(event);">
-											<input type="hidden" id="expid" />
+											<input type="hidden" id="expid" name="expid" />
 											<div class="mb-3 col-lg-6 col-md-12">
 												<label class="form-label" for="Company">Company </label> <input
 													type="text" class="form-control" id="Company"
@@ -2121,7 +2134,18 @@
 				}else if(name == "addmodaldocumenttype")
 				{
 					labeltext = "New Document Type";
+				}else if(name == "addmodallanguage")
+				{
+					labeltext = "New Language Type";
+				}else if(name == "addmodalrelation")
+				{
+					labeltext = "New Relation Type";
+				}else if(name == "addmodaldegree")
+				{
+					labeltext = "New Degree";
 				}
+				
+				
 				
 				$('#additemalltxt').text(labeltext);
 				$('#ItemStatusScrollable').modal('toggle');
@@ -2137,7 +2161,14 @@
 						labeltext = "modalcontacttype";
 					}else if (name == "New Document Type") {
 						labeltext = "modalDocumenttype";
+					}else if (name == "New Language Type") {
+						labeltext = "modallanguage";
+					}else if (name == "New Relation Type") {
+						labeltext = "modalrelation";
+					}else if (name == "New Degree") {
+						labeltext = "modaldegree";
 					}
+					
 					
 					$('.' + labeltext).append(
 							"<option value='"
@@ -2219,482 +2250,530 @@
 			
 	    }); // Jquery
 
-function reply_click(id,contacttype,phonenumber,email,primarycontact)
-	    
-{
-	$('#modalcontactid').val(id);
-	$('#modalcontacttype').val(contacttype);
-	$('#modalcontactPhone').val(phonenumber);
-	$('#modalContactemail').val(email);		
-	if(primarycontact=='true')
-	{
-		$('#modalcontactprimary').prop("checked",true);	
-	}else
-	{
-		$('#modalcontactprimary').prop("checked",false);
-	}
-	 
-	
-	$('#addNewContact').modal('show');
-}
-	 
+	    function reply_click(id, contacttype, phonenumber, email, primarycontact)
 
-function contactdeleteoperation(id){
-	 Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        customClass: {
-          confirmButton: 'btn btn-primary me-3',
-          cancelButton: 'btn btn-label-secondary'
-        },
-        buttonsStyling: false
-      }).then(function (result) {
-        if (result.value) {
-         var formData = {
-      	 contactid: id,
-      	functiontype : 'Employee'
-      	 }
-			 $.ajax({
-					type : "POST",url : "Contactdeletejson",
-					data : formData, success : function(result) {
-						$('.card'+id).remove();
-						Swal.fire({
-				              icon: 'success',
-				              title: 'Deleted!',
-				              text: 'Contact has been deleted.',
-				              customClass: {
-				                confirmButton: 'btn btn-success'
-				              }
-				            });
-					},
-					error : function(e) {
-						console.log("Error" + e);
-					}
-				});
-          
-          }
-      });
-}
-
-//------------------------------------------------------    
-function filedeleteoperation(id){
-	 Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        customClass: {
-          confirmButton: 'btn btn-primary me-3',
-          cancelButton: 'btn btn-label-secondary'
-        },
-        buttonsStyling: false
-      }).then(function (result) {
-        if (result.value) {
-         var formData = {
-       		  fileid: id,
-       		functiontype : 'Employee'
-      	 }
-			 $.ajax({
-					type : "POST",url : "Filedeletejson",
-					data : formData, success : function(result) {
-						$('.filecard'+id).remove();
-						Swal.fire({
-				              icon: 'success',
-				              title: 'Deleted!',
-				              text: 'File has been deleted.',
-				              customClass: {
-				                confirmButton: 'btn btn-success'
-				              }
-				            });
-					},
-					error : function(e) {
-						console.log("Error" + e);
-					}
-				});
-          
-          }
-      });
-}
-
-//------------------------------------------------------    
-
-$('.contactdeletebtn').on('click', function(event){
-	  let id=$(this).attr("name");
-	  contactdeleteoperation(id);
- });
-	//------------------------------------------------------    
-	  $('.filedeletebtn').on('click', function(event){
-	  let id=$(this).attr("name");
-	  filedeleteoperation(id);
- });
-//------------------------------------------------------
-// Date Format
-const flatpickrFriendly = document.querySelector('#Model_STATED_DATE');
-// Human Friendly
- if (flatpickrFriendly) {
-   flatpickrFriendly.flatpickr({
-     altInput: true,
-     altFormat: 'F j, Y',
-     dateFormat: 'Y-m-d'
-   });
- }
-
-
-//Phone
- const phoneMask = document.querySelector('.phone-number-otp-mask');
-
-// Phone Number Input Mask
-if (phoneMask) {
-  new Cleave(phoneMask, {
-    phone: true,
-    phoneRegionCode: 'US'
-  });
-}    
-
-
-function addlang(e){
-	e.preventDefault();
-	const formData = new FormData(e.target);
-	var lanid = $('#lanid').val();
-	var Language = $('#Language').val();
-	
-	if(lanid !=''){
-		$('#language'+lanid).text(Language);
-		if($('#Read').is(':checked'))
-		{
-		$('#lan_read'+lanid).html('<i class="bx bx-check-circle"></i>');
-		}
-		else
-		{
-			$('#lan_read'+lanid).html('');	
-		}
-		if($('#Write').is(':checked'))
-		{
-		$('#lan_write'+lanid).html('<i class="bx bx-check-circle"></i>');
-		}
-		else
-		{
-			$('#lan_write'+lanid).html('');	
-		}
-		 
-		if($('#Speak').is(':checked'))
-		{
-		$('#lan_speak'+lanid).html('<i class="bx bx-check-circle"></i>');
-		}
-		else
-		{
-			$('#lan_speak'+lanid).html('');	
-		}
-		 
-		 
-	}
-	else
-	{
-		
-	
-	var len  = $(`#Languagetable tr:last`).attr('id');
-	len =Number(len)+1;
-	
-	var data =`<tr id="${len}"><td class="text-nowrap pop_cursor" onclick="editlang(event);" id="language${len}">${Language}</td>`;
-	  if($('#Read').is(':checked'))
-		{
-		  data+=`<td class="text-center" id="lan_read${len}"><i class="bx bx-check-circle"></i></td>`;
-		}
-	    else
-		  {
-		  data+=`<td id="lan_read${len}"></td>`;
-		  }
-	  
-	   if($('#Write').is(':checked'))
-		{
-		  data+=`<td class="text-center" id="lan_write${len}"><i class="bx bx-check-circle"></i></td>`;
-		}
-	   else
-		  {
-		  data+=`<td id="lan_write${len}"></td>`;
-		  }
-	   
-	    if($('#Speak').is(':checked'))
-		{
-		  data+=`<td class="text-center" id="lan_speak${len}"><i class="bx bx-check-circle"></i></td>`;
-		}
-	   else
-		  {
-		  data+=`<td id="lan_speak${len}"></td>`;
-		  }
-	    data+=`</tr>`;
-	$(`#Languagetable tbody`).append(data);
-	}
-	langclose();
-	$(e.target)[0].reset();
-	$('#lanid').val('');
-	$('#AddLanguages').modal('hide');
-}
-
-function addQualificationitem(e){
-	e.preventDefault();
-	var Qualid = $(`#Qualid`).val();
-	const formData = new FormData(e.target);
-	const data = {};
-	  for (const [key, value] of formData.entries()) {
-		  data[key] = value;
-	  }
-	  if(Qualid !=''){
-		  $('#h6'+Qualid).text(`${data.Degree
-					} _ ${data.Major}`);
-		  $('#small'+Qualid).text(`${data.Qualificationfrom} _ ${data.Qualificationto}`);
-		  $('#span1_'+Qualid).text(`${data.Institution}`);
-		  $('#span2_'+Qualid).text(`${data.Percentage}`);
-	  }
-	  else
-		  {
-	      console.log(data);
-		  var len  = $(`.timelinequf li:first`).attr('id');
-		  len =Number(len)+1;
-		  
-		 $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);" id='${len}'><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="h6${len}">${data.Degree
-	} _ ${data.Major}</h6><small class="text-muted" id="small${len}">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="span1_${len}"> ${data.Institution}</span></div><div><span id="span2_${len}">${data.Percentage}</span></div></div></div></li>`);
-}
-	  
-	 $(e.target)[0].reset();
-	 $('#Qualid').val('');
-	 $('#AddQualification').modal('hide');
- 
-}
-
-function editlang(e){
-	const parent = $(e.target).parents('tr');
-	const texts = [];
-	var innerText;
-	$(parent).children().each(function() {
-		innerText = $(this).text();
-		if($(this).children().length>0){
-			texts.push('checked');
-		}
-		else
-		{
-		texts.push(innerText);
-		}
-	})
-	$('#lanid').val($(parent).attr('id'));
-	$('#Language').val(texts[0]);
-	    if(texts[1] != '')
-		{
-		$('#Read').attr('checked', true );
-		}
-	    else
 	    {
-	    	$('#Read').attr('checked', false );
+	        $('#modalcontactid').val(id);
+	        $('#modalcontacttype').val(contacttype);
+	        $('#modalcontactPhone').val(phonenumber);
+	        $('#modalContactemail').val(email);
+	        if (primarycontact == 'true') {
+	            $('#modalcontactprimary').prop("checked", true);
+	        } else {
+	            $('#modalcontactprimary').prop("checked", false);
+	        }
+
+
+	        $('#addNewContact').modal('show');
 	    }
-	    if(texts[2] != '')
-		{
-		$('#Write').attr('checked', true );
-		}
-	    else
-	    {
-	    	$('#Write').attr('checked', false );
+
+
+	    function contactdeleteoperation(id) {
+	        Swal.fire({
+	            title: 'Are you sure?',
+	            text: "You won't be able to revert this!",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonText: 'Yes, delete it!',
+	            customClass: {
+	                confirmButton: 'btn btn-primary me-3',
+	                cancelButton: 'btn btn-label-secondary'
+	            },
+	            buttonsStyling: false
+	        }).then(function(result) {
+	            if (result.value) {
+	                var formData = {
+	                    contactid: id,
+	                    functiontype: 'Employee'
+	                }
+	                $.ajax({
+	                    type: "POST",
+	                    url: "Contactdeletejson",
+	                    data: formData,
+	                    success: function(result) {
+	                        $('.card' + id).remove();
+	                        Swal.fire({
+	                            icon: 'success',
+	                            title: 'Deleted!',
+	                            text: 'Contact has been deleted.',
+	                            customClass: {
+	                                confirmButton: 'btn btn-success'
+	                            }
+	                        });
+	                    },
+	                    error: function(e) {
+	                        console.log("Error" + e);
+	                    }
+	                });
+
+	            }
+	        });
 	    }
-	    if(texts[3] != '')
-		{
-		$('#Speak').attr('checked', true );
-		}
-	    else
-	    {
-	    	$('#Speak').attr('checked', false );
+
+	    //------------------------------------------------------    
+	    function filedeleteoperation(id) {
+	        Swal.fire({
+	            title: 'Are you sure?',
+	            text: "You won't be able to revert this!",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonText: 'Yes, delete it!',
+	            customClass: {
+	                confirmButton: 'btn btn-primary me-3',
+	                cancelButton: 'btn btn-label-secondary'
+	            },
+	            buttonsStyling: false
+	        }).then(function(result) {
+	            if (result.value) {
+	                var formData = {
+	                    fileid: id,
+	                    functiontype: 'Employee'
+	                }
+	                $.ajax({
+	                    type: "POST",
+	                    url: "Filedeletejson",
+	                    data: formData,
+	                    success: function(result) {
+	                        $('.filecard' + id).remove();
+	                        Swal.fire({
+	                            icon: 'success',
+	                            title: 'Deleted!',
+	                            text: 'File has been deleted.',
+	                            customClass: {
+	                                confirmButton: 'btn btn-success'
+	                            }
+	                        });
+	                    },
+	                    error: function(e) {
+	                        console.log("Error" + e);
+	                    }
+	                });
+
+	            }
+	        });
 	    }
-	    $('#AddLanguages').modal('show');
-	 
-}
 
-function langclose(){
-	$('#Read').attr('checked', false );
-	$('#Speak').attr('checked', false );
-	$('#Write').attr('checked', false );
-}
+	    //------------------------------------------------------    
 
-function editExper(e){
-	const parent = $(e.target).parents('li');
-	const texts = [];
-	texts.push($(parent).children().find('h6').text());
-	texts.push($(parent).children().find('small').text());
-	$(parent).children().find('span').each(function(){
-		texts.push($(this).text());
-	})
-	$('#Qualid').val($(parent).attr('id'));
-	var Degree =  texts[0].split('_');
-	$('#Degree').val(Degree[0].trim());
-	$('#Major').val(Degree[1].trim());
-	$('#Institution').val(texts[2].trim());
-	var date =  texts[1].split('_');
-	Qualificationfrom.setDate(date[0]);
-	Qualificationto.setDate(date[1]);
-	$('#Percentage').val(texts[3].trim());
-	console.log(texts);
-	$('#AddQualification').modal('show');
-	
-}
-
-function addExper(e){
-	e.preventDefault();
-	var expid = $(`#expid`).val();
-	const formData = new FormData(e.target);
-	const obj = {};
-	  for (const [key, value] of formData.entries()) {
-		  obj[key] = value;
-	  }
-	  if(expid !=''){
-		  $('#Exph6'+expid).text(`${obj.Role}`);
-		  $('#Expsmall'+expid).text(`${obj.Experiencefrom}_ ${obj.Experiencento}`);
-		  $('#Expspan1'+expid).text(`${obj.Company}`);
-		  $('#Expspan2'+expid).text(`${obj.Location}`);
-	  }
-	  else
-		  {
-		  var len  = $(`.timeline-exp li:first`).attr('id');
-		  len =Number(len)+1;
-		  
-	  $('.timeline-exp').append(`<li class="timeline-item timeline-item-transparent" onclick="editExperience(event);" id="${len}"><spanclass="timeline-point timeline-point-primary"></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="Exph6${len}">${obj.Role}</h6><small class="text-muted" id="Expsmall${len}">${obj.Experiencefrom}_ ${obj.Experiencento}</small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="Expspan1${len}">${obj.Company}</span></div><div><span class="text-muted" id="Expspan2${len}">${obj.Location}</span></div></div></div></li>`);
-		  }
-	  
-	  $(e.target)[0].reset();
-	  $(`#expid`).val('');
-	  $('#AddExperience').modal('hide');
-}
-
-
-
-function editExperience(e){
-	const parent = $(e.target).parents('li');
-	const texts = [];
-	texts.push($(parent).children().find('h6').text());
-	texts.push($(parent).children().find('small').text());
-	$(parent).children().find('span').each(function(){
-		texts.push($(this).text());
-	})
-	$('#expid').val($(parent).attr('id'));
-	var date =  texts[1].split('_');
-	Experiencefrom.setDate(date[0]);
-	Experiencento.setDate(date[1]);
-	$('#Company').val(texts[2].trim());
-	$('#Location').val(texts[3].trim());
-	$('#Role').val(texts[0].trim());
-	$('#AddExperience').modal('show');
-	console.log(texts);
-}
-
-function emgAddressdata(e){
-	e.preventDefault();
-	var formData = new FormData(e.target);
-	formData.append("empMasterid",$('#empMasterid').val());
-
-	const obj = {};
-	  for (const [key, value] of formData.entries()) {
-		if(key != '_Emg_InsuranceNominee')
-			{
-			  obj[key] = value;
-			}
-		
-	  }
-	   //--------------------------------------
-	   var newid="";
-	   var formDataX = {
-								emgcontact : obj
-							}
-	   $.ajax({
-					type : "POST",url : "employeeemgaddressjson",
-					
-					data : formDataX, success : function(result) {
-						newid=result;
-					},
-					error : function(e) {
-						console.log("Error" + e);
-					}
-				});   
-	  //--------------------------------------------------------
-	  console.log(obj);
-	 var eid =  $('#empEmgContactid').val();
-	 if(eid !=''){
-		  $('#Emg_Name'+eid).text(`${obj.Emg_Name}`);
-		  $('#Emg_Relation'+eid).text(`${obj.Emg_Relation}`);
-		  $('#Emg_Street1'+eid).text(`${obj.Emg_Street1}`);
-		  $('#Emg_Street2'+eid).text(`${obj.Emg_Street2}`);
-		  $('#Emg_Landmark'+eid).text(`${obj.Emg_Landmark}`);
-		  $('#Emg_PersonalPhone'+eid).text(`${obj.Emg_PersonalPhone}`);
-		  $('#Emg_Village'+eid).text(`${obj.Emg_Village}`);
-		  $('#Emg_City'+eid).text(`${obj.Emg_City}`);
-		  $('#Emg_State'+eid).text(`${obj.Emg_State}`);
-		  $('#Emg_ZIP'+eid).text(`${obj.Emg_ZIP}`);
-		  $('#Emg_Country'+eid).text(`${obj.Emg_Country}`);
-	 }
-	 
-	 else
-     {
-				var len  = $(`#addNewEmg .editemg:last`).attr('id');
-				len =Number(len)+1;
-				
-				var text = `<div class="row editemg" id="${len}"><hr><div class="col-xl-7 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Name: <input type="hidden" id="empEmgContactid${len}" value="${newid}"> <input type="hidden" id="Emg_InsuranceNominee${len}" value="true"></dt><dd class="col-sm-8"><span id="Emg_Name${len}" class="pop_cursor" onclick="editemgAddressdata(event);">${obj.Emg_Name}</span>`;
-
-			if($('#InsuranceNominee').is(':checked'))
-			{
-			 text+=`<span><br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>`;
-			}
-			
-			text+=`</dd><dt class="col-sm-4 mb-3 text-nowrap">Relationship:</dt><dd class="col-sm-8" id="Emg_Relation${len}">${obj.Emg_Relation}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line1:</dt><dd class="col-sm-8" id="Emg_Street1${len}">${obj.Emg_Street1}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line2:</dt><dd class="col-sm-8" id="Emg_Street2${len}">${obj.Emg_Street2}</dd><dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt><dd class="col-sm-8" id="Emg_Landmark${len}">${obj.Emg_Landmark}</dd></dl></div><div class="col-xl-5 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Contact No:</dt><dd class="col-sm-8" id="Emg_PersonalPhone${len}">${obj.Emg_PersonalPhone}</dd><dt class="col-sm-4 mb-3 text-nowrap">Village:</dt><dd class="col-sm-8" id="Emg_Village${len}">${obj.Emg_Village}</dd><dt class="col-sm-4 mb-3 text-nowrap">City:</dt><dd class="col-sm-8" id="Emg_City${len}">${obj.Emg_City}</dd><dt class="col-sm-4 mb-3 text-nowrap">State:</dt><dd class="col-sm-8" id="Emg_State${len}">${obj.Emg_State}</dd><dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt><dd class="col-sm-8" id="Emg_ZIP${len}">${obj.Emg_ZIP}</dd><dt class="col-sm-4 mb-3 text-nowrap">Country:</dt><dd class="col-sm-8" id="Emg_Country${len}">${obj.Emg_Country}</dd></dl></div></div>`;
-			
-			$('#addNewEmg').append(text);
-     }
-	 $(e.target)[0].reset();
-	 $('#empEmgContactid').val('');
-	 $('#addNewEmgAddress').modal('hide');
-	
-}
-
-function editemgAddressdata(e){
-	const parent = $(e.target).parents('.editemg');
-	console.log(parent);
-	const texts = [];
-	$('#empEmgContactid').val($(parent).attr('id'));
-	$(parent).children().find('dd').each(function(){
-		texts.push($(this).text());
-	})
-	
-	$(parent).children().find('span').each(function(){
-		texts.push($(this).text());
-	})
-	
-	$(parent).children().find('button').each(function(){
-		texts.push($(this).text());
-	})
-	
-	
-	    if(texts.length>11)
-		{
-	    	$('#InsuranceNominee').attr('checked', true );
-		}
-	    else
-	    {
-	    	$('#InsuranceNominee').attr('checked', false );
+	    $('.contactdeletebtn').on('click', function(event) {
+	        let id = $(this).attr("name");
+	        contactdeleteoperation(id);
+	    });
+	    //------------------------------------------------------    
+	    $('.filedeletebtn').on('click', function(event) {
+	        let id = $(this).attr("name");
+	        filedeleteoperation(id);
+	    });
+	    //------------------------------------------------------
+	    // Date Format
+	    const flatpickrFriendly = document.querySelector('#Model_STATED_DATE');
+	    // Human Friendly
+	    if (flatpickrFriendly) {
+	        flatpickrFriendly.flatpickr({
+	            altInput: true,
+	            altFormat: 'F j, Y',
+	            dateFormat: 'Y-m-d'
+	        });
 	    }
-	$('#modalEmg_Name').val(texts[11]);
-	$('#modalEmg_PersonalPhone').val(texts[5]);
-	$('#modalEmg_RelationEmg').val(texts[1]);
-	$('#modalAddressAddress1Emg').val(texts[2]);
-	$('#modalAddressAddress2Emg').val(texts[3]);
-	$('#modalAddressLandmarkEmg').val(texts[4]);
-	$('#modalAddressVillageEmg').val(texts[6]);
-	$('#modalAddressCityEmg').val(texts[7]);
-	$('#modalAddressStateEmg').val(texts[8]);
-	$('#modalAddressZipCodeEmg').val(texts[9]);
-	$('#modalAddressCountryEmg').val(texts[10]).change();
-	$('#addNewEmgAddress').modal('show');
-	
-	console.log(texts);
-	
-}
+
+
+	    //Phone
+	    const phoneMask = document.querySelector('.phone-number-otp-mask');
+
+	    // Phone Number Input Mask
+	    if (phoneMask) {
+	        new Cleave(phoneMask, {
+	            phone: true,
+	            phoneRegionCode: 'US'
+	        });
+	    }
+
+
+	    function addlang(e) {
+	        e.preventDefault();
+	        const formData = new FormData(e.target);
+	        var lanid = $('#lanid').val();
+	        var Language = $('#Language').val();
+	        formData.append("empMasterid", $('#empMasterid').val());
+
+	        const obj = {};
+	        for (const [key, value] of formData.entries()) {
+	                obj[key] = value;
+	           	        }
+	        //--------------------------------------
+	        console.log(obj);
+	        var newid = "";
+	        var formDataX = {
+	            langu: obj
+	        }
+	        $.ajax({
+	            type: "POST",
+	            url: "employeelanguagejson",
+
+	            data: formDataX,
+	            success: function(result) {
+	                newid = result;
+	                
+	                //--------------------------------------------------------
+	    	        
+	    	        if (lanid != '') {
+	    	            $('#language' + lanid).text(Language);
+	    	            if ($('#Read').is(':checked')) {
+	    	                $('#lan_read' + lanid).html('<i class="bx bx-check-circle"></i>');
+	    	            } else {
+	    	                $('#lan_read' + lanid).html('');
+	    	            }
+	    	            if ($('#Write').is(':checked')) {
+	    	                $('#lan_write' + lanid).html('<i class="bx bx-check-circle"></i>');
+	    	            } else {
+	    	                $('#lan_write' + lanid).html('');
+	    	            }
+
+	    	            if ($('#Speak').is(':checked')) {
+	    	                $('#lan_speak' + lanid).html('<i class="bx bx-check-circle"></i>');
+	    	            } else {
+	    	                $('#lan_speak' + lanid).html('');
+	    	            }
+
+
+	    	        } else {
+
+
+	    	            var len = $(`#Languagetable tr:last`).attr('id');
+	    	            len = newid; //Number(len) + 1;
+
+	    	            var data = `<tr id="${len}"><td class="text-nowrap pop_cursor" onclick="editlang(event);" id="language${len}">${Language}</td>`;
+	    	            if ($('#Read').is(':checked')) {
+	    	                data += `<td class="text-center" id="lan_read${len}"><i class="bx bx-check-circle"></i></td>`;
+	    	            } else {
+	    	                data += `<td id="lan_read${len}"></td>`;
+	    	            }
+
+	    	            if ($('#Write').is(':checked')) {
+	    	                data += `<td class="text-center" id="lan_write${len}"><i class="bx bx-check-circle"></i></td>`;
+	    	            } else {
+	    	                data += `<td id="lan_write${len}"></td>`;
+	    	            }
+
+	    	            if ($('#Speak').is(':checked')) {
+	    	                data += `<td class="text-center" id="lan_speak${len}"><i class="bx bx-check-circle"></i></td>`;
+	    	            } else {
+	    	                data += `<td id="lan_speak${len}"></td>`;
+	    	            }
+	    	            data += `</tr>`;
+	    	            $(`#Languagetable tbody`).append(data);
+	    	        }
+	                
+	            },
+	            error: function(e) {
+	                console.log("Error" + e);
+	            }
+	        });
+	       
+	        langclose();
+	        $(e.target)[0].reset();
+	        $('#lanid').val('');
+	        $('#AddLanguages').modal('hide');
+	    }
+
+	    function addQualificationitem(e) {
+	        e.preventDefault();
+	        var Qualid = $(`#Qualid`).val();
+	        const formData = new FormData(e.target);
+	        formData.append("empMasterid", $('#empMasterid').val());
+
+	        const data = {};
+	        for (const [key, value] of formData.entries()) {
+	            data[key] = value;
+	        }
+	        
+	      //--------------------------------------
+	        console.log(data);
+	        var newid = "";
+	        var formDataX = {
+	            edu: data
+	        }
+	        $.ajax({
+	            type: "POST",
+	            url: "employeeQualificationjson",
+
+	            data: formDataX,
+	            success: function(result) {
+	                newid = result;
+	                
+	                
+	    	        if (Qualid != '') {
+	    	            $("#h6" + Qualid).text(data.Degree+"_"+ data.Major);
+	    	            $("#small" + Qualid).text(data.Qualificationfrom+"_"+data.Qualificationto);
+	    	            $("#span1_" + Qualid).text(data.Institution);
+	    	            $("#span2_" + Qualid).text(data.Percentage);
+	    	        } else {
+	    	            console.log(data);
+	    	            var len = $(`.timelinequf li:first`).attr('id');
+	    	            len = Number(len) + 1;
+
+	    	            $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);" id='${len}'><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="h6${len}">${data.Degree
+	    	    	} _ ${data.Major}</h6><small class="text-muted" id="small${len}">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="span1_${len}"> ${data.Institution}</span></div><div><span id="span2_${len}">${data.Percentage}</span></div></div></div></li>`);
+	    	        }
+	            },
+	            error: function(e) {
+	                console.log("Error" + e);
+	            }
+	        });
+	        //--------------------------------------------------------
+	       
+
+	        $(e.target)[0].reset();
+	        $('#Qualid').val('');
+	        $('#AddQualification').modal('hide');
+
+	    }
+
+	    function editlang(e) {
+	        const parent = $(e.target).parents('tr');
+	        const texts = [];
+	        var innerText;
+	        $(parent).children().each(function() {
+	            innerText = $(this).text();
+	            if ($(this).children().length > 0) {
+	                texts.push('checked');
+	            } else {
+	                texts.push(innerText);
+	            }
+	        })
+	        $('#lanid').val($(parent).attr('id'));
+	        $('#Language').val(texts[0]);
+	        if (texts[1] != '') {
+	            $('#Read').attr('checked', true);
+	        } else {
+	            $('#Read').attr('checked', false);
+	        }
+	        if (texts[2] != '') {
+	            $('#Write').attr('checked', true);
+	        } else {
+	            $('#Write').attr('checked', false);
+	        }
+	        if (texts[3] != '') {
+	            $('#Speak').attr('checked', true);
+	        } else {
+	            $('#Speak').attr('checked', false);
+	        }
+	        $('#AddLanguages').modal('show');
+
+	    }
+
+	    function langclose() {
+	        $('#Read').attr('checked', false);
+	        $('#Speak').attr('checked', false);
+	        $('#Write').attr('checked', false);
+	    }
+
+	    function editExper(e) {
+	        const parent = $(e.target).parents('li');
+	        const texts = [];
+	        texts.push($(parent).children().find('h6').text());
+	        texts.push($(parent).children().find('small').text());
+	        $(parent).children().find('span').each(function() {
+	            texts.push($(this).text());
+	        })
+	        $('#Qualid').val($(parent).attr('id'));
+	        var Degree = texts[0].split('_');
+	        $('#Degree').val(Degree[0].trim());
+	        $('#Major').val(Degree[1].trim());
+	        $('#Institution').val(texts[2].trim());
+	        var date = texts[1].split('_');
+	        Qualificationfrom.setDate(date[0]);
+	        Qualificationto.setDate(date[1]);
+	        $('#Percentage').val(texts[3].trim());
+	        console.log(texts);
+	        $('#AddQualification').modal('show');
+
+	    }
+
+	    function addExper(e) {
+	        e.preventDefault();
+	        var expid = $(`#expid`).val();
+	        const formData = new FormData(e.target);
+	        formData.append("empMasterid", $('#empMasterid').val());
+	        const obj = {};
+	        for (const [key, value] of formData.entries()) {
+	            obj[key] = value;
+	        }
+	        
+	        
+		      //--------------------------------------
+		        console.log(obj);
+		        var newid = "";
+		        var formDataX = {
+		            exp: obj
+		        }
+		        $.ajax({
+		            type: "POST",
+		            url: "employeeExperiencejson",
+
+		            data: formDataX,
+		            success: function(result) {
+		                newid = result;
+		                
+		                if (expid != '') {
+		    	            $('#Exph6' + expid).text(`${obj.Role}`);
+		    	            $('#Expsmall' + expid).text(`${obj.Experiencefrom}_ ${obj.Experiencento}`);
+		    	            $('#Expspan1' + expid).text(`${obj.Company}`);
+		    	            $('#Expspan2' + expid).text(`${obj.Location}`);
+		    	        } else {
+		    	            var len = $(`.timeline-exp li:first`).attr('id');
+		    	            len = newid; //Number(len) + 1;
+
+		    	            $('.timeline-exp').append(`<li class="timeline-item timeline-item-transparent" onclick="editExperience(event);" id="${len}"><spanclass="timeline-point timeline-point-primary"></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="Exph6${len}">${obj.Role}</h6><small class="text-muted" id="Expsmall${len}">${obj.Experiencefrom}_ ${obj.Experiencento}</small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="Expspan1${len}">${obj.Company}</span></div><div><span class="text-muted" id="Expspan2${len}">${obj.Location}</span></div></div></div></li>`);
+		    	        }
+
+		                
+		            },
+		            error: function(e) {
+		                console.log("Error" + e);
+		            }
+		        });
+		        //--------------------------------------------------------
+		        
+	       
+	        $(e.target)[0].reset();
+	        $(`#expid`).val('');
+	        $('#AddExperience').modal('hide');
+	    }
+
+
+
+	    function editExperience(e) {
+	        const parent = $(e.target).parents('li');
+	        const texts = [];
+	        texts.push($(parent).children().find('h6').text());
+	        texts.push($(parent).children().find('small').text());
+	        $(parent).children().find('span').each(function() {
+	            texts.push($(this).text());
+	        })
+	        $('#expid').val($(parent).attr('id'));
+	        var date = texts[1].split('_');
+	        Experiencefrom.setDate(date[0]);
+	        Experiencento.setDate(date[1]);
+	        $('#Company').val(texts[2].trim());
+	        $('#Location').val(texts[3].trim());
+	        $('#Role').val(texts[0].trim());
+	        $('#AddExperience').modal('show');
+	        console.log(texts);
+	    }
+
+	    function emgAddressdata(e) {
+	        e.preventDefault();
+	        var formData = new FormData(e.target);
+	        formData.append("empMasterid", $('#empMasterid').val());
+
+	        const obj = {};
+	        for (const [key, value] of formData.entries()) {
+	            if (key != '_Emg_InsuranceNominee') {
+	                obj[key] = value;
+	            }
+
+	        }
+	        //--------------------------------------
+	        var newid = "";
+	        var formDataX = {
+	            emgcontact: obj
+	        }
+	        $.ajax({
+	            type: "POST",
+	            url: "employeeemgaddressjson",
+
+	            data: formDataX,
+	            success: function(result) {
+	                newid = result;
+	                
+	                var eid = $('#empEmgContactid').val();
+	    	        if (eid != '') {
+	    	            $('#Emg_Name' + eid).text(`${obj.Emg_Name}`);
+	    	            $('#Emg_Relation' + eid).text(`${obj.Emg_Relation}`);
+	    	            $('#Emg_Street1' + eid).text(`${obj.Emg_Street1}`);
+	    	            $('#Emg_Street2' + eid).text(`${obj.Emg_Street2}`);
+	    	            $('#Emg_Landmark' + eid).text(`${obj.Emg_Landmark}`);
+	    	            $('#Emg_PersonalPhone' + eid).text(`${obj.Emg_PersonalPhone}`);
+	    	            $('#Emg_Village' + eid).text(`${obj.Emg_Village}`);
+	    	            $('#Emg_City' + eid).text(`${obj.Emg_City}`);
+	    	            $('#Emg_State' + eid).text(`${obj.Emg_State}`);
+	    	            $('#Emg_ZIP' + eid).text(`${obj.Emg_ZIP}`);
+	    	            $('#Emg_Country' + eid).text(`${obj.Emg_Country}`);
+	    	            if ($('#InsuranceNominee').is(':checked')) {
+	    	                $('#Emg_Nominee' + eid).html('<br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button>');
+	    	            } else {
+	    	                $('#Emg_Nominee' + eid).html("");
+	    	            }
+	    	        } else {
+	    	            var len = $(`#addNewEmg .editemg:last`).attr('id');
+	    	            len =newid; //  Number(len) + 1;
+
+	    	            var text = `<div class="row editemg" id="${len}"><hr><div class="col-xl-7 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Name: <input type="hidden" id="empEmgContactid${len}" value="${newid}"> <input type="hidden" id="Emg_InsuranceNominee${len}" value="true"></dt><dd class="col-sm-8"><span id="Emg_Name${len}" class="pop_cursor" onclick="editemgAddressdata(event);">${obj.Emg_Name}</span>`;
+
+	    	            if ($('#InsuranceNominee').is(':checked')) {
+	    	                text += `<span  id="Emg_Nominee${len}"><br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>`;
+	    	            }
+
+	    	            text += `</dd><dt class="col-sm-4 mb-3 text-nowrap">Relationship:</dt><dd class="col-sm-8" id="Emg_Relation${len}">${obj.Emg_Relation}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line1:</dt><dd class="col-sm-8" id="Emg_Street1${len}">${obj.Emg_Street1}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line2:</dt><dd class="col-sm-8" id="Emg_Street2${len}">${obj.Emg_Street2}</dd><dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt><dd class="col-sm-8" id="Emg_Landmark${len}">${obj.Emg_Landmark}</dd></dl></div><div class="col-xl-5 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Contact No:</dt><dd class="col-sm-8" id="Emg_PersonalPhone${len}">${obj.Emg_PersonalPhone}</dd><dt class="col-sm-4 mb-3 text-nowrap">Village:</dt><dd class="col-sm-8" id="Emg_Village${len}">${obj.Emg_Village}</dd><dt class="col-sm-4 mb-3 text-nowrap">City:</dt><dd class="col-sm-8" id="Emg_City${len}">${obj.Emg_City}</dd><dt class="col-sm-4 mb-3 text-nowrap">State:</dt><dd class="col-sm-8" id="Emg_State${len}">${obj.Emg_State}</dd><dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt><dd class="col-sm-8" id="Emg_ZIP${len}">${obj.Emg_ZIP}</dd><dt class="col-sm-4 mb-3 text-nowrap">Country:</dt><dd class="col-sm-8" id="Emg_Country${len}">${obj.Emg_Country}</dd></dl></div></div>`;
+
+	    	            $('#addNewEmg').append(text);
+	    	        }
+	    	        //------------------------------------------
+	            },
+	            error: function(e) {
+	                console.log("Error" + e);
+	            }
+	        });
+	        //--------------------------------------------------------
+	       // console.log(obj);
+	      
+	       
+	        $(e.target)[0].reset();
+	        $('#empEmgContactid').val('');
+	        $('#addNewEmgAddress').modal('hide');
+
+	    }
+
+	    function editemgAddressdata(e) {
+	        const parent = $(e.target).parents('.editemg');
+	        console.log(parent);
+	        const texts = [];
+	        $('#empEmgContactid').val($(parent).attr('id'));
+	        $(parent).children().find('dd').each(function() {
+	            texts.push($(this).text());
+	        })
+
+	        $(parent).children().find('span').each(function() {
+	            texts.push($(this).text());
+	        })
+
+	        $(parent).children().find('button').each(function() {
+	            texts.push($(this).text());
+	        })
+
+
+	        if (texts.length > 13) {
+	            $('#InsuranceNominee').attr('checked', true);
+	        } else {
+	            $('#InsuranceNominee').attr('checked', false);
+	        }
+	        $('#modalEmg_Name').val(texts[11]);
+	        $('#modalEmg_PersonalPhone').val(texts[5]);
+	        $('#modalEmg_RelationEmg').val(texts[1]);
+	        $('#modalAddressAddress1Emg').val(texts[2]);
+	        $('#modalAddressAddress2Emg').val(texts[3]);
+	        $('#modalAddressLandmarkEmg').val(texts[4]);
+	        $('#modalAddressVillageEmg').val(texts[6]);
+	        $('#modalAddressCityEmg').val(texts[7]);
+	        $('#modalAddressStateEmg').val(texts[8]);
+	        $('#modalAddressZipCodeEmg').val(texts[9]);
+	        $('#modalAddressCountryEmg').val(texts[10]).change();
+	        $('#addNewEmgAddress').modal('show');
+
+	        console.log(texts);
+
+	    }
 </script>
 </body>
 </html>

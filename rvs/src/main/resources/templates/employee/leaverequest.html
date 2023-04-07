@@ -659,26 +659,51 @@
    }
    
    function CancelRequest(id){
-	   if(confirm("Are you sure to cancel this request?"))
-		{
-			
-			var formData = {
-					cancelid : id										
-			}
-			$.ajax({
-				type : "POST",
-				url : "requestcancelled",
-				data : formData,
-				success : function(result) {
-					dt_basic.ajax.reload();
-					
-				},
-				error : function(e) {
-					dt_basic.ajax.reload();
-				}
-			});
-			
-		}
+
+       Swal.fire({
+           title: 'Are you sure?',
+           text: "You won't be able to revert this!",
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonText: 'Yes, delete it!',
+           customClass: {
+               confirmButton: 'btn btn-primary me-3',
+               cancelButton: 'btn btn-label-secondary'
+           },
+           buttonsStyling: false
+       }).then(function(result) {
+           if (result.value) {
+        	   
+               var formData = {
+                cancelid: id,
+               };
+               
+               $.ajax({
+                   type: "POST",
+                   url: "requestcancelled",
+                   data: formData,
+                   success: function(result) {
+                    
+                       Swal.fire({
+                           icon: 'success',
+                           title: 'Deleted!',
+                           text: 'Contact has been deleted.',
+                           customClass: {
+                               confirmButton: 'btn btn-success'
+                           }
+                       });
+                       
+                       dt_basic.ajax.reload();
+                       
+                   },
+                   error: function(e) {
+                       console.log("Error" + e);
+                   }
+               });
+
+           }
+       });
+		
    }
     </script>
   </body>

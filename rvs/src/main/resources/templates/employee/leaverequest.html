@@ -465,10 +465,12 @@
 						          render: function(data, type, full, meta) {
 						        	  
 						        	  var st = full.status;
+						        	  var id = full.id;
 				        			  var status = [];
 				        			     status['Approved'] = ' bg-label-success';
 							             status['Rejected'] = ' bg-label-danger';
 							             status['Pending'] = ' bg-label-warning';
+							             status['Cancelled'] = ' bg-label-dark';
 							             
 							             if (typeof status[st] === 'undefined') {
 								              return data;
@@ -476,7 +478,7 @@
 							             var txt ='';
 							             if(st == 'Pending')
 							            	 {
-							            	 txt+=`<a class="badge rounded-pill bg-label-primary">  Cancel the Request </a>`;
+							            	 txt+=`<button type="button" class="btn btn-sm rounded-pill btn-label-primary" onclick="CancelRequest(${id});">Cancel the Request</button>`;
 							            	 }
 							             else
 							            	{
@@ -654,6 +656,29 @@
 		    flatpickrFriendly2.setDate('');
 			flatpickrFriendly3.setDate('');
 		   }
+   }
+   
+   function CancelRequest(id){
+	   if(confirm("Are you sure to cancel this request?"))
+		{
+			
+			var formData = {
+					cancelid : id										
+			}
+			$.ajax({
+				type : "POST",
+				url : "requestcancelled",
+				data : formData,
+				success : function(result) {
+					dt_basic.ajax.reload();
+					
+				},
+				error : function(e) {
+					dt_basic.ajax.reload();
+				}
+			});
+			
+		}
    }
     </script>
   </body>

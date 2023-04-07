@@ -1631,21 +1631,19 @@ public class HomeController {
 	@PostMapping("employeeemgaddressjson")
 	public int employeeemgaddressjson(@RequestParam Map<String, String> params) {
 
-		
 		EmployeeEmgContact emg = new EmployeeEmgContact();
-		
+
 		emg.setEmg_Country(params.get("emgcontact[Emg_Country]"));
-		//emg.setEmg_EmailID(params.get("emgcontact[]"));
-		if(String.valueOf(params.get("emgcontact[Emg_InsuranceNominee]")).equalsIgnoreCase("true")) {
-			emg.setEmg_InsuranceNominee(true);	
-		}else
-		{
-			emg.setEmg_InsuranceNominee(false);	
+		// emg.setEmg_EmailID(params.get("emgcontact[]"));
+		if (String.valueOf(params.get("emgcontact[Emg_InsuranceNominee]")).equalsIgnoreCase("true")) {
+			emg.setEmg_InsuranceNominee(true);
+		} else {
+			emg.setEmg_InsuranceNominee(false);
 		}
-		
+
 		emg.setEmg_Landmark(params.get("emgcontact[Emg_Landmark]"));
 		emg.setEmg_Name(params.get("emgcontact[Emg_Name]"));
-		//emg.setEmg_OtherPhone(params.get("emgcontact[]"));
+		// emg.setEmg_OtherPhone(params.get("emgcontact[]"));
 		emg.setEmg_PersonalPhone(params.get("emgcontact[Emg_PersonalPhone]"));
 		emg.setEmg_State(params.get("emgcontact[Emg_State]"));
 		emg.setEmg_Street1(params.get("emgcontact[Emg_Street1]"));
@@ -1663,6 +1661,89 @@ public class HomeController {
 		} else {
 			emg.setEmpEmgContactid(Integer.parseInt(params.get("emgcontact[empEmgContactid]")));
 			return employeeMasterService.updateemployeeEmgContact(emg);
+		}
+
+	}
+
+	@ResponseBody
+	@PostMapping("employeeQualificationjson")
+	public int employeeQualificationjson(@RequestParam Map<String, String> params) {
+
+		EmployeeEducation edu = new EmployeeEducation();
+
+		edu.setCollege_Institution(params.get("edu[Institution]"));
+		edu.setDegree(params.get("edu[Degree]"));
+		edu.setFromYear(params.get("edu[Qualificationfrom]"));
+		edu.setMajorSpecialization(params.get("edu[Major]"));
+		edu.setPercentage_GPA(params.get("edu[Percentage]"));
+		edu.setToYear(params.get("edu[Qualificationto]"));
+
+		int empMasterid = Integer.parseInt(params.get("edu[empMasterid]"));
+
+		if (params.get("edu[Qualid]").equalsIgnoreCase("")) {
+			return employeeMasterService.insertemployeeQualification(empMasterid, edu);
+		} else {
+			edu.setEmpEduid(Integer.parseInt(params.get("edu[Qualid]")));
+			return employeeMasterService.updateemployeeQualification(edu);
+		}
+
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("employeeExperiencejson")
+	public int employeeExperiencejson(@RequestParam Map<String, String> params) {
+
+		EmployeeExperience exp = new EmployeeExperience();
+
+		exp.setCompany(params.get("exp[Company]")); 
+		exp.setExpFromyear(params.get("exp[Experiencefrom]"));
+		exp.setExpToyear(params.get("exp[Experiencento]"));
+		exp.setJobTitle(params.get("exp[Role]"));
+		exp.setLocation(params.get("exp[Location]"));
+		
+		int empMasterid = Integer.parseInt(params.get("exp[empMasterid]"));
+
+		if (params.get("exp[expid]").equalsIgnoreCase("")) {
+			return employeeMasterService.insertemployeeExperience(empMasterid,exp);
+		} else {
+			exp.setEmpExperienceid(Integer.parseInt(params.get("exp[expid]")));
+			return employeeMasterService.updateemployeeExperience(exp);
+		}
+
+	}
+
+	@ResponseBody
+	@PostMapping("employeelanguagejson")
+	public int employeelanguagejson(@RequestParam Map<String, String> params) {
+
+		EmployeeLanguage langu = new EmployeeLanguage();
+
+		if (String.valueOf(params.get("langu[Read]")).equalsIgnoreCase("on")) {
+			langu.setLan_read(true);
+		} else {
+			langu.setLan_read(false);
+		}
+		if (String.valueOf(params.get("langu[Write]")).equalsIgnoreCase("on")) {
+			langu.setLan_write(true);
+		} else {
+			langu.setLan_write(false);
+		}
+		if (String.valueOf(params.get("langu[Speak]")).equalsIgnoreCase("on")) {
+			langu.setLan_speak(true);
+		} else {
+			langu.setLan_speak(false);
+		}
+
+		langu.setLanguage(params.get("langu[Language]"));
+
+		int empMasterid = Integer.parseInt(params.get("langu[empMasterid]"));
+
+		if (params.get("langu[lanid]").equalsIgnoreCase("")) {
+			return employeeMasterService.insertemployeeLanguag(empMasterid, langu);
+		} else {
+			langu.setEmpLanguid(Integer.parseInt(params.get("langu[lanid]")));
+			return employeeMasterService.updateemployeeLanguag(langu);
 		}
 
 	}
@@ -2094,6 +2175,7 @@ public class HomeController {
 		// System.out.println(employeemasternew.getEmployeeEducation().size());
 		if (employeemasternew.getEmployeeEducation().size() > 0) {
 			edulsnew.addAll(employeemasternew.getEmployeeEducation());
+
 		} else {
 			EmployeeEducation empedu = new EmployeeEducation();
 			empedu.setDegree("-");
@@ -2103,7 +2185,11 @@ public class HomeController {
 
 		// System.out.println(employeemasternew.getEmployeeEmgContact().size());
 		if (employeemasternew.getEmployeeEmgContact().size() > 0) {
-			emglsnew.addAll(employeemasternew.getEmployeeEmgContact());
+			Set<EmployeeEmgContact> emglsnewtemp = employeemasternew.getEmployeeEmgContact().stream()
+					.sorted(Comparator.comparing(EmployeeEmgContact::getEmpEmgContactid)).collect(Collectors.toSet());
+			emglsnew.addAll(emglsnewtemp);
+			// System.out.println(emglsnewtemp);
+			// employeemasternew.setEmployeeEmgContact(emglsnewtemp);
 		} else {
 			EmployeeEmgContact empcont = new EmployeeEmgContact();
 			empcont.setEmg_Relation("-");

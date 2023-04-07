@@ -391,32 +391,10 @@ $(document).ready(function() {
 
  
 let direction = 'ltr';
-let evens; 
 
 if (isRtl) {
   direction = 'rtl';
 }
-
-
-
-$.getJSON('/rvs/rvsemp/leaverequestlistjson',function(json){
-	json.map((eve,i)=>{
-		evens=[
-			{
-			id:eve.id,
-			title: eve.leavetype,
-			start: eve.fromadate,
-		    end: eve.todate,
-		    allDay:1,
-		    extendedProps: {
-		        calendar: "Holiday"
-		    },
-		},
-		]
-	})
-})
-
-console.log(evens);
 
 document.addEventListener('DOMContentLoaded', function () {
   (function () {
@@ -592,7 +570,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let { dayGrid, interaction, timeGrid, list } = calendarPlugins;
     let calendar = new Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      events:evens,
+      events: 'leavehistoryjson?startdate=2022-01-01&enddate=2024-01-01',
       plugins: [interaction, dayGrid, timeGrid, list],
       editable: true,
       dragScroll: true,

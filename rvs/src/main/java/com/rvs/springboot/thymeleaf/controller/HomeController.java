@@ -106,6 +106,7 @@ import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
 import com.rvs.springboot.thymeleaf.entity.VendorFiles;
 import com.rvs.springboot.thymeleaf.entity.VendorMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
+import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
 import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetAuditService;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
@@ -3146,7 +3147,33 @@ public class HomeController {
 	public Object leavehistoryjson(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
 			@RequestParam(name = "enddate", required = false) String enddate) {
 		List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
-		return lmhistory;
+		
+		List<CalenderFormat> calformate= new ArrayList<CalenderFormat>();
+		
+		lmhistory.forEach(rowMap -> {
+			CalenderFormat cf= new CalenderFormat();
+			cf.setId((int) rowMap.get("id"));
+			cf.setAllDay(Boolean.parseBoolean(String.valueOf(rowMap.get("halfday"))));
+			cf.setTitle(String.valueOf(rowMap.get("empname")));
+			cf.setStart(String.valueOf(rowMap.get("start")));
+			cf.setEnd(String.valueOf(rowMap.get("end")));
+			
+			HashMap<String,String> exextendedProps = new HashMap<>();
+			exextendedProps.put("approvercomments", String.valueOf(rowMap.get("approvercomments")));
+			exextendedProps.put("approverejectdate", String.valueOf(rowMap.get("approverejectdate")));
+			exextendedProps.put("leavetype", String.valueOf(rowMap.get("leavetype")));
+			exextendedProps.put("notes", String.valueOf(rowMap.get("notes")));
+			exextendedProps.put("permissionendtime", String.valueOf(rowMap.get("permissionendtime")));
+			exextendedProps.put("permissionstarttime", String.valueOf(rowMap.get("permissionstarttime")));
+			exextendedProps.put("status", String.valueOf(rowMap.get("status")));
+			exextendedProps.put("approver", String.valueOf(rowMap.get("approver")));
+			exextendedProps.put("approvername", String.valueOf(rowMap.get("approvername")));
+			cf.setExextendedProps(exextendedProps);
+			calformate.add(cf);
+			
+		});
+		
+		return calformate;
 	}
 
 	@GetMapping("leavehistory")

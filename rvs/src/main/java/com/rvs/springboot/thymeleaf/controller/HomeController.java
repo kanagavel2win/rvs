@@ -3143,8 +3143,8 @@ public class HomeController {
 	}
 
 	@ResponseBody
-	@GetMapping("leavehistoryjson")
-	public Object leavehistoryjson(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
+	@GetMapping("leavehistoryjsoncalendar")
+	public Object leavehistoryjsoncalendar(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
 			@RequestParam(name = "enddate", required = false) String enddate) {
 		List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
 		
@@ -3176,6 +3176,18 @@ public class HomeController {
 		return calformate;
 	}
 
+	@ResponseBody
+	@GetMapping("leavehistoryjson")
+	public Object leavehistoryjson(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
+			@RequestParam(name = "enddate", required = false) String enddate) {
+		List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
+		
+		
+		
+		return lmhistory;
+	}
+
+	
 	@GetMapping("leavehistory")
 	public String leavehistory() {
 

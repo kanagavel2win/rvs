@@ -1,64 +1,100 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
-	data-textdirection="ltr">
 
-<!-- BEGIN: Head-->
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr"
+	data-theme="theme-default" th:data-assets-path="@{/assets/}"
+	data-template="vertical-menu-template">
 <head>
 <meta name="_csrf" th:content="${_csrf.token}" />
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="ICC">
-<title>PayRoll</title>
-<link rel="apple-touch-icon"
-	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
-<link rel="shortcut icon" type="image/x-icon"
-	th:href="@{/app-assets/images/ico/favicon.ico}">
+	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+<title>Pay Roll</title>
+
+<meta name="description" content="" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	th:href="@{/assets/img/favicon/favicon.ico}" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
-	rel="stylesheet}">
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/vendors.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
-<!-- END: Vendor CSS-->
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" type="text/css" />
 
-<!-- BEGIN: Theme CSS-->
+<!-- Icons -->
 <link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap.css}">
+	th:href="@{/assets/vendor/fonts/boxicons.css}" />
 <link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap-extended.css}">
+	th:href="@{/assets/vendor/fonts/fontawesome.css}" />
 <link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/colors.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/components.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/dark-layout.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
-<!-- END: Theme CSS-->
+	th:href="@{/assets/vendor/fonts/flag-icons.css}" />
 
-<!-- BEGIN: Page CSS-->
+<!-- Core CSS -->
 <link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+	th:href="@{/assets/vendor/css/rtl/core.css}"
+	class="template-customizer-core-css" />
 <link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
-<!-- END: Page CSS-->
+	th:href="@{/assets/vendor/css/rtl/theme-default.css}"
+	class="template-customizer-theme-css" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/demo.css}" />
 
-<!-- BEGIN: Custom CSS-->
+<!-- Vendors CSS -->
 <link rel="stylesheet" type="text/css"
-	th:href="@{/assets/css/style.css}">
-<!-- END: Custom CSS-->
+	th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/pickr/pickr-themes.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/select2/select2.css}" />
+
+<!-- Row Group CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css}" />
+<!-- Form Validation -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+
+
+<!-- Page CSS -->
+
+<!-- Helpers -->
+<script th:src="@{/assets/vendor/js/helpers.js}"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+<script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script th:src="@{/assets/js/config.js}"></script>
 <style>
 .emptitle {
 	color: #527a00;
@@ -74,7 +110,6 @@ thead {
 	border-color: transparent;
 	color: #555;
 	font-weight: 700;
-	
 	transition: background-color .15s ease-in-out;
 }
 
@@ -136,7 +171,6 @@ tbody>tr:hover .iconalign {
 
 .view {
 	margin: auto;
-	
 }
 
 .wrapper {
@@ -155,9 +189,9 @@ tbody>tr:hover .iconalign {
 
 .first-col {
 	text-align: left;
-	width: 50px;
-	min-width: 50px;
-	max-width: 50px;
+	width: 70px;
+	min-width: 70px;
+	max-width: 70px;
 	left: 0px;
 	border-right: 1px solid #ccc;
 }
@@ -171,128 +205,128 @@ tbody>tr:hover .iconalign {
 	border-right: 1px solid #ccc;
 }
 
-table tr td{
+table tr td {
 	text-align: right;
 	border-right: 1px solid #ccc;
 }
 
-.td16{
-	background:#66CD00;
-	text-weight:bold;
-	color:#fff;
+.td16 {
+	background: #66CD00;
+	text-weight: bold;
+	color: #fff;
 }
 
-.d1, .d1 > div > label, .d1 > div > h4{
-	background:#c09F80;
-	padding:1%;
-	color:#fff;
+.d1, .d1>div>label, .d1>div>h4 {
+	background: #c09F80;
+	padding: 1%;
+	color: #fff;
 }
-.d2,.d2 > div > label, .d2 > div > h4{
-	background:#565656;
-	padding:1%;
-	color:#fff;
+
+.d2, .d2>div>label, .d2>div>h4 {
+	background: #565656;
+	padding: 1%;
+	color: #fff;
 }
-.table tr, table ,table td
-	{
+
+.d3, .d3>div>label, .d3>div>h4 {
+	background: #BDC3C7;
+	padding: 1%;
+	color: #000;
+}
+
+.table tr, table, table td {
 	padding: .5rem 0.5rem;
-	line-height:5px;
-		
-	}
+	line-height: 5px;
+}
 </style>
 </head>
-<!-- END: Head-->
 
-<!-- BEGIN: Body-->
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<!-- Menu -->
+			<div th:insert="menu"></div>
+			<!-- / Menu -->
 
-<body
-	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
-	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+			<!-- Layout container -->
+			<div class="layout-page">
+				<!-- Navbar -->
 
-	<!-- BEGIN: Header-->
-	<div th:insert="header"></div>
-	<!-- END: Header-->
+				<div th:insert="header"></div>
 
+				<!-- / Navbar -->
 
-	<!-- BEGIN: Main Menu-->
-	<div th:insert="menu"></div>
-	<!-- END: Main Menu-->
+				<!-- Content wrapper -->
+				<div class="content-wrapper">
+					<!-- Content -->
+					<div class="container-xxl flex-grow-1 container-p-y">
+						<h4 class="py-3 breadcrumb-wrapper mb-4">
+							<span class="text-muted fw-light">Administration/HR
+								Management </span>Payroll
+						</h4>
 
-	<!-- BEGIN: Content-->
-	<!-- BEGIN: Content-->
-	<div class="app-content content">
-		<div class="content-overlay"></div>
-		<div class="content-wrapper">
-			<div class="content-header row">
-				<div class="content-header-left col-12 mb-2 mt-1">
-					<div class="row breadcrumbs-top">
-						<div class="col-12">
-							<h5 class="content-header-title float-left pr-1 mb-0">Payroll</h5>
-							<div class="breadcrumb-wrapper col-12">
-								<ol class="breadcrumb p-0 mb-0">
-									<li class="breadcrumb-item"><a href="index"><i
-											class="bx bx-home-alt"></i></a></li>
+						<!-- Users List -->
 
-								</ol>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="content-body">
+						<!-- DataTable with Buttons -->
+						<div class="card">
+							<div class="card-body">
+								<div
+									class="justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column p-sm-3 p-0">
+									<form th:action="@{payroll}" method="POST"
+										class="wizard-horizontal" enctype="multipart/form-data">
+										<div class="col-md-12">
+											<div class="row">
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalEditUserFirstName">Payroll
+														Month </label> <input type="month" name="month"
+														class="form-control" required />
 
-				<!-- Basic Vertical form layout section start -->
-				<section id="basic-vertical-layouts">
-					<div class="row match-height">
-						<div class="col-12">
-
-							<div class="card">
-								<div class="card-content">
-									<div class="card-body">
-
-										<hr />
-										<form th:action="@{payroll}" method="POST"
-											class="wizard-horizontal" enctype="multipart/form-data">
-											<div class="col-md-12">
-
-												<div class="form-group">
-													<label for="contact-info-icon">Payroll Month</label>
-													<div class="form-group">
-														<div class="position-relative has-icon-left">
-
-															<input type="month" name="month" class="e1 form-control" />
-															<div class="form-control-position">
-																<i class="bx bx-calendar-event"></i>
-															</div>
-														</div>
-													</div>
 												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalEditUserLastName">
+														Branch</label> <select class="form-control" id="branch"
+														name="branch" required>
+														<option value="">-</option>
+														<th:block th:each="obj : ${branchlist}">
+															<option
+																th:if="${obj.BRANCH_NAME} != ${targetedbranchName}"
+																th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+														</th:block>
 
-												<div class="form-group">
-													<button type="submit"
-														class="e2 position-relative  btn btn-primary ml-1"
-														id="hiredatebtn">Search</button>
+
+													</select>
 												</div>
-
+												<div class="col-12 col-md-6"></div>
+												<div class="col-12 text-center mt-4">
+													<button type="submit" class="btn btn-primary me-sm-3 me-1">Search</button>
+													<button type="reset" class="btn btn-label-secondary"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
+												</div>
 											</div>
-										</form>
-										<hr />
-										<div th:if="${save}" class="form-group col-12">
-											<button type="button" class="btn mb-1 btn-outline-success btn-block">PaySlip Generated Successfully</button>
-											
 										</div>
-										<div class="row">
-										
+									</form>
+									<hr />
+									<div th:if="${save}" class="form-group col-12">
+										<button type="button"
+											class="btn mb-1 btn-outline-success btn-block">PaySlip
+											Generated Successfully</button>
+
+									</div>
+									<div class="row">
+
 										<div class="col-md-2 d1">
 											<div class="form-group">
-												
+
 												<label>Payroll Month</label>
-												
+
 												<h4 th:text="${selectedmonth}"></h4>
 											</div>
 
 										</div>
-										
-										
+
+
 										<div class="col-md-2 d2">
 											<div class="form-group d2">
 												<label>Total Amount</label>
@@ -300,151 +334,212 @@ table tr td{
 											</div>
 
 										</div>
+										<div class="col-md-2 d3">
+											<div class="form-group d3">
+												<label>Branch</label>
+												<h4 th:text="${branchobj.BRANCH_NAME}"></h4>
+											</div>
+
+										</div>
 										<div class="col-md-2"></div>
-										<div class="col-md-2"></div>
-										<div class="col-md-4" th:if="${report}">
+										<div class="col-md-2">
 											<div class="form-group">
-													<form th:action="@{payroll}" method="POST"
-											class="wizard-horizontal" enctype="multipart/form-data">
-												<input type="hidden" th:value="${selectedmonth}" name="month" />
-												<input type="hidden" th:value="${selectedmonth}" name="save"/>
-												<button type="submit"
-													class="e2 position-relative  btn btn-secondary ml-1"  style="float:right">Generate Payslips</button>
+												<form th:action="@{payroll}" method="POST"
+													class="wizard-horizontal" enctype="multipart/form-data">
+													<input type="hidden" th:value="${selectedmonth}"
+														name="month" /> <input type="hidden"
+														th:value="${selectedmonth}" name="save" />
+													<button type="submit"
+														class="e2 position-relative  btn btn-secondary ml-1"
+														style="float: right">Generate Payslips</button>
 													<!-- <br/><label>Note: This is One Time Generation.</label> -->
 												</form>
-												<form th:action="@{payrollpdf}" target="_blank" method="POST"
-											class="wizard-horizontal" enctype="multipart/form-data">
-												<input type="hidden" th:value="${selectedmonth}" name="month" />
-												<input type="hidden" th:value="${report}" name="report"/>
-												<button type="submit"
-													class="e2   btn btn-secondary ml-1" style="float:right">Print</button>
-													
+											</div>
+										</div>
+
+										<div class="col-md-2" th:if="${report}">
+											<div class="form-group">
+
+												<form th:action="@{payrollpdf}" target="_blank"
+													method="POST" class="wizard-horizontal"
+													enctype="multipart/form-data">
+													<input type="hidden" th:value="${selectedmonth}"
+														name="month" /> <input type="hidden" th:value="${report}"
+														name="report" />
+													<button type="submit" class="e2   btn btn-secondary ml-1"
+														style="float: right">Print</button>
+
 												</form>
 											</div>
 
 										</div>
-										</div>
-										<hr />
-										<th:block>
-											<div class="view">
-												<div class="wrapper">
-													<table class="table">
-														<thead>
-															<tr>
-																<th class="sticky-col first-col">S.No</th>
-																<th class="sticky-col second-col">Name</th>
-																<th>CTC</th>
-																<th>Total</th>
-																<th>Absent</th>
-																<th>Working Days</th>
-																<th>Extra Working Days</th>
-																<th>Basic Salary</th>
-																<th>DA</th>
-																<th>HRA</th>
-																<th>TOTAL GROSS</th>
-																<th>ESI</th>
-																<th>EPF</th>
-																<th>Advance</th>
-																<th>TOTAL Deduction</th>
-																<th>Monthly incentives</th>
-																<th>Net salary</th>
-
-															</tr>
-														</thead>
-														<tbody>
-															<tr th:each="str,i : ${report}">
-																<td class="sticky-col first-col" th:text="${i.index+1}"></td>
-																<td class="sticky-col second-col"  th:text="${#strings.arraySplit(str,'-')[1]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[2]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[3]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[4]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[5]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[6]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[7]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[8]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[9]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[10]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[11]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[12]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[13]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[14]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[15]}"></td>
-																<td  th:text="${#strings.arraySplit(str,'-')[16]}" class="td16"></td>
-																
-																
-															</tr>
-															
-														</tbody>
-													</table>
-												</div>
-											</div>
-																		
-										</th:block>
 									</div>
+									<hr />
+									<th:block>
+										<div class="view">
+											<div class="wrapper">
+												<table class="table">
+													<thead>
+														<tr>
+															<th class="sticky-col first-col">S.No</th>
+															<th class="sticky-col second-col">Name</th>
+															<th>CTC</th>
+															<th>Total</th>
+															<th>Absent</th>
+															<th>Working Days</th>
+															<th>Extra Working Days</th>
+															<th>Basic Salary</th>
+															<th>DA</th>
+															<th>HRA</th>
+															<th>TOTAL GROSS</th>
+															<th>ESI</th>
+															<th>EPF</th>
+															<th>Advance</th>
+															<th>TOTAL Deduction</th>
+															<th>Monthly incentives</th>
+															<th>Net salary</th>
+
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="str,i : ${report}">
+															<td class="sticky-col first-col" th:text="${i.index+1}"></td>
+															<td class="sticky-col second-col"
+																th:text="${#strings.arraySplit(str,'-')[1]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[2]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[3]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[4]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[5]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[6]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[7]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[8]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[9]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[10]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[11]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[12]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[13]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[14]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[15]}"></td>
+															<td th:text="${#strings.arraySplit(str,'-')[16]}"
+																class="td16"></td>
+
+
+														</tr>
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+
+									</th:block>
 								</div>
 							</div>
 						</div>
+
+						<!-- / Content -->
+
+						<!-- Footer -->
+						<footer class="content-footer footer bg-footer-theme"> </footer>
+						<!-- / Footer -->
+
+						<div class="content-backdrop fade"></div>
 					</div>
-				</section>
-				<!-- // Basic Vertical form layout section end -->
-
-
-
+					<!-- Content wrapper -->
+				</div>
+				<!-- / Layout page -->
 			</div>
+
+			<!-- Overlay -->
+			<div class="layout-overlay layout-menu-toggle"></div>
+
+			<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+			<div class="drag-target"></div>
 		</div>
-	</div>
-	<!-- END: Content-->
+		<!-- / Layout wrapper -->
 
+		<!-- Core JS -->
+		<!-- build:js assets/vendor/js/core.js -->
+		<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+		<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+		<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
+		<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
-	<div class="sidenav-overlay"></div>
-	<div class="drag-target"></div>
+		<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+		<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 
+		<script th:src="@{/assets/vendor/js/menu.js}"></script>
+		<!-- endbuild -->
 
+		<!-- Vendors JS -->
+		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+		<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+		<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+		<!-- Flat Picker -->
+		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+		<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+		<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
 
+		<!-- Row Group JS -->
+		<script
+			th:src="@{/assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js}"></script>
+		<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+		<!-- Form Validation -->
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
 
-	<!-- BEGIN: Footer-->
-	<footer class="footer footer-static footer-light">
-		<p class="clearfix mb-0">
-			<span class="float-left d-inline-block"></span><span
-				class="float-right d-sm-inline-block d-none"></span>
-			<button class="btn btn-primary btn-icon scroll-top" type="button">
-				<i class="bx bx-up-arrow-alt"></i>
-			</button>
-		</p>
-	</footer>
+		<!-- Main JS -->
+		<script th:src="@{/assets/js/main.js}"></script>
 
-	<!-- END: Footer-->
-
-
-	<!-- BEGIN: Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-	<script
-		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-	<script
-		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-	<!-- BEGIN Vendor JS-->
-
-	<!-- BEGIN: Page Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-	<!-- END: Page Vendor JS-->
-
-	<!-- BEGIN: Theme JS-->
-	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-	<script th:src="@{/app-assets/js/core/app.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-	<!-- END: Theme JS-->
-
-	<!-- BEGIN: Page JS-->
-	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
-	<!-- END: Page JS-->
+		<!-- Page JS -->
+		<!-- <script th:src="@{/assets/js/tables-datatables-basic.js}"></script> -->
+		<script th:src="@{/assets/js/form-validation.js}"></script>
+		<script>
+  //------------------------------------------------------------------------
+    
+    
+    $(document).ready(function() {  
+      		
+    	});
+  //------------------------------------------------------------------------
+  
+   
+   
+    </script>
 </body>
-<!-- END: Body-->
 </html>
-
-
-

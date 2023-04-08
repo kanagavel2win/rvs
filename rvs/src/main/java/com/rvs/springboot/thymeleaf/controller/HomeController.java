@@ -3165,7 +3165,7 @@ public class HomeController {
 			exextendedProps.put("notes", String.valueOf(rowMap.get("notes")));
 			exextendedProps.put("permissionendtime", String.valueOf(rowMap.get("permissionendtime")));
 			exextendedProps.put("permissionstarttime", String.valueOf(rowMap.get("permissionstarttime")));
-			exextendedProps.put("calendar", String.valueOf(rowMap.get("status")));
+			exextendedProps.put("status", String.valueOf(rowMap.get("status")));
 			exextendedProps.put("approver", String.valueOf(rowMap.get("approver")));
 			exextendedProps.put("approvername", String.valueOf(rowMap.get("approvername")));
 			cf.setExtendedProps(exextendedProps);
@@ -3205,12 +3205,14 @@ public class HomeController {
 	}
 	@GetMapping("payroll")
 	public String payrollget(Model themodel) {
-
+		List<BranchMaster> branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", branchls);
+		
 		return "payroll";
 	}
 
 	@PostMapping("payroll")
-	public String payrollpost(@RequestParam(name = "month") String selectedmonth, Model themodel,
+	public String payrollpost(@RequestParam(name = "month") String selectedmonth, @RequestParam(name = "branch") int branch_masterid, Model themodel,
 			@RequestParam(value = "save", defaultValue = "", required = false) String save) {
 
 		LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
@@ -3282,9 +3284,8 @@ public class HomeController {
 		}
 
 		Holidaysqlstr = Sundaysqlstr + Holidaysqlstr;
-
 		ArrayList<String> report = new ArrayList<String>();
-		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth, Holidaysqlstr);
+		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth, Holidaysqlstr,branch_masterid);
 
 		ArrayList<Double> totalnet = new ArrayList<Double>();
 		totalnet.add(0, 0.0);
@@ -3414,6 +3415,14 @@ public class HomeController {
 		themodel.addAttribute("selectedmonth", selectedmonth);
 		themodel.addAttribute("totalnet", totalnet.get(0));
 
+		
+		BranchMaster bm =branchMasterService.findById(branch_masterid);
+		themodel.addAttribute("branchobj", bm);
+
+		List<BranchMaster> branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", branchls);
+		
+		
 		return "payroll";
 	}
 

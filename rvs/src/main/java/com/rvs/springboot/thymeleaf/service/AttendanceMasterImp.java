@@ -58,7 +58,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 	}
 
 	@Override
-	public  List<Map<String, Object>> getpayrolldetails(String selectedmonth,String holidaysql) {
+	public  List<Map<String, Object>> getpayrolldetails(String selectedmonth,String holidaysql, int branch_masterid) {
 		
 		
 		
@@ -78,7 +78,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 				"sum(CASE WHEN (attstatus ='P') THEN 1 ELSE 0 END)AS 'P', " + 
 				"sum(CASE WHEN (attstatus ='A') THEN 1 ELSE 0 END)AS 'A', " + 
 				"sum(CASE WHEN (attstatus ='T') THEN 1 ELSE 0 END)AS 'T', " + 
-				"sum(CASE WHEN (attstatus ='HL') THEN 1 ELSE 0 END)AS 'HL' "+ holidaysql + " FROM attendancemaster WHERE attendance_date between" + 
+				"sum(CASE WHEN (attstatus ='HL') THEN 1 ELSE 0 END)AS 'HL' "+ holidaysql + " FROM attendancemaster WHERE  branch_masterid="+ branch_masterid +" and attendance_date between" + 
 				"'"+ selectedmonth + "-01 00:00:00' and '"+ selectedmonth + "-31 00:00:00' group by employeeid)b1 " + 
 				" left join employeemaster b2 on b1.employeeid=b2.emp_masterid)t1 " + 
 				" inner join (select c2.employeeid,c2.compayrate,c2.employeejobcompensationid from (SELECT  max(STR_TO_DATE(comeffectivedate,'%Y-%m-%d')) as rowid,e.employeeid FROM employeejobcompensation e where STR_TO_DATE(comeffectivedate,'%Y-%m-%d') <=STR_TO_DATE('"+ selectedmonth + "-31','%Y-%m-%d')  group by employeeid) c1 inner join employeejobcompensation c2 on c1.rowid=c2.comeffectivedate and c1.employeeid = c2.employeeid)t2 on t1.employeeid=t2.employeeid" + 
@@ -110,7 +110,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 		String sql = "select em.staff_name,t1.* from (select" + 
 				"  `employeeid`," + sqlfinalQuery + 
 				"from attendancemaster where attendance_date between '"+ monthstr +"-01 00:00:00' and  '"+ monthstr +"-"+ prdenddate +" 00:00:00' group by `employeeid` order by employeeid )t1 inner join employeemaster em on t1.employeeid=em.emp_masterid";
-		//System.out.println(sql);
+		
 		List<Map<String, Object>> atm = JdbcTemplate.queryForList(sql);
 		return atm;
 	}

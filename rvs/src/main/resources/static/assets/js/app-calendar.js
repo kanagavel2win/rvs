@@ -521,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function () {
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes,  Cancel it!',
+            confirmButtonText: 'Yes,  delete it!',
             customClass: {
                 confirmButton: 'btn btn-primary me-3',
                 cancelButton: 'btn btn-label-secondary'
@@ -543,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         Swal.fire({
                             icon: 'success',
                             title: 'Deleted!',
-                            text: 'Request Cancelled.',
+                            text: 'Holiday Deleted.',
                             customClass: {
                                 confirmButton: 'btn btn-success'
                             }

@@ -827,6 +827,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ------------------------------------------------
     btnSubmit.addEventListener('click', e => {
       
+    	
     	  var formData = {
    			   calid : eventToUpdate.id
    		}
@@ -852,22 +853,50 @@ document.addEventListener('DOMContentLoaded', function () {
      // removeEvent(parseInt(eventToUpdate.id));
       // eventToUpdate.remove()
       
-      
-      var formData = {
-			   calid : eventToUpdate.id
-		}
-    	$.ajax({
-			type : "POST",
-			url : "leavereject",
-			data : formData,
-			success : function(result) {
-				console.log(result);
-				calendar.refetchEvents();
-			},
-			error : function(e) {
-				alert("Error" + e);
-			}
-		});
+       Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes,  Rejected it!',
+            customClass: {
+                confirmButton: 'btn btn-primary me-3',
+                cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+        }).then(function(result) {
+            if (result.value) {
+         	   
+            	var formData = {
+         			   calid : eventToUpdate.id
+         		}
+                
+                $.ajax({
+                    type: "POST",
+                    url: "leavereject",
+                    data: formData,
+                    success: function(result) {
+                     
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Rejected!',
+                            text: 'Leave Approve Reject.',
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        });
+                        
+                        calendar.refetchEvents();
+                        
+                    },
+                    error: function(e) {
+                        console.log("Error" + e);
+                    }
+                });
+
+            }
+        });
+ 
       
       bsAddEventSidebar.hide();
     });

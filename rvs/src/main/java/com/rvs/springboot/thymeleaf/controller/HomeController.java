@@ -3165,7 +3165,7 @@ public class HomeController {
 			exextendedProps.put("notes", String.valueOf(rowMap.get("notes")));
 			exextendedProps.put("permissionendtime", String.valueOf(rowMap.get("permissionendtime")));
 			exextendedProps.put("permissionstarttime", String.valueOf(rowMap.get("permissionstarttime")));
-			exextendedProps.put("status", String.valueOf(rowMap.get("status")));
+			exextendedProps.put("calendar", String.valueOf(rowMap.get("status")));
 			exextendedProps.put("approver", String.valueOf(rowMap.get("approver")));
 			exextendedProps.put("approvername", String.valueOf(rowMap.get("approvername")));
 			cf.setExtendedProps(exextendedProps);
@@ -3576,8 +3576,8 @@ public class HomeController {
 				monthstr + "-31");
 		holidaylistmap.forEach(rowMap -> {
 
-			String hstartdate = rowMap.get("start").toString();
-			String henddate = rowMap.get("end").toString();
+			String hstartdate = rowMap.get("start").toString().substring(0, 10);
+			String henddate = rowMap.get("end").toString().substring(0, 10);
 			int hdiff = Integer.parseInt(rowMap.get("diff").toString());
 
 			// System.out.println(hstartdate + " , " + henddate + " , " + hdiff);

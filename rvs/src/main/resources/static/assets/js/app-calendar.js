@@ -313,7 +313,6 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton: new FormValidation.plugins.SubmitButton(),
         // Submit the form when all fields are valid
         // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-        autoFocus: new FormValidation.plugins.AutoFocus()
       }
     })
       .on('core.form.valid', function () {
@@ -516,27 +515,54 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Call removeEvent function
     btnDeleteEvent.addEventListener('click', e => {
-     // removeEvent(parseInt(eventToUpdate.id));
-      // eventToUpdate.remove()
-      
-      
-      var formData = {
-			   calid : eventToUpdate.id
-		}
-    	$.ajax({
-			type : "POST",
-			url : "holidaydelete",
-			data : formData,
-			success : function(result) {
-				console.log(result);
-				calendar.refetchEvents();
-			},
-			error : function(e) {
-				alert("Error" + e);
-			}
-		});
-      
+   
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes,  Cancel it!',
+            customClass: {
+                confirmButton: 'btn btn-primary me-3',
+                cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+        }).then(function(result) {
+            if (result.value) {
+         	   
+            	var formData = {
+         			   calid : eventToUpdate.id
+         		}
+                
+                $.ajax({
+                    type: "POST",
+                    url: "holidaydelete",
+                    data: formData,
+                    success: function(result) {
+                     
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Deleted!',
+                            text: 'Request Cancelled.',
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        });
+                        
+                        calendar.refetchEvents();
+                        
+                    },
+                    error: function(e) {
+                        console.log("Error" + e);
+                    }
+                });
+
+            }
+        });
+     
       bsAddEventSidebar.hide();
+      
+      
     });
 
     // Reset event form inputs values
@@ -548,6 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
       Type.value='';
       eventDescription.value='';
       Branch.value='';
+      $(`#eventForm`)[0].reset();
     }
 
     // When modal hides reset input values
@@ -558,7 +585,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hide left sidebar if the right sidebar is open
     btnToggleSidebar.addEventListener('click', e => {
       if (offcanvasTitle) {
-        offcanvasTitle.innerHTML = 'Add Event';
+        offcanvasTitle.innerHTML = 'Add Holiday';
       }
       btnSubmit.innerHTML = 'Add';
       btnSubmit.classList.remove('btn-update-event');

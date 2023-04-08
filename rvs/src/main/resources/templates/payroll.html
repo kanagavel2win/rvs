@@ -270,7 +270,7 @@ table tr td {
 
 						<!-- DataTable with Buttons -->
 						<div class="card">
-							<div class="card-body">
+							<div class="card-body p-3">
 								<div
 									class="justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column p-sm-3 p-0">
 									<form th:action="@{payroll}" method="POST"
@@ -341,8 +341,8 @@ table tr td {
 											</div>
 
 										</div>
-										<div class="col-md-2"></div>
-										<div class="col-md-2" th:if="${report}">
+										<div class="col-md-1"></div>
+										<div class="col-md-3" th:if="${report}">
 											<div class="form-group">
 												<form th:action="@{payroll}" method="POST"
 													class="wizard-horizontal" enctype="multipart/form-data">
@@ -350,7 +350,7 @@ table tr td {
 														name="month" /> <input type="hidden"
 														th:value="${selectedmonth}" name="save" />
 													<button type="submit"
-														class="e2 position-relative  btn btn-secondary ml-1"
+														class="e2 position-relative  btn btn-secondary m-1"
 														style="float: right">Generate Payslips</button>
 													<!-- <br/><label>Note: This is One Time Generation.</label> -->
 												</form>
@@ -366,7 +366,7 @@ table tr td {
 													<input type="hidden" th:value="${selectedmonth}"
 														name="month" /> <input type="hidden" th:value="${report}"
 														name="report" />
-													<button type="submit" class="e2   btn btn-secondary ml-1"
+													<button type="submit" class="e2   btn btn-secondary m-1"
 														style="float: right">Print</button>
 
 												</form>
@@ -377,7 +377,7 @@ table tr td {
 									<hr />
 									<th:block>
 										<div class="row">
-											<div class="wrapper table-responsive">
+											<div class="wrapper table-responsive p-0">
 												<table class="table">
 													<thead>
 														<tr>

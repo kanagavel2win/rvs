@@ -569,7 +569,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       eventTitle.value = eventToUpdate.title;
       start.setDate(eventToUpdate.start, true, 'F j, Y');
-      eventToUpdate.allDay === true ? (allDaySwitch.checked = true) : (allDaySwitch.checked = false);
+      eventToUpdate.allDay === true ? (allDaySwitch.checked = 1) : (allDaySwitch.checked = 0);
       eventToUpdate.end !== null
         ? end.setDate(eventToUpdate.end, true, 'F j, Y')
         : end.setDate(eventToUpdate.start, true, 'F j, Y');
@@ -825,104 +825,25 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add new event
     // ------------------------------------------------
     btnSubmit.addEventListener('click', e => {
-      if (btnSubmit.classList.contains('btn-add-event')) {
-        if (isFormValid) {
-          let newEvent = {
-            id: calendar.getEvents().length + 1,
-            title: eventTitle.value,
-            start: moment(eventStartDate.value).format('YYYY-MM-DD h:mm:ss'),
-            end: moment(eventEndDate.value).format('YYYY-MM-DD h:mm:ss'),
-            startStr: eventStartDate.value,
-            endStr: eventEndDate.value,
-            display: 'block',
-            extendedProps: {
-              type :Type.value,
-              branch :Branch.value,
-              calendar: eventLabel.val(),
-              description: eventDescription.value
-            }
-          };
-          
-          var formData = {
-				   calid : null,
-				   fromdate : moment(eventStartDate.value).format('YYYY-MM-DD h:mm:ss'),
-				   todate : moment(eventEndDate.value).format('YYYY-MM-DD h:mm:ss'),
-				   title : eventTitle.value,
-				   allDay : false,
-				   type :Type.value,
-				   branch :Branch.value,
-				   calendar: eventLabel.val(),
-				   description: eventDescription.value,	
-			}
-          
-			$.ajax({
-				type : "POST",
-				url : "holidaysave",
-				data : formData,
-				success : function(result) {
-					//console.log(result);
-					calendar.refetchEvents();
-				},
-				error : function(e) {
-					alert("Error" + e);
-				}
-			});
-          
-          
-          //addEvent(newEvent);
-          bsAddEventSidebar.hide();
-          console.log(currentEvents);
-        }
-      } else {
-        // Update event
-        // ------------------------------------------------
-        if (isFormValid) {
-          let eventData = {
-            id: eventToUpdate.id,
-            title: eventTitle.value,
-            start: moment(eventStartDate.value).format('YYYY-MM-DD h:mm:ss'),
-            end: moment(eventEndDate.value).format('YYYY-MM-DD h:mm:ss'),
-           
-            extendedProps: {
-            	type :Type.value,
-                branch :Branch.value,
-                calendar: eventLabel.val(),
-                description: eventDescription.value
-            },
-            display: 'block',
       
-          };
-          
-          var formData = {
-				   calid : eventToUpdate.id,
-				   fromdate : moment(eventStartDate.value).format('YYYY-MM-DD h:mm:ss'),
-				   todate : moment(eventEndDate.value).format('YYYY-MM-DD h:mm:ss'),
-				   title : eventTitle.value,
-				   allDay : false,
-				   type :Type.value,
-				   branch :Branch.value,
-				   calendar: eventLabel.val(),
-				   description: eventDescription.value,	
-			}
+    	  var formData = {
+   			   calid : eventToUpdate.id
+   		}
+       	$.ajax({
+   			type : "POST",
+   			url : "leaveapprove",
+   			data : formData,
+   			success : function(result) {
+   				console.log(result);
+   				calendar.refetchEvents();
+   			},
+   			error : function(e) {
+   				alert("Error" + e);
+   			}
+   		});
          
-			$.ajax({
-				type : "POST",
-				url : "holidaysave",
-				data : formData,
-				success : function(result) {
-					console.log(result);
-					calendar.refetchEvents();
-				},
-				error : function(e) {
-					alert("Error" + e);
-				}
-			});
-          
-          console.log(currentEvents);
-          
-          bsAddEventSidebar.hide();
-        }
-      }
+         bsAddEventSidebar.hide();
+      
     });
 
     // Call removeEvent function
@@ -936,7 +857,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
     	$.ajax({
 			type : "POST",
-			url : "holidaydelete",
+			url : "leavereject",
 			data : formData,
 			success : function(result) {
 				console.log(result);

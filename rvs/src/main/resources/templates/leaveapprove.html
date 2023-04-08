@@ -113,6 +113,8 @@
 					<!-- Content -->
 
 					<div class="container-xxl flex-grow-1 container-p-y">
+					<h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Administration/HR Management/Attendance/</span>Leave Approval</h4>
+					
 						<div class="card app-calendar-wrapper">
 							<div class="row g-0">
 								<!-- Calendar Sidebar -->
@@ -131,7 +133,7 @@
 											<small
 												class="text-small text-muted text-uppercase align-middle">Filter</small>
 										</div>
-
+ 
 										<div class="form-check mb-2">
 											<input class="form-check-input select-all" type="checkbox"
 												id="selectAll" data-value="all" checked> <label
@@ -142,20 +144,27 @@
 
 											<div class="form-check form-check-success mb-2">
 												<input class="form-check-input input-filter" type="checkbox"
-													id="select-holiday" data-value="holiday" checked> <label
-													class="form-check-label" for="select-holiday">Holiday</label>
+													id="select-Approved" data-value="Approved" checked> <label
+													class="form-check-label" for="select-Approved">Approved</label>
 											</div>
 											
-											<div class="form-check form-check-danger mb-2">
+											<div class="form-check form-check-warning mb-2">
 												<input class="form-check-input input-filter" type="checkbox"
 													id="select-Pending" data-value="Pending" checked> <label
 													class="form-check-label" for="select-Pending">Pending</label>
+											</div>
+											
+											
+											<div class="form-check form-check-danger mb-2">
+												<input class="form-check-input input-filter" type="checkbox"
+													id="select-Rejected" data-value="Rejected" checked> <label
+													class="form-check-label" for="select-Rejected">Rejected</label>
 											</div>
 
 										</div>
 									</div>
 								</div>
-								<!-- /Calendar Sidebar -->
+								
 
 								<!-- Calendar & Modal -->
 								<div class="col app-calendar-content">
@@ -192,22 +201,14 @@
 														class="select2 form-select" id="eventType" name="Type">
 
 														<option value="">-</option>
-														<option>National holiday</option>
-														<option>State holiday</option>
-														<option>Local Holiday</option>
-														<option>Others</option>
+														 <option value="Personal">Personal</option>
+								                         <option value="Sick">Sick</option>
+								                         <option value="Vacation">Vacation</option>
+								                         <option value="Permission">Permission</option>
 
 													</select>
 												</div>
-												<div class="mb-3">
-													<label class="form-label" for="eventLabel">Label</label> <select
-														class="select2 select-event-label form-select"
-														id="eventLabel" name="eventLabel">
-
-														<option data-label="success" value="Holiday">Holiday</option>
-
-													</select>
-												</div>
+												 
 												<div class="mb-3">
 													<label class="form-label" for="eventStartDate">Start
 														Date</label> <input type="text" class="form-control"
@@ -220,10 +221,35 @@
 														id="eventEndDate" name="eventEndDate"
 														placeholder="End Date" />
 												</div>
-
-
-
+		
+			
+												<div class="mb-3">
+              <label class="switch">
+                <input type="checkbox" class="switch-input allDay-switch">
+                <span class="switch-toggle-slider">
+                  <span class="switch-on"></span>
+                  <span class="switch-off"></span>
+                </span>
+                <span class="switch-label">Half Day</span>
+              </label>
+            </div>
+            
+            <div class="mb-3">
+													<input type="time" class="form-control"
+														id="start-time" name="start-time"
+														placeholder="start time" />
+												</div>
 												
+											
+											   <div class="mb-3">
+													 <input type="time" class="form-control"
+														id="end-time" name="end-time"
+														placeholder="end time" />
+												</div>
+													
+												
+												 
+            
 												<div class="mb-3">
 													<label class="form-label" for="eventDescription">Description</label>
 													<textarea class="form-control" name="eventDescription"
@@ -403,11 +429,9 @@ document.addEventListener('DOMContentLoaded', function () {
       addEventSidebar = document.getElementById('addEventSidebar'),
       appOverlay = document.querySelector('.app-overlay'),
       calendarsColor = {
-        Business: 'primary',
-        Holiday: 'success',
-        Pending: 'danger',
-        Family: 'warning',
-        ETC: 'info'
+    	Approved: 'success',
+    	Rejected: 'danger',
+        Pending: 'warning',
       },
       offcanvasTitle = document.querySelector('.offcanvas-title'),
       btnToggleSidebar = document.querySelector('.btn-toggle-sidebar'),
@@ -416,6 +440,7 @@ document.addEventListener('DOMContentLoaded', function () {
       btnCancel = document.querySelector('.btn-cancel'),
       eventTitle = document.querySelector('#eventTitle'),
       eventStartDate = document.querySelector('#eventStartDate'),
+      allDaySwitch = document.querySelector('.allDay-switch'),
       eventEndDate = document.querySelector('#eventEndDate'),
       eventLabel = $('#eventLabel'), // ! Using jquery vars due to select2 jQuery dependency
       Type = document.querySelector('#eventType'), // ! Using jquery vars due to select2 jQuery dependency
@@ -423,6 +448,8 @@ document.addEventListener('DOMContentLoaded', function () {
       eventDescription = document.querySelector('#eventDescription'),
    
       selectAll = document.querySelector('.select-all'),
+      startime = document.querySelector('#start-time'),
+      endtime = document.querySelector('#end-time'),
       filterInput = [].slice.call(document.querySelectorAll('.input-filter')),
       inlineCalendar = document.querySelector('.inline-calendar');
 
@@ -499,35 +526,36 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event click function
     function eventClick(info) {
       eventToUpdate = info.event;
-      if (eventToUpdate.url) {
-        info.jsEvent.preventDefault();
-        window.open(eventToUpdate.url, '_blank');
-      }
+      console.log(eventToUpdate._def.extendedProps.calendar);
+      var stat = eventToUpdate._def.extendedProps.calendar;
       bsAddEventSidebar.show();
       // For update event set offcanvas title text: Update Event
       if (offcanvasTitle) {
         offcanvasTitle.innerHTML = 'Leave Approval';
       }
-      btnSubmit.innerHTML = 'Update';
+    
+      btnSubmit.innerHTML = 'Approve';
       btnSubmit.classList.add('btn-update-event');
       btnSubmit.classList.remove('btn-add-event');
-      btnDeleteEvent.classList.remove('d-none');
+      //btnDeleteEvent.classList.remove('d-none');
 
       eventTitle.value = eventToUpdate.title;
       start.setDate(eventToUpdate.start, true, 'F j, Y');
-      //eventToUpdate.allDay === true ? (allDaySwitch.checked = true) : (allDaySwitch.checked = false);
+      eventToUpdate.allDay === true ? (allDaySwitch.checked = true) : (allDaySwitch.checked = false);
       eventToUpdate.end !== null
         ? end.setDate(eventToUpdate.end, true, 'F j, Y')
         : end.setDate(eventToUpdate.start, true, 'F j, Y');
-      eventLabel.val(eventToUpdate.extendedProps.calendar).trigger('change');
+      //eventLabel.val(eventToUpdate.extendedProps.calendar).trigger('change');
       
       
      
-      eventToUpdate.extendedProps.type !== undefined ? (Type.value = eventToUpdate.extendedProps.type) : null;
+      eventToUpdate.extendedProps.leavetype !== undefined ? (Type.value = eventToUpdate.extendedProps.leavetype) : null;
       //eventToUpdate.extendedProps.branch !== undefined ? (Branch.value = eventToUpdate.extendedProps.branch) : null;
-      eventToUpdate.extendedProps.description !== undefined
-        ? (eventDescription.value = eventToUpdate.extendedProps.description)
+      eventToUpdate.extendedProps.notes !== undefined
+        ? (eventDescription.value = eventToUpdate.extendedProps.notes)
         : null;
+        
+        
 
      
     }
@@ -591,13 +619,16 @@ document.addEventListener('DOMContentLoaded', function () {
       eventClassNames: function ({ event: calendarEvent }) {
         const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar];
         // Background Color
+       var ob = calendarEvent._def.extendedProps;
+       console.log(calendarEvent._def.extendedProps);
+        console.log(calendarEvent._def.extendedProps.notes);
         return ['fc-event-' + colorName];
       },
       dateClick: function (info) {
     	  console.log(info);
         let date = moment(info.date).format('MMMM D, YYYY');
         resetValues();
-        bsAddEventSidebar.show();
+        //bsAddEventSidebar.show();
 
         // For new event set offcanvas title text: Add Event
         if (offcanvasTitle) {

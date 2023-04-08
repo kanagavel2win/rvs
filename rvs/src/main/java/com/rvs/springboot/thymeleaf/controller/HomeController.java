@@ -3165,7 +3165,7 @@ public class HomeController {
 			exextendedProps.put("notes", String.valueOf(rowMap.get("notes")));
 			exextendedProps.put("permissionendtime", String.valueOf(rowMap.get("permissionendtime")));
 			exextendedProps.put("permissionstarttime", String.valueOf(rowMap.get("permissionstarttime")));
-			exextendedProps.put("status", String.valueOf(rowMap.get("status")));
+			exextendedProps.put("calendar", String.valueOf(rowMap.get("status")));
 			exextendedProps.put("approver", String.valueOf(rowMap.get("approver")));
 			exextendedProps.put("approvername", String.valueOf(rowMap.get("approvername")));
 			cf.setExtendedProps(exextendedProps);

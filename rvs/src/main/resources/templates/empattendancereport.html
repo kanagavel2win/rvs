@@ -17,8 +17,6 @@
 
 <meta name="description" content="" />
 
-
-
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
 	th:href="@{/assets/img/favicon/favicon.ico}" />
@@ -28,36 +26,38 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
 	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-	rel="stylesheet" />
+	rel="stylesheet" type="text/css" />
 
 <!-- Icons -->
-<link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
-<link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
-<link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/vendor/fonts/boxicons.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/vendor/fonts/flag-icons.css}" />
 
 <!-- Core CSS -->
-<link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}"
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/vendor/css/rtl/core.css}"
 	class="template-customizer-core-css" />
-<link rel="stylesheet"
+<link rel="stylesheet" type="text/css"
 	th:href="@{/assets/vendor/css/rtl/theme-default.css}"
 	class="template-customizer-theme-css" />
-<link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/demo.css}" />
 
 <!-- Vendors CSS -->
-<link rel="stylesheet"
+<link rel="stylesheet" type="text/css"
 	th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
-<link rel="stylesheet"
+<link rel="stylesheet" type="text/css"
 	th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
-
-
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
 <link rel="stylesheet"
-	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+	th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
 <link rel="stylesheet"
-	th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
+	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
 <link rel="stylesheet"
@@ -69,14 +69,24 @@
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
 <link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/pickr/pickr-themes.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.css}" />
+<link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/select2/select2.css}" />
+
+<!-- Row Group CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css}" />
+<!-- Form Validation -->
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
 
+
 <!-- Page CSS -->
 
-<link rel="stylesheet"
-	th:href="@{/assets/vendor/css/pages/page-user-view.css}" />
 <!-- Helpers -->
 <script th:src="@{/assets/vendor/js/helpers.js}"></script>
 
@@ -87,8 +97,6 @@
 <script th:src="@{/assets/js/config.js}"></script>
 
 <style>
-	
-		
 .sticky-col {
 	position: -webkit-sticky;
 	position: sticky;
@@ -114,75 +122,63 @@
 	border-right: 1px solid #ccc;
 }
 
-	.table, .table>tr, .table td
-	{
-		line-height:8px;
-		
-		padding: 0.5rem 0.5rem;
-		text-align: left;
-	}
-	.table th
-	{
+.table, .table>tr, .table td {
+	line-height: 8px;
+	padding: 0.5rem 0.5rem;
+	text-align: left;
+}
+
+.table th {
 	padding: 1.5rem 0.5rem;
-		text-align: left;
-	}
-	
-
-.P
-{
-	color:green;
-}
-.A
-{
-	color:red;
-}
-.T
-{
-	color:#FDAC41;
-}
-.HL
-{
-	color:#4169E1;
-}
- .sunday
-{
-	background:#FFE4E1;
-	
+	text-align: left;
 }
 
-td.sunday
-{
-	background:#FFE4E1;
-	
-}
-.holiday
-{
-	background:#EEEEE0;
-	
+.P {
+	color: green;
 }
 
-td.holiday
-{
-	background:#EEEEE0;
-	
+.A {
+	color: red;
 }
 
-.reortmonth
-{
-	color:green;
+.T {
+	color: #FDAC41;
+}
+
+.HL {
+	color: #4169E1;
+}
+
+.sunday {
+	background: #FFE4E1;
+}
+
+td.sunday {
+	background: #FFE4E1;
+}
+
+.holiday {
+	background: #EEEEE0;
+}
+
+td.holiday {
+	background: #EEEEE0;
+}
+
+.reortmonth {
+	color: green;
 	font-weight: bold;
 }
-.note{
-	padding:10px;
-	
+
+.note {
+	padding: 10px;
 }
 
-.card-datatable  button
-{
-background:#EEEEE0;
-border: none;
-padding:5px;
-color: #9C9C9C;
+.card-datatable  button {
+	background: #EEEEE0;
+	border: none;
+	padding: 5px;
+	color: #9C9C9C;
 }
 </style>
 
@@ -233,9 +229,31 @@ color: #9C9C9C;
 																	<label for="contact-info-icon">Attendance Month</label>
 																	<div class="form-group">
 																		<div class="position-relative has-icon-left">
-																			<input type="month" name="month"
+																			<input type="month" name="month" id="month"
 																				class="e1 form-control" />
-																			
+
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-3">
+
+																<div class="form-group">
+																	<label for="contact-info-icon">Branch</label>
+																	<div class="form-group">
+																		<div class="position-relative has-icon-left">
+																			<select class="form-control" id="branch"
+																				name="branch"  required>
+																				<option value="">-</option>
+																				<th:block th:each="obj : ${branchlist}">
+																					<option
+																						th:if="${obj.BRANCH_NAME} != ${targetedbranchName}"
+																						th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+																				</th:block>
+
+
+																			</select>
+
 																		</div>
 																	</div>
 																</div>
@@ -256,9 +274,11 @@ color: #9C9C9C;
 														<p class="reortmonth"
 															th:text="'Report Month ' +${monthstr}"></p>
 													</th:block>
+													
 													<div class="card-datatable table-responsive pt-0">
-                  										<table class="datatables-basic table table-bordered" id="empattendancereport">
-															<thead class="">
+														<table class="datatables-basic table table-bordered"
+															id="empattendancereport">
+															<thead>
 																<tr>
 																	<th class="sticky-col first-col">#</th>
 																	<th class="sticky-col second-col">Name</th>
@@ -369,62 +389,97 @@ color: #9C9C9C;
 	</div>
 	<!-- / Layout wrapper -->
 
-	<!-- Core JS -->
-	<!-- build:js assets/vendor/js/core.js -->
-	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
-	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
-	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<!-- Core JS -->
+		<!-- build:js assets/vendor/js/core.js -->
+		<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+		<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+		<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
-	<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+		<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
-	<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
-	<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+		<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+		<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 
-	<script th:src="@{/assets/vendor/js/menu.js}"></script>
-	<!-- endbuild -->
+		<script th:src="@{/assets/vendor/js/menu.js}"></script>
+		<!-- endbuild -->
 
-	<!-- Vendors JS -->
-	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-	<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
-	<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
-	<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
-	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
-	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
-	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
-	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
-	<!-- Form Validation -->
-	<script
-		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+		<!-- Vendors JS -->
+		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+		<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+		<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+		<!-- Flat Picker -->
+		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+		<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+		<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
 
-	<!-- Main JS -->
-	<script th:src="@{/assets/js/main.js}"></script>
+		<!-- Row Group JS -->
+		<script
+			th:src="@{/assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js}"></script>
+		<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+		<!-- Form Validation -->
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+
+		<!-- Main JS -->
+		<script th:src="@{/assets/js/main.js}"></script>
+
+		<!-- Page JS -->
+		<!-- <script th:src="@{/assets/js/tables-datatables-basic.js}"></script> -->
+		<script th:src="@{/assets/js/form-validation.js}"></script>
 
 
-
-<script>
+	<script>
 $(document).ready(function () {
     
-    var table = $('#empattendancereport').DataTable({
+	$("#branch").val("[[${branchid}]]").change();
+	var month="[[${monthstr}]]";
+
+	if(month.length==6)
+	{
+		var arr=month.split("-");
+		$("#month").val(arr[0]+"-0"+arr[1]);
+	}else
+	{
+		$("#month").val("[[${monthstr}]]");
+	}
+	
+	
+	var table = $('#empattendancereport').DataTable({
         lengthChange: true,
         buttons: [ 'copy', 'csv', 'pdf' ]
     });

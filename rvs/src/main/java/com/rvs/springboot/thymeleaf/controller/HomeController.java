@@ -3453,7 +3453,7 @@ public class HomeController {
 
 	@GetMapping("attendancereport")
 	public String empattendancereport(Model themodel,
-			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth) {
+			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth, @RequestParam(name="branch", required = false, defaultValue = "1") String branchid ) {
 
 		int prdenddate;
 		String monthstr = "";
@@ -3486,7 +3486,7 @@ public class HomeController {
 		// -------------------------------------------------------
 		// Get Attendance details for particular month
 		// -------------------------------------------------------
-		List<Map<String, Object>> atm = attendanceMasterService.getatttendancereport(monthstr, prdenddate);
+		List<Map<String, Object>> atm = attendanceMasterService.getatttendancereport(monthstr, prdenddate,Integer.parseInt(branchid));
 
 		ArrayList<String> reportarr = new ArrayList<String>();
 
@@ -3560,7 +3560,11 @@ public class HomeController {
 		themodel.addAttribute("sundays", sundays);
 		themodel.addAttribute("reportarr", reportarr);
 		themodel.addAttribute("prdenddate", prdenddate);
-
+		
+		List<BranchMaster> bmList = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", bmList);
+		themodel.addAttribute("branchid", branchid);
+		
 		return "empattendancereport";
 	}
 

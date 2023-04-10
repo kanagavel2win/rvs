@@ -91,7 +91,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getatttendancereport(String monthstr, int prdenddate) {
+	public List<Map<String, Object>> getatttendancereport(String monthstr, int prdenddate, int branchid) {
 		
 		String sqlfinalQuery= "max(case when `attendance_date` = '"+ monthstr +"-01 00:00:00' then `attstatus` else '-' end) '01',"+
 		"max(case when `attendance_date` = '"+ monthstr +"-02 00:00:00' then `attstatus` else '-' end) '02'," + 
@@ -109,7 +109,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 		
 		String sql = "select em.staff_name,t1.* from (select" + 
 				"  `employeeid`," + sqlfinalQuery + 
-				"from attendancemaster where attendance_date between '"+ monthstr +"-01 00:00:00' and  '"+ monthstr +"-"+ prdenddate +" 00:00:00' group by `employeeid` order by employeeid )t1 inner join employeemaster em on t1.employeeid=em.emp_masterid";
+				"from attendancemaster where branch_masterid="+ branchid +" and attendance_date between '"+ monthstr +"-01 00:00:00' and  '"+ monthstr +"-"+ prdenddate +" 00:00:00' group by `employeeid` order by employeeid )t1 inner join employeemaster em on t1.employeeid=em.emp_masterid";
 		
 		List<Map<String, Object>> atm = JdbcTemplate.queryForList(sql);
 		return atm;

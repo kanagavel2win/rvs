@@ -13,6 +13,6 @@ public interface AttendanceMasterService {
 	public List<AttendanceMaster>  findByattendanceDate(String date);
 	public List<Map<String, Object>> getpayrolldetails(String selectedmonth, String holidaysql, int branch_masterid);
 	
-	public List<Map<String, Object>> getatttendancereport(String monthstr, int prdenddate);
+	public List<Map<String, Object>> getatttendancereport(String monthstr, int prdenddate, int branchid);
 	public void deleteById(int attendid);
 }

@@ -233,7 +233,9 @@
     <script>
     
  
-
+    const today = moment();
+    const startOfMonth = today.startOf('month').format('YYYY-MM-DD');
+    const endOfMonth = today.endOf('month').format('YYYY-MM-DD');
     
     var dt_adv_filter_table  = $('.dt-advanced-search');
     var startDateEle = $('.start_date'),endDateEle = $('.end_date');
@@ -241,7 +243,7 @@
     dt_adv_filter_table.DataTable({
           dom: "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6 dataTables_pager'p>>",
           ajax: {
-	             "url": "leavehistoryjson?startdate=2022-01-01&enddate=2023-01-01",
+	             "url": `leavehistoryjson?startdate=${startOfMonth}&enddate=${endOfMonth}`,
 	             "type": "GET",
 	             "dataSrc": "",
 	         },

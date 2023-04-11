@@ -65,6 +65,9 @@ public class payslip implements Comparable<payslip> {
 	String monthlyincentives;
 	@Column
 	String net;
+	@Column
+	String branchid;
+	
 	@Override
 	public int compareTo(payslip o) {
 		

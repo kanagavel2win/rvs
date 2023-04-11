@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.PaySlipRepository;
@@ -16,6 +17,9 @@ public class PaySlipServiceImpl implements PaySlipService {
 	@Autowired
 	private PaySlipRepository payslipRepository;
 
+	@Autowired
+	JdbcTemplate jdbctemplate;
+	
 	@Override
 	public List<payslip> findByEmpid(String Employeeid) {
 			return payslipRepository.findByEmployeeid(Employeeid);
@@ -33,9 +37,12 @@ public class PaySlipServiceImpl implements PaySlipService {
 	}
 
 	@Override
-	public void deleteByPayperiod(String Payperiod) {
+	public void deleteByPayperiod(String Payperiod,String branchid) {
 		
-		payslipRepository.deleteByPayperiod(Payperiod);
+		//payslipRepository.deleteByPayperiod(Payperiod);
+		String sql ="DELETE FROM `payslip` WHERE payperiod='" +Payperiod + "' and branchid = '" + branchid +"'" ;
+		jdbctemplate.update(sql);
+		
 	}
 
 	@Override

@@ -3236,7 +3236,10 @@ public class HomeController {
 
 		String Payperiod = prdStartdate + " - " + prdenddate;
 		if (!save.equalsIgnoreCase("")) {
-			payslipserive.deleteByPayperiod(Payperiod);
+			for (EmployeeMaster emoobj : EffectiveEmployee(employeeMasterService.findAll()))
+			{
+				payslipserive.deleteByPayperiod(Payperiod,String.valueOf(branch_masterid));	
+			}						
 		}
 
 		// -------------------------------------------------------
@@ -3413,7 +3416,8 @@ public class HomeController {
 				payslipboj.setTotalgross(String.valueOf(TOTALGROSS));
 				payslipboj.setTotalWorkingDays(String.valueOf(WorkingDays + ExtraWorkingDays));
 				payslipboj.setWorkingDays(String.valueOf(WorkingDays));
-
+				payslipboj.setBranchid(String.valueOf(branch_masterid));
+				
 				payslipserive.save(payslipboj);
 				themodel.addAttribute("save", "save");
 
@@ -3440,12 +3444,13 @@ public class HomeController {
 
 	@PostMapping("payrollpdf")
 	public String payrollpdf(@RequestParam(name = "month") String selectedmonth, Model themodel,
-			@RequestParam(value = "report") String report) {
+			@RequestParam(value = "report") String report,@RequestParam(value = "branchname") String branchname) {
 		// System.out.println(selectedmonth);
 		String Str = this.theMonth(Integer.parseInt(String.valueOf(selectedmonth).substring(5, 7)) - 1).toUpperCase()
 				+ " " + String.valueOf(selectedmonth).substring(0, 4);
 		themodel.addAttribute("report", report.replace("]", ""));
 		themodel.addAttribute("monthtext", Str);
+		themodel.addAttribute("branchname", branchname);
 		themodel.addAttribute("selectedmonth", selectedmonth);
 
 		return "payslippdf";

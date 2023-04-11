@@ -263,7 +263,7 @@ table tr td {
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
 							<span class="text-muted fw-light">Administration/HR
-								Management </span>Payroll
+								Management/ </span>Payroll
 						</h4>
 
 						<!-- Users List -->
@@ -308,9 +308,9 @@ table tr td {
 										</div>
 									</form>
 									<hr />
-									<div th:if="${save}" class="form-group col-12">
+									<div th:if="${save}" class="form-group col-12" align="center">
 										<button type="button"
-											class="btn mb-1 btn-outline-success btn-block">PaySlip
+											class="btn mb-1 btn-success btn-block">PaySlip
 											Generated Successfully</button>
 
 									</div>
@@ -349,6 +349,11 @@ table tr td {
 													<input type="hidden" th:value="${selectedmonth}"
 														name="month" /> <input type="hidden"
 														th:value="${selectedmonth}" name="save" />
+												
+														 <input type="hidden"
+														th:value="${branchobj.id}" name="branch" />
+														
+														
 													<button type="submit"
 														class="e2 position-relative  btn btn-secondary m-1"
 														style="float: right">Generate Payslips</button>
@@ -366,6 +371,8 @@ table tr td {
 													<input type="hidden" th:value="${selectedmonth}"
 														name="month" /> <input type="hidden" th:value="${report}"
 														name="report" />
+														 <input type="hidden"
+														th:value="${branchobj.BRANCH_NAME}" name="branchname" />
 													<button type="submit" class="e2   btn btn-secondary m-1"
 														style="float: right">Print</button>
 

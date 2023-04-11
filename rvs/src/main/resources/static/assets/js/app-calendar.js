@@ -574,7 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
       Type.value='';
       eventDescription.value='';
       Branch.value='';
-      $(`#eventForm`)[0].reset();
+      fv.resetForm();
     }
 
     // When modal hides reset input values

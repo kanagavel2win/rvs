@@ -426,6 +426,13 @@ if (isRtl) {
   direction = 'rtl';
 }
 
+const today = moment();
+const startOfMonth = today.startOf('month').format('YYYY-MM-DD');
+const endOfMonth = today.endOf('month').format('YYYY-MM-DD');
+
+console.log(startOfMonth)
+console.log(endOfMonth)
+
 document.addEventListener('DOMContentLoaded', function () {
   (function () {
     const calendarEl = document.getElementById('calendar'),
@@ -627,7 +634,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let { dayGrid, interaction, timeGrid, list } = calendarPlugins;
     let calendar = new Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      events: 'leavehistoryjsoncalendar?startdate=2022-01-01&enddate=2024-01-01',
+      events: `leavehistoryjsoncalendar?startdate=${startOfMonth}&enddate=${endOfMonth}`,
       plugins: [interaction, dayGrid, timeGrid, list],
       editable: true,
       dragScroll: true,

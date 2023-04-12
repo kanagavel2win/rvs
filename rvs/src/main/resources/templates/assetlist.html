@@ -1,619 +1,347 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
-	data-textdirection="ltr">
 
-<!-- BEGIN: Head-->
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="ICC">
-<title>Asset List</title>
-<link rel="apple-touch-icon"
-	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
-<link rel="shortcut icon" type="image/x-icon"
-	th:href="@{/app-assets/images/ico/favicon.ico}">
-<link
-	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
-	rel="stylesheet}">
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/vendors.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
-
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/tables/datatable/datatables.min.css}">
-
-<!-- END: Vendor CSS-->
-
-<!-- BEGIN: Theme CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap-extended.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/colors.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/components.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/dark-layout.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
-<!-- END: Theme CSS-->
-
-<!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
-<!-- END: Page CSS-->
-
-<!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/assets/css/style.css}">
-<!-- END: Custom CSS-->
-<style>
-.addnewVendor {
-	position: absolute;
-	right: -20px;
-	top: 0px;
-	cursor: pointer;
-}
-
-.bx-edit, .bx-show {
-	float: right;
-	padding-top: 10%;
-	padding-right: 10%;
-	font-size: 20px;
-	cursor: pointer;
-}
-
-.iconalign {
-	float: right;
-	position: relative;
-	padding-top: 10%;
-	font-size: 20px;
-	width: 100px;
-}
-
-.alerm {
-	padding-top: 1%;
-	float: right;
-}
-
-.bxs-bell-ring {
-	font-size: 25px;
-}
-
-.tth {
-	color: #228B22;
-	background-color: #e1e1e1;
-}
-
-.red {
-	color: #FF0000;
-}
-
-.green {
-	color: #228B22;
-}
-
-.black {
-	color: #000;
-	font-weight: bold;
-}
-
-#cartcount {
-	text-align: center;
-	position: absolute;
-	right: 102px;
-	top: -6px;
-	padding: 20px;
-	width: 70px;
-	z-index: 10;
-	cursor: pointer;
-}
-
-.bx-shopping-bag {
-	font-size: 54px;
-	position: absolute;
-	right: 110px;
-	top: -10px;
-	z-index: 9;
-	cursor: pointer;
-}
-
-.carttotallabelcount {
-	float: left
-}
-
-.isize {
-	font-size: 25px;
-	line-height: 0px;
-	vertical-align: middle;
-}
-</style>
-
-</head>
-<!-- END: Head-->
-
-<!-- BEGIN: Body-->
-
-<body
-	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
-	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
-
-	<!-- BEGIN: Header-->
-	<div th:insert="header"></div>
-	<!-- END: Header-->
-
-
-	<!-- BEGIN: Main Menu-->
-	<div th:insert="menu"></div>
-	<!-- END: Main Menu-->
-
-	<!-- BEGIN: Content-->
-	<!-- BEGIN: Content-->
-	<div class="app-content content">
-		<div class="content-overlay"></div>
-		<div class="content-wrapper">
-			<div class="content-header row">
-				<div class="content-header-left col-12 mb-2 mt-1">
-					<div class="row breadcrumbs-top">
-						<div class="col-12">
-							<h5 class="content-header-title float-left pr-1 mb-0">Asset
-								List</h5>
-							<div class="breadcrumb-wrapper col-12">
-								<ol class="breadcrumb p-0 mb-0">
-									<li class="breadcrumb-item"><a href="index"><i
-											class="bx bx-home-alt"></i></a></li>
-
-
-								</ol>
-								<a href="assetnew" class="addnewVendor"
-									style="vertical-align: middle"><button type="button"
-										class="btn btn-warning mr-1 mb-1">
-										<i class="bx bx-plus-circle "></i> New
-									</button></a> <span data-toggle="modal"
-									data-target="#exampleModalScrollable"> <i
-									class="bx bx-shopping-bag"></i> <span id="cartcount"> 0</span>
-								</span>
-
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-			</div>
-			<div class="content-body">
-
-				<!-- Zero configuration table -->
-				<section id="basic-datatable">
-					<div class="row">
-						<div class="col-12">
-
-							<div class="col-md-6 col-12">
-
-								<!-- Button trigger for scrolling content modal -->
-
-
-								<!--scrolling content Modal -->
-								<div class="modal fade" id="exampleModalScrollable"
-									tabindex="-1" role="dialog"
-									aria-labelledby="exampleModalScrollableTitle"
-									aria-hidden="true">
-									<div class="modal-dialog modal-dialog-scrollable modal-xl"
-										role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalScrollableTitle">Selected
-													Items</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<i class="bx bx-x"></i>
-												</button>
-											</div>
-											<div class="modal-body">
-												<table class="table table-hover" id="cart">
-													<thead>
-														<tr>
-															<th>#</th>
-															<th>Asset Type</th>
-															<th>Asset Name</th>
-															<th>Branch</th>
-															<th>Status</th>
-															<th>Custodian</th>
-															<th>Last Update</th>
-														</tr>
-													</thead>
-													<tbody>
-
-													</tbody>
-												</table>
-											</div>
-
-											<div class="modal-footer">
-												<div style="float: left;">
-													<button type="button" class="btn btn-primary mr-1 mb-1"
-														id="checkout">
-														<i class="bx bx-upload  isize"></i> Check Out
-													</button>
-													<button type="button" class="btn btn-warning mr-1 mb-1"
-														id="checkin">
-														<i class="bx bx-download isize"></i> Check In
-													</button>
-													<button type="button" class="btn btn-success  mr-1 mb-1"
-														id="assettransfer">
-														<i class="bx bx-transfer isize"></i> Asset Transfer
-													</button>
-												</div>
-
-
-												<span class="carttotallabelcount"><b>Total Item
-														Count - <span id="totalcartval"> Nos 
-												</b></span> </span>
-
-												<button type="button" class="btn btn-light-secondary"
-													data-dismiss="modal">
-													<i class="bx bx-x d-block d-sm-none"></i> <span
-														class="d-none d-sm-block">Close</span>
-												</button>
-												<!-- <button id="createjobcard"
-													class="btn btn-primary glow invoice-create" role="button"
-													aria-pressed="true" data-dismiss="modal">Next</button> -->
-
-
-
-											</div>
-										</div>
-									</div>
-								</div>
-
-							</div>
-
-						</div>
-						<div class="col-12">
-
-							<div class="card">
-
-								<div class="card-content">
-									<div class="card-body card-dashboard">
-										<p class="card-text"></p>
-										<div class="table-responsive">
-											<table class="table zero-configuration">
-												<thead>
-													<tr>
-														<th>#</th>
-														<th>Asset Type</th>
-														<th>Asset Name</th>
-														<th>Branch</th>
-														<th>Status</th>
-														<th>Custodian</th>
-														<th>Last Update</th>
-													</tr>
-												</thead>
-												<tbody>
-													<th:block th:each="asset,stat : ${assetlist}">
-														<tr
-															th:class="'srctble' + ${#strings.arraySplit(asset,'|')[0]}">
-
-															<td>
-																<button type='button'
-																	class='btn btn-icon btn-light-primary mr-1 mb-1 addtocart'
-																	th:id="${#strings.arraySplit(asset,'|')[0]}">ADD</button>
-															</td>
-															<td><span
-																th:text="${#strings.arraySplit(asset,'|')[2] }"></span></td>
-															<td><a
-																th:href="'asset?id=' + ${#strings.arraySplit(asset,'|')[0]}"
-																th:text="${#strings.arraySplit(asset,'|')[1] }"
-																title="Edit Asset"></a></td>
-
-
-															<td th:utext="${#strings.arraySplit(asset,'|')[3] }"></td>
-															<td th:utext="${#strings.arraySplit(asset,'|')[4] }"></td>
-															<td th:utext="${#strings.arraySplit(asset,'|')[5] }"></td>
-															<td th:utext="${#strings.arraySplit(asset,'|')[6] }"></td>
-														</tr>
-													</th:block>
-												</tbody>
-												<tfoot>
-													<tr>
-
-														<th>#</th>
-														<th>Asset Type</th>
-														<th>Asset Name</th>
-														<th>Branch</th>
-														<th>Status</th>
-														<th>Custodian</th>
-														<th>Last Update</th>
-
-
-													</tr>
-												</tfoot>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-				<!--/ Zero configuration table -->
-
-			</div>
-		</div>
-	</div>
-	<!-- END: Content-->
-
-
-
-	<div class="sidenav-overlay"></div>
-	<div class="drag-target"></div>
-
-	<!-- BEGIN: Footer-->
-	<footer class="footer footer-static footer-light">
-		<p class="clearfix mb-0">
-			<span class="float-left d-inline-block"></span><span
-				class="float-right d-sm-inline-block d-none"></span>
-			<button class="btn btn-primary btn-icon scroll-top" type="button">
-				<i class="bx bx-up-arrow-alt"></i>
-			</button>
-		</p>
-	</footer>
-	<!-- END: Footer-->
-
-
-	<!-- BEGIN: Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-	<script
-		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
-	<script
-		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-	<!-- BEGIN Vendor JS-->
-
-	<!-- BEGIN: Page Vendor JS-->
-	<script
-		th:src="@{/app-assets/vendors/js/tables/datatable/datatables.min.js}"></script>
-	<script
-		th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js}"></script>
-	<script
-		th:src="@{/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js}"></script>
-
-
-	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-	<!-- END: Page Vendor JS-->
-
-	<!-- BEGIN: Theme JS-->
-	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-	<script th:src="@{/app-assets/js/core/app.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-	<!-- END: Theme JS-->
-
-	<!-- BEGIN: Page JS-->
-	<script th:src="@{/app-assets/js/scripts/datatables/datatable.js}"></script>
-	<!-- END: Page JS-->
-	<script>
-		$(document)
-				.ready(
-						function() {
-
-							var carid = '';
-
-							if (carid != "") {
-								var a = carid.split(",");
-								for (i in a) {
-									var currentRow = $('#' + a[i])
-											.closest("tr");
-									currentRow.hide();
-								}
-
-							}
-
-							$('#checkout').click(function() {
-								navigationfun("checkout");
-							});
-							$('#checkin').click(function() {
-								navigationfun("checkin");
-							});
-							$('#assettransfer').click(function() {
-								navigationfun("assettransfer");
-							});
-
-							function navigationfun(root) {
-								var cartid = "";
-
-								$('.removefromcart').each(
-										function(index) {
-											cartid = cartid + ","
-													+ ($(this).attr('name'));
-										});
-
-								if (cartid == "") {
-									alert("Cart is Empty");
-								} else {
-									if (root == 'checkout') {
-										let allow = true;
-										var table = document
-												.getElementById("cart");
-										for (var i = 1, row; row = table.rows[i]; i++) {
-											if (row.cells[4].innerText.trim() != "In Stock") {
-												allow = false;
-											}
-										}
-
-										if (allow) {
-											cartid = cartid.substring(1,
-													cartid.length);
-											window.location.href = root
-													+ '?id=' + cartid;
-										} else {
-											alert('Selected Items should be in "In Stock".');
-										}
-
-									} else if (root == 'checkin') {
-										let allow = true;
-										let callow = true;
-										oldval = "";
-										var table = document
-												.getElementById("cart");
-										for (var i = 1, row; row = table.rows[i]; i++) {
-											if (i == 1) {
-												oldval = row.cells[5].innerText
-														.trim();
-											}
-											if (row.cells[4].innerText.trim() == "In Stock") {
-												allow = false;
-											}
-											
-												if (oldval == row.cells[5].innerText.trim()) {
-													oldval = row.cells[5].innerText.trim();
-												}else
-												{
-													callow = false;
-												}
-											
-										}
-
-										if (allow) {
-											if (callow) {
-											cartid = cartid.substring(1,
-													cartid.length);
-											window.location.href = root
-													+ '?id=' + cartid;
-											} else {
-												alert('Custodian getting differ please check it');
-											}
-										} else {
-											alert('Selected Items should be in not "In Stock".');
-										}
-
-									} else {
-										cartid = cartid.substring(1,
-												cartid.length);
-										window.location.href = root + '?id='
-												+ cartid;
-									}
-
-								}
-							}
-
-							$(document)
-									.on(
-											"click",
-											".addtocart",
-											function() {
-
-												$(this).hide();
-												var addcartid = $(this).attr(
-														'id');
-												var currentRow = $(this)
-														.closest("tr");
-												var col1 = currentRow.find(
-														"td:eq(1)").html();
-												var col2 = currentRow.find(
-														"td:eq(2)").html();
-												var col3 = currentRow.find(
-														"td:eq(3)").html();
-												var col4 = currentRow.find(
-														"td:eq(4)").html();
-												var col5 = currentRow.find(
-														"td:eq(5)").html();
-												var col6 = currentRow.find(
-														"td:eq(6)").html();
-
-												var data = col1 + "\n" + col2
-														+ "\n" + col3 + "\n"
-														+ col4 + "\n" + col5;
-
-												$('#cart > tbody:last-child')
-														.append(
-																"<tr><td><button type='button' name='"+addcartid+"' class='btn btn-icon btn-light-danger mr-1 mb-1 removefromcart'><i class='bx bx-trash'></i></button></td><td>"
-																		+ col1
-																		+ "</td><td>"
-																		+ col2
-																		+ "</td><td>"
-																		+ col3
-																		+ "</td><td>"
-																		+ col4
-																		+ "</td><td>"
-																		+ col5
-																		+ "</td><td>"
-																		+ col6
-																		+ "</td></tr>");
-												currentRow.fadeTo("slow", 0.7,
-														function() {
-															currentRow
-																	.fadeOut();
-															currentRow.hide();
-														});
-												cartcount();
-
-											});
-
-							$(document)
-									.on(
-											"click",
-											"td > button",
-											function() {
-												var removecartid = $(this)
-														.attr('name');
-												if (removecartid != undefined) {
-													var currentRow = $(this)
-															.closest("tr");
-													currentRow.remove();
-													$('.srctble' + removecartid)
-															.fadeTo(
-																	"slow",
-																	1,
-																	function() {
-																		$(
-																				'.srctble'
-																						+ removecartid)
-																				.fadeIn();
-																		$(
-																				'.srctble'
-																						+ removecartid)
-																				.show();
-																		$(
-																				'#'
-																						+ removecartid)
-																				.show();
-																	});
-													cartcount();
-												}
-
-											});
-
-							function cartcount() {
-								var count = 0;
-								$('.removefromcart').each(function(index) {
-									count++;
-								});
-								$('#cartcount').text(count);
-
-								$('#totalcartval').text(count);
-							}
-							cartcount();
-
-						});
-	</script>
-</body>
-<!-- END: Body-->
-
+<html
+  xmlns:th="http://www.thymeleaf.org" 
+  lang="en"
+  class="light-style layout-navbar-fixed layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  th:data-assets-path="@{/assets/}"
+  data-template="vertical-menu-template"
+  
+>
+  <head>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>Leave Approval</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet" type="text/css"
+    />
+
+    <!-- Icons -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/demo.css}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-select-bs5/select.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css}">
+	
+	 <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}">
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script th:src="@{/assets/js/config.js}"></script>
+    <style>
+    
+    
+    </style>
+  </head>
+
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+		<div th:insert="menu"></div>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+
+       <div th:insert="header"></div>
+
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+				 <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Administration/Asset/ </span>Asset List</h4>
+
+ 
+ <div class="card">
+                <div class="card-datatable table-responsive pt-0">
+                  <table class="datatables-basic table table-bordered">
+                    <thead>
+                      <tr>
+                       
+                    <th>#</th>
+					<th>Asset Type</th>
+					<th>Asset Name</th>
+					<th>Branch</th>
+					<th>Status</th>
+					<th>Custodian</th>
+					<th>Last Update</th>
+                        
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+              
+              
+
+             
+             
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  Â©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , made with â¤ï¸ by
+                  <a href="https://pixinvent.com" target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
+                </div>
+                <div>
+                  <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank"
+                    >License</a
+                  >
+                  <a href="https://1.envato.market/pixinvent_portfolio" target="_blank" class="footer-link me-4"
+                    >More Themes</a
+                  >
+
+                  <a
+                    href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
+                    target="_blank"
+                    class="footer-link me-4"
+                    >Documentation</a
+                  >
+
+                  <a href="https://pixinvent.ticksy.com/" target="_blank" class="footer-link d-none d-sm-inline-block"
+                    >Support</a
+                  >
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+
+      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+      <div class="drag-target"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+  <!-- build:js assets/vendor/js/core.js -->
+  <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+  <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+  <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+  <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+  
+  <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+  
+
+  <script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+  <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+  
+  <script th:src="@{/assets/vendor/js/menu.js}"></script>
+  <!-- endbuild -->
+<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+
+<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+  <!-- Vendors JS -->
+  <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+  <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+  <script th:src="@{/assets/vendor/libs/datatables-fixedcolumns/datatables.fixedcolumns.js}"></script>
+
+  <!-- Main JS -->
+  <script th:src="@{/assets/js/main.js}"></script>
+  
+  <!-- Page JS-->
+ 
+ 
+
+  
+    
+    <script>
+    var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
+	
+	
+	  var dt_basic_table = $('.datatables-basic');
+	  
+		
+	    var dt_basic = dt_basic_table.DataTable({
+	    	 ajax: {
+	             "url": "assetlistjson",
+	             "type": "GET",
+	             "dataSrc": "",
+	         },
+	      columnDefs: [
+	        {
+	          // For Responsive
+	          className: 'control',
+	          orderable: false,
+	          responsivePriority: 2,
+	          searchable: false,
+	          visible: true,
+	          targets: 0,
+	          render: function(data, type, full, meta) {
+	            return '';
+	          }
+	        },
+	        {
+	          // For Checkboxes
+	          targets: 1,
+	          orderable: false,
+	          responsivePriority: 3,
+	          searchable: false,
+	          checkboxes: true,
+	          render: function(data, type, full, meta) {
+	        	  console.log(full);
+	            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+	          },
+	          checkboxes: {
+	            selectAllRender: '<input type="checkbox" class="form-check-input">'
+	          }
+	        },
+	        
+	        {
+		          targets: 2,
+		          searchable: false,
+		          visible: false
+		    },
+		    
+
+	        {
+		          targets: 8,
+		          render: function(data, type, full, meta) {
+		        	  
+		        	  var st = full.status;
+		        	  var id = full.id;
+      			  var status = [];
+      			     status['Approved'] = ' bg-label-success';
+			             status['Rejected'] = ' bg-label-danger';
+			             status['Pending'] = ' bg-label-warning';
+			             status['Cancelled'] = ' bg-label-dark';
+			             
+			             if (typeof status[st] === 'undefined') {
+				              return data;
+				            }
+			             var txt ='';
+			             if(st == 'Pending')
+			            	 {
+			            	 txt+=`<button type="button" class="btn btn-sm rounded-pill btn-label-primary" onclick="CancelRequest(${id});">Cancel the Request</button>`;
+			            	 }
+			             else
+			            	{
+			            	 txt+='';
+			            	}
+				            return (
+				              `<span class="badge rounded-pill ${status[st]}">  ${st} </span>  ${txt}`
+				            );
+		        	  
+		          },
+		    },
+		 
+		   
+	        
+	      ],
+	      
+	      dom:
+	        '<"card-header"<"head-label text-center"><"dt-action-buttons text-end"B>><"d-flex justify-content-between align-items-center row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+	      displayLength: 10,
+	      lengthMenu: [10, 25, 50, 75, 100],
+	      buttons: [
+	        {
+	          extend: 'collection',
+	          className: 'btn btn-label-primary dropdown-toggle me-2',
+	          text: '<i class="bx bx-export me-2"></i>Export',
+	          buttons: [
+	            {
+	              extend: 'print',
+	              text: '<i class="bx bx-printer me-2" ></i>Print',
+	              className: 'dropdown-item',
+	              
+	            },
+	            {
+	              extend: 'csv',
+	              text: '<i class="bx bx-file me-2" ></i>Csv',
+	              className: 'dropdown-item',
+	              
+	            },
+	            {
+	              extend: 'excel',
+	              text: 'Excel',
+	              className: 'dropdown-item',
+	              
+	            },
+	            {
+	              extend: 'pdf',
+	              text: '<i class="bx bxs-file-pdf me-2"></i>Pdf',
+	              className: 'dropdown-item',
+	              
+	            },
+	            {
+	              extend: 'copy',
+	              text: '<i class="bx bx-copy me-2" ></i>Copy',
+	              className: 'dropdown-item',
+	              
+	            }
+	          ]
+	        },
+	        {
+	          text: '<i class="bx bx-plus me-2"></i> <span class="d-none d-lg-inline-block" >Apply Leave  </span>',
+	          className: 'create-new btn btn-primary'
+	        }
+	      ],
+	      
+	    });
+ 
+
+      
+    </script>
+  </body>
 </html>
-
-
-
-

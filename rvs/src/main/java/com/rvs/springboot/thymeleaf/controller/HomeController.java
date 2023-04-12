@@ -141,7 +141,7 @@ import com.rvs.springboot.thymeleaf.service.VendorMasterService;
 public class HomeController {
 
 	@Autowired
-	menuactivelist menuactivelistobj;	
+	menuactivelist menuactivelistobj;
 	@Autowired
 	BranchMasterService branchMasterService;
 	@Autowired
@@ -1406,10 +1406,8 @@ public class HomeController {
 		List<String> JobTitle = itemlistService.findByFieldName("JobTitle");
 		theModel.addAttribute("JobTitle", JobTitle);
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
-	
+
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
-		
-		
 
 		return "emplist";
 
@@ -2282,7 +2280,7 @@ public class HomeController {
 
 		themodel.addAttribute("employeemaster", employeemasternew);
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
-		
+
 		return "empadd";
 	}
 
@@ -2841,7 +2839,8 @@ public class HomeController {
 		theModel.addAttribute("currentmonname", currentmonname);
 		theModel.addAttribute("calhtml", calhtml);
 		theModel.addAttribute("jsdate", jsdate);
-		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Daily Attendance"));
+		theModel.addAttribute("menuactivelist",
+				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Daily Attendance"));
 		return "empattendance";
 
 	}
@@ -3129,7 +3128,8 @@ public class HomeController {
 
 	@GetMapping("leaveapprove")
 	public String leaveapprove(Model theModel) {
-		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave Approval"));
+		theModel.addAttribute("menuactivelist",
+				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave Approval"));
 		return "leaveapprove";
 	}
 
@@ -3202,8 +3202,9 @@ public class HomeController {
 
 	@GetMapping("leavehistory")
 	public String leavehistory(Model theModel) {
-		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave History"));
-		
+		theModel.addAttribute("menuactivelist",
+				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave History"));
+
 		return "leavehistory";
 	}
 
@@ -3452,7 +3453,7 @@ public class HomeController {
 		List<BranchMaster> branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", branchls);
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Payroll"));
-		
+
 		return "payroll";
 	}
 
@@ -3585,7 +3586,8 @@ public class HomeController {
 		List<BranchMaster> bmList = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", bmList);
 		themodel.addAttribute("branchid", branchid);
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Attendance Report"));
+		themodel.addAttribute("menuactivelist",
+				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Attendance Report"));
 		return "empattendancereport";
 	}
 
@@ -3904,7 +3906,9 @@ public class HomeController {
 			}
 
 			if ((obj.getStaffID() != null)) {
+				if(!nullremover(String.valueOf(obj.getStaffID())).equalsIgnoreCase("")){
 				obj.setCustodian(employeeMasterService.findById(Integer.parseInt(obj.getStaffID())).getStaffName());
+				}
 			}
 
 			ls.add(obj);
@@ -5443,7 +5447,7 @@ public class HomeController {
 		List<EmployeeMaster> empls = EffectiveEmployee(employeeMasterService.findAll());
 		themodel.addAttribute("empls", empls);
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("contact_Organization"));
-		
+
 		return "contactorganizationlist";
 	}
 

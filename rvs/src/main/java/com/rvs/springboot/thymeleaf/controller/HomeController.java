@@ -107,6 +107,7 @@ import com.rvs.springboot.thymeleaf.entity.VendorFiles;
 import com.rvs.springboot.thymeleaf.entity.VendorMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
+import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
 import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetAuditService;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
@@ -139,6 +140,8 @@ import com.rvs.springboot.thymeleaf.service.VendorMasterService;
 
 public class HomeController {
 
+	@Autowired
+	menuactivelist menuactivelistobj;	
 	@Autowired
 	BranchMasterService branchMasterService;
 	@Autowired
@@ -254,6 +257,7 @@ public class HomeController {
 		if (logintype("ROLE_EMPLOYEE")) {
 			return "redirect:rvsemp/";
 		} else if (logintype("ROLE_ADMIN")) {
+			theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("index"));
 			return "index";
 		} else {
 			return "login";
@@ -268,6 +272,7 @@ public class HomeController {
 		if (logintype("ROLE_EMPLOYEE")) {
 			return "redirect:rvsemp/";
 		} else if (logintype("ROLE_ADMIN")) {
+			theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("index"));
 			return "index";
 		} else {
 			// return "redirect:logout";
@@ -467,6 +472,7 @@ public class HomeController {
 		// System.out.println(bmList);
 		themodel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		themodel.addAttribute("branchlist", bmList);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_branchlist"));
 		return "branchlist";
 
 	}
@@ -1381,6 +1387,7 @@ public class HomeController {
 		theModel.addAttribute("BranchMaster", bm);
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_branchlist"));
 		return "branchadd";
 	}
 
@@ -1399,8 +1406,13 @@ public class HomeController {
 		List<String> JobTitle = itemlistService.findByFieldName("JobTitle");
 		theModel.addAttribute("JobTitle", JobTitle);
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
+	
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
+		
+		
 
 		return "emplist";
+
 	}
 
 	@ResponseBody
@@ -1683,24 +1695,23 @@ public class HomeController {
 		}
 
 	}
-	
-	
+
 	@ResponseBody
 	@PostMapping("employeeExperiencejson")
 	public int employeeExperiencejson(@RequestParam Map<String, String> params) {
 
 		EmployeeExperience exp = new EmployeeExperience();
 
-		exp.setCompany(params.get("exp[Company]")); 
+		exp.setCompany(params.get("exp[Company]"));
 		exp.setExpFromyear(params.get("exp[Experiencefrom]"));
 		exp.setExpToyear(params.get("exp[Experiencento]"));
 		exp.setJobTitle(params.get("exp[Role]"));
 		exp.setLocation(params.get("exp[Location]"));
-		
+
 		int empMasterid = Integer.parseInt(params.get("exp[empMasterid]"));
 
 		if (params.get("exp[expid]").equalsIgnoreCase("")) {
-			return employeeMasterService.insertemployeeExperience(empMasterid,exp);
+			return employeeMasterService.insertemployeeExperience(empMasterid, exp);
 		} else {
 			exp.setEmpExperienceid(Integer.parseInt(params.get("exp[expid]")));
 			return employeeMasterService.updateemployeeExperience(exp);
@@ -2268,10 +2279,10 @@ public class HomeController {
 		themodel.addAttribute("employeeExperience", exptrlsnew);
 		themodel.addAttribute("employeeLanguage", langlsnew);
 		themodel.addAttribute("employeeFiles", filelsnew);
-		
-		
-		themodel.addAttribute("employeemaster", employeemasternew);
 
+		themodel.addAttribute("employeemaster", employeemasternew);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
+		
 		return "empadd";
 	}
 
@@ -2488,6 +2499,7 @@ public class HomeController {
 
 		theModel.addAttribute("emptitle",
 				emobj.getEmpid() + "000" + emobj.getEmpMasterid() + " - " + emobj.getStaffName());
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
 		return "empjob";
 	}
 
@@ -2829,6 +2841,7 @@ public class HomeController {
 		theModel.addAttribute("currentmonname", currentmonname);
 		theModel.addAttribute("calhtml", calhtml);
 		theModel.addAttribute("jsdate", jsdate);
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Daily Attendance"));
 		return "empattendance";
 
 	}
@@ -2925,7 +2938,7 @@ public class HomeController {
 	public String holidaydefine(Model theModel) {
 		List<BranchMaster> bmList = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmList);
-
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Holiday"));
 		return "holidaydefine";
 	}
 
@@ -3116,6 +3129,7 @@ public class HomeController {
 
 	@GetMapping("leaveapprove")
 	public String leaveapprove(Model theModel) {
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave Approval"));
 		return "leaveapprove";
 	}
 
@@ -3144,21 +3158,22 @@ public class HomeController {
 
 	@ResponseBody
 	@GetMapping("leavehistoryjsoncalendar")
-	public Object leavehistoryjsoncalendar(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
+	public Object leavehistoryjsoncalendar(Model theModel,
+			@RequestParam(name = "startdate", required = false) String startdate,
 			@RequestParam(name = "enddate", required = false) String enddate) {
 		List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
-		
-		List<CalenderFormat> calformate= new ArrayList<CalenderFormat>();
-		
+
+		List<CalenderFormat> calformate = new ArrayList<CalenderFormat>();
+
 		lmhistory.forEach(rowMap -> {
-			CalenderFormat cf= new CalenderFormat();
+			CalenderFormat cf = new CalenderFormat();
 			cf.setId((int) rowMap.get("id"));
 			cf.setAllDay(Boolean.parseBoolean(String.valueOf(rowMap.get("halfday"))));
 			cf.setTitle(String.valueOf(rowMap.get("empname")));
 			cf.setStart(String.valueOf(rowMap.get("start")));
 			cf.setEnd(String.valueOf(rowMap.get("end")));
-			
-			HashMap<String,String> exextendedProps = new HashMap<>();
+
+			HashMap<String, String> exextendedProps = new HashMap<>();
 			exextendedProps.put("approvercomments", String.valueOf(rowMap.get("approvercomments")));
 			exextendedProps.put("approverejectdate", String.valueOf(rowMap.get("approverejectdate")));
 			exextendedProps.put("leavetype", String.valueOf(rowMap.get("leavetype")));
@@ -3170,9 +3185,9 @@ public class HomeController {
 			exextendedProps.put("approvername", String.valueOf(rowMap.get("approvername")));
 			cf.setExtendedProps(exextendedProps);
 			calformate.add(cf);
-			
+
 		});
-		
+
 		return calformate;
 	}
 
@@ -3181,19 +3196,17 @@ public class HomeController {
 	public Object leavehistoryjson(Model theModel, @RequestParam(name = "startdate", required = false) String startdate,
 			@RequestParam(name = "enddate", required = false) String enddate) {
 		List<Map<String, Object>> lmhistory = leaveMasterService.findByDates(startdate, enddate);
-		
-		
-		
+
 		return lmhistory;
 	}
 
-	
 	@GetMapping("leavehistory")
-	public String leavehistory() {
-
+	public String leavehistory(Model theModel) {
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave History"));
+		
 		return "leavehistory";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("leavereject")
 	public String leavereject(@RequestParam Map<String, String> param) {
@@ -3215,16 +3228,18 @@ public class HomeController {
 		return "Approved";
 
 	}
+
 	@GetMapping("payroll")
 	public String payrollget(Model themodel) {
 		List<BranchMaster> branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", branchls);
-		
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Payroll"));
 		return "payroll";
 	}
 
 	@PostMapping("payroll")
-	public String payrollpost(@RequestParam(name = "month") String selectedmonth, @RequestParam(name = "branch") int branch_masterid, Model themodel,
+	public String payrollpost(@RequestParam(name = "month") String selectedmonth,
+			@RequestParam(name = "branch") int branch_masterid, Model themodel,
 			@RequestParam(value = "save", defaultValue = "", required = false) String save) {
 
 		LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
@@ -3236,10 +3251,9 @@ public class HomeController {
 
 		String Payperiod = prdStartdate + " - " + prdenddate;
 		if (!save.equalsIgnoreCase("")) {
-			for (EmployeeMaster emoobj : EffectiveEmployee(employeeMasterService.findAll()))
-			{
-				payslipserive.deleteByPayperiod(Payperiod,String.valueOf(branch_masterid));	
-			}						
+			for (EmployeeMaster emoobj : EffectiveEmployee(employeeMasterService.findAll())) {
+				payslipserive.deleteByPayperiod(Payperiod, String.valueOf(branch_masterid));
+			}
 		}
 
 		// -------------------------------------------------------
@@ -3300,7 +3314,8 @@ public class HomeController {
 
 		Holidaysqlstr = Sundaysqlstr + Holidaysqlstr;
 		ArrayList<String> report = new ArrayList<String>();
-		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth, Holidaysqlstr,branch_masterid);
+		List<Map<String, Object>> atm = attendanceMasterService.getpayrolldetails(selectedmonth, Holidaysqlstr,
+				branch_masterid);
 
 		ArrayList<Double> totalnet = new ArrayList<Double>();
 		totalnet.add(0, 0.0);
@@ -3417,7 +3432,7 @@ public class HomeController {
 				payslipboj.setTotalWorkingDays(String.valueOf(WorkingDays + ExtraWorkingDays));
 				payslipboj.setWorkingDays(String.valueOf(WorkingDays));
 				payslipboj.setBranchid(String.valueOf(branch_masterid));
-				
+
 				payslipserive.save(payslipboj);
 				themodel.addAttribute("save", "save");
 
@@ -3431,20 +3446,19 @@ public class HomeController {
 		themodel.addAttribute("selectedmonth", selectedmonth);
 		themodel.addAttribute("totalnet", totalnet.get(0));
 
-		
-		BranchMaster bm =branchMasterService.findById(branch_masterid);
+		BranchMaster bm = branchMasterService.findById(branch_masterid);
 		themodel.addAttribute("branchobj", bm);
 
 		List<BranchMaster> branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", branchls);
-		
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Payroll"));
 		
 		return "payroll";
 	}
 
 	@PostMapping("payrollpdf")
 	public String payrollpdf(@RequestParam(name = "month") String selectedmonth, Model themodel,
-			@RequestParam(value = "report") String report,@RequestParam(value = "branchname") String branchname) {
+			@RequestParam(value = "report") String report, @RequestParam(value = "branchname") String branchname) {
 		// System.out.println(selectedmonth);
 		String Str = this.theMonth(Integer.parseInt(String.valueOf(selectedmonth).substring(5, 7)) - 1).toUpperCase()
 				+ " " + String.valueOf(selectedmonth).substring(0, 4);
@@ -3458,7 +3472,8 @@ public class HomeController {
 
 	@GetMapping("attendancereport")
 	public String empattendancereport(Model themodel,
-			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth, @RequestParam(name="branch", required = false, defaultValue = "1") String branchid ) {
+			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth,
+			@RequestParam(name = "branch", required = false, defaultValue = "1") String branchid) {
 
 		int prdenddate;
 		String monthstr = "";
@@ -3491,7 +3506,8 @@ public class HomeController {
 		// -------------------------------------------------------
 		// Get Attendance details for particular month
 		// -------------------------------------------------------
-		List<Map<String, Object>> atm = attendanceMasterService.getatttendancereport(monthstr, prdenddate,Integer.parseInt(branchid));
+		List<Map<String, Object>> atm = attendanceMasterService.getatttendancereport(monthstr, prdenddate,
+				Integer.parseInt(branchid));
 
 		ArrayList<String> reportarr = new ArrayList<String>();
 
@@ -3565,11 +3581,11 @@ public class HomeController {
 		themodel.addAttribute("sundays", sundays);
 		themodel.addAttribute("reportarr", reportarr);
 		themodel.addAttribute("prdenddate", prdenddate);
-		
+
 		List<BranchMaster> bmList = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", bmList);
 		themodel.addAttribute("branchid", branchid);
-		
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Attendance Report"));
 		return "empattendancereport";
 	}
 
@@ -3639,8 +3655,6 @@ public class HomeController {
 				"October", "November", "December" };
 		return monthNames[month];
 	}
-
-
 
 	@GetMapping("vendorlist")
 	public String vendorlist(Model theModel) {
@@ -3870,39 +3884,33 @@ public class HomeController {
 
 	@GetMapping("assetlist")
 	public String assetlist(Model theModel) {
-		List<String> data = new ArrayList<String>();
 
-		List<AssetMaster> ls = new ArrayList<AssetMaster>();
-		ls = assetMasterService.findAll();
-		List<BranchMaster> bm = branchMasterService.findAll();
-		String custodian = "";
-		for (AssetMaster obj : ls) {
-			String str = "";
-			str += obj.getAssetId() + "|";
-			str += obj.getAssetName() + "|";
-			str += obj.getAssetType() + "|";
-
-			if (obj.getBranch() != null) {
-				str += bm.stream().filter(C -> C.getId() == Integer.parseInt(obj.getBranch()))
-						.collect(Collectors.toList()).get(0).getBRANCH_NAME() + "|";
-			} else {
-				str += "- |";
-			}
-
-			str += obj.getStatus() + " |";
-			custodian = "";
-			if (!obj.getStatus().equalsIgnoreCase("In Stock") && (obj.getStaffID() != null)) {
-				custodian = employeeMasterService.findById(Integer.parseInt(obj.getStaffID())).getStaffName();
-			}
-			str += custodian + " |";
-			str += obj.getLastupdate() + " |";
-			str = nullremover(String.valueOf(str));
-			data.add(str);
-		}
-
-		theModel.addAttribute("assetlist", data);
 		return "assetlist";
 
+	}
+
+	@GetMapping("assetlistjson")
+	public List<AssetMaster> assetlistjson() {
+
+		List<AssetMaster> ls = new ArrayList<AssetMaster>();
+
+		List<BranchMaster> bm = branchMasterService.findAll();
+		String custodian = "";
+		for (AssetMaster obj : assetMasterService.findAll()) {
+
+			if (obj.getBranch() != null) {
+				obj.setBranchname(bm.stream().filter(C -> C.getId() == Integer.parseInt(obj.getBranch()))
+						.collect(Collectors.toList()).get(0).getBRANCH_NAME());
+			}
+
+			if ((obj.getStaffID() != null)) {
+				obj.setCustodian(employeeMasterService.findById(Integer.parseInt(obj.getStaffID())).getStaffName());
+			}
+
+			ls.add(obj);
+		}
+
+		return ls;
 	}
 
 	@GetMapping("assetnew")
@@ -5153,7 +5161,7 @@ public class HomeController {
 
 		List<OrganizationContacts> orgList = contactOrganizationService.findAll();
 		themodel.addAttribute("orgList", orgList);
-
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("contact_People"));
 		return "contactpersonlist";
 	}
 
@@ -5433,7 +5441,8 @@ public class HomeController {
 
 		List<EmployeeMaster> empls = EffectiveEmployee(employeeMasterService.findAll());
 		themodel.addAttribute("empls", empls);
-
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("contact_Organization"));
+		
 		return "contactorganizationlist";
 	}
 

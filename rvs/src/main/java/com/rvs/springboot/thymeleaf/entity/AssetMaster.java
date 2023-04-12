@@ -1,7 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -76,6 +77,13 @@ public class AssetMaster {
 	
 	@Column
 	private String staffID;
+	
+	@Transient
+	private String branchname;
+	
+	@Transient
+	private String custodian;
+	
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AssetId")

@@ -88,6 +88,12 @@ public class menuactivelist {
 			activemenus.put("HR Management", true);
 			activemenus.put("Payroll", true);
 					
+		}else if(menutitle.equalsIgnoreCase("admin_AssetManagement"))
+		{
+			activemenus.put("Administration", true);
+			activemenus.put("AssetManagement", true);
+			
+					
 		}else if(menutitle.equalsIgnoreCase("contact_People"))
 		{
 			activemenus.put("Contact", true);

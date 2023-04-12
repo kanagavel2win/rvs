@@ -3884,7 +3884,7 @@ public class HomeController {
 
 	@GetMapping("assetlist")
 	public String assetlist(Model theModel) {
-
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("AssetManagement"));
 		return "assetlist";
 
 	}
@@ -5206,6 +5206,7 @@ public class HomeController {
 		theModel.addAttribute("ContactPerson", cp);
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("contact_People"));
 		// ---------------------------
 
 		// ---------------------------
@@ -5501,7 +5502,7 @@ public class HomeController {
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		// ---------------------------
-
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("contact_Organization"));
 		return "contactorganizationadd";
 	}
 

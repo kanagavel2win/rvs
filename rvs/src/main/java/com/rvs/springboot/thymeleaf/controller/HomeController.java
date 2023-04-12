@@ -3891,6 +3891,7 @@ public class HomeController {
 
 	}
 
+	@ResponseBody
 	@GetMapping("assetlistjson")
 	public List<AssetMaster> assetlistjson() {
 

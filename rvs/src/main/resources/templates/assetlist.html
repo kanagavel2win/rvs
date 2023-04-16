@@ -56,7 +56,13 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css}">
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css}">
 	
-	 <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}">
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bs-stepper/bs-stepper.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -88,6 +94,10 @@
     cursor: pointer;
 }
 
+.light-style .bs-stepper
+{
+box-shadow: none !important;
+}
 
     </style>
   </head>
@@ -121,9 +131,9 @@
  
  
  <div class="card-header">
- <a href="assetnew" class="addnewVendor" style="vertical-align: middle"><button type="button" class="btn btn-warning mr-1 mb-1">
+<button type="button" class="btn btn-warning mr-1 mb-1" data-bs-toggle="modal" data-bs-target="#addasset">
 										<i class="bx bx-plus-circle "></i> New
-									</button></a>
+									</button>
 									
  <span data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"> <i class="bx bx-shopping-bag mr-1 mb-1"></i> <span id="cartcount">0</span>
 								</span>
@@ -160,59 +170,331 @@
 										role="document">
 										<div class="modal-content">
 											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalScrollableTitle">Selected
-													Items</h5>
-												
-												
+<h5 class="modal-title" id="exampleModalScrollableTitle">Selected
+	Items</h5>
+
+
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 											</div>
 											<div class="modal-body">
-												<table class="table table-hover" id="cart">
-													<thead>
-														<tr>
-															<th>#</th>
-															<th>Asset Type</th>
-															<th>Asset Name</th>
-															<th>Branch</th>
-															<th>Status</th>
-															<th>Custodian</th>
-															<th>Last Update</th>
-														</tr>
-													</thead>
-													<tbody>
+<table class="table table-hover" id="cart">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Asset Type</th>
+			<th>Asset Name</th>
+			<th>Branch</th>
+			<th>Status</th>
+			<th>Custodian</th>
+			<th>Last Update</th>
+		</tr>
+	</thead>
+	<tbody>
 
-													</tbody>
-												</table>
+	</tbody>
+</table>
 											</div>
 
 											<div class="modal-footer">
-												<div style="float: left;">
-													<button type="button" class="btn btn-primary mr-1 mb-1"
-														id="checkout">
-														<i class="bx bx-upload  isize"></i> Check Out
-													</button>
-													<button type="button" class="btn btn-warning mr-1 mb-1"
-														id="checkin">
-														<i class="bx bx-download isize"></i> Check In
-													</button>
-													<button type="button" class="btn btn-success  mr-1 mb-1"
-														id="assettransfer">
-														<i class="bx bx-transfer isize"></i> Asset Transfer
-													</button>
-												</div>
+<div style="float: left;">
+	<button type="button" class="btn btn-primary mr-1 mb-1"
+		id="checkout">
+		<i class="bx bx-upload  isize"></i> Check Out
+	</button>
+	<button type="button" class="btn btn-warning mr-1 mb-1"
+		id="checkin">
+		<i class="bx bx-download isize"></i> Check In
+	</button>
+	<button type="button" class="btn btn-success  mr-1 mb-1"
+		id="assettransfer">
+		<i class="bx bx-transfer isize"></i> Asset Transfer
+	</button>
+</div>
 
 
-												<span class="carttotallabelcount"><b>Total Item
-														Count - <span id="totalcartval"> Nos 
-												</b></span> </span>
+<span class="carttotallabelcount"><b>Total Item
+		Count - <span id="totalcartval"> Nos 
+</b></span> </span>
 
 											
-												 
+ 
 
 
 
 											</div>
 										</div>
+									</div>
+								</div>
+								
+								
+								
+								
+								 <!--add assets content Modal -->
+								<div class="modal fade" id="addasset"
+									tabindex="-1" role="dialog"
+									aria-labelledby="exampleModalScrollableTitle"
+									aria-hidden="true">
+									<div class="modal-dialog  modal-xl"
+										role="document">
+										<div class="modal-content">
+										<div class="modal-header">
+<h5 class="modal-title">Asset</h5>
+
+
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											
+											 
+ <!-- Property Listing Wizard -->
+<div id="wizard-property-listing" class="bs-stepper vertical mt-2">
+  <div class="bs-stepper-header">
+  
+    <div class="step" data-target="#personal-details">
+      <button type="button" class="step-trigger">
+        <span class="bs-stepper-circle">
+          <i class='bx bx-user'></i>
+        </span>
+        <span class="bs-stepper-label">
+          <span class="bs-stepper-title">Asset Master</span>
+          <span class="bs-stepper-subtitle">GENERAL</span>
+        </span>
+      </button>
+    </div>
+    <div class="line"></div>
+    
+    <div class="step" data-target="#property-details">
+      <button type="button" class="step-trigger">
+        <span class="bs-stepper-circle">
+          <i class='bx bx-home'></i>
+        </span>
+        <span class="bs-stepper-label">
+          <span class="bs-stepper-title">Asset Master</span>
+          <span class="bs-stepper-subtitle">PURCHASING</span>
+        </span>
+      </button>
+    </div>
+    <div class="line"></div>
+    <div class="step" data-target="#property-features">
+      <button type="button" class="step-trigger">
+        <span class="bs-stepper-circle">
+          <i class='bx bx-star'></i>
+        </span>
+        <span class="bs-stepper-label">
+          <span class="bs-stepper-title">Service Schedule</span>
+          <span class="bs-stepper-subtitle">SERVICES INFORMATION</span>
+        </span>
+      </button>
+    </div>
+    
+   
+  </div>
+  <div class="bs-stepper-content">
+    <form id="wizard-property-listing-form" onSubmit="return false">
+
+      <!-- Personal Details -->
+      <div id="personal-details" class="content">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label">ASSET NAME</label>
+            <input type="text" id="ASSET" name="ASSET" class="form-control" placeholder="ASSET NAME" />
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" >TYPE</label>
+            <select class="form-select" id="AssetType"  name="AssetType">
+<option value="">-</option>
+
+	<option value="Machinery">Machinery</option>
+
+	<option value="Vehicles">Vehicles</option>
+
+	<option value="Laptops">Laptops</option>
+
+	<option value="Smart Phones">Smart Phones</option>
+
+	<option value="Desktop">Desktop</option>
+
+	<option value="Tablets">Tablets</option>
+
+	<option value="Software">Software</option>
+
+	<option value="Electronics">Electronics</option>
+
+	<option value="Furniture">Furniture</option>
+
+	<option value="Hardware">Hardware</option>
+
+	<option value="Stationary">Stationary</option>
+
+	<option value="Insurance">Insurance</option>
+
+	<option value="land">land</option>
+
+	<option value="calibration">calibration</option>
+
+	<option value="Computer">Computer</option>
+
+	<option value="Printer">Printer</option>
+
+
+							</select>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="plUserName">BRAND</label>
+            <input type="text" id="BRAND" name="BRAND" class="form-control" placeholder="BRAND" />
+          </div>
+          
+           <div class="col-sm-6">
+            <label class="form-label"> MANUFACTURER</label>
+            <input type="text" id="MANUFACTURER" name="MANUFACTURER" class="form-control" placeholder="MANUFACTURER" />
+          </div>
+          
+          <div class="col-sm-6">
+            <label class="form-label" >MODEL</label>
+            <input type="text" id="MODEL" name="MODEL" class="form-control" placeholder="MODEL" />
+          </div>
+          
+          
+          <div class="col-sm-6">
+            <label class="form-label">SERIAL NUMBER</label>
+            <input type="text" id="SERIAL_NUMBER" name="SERIAL_NUMBER" class="form-control" placeholder="SERIAL NUMBER" />
+          </div>
+          
+          <div class="col-sm-6">
+            <label class="form-label">CONDITION</label>
+            <select class="form-select"  id="CONDITION" name="CONDITION">
+				<option value="">-</option>
+				<option value="Fair">Fair</option>
+				<option value="Good">Good</option>
+				<option value="New">New</option>
+				<option value="Poor">Poor</option>
+			 </select>
+          </div>
+          
+          
+          <div class="col-sm-6">
+            <label class="form-label" for="plUserName">NOTES</label>
+            <input type="text" id="NOTES" name="NOTES" class="form-control" placeholder="NOTES" />
+          </div>
+          
+          
+          
+           
+          <div class="col-12 d-flex justify-content-between">
+            <button class="btn btn-label-secondary btn-prev" disabled> <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
+              <span class="d-sm-inline-block d-none">Previous</span>
+            </button>
+            <button class="btn btn-primary btn-next"> <span class="d-sm-inline-block d-none me-sm-1">Next</span> <i class="bx bx-chevron-right bx-sm me-sm-n2"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Details -->
+      <div id="property-details" class="content">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label">BRANCH</label>
+           <select class="form-select" name="Branch">
+           <option value="">-</option>
+		   <option value="1">Coimbatore</option>
+           </select>
+          </div>
+          
+          <div class="col-sm-6">
+            <label class="form-label">VENDOR</label>
+           <select class="form-select" name="Vendor">
+           <option value="">-</option>
+		   <option value="1">INDUS INSTRUMENTS - Machinery</option>
+           </select>
+          </div>
+          
+           <div class="col-sm-6">
+            <label class="form-label">PURCHASE PRICE</label>
+           <input type="text" class="form-control" maxlength="10" placeholder="PurchasePrice" id="PurchasePrice" name="PurchasePrice">
+          </div>
+          
+            <div class="col-sm-6">
+            <label class="form-label">PURCHASE TYPE</label>
+           <select class="form-select" name="PurchasedType">
+           <option value="">-</option>
+		   <option value="Refurbished">Refurbished</option>
+           </select>
+          </div>
+          
+         <div class="col-sm-6">
+            <label class="form-label">PURCHASED</label>
+            <input type="text" name="PURCHASED" class="form-control flatpickr" placeholder="Apr 3 2022" />
+          </div>
+          
+           <div class="col-sm-6">
+            <label class="form-label">PURCHASE ORDER NO</label>
+           <input type="text" class="form-control"  placeholder="PURCHASE ORDER NO" id="PURCHASE_ORDER" name="PURCHASE_ORDER">
+          </div>
+          
+           <div class="col-sm-6">
+            <label class="form-label">WARRANTYEND</label>
+            <input type="text" name="WARRANTYEND" class="form-control flatpickr" placeholder="Apr 3 2022" />
+          </div>
+          
+            <div class="col-sm-6">
+            <label class="form-label">FILES</label>
+          <input type="file" class="form-control" name="Files_Attach" accept=".pdf" />
+          </div>
+          
+          <div class="col-sm-12 table-responsive">
+				<table class="table">
+					<tr>
+						<th>Attachment</th>
+						<th>Name</th>
+						<th></th>
+					</tr>
+				 
+					
+				</table>
+			</div>
+			
+          
+          
+         
+       
+          <div class="col-12 d-flex justify-content-between">
+            <button class="btn btn-primary btn-prev"> <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i> <span class="d-sm-inline-block d-none">Previous</span> </button>
+            <button class="btn btn-primary btn-next"> <span class="d-sm-inline-block d-none me-sm-1">Next</span> <i class="bx bx-chevron-right bx-sm me-sm-n2"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Features -->
+      <div id="property-features" class="content">
+        <div class="row g-3">
+ 	
+ 	    <div class="col-sm-6">
+            <label class="form-label">SERVICE ITEM</label>
+           <select class="form-select" name="ServiceItem">
+           <option value="">-</option>
+		  <option value="Check Calibration">Check Calibration</option>
+           </select>
+          </div>
+      
+          
+          
+          <div class="col-12 d-flex justify-content-between">
+            <button class="btn btn-primary btn-prev"> <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i> <span class="d-sm-inline-block d-none">Previous</span> </button>
+            <button class="btn btn-success btn-submit btn-next">Submit</button>
+          </div>
+        </div>
+      </div>
+
+    
+
+ 
+    </form>
+  </div>
+</div>
+<!--/ Property Listing Wizard -->
+											</div>
+
+											 
+										
 									</div>
 								</div>
 							 
@@ -281,16 +563,27 @@
   
   <script th:src="@{/assets/vendor/js/menu.js}"></script>
   <!-- endbuild -->
-<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+
 
 <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
   <!-- Vendors JS -->
   <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
   <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
   <script th:src="@{/assets/vendor/libs/datatables-fixedcolumns/datatables.fixedcolumns.js}"></script>
+  <script th:src="@{/assets/vendor/libs/bs-stepper/bs-stepper.js}"></script>
+	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+	 <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+     <script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
 
   <!-- Main JS -->
   <script th:src="@{/assets/js/main.js}"></script>
+  
+
   
   <!-- Page JS-->
  
@@ -391,6 +684,232 @@
 				});
   			cart_count();
 	    })
+	    
+	    
+	    /**
+ *  Form Wizard
+ */
+
+'use strict';
+
+(function () {
+  // Init custom option check
+  window.Helpers.initCustomOptionCheck();
+
+  //const flatpickrRange = document.querySelector('.flatpickr');
+
+  $(".flatpickr").each(function(index) {
+	  $(this).flatpickr({
+	    	altInput: true,
+		    altFormat: 'F j, Y',
+		    dateFormat: 'Y-m-d',
+	    });
+  })
+ 
+    
+ 
+
+
+  // Vertical Wizard
+  // --------------------------------------------------------------------
+
+  const wizardPropertyListing = document.querySelector('#wizard-property-listing');
+  if (typeof wizardPropertyListing !== undefined && wizardPropertyListing !== null) {
+    // Wizard form
+    const wizardPropertyListingForm = wizardPropertyListing.querySelector('#wizard-property-listing-form');
+    // Wizard steps
+    const wizardPropertyListingFormStep1 = wizardPropertyListingForm.querySelector('#personal-details');
+    const wizardPropertyListingFormStep2 = wizardPropertyListingForm.querySelector('#property-details');
+    const wizardPropertyListingFormStep3 = wizardPropertyListingForm.querySelector('#property-features');
+
+    // Wizard next prev button
+    const wizardPropertyListingNext = [].slice.call(wizardPropertyListingForm.querySelectorAll('.btn-next'));
+    const wizardPropertyListingPrev = [].slice.call(wizardPropertyListingForm.querySelectorAll('.btn-prev'));
+
+    const validationStepper = new Stepper(wizardPropertyListing, {
+      linear: true
+    });
+
+    // Personal Details
+    const FormValidation1 = FormValidation.formValidation(wizardPropertyListingFormStep1, {
+      fields: {
+        // * Validate the fields here based on your requirements
+        ASSET: {
+          validators: {
+            notEmpty: {
+              message: 'Please enter your Asset Name'
+            }
+          }
+        },
+        AssetType: {
+          validators: {
+            notEmpty: {
+              message: 'Please enter your Type'
+            }
+          }
+        },
+        
+        CONDITION: {
+            validators: {
+              notEmpty: {
+                message: 'Please enter your Condition'
+              }
+            }
+          },
+      },
+
+      plugins: {
+        trigger: new FormValidation.plugins.Trigger(),
+        bootstrap5: new FormValidation.plugins.Bootstrap5({
+          // Use this for enabling/changing valid/invalid class
+          // eleInvalidClass: '',
+          eleValidClass: '',
+          rowSelector: '.col-sm-6'
+        }),
+        autoFocus: new FormValidation.plugins.AutoFocus(),
+        submitButton: new FormValidation.plugins.SubmitButton()
+      },
+      init: instance => {
+        instance.on('plugins.message.placed', function (e) {
+          //* Move the error message out of the `input-group` element
+          if (e.element.parentElement.classList.contains('input-group')) {
+            e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+          }
+        });
+      }
+    }).on('core.form.valid', function () {
+      // Jump to the next step when all fields in the current step are valid
+      validationStepper.next();
+    });
+
+    // Property Details
+    const FormValidation2 = FormValidation.formValidation(wizardPropertyListingFormStep2, {
+      fields: {
+        // * Validate the fields here based on your requirements
+
+        Branch: {
+          validators: {
+            notEmpty: {
+              message: 'Please select  Branch'
+            }
+          }
+        },
+        Vendor:{
+        	 validators: {
+                 notEmpty: {
+                   message: 'Please select  Vendor'
+                 }
+               }
+        },
+       
+      },
+      plugins: {
+        trigger: new FormValidation.plugins.Trigger(),
+        bootstrap5: new FormValidation.plugins.Bootstrap5({
+          // Use this for enabling/changing valid/invalid class
+          // eleInvalidClass: '',
+          eleValidClass: '',
+          rowSelector: function (field, ele) {
+            // field is the field name & ele is the field element
+            switch (field) {
+              case 'plAddress':
+                return '.col-lg-12';
+              default:
+                return '.col-sm-6';
+            }
+          }
+        }),
+        autoFocus: new FormValidation.plugins.AutoFocus(),
+        submitButton: new FormValidation.plugins.SubmitButton()
+      }
+    }).on('core.form.valid', function () {
+      // Jump to the next step when all fields in the current step are valid
+      validationStepper.next();
+    });
+
+
+    // Property Features
+    const FormValidation3 = FormValidation.formValidation(wizardPropertyListingFormStep3, {
+      fields: {
+        // * Validate the fields here based on your requirements
+      },
+      plugins: {
+        trigger: new FormValidation.plugins.Trigger(),
+        bootstrap5: new FormValidation.plugins.Bootstrap5({
+          // Use this for enabling/changing valid/invalid class
+          // eleInvalidClass: '',
+          eleValidClass: '',
+          rowSelector: '.col-sm-6'
+        }),
+        autoFocus: new FormValidation.plugins.AutoFocus(),
+        submitButton: new FormValidation.plugins.SubmitButton()
+      }
+    }).on('core.form.valid', function () {
+      validationStepper.next();
+    });
+
+ 
+
+    wizardPropertyListingNext.forEach(item => {
+      item.addEventListener('click', event => {
+        // When click the Next button, we will validate the current step
+        switch (validationStepper._currentIndex) {
+          case 0:
+            FormValidation1.validate();
+            break;
+
+          case 1:
+            FormValidation2.validate();
+            break;
+
+          case 2:
+            FormValidation3.validate();
+            break;
+
+          case 3:
+            FormValidation4.validate();
+            break;
+
+          case 4:
+            FormValidation5.validate();
+            break;
+
+          default:
+            break;
+        }
+      });
+    });
+
+    wizardPropertyListingPrev.forEach(item => {
+      item.addEventListener('click', event => {
+        switch (validationStepper._currentIndex) {
+          case 4:
+            validationStepper.previous();
+            break;
+
+          case 3:
+            validationStepper.previous();
+            break;
+
+          case 2:
+            validationStepper.previous();
+            break;
+
+          case 1:
+            validationStepper.previous();
+            break;
+
+          case 0:
+
+          default:
+            break;
+        }
+      });
+    });
+  }
+})();
+
+
     </script>
   </body>
 </html>

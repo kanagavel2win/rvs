@@ -3886,7 +3886,7 @@ public class HomeController {
 
 	@GetMapping("assetlist")
 	public String assetlist(Model theModel) {
-		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("AssetManagement"));
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
 		return "assetlist";
 
 	}

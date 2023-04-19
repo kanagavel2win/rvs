@@ -75,23 +75,11 @@
     <script th:src="@{/assets/js/config.js}"></script>
     <style>
     
-    .bx-shopping-bag {
-    font-size: 54px;
-    position: absolute;
-    right: 110px;
-    top: 15px;
-    z-index: 0;
-    cursor: pointer;
-}
 
-#cartcount {
-    text-align: center;
-    position: absolute;
-    right: 102px;
-    padding: 15px;  
-    width: 70px;
-    z-index: 10;
-    cursor: pointer;
+.badge-notifications
+{
+    top: 0.5rem;
+    padding: 0.2rem 0.4rem;
 }
 
 .light-style .bs-stepper
@@ -131,13 +119,26 @@ box-shadow: none !important;
  
  
  <div class="card-header">
-<button type="button" class="btn btn-warning mr-1 mb-1" data-bs-toggle="modal" data-bs-target="#addasset">
-										<i class="bx bx-plus-circle "></i> New
-									</button>
-									
- <span data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"> <i class="bx bx-shopping-bag mr-1 mb-1"></i> <span id="cartcount">0</span>
-								</span>
-								
+
+	 <div class="row g-3">
+	 
+	  <div class="col-lg-6 col-md-12">
+<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addasset">
+                <span class="tf-icons bx bx-plus me-1"></span>New
+              </button>
+            </div>  
+	 <div class="col-lg-4 col-md-12">
+	 </div>
+
+	   <div class="col-lg-2 col-md-12">
+	 <button type="button" class="btn text-nowrap d-inline-block" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
+          <span class="tf-icons bx bx-md bx-shopping-bag"></span>
+         <span class="badge bg-danger rounded-pill badge-notifications" id="cartcount" style="padding: 0.2rem 0.4rem;">0</span>
+        </button>
+        
+	</div>
+	 
+	 </div>
  </div>
                 <div class="card-datatable table-responsive pt-0">
                   <table class="datatables-basic table table-bordered">
@@ -474,8 +475,84 @@ box-shadow: none !important;
 		  <option value="Check Calibration">Check Calibration</option>
            </select>
           </div>
+      <div class="col-sm-6">
+      </div>
       
+          <div class="col-sm-1">
           
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="radio" value="Onetime" name="optionradiobtn" id="radio1">
+              <label class="form-check-label" for="radio1"></label>
+            </div>
+            </div>
+            
+            <div class="col-sm-3">
+            <label class="form-label">Due One-Time</label>
+            <input type="text" class="form-control flatpickr" name="DueOneTime" />
+            </div>
+            <div class="col-sm-8"></div>
+            
+            <div class="col-sm-1">
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="radio" value="RepeatEvery" name="optionradiobtn" id="radio2">
+              <label class="form-check-label" for="radio2"></label>
+            </div>
+            </div>
+            
+             <div class="col-sm-2">
+            <label class="form-label">Repeat Every</label>
+            <input type="number" class="form-control" value="" id="RepeatEveryno" name="RepeatEveryno" />
+            </div>
+            <div class="col-sm-3">
+            <label class="form-label"></label>
+			<select class="form-select" id="RepeatEverytype" name="RepeatEverytype">
+				<option value="Days">Days</option>
+			   <option value="Week">Week</option>
+			   <option value="Month">Month</option>
+				<option value="Year">Year</option>
+			</select>
+            </div>
+            
+            <div class="col-sm-6">
+            <label class="form-label">Beginning</label>
+            <input type="text" class="form-control flatpickr"  id="Beginning" name="Beginning">
+            </div>
+            
+             <div class="col-sm-4">
+             <label class="form-label">Show Reminder (Before Due Date)</label>
+             <input type="number" class="form-control" id="ShowReminderno" name="ShowReminderno" />
+             </div>
+             
+             <div class="col-sm-2">
+             <label class="form-label"></label>
+             <select class="form-select" id="ShowRemindertype" name="ShowRemindertype">
+				<option value="Days">Days</option>
+				<option value="Week">Week</option>
+				<option value="Month">Month</option>
+				<option value="Year">Year</option>
+			</select>
+             </div>
+             
+             <div class="col-sm-6">
+             <label for="form-label">Notes</label>
+             <input type="text" class="form-control" value="" id="Notes" name="Notes">
+             </div>
+             
+          </div>
+          
+           <div class="col-sm-12 table-responsive">
+				<table class="table">
+					<tr>
+						<th>SERVICE ITEM</th>
+						<th>DUE ONE-TIME</th>
+						<th>REPEAT EVERY</th>
+						<th>SHOW REMINDER (BEFORE DUE DATE)</th>
+					</tr>
+				 
+					
+				</table>
+			</div>
+			
           
           <div class="col-12 d-flex justify-content-between">
             <button class="btn btn-primary btn-prev"> <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i> <span class="d-sm-inline-block d-none">Previous</span> </button>
@@ -640,6 +717,8 @@ box-shadow: none !important;
 			          $(row).attr("id", "row_" + data.assetId); // assuming the first column contains the unique ID
 			          console.log(data.assetId,row);
 			        },
+			    
+			        
 			       
 				      
 				     
@@ -845,7 +924,7 @@ box-shadow: none !important;
         submitButton: new FormValidation.plugins.SubmitButton()
       }
     }).on('core.form.valid', function () {
-      validationStepper.next();
+      alert('ok');
     });
 
  

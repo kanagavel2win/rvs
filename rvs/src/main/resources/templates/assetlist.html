@@ -73,6 +73,7 @@
 	th:href="@{/assets/vendor/libs/select2/select2.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
 <link rel="stylesheet"
@@ -87,6 +88,7 @@
 <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script th:src="@{/assets/js/config.js}"></script>
+
 <style>
 .badge-notifications {
 	top: 0.5rem;
@@ -302,39 +304,9 @@
 																class="form-select" id="AssetType" name="AssetType">
 																<option value="">-</option>
 
-																<option value="Machinery">Machinery</option>
-
-																<option value="Vehicles">Vehicles</option>
-
-																<option value="Laptops">Laptops</option>
-
-																<option value="Smart Phones">Smart Phones</option>
-
-																<option value="Desktop">Desktop</option>
-
-																<option value="Tablets">Tablets</option>
-
-																<option value="Software">Software</option>
-
-																<option value="Electronics">Electronics</option>
-
-																<option value="Furniture">Furniture</option>
-
-																<option value="Hardware">Hardware</option>
-
-																<option value="Stationary">Stationary</option>
-
-																<option value="Insurance">Insurance</option>
-
-																<option value="land">land</option>
-
-																<option value="calibration">calibration</option>
-
-																<option value="Computer">Computer</option>
-
-																<option value="Printer">Printer</option>
-
-
+																<th:block th:each="str :${ASSETTYPE}">
+																	<option th:value="${str}" th:text="${str}"></option>
+																</th:block>
 															</select>
 														</div>
 														<div class="col-sm-6">
@@ -401,17 +373,23 @@
 													<div class="row g-3">
 														<div class="col-sm-6">
 															<label class="form-label">BRANCH</label> <select
-																class="form-select" name="Branch" id="Branch">
+																class="form-select" name="Branch" id="Branch" required>
 																<option value="">-</option>
-																<option value="1">Coimbatore</option>
+																<th:block th:each="obj : ${branchls}">
+																	<option th:value="${obj.id}"
+																		th:text="${obj.BRANCH_NAME}"></option>
+																</th:block>
 															</select>
 														</div>
 
 														<div class="col-sm-6">
 															<label class="form-label">VENDOR</label> <select
-																class="form-select" name="Vendor" id="Vendor">
+																class="form-select" name="Vendor" id="Vendor" required>
 																<option value="">-</option>
-																<option value="1">INDUS INSTRUMENTS - Machinery</option>
+																<th:block th:each="obj :${vendorls}">
+																	<option th:value="${obj.vendormasterid}"
+																		th:text="${obj.Name +' - '+ obj.AssetType}"></option>
+																</th:block>
 															</select>
 														</div>
 
@@ -426,7 +404,7 @@
 															<label class="form-label">PURCHASE TYPE</label> <select
 																class="form-select" name="PurchasedType"
 																id="PurchasedType">
-																<option value="">-</option>
+																<option value="New">New</option>
 																<option value="Refurbished">Refurbished</option>
 															</select>
 														</div>
@@ -452,10 +430,13 @@
 
 
 														<div class="col-12 d-flex justify-content-between">
-															<button class="btn btn-primary btn-prev" type="button">
+															<button class="btn btn-primary btn-prev wizard-asset-listing-form_prev" type="button">
 																<i class="bx bx-chevron-left bx-sm ms-sm-n2"></i> <span
 																	class="d-sm-inline-block d-none">Previous</span>
 															</button>
+															<button type="reset"
+																class="wizard-asset-listing-form_reset"
+																style="visibility: hidden;">Reset</button>
 															<button
 																class="btn btn-success btn-submit wizard-asset-listing-form_submit">Submit</button>
 														</div>
@@ -525,6 +506,7 @@
 	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
 	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
 	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
 	<script
 		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
 	<script
@@ -834,6 +816,8 @@
 //--------------------------------------------------------------------------------------------------------------------------------------
 function validationformuserp1reset()
 {
+	$(".wizard-asset-listing-form_prev").click();
+	$(".wizard-asset-listing-form_reset").click();
 	$(".btn-close").click();
 	$('.wizard-asset-listing-form_submit').prop("disabled",false);
 	$('.wizard-asset-listing-form_submit').html("Submit");
@@ -854,9 +838,26 @@ $('#wizard-asset-listing-form').on('submit', function(event){
 						data : formdata, contentType: false,
 	   	              processData: false,success : function(result) {
 	   	            	  
+	   	            	Swal.fire({
+					        title: 'Success!',
+					        text: 'New Asset is Added Successfully',
+					        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+					        imageWidth: 400,
+					        imageAlt: 'Custom image',
+					        confirmButtonText: 'Ok',
+					        customClass: {
+					          confirmButton: 'btn btn-primary'
+					        },
+					        buttonsStyling: false
+					      });
+	   	            	
 	   	            	var bmobj = JSON.parse(JSON.stringify(result));
 	   	            	console.log(result);
 	   	            	validationformuserp1reset();
+	   	            	$('.datatables-basic').DataTable().ajax.reload();
+	   	            	
+	   	            	
+	   	            	
 						},
 	    	    	error : function(e) {
 							console.log("Error" + e);

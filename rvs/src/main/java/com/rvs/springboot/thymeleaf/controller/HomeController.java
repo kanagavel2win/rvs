@@ -4114,30 +4114,36 @@ public class HomeController {
 	public String Assetsave(HttpServletRequest req, Model themodel,HttpServletRequest request,@RequestParam Map<String, String> params) {
 
 		// Systasset.out.println("--------------Step 1 end----------------------");
-		System.out.println(params);
-
-		/*
-		 * AssetMaster assetmasternew = new AssetMaster();
-		 * itemlistService.savesingletxt(assetmaster.getAssetType(), "ASSETTYPE");
-		 * 
-		 * assetmasternew = assetMasterService.save(assetmaster);
-		 */
+		//System.out.println(params);
 		
-		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
-		branchls = branchMasterService.findAll();
-		themodel.addAttribute("branchls", branchls);
-
-		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
-		vendorls = vendorMasterService.findAll();
-		themodel.addAttribute("vendorls", vendorls);
-
-		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
-		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
-
-		List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
-		themodel.addAttribute("ServiceItem", ServiceItem);
-
-		return "asset";
+		  AssetMaster assetmasternew = new AssetMaster();
+		  assetmasternew.setACondition(params.get("CONDITION"));
+		  assetmasternew.setAssetName(params.get("ASSET"));		  
+		  assetmasternew.setAssetType(params.get("AssetType"));	
+		  assetmasternew.setBranch(params.get("Branch"));		  
+		  assetmasternew.setBrand(params.get("BRAND"));	  
+		  assetmasternew.setCustodian("");	  
+		  assetmasternew.setManufacturer(params.get("MANUFACTURER"));
+		  assetmasternew.setModel(params.get("MODEL"));
+		  assetmasternew.setNotes(params.get("NOTES"));
+		  assetmasternew.setPurchased(params.get("PURCHASED"));
+		  assetmasternew.setPurchasedType(params.get("PurchasedType"));
+		  assetmasternew.setPurchaseOrderNo(params.get("PURCHASE_ORDER"));	  
+		  assetmasternew.setPurchasePrice(params.get("PurchasePrice"));
+		  assetmasternew.setSerialNumber(params.get("SERIAL_NUMBER"));
+		  assetmasternew.setStatus("In Stock");
+		  assetmasternew.setWarrantyEnd(params.get("WARRANTYEND"));
+		  assetmasternew.setVendor(params.get("Vendor"));
+		  
+		  itemlistService.savesingletxt(params.get("AssetType"), "ASSETTYPE");
+		  assetmasternew.setBranchname( branchMasterService.findAll().stream().filter(C -> C.getId() == Integer.parseInt(params.get("Branch")))
+					.collect(Collectors.toList()).get(0).getBRANCH_NAME());
+		  
+		  
+		  assetmasternew = assetMasterService.save(assetmasternew);
+		 
+		
+		return "assetsaved";
 	}
 
 	@PostMapping("deleteassetService")

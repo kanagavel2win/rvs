@@ -104,7 +104,7 @@
 
 
 	 
-	 <form class="row g-3" method="POST" id="form1" onsumbit="return false;" enctype="multipart/form-data">
+	 <form class="row g-3"  id="form1" onsubmit="return false" enctype="multipart/form-data">
 	 <div class="col-sm-3">
 	  <label class="form-label">Branch</label>
       <select class="form-select" id="Branch" name="Branch" required>
@@ -164,10 +164,16 @@
          </div>
 	      
 	  </div>
+	  <div class="col-sm-4">
+	  <button type="button" class="btn btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"><i class="bx bx-plus-circle "></i> 
+			</button>
+	  </div>
+	  <div class="col-sm-8">
+	  </div>
 	  
 	   <div class="col-sm-12">
 	  <div class="table-responsive">
-		 <table class="table">
+		 <table class="table table-bordered">
 		 <thead>
 		<tr>
 			<th width="5%">S.No</th>
@@ -176,21 +182,17 @@
 			<th>Condition</th>
 			<th>Photo</th>
 			<th>Comments</th>
-			<th></th>
+			
 
 		</tr>
 		</thead>
-		<tbody>
+		<tbody id="addckoutrow">
 																
 
 		</tbody>
 		
 		
-			<tr>
-			<td colspan="4"><button type="button" class="btn btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"><i class="bx bx-plus-circle "></i>
-			</button></td>
-			<td colspan="3"></td>
-			</tr>													
+			 												
 
 	
 		
@@ -217,7 +219,41 @@
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 											</div>
 											<div class="modal-body">
-
+				 <form class="row g-3"  id="form2" onsubmit="return false" enctype="multipart/form-data">
+				 
+				 <div class="col-sm-6">
+	 <label for="form-label">Asset Type </label>
+	 <select class="form-select" name="AssetType" id="AssetType" required>
+	 <option value="">-</option>
+	 <option value="1">Machinery</option>
+	 </select>
+	 </div>
+	 
+	 <div class="col-sm-6">
+	 <label for="form-label">Asset Name</label>
+	 <input type="hidden"  name="ACondition" /> 
+	 <select class="form-select" name="AssetName" id="AssetName" required>
+	 <option value="">-</option>
+	 <option value="1">Machinery</option>
+	 </select>
+	 </div>
+	 
+	 <div class="col-sm-6">
+	 <label for="form-label">Photo Attach</label>
+	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" accept=".png,.jpg,.jpeg,.pdf" />
+	 </div>
+	 
+	  <div class="col-sm-6">
+	 <label for="form-label">Comments</label>
+	 <input type="text" name="Comments" class="form-control" />
+	 </div>
+	 
+	  <div class="col-sm-6">
+	  <button type="submit" id="addcheckout" class="btn btn-primary mb-1" > Submit</button>
+	 </div>
+	 
+	 
+				 </form>
 											</div>
 
 										 
@@ -323,26 +359,50 @@
   })
   
   const radio = $(`[name="Status"]`);
+  const WhichLocation = $(`[name="WhichLocation"]`);
+  const vendor = $(`[name="vendor"]`);
   const vendordiv = $(`#vendordiv`);
-  const locationdiv = $(`#locationdiv`);
- 
+  const locationdiv = $(`#locationdiv`); 
+  const form2 = $(`#form2`);
+  const AssetType = $(`[name="AssetType"]`);
+  const AssetName = $(`[name="AssetName"]`);
+  const Photo_Attach = $(`[name="Photo_Attach"]`);
+  const Comments = $(`[name="Comments"]`);
   
   $(radio).change(function(e){
 		if(this.value == "Out for repair")
 		{
 			vendordiv.show();
 			locationdiv.hide();
+			WhichLocation.val('');
 		}
 		else if(this.value == "In office Use")
 		{
 			locationdiv.show();
 			vendordiv.hide();
+			vendor.val('');
 		}
 		else
 	    {
 			vendordiv.hide();
 			locationdiv.hide();
+			WhichLocation.val('');
+			vendor.val('');
 	    }
+  })
+  
+  $(form2).submit(function(e){
+	  var at = $(`[name="AssetType"] option:selected`).text();
+	  var an = $(`[name="AssetName"] option:selected`).text();
+	  const file = Photo_Attach.files[0];
+	      if(file != '')
+		  {
+	    	  const url = URL.createObjectURL(file);
+		  }
+	      else
+	      {
+	    	  
+	      }
   })
   
   </script>

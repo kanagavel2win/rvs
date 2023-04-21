@@ -3887,8 +3887,17 @@ public class HomeController {
 	@GetMapping("assetlist")
 	public String assetlist(Model theModel) {
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
-		return "assetlist";
+		
+		theModel.addAttribute("branchls",  branchMasterService.findAll());
+		
+		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
+		vendorls = vendorMasterService.findAll();
+		theModel.addAttribute("vendorls", vendorls);
 
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		theModel.addAttribute("ASSETTYPE", ASSETTYPE);
+		
+		return "assetlist";
 	}
 
 	@ResponseBody
@@ -4100,6 +4109,37 @@ public class HomeController {
 		return "asset";
 	}
 
+	@ResponseBody
+	@PostMapping("assetsavejson")
+	public String Assetsave(HttpServletRequest req, Model themodel,HttpServletRequest request,@RequestParam Map<String, String> params) {
+
+		// Systasset.out.println("--------------Step 1 end----------------------");
+		System.out.println(params);
+
+		/*
+		 * AssetMaster assetmasternew = new AssetMaster();
+		 * itemlistService.savesingletxt(assetmaster.getAssetType(), "ASSETTYPE");
+		 * 
+		 * assetmasternew = assetMasterService.save(assetmaster);
+		 */
+		
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+
+		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
+		vendorls = vendorMasterService.findAll();
+		themodel.addAttribute("vendorls", vendorls);
+
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
+
+		List<String> ServiceItem = itemlistService.findByFieldName("ServiceItem");
+		themodel.addAttribute("ServiceItem", ServiceItem);
+
+		return "asset";
+	}
+
 	@PostMapping("deleteassetService")
 	@ResponseBody
 	public String deleteassetService(@RequestParam("deleteid") int deleteid) {
@@ -4163,7 +4203,7 @@ public class HomeController {
 
 	@GetMapping("checkout")
 	public String checkout(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids) {
-
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
 		List<AssetMaster> assetMaster = assetMasterService.findAll();
 
 		List<AssetMaster> AssetMasterobj = assetMaster.stream().filter(C -> C.getStatus().equalsIgnoreCase("In Stock"))

@@ -2106,15 +2106,26 @@
 			   						
 			   					console.log(tempobj);
 								
- 							let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.empFileid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
- 							tempresult += '<h6 class="mb-1">'+ tempobj.documentType +'</h6>';
- 							tempresult += '<span class="card-number">'+ tempobj.documentNo +'</span></div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
- 							if(tempobj.filePath != '')
- 							{
- 								tempresult += '<a href="'+ tempobj.filePath +'" target="_blank"><button class="btn btn-label-primary me-3"><i class="bx bx-link-alt"></i></button></a>';	
- 							}
- 							tempresult += '<br/><button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.empFileid +'"   onClick="filedeleteoperation('+ tempobj.empFileid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
- 								
+			   					let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.filesid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
+	  							tempresult += '<h6 class="mb-1">'+ tempobj.documentType +'</h6>';
+	  							tempresult += '<span class="card-number">'+ tempobj.documentNo +'</span>';
+	  							if(tempobj.filePath != '')
+  							{
+  								tempresult += '<br/><a href="'+ tempobj.filePath +'" target="_blank">';
+  								if(tempobj.filePath.split(".")[1] == 'pdf')
+									{
+  									tempresult += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
+									}else
+									{
+										tempresult += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
+									}
+  								tempresult += '<span class="text-body"> ' + tempobj.filePath.split("/")[1].substring(15) + '</span>';
+  								tempresult += '</a>';
+  							}
+	  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+	  							
+	  							tempresult += '<button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.filesid +'"   onClick="filedeleteoperation('+ tempobj.filesid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+	  								
  							$('#fileaddidv').before(tempresult);
  							
 			   					validationformfilereset();

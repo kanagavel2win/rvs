@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr"
+	data-theme="theme-default" th:data-assets-path="@{/assets/}"
+	data-template="vertical-menu-template">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+<title th:text="${assetobj.AssetName} + ' Profile'"></title>
+
+<meta name="description" content="" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	th:href="@{/assets/img/favicon/favicon.ico}" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Icons -->
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
+
+<!-- Core CSS -->
+<link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}"
+	class="template-customizer-core-css" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/rtl/theme-default.css}"
+	class="template-customizer-theme-css" />
+<link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/select2/select2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+
+<!-- Page CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/pages/page-profile.css}" />
+<!-- Helpers -->
+<script th:src="@{/assets/vendor/js/helpers.js}"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+<script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script th:src="@{/assets/js/config.js}"></script>
+
+
+
+<style>
+.bx-check-circle {
+	color: green;
+}
+
+.pop_cursor {
+	cursor: pointer;
+}
+
+.pop_cursor:hover {
+	font-Status: bold;
+}
+
+.contacteditbtn {
+	cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<!-- Menu -->
+			<div th:insert="menu"></div>
+			<!-- / Menu -->
+
+			<!-- Layout container -->
+			<div class="layout-page">
+				<!-- Navbar -->
+
+				<div th:insert="header"></div>
+
+				<!-- / Navbar -->
+
+				<!-- Content wrapper -->
+				<div class="content-wrapper">
+					<!-- Content -->
+
+					<div class="container-xxl flex-grow-1 container-p-y">
+						<h4 class="py-3 breadcrumb-wrapper mb-4">
+							<span class="text-muted fw-light">User Profile /</span> Profile
+						</h4>
+
+						<!-- Header -->
+						<div class="row">
+							<div class="col-12">
+								<div class="card mb-4">
+									<div class="user-profile-header-banner">
+										<img th:src="@{/assets/img/pages/profile-banner.png}"
+											alt="Banner image" class="rounded-top" />
+									</div>
+									<div
+										class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+										
+										<div class="flex-grow-1 mt-3 mt-sm-5">
+											<div
+												class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
+												<div class="user-profile-info">
+													<h4 th:text="${assetobj.AssetName}"></h4>
+													<ul
+														class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+														<li class="list-inline-item fw-semibold"><i
+															class="bx bx-pen"></i> <th:block
+																th:text="${assetobj.ACondition}"></th:block></li>
+														<li class="list-inline-item fw-semibold"><i
+															class="bx bx-map"></i> <th:block
+																th:text="${assetobj.branchname}"></th:block></li>
+														<li class="list-inline-item fw-semibold"><i
+															class="bx bx-calendar-alt"></i> <th:block
+																th:text=" ${assetobj.ACondition}"></th:block>
+														</li>
+													</ul>
+												</div>
+												<!--  <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
+                            <i class="bx bx-user-check"></i> Connected
+                          </a> -->
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Header -->
+
+						<!-- Navbar pills -->
+						<div class="row">
+							<div class="col-md-12">
+								<ul class="nav nav-pills flex-column flex-sm-row mb-4">
+									<li class="nav-item"><a class="nav-link active"
+										href="javascript:void(0);"><i class="bx bx-user"></i>
+											Profile</a></li>
+									<li class="nav-item"><a class="nav-link"
+										><i
+											class="bx bx-group"></i> Service History</a></li>
+									<li class="nav-item"><a class="nav-link"
+										href="pages-profile-projects.html"><i
+											class="bx bx-grid-alt"></i> Projects</a></li>
+									<li class="nav-item"><a class="nav-link"
+										href="pages-profile-connections.html"><i
+											class="bx bx-link-alt"></i> Connections</a></li>
+								</ul>
+							</div>
+						</div>
+						<!--/ Navbar pills -->
+
+						<!-- User Profile Content -->
+						<div class="row">
+							<div class="col-xl-4 col-lg-5 col-md-5">
+								<!-- About User -->
+								<div class="card mb-4">
+									<div class="card-body">
+										<small class="text-muted text-uppercase">About</small>
+										<ul class="list-unstyled mb-4 mt-3">
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Asset:</span> <span
+												th:text="${assetobj.AssetName}" id="Lbl_AssetName"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Asset Type :</span> <span
+												th:text="${assetobj.AssetType}"
+												id="Lbl_AssetType"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Manufacturer :</span> <span
+												th:text="${assetobj.Manufacturer}" id="Lbl_Manufacturer"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Brand:</span> <span
+												th:text="${assetobj.Brand}"
+												id="Lbl_Brand"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Model:</span> <span
+												th:text="${assetobj.Model}" id="Lbl_Model"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">SerialNumber:</span> <span
+												th:text="${assetobj.SerialNumber}" id="Lbl_SerialNumber"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Condition:</span> <span
+												th:text="${assetobj.ACondition}" id="Lbl_ACondition"></span></li>
+											
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Branch:</span> <span
+												th:text="${assetobj.branchname}" id="Lbl_Branch"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Vendor:</span> <span
+												th:text="${assetobj.vendorName}" id="Lbl_Vendor"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Purchase Price:</span> <span
+												th:text="${assetobj.PurchasePrice}" id="Lbl_PurchasePrice"></span>
+											</li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Purchased:</span> <span
+												th:text="${assetobj.PurchasedMMMddYYY}"
+												id="Lbl_PURCHASED"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Purchase Order:</span> <span
+												th:text="${assetobj.PurchaseOrderNo}"
+												id="Lbl_PURCHASE_ORDER"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Warranty End:</span> <span
+												th:text="${assetobj.WarrantyEndMMMddYYY}"
+												id="Lbl_WARRANTYEND"></span></li>
+											<li class="d-flex align-items-center mb-3"><span
+												class="fw-semibold mx-2">Notes:</span> <span
+												th:text="${assetobj.Notes}" id="Lbl_NOTES"></span></li>
+										</ul>
+										<div class="d-flex justify-content-center pt-3">
+											<a href="javascript:;" class="btn btn-primary me-3"
+												data-bs-target="#editEmployeedetails" data-bs-toggle="modal"
+												id="editEmployeedetailsbtn">Edit</a>
+
+										</div>
+
+									</div>
+								</div>
+								<!--/ About User -->
+							
+								<!-- Document   Card -->
+								<div class="card  mb-4">
+									<div class="card-body1">
+										<div class="card-header align-items-center">
+											<h5 class="card-action-title mb-0">
+												Document
+												<div class="card-action-element" style="float: right">
+													<button class="btn btn-primary btn-sm" type="button"
+														data-bs-toggle="modal" data-bs-target="#addNewDocument">
+														<i class="bx bx-plus bx-xs me-1"></i>
+													</button>
+												</div>
+											</h5>
+
+										</div>
+										<div class="card-body">
+											<div class="added-cards">
+												<th:block
+													th:each="fileObj : ${assetobj.assetMasterFiles}">
+													<div
+														th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.assetFileid}">
+														<div
+															class="d-flex justify-content-between flex-sm-row flex-column">
+															<div class="card-information">
+
+																
+
+																<th:block th:if="${fileObj.Files_Attach != ''}">
+																	<br />
+																	<a th:href="${fileObj.Files_Attach}" target="_blank"> <th:block
+																			th:if="${#strings.arraySplit(fileObj.Files_Attach,'.')[1]} == 'pdf'">
+																			<img th:src="@{/assets/img/icons/misc/pdf.png}"
+																				alt="PDF image" width="20" class="me-2">
+																		</th:block> <th:block
+																			th:unless="${#strings.arraySplit(fileObj.Files_Attach,'.')[1]} == 'pdf'">
+																			<img th:src="@{/assets/img/icons/misc/jpg.png}"
+																				alt="PDF image" width="20" class="me-2">
+																		</th:block> <small class="text-body"
+																		th:text="${#strings.substring(#strings.arraySplit(fileObj.Files_Attach,'/')[1],15)}">
+																	</small>
+																	</a>
+																</th:block>
+
+															</div>
+															<div class="d-flex flex-column text-start text-lg-end">
+																<div class="d-flex order-sm-0 order-1 mt-3">
+
+																	<button class="btn btn-label-secondary filedeletebtn"
+																		th:name="${fileObj.assetFileid}">
+																		<i class='bx bxs-trash-alt'></i>
+																	</button>
+																</div>
+
+															</div>
+														</div>
+													</div>
+
+												</th:block>
+												<span id="fileaddidv"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- /Document   Card -->
+								
+							</div>
+							<!-- <div class="col-xl-4 col-lg-5 col-md-5"> -->
+							<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+								
+							</div>
+
+
+						</div>
+						<!--/ User Profile Content -->
+
+						<!-- Modal -->
+						<!-- Edit User Modal -->
+						<div class="modal fade" id="editEmployeedetails" tabindex="-1"
+							aria-hidden="true">
+							<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Edit Asset Information</h3>
+											<p>Updating asset details will receive a privacy audit</p>
+										</div>
+										<form id="editAssetdetailsForm"
+											th:object="${assetobj}"
+											class="row g-3 needs-validation" onsubmit="return false">
+											<input type="hidden"
+												th:value="${assetobj['AssetId']}" id="AssetId" />
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_AssetName">Asset Name</label> 
+												<input type="text" class="form-control"
+													id="Model_AssetName" th:field="*{AssetName}"
+													th:value="${assetobj['AssetName']}" required />
+												<div class="invalid-feedback">Please enter Asset Name.</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_AssetType">Asset Type
+												
+												<label class="emptitle additem" name="addmodalassettype"><i class="bx bxs-plus-circle ownstyle1"></i></label>
+													</label> 
+												 <select
+																class="form-select modalassettype" id="Model_AssetType" th:field="*{AssetType}" required >
+																<option value="">-</option>
+
+																<th:block th:each="str :${ASSETTYPE}">
+																	<option th:value="${str}" th:text="${str}"></option>
+																</th:block>
+															</select>
+												<div class="invalid-feedback">Please enter Asset Type.</div>
+												
+												
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="d-block form-label">Manufacturer</label>
+												<input type="text" class="form-control"
+													id="Model_AssetType"
+													th:value="${assetobj['Manufacturer']}"
+													th:field="*{Manufacturer}" required />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_Brand">Brand</label>
+												<input type="text" class="form-control flatpickr-validation"
+													id="Model_Brand"
+													th:value="${assetobj['Brand']}"
+													th:field="*{Brand}" required />
+												<div class="invalid-feedback">Please enter Brand .</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_Model">Model</label>
+												<input type="text" class="form-control flatpickr-validation"
+													id="Model_Model"
+													th:value="${assetobj['Model']}"
+													th:field="*{Model}" required />
+												<div class="invalid-feedback">Please enter Model .</div>
+											</div>
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_SerialNumber">Serial Number </label> 
+												<input type="text" class="form-control flatpickr-validation"
+													id="Model_SerialNumber"
+													th:value="${assetobj['SerialNumber']}"
+													th:field="*{SerialNumber}" required />
+												<div class="invalid-feedback">Please enter SerialNumber .</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_ACondition">Condition</label>
+												
+												<select class="form-select"  id="Model_ACondition"
+													th:field="*{ACondition}" th:value="${assetobj['ACondition']}"
+													required >
+																<option value="">-</option>
+																<option value="Fair">Fair</option>
+																<option value="Good">Good</option>
+																<option value="New">New</option>
+																<option value="Poor">Poor</option>
+															</select>
+												<div class="invalid-feedback">Please enter Condition.</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_Branch">Branch
+													</label> 
+												<select
+																class="form-select" id="Model_Branch" th:field="*{Branch}"
+													th:value="${assetobj['Branch']}" required>
+																<option value="">-</option>
+																<th:block th:each="obj : ${branchls}">
+																	<option th:value="${obj.id}"
+																		th:text="${obj.BRANCH_NAME}"></option>
+																</th:block>
+															</select>
+												<div class="invalid-feedback">Please enter Branch.</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_Vendor">Vendor
+													</label> 
+													
+													<select
+																class="form-select" th:field="*{Vendor}"
+													th:value="${assetobj['Vendor']}"  required>
+																<option value="">-</option>
+																<th:block th:each="obj :${vendorls}">
+																	<option th:value="${obj.vendormasterid}"
+																		th:text="${obj.Name +' - '+ obj.AssetType}"></option>
+																</th:block>
+															</select>
+												<div class="invalid-feedback">Please enter Vendor.</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_PurchasePrice">Purchase Price </label> 
+												<input type="text" class="form-control"
+													id="Model_PurchasePrice" th:field="*{PurchasePrice}"
+													th:value="${assetobj['PurchasePrice']}" />
+												<div class="invalid-feedback">Please enter Purchase Price .</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_Purchased">Purchased </label> 
+												<input type="text" class="form-control flatpickr"
+													id="Model_Purchased" th:field="*{Purchased}"
+													th:value="${assetobj['Purchased']}" />
+												<div class="invalid-feedback">Please enter Purchased .</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_PurchasedType">Purchased Type </label> 
+												<select class="form-select" id="Model_PurchasedType" th:field="*{PurchasedType}"
+													th:value="${assetobj['PurchasedType']}"  required>
+																<option value="New">New</option>
+																<option value="Refurbished">Refurbished</option>
+															</select>
+												
+												
+												<div class="invalid-feedback">Please enter PurchasedType .</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_PurchaseOrderNo">Purchase Order No </label> 
+												<input type="text" class="form-control"
+													id="Model_PurchaseOrderNo" th:field="*{PurchaseOrderNo}"
+													th:value="${assetobj['PurchaseOrderNo']}" />
+												<div class="invalid-feedback">Please enter PurchaseOrderNo .</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Model_WarrantyEnd">Warranty End </label> 
+												<input type="text" class="form-control flatpickr"
+													id="Model_WarrantyEnd" th:field="*{WarrantyEnd}"
+													th:value="${assetobj['WarrantyEnd']}" />
+												<div class="invalid-feedback">Please enter WarrantyEnd .</div>
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="Model_Notes">Notes </label> 
+												<input type="text" class="form-control"
+													id="Model_Notes" th:field="*{Notes}"
+													th:value="${assetobj['Notes']}" />
+												<div class="invalid-feedback">Please enter Notes .</div>
+											</div>
+
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary editassetdatap1submit me-sm-3 me-1">Submit</button>
+												<button type="button"
+													class="btn btn-label-secondary edituserdatap1close"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Edit User Modal -->
+
+						<!-- Add Document -->
+						<div class="modal fade" id="addNewDocument" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Add Document</h3>
+											<p>Attach Files / Documents / Image</p>
+										</div>
+										<form id="addNewdocument" class="row g-3"
+											onsubmit="return false">
+											<div class="col-12">
+												<label class="form-label" for="modalAddCardExpiryDate">Upload
+													File </label> <input type="file" id="modalFile"
+													class="form-control expiry-date-mask" />
+											</div>
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary me-sm-3 me-1 documentsave">Submit</button>
+												<button type="button"
+													class="btn btn-label-secondary btn-reset documentclose"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add Document -->
+
+					
+
+
+						<!-- Add New Address Modal -->
+						<div class="modal fade" id="AddExperience" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-lg modal-simple modal-add-new-address">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3 class="address-title">Experience</h3>
+
+										</div>
+										<form id="Experienceform" class="row g-3"
+											onsubmit="addExper(event);">
+											<input type="hidden" id="expid" name="expid" />
+											<div class="mb-3 col-lg-6 col-md-12">
+												<label class="form-label" for="Company">Company </label> <input
+													type="text" class="form-control" id="Company"
+													name="Company" placeholder="Company" />
+											</div>
+
+											<div class="mb-3 col-lg-6 col-md-12">
+												<label class="form-label" for="Location">Location </label> <input
+													type="text" class="form-control" id="Location"
+													name="Location" placeholder="Location" />
+											</div>
+
+											<div class="mb-3 col-lg-6 col-md-12">
+												<label class="form-label" for="From">From Date</label> <input
+													type="date" class="form-control" id="Experiencefrom"
+													name="Experiencefrom" placeholder="From date" />
+											</div>
+
+
+											<div class="mb-3 col-lg-6 col-md-12">
+												<label class="form-label" for="Qualificationto">To
+													Date</label> <input type="date" class="form-control"
+													id="Experiencento" name="Experiencento"
+													placeholder="To Date">
+											</div>
+
+											<div class="mb-3 col-lg-6 col-md-12">
+												<label class="form-label" for="Location">Role </label> <input
+													type="text" class="form-control" id="Role" name="Role"
+													placeholder="Role" />
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="sumbit" class="btn btn-primary me-sm-3 me-1">Save</button>
+												<button type="reset" class="btn btn-label-secondary"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add New Address Modal -->
+
+
+
+
+						<!--scrolling content Modal -->
+						<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
+							role="dialog" aria-labelledby="ItemStatusScrollableTitle"
+							aria-hidden="true">
+							<div class="modal-dialog modal-dialog-scrollable" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="addmodel" id="additemalltxt"></label>
+												<div class="position-relative">
+													<fieldset class="form-group">
+														<input type="text" id="additemall" name="addmodel"
+															class="form-control capitalize">
+													</fieldset>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-light-secondary"
+											data-bs-dismiss="modal">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Close</span>
+										</button>
+										<button type="button" class="btn btn-primary ml-1"
+											id="additemallsavebtn">
+											<i class="bx bx-check d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">ADD</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--scrolling content Modal -->
+
+						<!-- /Modal -->
+					</div>
+					<!-- / Content -->
+
+					<!-- Footer -->
+					<footer class="content-footer footer bg-footer-theme">
+						<div
+							class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+							<div class="mb-2 mb-md-0">
+								©
+								<script>
+                    document.write(new Date().getFullYear());
+                  </script>
+								, made with ❤️ by <a href="https://pixinvent.com"
+									target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
+							</div>
+							<div>
+								<a href="https://themeforest.net/licenses/standard"
+									class="footer-link me-4" target="_blank">License</a> <a
+									href="https://1.envato.market/pixinvent_portfolio"
+									target="_blank" class="footer-link me-4">More Themes</a> <a
+									href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
+									target="_blank" class="footer-link me-4">Documentation</a> <a
+									href="https://pixinvent.ticksy.com/" target="_blank"
+									class="footer-link d-none d-sm-inline-block">Support</a>
+							</div>
+						</div>
+					</footer>
+					<!-- / Footer -->
+
+					<div class="content-backdrop fade"></div>
+				</div>
+				<!-- Content wrapper -->
+			</div>
+			<!-- / Layout page -->
+		</div>
+
+		<!-- Overlay -->
+		<div class="layout-overlay layout-menu-toggle"></div>
+
+		<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+		<div class="drag-target"></div>
+	</div>
+	<!-- / Layout wrapper -->
+
+	<!-- Core JS -->
+	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+
+	<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+
+	<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+	<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+
+	<script th:src="@{/assets/vendor/js/menu.js}"></script>
+	<!-- endbuild -->
+
+	<!-- Vendors JS -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+	<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<!-- Form Validation -->
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+
+	<!-- Main JS -->
+	<script th:src="@{/assets/js/main.js}"></script>
+
+	<!-- Flat Picker -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+
+	<!-- Page JS -->
+	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
+	<script th:src="@{/assets/js/app-user-view.js}"></script>
+	<script th:src="@{/assets/js/app-user-view-account.js}"></script>
+
+
+
+
+
+	<script>
+	
+	const Qualificationfrom = flatpickr("#Qualificationfrom", {
+		  altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	     });
+	
+	const Qualificationto = flatpickr("#Qualificationto", {
+		  altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	     });
+	
+	
+	const Experiencefrom = flatpickr("#Experiencefrom", {
+		  altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	     });
+	
+	const Experiencento = flatpickr("#Experiencento", {
+		  altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	     });
+	
+    $(document).ready(function() {  
+    	//--------------------------------------------------------------------------------------------------------------------------------------
+    	
+		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+		$(function() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+			});
+		});
+		//--------------------------------------------------------------------------------------------------------------------------------------
+		function validationformuserp1reset()
+   		{
+   			$('.edituserdatap1close').click();
+			$('.editassetdatap1submit').prop("disabled",false);
+   			$('.editassetdatap1submit').html("Submit");
+   		}
+		//-----------------------------------------------------------------------------------------------------------------------------------
+		$(".addNewEmgAddress").click(function() {
+			$("#empEmgContactid").val('');
+		});
+		$(".AddLanguages").click(function() {
+			$("#lanid").val('');
+		});
+		$(".AddQualification").click(function() {
+			$("#Qualid").val('');
+		});
+		$(".AddExperience").click(function() {
+			$("#expid").val('');
+		});
+		//--------------------------------------------------------------------------------------------------------------------------------------		 
+		$('#editAssetdetailsForm').on('submit', function(event){
+  			   	 
+  			   		$('.editassetdatap1submit').prop("disabled",true);
+  			   	    $('.editassetdatap1submit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+		    	    if(event.target.checkValidity()){
+		    	    
+		    	    	const formdata= new FormData(document.querySelector("#editAssetdetailsForm"));
+		    	    	formdata.append("AssetId", $('#AssetId').val())
+		    	    	$.ajax({
+	  						type : "POST",url : "assetsave1json",
+	  						data : formdata, contentType: false,
+			   	              processData: false,success : function(result) {
+			   	            	  
+			   	            	var bmobj = JSON.parse(JSON.stringify(result));
+			   	            	console.log(bmobj);
+			   	            	 $('#Lbl_AssetName').text(bmobj.assetName);
+			   	            	$('#Lbl_AssetType').text(bmobj.assetType);
+			   	            	$('#Lbl_Manufacturer').text(bmobj.manufacturer);
+			   	            	$('#Lbl_Brand').text(bmobj.brand);
+			   	            	$('#Lbl_Model').text(bmobj.model);
+			   	            	$('#Lbl_SerialNumber').text(bmobj.serialNumber);
+			   	            	$('#Lbl_ACondition').text(bmobj.acondition);
+			   	            	$('#Lbl_Status').text(bmobj.status);
+			   	            	$('#Lbl_Branch').text(bmobj.branchname);
+			   	            	$('#Lbl_Vendor').text(bmobj.vendorName);
+			   	            	$('#Lbl_PurchasePrice').text(bmobj.purchasePrice);
+			   	            	$('#Lbl_PURCHASED').text(bmobj.purchasedMMMddYYY);
+			   	            	$('#Lbl_PURCHASE_ORDER').text(bmobj.purchaseOrderNo);
+			   	            	$('#Lbl_WARRANTYEND').text(bmobj.warrantyEndMMMddYYY);
+			   	            	$('#Lbl_NOTES').text(bmobj.notes);
+			   	            	validationformuserp1reset(); 
+	  						},
+			    	    	error : function(e) {
+	  							console.log("Error" + e);
+	  						}
+		    	    	});
+		    	    }
+		});
+		//--------------------------------------------------------------------------------------------------------------------------------------
+		
+ 		// --------------------------------------------------------------------
+ 		
+	   		function validationformreset()
+		   {
+	   				$('.editbranchdataclose').click();
+	   				$('.editbranchdatasubmit').prop("disabled",false);
+		   			$('.editbranchdatasubmit').html("Submit");
+		   }
+	   		   	
+	   		
+	   		function validationformfilereset()
+			   {
+		   				$('.documentclose').click();
+		   				$('.documentsave').prop("disabled",false);
+			   			$('.documentsave').html("Submit");
+			   }
+	   		
+	   		
+	   	// --------------------------------------------------------------------
+	   	 
+			  $(".addcontactbtn").click(function(){
+				$('#modalcontactid').val("-");
+			  });
+			  
+			// --------------------------------------------------------------------
+			
+			 
+	  			
+		
+			// --------------------------------------------------------------------
+  			$('.collapsetogglebtn').click(function(){
+  				 $('#collapsetoggleicon').toggleClass('bx-chevron-down bx-chevron-up'); 
+  			});
+		    // --------------------------------------------------------------------
+			// File uploading 		  
+					 const addNewdocumentForm =document.getElementById("addNewdocument");
+					 const modalFile =document.getElementById("modalFile");
+					 addNewdocumentForm.addEventListener("submit", e =>{
+						 
+						$('.documentsave').prop("disabled",true);
+						$('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+						const endpoint ="fileuploadjson";
+						const formdata= new FormData();
+						//console.log(modalFile.files);
+						formdata.append("File_Attach",modalFile.files[0]);
+						formdata.append("AssetId",$('#AssetId').val());
+						
+						formdata.append("functiontype","Asset");
+						  $.ajax({
+			   					type : "POST",url : endpoint,
+			   					data : formdata,
+			   					contentType: false,
+			   	              processData: false,
+			   					success : function(result) {
+			   						
+			   					tempobj =JSON.parse(JSON.stringify(result));
+			   						
+			   					console.log(tempobj);
+								
+ 							
+ 							
+ 							let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.assetFileid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
+  							if(tempobj.files_Attach != '')
+  							{
+  								tempresult += '<br/><a href="'+ tempobj.files_Attach +'" target="_blank">';
+  								if(tempobj.files_Attach.split(".")[1] == 'pdf')
+									{
+  									tempresult += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
+									}else
+									{
+										tempresult += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
+									}
+  								tempresult += '<span class="text-body"> ' + tempobj.files_Attach.split("/")[1].substring(15) + '</span>';
+  								tempresult += '</a>';
+  							}
+  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+  							
+  							tempresult += '<button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.assetFileid +'"   onClick="filedeleteoperation('+ tempobj.assetFileid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+  							
+  							
+  							
+ 							$('#fileaddidv').before(tempresult);
+ 							
+			   					validationformfilereset();
+			   					},
+			   					error : function(e) {
+			   						console.log("Error" + e);
+			   					}
+			   				}); 
+					 });
+				// --------------------------------------------------------------------
+				
+				$(".additem").click(function() {
+				var name = $(this).attr('name');
+				var labeltext = "";
+				if (name == "addmodalassettype") {
+					labeltext = "New Asset Type";
+				}
+				
+				
+				
+				$('#additemalltxt').text(labeltext);
+				$('#ItemStatusScrollable').modal('toggle');
+
+			});
+
+			$("#additemallsavebtn").click(
+					function() {
+				if ($("#additemall").val() != '') {
+					var name = $('#additemalltxt').text();
+					var labeltext = "";
+					if (name == "New Asset Type") {
+						labeltext = "modalassettype";
+					}
+					
+					
+					$('.' + labeltext).append(
+							"<option value='"
+									+ $("#additemall").val()
+									+ "'>"
+									+ $("#additemall").val()
+									+ "</option>");
+					//$('.' + labeltext).val($("#additemall").val());
+					$("#additemall").val('');
+					$('#ItemStatusScrollable').modal(
+							'toggle');
+				}
+			});
+				
+				// --------------------------------------------------------------------
+				
+			  
+			// --------------------------------------------------------------------
+			
+	    }); // Jquery
+
+	    function reply_click(id, contacttype, phonenumber, email, primarycontact)
+
+	    {
+	        $('#modalcontactid').val(id);
+	        $('#modalcontacttype').val(contacttype);
+	        $('#modalcontactPhone').val(phonenumber);
+	        $('#modalContactemail').val(email);
+	        if (primarycontact == 'true') {
+	            $('#modalcontactprimary').prop("checked", true);
+	        } else {
+	            $('#modalcontactprimary').prop("checked", false);
+	        }
+
+
+	        $('#addNewContact').modal('show');
+	    }
+
+
+	   
+
+	    //------------------------------------------------------    
+	    function filedeleteoperation(id) {
+	        Swal.fire({
+	            title: 'Are you sure?',
+	            text: "You won't be able to revert this!",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonText: 'Yes, delete it!',
+	            customClass: {
+	                confirmButton: 'btn btn-primary me-3',
+	                cancelButton: 'btn btn-label-secondary'
+	            },
+	            buttonsStyling: false
+	        }).then(function(result) {
+	            if (result.value) {
+	                var formData = {
+	                    fileid: id,
+	                    functiontype: 'AssetFile'
+	                }
+	                $.ajax({
+	                    type: "POST",
+	                    url: "Filedeletejson",
+	                    data: formData,
+	                    success: function(result) {
+	                        $('.filecard' + id).remove();
+	                        Swal.fire({
+	                            icon: 'success',
+	                            title: 'Deleted!',
+	                            text: 'File has been deleted.',
+	                            customClass: {
+	                                confirmButton: 'btn btn-success'
+	                            }
+	                        });
+	                    },
+	                    error: function(e) {
+	                        console.log("Error" + e);
+	                    }
+	                });
+
+	            }
+	        });
+	    }
+
+	    //------------------------------------------------------    
+
+	    //------------------------------------------------------    
+	    $('.filedeletebtn').on('click', function(event) {
+	        let id = $(this).attr("name");
+	        filedeleteoperation(id);
+	    });
+	    //------------------------------------------------------
+	    
+	    $(".flatpickr").each(function(index) {
+	  	  $(this).flatpickr({
+	  	    	altInput: true,
+	  		    altFormat: 'F j, Y',
+	  		    dateFormat: 'Y-m-d',
+	  	    });
+	    });
+
+	    
+	 
+</script>
+</body>
+</html>

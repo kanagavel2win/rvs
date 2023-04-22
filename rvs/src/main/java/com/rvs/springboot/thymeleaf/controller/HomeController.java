@@ -783,7 +783,7 @@ public class HomeController {
 
 					String tempfilename = stringdatetime() + Files_Attach.getOriginalFilename();
 					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
-					filename.append("branchfiles/" + tempfilename);
+					filename.append("employeefiles/" + tempfilename);
 
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
@@ -806,6 +806,41 @@ public class HomeController {
 			bfiles.setDocumentNo(DocNo);
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
+			return bfiles;
+		} else if (params.get("functiontype").equalsIgnoreCase("Asset")) {
+			StringBuilder filename = new StringBuilder();
+			if (Files_Attach != null) {
+				// File Uploading
+				String profilephotouploadRootPath = request.getServletContext().getRealPath("assetfiles");
+				// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+				File uploadRootDir = new File(profilephotouploadRootPath);
+				// Create directory if it not exists.
+				if (!uploadRootDir.exists()) {
+					uploadRootDir.mkdirs();
+				}
+
+				if (Files_Attach.getOriginalFilename().toString().length() > 0) {
+
+					String tempfilename = stringdatetime() + Files_Attach.getOriginalFilename();
+					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+					filename.append("assetfiles/" + tempfilename);
+
+					try {
+						Files.write(fileNameandPath, Files_Attach.getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			AssetMasterFiles bfiles = new AssetMasterFiles();
+
+			int AssetId = Integer.parseInt(params.get("AssetId"));
+
+			int id = assetMasterService.insertassetFiles( filename.toString(), AssetId);
+
+			bfiles.setAssetFileid(id);
+			bfiles.setFiles_Attach(filename.toString());
 			return bfiles;
 		} else {
 			throw new RuntimeException("functiontype is invalid");
@@ -1041,6 +1076,9 @@ public class HomeController {
 		} else if (params.get("functiontype").equalsIgnoreCase("ContactPerson")) {
 			int fileid = Integer.parseInt(params.get("fileid"));
 			return contactPersonService.deleteFiles(fileid);
+		} else if (params.get("functiontype").equalsIgnoreCase("AssetFile")) {
+			int fileid = Integer.parseInt(params.get("fileid"));
+			return assetMasterService.deleteassetFiles(fileid);
 		} else {
 			throw new RuntimeException("functiontype is invalid");
 		}

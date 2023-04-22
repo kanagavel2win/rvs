@@ -73,7 +73,8 @@
 	th:href="@{/assets/vendor/libs/select2/select2.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
-	<link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
 <link rel="stylesheet"
@@ -300,8 +301,11 @@
 																placeholder="ASSET NAME" />
 														</div>
 														<div class="col-sm-6">
-															<label class="form-label">TYPE</label> <select
-																class="form-select" id="AssetType" name="AssetType">
+															<label class="form-label">TYPE <label
+																class="emptitle additem" name="addmodalassettype"><i
+																	class="bx bxs-plus-circle ownstyle1"></i></label>
+															</label> <select class="form-select modalassettype"
+																id="AssetType" name="AssetType" required>
 																<option value="">-</option>
 
 																<th:block th:each="str :${ASSETTYPE}">
@@ -423,14 +427,16 @@
 														</div>
 
 														<div class="col-sm-6">
-															<label class="form-label">WARRANTYEND</label> <input
+															<label class="form-label">WARRANTY END</label> <input
 																type="text" name="WARRANTYEND" id="WARRANTYEND"
 																class="form-control flatpickr" placeholder="Apr 3 2022" />
 														</div>
 
 
 														<div class="col-12 d-flex justify-content-between">
-															<button class="btn btn-primary btn-prev wizard-asset-listing-form_prev" type="button">
+															<button
+																class="btn btn-primary btn-prev wizard-asset-listing-form_prev"
+																type="button">
 																<i class="bx bx-chevron-left bx-sm ms-sm-n2"></i> <span
 																	class="d-sm-inline-block d-none">Previous</span>
 															</button>
@@ -456,6 +462,50 @@
 
 
 						</div>
+
+						<!--scrolling content Modal -->
+						<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
+							role="dialog" aria-labelledby="ItemStatusScrollableTitle"
+							aria-hidden="true">
+							<div class="modal-dialog modal-dialog-scrollable" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="addmodel" id="additemalltxt"></label>
+												<div class="position-relative">
+													<fieldset class="form-group">
+														<input type="text" id="additemall" name="addmodel"
+															class="form-control capitalize">
+													</fieldset>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-light-secondary"
+											data-bs-dismiss="modal">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Close</span>
+										</button>
+										<button type="button" class="btn btn-primary ml-1"
+											id="additemallsavebtn">
+											<i class="bx bx-check d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">ADD</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--scrolling content Modal -->
+
+
 					</div>
 
 
@@ -563,6 +613,14 @@
 				            return `<button type="button" class="btn btn-label-primary" onclick="hiderow(${full.assetId});">ADD</button>`;
 				          },
 				        },
+				    	{
+					           targets: 2,
+					           render: function(data, type, full, meta) {
+					           	 $assetId = full['assetId'];
+					           	 $row_output = '<a href="assetview?id='+ $assetId+'">' + full['assetName'] + '</small>';
+					           	 return $row_output;
+					           }
+					         },
 			      ],
 			      
 			      "rowCallback": function(row, data) {
@@ -580,6 +638,7 @@
 
 			$('#totalcartval').text(count);
 		}
+	    
 	    
 	    
 	    function hiderow(id){
@@ -610,6 +669,50 @@
   			cart_count();
 	    })
 	    
+	   
+	    
+	    
+	   				// --------------------------------------------------------------------
+				
+				$(".additem").click(function() {
+				var name = $(this).attr('name');
+				var labeltext = "";
+				if (name == "addmodalassettype") {
+					labeltext = "New Asset Type";
+				}
+				
+				
+				
+				$('#additemalltxt').text(labeltext);
+				$('#ItemStatusScrollable').modal('toggle');
+
+			});
+
+			$("#additemallsavebtn").click(
+					function() {
+				if ($("#additemall").val() != '') {
+					var name = $('#additemalltxt').text();
+					var labeltext = "";
+					if (name == "New Asset Type") {
+						labeltext = "modalassettype";
+					}
+					
+					
+					$('.' + labeltext).append(
+							"<option value='"
+									+ $("#additemall").val()
+									+ "'>"
+									+ $("#additemall").val()
+									+ "</option>");
+					//$('.' + labeltext).val($("#additemall").val());
+					$("#additemall").val('');
+					$('#ItemStatusScrollable').modal(
+							'toggle');
+				}
+			});
+				
+				// --------------------------------------------------------------------
+				 
 	    
 	    /**
  *  Form Wizard

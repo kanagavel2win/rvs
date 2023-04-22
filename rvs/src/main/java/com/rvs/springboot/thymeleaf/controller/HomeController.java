@@ -3887,16 +3887,16 @@ public class HomeController {
 	@GetMapping("assetlist")
 	public String assetlist(Model theModel) {
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
-		
-		theModel.addAttribute("branchls",  branchMasterService.findAll());
-		
+
+		theModel.addAttribute("branchls", branchMasterService.findAll());
+
 		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
 		vendorls = vendorMasterService.findAll();
 		theModel.addAttribute("vendorls", vendorls);
 
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		theModel.addAttribute("ASSETTYPE", ASSETTYPE);
-		
+
 		return "assetlist";
 	}
 
@@ -3916,8 +3916,8 @@ public class HomeController {
 			}
 
 			if ((obj.getStaffID() != null)) {
-				if(!nullremover(String.valueOf(obj.getStaffID())).equalsIgnoreCase("")){
-				obj.setCustodian(employeeMasterService.findById(Integer.parseInt(obj.getStaffID())).getStaffName());
+				if (!nullremover(String.valueOf(obj.getStaffID())).equalsIgnoreCase("")) {
+					obj.setCustodian(employeeMasterService.findById(Integer.parseInt(obj.getStaffID())).getStaffName());
 				}
 			}
 
@@ -4111,39 +4111,148 @@ public class HomeController {
 
 	@ResponseBody
 	@PostMapping("assetsavejson")
-	public String Assetsave(HttpServletRequest req, Model themodel,HttpServletRequest request,@RequestParam Map<String, String> params) {
+	public String Assetsave(HttpServletRequest req, Model themodel, HttpServletRequest request,
+			@RequestParam Map<String, String> params) {
 
 		// Systasset.out.println("--------------Step 1 end----------------------");
-		//System.out.println(params);
-		
-		  AssetMaster assetmasternew = new AssetMaster();
-		  assetmasternew.setACondition(params.get("CONDITION"));
-		  assetmasternew.setAssetName(params.get("ASSET"));		  
-		  assetmasternew.setAssetType(params.get("AssetType"));	
-		  assetmasternew.setBranch(params.get("Branch"));		  
-		  assetmasternew.setBrand(params.get("BRAND"));	  
-		  assetmasternew.setCustodian("");	  
-		  assetmasternew.setManufacturer(params.get("MANUFACTURER"));
-		  assetmasternew.setModel(params.get("MODEL"));
-		  assetmasternew.setNotes(params.get("NOTES"));
-		  assetmasternew.setPurchased(params.get("PURCHASED"));
-		  assetmasternew.setPurchasedType(params.get("PurchasedType"));
-		  assetmasternew.setPurchaseOrderNo(params.get("PURCHASE_ORDER"));	  
-		  assetmasternew.setPurchasePrice(params.get("PurchasePrice"));
-		  assetmasternew.setSerialNumber(params.get("SERIAL_NUMBER"));
-		  assetmasternew.setStatus("In Stock");
-		  assetmasternew.setWarrantyEnd(params.get("WARRANTYEND"));
-		  assetmasternew.setVendor(params.get("Vendor"));
-		  
-		  itemlistService.savesingletxt(params.get("AssetType"), "ASSETTYPE");
-		  assetmasternew.setBranchname( branchMasterService.findAll().stream().filter(C -> C.getId() == Integer.parseInt(params.get("Branch")))
-					.collect(Collectors.toList()).get(0).getBRANCH_NAME());
-		  
-		  
-		  assetmasternew = assetMasterService.save(assetmasternew);
-		 
-		
+		// System.out.println(params);
+
+		AssetMaster assetmasternew = new AssetMaster();
+		assetmasternew.setACondition(params.get("CONDITION"));
+		assetmasternew.setAssetName(params.get("ASSET"));
+		assetmasternew.setAssetType(params.get("AssetType"));
+		assetmasternew.setBranch(params.get("Branch"));
+		assetmasternew.setBrand(params.get("BRAND"));
+		assetmasternew.setCustodian("");
+		assetmasternew.setManufacturer(params.get("MANUFACTURER"));
+		assetmasternew.setModel(params.get("MODEL"));
+		assetmasternew.setNotes(params.get("NOTES"));
+		assetmasternew.setPurchased(params.get("PURCHASED"));
+		assetmasternew.setPurchasedType(params.get("PurchasedType"));
+		assetmasternew.setPurchaseOrderNo(params.get("PURCHASE_ORDER"));
+		assetmasternew.setPurchasePrice(params.get("PurchasePrice"));
+		assetmasternew.setSerialNumber(params.get("SERIAL_NUMBER"));
+		assetmasternew.setStatus("In Stock");
+		assetmasternew.setWarrantyEnd(params.get("WARRANTYEND"));
+		assetmasternew.setVendor(params.get("Vendor"));
+
+		itemlistService.savesingletxt(params.get("AssetType"), "ASSETTYPE");
+		assetmasternew.setBranchname(
+				branchMasterService.findAll().stream().filter(C -> C.getId() == Integer.parseInt(params.get("Branch")))
+						.collect(Collectors.toList()).get(0).getBRANCH_NAME());
+
+		assetmasternew = assetMasterService.save(assetmasternew);
+
 		return "assetsaved";
+	}
+
+	@GetMapping("assetview")
+	public String assetview(@RequestParam("id") int assetid, Model theModel) {
+
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
+
+		theModel.addAttribute("branchls", branchMasterService.findAll());
+
+		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
+		vendorls = vendorMasterService.findAll();
+		theModel.addAttribute("vendorls", vendorls);
+
+		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
+		theModel.addAttribute("ASSETTYPE", ASSETTYPE);
+
+		AssetMaster assetmasternew = assetMasterService.findById(assetid);
+
+		try {
+			assetmasternew.setVendorName(vendorMasterService.findAll().stream()
+					.filter(C -> C.getVendormasterid() == Integer.parseInt(assetmasternew.getVendor()))
+					.collect(Collectors.toList()).get(0).getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			assetmasternew.setBranchname(branchMasterService.findAll().stream()
+					.filter(C -> C.getId() == Integer.parseInt(assetmasternew.getBranch())).collect(Collectors.toList())
+					.get(0).getBRANCH_NAME());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		;
+		try {
+			assetmasternew.setWarrantyEndMMMddYYY(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(assetmasternew.getWarrantyEnd())).toString());
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			assetmasternew.setPurchasedMMMddYYY(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(assetmasternew.getPurchased())).toString());
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		theModel.addAttribute("assetobj", assetMasterService.findById(assetid));
+
+		return "assetview";
+	}
+
+	@ResponseBody
+	@PostMapping("assetsave1json")
+	public AssetMaster AssetMasteredit(@RequestParam Map<String, String> params) {
+		AssetMaster assetmasternew = assetMasterService.findById(Integer.parseInt(params.get("AssetId")));
+
+		assetmasternew.setACondition(params.get("ACondition"));
+		assetmasternew.setAssetName(params.get("AssetName"));
+		assetmasternew.setAssetType(params.get("AssetType"));
+		assetmasternew.setBranch(params.get("Branch"));
+		assetmasternew.setBrand(params.get("Brand"));
+		assetmasternew.setManufacturer(params.get("Manufacturer"));
+		assetmasternew.setModel(params.get("Model"));
+		assetmasternew.setNotes(params.get("Notes"));
+		assetmasternew.setPurchased(params.get("Purchased"));
+		assetmasternew.setPurchasedType(params.get("PurchasedType"));
+		assetmasternew.setPurchaseOrderNo(params.get("PurchaseOrderNo"));
+		assetmasternew.setPurchasePrice(params.get("PurchasePrice"));
+		assetmasternew.setSerialNumber(params.get("SerialNumber"));
+		assetmasternew.setWarrantyEnd(params.get("WarrantyEnd"));
+		assetmasternew.setVendor(params.get("Vendor"));
+		itemlistService.savesingletxt(params.get("AssetType"), "ASSETTYPE");
+		try {
+			assetmasternew.setBranchname(branchMasterService.findAll().stream()
+					.filter(C -> C.getId() == Integer.parseInt(params.get("Branch"))).collect(Collectors.toList())
+					.get(0).getBRANCH_NAME());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			assetmasternew.setVendorName(vendorMasterService.findAll().stream()
+					.filter(C -> C.getVendormasterid() == Integer.parseInt(assetmasternew.getVendor()))
+					.collect(Collectors.toList()).get(0).getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			assetmasternew.setWarrantyEndMMMddYYY(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(params.get("WarrantyEnd"))).toString());
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+
+			assetmasternew.setPurchasedMMMddYYY(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(params.get("Purchased"))).toString());
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assetMasterService.save(assetmasternew);
+		return assetmasternew;
 	}
 
 	@PostMapping("deleteassetService")

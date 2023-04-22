@@ -84,6 +84,14 @@ public class AssetMaster {
 	@Transient
 	private String custodian;
 	
+	@Transient
+	private String WarrantyEndMMMddYYY;
+	
+	@Transient
+	private String PurchasedMMMddYYY;
+	
+	@Transient
+	private String vendorName;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AssetId")

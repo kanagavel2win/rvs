@@ -182,6 +182,7 @@
 			<th>Condition</th>
 			<th>Photo</th>
 			<th>Comments</th>
+			<th>Actions</th>
 			
 
 		</tr>
@@ -225,7 +226,7 @@
 	 <label for="form-label">Asset Type </label>
 	 <select class="form-select" name="AssetType" id="AssetType" required>
 	 <option value="">-</option>
-	 <option value="1">Machinery</option>
+	 <option value="Machinery">Machinery</option>
 	 </select>
 	 </div>
 	 
@@ -234,7 +235,7 @@
 	 <input type="hidden"  name="ACondition" /> 
 	 <select class="form-select" name="AssetName" id="AssetName" required>
 	 <option value="">-</option>
-	 <option value="1">Machinery</option>
+	 <option value="Machinery">Machinery</option>
 	 </select>
 	 </div>
 	 
@@ -366,7 +367,7 @@
   const form2 = $(`#form2`);
   const AssetType = $(`[name="AssetType"]`);
   const AssetName = $(`[name="AssetName"]`);
-  const Photo_Attach = $(`[name="Photo_Attach"]`);
+  const Photo_Attach = document.querySelector(`[name="Photo_Attach"]`);
   const Comments = $(`[name="Comments"]`);
   
   $(radio).change(function(e){
@@ -392,19 +393,37 @@
   })
   
   $(form2).submit(function(e){
+	  var text=`<tr>`;
 	  var at = $(`[name="AssetType"] option:selected`).text();
 	  var an = $(`[name="AssetName"] option:selected`).text();
-	  const file = Photo_Attach.files[0];
-	      if(file != '')
+	  var com = Comments.val();
+	  var i = $('#addckoutrow tr').length === 0 ? 1 : $('#addckoutrow tr').length+1;
+	   
+	  text+=`<td>${i}</td><td id="at-${i}">${at}</td><td id="an-${i}">${an}</td><td></td>`;
+	  const FilesCount = Photo_Attach.files.length;
+	      if(FilesCount > 0)
 		  {
+	    	  const file = Photo_Attach.files[0];
 	    	  const url = URL.createObjectURL(file);
+	    	  text+=`<td id="file-${i}"><a class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2" href="${url}" target="_blank"><i class="bx bx-download bx-xs"></i></a></td>`;
 		  }
 	      else
 	      {
-	    	  
+	    	  text+=`<td id="file-${i}">-</td>`;
 	      }
+	      text+=`<td id="com-${i}">${com}</td><td><button type="button" name="${i}" class="btn btn-sm btn-icon edit-check"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete-record" type="button"><i class="bx bx-trash"></i></button></td></tr>`;
+	      $('#addckoutrow').append(text);
+	      e.target.reset();
+	      $(`#exampleModalScrollable`).modal('hide');
   })
   
+  $(document).on('click' , '.edit-check', function (e) {
+	  $(`#exampleModalScrollable`).modal('show');
+	  var id = $(this).attr('name');
+	  AssetType.val($('#at-'+id).text());
+	  AssetName.val($('#an-'+id).text());
+	  Comments.val($('#com-'+id).text())
+  })
   </script>
     </body>
     </html>

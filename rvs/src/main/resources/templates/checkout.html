@@ -63,6 +63,7 @@
 	<link rel="stylesheet" th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
 	<link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
 	<link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -164,16 +165,18 @@
          </div>
 	      
 	  </div>
-	  <div class="col-sm-4">
-	  <button type="button" class="btn btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"><i class="bx bx-plus-circle "></i> 
-			</button>
+	  
+	  <div class="col-sm-10">
+	 
 	  </div>
-	  <div class="col-sm-8">
+	  <div class="col-sm-2">
+	   <button type="button" class="btn btn-block btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"><i class="bx bx-plus-circle "></i> Add 
+			</button>
 	  </div>
 	  
 	   <div class="col-sm-12">
 	  <div class="table-responsive">
-		 <table class="table table-bordered">
+		 <table class="table table-sm table-bordered">
 		 <thead>
 		<tr>
 			<th width="5%">S.No</th>
@@ -232,6 +235,7 @@
 	 
 	 <div class="col-sm-6">
 	 <label for="form-label">Asset Name</label>
+	 <input type="hidden"  id="idc" /> 
 	 <input type="hidden"  name="ACondition" /> 
 	 <select class="form-select" name="AssetName" id="AssetName" required>
 	 <option value="">-</option>
@@ -340,6 +344,7 @@
 	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
 	 <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
      <script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+     <script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
 
   <!-- Main JS -->
   <script th:src="@{/assets/js/main.js}"></script>
@@ -393,37 +398,51 @@
   })
   
   $(form2).submit(function(e){
-	  var text=`<tr>`;
-	  var at = $(`[name="AssetType"] option:selected`).text();
-	  var an = $(`[name="AssetName"] option:selected`).text();
-	  var com = Comments.val();
-	  var i = $('#addckoutrow tr').length === 0 ? 1 : $('#addckoutrow tr').length+1;
-	   
-	  text+=`<td>${i}</td><td id="at-${i}">${at}</td><td id="an-${i}">${an}</td><td></td>`;
-	  const FilesCount = Photo_Attach.files.length;
-	      if(FilesCount > 0)
-		  {
-	    	  const file = Photo_Attach.files[0];
-	    	  const url = URL.createObjectURL(file);
-	    	  text+=`<td id="file-${i}"><a class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2" href="${url}" target="_blank"><i class="bx bx-download bx-xs"></i></a></td>`;
-		  }
-	      else
-	      {
-	    	  text+=`<td id="file-${i}">-</td>`;
-	      }
-	      text+=`<td id="com-${i}">${com}</td><td><button type="button" name="${i}" class="btn btn-sm btn-icon edit-check"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete-record" type="button"><i class="bx bx-trash"></i></button></td></tr>`;
-	      $('#addckoutrow').append(text);
+	 
+		  var text=`<tr>`;
+		  var at = $(`[name="AssetType"] option:selected`).text();
+		  var an = $(`[name="AssetName"] option:selected`).text();
+		  var com = Comments.val();
+		  var i = $('#addckoutrow tr').length === 0 ? 1 : $('#addckoutrow tr').length+1;
+		   
+		  text+=`<td>${i}</td><td id="at-${i}">${at}</td><td id="an-${i}">${an}</td><td></td>`;
+		  const FilesCount = Photo_Attach.files.length;
+		      if(FilesCount > 0)
+			  {
+		    	  const file = Photo_Attach.files[0];
+		    	  const url = URL.createObjectURL(file);
+		    	  text+=`<td id="file-${i}"><a class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2" href="${url}" target="_blank"><i class="bx bx-download bx-xs"></i></a></td>`;
+			  }
+		      else
+		      {
+		    	  text+=`<td id="file-${i}">-</td>`;
+		      }
+		      text+=`<td id="com-${i}">${com}</td><td><button class="btn btn-sm btn-icon delete-record" type="button"><i class="bx bx-trash"></i></button></td></tr>`;
+		      $('#addckoutrow').append(text);
+		  
 	      e.target.reset();
 	      $(`#exampleModalScrollable`).modal('hide');
   })
   
-  $(document).on('click' , '.edit-check', function (e) {
-	  $(`#exampleModalScrollable`).modal('show');
-	  var id = $(this).attr('name');
-	  AssetType.val($('#at-'+id).text());
-	  AssetName.val($('#an-'+id).text());
-	  Comments.val($('#com-'+id).text())
-  })
+$(document).on('click','.delete-record' , function(e){
+	var tr = $(this).closest('tr');
+	 Swal.fire({
+         title: 'Are you sure?',
+         text: "You won't be able to revert this!",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Yes,  Delete Check Out Entry it!',
+         customClass: {
+             confirmButton: 'btn btn-primary me-3',
+             cancelButton: 'btn btn-label-secondary'
+         },
+         buttonsStyling: false
+     }).then(function(result) {
+    	 if (result.value) {
+    	  tr.remove();
+    	 }
+     })
+})
   </script>
     </body>
     </html>

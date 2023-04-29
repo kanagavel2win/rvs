@@ -23,6 +23,8 @@ public class menuactivelist {
 	public HashMap<String,Boolean> getactivemenulist(String menutitle) {
 		activemenus.clear();
 		
+		
+		
 		if(menutitle.equalsIgnoreCase("index"))
 		{
 			activemenus.put("index", true);
@@ -104,6 +106,24 @@ public class menuactivelist {
 		{
 			activemenus.put("Contact", true);
 			activemenus.put("Organization", true);
+			
+					
+		}else if(menutitle.equalsIgnoreCase("lead"))
+		{
+			activemenus.put("WorkItem", true);
+			activemenus.put("lead", true);
+			
+					
+		}else if(menutitle.equalsIgnoreCase("deal"))
+		{
+			activemenus.put("Contact", true);
+			activemenus.put("deal", true);
+			
+					
+		}else if(menutitle.equalsIgnoreCase("project"))
+		{
+			activemenus.put("Contact", true);
+			activemenus.put("project", true);
 			
 					
 		}

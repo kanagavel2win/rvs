@@ -216,7 +216,7 @@ table tr td {
 	color: #fff;
 }
 
-.d1, .d1>div>label, .d1>div>h4 {
+/* .d1, .d1>div>label, .d1>div>h4 {
 	background: #c09F80;
 	padding: 1%;
 	color: #fff;
@@ -232,7 +232,7 @@ table tr td {
 	background: #BDC3C7;
 	padding: 1%;
 	color: #000;
-}
+} */
 
 .table tr, table, table td {
 	padding: .5rem 0.5rem;
@@ -316,28 +316,27 @@ table tr td {
 									</div>
 									<div class="row">
 
-										<div class="col-md-2 d1">
-											<div class="form-group">
-
+										<div class="col-md-2 d1 bg-info text-white ">
+											<div class="form-group ">
 												<label>Payroll Month</label>
 
-												<h4 th:text="${selectedmonth}"></h4>
+												<h4 th:text="${selectedmonth}" class=" text-white"></h4>
 											</div>
 
 										</div>
 
 
-										<div class="col-md-2 d2">
-											<div class="form-group d2">
+										<div class="col-md-2 d2  bg-success text-white ">
+											<div class="form-group d2 ">
 												<label>Total Amount</label>
-												<h4 th:text="${totalnet}"></h4>
+												<h4 th:text="${totalnet}" class=" text-white"></h4>
 											</div>
 
 										</div>
-										<div class="col-md-2 d3">
-											<div class="form-group d3">
+										<div class="col-md-2 d3 bg-primary text-white">
+											<div class="form-group d3  ">
 												<label>Branch</label>
-												<h4 th:if="${branchobj}" th:text="${branchobj.BRANCH_NAME}"></h4>
+												<h4 th:if="${branchobj}" th:text="${branchobj.BRANCH_NAME}" class=" text-white"></h4>
 											</div>
 
 										</div>

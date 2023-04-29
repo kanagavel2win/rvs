@@ -55,6 +55,13 @@
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
 <link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-select-bs5/select.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{./assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css}" />
+
+<link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
@@ -243,8 +250,8 @@ td.holiday {
 																	<div class="form-group">
 																		<div class="position-relative has-icon-left">
 																			<select class="form-control" id="branch"
-																				name="branch"  required>
-																				<option value="">-</option>
+																				name="branch" required>
+
 																				<th:block th:each="obj : ${branchlist}">
 																					<option
 																						th:if="${obj.BRANCH_NAME} != ${targetedbranchName}"
@@ -274,14 +281,14 @@ td.holiday {
 														<p class="reortmonth"
 															th:text="'Report Month ' +${monthstr}"></p>
 													</th:block>
-													
+
 													<div class="card-datatable table-responsive pt-0">
 														<table class="datatables-basic table table-bordered"
 															id="empattendancereport">
 															<thead>
 																<tr>
-																	<th class="sticky-col first-col">#</th>
-																	<th class="sticky-col second-col">Name</th>
+																	<!-- <th class="sticky-col first-col">#</th> -->
+																	<th class="sticky-col first-col">Name</th>
 																	<th:block
 																		th:each="i : ${#numbers.sequence( 1, prdenddate, 1)}">
 
@@ -310,8 +317,8 @@ td.holiday {
 															</thead>
 															<tbody>
 																<tr th:each="rpt,stat : ${reportarr}">
-																	<td class="sticky-col first-col"
-																		th:text="${stat.index+1}"></td>
+																	<!-- <td class="sticky-col first-col"
+																		th:text="${stat.index+1}"></td> -->
 																	<td class="sticky-col second-col"
 																		th:text="${#strings.arraySplit(rpt,'~')[0] }"></td>
 
@@ -352,7 +359,7 @@ td.holiday {
 									</div>
 								</div>
 								<!-- /User Card -->
-
+								
 
 							</div>
 							<!--/ User Sidebar -->
@@ -389,83 +396,88 @@ td.holiday {
 	</div>
 	<!-- / Layout wrapper -->
 
-<!-- Core JS -->
-		<!-- build:js assets/vendor/js/core.js -->
-		<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
-		<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
-		<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<!-- Core JS -->
+	<!-- build:js assets/vendor/js/core.js -->
+	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
-		<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+	<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
-		<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
-		<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+	<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+	<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 
-		<script th:src="@{/assets/vendor/js/menu.js}"></script>
-		<!-- endbuild -->
+	<script th:src="@{/assets/vendor/js/menu.js}"></script>
+	<!-- endbuild -->
 
-		<!-- Vendors JS -->
-		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
-		<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
-		<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
-		<!-- Flat Picker -->
-		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-		<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
-		<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+	<!-- Vendors JS -->
+	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
+	<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+	<!-- Fixed columns -->
+	<script
+		th:src="@{/assets/vendor/libs/datatables-fixedcolumns/datatables.fixedcolumns.js}"></script>
 
-		<!-- Row Group JS -->
-		<script
-			th:src="@{/assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js}"></script>
-		<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
-		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
-		<!-- Form Validation -->
-		<script
-			th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
 
-		<!-- Main JS -->
-		<script th:src="@{/assets/js/main.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+	<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
 
-		<!-- Page JS -->
-		<!-- <script th:src="@{/assets/js/tables-datatables-basic.js}"></script> -->
-		<script th:src="@{/assets/js/form-validation.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+	<!-- Flat Picker -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+
+	<!-- Row Group JS -->
+	<script
+		th:src="@{/assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js}"></script>
+	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+	<!-- Form Validation -->
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+
+	<!-- Main JS -->
+	<script th:src="@{/assets/js/main.js}"></script>
+
+	<!-- Page JS -->
+	<!-- <script th:src="@{/assets/js/tables-datatables-basic.js}"></script> -->
+	<script th:src="@{/assets/js/form-validation.js}"></script>
 
 
 	<script>
 $(document).ready(function () {
-    
+	//--------------------------------------------------------
 	$("#branch").val("[[${branchid}]]").change();
 	var month="[[${monthstr}]]";
 
@@ -480,13 +492,41 @@ $(document).ready(function () {
 	
 	
 	var table = $('#empattendancereport').DataTable({
+		dom: 'Bfrtip',
         lengthChange: true,
-        buttons: [ 'copy', 'csv', 'pdf' ]
+        buttons: [ 'copy','excel',
+        	{
+	            extend: 'csv',
+	           
+	        },
+	        {
+	            extend: 'pdf',
+	            messageBottom: null
+	        },
+	        {
+	            extend: 'print',
+	            messageTop: function () {
+	                printCounter++;
+	
+	                if ( printCounter === 1 ) {
+	                    return 'This is the first time you have printed this document.';
+	                }
+	                else {
+	                    return 'You have printed this document '+printCounter+' times';
+	                }
+	            },
+	            messageBottom: null
+	        }],
+	        fixedColumns: true
     });
  
 
     table.buttons().container()
         .appendTo( '.card-datatable' );
+ //----------------------------------------------------------------------------------------------------------   
+ 
+ 
+ //----------------------------------------------------------------------------------------------------------
 });
 </script>
 

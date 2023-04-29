@@ -52,6 +52,8 @@ public class LeaveMaster implements Comparable<LeaveMaster> {
 	String approvercomments;
 	@Column
 	String approverejectdate;
+	
+	
 
 	@Override
 	public int compareTo(LeaveMaster o) {

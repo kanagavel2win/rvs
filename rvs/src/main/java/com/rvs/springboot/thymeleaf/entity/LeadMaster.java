@@ -6,8 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.springframework.beans.factory.annotation.Value;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,4 +49,14 @@ public class LeadMaster {
 	
 	@Column
 	private boolean backfromdeal;
+	
+	@Column
+	int branch;
+	
+	@Transient
+	private String nextactivity;
+	
+	@Transient
+	private String Followername;
+	
 }

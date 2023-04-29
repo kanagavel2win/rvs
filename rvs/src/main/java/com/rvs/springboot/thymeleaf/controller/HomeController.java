@@ -108,6 +108,7 @@ import com.rvs.springboot.thymeleaf.entity.VendorMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
+import com.rvs.springboot.thymeleaf.pojo.tagify;
 import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetAuditService;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
@@ -837,7 +838,7 @@ public class HomeController {
 
 			int AssetId = Integer.parseInt(params.get("AssetId"));
 
-			int id = assetMasterService.insertassetFiles( filename.toString(), AssetId);
+			int id = assetMasterService.insertassetFiles(filename.toString(), AssetId);
 
 			bfiles.setAssetFileid(id);
 			bfiles.setFiles_Attach(filename.toString());
@@ -2782,10 +2783,10 @@ public class HomeController {
 					&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid)).count();
 
 			calhtml = calhtml + "<div class='cal_inner_holder' id='" + i + "_div1'>" + "<a class='cal_inner cal_innerp"
-					+ i + "' style='background:#8FBC8F;color:#000'>" + p + "</a>" + "<a class='cal_inner cal_innera" + i
-					+ "' style='background:#FF8C69;color:#000'>" + a + "</a>" + "<a class='cal_inner cal_innert" + i
-					+ "' style='background:#FFEC8B;color:#000'>" + t + "</a>" + "<a class='cal_inner cal_innerhl" + i
-					+ "' style='background:#DEDEDE;color:#000'>" + hl + "</a><div></td>";
+					+ i + "' style='background:#8FBC8F;color:#fff'>" + p + "</a>" + "<a class='cal_inner cal_innera" + i
+					+ "' style='background:#FF8C69;color:#fff'>" + a + "</a>" + "<a class='cal_inner cal_innert" + i
+					+ "' style='background:#FFEC8B;color:#fff'>" + t + "</a>" + "<a class='cal_inner cal_innerhl" + i
+					+ "' style='background:#DEDEDE;color:#fff'>" + hl + "</a><div></td>";
 
 		}
 		calhtml = calhtml + "</tr>";
@@ -4217,15 +4218,19 @@ public class HomeController {
 		}
 		;
 		try {
-			assetmasternew.setWarrantyEndMMMddYYY(displaydateFormatFirstMMMddYYY
-					.format(displaydateFormatrev.parse(assetmasternew.getWarrantyEnd())).toString());
+			if (!nullremover(String.valueOf(assetmasternew.getWarrantyEnd())).equalsIgnoreCase("")) {
+				assetmasternew.setWarrantyEndMMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(assetmasternew.getWarrantyEnd())).toString());
+			}
 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		try {
-			assetmasternew.setPurchasedMMMddYYY(displaydateFormatFirstMMMddYYY
-					.format(displaydateFormatrev.parse(assetmasternew.getPurchased())).toString());
+			if (!nullremover(String.valueOf(assetmasternew.getPurchased())).equalsIgnoreCase("")) {
+				assetmasternew.setPurchasedMMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(assetmasternew.getPurchased())).toString());
+			}
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -4275,16 +4280,19 @@ public class HomeController {
 		}
 
 		try {
-			assetmasternew.setWarrantyEndMMMddYYY(displaydateFormatFirstMMMddYYY
-					.format(displaydateFormatrev.parse(params.get("WarrantyEnd"))).toString());
+			if (!nullremover(String.valueOf(params.get("WarrantyEnd"))).equalsIgnoreCase("")) {
+				assetmasternew.setWarrantyEndMMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(params.get("WarrantyEnd"))).toString());
+			}
 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		try {
-
-			assetmasternew.setPurchasedMMMddYYY(displaydateFormatFirstMMMddYYY
-					.format(displaydateFormatrev.parse(params.get("Purchased"))).toString());
+			if (!nullremover(String.valueOf(params.get("Purchased"))).equalsIgnoreCase("")) {
+				assetmasternew.setPurchasedMMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(params.get("Purchased"))).toString());
+			}
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -4359,8 +4367,8 @@ public class HomeController {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
 		List<AssetMaster> assetMaster = assetMasterService.findAll();
 
-		List<AssetMaster> AssetMasterobj = assetMaster.stream().filter(C -> C.getStatus().equalsIgnoreCase("In Stock"))
-				.collect(Collectors.toList());
+		List<AssetMaster> AssetMasterobj = assetMaster.stream()
+				.filter(C -> String.valueOf(C.getStatus()).equalsIgnoreCase("In Stock")).collect(Collectors.toList());
 
 		List<AssetMaster> selectedasset = new ArrayList<AssetMaster>();
 		if (!ids.equalsIgnoreCase("")) {
@@ -5421,6 +5429,20 @@ public class HomeController {
 		return orglist;
 	}
 
+	@ResponseBody
+	@GetMapping("organizationNameListtype1")
+	public List<tagify> organizationNameListtype1() {
+		List<tagify> taglist = new ArrayList<tagify>();
+
+		for (OrganizationContacts o : contactOrganizationService.findAll()) {
+			tagify tagobj = new tagify();
+			tagobj.setValue(o.getOrgname());
+			tagobj.setCode(String.valueOf(o.getId()));
+			taglist.add(tagobj);
+		}
+		return taglist;
+	}
+
 	public ContactPerson ContactPersonobjectfiller(ContactPerson cp) {
 		if (cp.getContactPersonAccNo().size() == 0) {
 			List<ContactPersonAccNo> ContactPersonAccNols = new ArrayList();
@@ -5759,58 +5781,26 @@ public class HomeController {
 		// --------------------------------
 	}
 
-	@GetMapping("leadlist")
-	public String leadlist(Model themodel) {
-
+	@ResponseBody
+	@GetMapping("leadlistjson")
+	public List<LeadMaster> leadlistjson(Model themodel) {
+		List<LeadMaster> leadmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
-		themodel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
-		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
-		// --------------------------------------------------
-		ArrayList<String> personorgls = new ArrayList<String>();
-		for (ContactPerson cp : cplis) {
 
-			if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase("")) {
-				for (String str1 : (cp.getOrganization().toString()).split(",")) {
-					String temp2 = "";
-					String str2 = nullremover(String.valueOf(str1));
-					if (str2.length() > 0) {
-						OrganizationContacts obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-								.collect(Collectors.toList()).get(0);
-						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname()
-								+ " |";
-						personorgls.add(temp2);
-					} else {
-						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-						personorgls.add(temp2);
-					}
-				}
-			} else {
-				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
-			}
-		}
-		// --------------------------------------------------
-		List<LeadMaster> leadmasterls = leadMasterService.findAll();
-
-		// Next Activity & Followers Details
-		HashMap<Integer, String> nextactmap = new HashMap();
-		HashMap<Integer, String> followersmap = new HashMap();
-		String followerstr = "";
-
-		for (LeadMaster tmp1obj : leadmasterls) {
+		for (LeadMaster tmp1obj : leadMasterService.findAll()) {
 			// --------------------------------------------------
 			List<Map<String, Object>> ls = activityMasterService.nextactivity("Lead", String.valueOf(tmp1obj.getId()));
 			if (ls.size() > 0) {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 					String activitytype = String.valueOf(rowMap.get("activitytype"));
-					nextactmap.put(tmp1obj.getId(), activitytype + " - " + activitytitle);
+					tmp1obj.setNextactivity(activitytype + " - " + activitytitle);
 				});
 			} else {
-				nextactmap.put(tmp1obj.getId(), "<span class='red'>No Activity</span>");
+				tmp1obj.setNextactivity("<span class='red'>No Activity</span>");
 			}
 			// --------------------------------------------------
-			followerstr = nullremover(String.valueOf(tmp1obj.getFollower()));
+			String followerstr = nullremover(String.valueOf(tmp1obj.getFollower()));
 			String followernames = "";
 			for (String locstr : followerstr.split(",")) {
 				if (!locstr.equalsIgnoreCase(""))
@@ -5820,40 +5810,95 @@ public class HomeController {
 			if (followernames.length() > 0) {
 				followernames = followernames.substring(0, followernames.length() - 1);
 			}
-			followersmap.put(tmp1obj.getId(), followernames);
+			tmp1obj.setFollowername(followernames);
+
+			leadmasterls.add(tmp1obj);
 		}
 
-		// --------------------------------------------------
-		themodel.addAttribute("leadmasterlist", leadmasterls);
-		themodel.addAttribute("followersmap", followersmap);
-		themodel.addAttribute("nextactmap", nextactmap);
+		return leadmasterls;
+	}
+
+	@ResponseBody
+	@GetMapping("leadcplist")
+	public List<tagify> contactpersonlist() {
+
+		List<tagify> taglist = new ArrayList<tagify>();
+
+		for (ContactPerson cp : contactPersonService.findAll()) {
+			tagify tagobj = new tagify();
+			tagobj.setValue(cp.getPeoplename());
+			tagobj.setCode(String.valueOf(cp.getId()));
+
+			taglist.add(tagobj);
+
+		}
+
+		return taglist;
+	}
+
+	@GetMapping("leadlist")
+	public String leadlist(Model themodel) {
+
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("lead"));
+
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+		themodel.addAttribute("employeelist", emplist);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		// Next Activity & Followers Details
+		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> followersmap = new HashMap();
+		String followerstr = "";
+
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
-		themodel.addAttribute("personorgls", personorgls);
+
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", bmlist);
+
 		return "leadlist";
 	}
 
 	@PostMapping("contactpersondetails")
 	@ResponseBody
-	public String organizationlist(@RequestParam Map<String, String> params) {
-		ContactPerson obj = new ContactPerson();
-		obj = contactPersonService.findById(Integer.parseInt(params.get("personid")));
-		/*
-		 * String str = obj.getPhonework() + " |" + obj.getPhonepersonal() + " |" +
-		 * obj.getPhoneothers() + " |" + obj.getEmailwork() + " |" +
-		 * obj.getEmailpersonal() + " |" + obj.getEmailothers() + " |" +
-		 * obj.getFollowers() + " |";
-		 */
-		// str = nullremover(String.valueOf(str));
+	public ContactPerson organizationlist(@RequestParam Map<String, String> params) {
 
-		return ""; // str;
+		// System.out.println(params);
+		ContactPerson obj = new ContactPerson();
+		String str = params.get("selectval").replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+				"");
+		str = str.replace("\"", "");
+		// System.out.println(str);
+		String[] strarr = str.split(",");
+
+		if (strarr.length > 1) {
+			String strarr1 = strarr[1];
+			obj = contactPersonService.findById(Integer.parseInt(strarr1));
+			// Set primary contact
+			List<ContactPersonContact> bcls = obj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				obj.setPrimarymob(bcls.get(0).getPhonenumber());
+				obj.setPrimaryemail(bcls.get(0).getEmail());
+
+				if (!nullremover(obj.getOrganization()).equalsIgnoreCase("")) {
+					obj.setOrganizationname(
+							contactOrganizationService.findById(Integer.parseInt(obj.getOrganization())).getOrgname());
+				}
+				;
+			}
+		}
+		return obj;
 	}
 
 	@PostMapping("leadsavestage1")
 	@ResponseBody
 	public String leadsavestage1(@RequestParam Map<String, String> params) {
+
 		String ContactPerson = params.get("ContactPerson");
 		String Organization = params.get("Organization");
 		String Title = params.get("Title");
@@ -5862,69 +5907,84 @@ public class HomeController {
 		String Label = params.get("Label");
 		String notes = params.get("notes");
 		String followers = params.get("followers");
-		String phonework = params.get("phonework");
-		String phonepersonal = params.get("phonepersonal");
-		String phoneothers = params.get("phoneothers");
-		String emailwork = params.get("emailwork");
-		String emailpersonal = params.get("emailpersonal");
-		String emailothers = params.get("emailothers");
-		// ----------------------------
+		String phonenumber = params.get("phonenumber");
+		int branch = Integer.parseInt(params.get("branch"));
+		// ---------------------------------------
+		ContactPerson cp = new ContactPerson();
+		String str = params.get("ContactPerson").replace("[{\"value\":\"", "").replace("\"code\":\"", "")
+				.replace("\"}]", "");
+		str = str.replace("\"", "");
+		String[] strarr = str.split(",");
 
-		String collectorgids = "";
-		String srcOrg = String.valueOf(Organization).replace("null", "");
-		if (srcOrg.length() > 0) {
-			for (String str : srcOrg.split(",")) {
-				if (NumberUtils.isParsable(str)) {
-					collectorgids += str + ",";
-				} else {
+		if (strarr.length > 1) {
+			String strarr1 = strarr[1];
+			cp = contactPersonService.findById(Integer.parseInt(strarr1));
+			// ----------------------------------------------
+
+			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
+			strorg = strorg.replace("\"", "");
+			String[] strarrorg = strorg.split(",");
+
+			if (strarrorg.length > 1) {
+
+				cp.setOrganization(String.valueOf(strarrorg[1]));
+
+			} else {
+				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
 					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(str);
+					contactOrganization.setOrgname(strarrorg[0]);
+					contactOrganization.setBranchid(branch);
+					contactOrganization.setCustomer_supplier("Customer");
+					contactOrganization.setFollowers(params.get("followers"));
+					contactOrganization = contactOrganizationService.save(contactOrganization);
 
-					collectorgids += contactOrganizationService.save(contactOrganization).getId() + ",";
+					cp.setOrganization(String.valueOf(contactOrganization.getId()));
 				}
 			}
-			collectorgids = collectorgids.substring(0, collectorgids.length() - 1);
-		}
+			// ----------------------------------------
+		} else {
+			cp.setBranchid(1);
+			cp.setCustomer_supplier("Customer");
+			cp.setFollowers(params.get("followers"));
 
-		// ----------------------------
-		String collectpeopleids = "";
-		String srcPer = String.valueOf(ContactPerson).replace("null", "");
+			cp.setPeoplename(strarr[0]);
+			ContactPersonContact cpc = new ContactPersonContact();
+			cpc.setDepartment("Personal");
+			cpc.setPhonenumber(phonenumber);
+			cpc.setPrimarycontact(true);
+			List<ContactPersonContact> cpcls = new ArrayList();
+			cpcls.add(cpc);
+			cp.setContactPersonContact(cpcls);
+			// -------------------------------------------------
 
-		if (srcPer.length() > 0) {
-			for (String str : srcPer.split(",")) {
-				if (NumberUtils.isParsable(str)) {
-					collectpeopleids += str + ",";
-					ContactPerson contactperson = contactPersonService.findById(Integer.parseInt(str));
-					contactperson.setFollowers(followers);
-					contactPersonService.save(contactperson);
+			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
+			strorg = strorg.replace("\"", "");
+			String[] strarrorg = strorg.split(",");
 
-				} else {
-					ContactPerson contactperson = new ContactPerson();
-					contactperson.setPeoplename(str);
-					contactperson.setFollowers(followers);
+			if (strarrorg.length > 1) {
 
-					collectpeopleids += contactPersonService.save(contactperson).getId() + ",";
+				cp.setOrganization(String.valueOf(strarrorg[1]));
+
+			} else {
+				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+					OrganizationContacts contactOrganization = new OrganizationContacts();
+					contactOrganization.setOrgname(strarrorg[0]);
+					contactOrganization.setBranchid(branch);
+					contactOrganization.setCustomer_supplier("Customer");
+					contactOrganization.setFollowers(params.get("followers"));
+					contactOrganization = contactOrganizationService.save(contactOrganization);
+					cp.setOrganization(String.valueOf(contactOrganization.getId()));
 				}
 			}
-			collectpeopleids = collectpeopleids.substring(0, collectpeopleids.length() - 1);
-		}
+			// --------------------------------------------------------------
 
-		// ----------------------------
-		if (!collectpeopleids.equalsIgnoreCase("")) {
-			for (String s : collectpeopleids.split(",")) {
-				mappersonstoOrganization(collectorgids, Integer.parseInt(s));
+		}
+		cp = contactPersonService.save(cp);
 
-			}
-		}
-		if (!collectorgids.equalsIgnoreCase("")) {
-			for (String s : collectorgids.split(",")) {
-				mapOrganizationtopersons(collectpeopleids, Integer.parseInt(s));
-			}
-		}
 		// ----------------------------
 		LeadMaster leadMaster = new LeadMaster();
-		leadMaster.setContactPerson(collectpeopleids);
-		leadMaster.setOrganization(collectorgids);
+		leadMaster.setContactPerson(String.valueOf(cp.getId()));
+		leadMaster.setOrganization(cp.getOrganization());
 		leadMaster.setTitle(Title);
 		leadMaster.setSource(Source);
 		leadMaster.setReference(Reference);
@@ -5932,6 +5992,7 @@ public class HomeController {
 		leadMaster.setNotes(notes);
 		leadMaster.setFollower(followers);
 		leadMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
+		leadMaster.setBranch(0);
 		leadMasterService.save(leadMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");

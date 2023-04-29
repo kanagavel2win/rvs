@@ -110,6 +110,25 @@
 				</a></li>
 
 			</ul></li>
+		<li class="menu-item"  th:classappend="${menuactivelist.get('WorkItem')} ? ' active open ' :'' "><a href="javascript:void(0);"
+			class="menu-link menu-toggle"> <i
+				class="menu-icon tf-icons bx bx-grid"></i>
+				<div data-i18n="Work Item">Work Item</div>
+		</a>
+			<ul class="menu-sub">
+				<li class="menu-item" th:classappend="${menuactivelist.get('lead')} ? ' active' :'' "><a href="l"
+					class="menu-link">
+						<div data-i18n="Lead">Lead</div>
+				</a></li>
+				<li class="menu-item" th:classappend="${menuactivelist.get('deal')} ? ' active' :'' "><a href="leadlist"
+					class="menu-link">
+						<div data-i18n="Deal">Deal</div>
+				</a></li>
+				<li class="menu-item" th:classappend="${menuactivelist.get('project')} ? ' active' :'' "><a
+					href="tables-datatables-extensions.html" class="menu-link">
+						<div data-i18n="Project">Project</div>
+				</a></li>
+			</ul></li>
 		<!-- Apps & Pages -->
 		<li class="menu-header small text-uppercase"><span
 			class="menu-header-text">Apps &amp; Pages</span></li>
@@ -715,25 +734,7 @@
 			class="menu-link"> <i class="menu-icon tf-icons bx bx-table"></i>
 				<div data-i18n="Tables">Tables</div>
 		</a></li>
-		<li class="menu-item"><a href="javascript:void(0);"
-			class="menu-link menu-toggle"> <i
-				class="menu-icon tf-icons bx bx-grid"></i>
-				<div data-i18n="Datatables">Datatables</div>
-		</a>
-			<ul class="menu-sub">
-				<li class="menu-item"><a href="tables-datatables-basic.html"
-					class="menu-link">
-						<div data-i18n="Basic">Basic</div>
-				</a></li>
-				<li class="menu-item"><a href="tables-datatables-advanced.html"
-					class="menu-link">
-						<div data-i18n="Advanced">Advanced</div>
-				</a></li>
-				<li class="menu-item"><a
-					href="tables-datatables-extensions.html" class="menu-link">
-						<div data-i18n="Extensions">Extensions</div>
-				</a></li>
-			</ul></li>
+		
 
 		<!-- Charts & Maps -->
 		<li class="menu-header small text-uppercase"><span

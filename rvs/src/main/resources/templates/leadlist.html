@@ -121,7 +121,7 @@
 					<!-- Content -->
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
-							<span class="text-muted fw-light">Work Item / </span>Leads
+							<span class="text-muted fw-light">Works / </span>Leads
 						</h4>
 
 
@@ -474,7 +474,7 @@
 				      maxTags: 1,
 				      dropdown: {
 				        maxItems: 20,
-				        classname: '',
+				        classname: 'tags-inline',
 				        enabled: 0,
 				        closeOnSelect: false
 				      }
@@ -629,7 +629,7 @@
 			          searchable: false,
 			          render: function(data, type, full, meta) {
 			            return (
-			              '<a href="emp?id='+ full['empMasterid'] +'" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
+			              '<a href="leadview?id='+ full['id'] +'" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
 			            );
 			          }
 			        }
@@ -770,7 +770,7 @@
 				        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
 				        imageWidth: 400,
 				        imageAlt: 'Custom image',
-				        confirmButtonText: 'Welcome',
+				        confirmButtonText: 'Ok',
 				        customClass: {
 				          confirmButton: 'btn btn-primary'
 				        },
@@ -854,10 +854,6 @@
 	     
 	    
     </script>
-		<script>
-		/* $(".js-example-tags").select2({
-			tags : true
-		}); */
-	</script>
+		
 </body>
 </html>

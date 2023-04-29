@@ -1817,7 +1817,7 @@
   			   	    $('.edituserdatap1submit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 		    	    if(event.target.checkValidity()){
 		    	    
-		    	    	const formdata= new FormData(document.querySelector("#editEmployeedetailsForm"));
+		    	    	const formdata= new FormData(document.querySelector("#"));
 		    	    	formdata.append("empMasterid", $('#empMasterid').val())
 		    	    	$.ajax({
 	  						type : "POST",url : "employeep1json",

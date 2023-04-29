@@ -59,4 +59,10 @@ public class LeadMaster {
 	@Transient
 	private String Followername;
 	
+	@Transient
+	private String OrganizationName;
+
+	@Transient
+	private String ContactPersonName;
+	
 }

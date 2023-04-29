@@ -5863,6 +5863,65 @@ public class HomeController {
 		return "leadlist";
 	}
 
+	@GetMapping("leadview")
+	public String leadview(Model theModel, @RequestParam("id") int id) {
+
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+		
+		LeadMaster leadMaster= new LeadMaster();
+		leadMaster= leadMasterService.findById(id);
+		
+		if(!nullremover(leadMaster.getOrganization()).equalsIgnoreCase("")){
+			leadMaster.setOrganizationName(contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());			
+		}
+		if(!nullremover(leadMaster.getContactPerson()).equalsIgnoreCase("")){
+			leadMaster.setContactPersonName(contactPersonService.findById(Integer.parseInt(leadMaster.getContactPerson())).getPeoplename());			
+		}
+		if(!nullremover(leadMaster.getFollower()).equalsIgnoreCase("")){
+			final String leadfollower=leadMaster.getFollower().toString();
+			
+			leadMaster.setFollowername(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadfollower)).collect(Collectors.toList()).get(0).getStaffName()) ;
+		}
+		
+		theModel.addAttribute("leadMaster", leadMaster);
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+
+		List<String> industry_type = itemlistService.findByFieldName("industry_type");
+		theModel.addAttribute("industry_type", industry_type);
+		
+
+		theModel.addAttribute("employeelist", emplist);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		// Next Activity & Followers Details
+		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> followersmap = new HashMap();
+		String followerstr = "";
+
+		theModel.addAttribute("personlist", cplis);
+		theModel.addAttribute("organizationlist", corglis);
+		
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		theModel.addAttribute("SOURCE", MEMBERIN);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmlist);
+
+		//theModel.addAttribute("OrganizationContacts", corg);
+		theModel.addAttribute("contactPeopleList", contactPersonService.findAll());
+		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("lead"));
+		return "leadview";
+	}
+
+	
 	@PostMapping("contactpersondetails")
 	@ResponseBody
 	public ContactPerson organizationlist(@RequestParam Map<String, String> params) {
@@ -5893,6 +5952,39 @@ public class HomeController {
 			}
 		}
 		return obj;
+	}
+	
+	@PostMapping("leadsavestage2")
+	@ResponseBody
+	public LeadMaster leadsavestage2(@RequestParam Map<String, String> params) {
+	
+		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(params.get("leadMasterID")));
+		
+		leadMaster.setTitle(params.get("Title"));
+		leadMaster.setSource(params.get("Source"));
+		leadMaster.setReference(params.get("Reference"));
+		leadMaster.setLabel(params.get("Label"));
+		leadMaster.setBranch(Integer.parseInt(params.get("branch")));
+		leadMaster.setFollower(params.get("followers"));
+		leadMaster.setNotes(params.get("notes"));		
+		
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+		
+		if(!nullremover(leadMaster.getOrganization()).equalsIgnoreCase("")){
+			leadMaster.setOrganizationName(contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());			
+		}
+		if(!nullremover(leadMaster.getContactPerson()).equalsIgnoreCase("")){
+			leadMaster.setContactPersonName(contactPersonService.findById(Integer.parseInt(leadMaster.getContactPerson())).getPeoplename());			
+		}
+		if(!nullremover(leadMaster.getFollower()).equalsIgnoreCase("")){
+			final String leadfollower=leadMaster.getFollower().toString();
+			
+			leadMaster.setFollowername(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadfollower)).collect(Collectors.toList()).get(0).getStaffName()) ;
+		}
+		
+		leadMaster = leadMasterService.save(leadMaster);
+		
+		return leadMaster;
 	}
 
 	@PostMapping("leadsavestage1")

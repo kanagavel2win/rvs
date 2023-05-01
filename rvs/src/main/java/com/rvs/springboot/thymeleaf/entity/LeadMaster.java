@@ -1,10 +1,15 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -26,8 +31,8 @@ public class LeadMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column
-	private String ContactPerson;
+	//@Column
+	//private String ContactPerson;
 	@Column
 	private String Organization;
 	@Column
@@ -53,6 +58,11 @@ public class LeadMaster {
 	@Column
 	int branch;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private List<LeadContact> leadContact;
+	
+	
 	@Transient
 	private String nextactivity;
 	
@@ -64,5 +74,8 @@ public class LeadMaster {
 
 	@Transient
 	private String ContactPersonName;
+	
+	@Transient
+	private String ReferenceName;
 	
 }

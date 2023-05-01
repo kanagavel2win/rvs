@@ -10,5 +10,5 @@ public interface LeadMasterService {
 	public LeadMaster findById(Integer id);
 	public List<LeadMaster> findAll();
 	public List<LeadMaster> saveall(List<LeadMaster> objList);
-	
+	public int insertContact(int contactpersonid, int leadid);
 }

@@ -150,13 +150,16 @@
 														class="badge bg-primary" th:text="${leadMaster.Label}"></span>
 												</span></li>
 
+												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
+													<span th:text="${leadMaster.OrganizationName}" id="Lbl_organization"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
 												</li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
-													<span th:text="${leadMaster.Reference}" id="Lbl_Reference"></span>
-												</li>
+													<span th:text="${leadMaster.ReferenceName}"
+													id="Lbl_Reference"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
 													<span th:text="${leadMaster.notes}" id="Lbl_notes"></span>
 												</li>
@@ -177,7 +180,52 @@
 									</div>
 								</div>
 								<!-- /User Card -->
+								<!-- Connected Accounts -->
+								<div class="card mb-4">
+									<h5 class="card-header">
+										Connected People
+										<div class="card-action-element" style="float: right">
+											<button class="btn btn-primary btn-sm" type="button"
+												data-bs-toggle="modal" data-bs-target="#addNewperson"
+												alt="Add New Person">
+												<i class="bx bx-plus bx-xs me-1"></i>
+											</button>
+											<button class="btn btn-primary btn-sm" type="button"
+												data-bs-toggle="modal" data-bs-target="#linkperson"
+												alt="Link Person">
+												<i class="bx bx-link bx-xs me-1"></i>
+											</button>
+										</div>
+									</h5>
+									<div class="card-body">
+										<div class="d-flex mb-3" th:each="obj : ${cplist}">
+											<div class="flex-grow-1 row">
+												<div class="col-9 mb-sm-0 mb-2">
+													<a th:href="'contactpersonview?id='+ ${obj.id}"
+														target="_blank">
+														<h6 class="mb-0" th:text="${obj.peoplename}"></h6>
+													</a> <small class="text-muted" th:text="${obj.primarymob}"></small>
+												</div>
+												<div class="col-3 text-end">
+													<label class="switch me-0"> <input type="checkbox"
+														class="switch-input" th:name="${obj.id}"
+														th:onclick="'makeprimarycontactperson(this)'"
+														th:checked="${obj.primaryperson}" /> <span
+														class="switch-toggle-slider"> <span
+															class="switch-on"> <i class="bx bx-check"></i>
+														</span> <span class="switch-off"> <i class="bx bx-x"></i>
+														</span>
+													</span> <span class="switch-label"></span>
+													</label>
+												</div>
+											</div>
+										</div>
 
+										<div id="contactpeopleaddidv"></div>
+
+									</div>
+								</div>
+								<!-- /Connected Accounts -->
 
 							</div>
 							<!--/ User Sidebar -->
@@ -211,7 +259,7 @@
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="Title">TITLE</label>
 												<div>
-													<input type="text" id="Title" name="Title"
+													<input type="text" id="Title" th:field="*{Title}"
 														class="form-control  capitalize"
 														th:value="${leadMaster['Title']}" required>
 
@@ -219,12 +267,28 @@
 
 											</div>
 											<div class="col-12 col-md-6">
+												<label class="form-label" for="followers">ORAGNIZATION</label>
+												<div>
+													<select class="form-select followers form-control "
+														id="organization" th:field="*{Organization}"
+														th:value="${leadMaster['Organization']}">
+														<option value="">-</option>
+														<th:block th:each="str :${organizationlist}">
+															<option th:value="${str.id}"
+																th:text="${str.orgname}"></option>
+														</th:block>
+													</select>
+
+													<div class="invalid-feedback">Please select follower.</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6">
 												<label class="form-label" for="Source">SOURCE <label
 													class="emptitle additem" name="addsourcedata"><i
 														class="bx bxs-plus-circle ownstyle1"></i></label></label>
 												<div>
 													<select class="form-control  addsourcedata" id="Source"
-														name="Source" th:value="${leadMaster['Source']}">
+														th:field="*{Source}" th:value="${leadMaster['Source']}">
 														<th:block th:each="str :${SOURCE}">
 															<option th:value="${str}" th:text="${str}"></option>
 														</th:block>
@@ -237,7 +301,8 @@
 												<div>
 
 													<select class="form-control " id="Reference"
-														name="Reference" th:value="${leadMaster['Reference']}">
+														th:field="*{Reference}"
+														th:value="${leadMaster['Reference']}">
 														<option value="">-</option>
 														<th:block th:each="str :${personlist}">
 															<option th:value="${str.id}" th:text="${str.peoplename}"></option>
@@ -250,8 +315,8 @@
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="Label">LABEL </label>
 												<div>
-													<select class="form-control " id="Label" name="Label"
-														th:value="${leadMaster['Label']}">
+													<select class="form-control " id="Label"
+														th:field="*{Label}" th:value="${leadMaster['Label']}">
 														<option value="Hot">Hot</option>
 														<option value="Cold">Cold</option>
 														<option value="Warm">Warm</option>
@@ -263,7 +328,8 @@
 												<label class="form-label" for="phonenumber">BRANCH</label>
 												<div>
 													<select class="form-select  form-control " id="branch"
-														th:value="${leadMaster['id']}" name="branch" required>
+														th:field="*{branch}" th:value="${leadMaster['branch']}"
+														required>
 														<th:block th:each="str :${branchlist}">
 															<option th:value="${str.id}" th:text="${str.BRANCH_NAME}"></option>
 														</th:block>
@@ -275,7 +341,7 @@
 												<label class="form-label" for="followers">FOLLOWER</label>
 												<div>
 													<select class="form-select followers form-control "
-														id="followers" name="followers"
+														id="followers" th:field="*{follower}"
 														th:value="${leadMaster['follower']}" required>
 														<th:block th:each="str :${employeelist}">
 															<option th:value="${str.empMasterid}"
@@ -290,7 +356,7 @@
 												<label class="form-label" for="notes">NOTES</label>
 												<div>
 
-													<input type="text" id="notes" name="notes"
+													<input type="text" id="notes" th:field="*{notes}"
 														th:value="${leadMaster['notes']}"
 														class="form-control  capitalize">
 												</div>
@@ -310,6 +376,102 @@
 							</div>
 						</div>
 						<!--/ Edit User Modal -->
+						<!-- Edit People Modal -->
+						<div class="modal fade" id="addNewperson" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Create People Information</h3>
+											<p>Update People Basic Information</p>
+										</div>
+										<form id="editPeopledetailsForm"
+											class="row g-3 needs-validation" onsubmit="return false">
+
+											<div class="col-12 ">
+
+
+												<label class="form-label" for="Model_peoplename">Name</label>
+												<input type="text" class="form-control"
+													id="Model_peoplename" required />
+												<div class="invalid-feedback">Please enter Person
+													Name.</div>
+											</div>
+
+											<div class="col-12">
+												<label class="form-label" for="Model_peoplecontact">Contact
+													Number </label> <input type="text"
+													class="form-control phone-number-otp-mask" pattern=".{12}"
+													id="Model_peoplecontact" required />
+												<div class="invalid-feedback">Please enter Contact.</div>
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary editpeopledatasubmit me-sm-3 me-1">ADD</button>
+												<button type="reset"
+													class="btn btn-label-secondary editpeopledataclose"
+													data-bs-dismiss="modal" aria-label="Close">
+													Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Edit People Modal -->
+						<!-- Edit People Modal -->
+						<div class="modal fade" id="linkperson" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Link People Information</h3>
+											<p>Update People Basic Information</p>
+										</div>
+										<form id="linkPeopledetailsForm" class="row g-3"
+											onsubmit="return false">
+
+											<div class="col-12 ">
+
+
+												<label class="form-label" for="Model_linkpeoplename">People
+													Name</label> <select class="form-select"
+													aria-label="Default select example"
+													id="Model_linkpeoplename" required>
+
+													<option th:each="obj : ${contactPeopleList}"
+														th:value="${obj.id}" th:text="${obj.peoplename}"></option>
+
+												</select>
+
+											</div>
+
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
+												<button type="reset"
+													class="btn btn-label-secondary linkpeopledataclose"
+													data-bs-dismiss="modal" aria-label="Close">
+													Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Edit People Modal -->
 
 						<!--scrolling content Modal -->
 						<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
@@ -489,28 +651,7 @@
 							}
 	   });
 	 //--------------------------------------------------------------------------------------  
-	   const TagifyCustomListSuggestionEl = document.querySelector('#organization');
-
-	  $.ajax({
-				type : "GET",url : "organizationNameListtype1",
-				data : '', success : function(result) {
-					
-					 // List
-				    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
-				      whitelist: result,
-				      maxTags: 1,
-				      dropdown: {
-				        maxItems: 20,
-				        classname: 'tags-inline',
-				        enabled: 0,
-				        closeOnSelect: false
-				      }
-				    });
-					 
-				}
-	  });
-		//--------------------------------------------------------------------------------------------------------------------------------------		 
-		
+	  
    		function validationformreset()
 	   {
 			
@@ -518,7 +659,12 @@
    				$('.editorganizationdatasubmit').prop("disabled",false);
 	   			$('.editorganizationdatasubmit').html("Submit");
 	   }
-   		
+   		function validationlinkformreset()
+  	   {
+  			$('.linkpeopledataclose').click();
+    			$('.linkpeopledatasubmit').prop("disabled",false);
+  	   		$('.linkpeopledatasubmit').html("Submit");
+  	   }
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
 	
 
@@ -530,16 +676,16 @@
 		    	    	$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 		    	    	const formData= new FormData(document.querySelector("#editleadMasterdetailsForm"));
 		    	    	
-		           	 for (var pair of formData.entries()) {
+		           	 /* for (var pair of formData.entries()) {
 		           	    console.log(pair); 
-		           	}
+		           	} */
 		  				 $.ajax({
 		  						type : "POST",url : "leadsavestage2",
 		  						processData: false,
 		  					    contentType: false,
 		  						data :formData, success : function(result) {
 		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							console.log(bmobj);
+		  							//console.log(bmobj);
 		  							
 		  							if(bmobj.label =="Hot")
 		  							{
@@ -556,6 +702,8 @@
 		  							$('#Lbl_Source').text(bmobj.source);
 		  							$('#Lbl_follower').text(bmobj.followername);
 		  							$('#Lbl_notes').text(bmobj.notes);
+		  							$('#Lbl_Reference').text(bmobj.referencename);
+		  							$("#Lbl_organization").text(bmobj.organization);
 		  							
 		  							$('.editorganizationdataclose').click();
 		  			   				$('.editorganizationdatasubmit').prop("disabled",false);
@@ -625,11 +773,131 @@
   				
   				// --------------------------------------------------------------------
   				
-	  			
+	  				function validationformreset()
+	   {
+   				$('.editpeopledataclose').click();
+   				$('.editpeopledatasubmit').prop("disabled",false);
+	   			$('.editpeopledatasubmit').html("Submit");
+	   }
+	// --------------------------------------------------------------------
+      $('#editPeopledetailsForm').on('submit', function(event){
+    	  
+    	 
+    	    if(event.target.checkValidity()){
+    	    	$('.editpeopledatasubmit').prop("disabled",true);
+    	    	$('.editpeopledatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+    	    	  
+    	    	var leadMasterID  =$('#leadMasterID').val();
+	        	var peoplename =$('#Model_peoplename').val();
+	        	var phonenumber =$('#Model_peoplecontact').val();
+	        	var branch=$("#branch").val();
+	        	var followers =$("followers").val();
+	        	var organization=$("organization").val();
+	        	 var formData = {
+	        			 id :leadMasterID,
+	        			 category : 'Lead',
+	        			 organization : organization,
+	        			 branch : branch,
+	        			 peoplename :peoplename,
+	        			 phonenumber :phonenumber,
+	        			 followers: followers
+
+				 }
+				 $.ajax({
+						type : "POST",url : "workcontactpersonsavejson",
+						data : formData, success : function(result) {
+							validationformreset();
+							var bmobj = JSON.parse(JSON.stringify(result));
+  							
+  							let temphtml= '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='+ bmobj +'" target="_blank"> <h6 class="mb-0">'+ peoplename +'</h6></a> <small class="text-muted">'+ phonenumber +'</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'+ result +'" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+							$('#contactpeopleaddidv').before(temphtml);
+							
+						},
+						error : function(e) {
+							console.log("Error" + e);
+							
+						}
+						
+					});
+	        	
+		        }	
+	    	    else
+	        	{
+	    	    	$('.editpeopledatasubmit').prop("disabled",false);
+	        	}
+   		 
+	    });
+   // --------------------------------------------------------------------
+      $('#linkPeopledetailsForm').on('submit', function(event){
+    	  
+    	 
+    	    if(event.target.checkValidity()){
+    	    	$('.linkpeopledatasubmit').prop("disabled",true);
+    	    	$('.linkpeopledatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+    	    	var leadMasterID  =$('#leadMasterID').val();
+    	    	var linkpeoplename  =$('#Model_linkpeoplename').val();
+	        	
+	        	 var formData = {
+	        			 id :leadMasterID,
+	        			 category : 'Lead',
+	        			 linkpeoplename :linkpeoplename,
+	        			
+	        	}
+				 $.ajax({
+						type : "POST",url : "workcontactlinkpersonsavejson",
+						data : formData, success : function(result) {
+							
+							var bmobj = JSON.parse(JSON.stringify(result));
+  							let primarymob=""
+  							if(bmobj.primarymob != null)
+							{
+  								primarymob=bmobj.primarymob;
+							}
+							
+  							let temphtml= '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='+ bmobj.id +'" target="_blank"> <h6 class="mb-0">'+ bmobj.peoplename +'</h6></a> <small class="text-muted">'+ primarymob +'</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'+ bmobj.id  +'" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+							$('#contactpeopleaddidv').before(temphtml);
+							validationlinkformreset();
+						},
+						error : function(e) {
+							console.log("Error" + e);
+							
+						}
+						
+					});
+	        	
+		        }	
+	    	    else
+	        	{
+	    	    	$('.linkpeopledatasubmit').prop("disabled",false);
+	        	}
+   		 
+	    });
+  				
+  				
 		   	//-------------------------------------------
 }); // Jquery
     
-		
+//------------------------------------------------------
+		function makeprimarycontactperson(elem){
+			  
+			  
+			  var formData = {
+		  		  personid: elem.getAttribute("name"),
+		  		  primarystatus : elem.checked
+		 	 }
+				 $.ajax({
+						type : "POST",url : "makeprimarycontactperson",
+						data : formData, success : function(result) {
+							
+						},
+						error : function(e) {
+							console.log("Error" + e);
+						}
+					});
+		  }
+
+//------------------------------------------------------    
+
 		// Phone
 			 const phoneMask = document.querySelector('.phone-number-otp-mask');
 

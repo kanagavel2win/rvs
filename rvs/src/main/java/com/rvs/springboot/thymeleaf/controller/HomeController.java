@@ -88,6 +88,7 @@ import com.rvs.springboot.thymeleaf.entity.Holiday;
 import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
+import com.rvs.springboot.thymeleaf.entity.LeadContact;
 import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
@@ -5636,6 +5637,55 @@ public class HomeController {
 	}
 
 	@ResponseBody
+	@PostMapping("workcontactpersonsavejson")
+	public int workcontactpersonsavejson(@RequestParam Map<String, String> params) {
+
+		int insertedkey = 0;
+		if (params.get("category").equalsIgnoreCase("Lead")) {
+			ContactPerson cp = new ContactPerson();
+			cp.setBranchid(Integer.parseInt(params.get("branch")));
+			cp.setOrganization(String.valueOf(params.get("organization")));
+			cp.setPeoplename(params.get("peoplename"));
+			cp.setCustomer_supplier("Customer");
+			cp.setFollowers(params.get("followers"));
+
+			ContactPersonContact cpc = new ContactPersonContact();
+			cpc.setDepartment("Personal");
+			cpc.setPhonenumber(params.get("phonenumber"));
+			cpc.setPrimarycontact(true);
+			List<ContactPersonContact> cpcls = new ArrayList();
+			cpcls.add(cpc);
+			cp.setContactPersonContact(cpcls);
+			int cpkey = contactPersonService.save(cp).getId();
+			 leadMasterService.insertContact(cpkey,Integer.parseInt(params.get("id")));
+			insertedkey =cpkey;
+		}
+
+		return insertedkey;
+
+	}
+
+	@ResponseBody
+	@PostMapping("workcontactlinkpersonsavejson")
+	public ContactPerson workcontactlinkpersonsavejson(@RequestParam Map<String, String> params) {
+		
+		ContactPerson cp = new ContactPerson();
+		if (params.get("category").equalsIgnoreCase("Lead")) {
+			cp = contactPersonService.findById(Integer.parseInt(params.get("linkpeoplename")));
+			leadMasterService.insertContact(cp.getId(),Integer.parseInt(params.get("id")));
+			
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
+		}
+		return cp;
+
+	}
+
+	@ResponseBody
 	@PostMapping("orgcontactlinkpersonsavejson")
 	public ContactPerson orgcontactlinkpersonsavejson(@RequestParam Map<String, String> params) {
 
@@ -5867,22 +5917,48 @@ public class HomeController {
 	public String leadview(Model theModel, @RequestParam("id") int id) {
 
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
-		
-		LeadMaster leadMaster= new LeadMaster();
-		leadMaster= leadMasterService.findById(id);
-		
-		if(!nullremover(leadMaster.getOrganization()).equalsIgnoreCase("")){
-			leadMaster.setOrganizationName(contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());			
+
+		LeadMaster leadMaster = new LeadMaster();
+		leadMaster = leadMasterService.findById(id);
+
+		if (!nullremover(String.valueOf(leadMaster.getOrganization())).equalsIgnoreCase("")) {
+			leadMaster.setOrganizationName(
+					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
 		}
-		if(!nullremover(leadMaster.getContactPerson()).equalsIgnoreCase("")){
-			leadMaster.setContactPersonName(contactPersonService.findById(Integer.parseInt(leadMaster.getContactPerson())).getPeoplename());			
+
+		if (!nullremover(String.valueOf(leadMaster.getFollower())).equalsIgnoreCase("")) {
+			final String leadfollower = leadMaster.getFollower().toString();
+
+			leadMaster
+					.setFollowername(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadfollower))
+							.collect(Collectors.toList()).get(0).getStaffName());
 		}
-		if(!nullremover(leadMaster.getFollower()).equalsIgnoreCase("")){
-			final String leadfollower=leadMaster.getFollower().toString();
-			
-			leadMaster.setFollowername(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadfollower)).collect(Collectors.toList()).get(0).getStaffName()) ;
+
+		if (!nullremover(String.valueOf(leadMaster.getReference())).equalsIgnoreCase("")) {
+			final String leadreference = leadMaster.getReference().toString();
+			ContactPerson cp = contactPersonService.findById(Integer.parseInt(leadreference));
+			leadMaster.setReferenceName(cp.getPeoplename());
 		}
-		
+
+		// ----------------------------------------------------------
+		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
+
+		for (LeadContact lc : leadMaster.getLeadContact()) {
+			ContactPerson cp = contactPersonService.findById(lc.getContactPerson());
+
+			// Set primary contact
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplist.add(cp);
+
+		}
+
+		// ----------------------------------------------------------
+		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("leadMaster", leadMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
@@ -5892,7 +5968,6 @@ public class HomeController {
 
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
-		
 
 		theModel.addAttribute("employeelist", emplist);
 		List<ContactPerson> cplis = contactPersonService.findAll();
@@ -5905,14 +5980,14 @@ public class HomeController {
 
 		theModel.addAttribute("personlist", cplis);
 		theModel.addAttribute("organizationlist", corglis);
-		
+
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		theModel.addAttribute("SOURCE", MEMBERIN);
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
 
-		//theModel.addAttribute("OrganizationContacts", corg);
+		// theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("contactPeopleList", contactPersonService.findAll());
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
@@ -5921,7 +5996,6 @@ public class HomeController {
 		return "leadview";
 	}
 
-	
 	@PostMapping("contactpersondetails")
 	@ResponseBody
 	public ContactPerson organizationlist(@RequestParam Map<String, String> params) {
@@ -5944,7 +6018,7 @@ public class HomeController {
 				obj.setPrimarymob(bcls.get(0).getPhonenumber());
 				obj.setPrimaryemail(bcls.get(0).getEmail());
 
-				if (!nullremover(obj.getOrganization()).equalsIgnoreCase("")) {
+				if (!nullremover(String.valueOf(obj.getOrganization())).equalsIgnoreCase("")) {
 					obj.setOrganizationname(
 							contactOrganizationService.findById(Integer.parseInt(obj.getOrganization())).getOrgname());
 				}
@@ -5953,37 +6027,52 @@ public class HomeController {
 		}
 		return obj;
 	}
-	
+
 	@PostMapping("leadsavestage2")
 	@ResponseBody
 	public LeadMaster leadsavestage2(@RequestParam Map<String, String> params) {
-	
+
+		System.out.println(params);
 		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(params.get("leadMasterID")));
-		
+
 		leadMaster.setTitle(params.get("Title"));
 		leadMaster.setSource(params.get("Source"));
 		leadMaster.setReference(params.get("Reference"));
 		leadMaster.setLabel(params.get("Label"));
 		leadMaster.setBranch(Integer.parseInt(params.get("branch")));
-		leadMaster.setFollower(params.get("followers"));
-		leadMaster.setNotes(params.get("notes"));		
-		
+		leadMaster.setFollower(params.get("follower"));
+		leadMaster.setNotes(params.get("notes"));
+
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
-		
-		if(!nullremover(leadMaster.getOrganization()).equalsIgnoreCase("")){
-			leadMaster.setOrganizationName(contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());			
+
+		if (!nullremover(String.valueOf(leadMaster.getOrganization())).equalsIgnoreCase("")) {
+			leadMaster.setOrganizationName(
+					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
 		}
-		if(!nullremover(leadMaster.getContactPerson()).equalsIgnoreCase("")){
-			leadMaster.setContactPersonName(contactPersonService.findById(Integer.parseInt(leadMaster.getContactPerson())).getPeoplename());			
+		/*
+		 * if(!nullremover(String.valueOf(leadMaster.getContactPerson())).
+		 * equalsIgnoreCase("")){
+		 * leadMaster.setContactPersonName(contactPersonService.findById(Integer.
+		 * parseInt(leadMaster.getContactPerson())).getPeoplename()); }
+		 */
+		if (!nullremover(String.valueOf(leadMaster.getFollower())).equalsIgnoreCase("")) {
+			final String leadfollower = leadMaster.getFollower().toString();
+
+			leadMaster
+					.setFollowername(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadfollower))
+							.collect(Collectors.toList()).get(0).getStaffName());
 		}
-		if(!nullremover(leadMaster.getFollower()).equalsIgnoreCase("")){
-			final String leadfollower=leadMaster.getFollower().toString();
-			
-			leadMaster.setFollowername(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadfollower)).collect(Collectors.toList()).get(0).getStaffName()) ;
+		if (!nullremover(String.valueOf(leadMaster.getReference())).equalsIgnoreCase("")) {
+			final String leadreference = leadMaster.getReference().toString();
+
+			leadMaster.setReferenceName(
+					emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadreference))
+							.collect(Collectors.toList()).get(0).getStaffName());
+			;
 		}
-		
+
 		leadMaster = leadMasterService.save(leadMaster);
-		
+
 		return leadMaster;
 	}
 
@@ -6075,7 +6164,12 @@ public class HomeController {
 
 		// ----------------------------
 		LeadMaster leadMaster = new LeadMaster();
-		leadMaster.setContactPerson(String.valueOf(cp.getId()));
+		List<LeadContact> lclist = new ArrayList<LeadContact>();
+		LeadContact lc = new LeadContact();
+		lc.setContactPerson(cp.getId());
+		lclist.add(lc);
+
+		leadMaster.setLeadContact(lclist);
 		leadMaster.setOrganization(cp.getOrganization());
 		leadMaster.setTitle(Title);
 		leadMaster.setSource(Source);
@@ -6122,18 +6216,20 @@ public class HomeController {
 			}
 
 		}
-
-		if (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase("")) {
-			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
-
-				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
-				contactPersonobj = cplistemp;
-				break;
-
-			}
-
-		}
-
+		/*
+		 * if
+		 * (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase
+		 * ("")) { for (String str1 :
+		 * (leadMaster.getContactPerson().toString()).split(",")) {
+		 * 
+		 * ContactPerson cplistemp =
+		 * contactPersonService.findById(Integer.parseInt(str1)); contactPersonobj =
+		 * cplistemp; break;
+		 * 
+		 * }
+		 * 
+		 * }
+		 */
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
@@ -6226,7 +6322,7 @@ public class HomeController {
 		}
 		// ----------------------------
 
-		leadMaster.setContactPerson(collectpeopleids);
+		// leadMaster.setContactPerson(collectpeopleids);
 		leadMaster.setOrganization(collectorgids);
 		leadMasterService.save(leadMaster);
 		// ----------------------------
@@ -6261,16 +6357,20 @@ public class HomeController {
 
 		}
 
-		if (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase("")) {
-			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
-
-				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
-				contactPersonobj = cplistemp;
-				break;
-
-			}
-
-		}
+		/*
+		 * if
+		 * (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase
+		 * ("")) { for (String str1 :
+		 * (leadMaster.getContactPerson().toString()).split(",")) {
+		 * 
+		 * ContactPerson cplistemp =
+		 * contactPersonService.findById(Integer.parseInt(str1)); contactPersonobj =
+		 * cplistemp; break;
+		 * 
+		 * }
+		 * 
+		 * }
+		 */
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
@@ -6390,16 +6490,20 @@ public class HomeController {
 
 		}
 
-		if (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase("")) {
-			for (String str1 : (leadMaster.getContactPerson().toString()).split(",")) {
-
-				ContactPerson cplistemp = contactPersonService.findById(Integer.parseInt(str1));
-				contactPersonobj = cplistemp;
-				break;
-
-			}
-
-		}
+		/*
+		 * if
+		 * (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase
+		 * ("")) { for (String str1 :
+		 * (leadMaster.getContactPerson().toString()).split(",")) {
+		 * 
+		 * ContactPerson cplistemp =
+		 * contactPersonService.findById(Integer.parseInt(str1)); contactPersonobj =
+		 * cplistemp; break;
+		 * 
+		 * }
+		 * 
+		 * }
+		 */
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
 		themodel.addAttribute("personlist", cplis);
 		themodel.addAttribute("organizationlist", corglis);
@@ -6772,7 +6876,7 @@ public class HomeController {
 		leadMasterService.save(leadobj);
 
 		DealMaster dealobj = new DealMaster();
-		dealobj.setContactPerson(leadobj.getContactPerson());
+		// dealobj.setContactPerson(leadobj.getContactPerson());
 		dealobj.setOrganization(leadobj.getOrganization());
 		dealobj.setTitle(leadobj.getTitle());
 		dealobj.setSource(leadobj.getSource());
@@ -6796,7 +6900,7 @@ public class HomeController {
 
 		if (dealobj.getLeadid() == 0) {
 			LeadMaster leadobj = new LeadMaster();
-			leadobj.setContactPerson(dealobj.getContactPerson());
+			// leadobj.setContactPerson(dealobj.getContactPerson());
 			leadobj.setOrganization(dealobj.getOrganization());
 			leadobj.setTitle(dealobj.getTitle());
 			leadobj.setSource(dealobj.getSource());

@@ -1,9 +1,14 @@
 package com.rvs.springboot.thymeleaf.service;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.LeadMasterRepository;
@@ -14,6 +19,8 @@ public class LeadMasterImp implements LeadMasterService {
 
 	@Autowired
 	LeadMasterRepository leadMasterRepo;
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 	
 	@Override
 	public LeadMaster save(LeadMaster obj) {
@@ -22,23 +29,21 @@ public class LeadMasterImp implements LeadMasterService {
 
 	@Override
 	public LeadMaster findById(Integer id) {
-		Optional<LeadMaster> obj=leadMasterRepo.findById(id);
-		
-		LeadMaster bm=null;
-		
-		if(obj.isPresent())
-		{	
-			bm=obj.get();
-		}else
-		{
-			throw new RuntimeException("Did find any records of leadMaster id "+ id);
+		Optional<LeadMaster> obj = leadMasterRepo.findById(id);
+
+		LeadMaster bm = null;
+
+		if (obj.isPresent()) {
+			bm = obj.get();
+		} else {
+			throw new RuntimeException("Did find any records of leadMaster id " + id);
 		}
 		return bm;
 	}
 
 	@Override
 	public List<LeadMaster> findAll() {
-		
+
 		return leadMasterRepo.findAll();
 	}
 
@@ -46,6 +51,21 @@ public class LeadMasterImp implements LeadMasterService {
 	public List<LeadMaster> saveall(List<LeadMaster> objList) {
 		return leadMasterRepo.saveAll(objList);
 	}
-		
-	
+
+	@Override
+	public int insertContact(int contactpersonid, int leadid) {
+		final String sql = "INSERT INTO lead_contact(`contact_person`, `id`) VALUES ("
+				+ contactpersonid + "," + leadid + ")";
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
 }

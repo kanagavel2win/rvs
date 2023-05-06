@@ -72,7 +72,7 @@
 	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
-
+<link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" />
 <!-- Page CSS -->
 
 <link rel="stylesheet"
@@ -90,8 +90,29 @@
 .contacteditbtn {
 	cursor: pointer;
 }
-</style>
 
+.activitytypeicon {
+	position: relative;
+	margin-left: -10px;
+}
+</style>
+<script th:inline="javascript">
+	var emplanstat = 0;
+	var emgstat = 0;
+	var languagelist = "";
+	var educationdegreelist = "";
+	var Nomineerelationshiplist = "";
+	
+	function optionshandle(radio)
+	{
+		
+		$(".ActivityTitle").attr('placeholder',radio.title +' details...');
+		$(".activitytype").removeClass("active");
+		$(".activitytype"+radio.title).addClass("active");
+	}	
+	
+	
+</script>
 </head>
 
 <body>
@@ -151,7 +172,10 @@
 												</span></li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
-													<span th:text="${leadMaster.OrganizationName}" id="Lbl_organization"></span>
+													<span th:text="${leadMaster.OrganizationName}"
+													id="Lbl_organization"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Value:</span>
+													<span th:text="${leadMaster.leadvalue}" id="Lbl_leadvalue"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
@@ -230,687 +254,1368 @@
 							</div>
 							<!--/ User Sidebar -->
 
+							<!-- User Content -->
+							<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+								<!-- User Pills -->
+								<ul class="nav nav-pills flex-column flex-md-row mb-3">
+									<li class="nav-item"><a class="nav-link active"
+										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Activity</a>
+									</li>
+									<li class="nav-item"><a class="nav-link"
+										href="app-user-view-security.html"><i
+											class="bx bx-lock-alt me-1"></i>Security</a></li>
+
+								</ul>
+								<!--/ User Pills -->
 
 
 
-						</div>
-
-						<!-- Modal -->
-
-						<!-- Edit User Modal -->
-						<div class="modal fade" id="editleadMasterdetails" tabindex="-1"
-							aria-hidden="true">
-							<div class="modal-dialog modal-lg modal-simple modal-edit-user">
-								<div class="modal-content p-3 p-md-5">
-
-									<div class="modal-body">
-										<button type="button" class="btn-close"
-											data-bs-dismiss="modal" aria-label="Close"></button>
-										<div class="text-center mb-4">
-											<h3>Edit Lead Information</h3>
-											<p>Update Lead Basic Information</p>
+								<!-- Activity Timeline -->
+								<div class="card mb-4">
+									<h5 class="card-header">
+										Activity Timeline
+										<div class="card-action-element" style="float: right">
+											<button class="btn btn-primary btn-sm" type="button"
+												data-bs-toggle="modal" data-bs-target="#addevent"
+												alt="Add New Event">
+												<i class="bx bx-plus bx-xs me-1"></i> Event
+											</button>
+											<button class="btn btn-primary btn-sm" type="button"
+												data-bs-toggle="modal" data-bs-target="#addnotes"
+												alt="Add New Notes">
+												<i class="bx bx-plus bx-xs me-1"></i> Notes
+											</button>
 										</div>
-										<form id="editleadMasterdetailsForm" th:object="${leadMaster}"
-											class="row g-3 needs-validation" onsubmit="return false">
-											<input type="hidden" th:value="${leadMaster['id']}"
-												id="leadMasterID" name="leadMasterID" />
+									</h5>
+									<div class="card-body">
+										<ul class="timeline">
+											<li class="timeline-item timeline-item-transparent"><span
+												class="timeline-point timeline-point-primary"></span>
+												<div class="timeline-event">
+													<div class="timeline-header mb-1">
+														<h6 class="mb-0">12 Invoices have been paid</h6>
+														<small class="text-muted">12 min ago</small>
+													</div>
+													<p class="mb-2">Invoices have been paid to the company</p>
+													<div class="d-flex">
+														<a href="javascript:void(0)" class="me-3"> <img
+															src="../../assets/img/icons/misc/pdf.png" alt="PDF image"
+															width="20" class="me-2" /> <span
+															class="fw-bold text-body">invoices.pdf</span>
+														</a>
+													</div>
+												</div></li>
+											<li class="timeline-item timeline-item-transparent"><span
+												class="timeline-point timeline-point-warning"></span>
+												<div class="timeline-event">
+													<div class="timeline-header mb-1">
+														<h6 class="mb-0">Client Meeting</h6>
+														<small class="text-muted">45 min ago</small>
+													</div>
+													<p class="mb-2">Project meeting with john @10:15am</p>
+													<div class="d-flex flex-wrap">
+														<div class="avatar me-3">
+															<img src="../../assets/img/avatars/3.png" alt="Avatar"
+																class="rounded-circle" />
+														</div>
+														<div>
+															<h6 class="mb-0">Lester McCarthy (Client)</h6>
+															<span>CEO of PIXINVENT</span>
+														</div>
+													</div>
+												</div></li>
+											<li class="timeline-item timeline-item-transparent"><span
+												class="timeline-point timeline-point-info"></span>
+												<div class="timeline-event">
+													<div class="timeline-header mb-1">
+														<h6 class="mb-0">Create a new project for client</h6>
+														<small class="text-muted">2 Day Ago</small>
+													</div>
+													<p class="mb-2">5 team members in a project</p>
+													<div class="d-flex align-items-center avatar-group">
+														<div class="avatar pull-up" data-bs-toggle="tooltip"
+															data-popup="tooltip-custom" data-bs-placement="top"
+															title="Vinnie Mostowy">
+															<img src="../../assets/img/avatars/5.png" alt="Avatar"
+																class="rounded-circle" />
+														</div>
+														<div class="avatar pull-up" data-bs-toggle="tooltip"
+															data-popup="tooltip-custom" data-bs-placement="top"
+															title="Marrie Patty">
+															<img src="../../assets/img/avatars/12.png" alt="Avatar"
+																class="rounded-circle" />
+														</div>
+														<div class="avatar pull-up" data-bs-toggle="tooltip"
+															data-popup="tooltip-custom" data-bs-placement="top"
+															title="Jimmy Jackson">
+															<img src="../../assets/img/avatars/9.png" alt="Avatar"
+																class="rounded-circle" />
+														</div>
+														<div class="avatar pull-up" data-bs-toggle="tooltip"
+															data-popup="tooltip-custom" data-bs-placement="top"
+															title="Kristine Gill">
+															<img src="../../assets/img/avatars/6.png" alt="Avatar"
+																class="rounded-circle" />
+														</div>
+														<div class="avatar pull-up" data-bs-toggle="tooltip"
+															data-popup="tooltip-custom" data-bs-placement="top"
+															title="Nelson Wilson">
+															<img src="../../assets/img/avatars/14.png" alt="Avatar"
+																class="rounded-circle" />
+														</div>
+													</div>
+												</div></li>
+											<li class="timeline-item timeline-item-transparent"><span
+												class="timeline-point timeline-point-success"></span>
+												<div class="timeline-event">
+													<div class="timeline-header mb-1">
+														<h6 class="mb-0">Design Review</h6>
+														<small class="text-muted">5 days Ago</small>
+													</div>
+													<p class="mb-0">Weekly review of freshly prepared
+														design for our new app.</p>
+												</div></li>
+											<li class="timeline-end-indicator"><i
+												class="bx bx-check-circle"></i></li>
+										</ul>
+									</div>
+								</div>
+								<!-- /Activity Timeline -->
+							</div>
+							<!-- User Content -->
 
 
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="Title">TITLE</label>
-												<div>
-													<input type="text" id="Title" th:field="*{Title}"
-														class="form-control  capitalize"
-														th:value="${leadMaster['Title']}" required>
 
+							<!-- Modal -->
+							<!-- Edit Notes Modal -->
+							<div class="modal fade" id="addnotes" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Activity Notes Information</h3>
+												<p>Update Notes Basic Information</p>
+											</div>
+											<form id="" class="" onsubmit="return false">
+
+												<!-- Full Editor -->
+												<div class="col-12">
+													<div class="card">
+														<h5 class="card-header"></h5>
+														<div class="card-body">
+															<div id="full-editor">
+																<h6>Quill Rich Text Editor</h6>
+																<p>Cupcake ipsum dolor sit amet. Halvah cheesecake
+																	chocolate bar gummi bears cupcake. Pie macaroon bear
+																	claw. Soufflé I love candy canes I love cotton candy I
+																	love.</p>
+															</div>
+														</div>
+													</div>
 												</div>
+												<!-- /Full Editor -->
 
-											</div>
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="followers">ORAGNIZATION</label>
-												<div>
-													<select class="form-select followers form-control "
-														id="organization" th:field="*{Organization}"
-														th:value="${leadMaster['Organization']}">
-														<option value="">-</option>
-														<th:block th:each="str :${organizationlist}">
-															<option th:value="${str.id}"
-																th:text="${str.orgname}"></option>
-														</th:block>
-													</select>
 
-													<div class="invalid-feedback">Please select follower.</div>
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
+													<button type="reset"
+														class="btn btn-label-secondary linkpeopledataclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
 												</div>
-											</div>
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="Source">SOURCE <label
-													class="emptitle additem" name="addsourcedata"><i
-														class="bx bxs-plus-circle ownstyle1"></i></label></label>
-												<div>
-													<select class="form-control  addsourcedata" id="Source"
-														th:field="*{Source}" th:value="${leadMaster['Source']}">
-														<th:block th:each="str :${SOURCE}">
-															<option th:value="${str}" th:text="${str}"></option>
-														</th:block>
-													</select>
-												</div>
-
-											</div>
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="Reference">REFERENCE</label>
-												<div>
-
-													<select class="form-control " id="Reference"
-														th:field="*{Reference}"
-														th:value="${leadMaster['Reference']}">
-														<option value="">-</option>
-														<th:block th:each="str :${personlist}">
-															<option th:value="${str.id}" th:text="${str.peoplename}"></option>
-														</th:block>
-													</select>
-												</div>
-
-											</div>
-
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="Label">LABEL </label>
-												<div>
-													<select class="form-control " id="Label"
-														th:field="*{Label}" th:value="${leadMaster['Label']}">
-														<option value="Hot">Hot</option>
-														<option value="Cold">Cold</option>
-														<option value="Warm">Warm</option>
-													</select>
-												</div>
-											</div>
-
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="phonenumber">BRANCH</label>
-												<div>
-													<select class="form-select  form-control " id="branch"
-														th:field="*{branch}" th:value="${leadMaster['branch']}"
-														required>
-														<th:block th:each="str :${branchlist}">
-															<option th:value="${str.id}" th:text="${str.BRANCH_NAME}"></option>
-														</th:block>
-													</select>
-
-												</div>
-											</div>
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="followers">FOLLOWER</label>
-												<div>
-													<select class="form-select followers form-control "
-														id="followers" th:field="*{follower}"
-														th:value="${leadMaster['follower']}" required>
-														<th:block th:each="str :${employeelist}">
-															<option th:value="${str.empMasterid}"
-																th:text="${str.StaffName}"></option>
-														</th:block>
-													</select>
-
-													<div class="invalid-feedback">Please select follower.</div>
-												</div>
-											</div>
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="notes">NOTES</label>
-												<div>
-
-													<input type="text" id="notes" th:field="*{notes}"
-														th:value="${leadMaster['notes']}"
-														class="form-control  capitalize">
-												</div>
-											</div>
-
-
-											<div class="col-12 text-center mt-4">
-												<button type="submit"
-													class="btn btn-primary editorganizationdatasubmit me-sm-3 me-1">Update</button>
-												<button type="button"
-													class="btn btn-label-secondary editorganizationdataclose"
-													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-											</div>
-										</form>
+											</form>
+										</div>
 									</div>
 								</div>
 							</div>
+							<!--/ Edit Notes Modal -->
+
+							<!-- Edit Activity Modal -->
+							<div class="modal fade" id="addevent" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close activityMasterformclose"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Activity Information</h3>
+												<p>Update Activity Basic Information</p>
+											</div>
+											<form id="activityMasterform" th:object="${activityMaster}"
+												 class="wizard-horizontal"
+												onsubmit="return false" enctype="multipart/form-data">
+												<!-- ------------------------------------------ -->
+												<div class="row">
+													<div class="col-md-12">
+														<label for="addmodel">Activity Title</label>
+														<div class="form-group">
+															<div class="position-relative">
+																<input type="hidden" th:field="*{mastercategoryid}"
+																	id="mastercategoryid" /> <input type="hidden"
+																	th:field="*{activityId}"
+																	th:value="${activityMaster['activityId']}" /> <input
+																	type="hidden" th:field="*{createdtime}"
+																	th:value="${activityMaster['createdtime']}" /> <input
+																	type="text"
+																	class="form-control   capitalize ActivityTitle"
+																	placeholder="Task details..."
+																	th:field="*{activitytitle}"
+																	th:value="${activityMaster['activitytitle']}" />
+
+															</div>
+														</div>
+													</div>
+													<div class="col-12">
+														<div class="form-group">
+															<div class="btn-group btn-group-toggle mb-1"
+																data-toggle="buttons">
+																<label
+																	th:class="'btn btn-outline-primary  activitytype activitytypeTask '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Task"> <input
+																	type="radio" name="options"
+																	onclick="optionshandle(this);"
+																	th:field="*{activitytype}" value="Task" id="radio1"
+																	style="visibility: hidden"><i
+																	class="bx bx-alarm-add activitytypeicon"></i>
+																</label> <label
+																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Call"> <input
+																	type="radio" name="options"
+																	onclick="optionshandle(this);"
+																	th:field="*{activitytype}" value="Call" id="radio2"
+																	style="visibility: hidden"><i
+																	class="bx bx-phone-call activitytypeicon"></i>
+																</label> <label
+																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Meetings">
+																	<input type="radio" onclick="optionshandle(this);"
+																	name="options" th:field="*{activitytype}"
+																	value="Meetings" id="radio3" style="visibility: hidden"><i
+																	class="bx bx-group activitytypeicon"></i>
+																</label>
+															</div>
+														</div>
+
+
+													</div>
+
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">Start Date</label>
+															<div class="position-relative has-icon-left">
+																<input type="date" class="form-control  "
+																	th:field="*{startdate}"
+																	th:value="${activityMaster['startdate']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">Start Time</label>
+															<div class="position-relative has-icon-left">
+																<input type="time" class="form-control  "
+																	th:field="*{starttime}"
+																	th:value="${activityMaster['starttime']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">End Date</label>
+															<div class="position-relative has-icon-left">
+																<input type="date" class="form-control  "
+																	th:field="*{enddate}"
+																	th:value="${activityMaster['enddate']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">End Time</label>
+															<div class="position-relative has-icon-left">
+																<input type="time" class="form-control  "
+																	th:field="*{endtime}"
+																	th:value="${activityMaster['endtime']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-12">
+														<!-- Accordion start -->
+														<div class="col-md">
+
+															<div class="accordion mt-3 accordion-header-primary"
+																id="accordionStyle1">
+																<div class="accordion-item card"
+																	style="border: 1px solid #d4d8dd;">
+																	<h2 class="accordion-header">
+																		<button type="button"
+																			class="accordion-button collapsed card-header"
+																			data-bs-toggle="collapse"
+																			data-bs-target="#accordionStyle1-1"
+																			aria-expanded="false">
+																			<span class="collapse-title"> <i
+																				class="bx bx-calendar-plus align-middle"></i> <span
+																				class="align-middle"
+																				style="color: var(- -bs-modal-color); font-family: var(- -bs-body-font-family);">Add
+																					Guest,Location,Description,Note</span>
+																			</span>
+																		</button>
+																	</h2>
+
+																	<div id="accordionStyle1-1"
+																		class="accordion-collapse collapse"
+																		data-bs-parent="#accordionStyle1">
+																		<div class="accordion-body">
+																			<div class="card-body row">
+																				<div class="col-md-6">
+																					<div class="form-group">
+																						<label for="addmodel">Staff</label>
+																						<div class="position-relative  has-icon-left">
+																							<fieldset class="form-group">
+																								<select id="guestid"
+																									class="select2 form-select guestStaff"
+																									multiple>
+																									<th:block th:each="str :${employeelist}">
+																										<option th:value="${str.empMasterid}"
+																											th:text="${str.StaffName}"></option>
+																									</th:block>
+																								</select>
+
+																							</fieldset>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-6">
+																					<div class="form-group">
+																						<label for="addmodel">Location</label>
+																						<div class="position-relative  has-icon-left">
+																							<fieldset class="form-group">
+																								<input type="text" id="notes"
+																									class="form-control  capitalize"
+																									th:field="*{location}"
+																									th:value="${activityMaster['location']}">
+
+																							</fieldset>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-6">
+																					<div class="form-group">
+																						<label for="addmodel">Description </label><span
+																							class="notes-sm">(Description visible to
+																							Guest)</span>
+																						<div class="position-relative  has-icon-left">
+																							<fieldset class="form-group">
+																								<textarea class="form-control " rows="4"
+																									th:field="*{description}"
+																									th:value="${activityMaster['description']}">
+																													</textarea>
+
+																							</fieldset>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-6">
+																					<div class="form-group">
+																						<label for="addmodel">Note </label><span
+																							class="notes-sm">(Note visible only For
+																							You)</span>
+																						<div class="position-relative  has-icon-left">
+																							<fieldset class="form-group">
+																								<textarea class="form-control " rows="4"
+																									th:field="*{notes}"
+																									th:value="${activityMaster['notes']}">
+																													</textarea>
+
+																							</fieldset>
+																						</div>
+																					</div>
+																				</div>
+
+
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+
+														<!-- Accordion end -->
+													</div>
+
+
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<label for="addmodel">Followers</label>
+														<div class="position-relative  has-icon-left">
+															<fieldset class="form-group">
+																<select class="select2 form-control "
+																	 id="activityfollowers"
+																	>
+																	<th:block th:each="str :${employeelist}">
+																		<option th:value="${str.empMasterid}"
+																			th:text="${str.StaffName}"></option>
+																	</th:block>
+																</select>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label for="addmodel">Files</label>
+														<div class="position-relative has-icon-left">
+															<input type="file" class="form-control  "
+																 id="activityfiles"/>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<br />
+													<div class="checkbox checkbox-success checkbox-glow">
+														<input type="checkbox" id="checkboxGlow1" name="status">
+														<label for="checkboxGlow1">Make as done</label>
+
+													</div>
+												</div>
+												<div class="col-md-12">
+													<br />
+													<button type="reset" class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
+														style="padding-right: 20px;">Reset</button>
+													<button type="submit" class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
+														style="float: right">Save</button>
+
+
+												</div>
+												<!-- ------------------------------------------ -->
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!--/ Edit Activity Modal -->
+
+							<!-- Edit User Modal -->
+							<div class="modal fade" id="editleadMasterdetails" tabindex="-1"
+								aria-hidden="true">
+								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Edit Lead Information</h3>
+												<p>Update Lead Basic Information</p>
+											</div>
+											<form id="editleadMasterdetailsForm"
+												th:object="${leadMaster}" class="row g-3 needs-validation"
+												onsubmit="return false">
+												<input type="hidden" th:value="${leadMaster['id']}"
+													id="leadMasterID" name="leadMasterID" />
+
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Title">TITLE</label>
+													<div>
+														<input type="text" id="Title" th:field="*{Title}"
+															class="form-control  capitalize"
+															th:value="${leadMaster['Title']}" required>
+
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="followers">ORAGNIZATION</label>
+													<div>
+														<select class="form-select followers form-control "
+															id="organization" th:field="*{Organization}"
+															th:value="${leadMaster['Organization']}">
+															<option value="">-</option>
+															<th:block th:each="str :${organizationlist}">
+																<option th:value="${str.id}" th:text="${str.orgname}"></option>
+															</th:block>
+														</select>
+
+														<div class="invalid-feedback">Please select
+															follower.</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Source">SOURCE <label
+														class="emptitle additem" name="addsourcedata"><i
+															class="bx bxs-plus-circle ownstyle1"></i></label></label>
+													<div>
+														<select class="form-control  addsourcedata" id="Source"
+															th:field="*{Source}" th:value="${leadMaster['Source']}">
+															<th:block th:each="str :${SOURCE}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Source">VALUE</label>
+													<div>
+														<input type="number" id="leadvalue"
+															th:field="*{leadvalue}" class="form-control  capitalize"
+															th:value="${leadMaster['leadvalue']}">
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Reference">REFERENCE</label>
+													<div>
+
+														<select class="form-control " id="Reference"
+															th:field="*{Reference}"
+															th:value="${leadMaster['Reference']}">
+															<option value="">-</option>
+															<th:block th:each="str :${personlist}">
+																<option th:value="${str.id}" th:text="${str.peoplename}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Label">LABEL </label>
+													<div>
+														<select class="form-control " id="Label"
+															th:field="*{Label}" th:value="${leadMaster['Label']}">
+															<option value="Hot">Hot</option>
+															<option value="Cold">Cold</option>
+															<option value="Warm">Warm</option>
+														</select>
+													</div>
+												</div>
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="phonenumber">BRANCH</label>
+													<div>
+														<select class="form-select  form-control " id="branch"
+															th:field="*{branch}" th:value="${leadMaster['branch']}"
+															required>
+															<th:block th:each="str :${branchlist}">
+																<option th:value="${str.id}"
+																	th:text="${str.BRANCH_NAME}"></option>
+															</th:block>
+														</select>
+
+													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="followers">FOLLOWER</label>
+													<div>
+														<select class="form-select followers form-control "
+															id="followers" th:field="*{follower}"
+															th:value="${leadMaster['follower']}" required>
+															<th:block th:each="str :${employeelist}">
+																<option th:value="${str.empMasterid}"
+																	th:text="${str.StaffName}"></option>
+															</th:block>
+														</select>
+
+														<div class="invalid-feedback">Please select
+															follower.</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="notes">NOTES</label>
+													<div>
+
+														<input type="text" id="notes" th:field="*{notes}"
+															th:value="${leadMaster['notes']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary editorganizationdatasubmit me-sm-3 me-1">Update</button>
+													<button type="button"
+														class="btn btn-label-secondary editorganizationdataclose"
+														data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Edit User Modal -->
+							<!-- Edit People Modal -->
+							<div class="modal fade" id="addNewperson" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Create People Information</h3>
+												<p>Update People Basic Information</p>
+											</div>
+											<form id="editPeopledetailsForm"
+												class="row g-3 needs-validation" onsubmit="return false">
+
+												<div class="col-12 ">
+
+
+													<label class="form-label" for="Model_peoplename">Name</label>
+													<input type="text" class="form-control"
+														id="Model_peoplename" required />
+													<div class="invalid-feedback">Please enter Person
+														Name.</div>
+												</div>
+
+												<div class="col-12">
+													<label class="form-label" for="Model_peoplecontact">Contact
+														Number </label> <input type="text"
+														class="form-control phone-number-otp-mask" pattern=".{12}"
+														id="Model_peoplecontact" required />
+													<div class="invalid-feedback">Please enter Contact.</div>
+												</div>
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary editpeopledatasubmit me-sm-3 me-1">ADD</button>
+													<button type="reset"
+														class="btn btn-label-secondary editpeopledataclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Edit People Modal -->
+							<!-- Edit People Modal -->
+							<div class="modal fade" id="linkperson" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Link People Information</h3>
+												<p>Update People Basic Information</p>
+											</div>
+											<form id="linkPeopledetailsForm" class="row g-3"
+												onsubmit="return false">
+
+												<div class="col-12 ">
+
+
+													<label class="form-label" for="Model_linkpeoplename">People
+														Name</label> <select class="form-select"
+														aria-label="Default select example"
+														id="Model_linkpeoplename" required>
+
+														<option th:each="obj : ${contactPeopleList}"
+															th:value="${obj.id}" th:text="${obj.peoplename}"></option>
+
+													</select>
+
+												</div>
+
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
+													<button type="reset"
+														class="btn btn-label-secondary linkpeopledataclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Edit People Modal -->
+
+							<!--scrolling content Modal -->
+							<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
+								role="dialog" aria-labelledby="ItemStatusScrollableTitle"
+								aria-hidden="true">
+								<div class="modal-dialog modal-dialog-scrollable"
+									role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="addmodel" id="additemalltxt"></label>
+													<div class="position-relative">
+														<fieldset class="form-group">
+															<input type="text" id="additemall" name="addmodel"
+																class="form-control capitalize">
+														</fieldset>
+													</div>
+												</div>
+											</div>
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-light-secondary"
+												data-bs-dismiss="modal">
+												<i class="bx bx-x d-block d-sm-none"></i> <span
+													class="d-none d-sm-block">Close</span>
+											</button>
+											<button type="button" class="btn btn-primary ml-1"
+												id="additemallsavebtn">
+												<i class="bx bx-check d-block d-sm-none"></i> <span
+													class="d-none d-sm-block">ADD</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--scrolling content Modal -->
+
+							<!-- /Modal -->
 						</div>
-						<!--/ Edit User Modal -->
-						<!-- Edit People Modal -->
-						<div class="modal fade" id="addNewperson" tabindex="-1"
-							aria-hidden="true">
+						<!-- / Content -->
+
+						<!-- Footer -->
+						<footer class="content-footer footer bg-footer-theme">
 							<div
-								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-								<div class="modal-content p-3 p-md-5">
-
-									<div class="modal-body">
-										<button type="button" class="btn-close"
-											data-bs-dismiss="modal" aria-label="Close"></button>
-										<div class="text-center mb-4">
-											<h3>Create People Information</h3>
-											<p>Update People Basic Information</p>
-										</div>
-										<form id="editPeopledetailsForm"
-											class="row g-3 needs-validation" onsubmit="return false">
-
-											<div class="col-12 ">
-
-
-												<label class="form-label" for="Model_peoplename">Name</label>
-												<input type="text" class="form-control"
-													id="Model_peoplename" required />
-												<div class="invalid-feedback">Please enter Person
-													Name.</div>
-											</div>
-
-											<div class="col-12">
-												<label class="form-label" for="Model_peoplecontact">Contact
-													Number </label> <input type="text"
-													class="form-control phone-number-otp-mask" pattern=".{12}"
-													id="Model_peoplecontact" required />
-												<div class="invalid-feedback">Please enter Contact.</div>
-											</div>
-
-											<div class="col-12 text-center mt-4">
-												<button type="submit"
-													class="btn btn-primary editpeopledatasubmit me-sm-3 me-1">ADD</button>
-												<button type="reset"
-													class="btn btn-label-secondary editpeopledataclose"
-													data-bs-dismiss="modal" aria-label="Close">
-													Cancel</button>
-											</div>
-										</form>
-									</div>
-								</div>
+								class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+								<div class="mb-2 mb-md-0"></div>
+								<div></div>
 							</div>
-						</div>
-						<!--/ Edit People Modal -->
-						<!-- Edit People Modal -->
-						<div class="modal fade" id="linkperson" tabindex="-1"
-							aria-hidden="true">
-							<div
-								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-								<div class="modal-content p-3 p-md-5">
+						</footer>
+						<!-- / Footer -->
 
-									<div class="modal-body">
-										<button type="button" class="btn-close"
-											data-bs-dismiss="modal" aria-label="Close"></button>
-										<div class="text-center mb-4">
-											<h3>Link People Information</h3>
-											<p>Update People Basic Information</p>
-										</div>
-										<form id="linkPeopledetailsForm" class="row g-3"
-											onsubmit="return false">
-
-											<div class="col-12 ">
-
-
-												<label class="form-label" for="Model_linkpeoplename">People
-													Name</label> <select class="form-select"
-													aria-label="Default select example"
-													id="Model_linkpeoplename" required>
-
-													<option th:each="obj : ${contactPeopleList}"
-														th:value="${obj.id}" th:text="${obj.peoplename}"></option>
-
-												</select>
-
-											</div>
-
-
-											<div class="col-12 text-center mt-4">
-												<button type="submit"
-													class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
-												<button type="reset"
-													class="btn btn-label-secondary linkpeopledataclose"
-													data-bs-dismiss="modal" aria-label="Close">
-													Cancel</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!--/ Edit People Modal -->
-
-						<!--scrolling content Modal -->
-						<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
-							role="dialog" aria-labelledby="ItemStatusScrollableTitle"
-							aria-hidden="true">
-							<div class="modal-dialog modal-dialog-scrollable" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
-										<button type="button" class="btn-close"
-											data-bs-dismiss="modal" aria-label="Close"></button>
-									</div>
-									<div class="modal-body">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label for="addmodel" id="additemalltxt"></label>
-												<div class="position-relative">
-													<fieldset class="form-group">
-														<input type="text" id="additemall" name="addmodel"
-															class="form-control capitalize">
-													</fieldset>
-												</div>
-											</div>
-										</div>
-
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-light-secondary"
-											data-bs-dismiss="modal">
-											<i class="bx bx-x d-block d-sm-none"></i> <span
-												class="d-none d-sm-block">Close</span>
-										</button>
-										<button type="button" class="btn btn-primary ml-1"
-											id="additemallsavebtn">
-											<i class="bx bx-check d-block d-sm-none"></i> <span
-												class="d-none d-sm-block">ADD</span>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!--scrolling content Modal -->
-						<!-- /Modal -->
+						<div class="content-backdrop fade"></div>
 					</div>
-					<!-- / Content -->
-
-					<!-- Footer -->
-					<footer class="content-footer footer bg-footer-theme">
-						<div
-							class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-							<div class="mb-2 mb-md-0"></div>
-							<div></div>
-						</div>
-					</footer>
-					<!-- / Footer -->
-
-					<div class="content-backdrop fade"></div>
+					<!-- Content wrapper -->
 				</div>
-				<!-- Content wrapper -->
+				<!-- / Layout page -->
 			</div>
-			<!-- / Layout page -->
+
+			<!-- Overlay -->
+			<div class="layout-overlay layout-menu-toggle"></div>
+
+			<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+			<div class="drag-target"></div>
 		</div>
-
-		<!-- Overlay -->
-		<div class="layout-overlay layout-menu-toggle"></div>
-
-		<!-- Drag Target Area To SlideIn Menu On Small Screens -->
-		<div class="drag-target"></div>
-	</div>
-	<!-- / Layout wrapper -->
+		<!-- / Layout wrapper -->
 
 
-	<!-- Core JS -->
-	<!-- build:js assets/vendor/js/core.js -->
-	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
-	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
-	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+		<!-- Core JS -->
+		<!-- build:js assets/vendor/js/core.js -->
+		<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+		<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+		<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
-	<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+		<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
-	<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
-	<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+		<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+		<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 
-	<script th:src="@{/assets/vendor/js/menu.js}"></script>
-	<!-- endbuild -->
+		<script th:src="@{/assets/vendor/js/menu.js}"></script>
+		<!-- endbuild -->
 
-	<!-- Vendors JS -->
-	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-	<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
-	<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
-	<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
-	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
-	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
-	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
-	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
-	<!-- Form Validation -->
-	<script
-		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
-
-	<!-- Main JS -->
-	<script th:src="@{/assets/js/main.js}"></script>
-
-	<!-- Flat Picker -->
-	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
-	<script
-		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
-	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
-	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
-	<!-- Page JS -->
-	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
-	<script th:src="@{/assets/js/app-user-view.js}"></script>
-	<script th:src="@{/assets/js/app-user-view-account.js}"></script>
+		<!-- Vendors JS -->
+		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+		<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+		<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+		<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+		<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+		<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
 
 
+		<script th:src="@{/assets/vendor/libs/quill/quill.js}"></script>
+		<!-- Form Validation -->
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
 
-	<script>
-    $(document).ready(function() {  
-    	//--------------------------------------------------------------------------------------------------------------------------------------
-    	 
-		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+		<!-- Main JS -->
+		<script th:src="@{/assets/js/main.js}"></script>
 
-		$(function() {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
-			$(document).ajaxSend(function(e, xhr, options) {
-				xhr.setRequestHeader(header, token);
-			});
-		});
-		// --------------------------------------------------------------------
-		//--------------------------------------------------------------------------------------------------------------------------------------
-    	// Custom list & inline suggestion
-	  //------------------------------------------------------
-	   $.ajax({
-							type : "GET",url : "leadcplist",
-							data : "", success : function(result) {
+		<!-- Flat Picker -->
+		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+		<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+		<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+		<script th:src="@{/assets/js/forms-selects.js}"></script>
+		<!-- Page JS -->
+		<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
+		<script th:src="@{/assets/js/app-user-view.js}"></script>
+		<script th:src="@{/assets/js/app-user-view-account.js}"></script>
+		<script th:src="@{/assets/js/forms-editors.js}"></script>
+
+
+		<script>
+			$(document)
+					.ready(
+							function() {
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								var ids="[[${leadMaster['id']}]]";
+								$("#mastercategoryid").val(ids);
+								//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+								$(function() {
+									var token = $("meta[name='_csrf']").attr(
+											"content");
+									var header = $("meta[name='_csrf_header']")
+											.attr("content");
+									$(document).ajaxSend(
+											function(e, xhr, options) {
+												xhr.setRequestHeader(header,
+														token);
+											});
+								});
+								// --------------------------------------------------------------------
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								// Custom list & inline suggestion
+								//------------------------------------------------------
+								$
+										.ajax({
+											type : "GET",
+											url : "leadcplist",
+											data : "",
+											success : function(result) {
+
+												const ContactPersonTagifyEl = document
+														.querySelector('#ContactPersonTagify');
+
+												const whitelist = result;
+												// Inline
+												let ContactPersonTagify = new Tagify(
+														ContactPersonTagifyEl,
+														{
+															whitelist : whitelist,
+															maxTags : 1,
+															dropdown : {
+																maxItems : 20,
+																classname : 'tags-inline',
+																enabled : 0,
+																closeOnSelect : false
+															}
+														});
+
+											}
+										});
+								//--------------------------------------------------------------------------------------  
+
+								function validationformreset() {
+
+									$('.editorganizationdataclose').click();
+									$('.editorganizationdatasubmit').prop(
+											"disabled", false);
+									$('.editorganizationdatasubmit').html(
+											"Submit");
+								}
+								function validationlinkformreset() {
+									$('.linkpeopledataclose').click();
+									$('.linkpeopledatasubmit').prop("disabled",
+											false);
+									$('.linkpeopledatasubmit').html("Submit");
+								}
+								function validationactivityeventformreset() {
+									$('.activityMasterformreset').click();
+									$('.activityMasterformclose').click();									
+									$('.activityMasterformsubmit').prop("disabled",
+											false);
+									$('.activityMasterformsubmit').html("Submit");
+								}
+								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
-								const ContactPersonTagifyEl = document.querySelector('#ContactPersonTagify');
-								 
-								  const whitelist = result;
-								  // Inline
-								  let ContactPersonTagify = new Tagify(ContactPersonTagifyEl, {
-								    whitelist: whitelist,
-								    maxTags: 1,
-								    dropdown: {
-								      maxItems: 20,
-								      classname: 'tags-inline',
-								      enabled: 0,
-								      closeOnSelect: false
-								    }
-								  });
-								
-							}
-	   });
-	 //--------------------------------------------------------------------------------------  
-	  
-   		function validationformreset()
-	   {
-			
-   				$('.editorganizationdataclose').click();
-   				$('.editorganizationdatasubmit').prop("disabled",false);
-	   			$('.editorganizationdatasubmit').html("Submit");
-	   }
-   		function validationlinkformreset()
-  	   {
-  			$('.linkpeopledataclose').click();
-    			$('.linkpeopledatasubmit').prop("disabled",false);
-  	   		$('.linkpeopledatasubmit').html("Submit");
-  	   }
-		//--------------------------------------------------------------------------------------------------------------------------------------		 
-	
+								$('#activityMasterform').on('submit',function(event) {
+											const modalFile =document.getElementById("activityfiles");
+											if (event.target.checkValidity()) {
+												$('.activityMasterformsubmit').prop("disabled",true);
+												$('.activityMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+												const formData = new FormData(
+														document
+																.querySelector("#activityMasterform"));
+												formData.append("File_Attach",modalFile.files[0]);
+												formData.append("guestid",$("#guestid").val());
+												formData.append("activityfollowers",$("#activityfollowers").val());
+												formData.append("Activitycategory","Activity");
+												formData.append("duedate","");
+												formData.append("htmlnotes","");													
+												formData.append("mastercategory","Lead");
+												formData.append("mastercategoryid",$("#mastercategoryid").val());
+												 for (var pair of formData.entries()) {
+												   console.log(pair); 
+												} 
+												 $.ajax({
+													type : "POST",
+													url : "activitysave",
+													processData : false,
+													contentType : false,
+													data : formData,
+													success : function(
+															result) {
+														
+														validationactivityeventformreset();
+														
 
-		 $('#editleadMasterdetailsForm').on('submit', function(event){
-			
-        	 
-			 if(event.target.checkValidity()){
-		    	    	$('.editorganizationdatasubmit').prop("disabled",true);
-		    	    	$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-		    	    	const formData= new FormData(document.querySelector("#editleadMasterdetailsForm"));
-		    	    	
-		           	 /* for (var pair of formData.entries()) {
-		           	    console.log(pair); 
-		           	} */
-		  				 $.ajax({
-		  						type : "POST",url : "leadsavestage2",
-		  						processData: false,
-		  					    contentType: false,
-		  						data :formData, success : function(result) {
-		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							//console.log(bmobj);
-		  							
-		  							if(bmobj.label =="Hot")
-		  							{
-		  								$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
-		  							}else if(bmobj.label =="Warm")
-		  							{
-		  								$('#Lbl_Label').html("<span class='badge bg-warning'>Warm</span>");
-		  							}else
-	  								{
-		  								$('#Lbl_Label').html("<span class='badge bg-primary'>Cold</span>");
-	  								}
-		  							
-		  							$('#Lbl_Title').text(bmobj.title);
-		  							$('#Lbl_Source').text(bmobj.source);
-		  							$('#Lbl_follower').text(bmobj.followername);
-		  							$('#Lbl_notes').text(bmobj.notes);
-		  							$('#Lbl_Reference').text(bmobj.referencename);
-		  							$("#Lbl_organization").text(bmobj.organization);
-		  							
-		  							$('.editorganizationdataclose').click();
-		  			   				$('.editorganizationdatasubmit').prop("disabled",false);
-		  				   			$('.editorganizationdatasubmit').html("Submit");
-			  						 
-		  						},
-		  						error : function(e) {
-		  							console.log("Error" + e);
-		  						}
-		  					});
-		  	        }	
-		    	    else
-		        	{
-		    	    	$('.editorganizationdatasubmit').prop("disabled",false);
-		        	}
+													},
+													error : function(e) {
+														console.log("Error"+ e);
+													}
+												});
+											} else {
+												$('.activityMasterformsubmit').prop("disabled",false);
+											}
 
-	   		 
-		    	
-		      });
-		// --------------------------------------------------------------------
-	     	
-  				// --------------------------------------------------------------------
-  				
-  				$(".additem").click(function() {
-					var name = $(this).attr('name');
-					var labeltext = "";
-					if (name == "addmodalcontacttype") {
-						labeltext = "New Contact Type";
-					}else if(name == "addmodaldocumenttype")
-					{
-						labeltext = "New Document Type";
-					}else if(name == "addModel_Source")
-					{
-						labeltext = "New Industry Type";
+										});
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$('#editleadMasterdetailsForm')
+										.on(
+												'submit',
+												function(event) {
+
+													if (event.target
+															.checkValidity()) {
+														$(
+																'.editorganizationdatasubmit')
+																.prop(
+																		"disabled",
+																		true);
+														$(
+																'.editorganizationdatasubmit')
+																.html(
+																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+														const formData = new FormData(
+																document
+																		.querySelector("#editleadMasterdetailsForm"));
+
+														/* for (var pair of formData.entries()) {
+														   console.log(pair); 
+														} */
+														$
+																.ajax({
+																	type : "POST",
+																	url : "leadsavestage2",
+																	processData : false,
+																	contentType : false,
+																	data : formData,
+																	success : function(
+																			result) {
+																		var bmobj = JSON
+																				.parse(JSON
+																						.stringify(result));
+																		//console.log(bmobj);
+
+																		if (bmobj.label == "Hot") {
+																			$(
+																					'#Lbl_Label')
+																					.html(
+																							"<span class='badge bg-danger'>Hot</span>");
+																		} else if (bmobj.label == "Warm") {
+																			$(
+																					'#Lbl_Label')
+																					.html(
+																							"<span class='badge bg-warning'>Warm</span>");
+																		} else {
+																			$(
+																					'#Lbl_Label')
+																					.html(
+																							"<span class='badge bg-primary'>Cold</span>");
+																		}
+
+																		$(
+																				'#Lbl_Title')
+																				.text(
+																						bmobj.title);
+																		$(
+																				'#Lbl_Source')
+																				.text(
+																						bmobj.source);
+																		$(
+																				'#Lbl_follower')
+																				.text(
+																						bmobj.followername);
+																		$(
+																				'#Lbl_notes')
+																				.text(
+																						bmobj.notes);
+																		$(
+																				'#Lbl_Reference')
+																				.text(
+																						bmobj.referencename);
+																		$(
+																				"#Lbl_organization")
+																				.text(
+																						bmobj.organization);
+																		$(
+																				"#Lbl_leadvalue")
+																				.text(
+																						bmobj.leadvalue);
+
+																		$(
+																				'.editorganizationdataclose')
+																				.click();
+																		$(
+																				'.editorganizationdatasubmit')
+																				.prop(
+																						"disabled",
+																						false);
+																		$(
+																				'.editorganizationdatasubmit')
+																				.html(
+																						"Submit");
+
+																	},
+																	error : function(
+																			e) {
+																		console
+																				.log("Error"
+																						+ e);
+																	}
+																});
+													} else {
+														$(
+																'.editorganizationdatasubmit')
+																.prop(
+																		"disabled",
+																		false);
+													}
+
+												});
+								// --------------------------------------------------------------------
+
+								// --------------------------------------------------------------------
+
+								$(".additem").click(function() {
+									var name = $(this).attr('name');
+									var labeltext = "";
+									if (name == "addmodalcontacttype") {
+										labeltext = "New Contact Type";
+									} else if (name == "addmodaldocumenttype") {
+										labeltext = "New Document Type";
+									} else if (name == "addModel_Source") {
+										labeltext = "New Industry Type";
+									}
+
+									$('#additemalltxt').text(labeltext);
+									$('#ItemStatusScrollable').modal('toggle');
+
+								});
+
+								$("#additemallsavebtn")
+										.click(
+												function() {
+													if ($("#additemall").val() != '') {
+														var name = $(
+																'#additemalltxt')
+																.text();
+														var labeltext = "";
+														if (name == "New Contact Type") {
+															labeltext = "modalcontacttype";
+														} else if (name == "New Document Type") {
+															labeltext = "modalDocumenttype";
+														} else if (name == "New Industry Type") {
+															labeltext = "addModel_Source";
+														}
+
+														$('.' + labeltext)
+																.append(
+																		"<option value='"
+																				+ $(
+																						"#additemall")
+																						.val()
+																				+ "'>"
+																				+ $(
+																						"#additemall")
+																						.val()
+																				+ "</option>");
+														//$('.' + labeltext).val($("#additemall").val());
+														$("#additemall")
+																.val('');
+														$(
+																'#ItemStatusScrollable')
+																.modal('toggle');
+													}
+												});
+
+								// --------------------------------------------------------------------
+
+								function validationformreset() {
+									$('.editpeopledataclose').click();
+									$('.editpeopledatasubmit').prop("disabled",
+											false);
+									$('.editpeopledatasubmit').html("Submit");
+								}
+								// --------------------------------------------------------------------
+								$('#editPeopledetailsForm')
+										.on(
+												'submit',
+												function(event) {
+
+													if (event.target
+															.checkValidity()) {
+														$(
+																'.editpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		true);
+														$(
+																'.editpeopledatasubmit')
+																.html(
+																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+
+														var leadMasterID = $(
+																'#leadMasterID')
+																.val();
+														var peoplename = $(
+																'#Model_peoplename')
+																.val();
+														var phonenumber = $(
+																'#Model_peoplecontact')
+																.val();
+														var branch = $(
+																"#branch")
+																.val();
+														var followers = $(
+																"followers")
+																.val();
+														var organization = $(
+																"organization")
+																.val();
+														var formData = {
+															id : leadMasterID,
+															category : 'Lead',
+															organization : organization,
+															branch : branch,
+															peoplename : peoplename,
+															phonenumber : phonenumber,
+															followers : followers
+
+														}
+														$
+																.ajax({
+																	type : "POST",
+																	url : "workcontactpersonsavejson",
+																	data : formData,
+																	success : function(
+																			result) {
+																		validationformreset();
+																		var bmobj = JSON
+																				.parse(JSON
+																						.stringify(result));
+
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																				+ bmobj
+																				+ '" target="_blank"> <h6 class="mb-0">'
+																				+ peoplename
+																				+ '</h6></a> <small class="text-muted">'
+																				+ phonenumber
+																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
+																				+ result
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																		$(
+																				'#contactpeopleaddidv')
+																				.before(
+																						temphtml);
+
+																	},
+																	error : function(
+																			e) {
+																		console
+																				.log("Error"
+																						+ e);
+
+																	}
+
+																});
+
+													} else {
+														$(
+																'.editpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		false);
+													}
+
+												});
+								// --------------------------------------------------------------------
+								$('#linkPeopledetailsForm')
+										.on(
+												'submit',
+												function(event) {
+
+													if (event.target
+															.checkValidity()) {
+														$(
+																'.linkpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		true);
+														$(
+																'.linkpeopledatasubmit')
+																.html(
+																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+														var leadMasterID = $(
+																'#leadMasterID')
+																.val();
+														var linkpeoplename = $(
+																'#Model_linkpeoplename')
+																.val();
+
+														var formData = {
+															id : leadMasterID,
+															category : 'Lead',
+															linkpeoplename : linkpeoplename,
+
+														}
+														$
+																.ajax({
+																	type : "POST",
+																	url : "workcontactlinkpersonsavejson",
+																	data : formData,
+																	success : function(
+																			result) {
+
+																		var bmobj = JSON
+																				.parse(JSON
+																						.stringify(result));
+																		let primarymob = ""
+																		if (bmobj.primarymob != null) {
+																			primarymob = bmobj.primarymob;
+																		}
+
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																				+ bmobj.id
+																				+ '" target="_blank"> <h6 class="mb-0">'
+																				+ bmobj.peoplename
+																				+ '</h6></a> <small class="text-muted">'
+																				+ primarymob
+																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
+																				+ bmobj.id
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																		$(
+																				'#contactpeopleaddidv')
+																				.before(
+																						temphtml);
+																		validationlinkformreset();
+																	},
+																	error : function(
+																			e) {
+																		console
+																				.log("Error"
+																						+ e);
+
+																	}
+
+																});
+
+													} else {
+														$(
+																'.linkpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		false);
+													}
+
+												});
+
+								//-------------------------------------------
+							}); // Jquery
+
+			//------------------------------------------------------
+			function makeprimarycontactperson(elem) {
+
+				var formData = {
+					personid : elem.getAttribute("name"),
+					primarystatus : elem.checked
+				}
+				$.ajax({
+					type : "POST",
+					url : "makeprimarycontactperson",
+					data : formData,
+					success : function(result) {
+
+					},
+					error : function(e) {
+						console.log("Error" + e);
 					}
-					
-					$('#additemalltxt').text(labeltext);
-					$('#ItemStatusScrollable').modal('toggle');
-
 				});
+			}
 
-				$("#additemallsavebtn").click(
-						function() {
-					if ($("#additemall").val() != '') {
-						var name = $('#additemalltxt').text();
-						var labeltext = "";
-						if (name == "New Contact Type") {
-							labeltext = "modalcontacttype";
-						}else if (name == "New Document Type") {
-							labeltext = "modalDocumenttype";
-						}else if (name == "New Industry Type") {
-							labeltext = "addModel_Source";
-						}
-						
-						$('.' + labeltext).append(
-								"<option value='"
-										+ $("#additemall").val()
-										+ "'>"
-										+ $("#additemall").val()
-										+ "</option>");
-						//$('.' + labeltext).val($("#additemall").val());
-						$("#additemall").val('');
-						$('#ItemStatusScrollable').modal(
-								'toggle');
-					}
+			//------------------------------------------------------    
+
+			// Phone
+			const phoneMask = document.querySelector('.phone-number-otp-mask');
+
+			// Phone Number Input Mask
+			if (phoneMask) {
+				new Cleave(phoneMask, {
+					phone : true,
+					phoneRegionCode : 'US'
 				});
-  				
-  				// --------------------------------------------------------------------
-  				
-	  				function validationformreset()
-	   {
-   				$('.editpeopledataclose').click();
-   				$('.editpeopledatasubmit').prop("disabled",false);
-	   			$('.editpeopledatasubmit').html("Submit");
-	   }
-	// --------------------------------------------------------------------
-      $('#editPeopledetailsForm').on('submit', function(event){
-    	  
-    	 
-    	    if(event.target.checkValidity()){
-    	    	$('.editpeopledatasubmit').prop("disabled",true);
-    	    	$('.editpeopledatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-    	    	  
-    	    	var leadMasterID  =$('#leadMasterID').val();
-	        	var peoplename =$('#Model_peoplename').val();
-	        	var phonenumber =$('#Model_peoplecontact').val();
-	        	var branch=$("#branch").val();
-	        	var followers =$("followers").val();
-	        	var organization=$("organization").val();
-	        	 var formData = {
-	        			 id :leadMasterID,
-	        			 category : 'Lead',
-	        			 organization : organization,
-	        			 branch : branch,
-	        			 peoplename :peoplename,
-	        			 phonenumber :phonenumber,
-	        			 followers: followers
+			}
 
-				 }
-				 $.ajax({
-						type : "POST",url : "workcontactpersonsavejson",
-						data : formData, success : function(result) {
-							validationformreset();
-							var bmobj = JSON.parse(JSON.stringify(result));
-  							
-  							let temphtml= '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='+ bmobj +'" target="_blank"> <h6 class="mb-0">'+ peoplename +'</h6></a> <small class="text-muted">'+ phonenumber +'</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'+ result +'" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
-							$('#contactpeopleaddidv').before(temphtml);
-							
-						},
-						error : function(e) {
-							console.log("Error" + e);
-							
-						}
-						
-					});
-	        	
-		        }	
-	    	    else
-	        	{
-	    	    	$('.editpeopledatasubmit').prop("disabled",false);
-	        	}
-   		 
-	    });
-   // --------------------------------------------------------------------
-      $('#linkPeopledetailsForm').on('submit', function(event){
-    	  
-    	 
-    	    if(event.target.checkValidity()){
-    	    	$('.linkpeopledatasubmit').prop("disabled",true);
-    	    	$('.linkpeopledatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-    	    	var leadMasterID  =$('#leadMasterID').val();
-    	    	var linkpeoplename  =$('#Model_linkpeoplename').val();
-	        	
-	        	 var formData = {
-	        			 id :leadMasterID,
-	        			 category : 'Lead',
-	        			 linkpeoplename :linkpeoplename,
-	        			
-	        	}
-				 $.ajax({
-						type : "POST",url : "workcontactlinkpersonsavejson",
-						data : formData, success : function(result) {
-							
-							var bmobj = JSON.parse(JSON.stringify(result));
-  							let primarymob=""
-  							if(bmobj.primarymob != null)
-							{
-  								primarymob=bmobj.primarymob;
-							}
-							
-  							let temphtml= '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='+ bmobj.id +'" target="_blank"> <h6 class="mb-0">'+ bmobj.peoplename +'</h6></a> <small class="text-muted">'+ primarymob +'</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'+ bmobj.id  +'" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
-							$('#contactpeopleaddidv').before(temphtml);
-							validationlinkformreset();
-						},
-						error : function(e) {
-							console.log("Error" + e);
-							
-						}
-						
-					});
-	        	
-		        }	
-	    	    else
-	        	{
-	    	    	$('.linkpeopledatasubmit').prop("disabled",false);
-	        	}
-   		 
-	    });
-  				
-  				
-		   	//-------------------------------------------
-}); // Jquery
-    
-//------------------------------------------------------
-		function makeprimarycontactperson(elem){
-			  
-			  
-			  var formData = {
-		  		  personid: elem.getAttribute("name"),
-		  		  primarystatus : elem.checked
-		 	 }
-				 $.ajax({
-						type : "POST",url : "makeprimarycontactperson",
-						data : formData, success : function(result) {
-							
-						},
-						error : function(e) {
-							console.log("Error" + e);
-						}
-					});
-		  }
-
-//------------------------------------------------------    
-
-		// Phone
-			 const phoneMask = document.querySelector('.phone-number-otp-mask');
-
-		    // Phone Number Input Mask
-		    if (phoneMask) {
-		      new Cleave(phoneMask, {
-		        phone: true,
-		        phoneRegionCode: 'US'
-		      });
-		    }    
-	 
-			  
-		  //--------------------------	 
-    </script>
+			//--------------------------
+		</script>
 </body>
 </html>

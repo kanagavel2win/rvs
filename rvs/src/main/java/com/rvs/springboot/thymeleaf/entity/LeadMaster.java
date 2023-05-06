@@ -51,7 +51,8 @@ public class LeadMaster {
 	private String createddate;
 	@Column
 	private boolean movedtolead;
-	
+	@Column
+	private int leadvalue;
 	@Column
 	private boolean backfromdeal;
 	

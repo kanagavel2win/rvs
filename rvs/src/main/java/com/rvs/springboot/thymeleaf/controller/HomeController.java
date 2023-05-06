@@ -2958,7 +2958,7 @@ public class HomeController {
 		}
 		obj.setTitle(param.get("title").toString());
 		obj.setStart(param.get("fromdate").toString());
-		obj.setEnd(param.get("todate").toString());
+		obj.setEnd(param.get("").toString());
 		obj.setAllDay(Boolean.valueOf(param.get("allDay")));
 
 		HolidayextendedProps holiextra = new HolidayextendedProps();
@@ -5657,8 +5657,8 @@ public class HomeController {
 			cpcls.add(cpc);
 			cp.setContactPersonContact(cpcls);
 			int cpkey = contactPersonService.save(cp).getId();
-			 leadMasterService.insertContact(cpkey,Integer.parseInt(params.get("id")));
-			insertedkey =cpkey;
+			leadMasterService.insertContact(cpkey, Integer.parseInt(params.get("id")));
+			insertedkey = cpkey;
 		}
 
 		return insertedkey;
@@ -5668,12 +5668,12 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping("workcontactlinkpersonsavejson")
 	public ContactPerson workcontactlinkpersonsavejson(@RequestParam Map<String, String> params) {
-		
+
 		ContactPerson cp = new ContactPerson();
 		if (params.get("category").equalsIgnoreCase("Lead")) {
 			cp = contactPersonService.findById(Integer.parseInt(params.get("linkpeoplename")));
-			leadMasterService.insertContact(cp.getId(),Integer.parseInt(params.get("id")));
-			
+			leadMasterService.insertContact(cp.getId(), Integer.parseInt(params.get("id")));
+
 			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
 					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
 			if (bcls.size() > 0) {
@@ -5993,6 +5993,7 @@ public class HomeController {
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("lead"));
+		theModel.addAttribute("activityMaster", new ActivityMaster());
 		return "leadview";
 	}
 
@@ -6028,52 +6029,87 @@ public class HomeController {
 		return obj;
 	}
 
-	@PostMapping("leadsavestage2")
+	@PostMapping("activitysave")
 	@ResponseBody
-	public LeadMaster leadsavestage2(@RequestParam Map<String, String> params) {
+	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid,
+			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
+			HttpServletRequest request) {
 
-		System.out.println(params);
-		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(params.get("leadMasterID")));
-
-		leadMaster.setTitle(params.get("Title"));
-		leadMaster.setSource(params.get("Source"));
-		leadMaster.setReference(params.get("Reference"));
-		leadMaster.setLabel(params.get("Label"));
-		leadMaster.setBranch(Integer.parseInt(params.get("branch")));
-		leadMaster.setFollower(params.get("follower"));
-		leadMaster.setNotes(params.get("notes"));
-
-		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
-
-		if (!nullremover(String.valueOf(leadMaster.getOrganization())).equalsIgnoreCase("")) {
-			leadMaster.setOrganizationName(
-					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
-		}
-		/*
-		 * if(!nullremover(String.valueOf(leadMaster.getContactPerson())).
-		 * equalsIgnoreCase("")){
-		 * leadMaster.setContactPersonName(contactPersonService.findById(Integer.
-		 * parseInt(leadMaster.getContactPerson())).getPeoplename()); }
-		 */
-		if (!nullremover(String.valueOf(leadMaster.getFollower())).equalsIgnoreCase("")) {
-			final String leadfollower = leadMaster.getFollower().toString();
-
-			leadMaster
-					.setFollowername(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadfollower))
-							.collect(Collectors.toList()).get(0).getStaffName());
-		}
-		if (!nullremover(String.valueOf(leadMaster.getReference())).equalsIgnoreCase("")) {
-			final String leadreference = leadMaster.getReference().toString();
-
-			leadMaster.setReferenceName(
-					emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadreference))
-							.collect(Collectors.toList()).get(0).getStaffName());
-			;
+		//System.out.println(param);
+		ActivityMaster activityMaster = new ActivityMaster();
+		activityMaster.setActivitycategory(param.get("Activitycategory").toString());
+		activityMaster.setActivityfollowers(param.get("activityfollowers").toString());
+		activityMaster.setActivitytitle(param.get("activitytitle").toString());
+		activityMaster.setActivitytype(param.get("activitytype").toString());
+		activityMaster.setDescription(param.get("description").toString());
+		activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
+		activityMaster.setDuedate(param.get("duedate").toString());
+		activityMaster.setEnddate(param.get("enddate").toString());
+		activityMaster.setEndtime(param.get("endtime").toString());
+		activityMaster.setHtmlnotes(param.get("htmlnotes").toString());
+		activityMaster.setMastercategory(param.get("mastercategory").toString());
+		activityMaster.setMastercategoryid(param.get("mastercategoryid").toString());
+		activityMaster.setNotes(param.get("notes").toString());
+		activityMaster.setStartdate(param.get("startdate").toString());
+		activityMaster.setStarttime(param.get("starttime").toString());
+		if (param.get("status") != null) {
+			activityMaster.setStatus("Completed");
+		} else {
+			activityMaster.setStatus("");
 		}
 
-		leadMaster = leadMasterService.save(leadMaster);
+		// --------------------------------------------------
+		// Guest
 
-		return leadMaster;
+		List<ActivityMasterGuest> lsactivityMasterguest = new ArrayList();
+
+		for (String str : guestid) {
+			ActivityMasterGuest guestobj = new ActivityMasterGuest();
+			guestobj.setGuestid(str);
+			lsactivityMasterguest.add(guestobj);
+		}
+		activityMaster.setActivityMasterGuest(lsactivityMasterguest);
+
+		// --------------------------------------------------
+		// File Uploading
+		List<ActivityMasterFiles> activityMasterFileslist = new ArrayList();
+		if (Files_Attach != null) {
+
+			StringBuilder filename = new StringBuilder();
+			// File Uploading
+			String profilephotouploadRootPath = request.getServletContext().getRealPath("activityfiles");
+			// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+			File uploadRootDir = new File(profilephotouploadRootPath);
+			// Create directory if it not exists.
+			if (!uploadRootDir.exists()) {
+				uploadRootDir.mkdirs();
+			}
+
+			if (Files_Attach.getOriginalFilename().toString().length() > 0) {
+
+				String tempfilename = stringdatetime() + Files_Attach.getOriginalFilename();
+				Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+				filename.append("activityfiles/" + tempfilename);
+
+				try {
+					Files.write(fileNameandPath, Files_Attach.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			ActivityMasterFiles activityMasterFiles = new ActivityMasterFiles();
+			activityMasterFiles.setFiles_Attach(filename.toString());
+			activityMasterFileslist.add(activityMasterFiles);
+
+		}
+		if (activityMasterFileslist.size() > 0) {
+			activityMaster.setActivityMasterFiles(activityMasterFileslist);
+
+		}
+
+		activityMaster = activityMasterService.save(activityMaster);
+		return "";
 	}
 
 	@PostMapping("leadsavestage1")
@@ -6390,132 +6426,99 @@ public class HomeController {
 		return "leadevents";
 	}
 
+	@ResponseBody
 	@PostMapping("leadeventpart2save")
-	public String leadeventpart2save(@ModelAttribute("activityMaster") ActivityMaster activityMaster,
-			@RequestParam Map<String, String> params, Model themodel,
-			@RequestParam(name = "activityfiles", required = false) MultipartFile activityfiles,
+	public String leadeventpart2save(@RequestParam Map<String, String> params, Model themodel,
+
 			HttpServletRequest request) {
-		// --------------------------------------------------
-		List<ActivityMasterGuest> lsactivityMasterguest = activityMaster.getActivityMasterGuest();
-		String guestStaff = "";
-		if (lsactivityMasterguest.size() > 0) {
-			guestStaff = String.valueOf(lsactivityMasterguest.get(0).getGuestid());
-			guestStaff = guestStaff.replace("null", "");
-			themodel.addAttribute("guestStaff", guestStaff);
-		}
 
-		String status = String.valueOf(params.get("status"));
-		status = status.replace("null", "");
-
-		// --------------------------------------------------
-		if (!status.equalsIgnoreCase("")) {
-			activityMaster.setStatus("Completed");
-		}
-		// --------------------------------------------------
-		// File Uploading
-		String profilephotouploadRootPath = request.getServletContext().getRealPath("activityfiles");
-		File uploadRootDir = new File(profilephotouploadRootPath);
-		// Create directory if it not exists.
-		if (!uploadRootDir.exists()) {
-			uploadRootDir.mkdirs();
-		}
-
-		if (activityfiles.getOriginalFilename().toString().length() > 0) {
-			List<ActivityMasterFiles> actfilelist = new ArrayList();
-
-			ActivityMasterFiles actfiles = new ActivityMasterFiles();
-			StringBuilder filename = new StringBuilder();
-			String tempfilename = stringdatetime() + activityfiles.getOriginalFilename();
-			Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
-			filename.append(tempfilename);
-			actfiles.setFiles_Attach("activityfiles/" + filename);
-			try {
-				Files.write(fileNameandPath, activityfiles.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			actfilelist.add(actfiles);
-			activityMaster.setActivityMasterFiles(actfilelist);
-		}
-
-		// --------------------------------------------------
-
-		if (!guestStaff.equalsIgnoreCase("")) {
-			List<ActivityMasterGuest> actguestlist = new ArrayList();
-			String guestStaffarr1[] = guestStaff.split(",");
-
-			for (String str : guestStaffarr1) {
-				ActivityMasterGuest activityMasterGuest = new ActivityMasterGuest();
-				activityMasterGuest.setGuestid(String.valueOf(str));
-				actguestlist.add(activityMasterGuest);
-			}
-			activityMaster.setActivityMasterGuest(actguestlist);
-		}
-
-		// --------------------------------------------------
-		if (String.valueOf(activityMaster.getCreatedtime()).equalsIgnoreCase("")) {
-			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
-		}
-		activityMaster.setActivitycategory("Activity");
-		activityMaster.setMastercategory("Lead");
-		activityMaster = activityMasterService.save(activityMaster);
-		// --------------------------------------------------
-		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(activityMaster.getMastercategoryid()));
-		List<ContactPerson> cplis = contactPersonService.findAll();
-		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
-		ContactPerson contactPersonobj = null;
-		// --------------------------------------------------
-		ArrayList<String> personorgls = new ArrayList<String>();
-		for (ContactPerson cp : cplis) {
-
-			if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase("")) {
-				for (String str1 : (cp.getOrganization().toString()).split(",")) {
-					String temp2 = "";
-					String str2 = nullremover(String.valueOf(str1));
-					if (str2.length() > 0) {
-						OrganizationContacts obj = corglis.stream().filter(C -> C.getId() == Integer.parseInt(str2))
-								.collect(Collectors.toList()).get(0);
-						temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" + obj.getOrgname()
-								+ " |";
-						personorgls.add(temp2);
-					} else {
-						temp2 += cp.getId() + "|" + cp.getPeoplename() + " | | |";
-						personorgls.add(temp2);
-					}
-				}
-			} else {
-				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
-			}
-
-		}
-
+		System.out.println(params);
 		/*
-		 * if
-		 * (!nullremover(String.valueOf(leadMaster.getContactPerson())).equalsIgnoreCase
-		 * ("")) { for (String str1 :
-		 * (leadMaster.getContactPerson().toString()).split(",")) {
+		 * // --------------------------------------------------
+		 * List<ActivityMasterGuest> lsactivityMasterguest =
+		 * activityMaster.getActivityMasterGuest(); String guestStaff = ""; if
+		 * (lsactivityMasterguest.size() > 0) { guestStaff =
+		 * String.valueOf(lsactivityMasterguest.get(0).getGuestid()); guestStaff =
+		 * guestStaff.replace("null", ""); themodel.addAttribute("guestStaff",
+		 * guestStaff); }
 		 * 
-		 * ContactPerson cplistemp =
-		 * contactPersonService.findById(Integer.parseInt(str1)); contactPersonobj =
-		 * cplistemp; break;
+		 * String status = String.valueOf(params.get("status")); status =
+		 * status.replace("null", "");
+		 * 
+		 * // -------------------------------------------------- if
+		 * (!status.equalsIgnoreCase("")) { activityMaster.setStatus("Completed"); } //
+		 * -------------------------------------------------- // File Uploading String
+		 * profilephotouploadRootPath =
+		 * request.getServletContext().getRealPath("activityfiles"); File uploadRootDir
+		 * = new File(profilephotouploadRootPath); // Create directory if it not exists.
+		 * if (!uploadRootDir.exists()) { uploadRootDir.mkdirs(); }
+		 * 
+		 * if (activityfiles.getOriginalFilename().toString().length() > 0) {
+		 * List<ActivityMasterFiles> actfilelist = new ArrayList();
+		 * 
+		 * ActivityMasterFiles actfiles = new ActivityMasterFiles(); StringBuilder
+		 * filename = new StringBuilder(); String tempfilename = stringdatetime() +
+		 * activityfiles.getOriginalFilename(); Path fileNameandPath =
+		 * Paths.get(profilephotouploadRootPath, tempfilename);
+		 * filename.append(tempfilename); actfiles.setFiles_Attach("activityfiles/" +
+		 * filename); try { Files.write(fileNameandPath, activityfiles.getBytes()); }
+		 * catch (IOException e) { e.printStackTrace(); }
+		 * 
+		 * actfilelist.add(actfiles);
+		 * activityMaster.setActivityMasterFiles(actfilelist); }
+		 * 
+		 * // --------------------------------------------------
+		 * 
+		 * if (!guestStaff.equalsIgnoreCase("")) { List<ActivityMasterGuest>
+		 * actguestlist = new ArrayList(); String guestStaffarr1[] =
+		 * guestStaff.split(",");
+		 * 
+		 * for (String str : guestStaffarr1) { ActivityMasterGuest activityMasterGuest =
+		 * new ActivityMasterGuest();
+		 * activityMasterGuest.setGuestid(String.valueOf(str));
+		 * actguestlist.add(activityMasterGuest); }
+		 * activityMaster.setActivityMasterGuest(actguestlist); }
+		 * 
+		 * // -------------------------------------------------- if
+		 * (String.valueOf(activityMaster.getCreatedtime()).equalsIgnoreCase("")) {
+		 * activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date())); }
+		 * activityMaster.setActivitycategory("Activity");
+		 * activityMaster.setMastercategory("Lead"); activityMaster =
+		 * activityMasterService.save(activityMaster); //
+		 * -------------------------------------------------- LeadMaster leadMaster =
+		 * leadMasterService.findById(Integer.parseInt(activityMaster.
+		 * getMastercategoryid())); List<ContactPerson> cplis =
+		 * contactPersonService.findAll(); List<OrganizationContacts> corglis =
+		 * contactOrganizationService.findAll(); ContactPerson contactPersonobj = null;
+		 * // -------------------------------------------------- ArrayList<String>
+		 * personorgls = new ArrayList<String>(); for (ContactPerson cp : cplis) {
+		 * 
+		 * if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase(""))
+		 * { for (String str1 : (cp.getOrganization().toString()).split(",")) { String
+		 * temp2 = ""; String str2 = nullremover(String.valueOf(str1)); if
+		 * (str2.length() > 0) { OrganizationContacts obj = corglis.stream().filter(C ->
+		 * C.getId() == Integer.parseInt(str2)) .collect(Collectors.toList()).get(0);
+		 * temp2 += cp.getId() + "|" + cp.getPeoplename() + " |" + obj.getId() + "|" +
+		 * obj.getOrgname() + " |"; personorgls.add(temp2); } else { temp2 += cp.getId()
+		 * + "|" + cp.getPeoplename() + " | | |"; personorgls.add(temp2); } } } else {
+		 * personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |"); }
 		 * 
 		 * }
 		 * 
-		 * }
+		 * 
+		 * themodel.addAttribute("contactPersonobj", contactPersonobj);
+		 * themodel.addAttribute("personlist", cplis);
+		 * themodel.addAttribute("organizationlist", corglis);
+		 * themodel.addAttribute("personorgls", personorgls);
+		 * themodel.addAttribute("leadMaster", leadMaster);
+		 * 
+		 * themodel.addAttribute("employeelist",
+		 * EffectiveEmployee(employeeMasterService.findAll())); List<String> MEMBERIN =
+		 * itemlistService.findByFieldName("SOURCE"); themodel.addAttribute("SOURCE",
+		 * MEMBERIN);
+		 * 
+		 * themodel.addAttribute("activityMaster", activityMaster);
 		 */
-		themodel.addAttribute("contactPersonobj", contactPersonobj);
-		themodel.addAttribute("personlist", cplis);
-		themodel.addAttribute("organizationlist", corglis);
-		themodel.addAttribute("personorgls", personorgls);
-		themodel.addAttribute("leadMaster", leadMaster);
-
-		themodel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
-		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
-		themodel.addAttribute("SOURCE", MEMBERIN);
-
-		themodel.addAttribute("activityMaster", activityMaster);
-
 		return "leadevents";
 
 	}

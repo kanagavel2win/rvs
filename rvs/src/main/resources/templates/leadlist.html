@@ -97,6 +97,62 @@
 #branchName, #branchemail, #branch_startdate {
 	border-right: solid 1px #d4d8dd;
 }
+
+.tooltipx .tooltiptextx {
+  visibility: hidden;
+  font-size:12px;
+  min-width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltipx:hover .tooltiptextx {
+  visibility: visible;
+}
+.innertablefollowers td{
+	border: none;
+	padding-left:0.1rem;
+	padding-right:0.1rem;
+	margin: none;
+}
+
+.tooltipx {
+  position: relative;
+  display: inline-block;
+ 
+}
+
+.tooltipx .tooltiptextx {
+  visibility: hidden;
+  font-size:12px;
+  min-width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltipx:hover .tooltiptextx {
+  visibility: visible;
+}
+
+ td
+{
+	line-height: 20px;
+}
+
 </style>
 </head>
 
@@ -137,8 +193,12 @@
 											<th>id</th>
 											<th>Title</th>
 											<th>Next Activity</th>
-											<th>Followers</th>
+											<th>Relational Manager</th>
 											<th>Label</th>
+											<th>Source</th>
+											<th>Purpose</th>
+											<th>Branch</th>
+											<th>Value</th>
 											<th>Created on</th>
 
 										</tr>
@@ -199,6 +259,31 @@
 
 									</div>
 									<div class="col-sm-12">
+										<label class="form-label" for="Purpose">PURPOSE<label
+											class="emptitle additem" name="addPurposedata"><i
+												class="bx bxs-plus-circle ownstyle1"></i></label></label>
+										<div>
+											
+											<select class="form-control  addPurposedata" id="Purpose"
+												name="Purpose">
+												<th:block th:each="str :${PURPOSE}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="leadValue">Lead Value</label>
+										<div>
+											<input type="number" id="leadValue" name="leadValue"
+												class="form-control  capitalize" >
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
 										<label class="form-label" for="Source">SOURCE <label
 											class="emptitle additem" name="addsourcedata"><i
 												class="bx bxs-plus-circle ownstyle1"></i></label></label>
@@ -212,7 +297,8 @@
 										</div>
 
 									</div>
-									<div class="col-sm-12">
+									
+									<div class="col-sm-12 Referencediv">
 										<label class="form-label" for="Reference">REFERENCE</label>
 										<div>
 
@@ -260,7 +346,7 @@
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="followers">FOLLOWER</label>
+										<label class="form-label" for="followers">Relational Manager</label>
 										<div>
 											<select class="form-select followers form-control "
 												id="followers" name="followers" required>
@@ -482,14 +568,28 @@
 					 
 				}
 	  });
-		//--------------------------------------------------------------------------------------------------------------------------------------		 
-		
+		//--------------------------------------------------------------------------------------------------------------------------------------		
+			$(".Referencediv").hide();
+
+			$('#Source').change(function(){
+				
+				if($(this).val()=='Referral')
+				{
+					$(".Referencediv").show();
+				}else
+				{
+					$(".Referencediv").hide();
+				}
+			});
+		//--------------------------------------------------------------------------------------------------------------------------------------
 		$(document).on("click", ".additem", function() {
 
 			var name = $(this).attr('name');
 			var labeltext = "";
 			if (name == "addsourcedata") {
 				labeltext = "New Source";
+			}else if (name == "addPurposedata") {
+				labeltext = "New Purpose";
 			}
 
 			$('#additemalltxt').text(labeltext);
@@ -504,6 +604,8 @@
 						var labeltext = "";
 						if (name == "New Source") {
 							labeltext = "addsourcedata";
+						}else if (name == "New Purpose") {
+							labeltext = "addPurposedata";
 						}
 
 						$('.' + labeltext).append(
@@ -556,9 +658,13 @@
 			        { data: 'id' },
 			        { data: 'title' },
 			        { data: 'nextactivity' },
-			        { data: 'followername' },
+			        { data: '' },
 			        { data: 'label' },
-			        { data: 'createddate' },
+			        { data: 'source' },
+			        { data: 'purpose' },	
+			        { data: 'branchname' },
+			        { data: 'leadvalue' },			        
+			        { data: 'createddateMMddYYY' },
 			      
 			      ],
 			      columnDefs: [
@@ -592,7 +698,13 @@
 			          searchable: false,
 			          visible: false
 			        },
-			       
+			        {
+				           targets:3,
+				           render: function(data, type, full, meta) {
+				           	 
+				           	 return '<a href="leadview?id='+ full['id'] +'">'+ full['title'] +'</a>';
+				           }
+				     },
 			         
 			        
 			          
@@ -622,17 +734,60 @@
 			          }
 			        },
 			        {
-			          // Actions
-			          targets: -1,
-			          title: 'Actions',
-			          orderable: false,
-			          searchable: false,
-			          render: function(data, type, full, meta) {
-			            return (
-			              '<a href="leadview?id='+ full['id'] +'" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
-			            );
-			          }
-			        }
+				           targets:5,
+				           render: function(data, type, full, meta) {
+				           	 $leadFollowerslist = full['leadFollowers'];
+				           	 
+				           	 var $row_output='<table class="innertablefollowers"><tr>';
+				           
+				           	 $leadFollowerslist.forEach((element, index, array) =>
+				           	 {
+				           		
+				           		$row_output += '<td>';
+				           	
+				           		 var $user_img = element.followerimg ,
+				                $name = element.followername;
+				                $empMasterid=element.empid;
+				               
+				              if ($user_img != "" && $user_img != null) {
+				               // For Avatar image
+				                var $output =
+				                  '<img src="' + $user_img + '" alt="Avatar" class="rounded-circle">';
+				              } else {
+				                // For Avatar badge
+				                var stateNum = Math.floor(Math.random() * 6);
+				                var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
+				                var $state = states[stateNum],
+				                  $name = $name,
+				                  $initials = $name.match(/\b\w/g) || [];
+				                $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+				                $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
+				              }
+				              // Creates full output for row
+				               $row_output +=
+				                '<a href="emp?id='+ $empMasterid +'"><div class="d-flex justify-content-start align-items-center">' +
+				                '<div class="avatar-wrapper">' +
+				                '<div class="avatar me-2 tooltipx">' +
+				                $output + "<span class='tooltiptextx'>" + $name + "</span>"+
+				                '</div>' +
+				                '</div>' +
+				                
+				                '</div></a></td>';
+				           	
+				           	 });
+				           	
+				           	 return $row_output+ "</tr></table>";
+				           }
+				         },{
+					           targets:9,
+					           render: function(data, type, full, meta) {
+					           	 
+					           	 return 	  '<a href="editbranch?id='+ full['branch'] +'">'+ full["branchname"] +'</a>'; 
+					           }
+					     }
+				         
+				        
+				         
 			      ],
 			      
 			      dom:
@@ -741,11 +896,14 @@
 			   var Title= $("#Title").val();
 			   var Source= $("#Source").val();
 			   var Reference= $("#Reference").val();
+			   var Purpose= $("#Purpose").val();
 			   var Label= $("#Label").val();
 			   var notes= $("#notes").val();
 			   var followers= $("#followers").val();
 			   var phonenumber= $("#phonenumber").val(); 
-			   var branch=$("#branch").val();
+			   var branch=$("#branch").val(); 
+			   var leadValue=$("#leadValue").val();
+			   
 			   var formData = {
 					   ContactPerson: String(ContactPersonTagify),
 					   Organization : String(Organization),
@@ -756,10 +914,12 @@
 					   notes : notes,
 					   followers : followers,
 					   phonenumber : phonenumber,
-					   branch:branch
+					   branch:branch,
+					   Purpose:Purpose,
+					   leadValue: leadValue
 				 }
 			   
-			   //console.log(formData);
+			   
         	$.ajax({
 				type : "POST",url : "leadsavestage1",
 				data : formData, success : function(result) {

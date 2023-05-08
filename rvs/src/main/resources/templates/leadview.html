@@ -95,6 +95,37 @@
 	position: relative;
 	margin-left: -10px;
 }
+
+.guestdetailslist, .followerdetailslist{
+  top: 10px;
+  font-size:20px;
+  left:-20px;
+}
+
+.tooltipx {
+  position: relative;
+  display: inline-block;
+ 
+}
+
+.tooltipx .tooltiptextx {
+  visibility: hidden;
+  font-size:12px;
+  min-width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltipx:hover .tooltiptextx {
+  visibility: visible;
+}
 </style>
 <script th:inline="javascript">
 	var emplanstat = 0;
@@ -174,7 +205,7 @@
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${leadMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Value:</span>
+												<li class="mb-3"><span class="fw-bold me-2">Value:</span> Rs. 
 													<span th:text="${leadMaster.leadvalue}" id="Lbl_leadvalue"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
@@ -188,8 +219,12 @@
 													<span th:text="${leadMaster.notes}" id="Lbl_notes"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
-													<span th:text="${leadMaster.Followername}"
-													id="Lbl_follower"></span></li>
+													
+													<span id="Lbl_follower">
+														<span th:each="obj : ${leadMaster.leadFollowers}" th:utext="${obj.Followername} + '<br/>'"> </span>
+													</span>
+													
+													</li>
 
 
 											</ul>
@@ -274,7 +309,15 @@
 								<div class="card mb-4">
 									<h5 class="card-header">
 										Activity Timeline
+										
+										
+
 										<div class="card-action-element" style="float: right">
+											<button class="btn btn-primary btn-sm loadevent" type="button"
+												>
+												Load
+											</button>
+											
 											<button class="btn btn-primary btn-sm" type="button"
 												data-bs-toggle="modal" data-bs-target="#addevent"
 												alt="Add New Event">
@@ -288,97 +331,12 @@
 										</div>
 									</h5>
 									<div class="card-body">
-										<ul class="timeline">
-											<li class="timeline-item timeline-item-transparent"><span
-												class="timeline-point timeline-point-primary"></span>
-												<div class="timeline-event">
-													<div class="timeline-header mb-1">
-														<h6 class="mb-0">12 Invoices have been paid</h6>
-														<small class="text-muted">12 min ago</small>
-													</div>
-													<p class="mb-2">Invoices have been paid to the company</p>
-													<div class="d-flex">
-														<a href="javascript:void(0)" class="me-3"> <img
-															src="../../assets/img/icons/misc/pdf.png" alt="PDF image"
-															width="20" class="me-2" /> <span
-															class="fw-bold text-body">invoices.pdf</span>
-														</a>
-													</div>
-												</div></li>
-											<li class="timeline-item timeline-item-transparent"><span
-												class="timeline-point timeline-point-warning"></span>
-												<div class="timeline-event">
-													<div class="timeline-header mb-1">
-														<h6 class="mb-0">Client Meeting</h6>
-														<small class="text-muted">45 min ago</small>
-													</div>
-													<p class="mb-2">Project meeting with john @10:15am</p>
-													<div class="d-flex flex-wrap">
-														<div class="avatar me-3">
-															<img src="../../assets/img/avatars/3.png" alt="Avatar"
-																class="rounded-circle" />
-														</div>
-														<div>
-															<h6 class="mb-0">Lester McCarthy (Client)</h6>
-															<span>CEO of PIXINVENT</span>
-														</div>
-													</div>
-												</div></li>
-											<li class="timeline-item timeline-item-transparent"><span
-												class="timeline-point timeline-point-info"></span>
-												<div class="timeline-event">
-													<div class="timeline-header mb-1">
-														<h6 class="mb-0">Create a new project for client</h6>
-														<small class="text-muted">2 Day Ago</small>
-													</div>
-													<p class="mb-2">5 team members in a project</p>
-													<div class="d-flex align-items-center avatar-group">
-														<div class="avatar pull-up" data-bs-toggle="tooltip"
-															data-popup="tooltip-custom" data-bs-placement="top"
-															title="Vinnie Mostowy">
-															<img src="../../assets/img/avatars/5.png" alt="Avatar"
-																class="rounded-circle" />
-														</div>
-														<div class="avatar pull-up" data-bs-toggle="tooltip"
-															data-popup="tooltip-custom" data-bs-placement="top"
-															title="Marrie Patty">
-															<img src="../../assets/img/avatars/12.png" alt="Avatar"
-																class="rounded-circle" />
-														</div>
-														<div class="avatar pull-up" data-bs-toggle="tooltip"
-															data-popup="tooltip-custom" data-bs-placement="top"
-															title="Jimmy Jackson">
-															<img src="../../assets/img/avatars/9.png" alt="Avatar"
-																class="rounded-circle" />
-														</div>
-														<div class="avatar pull-up" data-bs-toggle="tooltip"
-															data-popup="tooltip-custom" data-bs-placement="top"
-															title="Kristine Gill">
-															<img src="../../assets/img/avatars/6.png" alt="Avatar"
-																class="rounded-circle" />
-														</div>
-														<div class="avatar pull-up" data-bs-toggle="tooltip"
-															data-popup="tooltip-custom" data-bs-placement="top"
-															title="Nelson Wilson">
-															<img src="../../assets/img/avatars/14.png" alt="Avatar"
-																class="rounded-circle" />
-														</div>
-													</div>
-												</div></li>
-											<li class="timeline-item timeline-item-transparent"><span
-												class="timeline-point timeline-point-success"></span>
-												<div class="timeline-event">
-													<div class="timeline-header mb-1">
-														<h6 class="mb-0">Design Review</h6>
-														<small class="text-muted">5 days Ago</small>
-													</div>
-													<p class="mb-0">Weekly review of freshly prepared
-														design for our new app.</p>
-												</div></li>
-											<li class="timeline-end-indicator"><i
-												class="bx bx-check-circle"></i></li>
+										<ul class="timeline widget-timeline">
+											
 										</ul>
 									</div>
+									
+
 								</div>
 								<!-- /Activity Timeline -->
 							</div>
@@ -401,7 +359,7 @@
 												<h3>Activity Notes Information</h3>
 												<p>Update Notes Basic Information</p>
 											</div>
-											<form id="" class="" onsubmit="return false">
+											<form id="NotesMasterform" class="" onsubmit="return false">
 
 												<!-- Full Editor -->
 												<div class="col-12">
@@ -409,11 +367,7 @@
 														<h5 class="card-header"></h5>
 														<div class="card-body">
 															<div id="full-editor">
-																<h6>Quill Rich Text Editor</h6>
-																<p>Cupcake ipsum dolor sit amet. Halvah cheesecake
-																	chocolate bar gummi bears cupcake. Pie macaroon bear
-																	claw. Soufflé I love candy canes I love cotton candy I
-																	love.</p>
+																
 															</div>
 														</div>
 													</div>
@@ -424,9 +378,9 @@
 
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
-														class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
+														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
 													<button type="reset"
-														class="btn btn-label-secondary linkpeopledataclose"
+														class="btn btn-label-secondary NotesMasterformclose"
 														data-bs-dismiss="modal" aria-label="Close">
 														Cancel</button>
 												</div>
@@ -445,15 +399,16 @@
 									<div class="modal-content p-3 p-md-5">
 
 										<div class="modal-body">
-											<button type="button" class="btn-close activityMasterformclose"
+											<button type="button"
+												class="btn-close activityMasterformclose"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
 												<h3>Activity Information</h3>
 												<p>Update Activity Basic Information</p>
 											</div>
 											<form id="activityMasterform" th:object="${activityMaster}"
-												 class="wizard-horizontal"
-												onsubmit="return false" enctype="multipart/form-data">
+												class="wizard-horizontal" onsubmit="return false"
+												enctype="multipart/form-data">
 												<!-- ------------------------------------------ -->
 												<div class="row">
 													<div class="col-md-12">
@@ -591,8 +546,7 @@
 																						<div class="position-relative  has-icon-left">
 																							<fieldset class="form-group">
 																								<select id="guestid"
-																									class="select2 form-select guestStaff"
-																									multiple>
+																									class="select2 form-select guestStaff" multiple>
 																									<th:block th:each="str :${employeelist}">
 																										<option th:value="${str.empMasterid}"
 																											th:text="${str.StaffName}"></option>
@@ -670,8 +624,7 @@
 														<div class="position-relative  has-icon-left">
 															<fieldset class="form-group">
 																<select class="select2 form-control "
-																	 id="activityfollowers"
-																	>
+																	id="activityfollowers">
 																	<th:block th:each="str :${employeelist}">
 																		<option th:value="${str.empMasterid}"
 																			th:text="${str.StaffName}"></option>
@@ -687,7 +640,7 @@
 														<label for="addmodel">Files</label>
 														<div class="position-relative has-icon-left">
 															<input type="file" class="form-control  "
-																 id="activityfiles"/>
+																id="activityfiles" />
 														</div>
 													</div>
 												</div>
@@ -701,9 +654,11 @@
 												</div>
 												<div class="col-md-12">
 													<br />
-													<button type="reset" class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
+													<button type="reset"
+														class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
 														style="padding-right: 20px;">Reset</button>
-													<button type="submit" class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
+													<button type="submit"
+														class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
 														style="float: right">Save</button>
 
 
@@ -748,7 +703,7 @@
 
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="followers">ORAGNIZATION</label>
+													<label class="form-label" for="organization">ORAGNIZATION</label>
 													<div>
 														<select class="form-select followers form-control "
 															id="organization" th:field="*{Organization}"
@@ -831,14 +786,14 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="followers">FOLLOWER</label>
 													<div>
-														<select class="form-select followers form-control "
-															id="followers" th:field="*{follower}"
-															th:value="${leadMaster['follower']}" required>
+														<select class="select2  form-select followers form-control "
+															id="followers" name="follower" 
+															 multiple="multiple" required>
 															<th:block th:each="str :${employeelist}">
 																<option th:value="${str.empMasterid}"
 																	th:text="${str.StaffName}"></option>
 															</th:block>
-														</select>
+														</select> 
 
 														<div class="invalid-feedback">Please select
 															follower.</div>
@@ -1081,14 +1036,7 @@
 
 
 		<script th:src="@{/assets/vendor/libs/quill/quill.js}"></script>
-		<!-- Form Validation -->
-		<script
-			th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
-
+		
 		<!-- Main JS -->
 		<script th:src="@{/assets/js/main.js}"></script>
 
@@ -1118,6 +1066,11 @@
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								var ids="[[${leadMaster['id']}]]";
 								$("#mastercategoryid").val(ids);
+								
+								var leadfollowerids="[[${leadMaster['leadfollowerids']}]]";
+								$("#followers").val(leadfollowerids.split(",")).change();
+								
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------		 		
 
 								$(function() {
@@ -1132,6 +1085,35 @@
 											});
 								});
 								// --------------------------------------------------------------------
+								//--------------------------------------------------------------------------------
+								//function load the history events
+								function gettimelinelist() {
+									
+									var formData = {
+										mastercategoryid : "[[${leadMaster['id']}]]",
+										categoryType : "Lead"
+									}
+	
+									$.ajax({
+										type : "POST",
+										url : "gettimelinelist",
+										data : formData,
+										success : function(result) {
+	
+											$('.widget-timeline').html(result);
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
+								
+								$(".loadevent").click(function() {
+									gettimelinelist();
+								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								// Custom list & inline suggestion
 								//------------------------------------------------------
@@ -1185,8 +1167,59 @@
 											false);
 									$('.activityMasterformsubmit').html("Submit");
 								}
+								function validationactivitynotesformreset() {
+									$(".ql-editor").html("");
+									$('.NotesMasterformclose').click();									
+									$('.NotesMasterformsubmit').prop("disabled",false);
+									$('.NotesMasterformsubmit').html("Save");
+								}
 								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
+								$(".NotesMasterformsubmit").click(function() {
+									var htmlnotes = $(".ql-editor").html().trim();
+									if (htmlnotes != '') {
+										$('.NotesMasterformsubmit').prop("disabled",true);
+										$('.NotesMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+										const formData = new FormData();
+										formData.append("File_Attach",null);
+										formData.append("activityfollowers","");
+										formData.append("activitytitle","");
+										formData.append("activitytype","");
+										formData.append("description","");
+										formData.append("enddate","");
+										formData.append("endtime","");
+										formData.append("guestid","");
+										formData.append("notes","");
+										formData.append("startdate","");
+										formData.append("starttime","");
+										formData.append("Activitycategory","Note");
+										formData.append("duedate","");
+										formData.append("htmlnotes",htmlnotes);													
+										formData.append("mastercategory","Lead");
+										formData.append("mastercategoryid",$("#mastercategoryid").val());
+										 for (var pair of formData.entries()) {
+										   console.log(pair); 
+										} 
+										 $.ajax({
+											type : "POST",
+											url : "activitysave",
+											processData : false,
+											contentType : false,
+											data : formData,
+											success : function(
+													result) {
+												
+												validationactivitynotesformreset();
+												
+
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+											}
+										});
+									}
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
 								$('#activityMasterform').on('submit',function(event) {
 											const modalFile =document.getElementById("activityfiles");
 											if (event.target.checkValidity()) {
@@ -1203,9 +1236,9 @@
 												formData.append("htmlnotes","");													
 												formData.append("mastercategory","Lead");
 												formData.append("mastercategoryid",$("#mastercategoryid").val());
-												 for (var pair of formData.entries()) {
-												   console.log(pair); 
-												} 
+												 //for (var pair of formData.entries()) {
+												  // console.log(pair); 
+												//} 
 												 $.ajax({
 													type : "POST",
 													url : "activitysave",
@@ -1578,7 +1611,7 @@
 													}
 
 												});
-
+								
 								//-------------------------------------------
 							}); // Jquery
 
@@ -1614,7 +1647,9 @@
 					phoneRegionCode : 'US'
 				});
 			}
-
+			
+			
+			
 			//--------------------------
 		</script>
 </body>

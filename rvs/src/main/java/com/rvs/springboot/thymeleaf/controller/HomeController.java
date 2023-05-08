@@ -89,6 +89,7 @@ import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadContact;
+import com.rvs.springboot.thymeleaf.entity.LeadFollowers;
 import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
@@ -1269,12 +1270,15 @@ public class HomeController {
 			}
 			// -------------------
 			// Set primary contact
-			List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
-					.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
-					.collect(Collectors.toList());
-			if (ecls.size() > 0) {
-				cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
 
+				List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
+						.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+						.collect(Collectors.toList());
+				if (ecls.size() > 0) {
+					cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+
+				}
 			}
 			// -------------------
 
@@ -5478,11 +5482,14 @@ public class HomeController {
 			cp.setFollowername(empobj.getStaffName());
 		}
 		// Set primary contact
-		List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
-				.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
-		if (ecls.size() > 0) {
-			cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+		if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
+			List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
+					.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+					.collect(Collectors.toList());
+			if (ecls.size() > 0) {
+				cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
 
+			}
 		}
 		// -------------------------------------------
 		return cp;
@@ -5850,21 +5857,32 @@ public class HomeController {
 				tmp1obj.setNextactivity("<span class='red'>No Activity</span>");
 			}
 			// --------------------------------------------------
-			String followerstr = nullremover(String.valueOf(tmp1obj.getFollower()));
-			String followernames = "";
-			for (String locstr : followerstr.split(",")) {
-				if (!locstr.equalsIgnoreCase(""))
-					followernames += emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(locstr))
-							.collect(Collectors.toList()).get(0).getStaffName() + " ,";
+			for (LeadFollowers leadfol : tmp1obj.getLeadFollowers()) {
+				String followerstr = nullremover(String.valueOf(leadfol.getEmpid()));
+
+				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(followerstr));
+
+				leadfol.setFollowername(empobj.getStaffName());
+
+				List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+						.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+				if (validProfilephoto.size() > 0) {
+
+					leadfol.setFollowerimg(validProfilephoto.get(0).getFilePath());
+				}
 			}
-			if (followernames.length() > 0) {
-				followernames = followernames.substring(0, followernames.length() - 1);
+
+			try {
+				tmp1obj.setCreateddateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydatetimeFormat.parse(tmp1obj.getCreateddate())).toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
-			tmp1obj.setFollowername(followernames);
+			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			leadmasterls.add(tmp1obj);
-		}
 
+		}
 		return leadmasterls;
 	}
 
@@ -5878,6 +5896,20 @@ public class HomeController {
 			tagify tagobj = new tagify();
 			tagobj.setValue(cp.getPeoplename());
 			tagobj.setCode(String.valueOf(cp.getId()));
+			// -------------------------------------------
+
+			if (cp.getContactPersonContact().size() > 0) {
+
+				List<ContactPersonContact> cpList = cp.getContactPersonContact().stream()
+						.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+				if (cpList.size() > 0) {
+					tagobj.setValue(tagobj.getValue() + " [" + cpList.get(0).getPhonenumber() + "]");
+				} else {
+					tagobj.setValue(
+							tagobj.getValue() + " [" + cp.getContactPersonContact().get(0).getPhonenumber() + "]");
+				}
+			}
+			// -------------------------------------------
 
 			taglist.add(tagobj);
 
@@ -5907,6 +5939,9 @@ public class HomeController {
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
 
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		themodel.addAttribute("PURPOSE", PURPOSE);
+
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", bmlist);
 
@@ -5925,15 +5960,27 @@ public class HomeController {
 			leadMaster.setOrganizationName(
 					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
 		}
+		List<LeadFollowers> leadfolloersls = new ArrayList();
+		String  followerids="";
+		for (LeadFollowers lf : leadMaster.getLeadFollowers()) {
 
-		if (!nullremover(String.valueOf(leadMaster.getFollower())).equalsIgnoreCase("")) {
-			final String leadfollower = leadMaster.getFollower().toString();
+			followerids +=lf.getEmpid() + ",";
+			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
 
-			leadMaster
-					.setFollowername(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(leadfollower))
-							.collect(Collectors.toList()).get(0).getStaffName());
+			lf.setFollowername(empobj.getStaffName());
+
+			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+					.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+			if (validProfilephoto.size() > 0) {
+
+				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
+			}
+
+			leadfolloersls.add(lf);
 		}
-
+		followerids = followerids.substring(0, followerids.length() - 1);
+		leadMaster.setLeadfollowerids(followerids);
+		
 		if (!nullremover(String.valueOf(leadMaster.getReference())).equalsIgnoreCase("")) {
 			final String leadreference = leadMaster.getReference().toString();
 			ContactPerson cp = contactPersonService.findById(Integer.parseInt(leadreference));
@@ -6035,7 +6082,7 @@ public class HomeController {
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
 
-		//System.out.println(param);
+		// System.out.println(param);
 		ActivityMaster activityMaster = new ActivityMaster();
 		activityMaster.setActivitycategory(param.get("Activitycategory").toString());
 		activityMaster.setActivityfollowers(param.get("activityfollowers").toString());
@@ -6116,6 +6163,7 @@ public class HomeController {
 	@ResponseBody
 	public String leadsavestage1(@RequestParam Map<String, String> params) {
 
+		// System.out.println(params);
 		String ContactPerson = params.get("ContactPerson");
 		String Organization = params.get("Organization");
 		String Title = params.get("Title");
@@ -6125,6 +6173,12 @@ public class HomeController {
 		String notes = params.get("notes");
 		String followers = params.get("followers");
 		String phonenumber = params.get("phonenumber");
+		String Purpose = params.get("Purpose");
+		int leadValue = 0;
+		if (!params.get("leadValue").equalsIgnoreCase("")) {
+			leadValue = Integer.parseInt(params.get("leadValue"));
+		}
+
 		int branch = Integer.parseInt(params.get("branch"));
 		// ---------------------------------------
 		ContactPerson cp = new ContactPerson();
@@ -6212,9 +6266,16 @@ public class HomeController {
 		leadMaster.setReference(Reference);
 		leadMaster.setLabel(Label);
 		leadMaster.setNotes(notes);
-		leadMaster.setFollower(followers);
+		leadMaster.setPurpose(Purpose);
+		leadMaster.setBranch(branch);
+		leadMaster.setLeadvalue(leadValue);
+		List<LeadFollowers> lmlis = new ArrayList();
+		LeadFollowers lfobj = new LeadFollowers();
+		lmlis.add(new LeadFollowers(0, Integer.parseInt(followers), "", ""));
+
+		leadMaster.setLeadFollowers(lmlis);
 		leadMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
-		leadMaster.setBranch(0);
+
 		leadMasterService.save(leadMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
@@ -6730,7 +6791,7 @@ public class HomeController {
 		ls.forEach(rowMap -> {
 
 			String activitytitle = String.valueOf(rowMap.get("activitytitle"));
-			String activitytype = nullremover(String.valueOf(rowMap.get("activitytype")));
+			String activitytype = nullremover(String.valueOf(rowMap.get("activitytype"))).toUpperCase();
 			String startdate = nullremover(String.valueOf(rowMap.get("startdate")));
 			String starttime = nullremover(String.valueOf(rowMap.get("starttime")));
 			String enddate = nullremover(String.valueOf(rowMap.get("enddate")));
@@ -6745,41 +6806,86 @@ public class HomeController {
 					.findById(Integer.parseInt(String.valueOf(rowMap.get("activity_id"))));
 			// -------------------------------------------
 			// guest Details
-			String guestdetails = "";
-			for (ActivityMasterGuest gobj : actimaster.getActivityMasterGuest()) {
+			String guestdetails = "<ul class='list-unstyled users-list d-flex align-items-center avatar-group m-0 my-3 me-2 guestdetailslist' >";
+			List<ActivityMasterGuest> guestlist = actimaster.getActivityMasterGuest();
+			for (ActivityMasterGuest gobj : guestlist) {
 				if (gobj.getGuestid() != null) {
 					EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(gobj.getGuestid()));
 
 					if (empobj != null) {
-						guestdetails += "<div class='badge badge-pill badge-light-secondary mr-1 mb-1'>"
-								+ empobj.getStaffName() + "</div>";
+						String empphotos = "<button type='button' class='step-trigger' aria-selected='false' disabled='disabled'>  <span class='bs-stepper-circle'><i class='bx bx-user'></i></span></button>";
+
+						List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+								.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo"))
+								.collect(Collectors.toList());
+						if (validProfilephoto.size() > 0) {
+
+							empphotos = validProfilephoto.get(0).getFilePath();
+						}
+
+						guestdetails += "<li data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx'>"
+								+ " <img class='rounded-circle' src='" + empphotos
+								+ " ' alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
+								+ "</span></li>";
 					}
 				}
 			}
+			guestdetails += "</ul>";
 			// -------------------------------------------
 			// Activity File
 			String filedetails = "";
 			for (ActivityMasterFiles aobj : actimaster.getActivityMasterFiles()) {
 
 				filedetails += "<a href='" + aobj.getFiles_Attach() + "' target='_blank' title='"
-						+ (aobj.getFiles_Attach()).toString().substring(29, aobj.getFiles_Attach().length())
-						+ "'><div class='avatar mr-1 avatar-sm bg-info'><span class='avatar-content'><i class='avatar-icon bx bx-link'></i></span></div></a>";
+						+ (aobj.getFiles_Attach()).toString().substring(29, aobj.getFiles_Attach().length()) + "'>";
+
+				String[] arrOfStr = String.valueOf(aobj.getFiles_Attach()).split("\\.");
+
+				if (arrOfStr.length > 0) {
+					String filevarpath = arrOfStr[1];
+
+					if (filevarpath.equalsIgnoreCase("pdf") == true) {
+						filedetails += "<img src='assets/img/icons/misc/pdf.png' alt='PDF image' width='20' class='me-2'>";
+					} else {
+						filedetails += "<img src='assets/img/icons/misc/jpg.png' alt='jp image' width='20' class='me-2'>";
+					}
+				}
+				filedetails += (aobj.getFiles_Attach()).toString().substring(29, aobj.getFiles_Attach().length())
+						+ "</a>";
 
 			}
 			// -------------------------------------------
-			String followerdetails = "";
+
+			String followerdetails = "<ul class='list-unstyled users-list d-flex align-items-center avatar-group m-0 my-3 me-2 followerdetailslist' >";
 			EmployeeMaster empobj = null;
 			for (String str : followers.split(",")) {
 				if (!str.equalsIgnoreCase("")) {
 					empobj = employeeMasterService.findById(Integer.parseInt(str));
 
 					if (empobj != null) {
-						followerdetails += "<div class='badge badge-pill badge-light-secondary mr-1 mb-1'>"
-								+ empobj.getStaffName() + "</div>";
+
+						if (empobj != null) {
+							String empphotos = "<button type='button' class='step-trigger' aria-selected='false' disabled='disabled'>  <span class='bs-stepper-circle'><i class='bx bx-user'></i></span></button>";
+
+							List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+									.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo"))
+									.collect(Collectors.toList());
+							if (validProfilephoto.size() > 0) {
+
+								empphotos = validProfilephoto.get(0).getFilePath();
+							}
+
+							followerdetails += "<li data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx' >"
+									+ " <img class='rounded-circle' src='" + empphotos
+									+ " ' alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
+									+ "</span></li>";
+						}
+
 					}
 				}
 
 			}
+			followerdetails += "</ul>";
 			// -------------------------------------------
 			if (status.equalsIgnoreCase("Completed")) {
 				status = "<span class='badge-circle-light-success'><i class='bx bx-check font-size-base'></i></span>";
@@ -6792,17 +6898,17 @@ public class HomeController {
 			// -------------------------------------------
 			// time calculator
 			String timecalculator = "";
-			long differdate = (long) rowMap.get("differdate");
+			long differdate = Long.parseLong(String.valueOf(rowMap.get("differdate")));
 			String differtime = String.valueOf(rowMap.get("differtime"));
 			long differmins = 0;
 			long differhr = 0;
 
 			if (!nullremover(String.valueOf(rowMap.get("differmins"))).equalsIgnoreCase("")) {
-				differmins = (long) rowMap.get("differmins");
+				differmins = Long.parseLong(String.valueOf(rowMap.get("differmins")));
 			}
 
 			if (!nullremover(String.valueOf(rowMap.get("differhr"))).equalsIgnoreCase("")) {
-				differmins = (long) rowMap.get("differhr");
+				differmins = Long.parseLong(String.valueOf(rowMap.get("differhr")));
 			}
 
 			String sorteddates = (String) rowMap.get("sorteddates");
@@ -6822,43 +6928,44 @@ public class HomeController {
 				}
 			}
 			// -------------------------------------------------
-			if (activitytitle.equalsIgnoreCase("null")) {
-				result[0] += "<li class='timeline-items timeline-icon-secondary active'><div class='timeline-time'>"
-						+ timecalculator + "</div>";
-				result[0] += "<h6 class='timeline-title'>Notes " + status + "</h6><div class='timeline-content'>";
+			if (nullremover(String.valueOf(activitytitle)).equalsIgnoreCase("")) {
+				result[0] += " <li class='timeline-item timeline-item-transparent'>  <span class='timeline-point timeline-point-primary'></span><div class='timeline-event'><div class='timeline-header border-bottom mb-3'>";
+				result[0] += "<h6 class='mb-0'>Notes " + status + "</h6><small class='text-muted'>" + timecalculator
+						+ "</small></div> <div class='d-flex justify-content-between flex-wrap mb-2'><div> <span>";
 				result[0] += htmlnotes;
-				result[0] += "</div> </li>";
+				result[0] += "</span> </li>";
 			} else {
-				result[0] += "<li class='timeline-items timeline-icon-secondary active'><div class='timeline-time'>"
-						+ timecalculator + "</div>";
-				result[0] += "<h6 class='timeline-title'>" + activitytitle + " " + status
-						+ "</h6><p class='timeline-text'>" + activitytype + " (" + startdate + " - " + starttime
-						+ " to " + enddate + " - " + endtime + ") </p><div class='timeline-content'>";
+				result[0] += " <li class='timeline-item timeline-item-transparent'>  <span class='timeline-point timeline-point-primary'></span><div class='timeline-event'><div class='timeline-header border-bottom mb-3'>";
+				result[0] += "<h6 class='mb-0'>" + activitytitle + " " + status + "</h6><small class='text-muted'>"
+						+ timecalculator
+						+ "</small></div> <div class='d-flex justify-content-between flex-wrap mb-2'><div><span>"
+						+ activitytype + " (" + startdate + " - " + starttime + " to " + enddate + " - " + endtime
+						+ ") </span><div class='timeline-content'><p class='mb-2'>";
 
 				if (!location.equalsIgnoreCase("")) {
-					result[0] += "Location : " + location;
+					result[0] += "Location : " + location + "<br/>";
 				}
 				if (!description.equalsIgnoreCase("")) {
-					result[0] += "<br/>Description : " + description;
+					result[0] += "Description : " + description + "<br/>";
 				}
 				if (!notes.equalsIgnoreCase("")) {
-					result[0] += "<br/>Notes : " + notes;
+					result[0] += "Notes : " + notes + "<br/>";
 				}
 
-				result[0] += "</div>";
+				result[0] += "</p></div>";
 
-				if (!guestdetails.equalsIgnoreCase("")) {
-					result[0] += "<div>Guest : " + guestdetails + "</div>";
+				if (guestlist.size() > 0) {
+					result[0] += "<p class='mb-2'>Guest : " + guestdetails + "</p>";
 				}
 				if (!filedetails.equalsIgnoreCase("")) {
-					result[0] += "<div>" + filedetails + "</div>";
+					result[0] += "<p class='mb-2'>" + filedetails + "</p>";
 				}
 
 				if (!guestdetails.equalsIgnoreCase("")) {
-					result[0] += "Follower: " + followerdetails;
+					result[0] += "<p class='mb-2'>Follower: " + followerdetails + "</p>";
 				}
 
-				result[0] += "<hr/></li>";
+				result[0] += "</li>";
 			}
 
 		});
@@ -6885,7 +6992,7 @@ public class HomeController {
 		dealobj.setSource(leadobj.getSource());
 		dealobj.setReference(leadobj.getReference());
 		dealobj.setNotes(leadobj.getNotes());
-		dealobj.setFollower(leadobj.getFollower());
+		// dealobj.setFollower(leadobj.getFollower());
 		dealobj.setLeadid(leadobj.getId());
 		dealobj.setPipeline("Deal In");
 		dealobj.setCreateddate(displaydatetimeFormat.format(new Date()));
@@ -6909,7 +7016,7 @@ public class HomeController {
 			leadobj.setSource(dealobj.getSource());
 			leadobj.setReference(dealobj.getReference());
 			leadobj.setNotes(dealobj.getNotes());
-			leadobj.setFollower(dealobj.getFollower());
+			// leadobj.setFollower(dealobj.getFollower());
 			leadobj.setCreateddate(displaydatetimeFormat.format(new Date()));
 			leadobj.setMovedtolead(false);
 			leadobj.setBackfromdeal(true);

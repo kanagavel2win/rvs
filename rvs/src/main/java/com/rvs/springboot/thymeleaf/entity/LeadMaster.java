@@ -46,7 +46,7 @@ public class LeadMaster {
 	@Column
 	private String notes;
 	@Column
-	private String follower;
+	private String purpose;
 	@Column
 	private String createddate;
 	@Column
@@ -63,12 +63,14 @@ public class LeadMaster {
 	@JoinColumn(name = "id")
 	private List<LeadContact> leadContact;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private List<LeadFollowers> leadFollowers;
+	
 	
 	@Transient
 	private String nextactivity;
 	
-	@Transient
-	private String Followername;
 	
 	@Transient
 	private String OrganizationName;
@@ -78,5 +80,12 @@ public class LeadMaster {
 	
 	@Transient
 	private String ReferenceName;
+	@Transient
+	private String createddateMMddYYY;
 	
+	@Transient
+	private String branchname;
+	
+	@Transient
+	private String leadfollowerids;
 }

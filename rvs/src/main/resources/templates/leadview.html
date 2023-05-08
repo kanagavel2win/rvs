@@ -188,7 +188,17 @@
 												</div>
 											</div>
 										</div>
-
+										<div class="d-flex justify-content-around flex-wrap my-4 py-3">
+											<div class="d-flex align-items-start me-4 mt-3 gap-3">
+												<span class="badge bg-label-primary p-2 rounded"><i
+													class="bx bx-check bx-sm"></i></span>
+												<div>
+													<h5 class="mb-0">Rs.<span th:text="${leadMaster.leadvalue}" id="Lbl_leadvalue"></span></h5>
+													<span>Lead Value</span>
+												</div>
+											</div>
+											
+										</div>
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
@@ -205,9 +215,7 @@
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${leadMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Value:</span> Rs. 
-													<span th:text="${leadMaster.leadvalue}" id="Lbl_leadvalue"></span>
-												</li>
+												
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
 												</li>
@@ -733,6 +741,20 @@
 
 												</div>
 												<div class="col-12 col-md-6">
+													<label class="form-label" for="purpose">PURPOSE <label
+														class="emptitle additem" name="addpurposedata"><i
+															class="bx bxs-plus-circle ownstyle1"></i></label></label>
+													<div>
+														<select class="form-control  addpurposedata" id="purpose"
+															th:field="*{purpose}" th:value="${leadMaster['purpose']}">
+															<th:block th:each="str :${PURPOSE}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">VALUE</label>
 													<div>
 														<input type="number" id="leadvalue"
@@ -741,7 +763,7 @@
 													</div>
 
 												</div>
-												<div class="col-12 col-md-6">
+												<div class="col-12 col-md-6 Referencediv">
 													<label class="form-label" for="Reference">REFERENCE</label>
 													<div>
 
@@ -1144,6 +1166,26 @@
 
 											}
 										});
+								//--------------------------------------------------------------------------------------------------------------------------------------		
+								$(".Referencediv").hide();
+								if($("#Source").val()=='Referral')
+								{
+									$(".Referencediv").show();
+								}else
+								{
+									$(".Referencediv").hide();
+								}
+								
+								$('#Source').change(function(){
+									
+									if($(this).val()=='Referral')
+									{
+										$(".Referencediv").show();
+									}else
+									{
+										$(".Referencediv").hide();
+									}
+								});
 								//--------------------------------------------------------------------------------------  
 
 								function validationformreset() {
@@ -1262,101 +1304,54 @@
 
 										});
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#editleadMasterdetailsForm')
-										.on(
-												'submit',
-												function(event) {
+								$('#editleadMasterdetailsForm').on('submit',function(event) {
 
-													if (event.target
-															.checkValidity()) {
-														$(
-																'.editorganizationdatasubmit')
-																.prop(
-																		"disabled",
-																		true);
-														$(
-																'.editorganizationdatasubmit')
-																.html(
-																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														const formData = new FormData(
-																document
-																		.querySelector("#editleadMasterdetailsForm"));
-
+													if (event.target.checkValidity()) {
+														$('.editorganizationdatasubmit').prop("disabled",true);
+														$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+														const formData = new FormData(document.querySelector("#editleadMasterdetailsForm"));
+														
+														formData.append("followers",$("#followers").val());
 														/* for (var pair of formData.entries()) {
 														   console.log(pair); 
 														} */
-														$
-																.ajax({
+														$.ajax({
 																	type : "POST",
 																	url : "leadsavestage2",
 																	processData : false,
 																	contentType : false,
 																	data : formData,
-																	success : function(
-																			result) {
-																		var bmobj = JSON
-																				.parse(JSON
-																						.stringify(result));
-																		//console.log(bmobj);
+																	success : function(result) {
+																		var bmobj = JSON.parse(JSON.stringify(result));
+																		console.log(bmobj);
 
-																		if (bmobj.label == "Hot") {
-																			$(
-																					'#Lbl_Label')
-																					.html(
-																							"<span class='badge bg-danger'>Hot</span>");
-																		} else if (bmobj.label == "Warm") {
-																			$(
-																					'#Lbl_Label')
-																					.html(
-																							"<span class='badge bg-warning'>Warm</span>");
-																		} else {
-																			$(
-																					'#Lbl_Label')
-																					.html(
-																							"<span class='badge bg-primary'>Cold</span>");
-																		}
-
-																		$(
-																				'#Lbl_Title')
-																				.text(
-																						bmobj.title);
-																		$(
-																				'#Lbl_Source')
-																				.text(
-																						bmobj.source);
-																		$(
-																				'#Lbl_follower')
-																				.text(
-																						bmobj.followername);
-																		$(
-																				'#Lbl_notes')
-																				.text(
-																						bmobj.notes);
-																		$(
-																				'#Lbl_Reference')
-																				.text(
-																						bmobj.referencename);
-																		$(
-																				"#Lbl_organization")
-																				.text(
-																						bmobj.organization);
-																		$(
-																				"#Lbl_leadvalue")
-																				.text(
-																						bmobj.leadvalue);
-
-																		$(
-																				'.editorganizationdataclose')
-																				.click();
-																		$(
-																				'.editorganizationdatasubmit')
-																				.prop(
-																						"disabled",
-																						false);
-																		$(
-																				'.editorganizationdatasubmit')
-																				.html(
-																						"Submit");
+																			if (bmobj.label == "Hot") {
+																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
+																			} else if (bmobj.label == "Warm") {
+																				$('#Lbl_Label').html("<span class='badge bg-warning'>Warm</span>");
+																			} else {
+																				$('#Lbl_Label').html("<span class='badge bg-primary'>Cold</span>");
+																			}
+																			$('#Lbl_Title').text(bmobj.title);
+																			$('#Lbl_Source').text(bmobj.source);
+																			
+																			$('#Lbl_notes').text(bmobj.notes);
+																			$('#Lbl_Reference').text(bmobj.referencename);
+																			$("#Lbl_organization").text(bmobj.organizationName);
+																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
+																			
+																			$name ="";
+																			
+																			bmobj.leadFollowers.forEach((element, index, array) =>
+																           	{
+																           	    $name += element.followername+ "<br>";
+																            });
+																           	$('#Lbl_follower').html($name);
+																           	
+																			$('.editorganizationdataclose').click();
+																			$('.editorganizationdatasubmit').prop("disabled",false);
+																			$('.editorganizationdatasubmit').html("Submit");
+																		
 
 																	},
 																	error : function(
@@ -1388,7 +1383,11 @@
 										labeltext = "New Document Type";
 									} else if (name == "addModel_Source") {
 										labeltext = "New Industry Type";
+									}else if (name == "addpurposedata") {
+										labeltext = "New Purpose";
 									}
+									
+									
 
 									$('#additemalltxt').text(labeltext);
 									$('#ItemStatusScrollable').modal('toggle');
@@ -1409,6 +1408,8 @@
 															labeltext = "modalDocumenttype";
 														} else if (name == "New Industry Type") {
 															labeltext = "addModel_Source";
+														} else if (name == "New Purpose") {
+															labeltext = "addpurposedata";
 														}
 
 														$('.' + labeltext)

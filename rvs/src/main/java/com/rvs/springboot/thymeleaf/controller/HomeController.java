@@ -5961,10 +5961,10 @@ public class HomeController {
 					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
 		}
 		List<LeadFollowers> leadfolloersls = new ArrayList();
-		String  followerids="";
+		String followerids = "";
 		for (LeadFollowers lf : leadMaster.getLeadFollowers()) {
 
-			followerids +=lf.getEmpid() + ",";
+			followerids += lf.getEmpid() + ",";
 			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
 
 			lf.setFollowername(empobj.getStaffName());
@@ -5980,7 +5980,7 @@ public class HomeController {
 		}
 		followerids = followerids.substring(0, followerids.length() - 1);
 		leadMaster.setLeadfollowerids(followerids);
-		
+
 		if (!nullremover(String.valueOf(leadMaster.getReference())).equalsIgnoreCase("")) {
 			final String leadreference = leadMaster.getReference().toString();
 			ContactPerson cp = contactPersonService.findById(Integer.parseInt(leadreference));
@@ -6030,6 +6030,9 @@ public class HomeController {
 
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		theModel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		theModel.addAttribute("PURPOSE", PURPOSE);
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
@@ -6159,6 +6162,64 @@ public class HomeController {
 		return "";
 	}
 
+	
+	@PostMapping("leadsavestage2")
+	@ResponseBody
+	public LeadMaster leadsavestage2(@RequestParam Map<String, String> params) {
+
+		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(params.get("leadMasterID")));
+
+		leadMaster.setTitle(params.get("Title"));
+		leadMaster.setOrganization(params.get("Organization"));
+		leadMaster.setSource(params.get("Source"));
+		leadMaster.setPurpose(params.get("purpose"));
+		leadMaster.setLeadvalue(Integer.parseInt(params.get("leadvalue")));
+		leadMaster.setReference(params.get("Reference"));
+		leadMaster.setLabel(params.get("Label"));
+		leadMaster.setBranch(Integer.parseInt(params.get("branch")));
+		leadMaster.setNotes(params.get("notes"));
+
+		List<LeadFollowers> lfls = new ArrayList<>();
+
+		for (String str : params.get("followers").split(",")) {
+
+			int followerid = Integer.parseInt(str);
+
+			if (leadMaster.getLeadFollowers().stream().filter(C -> C.getEmpid() == followerid)
+					.collect(Collectors.toList()).size() > 0) {
+				lfls.add(leadMaster.getLeadFollowers().stream().filter(C -> C.getEmpid() == followerid)
+						.collect(Collectors.toList()).get(0));
+			}else
+			{
+				lfls.add(new LeadFollowers(0,followerid,"",""));
+			}
+		}
+		leadMaster.setLeadFollowers(lfls);
+		
+		leadMaster = leadMasterService.save(leadMaster);
+		for (LeadFollowers lf : leadMaster.getLeadFollowers()) {
+
+			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
+
+			lf.setFollowername(empobj.getStaffName());
+
+			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+					.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+			if (validProfilephoto.size() > 0) {
+
+				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
+			}
+
+			
+		}
+		if (!nullremover(String.valueOf(leadMaster.getOrganization())).equalsIgnoreCase("")) {
+			leadMaster.setOrganizationName(
+					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
+		}
+		
+		return leadMaster;
+	}
+
 	@PostMapping("leadsavestage1")
 	@ResponseBody
 	public String leadsavestage1(@RequestParam Map<String, String> params) {
@@ -6279,6 +6340,7 @@ public class HomeController {
 		leadMasterService.save(leadMaster);
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
+		itemlistService.savesingletxt(Purpose, "PURPOSE");
 		// ----------------------------
 		return "";
 	}

@@ -6038,7 +6038,7 @@ public class HomeController {
 		theModel.addAttribute("branchlist", bmlist);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
-		theModel.addAttribute("contactPeopleList", contactPersonService.findAll());
+		theModel.addAttribute("contactPeopleList", contactPersonService.contactpersonlistbyorgname(leadMaster.getOrganization()));
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		// ---------------------------

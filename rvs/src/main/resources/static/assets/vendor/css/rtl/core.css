@@ -19779,7 +19779,7 @@ html:not([dir=rtl]) .switches-stacked .switch {
 .timeline::before {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 4px;
   z-index: 1;
   height: 100%;
   width: 1px;
@@ -19883,8 +19883,8 @@ html:not([dir=rtl]) .switches-stacked .switch {
   top: 0;
   z-index: 2;
   display: block;
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 2rem;
+  width: 2rem;
   text-align: center;
   border-radius: 50%;
   border: 2px solid #5a8dee;
@@ -19892,8 +19892,9 @@ html:not([dir=rtl]) .switches-stacked .switch {
 }
 .timeline .timeline-item .timeline-indicator i {
   color: #5a8dee;
-  font-size: 0.85rem;
-  vertical-align: baseline;
+  font-size: 1.2rem;
+  vertical-align: bottom;
+  padding-top:4.5px;
 }
 .timeline .timeline-item .timeline-point {
   position: absolute;

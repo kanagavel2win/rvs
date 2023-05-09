@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -208,8 +209,11 @@ public class HomeController {
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
 	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	DateFormat displaydatetimeFormatHHmm = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 	DateFormat displaydateFormatFirstMMMddYYY = new SimpleDateFormat("MMM-dd-yyyy");
-
+	DateFormat displaydateFormatFirstMMMddYYYAMPM = new SimpleDateFormat("MMM-dd-yyyy hh:mm a");
+	DateFormat displaydateFormatAMPM = new SimpleDateFormat("hh:mm a");
+	DateFormat displaydateFormathhmm = new SimpleDateFormat("hh:mm");
 	@ModelAttribute
 	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
 
@@ -6091,7 +6095,8 @@ public class HomeController {
 		activityMaster.setActivityfollowers(param.get("activityfollowers").toString());
 		activityMaster.setActivitytitle(param.get("activitytitle").toString());
 		activityMaster.setActivitytype(param.get("activitytype").toString());
-		activityMaster.setDescription(param.get("description").toString());
+
+		activityMaster.setDescription("");
 		activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
 		activityMaster.setDuedate(param.get("duedate").toString());
 		activityMaster.setEnddate(param.get("enddate").toString());
@@ -6111,7 +6116,7 @@ public class HomeController {
 		// --------------------------------------------------
 		// Guest
 
-		List<ActivityMasterGuest> lsactivityMasterguest = new ArrayList();
+		/*List<ActivityMasterGuest> lsactivityMasterguest = new ArrayList();
 
 		for (String str : guestid) {
 			ActivityMasterGuest guestobj = new ActivityMasterGuest();
@@ -6119,7 +6124,7 @@ public class HomeController {
 			lsactivityMasterguest.add(guestobj);
 		}
 		activityMaster.setActivityMasterGuest(lsactivityMasterguest);
-
+		*/
 		// --------------------------------------------------
 		// File Uploading
 		List<ActivityMasterFiles> activityMasterFileslist = new ArrayList();
@@ -6845,13 +6850,19 @@ public class HomeController {
 
 		String mastercategoryid = params.get("mastercategoryid");
 		String categoryType = params.get("categoryType");
-
-		List<Map<String, Object>> ls = activityMasterService.gettimelinelist(categoryType, mastercategoryid);
+		String statusweb = params.get("status");
+		List<Map<String, Object>> ls = activityMasterService.gettimelinelist(categoryType, mastercategoryid, statusweb);
 
 		String[] result = { "" };
 
 		ls.forEach(rowMap -> {
-
+			//-------------------------------------------------------------
+			// Label BG Color
+			Random rand = new Random();
+			int stateNum = rand.nextInt(6);
+			String[] states = {"success", "danger", "warning", "info", "dark", "primary", "secondary"};
+			String state = states[stateNum];
+			//-------------------------------------------------------------
 			String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 			String activitytype = nullremover(String.valueOf(rowMap.get("activitytype"))).toUpperCase();
 			String startdate = nullremover(String.valueOf(rowMap.get("startdate")));
@@ -6868,7 +6879,7 @@ public class HomeController {
 					.findById(Integer.parseInt(String.valueOf(rowMap.get("activity_id"))));
 			// -------------------------------------------
 			// guest Details
-			String guestdetails = "<ul class='list-unstyled users-list d-flex align-items-center avatar-group m-0 my-3 me-2 guestdetailslist' >";
+			String guestdetails = "<ul class='list-unstyled users-list d-flex align-items-center avatar-group m-0  me-2 guestdetailslist' >";
 			List<ActivityMasterGuest> guestlist = actimaster.getActivityMasterGuest();
 			for (ActivityMasterGuest gobj : guestlist) {
 				if (gobj.getGuestid() != null) {
@@ -6918,7 +6929,7 @@ public class HomeController {
 			}
 			// -------------------------------------------
 
-			String followerdetails = "<ul class='list-unstyled users-list d-flex align-items-center avatar-group m-0 my-3 me-2 followerdetailslist' >";
+			String followerdetails = "<ul class='list-unstyled users-list d-flex align-items-center avatar-group m-0  me-2 followerdetailslist' >";
 			EmployeeMaster empobj = null;
 			for (String str : followers.split(",")) {
 				if (!str.equalsIgnoreCase("")) {
@@ -6927,7 +6938,7 @@ public class HomeController {
 					if (empobj != null) {
 
 						if (empobj != null) {
-							String empphotos = "<button type='button' class='step-trigger' aria-selected='false' disabled='disabled'>  <span class='bs-stepper-circle'><i class='bx bx-user'></i></span></button>";
+							String empphotos = "";
 
 							List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
 									.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo"))
@@ -6935,12 +6946,26 @@ public class HomeController {
 							if (validProfilephoto.size() > 0) {
 
 								empphotos = validProfilephoto.get(0).getFilePath();
+								followerdetails += "<li data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx' >"
+										+ " <img class='rounded-circle' src='" + empphotos + "'"
+										+ "  alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
+										+ "</span></li>";
+								
+							}else {
+								
+								
+								String name =empobj.getStaffName();
+								String[] initials = name.split("\\s+");
+								
+								empphotos = "<span class='avatar-initial rounded-circle bg-label-" + state + "'>" + String.valueOf(initials[0].charAt(0) +""+ initials[initials.length - 1].charAt(0)).toUpperCase() + "</span>";
+
+								followerdetails += "<li data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx' >"
+										+  empphotos
+										+ "  <span class='tooltiptextx'>" + empobj.getStaffName()
+										+ "</span></li>";
 							}
 
-							followerdetails += "<li data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx' >"
-									+ " <img class='rounded-circle' src='" + empphotos
-									+ " ' alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
-									+ "</span></li>";
+						
 						}
 
 					}
@@ -6950,12 +6975,10 @@ public class HomeController {
 			followerdetails += "</ul>";
 			// -------------------------------------------
 			if (status.equalsIgnoreCase("Completed")) {
-				status = "<span class='badge-circle-light-success'><i class='bx bx-check font-size-base'></i></span>";
+				status = "";
 			} else {
-				status = "<span id='" + actimaster.getActivityId()
-						+ "NC' class='badge-circle-light-danger'><i class='bx bxs-flag-alt font-size-base'></i></span>"
-						+ "<a id='" + actimaster.getActivityId()
-						+ "' class='badge-circle-light-warning' title='Mark it As Completed'><i class='bx bx-like font-size-base'></i></a>";
+				status="<button type='button' id='" + actimaster.getActivityId() + "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx'> <span class='tooltiptextx'>Mark as Completed</span></button>";
+				
 			}
 			// -------------------------------------------
 			// time calculator
@@ -6975,56 +6998,80 @@ public class HomeController {
 
 			String sorteddates = (String) rowMap.get("sorteddates");
 
-			if (differdate > 30) {
-				timecalculator = sorteddates + "";
-			} else {
-
-				if (differdate == -1) {
-					timecalculator = " Tomorrow ";
-				} else if (differdate < -1) {
-					timecalculator = " Next Coming in  " + differdate + " days";
-				} else if (differdate > 0) {
-					timecalculator = differdate + " days ago";
+			if (nullremover(String.valueOf(activitytitle)).equalsIgnoreCase("")) {
+				try {
+					timecalculator= displaydateFormatFirstMMMddYYYAMPM
+							.format(displaydatetimeFormat.parse((String) rowMap.get("createdtime")) ).toString();
+				} catch (ParseException e) {
+					//e.printStackTrace();
+				}
+			}else
+			{
+				if (differdate > 30) {
+				
+					try {
+						timecalculator = displaydateFormatFirstMMMddYYYAMPM
+								.format(displaydatetimeFormat.parse(sorteddates + " "+ starttime) ).toString()+" " + displaydateFormatAMPM.format(displaydateFormathhmm.parse(starttime)).toString().toUpperCase();
+						
+					} catch (ParseException e) {
+						//e.printStackTrace();
+					}
+							
+							
 				} else {
-					timecalculator = differhr + "hrs " + differmins + "  mins ago";
+					String temp ="";
+					try {
+						temp = displaydateFormatAMPM.format(displaydateFormathhmm.parse(starttime)).toString().toUpperCase();
+					} catch (ParseException e) {
+						//e.printStackTrace();
+					}
+					
+					if (differdate == -1) {
+						timecalculator = " Tomorrow "+ temp;
+					} else if (differdate < -1) {
+						timecalculator = " Next Coming in  " + differdate + " days "+ temp;
+					} else if (differdate > 0) {
+						timecalculator = differdate + " days ago "+temp;
+					} else {
+						timecalculator = differhr + "hrs " + differmins + "  mins ago "+temp;
+					}
 				}
 			}
 			// -------------------------------------------------
+			String eventicon="bx-note";
+			if(activitytype.equalsIgnoreCase("Call")) {
+				eventicon="bx-phone-call";
+			}else if(activitytype.equalsIgnoreCase("Task")) {
+				eventicon="bx-alarm-add";
+			}else if(activitytype.equalsIgnoreCase("Meetings")) {
+				eventicon="bx-group";
+			}
+			
+				
 			if (nullremover(String.valueOf(activitytitle)).equalsIgnoreCase("")) {
-				result[0] += " <li class='timeline-item timeline-item-transparent'>  <span class='timeline-point timeline-point-primary'></span><div class='timeline-event'><div class='timeline-header border-bottom mb-3'>";
-				result[0] += "<h6 class='mb-0'>Notes " + status + "</h6><small class='text-muted'>" + timecalculator
-						+ "</small></div> <div class='d-flex justify-content-between flex-wrap mb-2'><div> <span>";
-				result[0] += htmlnotes;
-				result[0] += "</span> </li>";
+				result[0] += " <li class='timeline-item timeline-item-transparent'>  <span class='timeline-indicator timeline-indicator-"+ state +"'><i class='bx "+ eventicon +"'></i></span> <div class='timeline-event'><div class='timeline-header'>";
+				result[0] += "<h6 class='mb-0'>"+ htmlnotes +"</h6>" ;
+				result[0] += "</div><p class='text-muted'>"+ timecalculator +"</p></div> </li>";
 			} else {
-				result[0] += " <li class='timeline-item timeline-item-transparent'>  <span class='timeline-point timeline-point-primary'></span><div class='timeline-event'><div class='timeline-header border-bottom mb-3'>";
-				result[0] += "<h6 class='mb-0'>" + activitytitle + " " + status + "</h6><small class='text-muted'>"
+				result[0] += " <li class='timeline-item timeline-item-transparent'> <span class='timeline-indicator timeline-indicator-"+ state +"'><i class='bx "+ eventicon +"'></i></span><div class='timeline-event'><div class='timeline-header'>";
+				result[0] += "<h6 class='mb-0'>" + status +" " + activitytitle + "</h6></div><p class='text-muted'>"
 						+ timecalculator
-						+ "</small></div> <div class='d-flex justify-content-between flex-wrap mb-2'><div><span>"
-						+ activitytype + " (" + startdate + " - " + starttime + " to " + enddate + " - " + endtime
-						+ ") </span><div class='timeline-content'><p class='mb-2'>";
+						+ "</p> <div class='d-flex justify-content-between flex-wrap mb-2'><div><span>"
+						+ " </span><div class='timeline-content'>";
 
-				if (!location.equalsIgnoreCase("")) {
-					result[0] += "Location : " + location + "<br/>";
-				}
-				if (!description.equalsIgnoreCase("")) {
-					result[0] += "Description : " + description + "<br/>";
-				}
 				if (!notes.equalsIgnoreCase("")) {
-					result[0] += "Notes : " + notes + "<br/>";
+					result[0] +=  "<p class='mb-2'>"+ notes + "<br/></p>";
 				}
 
-				result[0] += "</p></div>";
+				result[0] += "</div>";
 
-				if (guestlist.size() > 0) {
-					result[0] += "<p class='mb-2'>Guest : " + guestdetails + "</p>";
-				}
+				
 				if (!filedetails.equalsIgnoreCase("")) {
 					result[0] += "<p class='mb-2'>" + filedetails + "</p>";
 				}
 
-				if (!guestdetails.equalsIgnoreCase("")) {
-					result[0] += "<p class='mb-2'>Follower: " + followerdetails + "</p>";
+				if (!followerdetails.equalsIgnoreCase("")) {
+					result[0] +=  followerdetails ;
 				}
 
 				result[0] += "</li>";
@@ -7032,7 +7079,8 @@ public class HomeController {
 
 		});
 
-		return result[0];
+		
+		return result[0] + "<li class='timeline-end-indicator'>  <i class='bx bx-badge-check'></i> </li>";
 	}
 
 	public String nullremover(String str) {

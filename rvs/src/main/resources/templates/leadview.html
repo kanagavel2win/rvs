@@ -96,36 +96,45 @@
 	margin-left: -10px;
 }
 
-.guestdetailslist, .followerdetailslist{
-  top: 10px;
-  font-size:20px;
-  left:-20px;
+.guestdetailslist, .followerdetailslist {
+	top: 10px;
+	font-size: 14px;
+	left: -20px;
 }
 
 .tooltipx {
-  position: relative;
-  display: inline-block;
- 
+	position: relative;
+	display: inline-block;
 }
 
 .tooltipx .tooltiptextx {
-  visibility: hidden;
-  font-size:12px;
-  min-width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
+	visibility: hidden;
+	font-size: 12px;
+	min-width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 1px;
+	/* Position the tooltip */
+	position: absolute;
+	left: 50px;
+	z-index: 1;
 }
 
 .tooltipx:hover .tooltiptextx {
-  visibility: visible;
+	visibility: visible;
 }
+
+.btn-iconx {
+	padding: 1px;
+	display: inline-flex;
+	margin-right: 2px;
+	margin-top: -3px;
+    width: 15px;
+    height: 15px;
+}
+
 </style>
 <script th:inline="javascript">
 	var emplanstat = 0;
@@ -193,11 +202,14 @@
 												<span class="badge bg-label-primary p-2 rounded"><i
 													class="bx bx-check bx-sm"></i></span>
 												<div>
-													<h5 class="mb-0">Rs.<span th:text="${leadMaster.leadvalue}" id="Lbl_leadvalue"></span></h5>
+													<h5 class="mb-0">
+														Rs.<span th:text="${leadMaster.leadvalue}"
+															id="Lbl_leadvalue"></span>
+													</h5>
 													<span>Lead Value</span>
 												</div>
 											</div>
-											
+
 										</div>
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
@@ -215,7 +227,7 @@
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${leadMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
-												
+
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
 												</li>
@@ -227,12 +239,11 @@
 													<span th:text="${leadMaster.notes}" id="Lbl_notes"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
-													
-													<span id="Lbl_follower">
-														<span th:each="obj : ${leadMaster.leadFollowers}" th:utext="${obj.Followername} + '<br/>'"> </span>
-													</span>
-													
-													</li>
+
+													<span id="Lbl_follower"> <span
+														th:each="obj : ${leadMaster.leadFollowers}"
+														th:utext="${obj.Followername} + '<br/>'"> </span>
+												</span></li>
 
 
 											</ul>
@@ -317,15 +328,10 @@
 								<div class="card mb-4">
 									<h5 class="card-header">
 										Activity Timeline
-										
-										
+
+
 
 										<div class="card-action-element" style="float: right">
-											<button class="btn btn-primary btn-sm loadevent" type="button"
-												>
-												Load
-											</button>
-											
 											<button class="btn btn-primary btn-sm" type="button"
 												data-bs-toggle="modal" data-bs-target="#addevent"
 												alt="Add New Event">
@@ -339,11 +345,20 @@
 										</div>
 									</h5>
 									<div class="card-body">
-										<ul class="timeline widget-timeline">
-											
+										<div class="divider divider-dashed">
+					                        <div class="divider-text">Planned</div>
+					                      </div>
+										<ul class="timeline widget-timeline widget-timelinePlanned">
+
+										</ul>
+										<div class="divider divider-dashed">
+					                        <div class="divider-text">Completed</div>
+					                      </div>
+					                     <ul class="timeline widget-timeline widget-timelineCompleted">
+
 										</ul>
 									</div>
-									
+
 
 								</div>
 								<!-- /Activity Timeline -->
@@ -374,9 +389,7 @@
 													<div class="card">
 														<h5 class="card-header"></h5>
 														<div class="card-body">
-															<div id="full-editor">
-																
-															</div>
+															<div id="full-editor"></div>
 														</div>
 													</div>
 												</div>
@@ -521,106 +534,20 @@
 														</div>
 													</div>
 													<div class="col-md-12">
-														<!-- Accordion start -->
-														<div class="col-md">
+														<div class="form-group">
+															<label for="addmodel">Note </label><span class="notes-sm">(Note
+																visible only For You)</span>
+															<div class="position-relative  has-icon-left">
+																<fieldset class="form-group">
+																	<textarea class="form-control " rows="4"
+																		th:field="*{notes}"
+																		th:value="${activityMaster['notes']}">
+																							</textarea>
 
-															<div class="accordion mt-3 accordion-header-primary"
-																id="accordionStyle1">
-																<div class="accordion-item card"
-																	style="border: 1px solid #d4d8dd;">
-																	<h2 class="accordion-header">
-																		<button type="button"
-																			class="accordion-button collapsed card-header"
-																			data-bs-toggle="collapse"
-																			data-bs-target="#accordionStyle1-1"
-																			aria-expanded="false">
-																			<span class="collapse-title"> <i
-																				class="bx bx-calendar-plus align-middle"></i> <span
-																				class="align-middle"
-																				style="color: var(- -bs-modal-color); font-family: var(- -bs-body-font-family);">Add
-																					Guest,Location,Description,Note</span>
-																			</span>
-																		</button>
-																	</h2>
-
-																	<div id="accordionStyle1-1"
-																		class="accordion-collapse collapse"
-																		data-bs-parent="#accordionStyle1">
-																		<div class="accordion-body">
-																			<div class="card-body row">
-																				<div class="col-md-6">
-																					<div class="form-group">
-																						<label for="addmodel">Staff</label>
-																						<div class="position-relative  has-icon-left">
-																							<fieldset class="form-group">
-																								<select id="guestid"
-																									class="select2 form-select guestStaff" multiple>
-																									<th:block th:each="str :${employeelist}">
-																										<option th:value="${str.empMasterid}"
-																											th:text="${str.StaffName}"></option>
-																									</th:block>
-																								</select>
-
-																							</fieldset>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="col-md-6">
-																					<div class="form-group">
-																						<label for="addmodel">Location</label>
-																						<div class="position-relative  has-icon-left">
-																							<fieldset class="form-group">
-																								<input type="text" id="notes"
-																									class="form-control  capitalize"
-																									th:field="*{location}"
-																									th:value="${activityMaster['location']}">
-
-																							</fieldset>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="col-md-6">
-																					<div class="form-group">
-																						<label for="addmodel">Description </label><span
-																							class="notes-sm">(Description visible to
-																							Guest)</span>
-																						<div class="position-relative  has-icon-left">
-																							<fieldset class="form-group">
-																								<textarea class="form-control " rows="4"
-																									th:field="*{description}"
-																									th:value="${activityMaster['description']}">
-																													</textarea>
-
-																							</fieldset>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="col-md-6">
-																					<div class="form-group">
-																						<label for="addmodel">Note </label><span
-																							class="notes-sm">(Note visible only For
-																							You)</span>
-																						<div class="position-relative  has-icon-left">
-																							<fieldset class="form-group">
-																								<textarea class="form-control " rows="4"
-																									th:field="*{notes}"
-																									th:value="${activityMaster['notes']}">
-																													</textarea>
-
-																							</fieldset>
-																						</div>
-																					</div>
-																				</div>
-
-
-																			</div>
-																		</div>
-																	</div>
-																</div>
+																</fieldset>
 															</div>
 														</div>
 
-														<!-- Accordion end -->
 													</div>
 
 
@@ -652,14 +579,7 @@
 														</div>
 													</div>
 												</div>
-												<div class="col-md-12">
-													<br />
-													<div class="checkbox checkbox-success checkbox-glow">
-														<input type="checkbox" id="checkboxGlow1" name="status">
-														<label for="checkboxGlow1">Make as done</label>
-
-													</div>
-												</div>
+												
 												<div class="col-md-12">
 													<br />
 													<button type="reset"
@@ -808,14 +728,15 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="followers">FOLLOWER</label>
 													<div>
-														<select class="select2  form-select followers form-control "
-															id="followers" name="follower" 
-															 multiple="multiple" required>
+														<select
+															class="select2  form-select followers form-control "
+															id="followers" name="follower" multiple="multiple"
+															required>
 															<th:block th:each="str :${employeelist}">
 																<option th:value="${str.empMasterid}"
 																	th:text="${str.StaffName}"></option>
 															</th:block>
-														</select> 
+														</select>
 
 														<div class="invalid-feedback">Please select
 															follower.</div>
@@ -1058,7 +979,7 @@
 
 
 		<script th:src="@{/assets/vendor/libs/quill/quill.js}"></script>
-		
+
 		<!-- Main JS -->
 		<script th:src="@{/assets/js/main.js}"></script>
 
@@ -1109,11 +1030,12 @@
 								// --------------------------------------------------------------------
 								//--------------------------------------------------------------------------------
 								//function load the history events
-								function gettimelinelist() {
+								function gettimelinelistCompleted() {
 									
 									var formData = {
 										mastercategoryid : "[[${leadMaster['id']}]]",
-										categoryType : "Lead"
+										categoryType : "Lead",
+										status : "Completed"
 									}
 	
 									$.ajax({
@@ -1122,7 +1044,31 @@
 										data : formData,
 										success : function(result) {
 	
-											$('.widget-timeline').html(result);
+											$('.widget-timelineCompleted').html(result);
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
+								function gettimelinelistNotCompleted() {
+									
+									var formData = {
+										mastercategoryid : "[[${leadMaster['id']}]]",
+										categoryType : "Lead",
+										status : "NotCompleted"
+									}
+	
+									$.ajax({
+										type : "POST",
+										url : "gettimelinelist",
+										data : formData,
+										success : function(result) {
+	
+											$('.widget-timelinePlanned').html(result);
 										},
 										error : function(e) {
 											console.log("Error" + e);
@@ -1133,9 +1079,6 @@
 	
 								}
 								
-								$(".loadevent").click(function() {
-									gettimelinelist();
-								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								// Custom list & inline suggestion
 								//------------------------------------------------------
@@ -1238,6 +1181,8 @@
 										formData.append("duedate","");
 										formData.append("htmlnotes",htmlnotes);													
 										formData.append("mastercategory","Lead");
+										formData.append("status","Completed");
+										
 										formData.append("mastercategoryid",$("#mastercategoryid").val());
 										 for (var pair of formData.entries()) {
 										   console.log(pair); 
@@ -1252,7 +1197,8 @@
 													result) {
 												
 												validationactivitynotesformreset();
-												
+												gettimelinelistCompleted();
+												gettimelinelistNotCompleted();
 
 											},
 											error : function(e) {
@@ -1271,13 +1217,14 @@
 														document
 																.querySelector("#activityMasterform"));
 												formData.append("File_Attach",modalFile.files[0]);
-												formData.append("guestid",$("#guestid").val());
+												formData.append("guestid","");
 												formData.append("activityfollowers",$("#activityfollowers").val());
 												formData.append("Activitycategory","Activity");
 												formData.append("duedate","");
 												formData.append("htmlnotes","");													
 												formData.append("mastercategory","Lead");
 												formData.append("mastercategoryid",$("#mastercategoryid").val());
+												//formData.append("status","");
 												 //for (var pair of formData.entries()) {
 												  // console.log(pair); 
 												//} 
@@ -1291,7 +1238,8 @@
 															result) {
 														
 														validationactivityeventformreset();
-														
+														gettimelinelistCompleted();
+														gettimelinelistNotCompleted();
 
 													},
 													error : function(e) {
@@ -1614,6 +1562,12 @@
 												});
 								
 								//-------------------------------------------
+								$(document).ready(function(){
+								    setTimeout(function(){
+								    	gettimelinelistCompleted();
+								    	gettimelinelistNotCompleted();
+								     },1000); // milliseconds
+								});
 							}); // Jquery
 
 			//------------------------------------------------------
@@ -1652,6 +1606,7 @@
 			
 			
 			//--------------------------
+			
 		</script>
 </body>
 </html>

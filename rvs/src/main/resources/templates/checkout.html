@@ -105,7 +105,8 @@
 
 
 	 
-	 <form class="row g-3"  id="form1" onsubmit="return false" enctype="multipart/form-data">
+	 <form class="g-3"  id="form1" onsubmit="return false" enctype="multipart/form-data">
+	 <div class="row">
 	 <div class="col-sm-3">
 	  <label class="form-label">Branch</label>
       <select class="form-select" id="Branch" name="Branch" required>
@@ -128,10 +129,12 @@
  
 	</select>
 	 </div>
+	 
 	 <div class="col-sm-3">
 	  <label class="form-label">Check Out Date</label>
 	  <input type="text" class="form-control flatpickr" name="CheckOutDate" id="CheckOutDate" placeholder="Apr 3 2022" required>
 	  </div>
+	  
 	 <div class="col-sm-3" id="vendordiv" style="display:none;">
 	 <label for="form-label">Vendor </label>
 	 <select class="form-select" name="vendor" id="vendorls">
@@ -141,30 +144,72 @@
 	 </div>
 	 
 	 <div class="col-sm-3" id="locationdiv" style="display:none;">
-	 <label for="form-label">Which Location </label>
+	 <label for="form-label">Which Location/Department </label>
 	 <input type="text" class="form-control" id="WhichLocation" name="WhichLocation">
+	 </div>
 	 </div>
 	 
 	 
-	 <div class="col-sm-12">
-	 <label class="form-label">Status</label>
-	 <div class="form-check form-check-success mb-2">
+	<!--  <div class="form-check form-check-success mb-2">
              
             
       
             <input name="Status" class="form-check-input" type="radio"  id="radio1" value="Checked Out" checked="" required>
             <label class="form-check-label" for="Status"> Checked Out &nbsp;&nbsp;</label>
-         </div>
-         	 <div class="form-check form-check-success mb-2">
+         </div> -->
+         
+         <div class="row mt-3">
+        <div class="col-md-2 mb-md-0 mb-2">
+            <div class="form-check custom-option custom-option-icon checked">
+              <label class="form-check-label custom-option-content" for="Status">
+                <span class="custom-option-body">
+                  <i class="bx bx-archive-out"></i>
+                  <span class="custom-option-title">Checked Out</span>
+                </span>
+                <input name="Status" class="form-check-input" type="radio"  id="radio1" value="Checked Out" checked="" required>
+              </label>
+            </div>
+          </div>
+          
+           <div class="col-md-2 mb-md-0 mb-2">
+            <div class="form-check custom-option custom-option-icon checked">
+              <label class="form-check-label custom-option-content" for="Status">
+                <span class="custom-option-body">
+                  <i class="bx bx-briefcase-alt-2"></i>
+                  <span class="custom-option-title">Out For Repair</span>
+                </span>
+                <input name="Status" class="form-check-input" type="radio" id="radio2" value="Out for repair" required>
+              </label>
+            </div>
+          </div>
+          
+          
+           <div class="col-md-2 mb-md-0 mb-2">
+            <div class="form-check custom-option custom-option-icon checked">
+              <label class="form-check-label custom-option-content" for="Status">
+                <span class="custom-option-body">
+                  <i class="bx bx-building-house"></i>
+                  <span class="custom-option-title">In Office Use</span>
+                </span>
+                <input name="Status" class="form-check-input" type="radio" id="radio2" value="In office Use" required>
+              </label>
+            </div>
+          </div>
+          
+          
+          
+           </div>
+          
+          
+         	<!--  <div class="form-check form-check-success mb-2">
             <input name="Status" class="form-check-input" type="radio" id="radio2" value="Out for repair" required>
             <label class="form-check-label" for="Status"> Out for repair &nbsp;&nbsp;</label>
             </div>
             	 <div class="form-check form-check-success mb-2">
             <input name="Status" class="form-check-input" type="radio" id="radio3" value="In office Use" required>
-            <label class="form-check-label" for="Status"> In office Use &nbsp;&nbsp;</label>
-         </div>
-	      
-	  </div>
+            <label class="form-check-label" for="Status"> In office Use &nbsp;&nbsp;</label> -->
+       
+	  <div class="row">
 	  
 	  <div class="col-sm-10">
 	 
@@ -175,7 +220,7 @@
 	  </div>
 	  
 	   <div class="col-sm-12">
-	  <div class="table-responsive">
+	  <div class="table-responsive mt-3">
 		 <table class="table table-sm table-bordered">
 		 <thead>
 		<tr>
@@ -204,28 +249,28 @@
 		 </table>
 		 </div>
 	</div>	
+	</div>	
+	</form>
+	
 											
-	 </form>
+	 
 	 
 	 
 	   <!--scrolling content Modal -->
-								<div class="modal fade" id="exampleModalScrollable"
+	<!-- 							<div class="modal fade" id="exampleModalScrollable"
 									tabindex="-1" role="dialog"
 									aria-labelledby="exampleModalScrollableTitle"
 									aria-hidden="true">
-									<div class="modal-dialog modal-dialog-scrollable modal-xl"
+									<div class="modal-dialog modal-simple modal-enable-otp modal-dialog-centered"
 										role="document">
 										<div class="modal-content">
-											<div class="modal-header">
-<h5 class="modal-title" id="exampleModalScrollableTitle">Check Out Items</h5>
-
-
-										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
+											
 											<div class="modal-body">
+											<h5 class="modal-title" id="exampleModalScrollableTitle">Check Out Items</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				 <form class="row g-3"  id="form2" onsubmit="return false" enctype="multipart/form-data">
 				 
-				 <div class="col-sm-6">
+				 <div class="col-sm-12">
 	 <label for="form-label">Asset Type </label>
 	 <select class="form-select" name="AssetType" id="AssetType" required>
 	 <option value="">-</option>
@@ -233,7 +278,7 @@
 	 </select>
 	 </div>
 	 
-	 <div class="col-sm-6">
+	 <div class="col-sm-12">
 	 <label for="form-label">Asset Name</label>
 	 <input type="hidden"  id="idc" /> 
 	 <input type="hidden"  name="ACondition" /> 
@@ -243,17 +288,17 @@
 	 </select>
 	 </div>
 	 
-	 <div class="col-sm-6">
+	 <div class="col-sm-12">
 	 <label for="form-label">Photo Attach</label>
 	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" accept=".png,.jpg,.jpeg,.pdf" />
 	 </div>
 	 
-	  <div class="col-sm-6">
+	  <div class="col-sm-12">
 	 <label for="form-label">Comments</label>
 	 <input type="text" name="Comments" class="form-control" />
 	 </div>
 	 
-	  <div class="col-sm-6">
+	  <div class="col-sm-12">
 	  <button type="submit" id="addcheckout" class="btn btn-primary mb-1" > Submit</button>
 	 </div>
 	 
@@ -264,7 +309,62 @@
 										 
 										</div>
 									</div>
-								</div>
+								</div> -->
+								
+								
+								
+								
+								<!-- Add New Credit Card Modal -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-simple modal-add-new-cc">
+    <div class="modal-content p-3 p-md-5">
+      <div class="modal-body">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="text-center mb-4">
+          <h3>Check Out Items</h3>
+         
+        </div>
+         <form class="row g-3"  id="form2" onsubmit="return false" enctype="multipart/form-data">
+				 
+				 <div class="col-sm-12">
+	 <label for="form-label">Asset Type </label>
+	 <select class="form-select" name="AssetType" id="AssetType" required>
+	 <option value="">-</option>
+	 <option value="Machinery">Machinery</option>
+	 </select>
+	 </div>
+	 
+	 <div class="col-sm-12">
+	 <label for="form-label">Asset Name</label>
+	 <input type="hidden"  id="idc" /> 
+	 <input type="hidden"  name="ACondition" /> 
+	 <select class="form-select" name="AssetName" id="AssetName" required>
+	 <option value="">-</option>
+	 <option value="Machinery">Machinery</option>
+	 </select>
+	 </div>
+	 
+	 <div class="col-sm-12">
+	 <label for="form-label">Photo Attach</label>
+	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" accept=".png,.jpg,.jpeg,.pdf" />
+	 </div>
+	 
+	  <div class="col-sm-12">
+	 <label for="form-label">Comments</label>
+	 <input type="text" name="Comments" class="form-control" />
+	 </div>
+	 
+	  <div class="col-sm-12">
+	  <button type="submit" id="addcheckout" class="btn btn-primary mb-1" > Submit</button>
+	 </div>
+	 
+	 
+				 </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Add New Credit Card Modal -->
 								
 	 
 	 </div>

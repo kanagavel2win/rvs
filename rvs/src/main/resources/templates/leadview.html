@@ -324,8 +324,8 @@ cursor: pointer;
 										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Activity</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
-										href="app-user-view-security.html"><i
-											class="bx bx-lock-alt me-1"></i>Security</a></li>
+										href="#"><i
+											class="bx bx-link me-1"></i>File</a></li>
 
 								</ul>
 								<!--/ User Pills -->
@@ -1088,8 +1088,7 @@ cursor: pointer;
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								// Custom list & inline suggestion
 								//------------------------------------------------------
-								$
-										.ajax({
+								$.ajax({
 											type : "GET",
 											url : "leadcplist",
 											data : "",
@@ -1166,6 +1165,53 @@ cursor: pointer;
 								}
 								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
+								$(document).on("click",".markitascompleted",	function() {	
+										
+									
+									let activityid = $(this).attr("id");
+									var formData = { activityid : activityid }
+		
+										$.ajax({
+											type : "POST",
+											url : "activitymarkascompleted",
+											data : formData,
+											success : function(result) {
+												Swal.fire({
+											        title: '',
+											        text: 'Activity Completed',
+											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+											        imageWidth: 400,
+											        imageAlt: 'Custom image',
+											        confirmButtonText: 'Ok',
+											        customClass: {
+											          confirmButton: 'btn btn-primary'
+											        },
+											        buttonsStyling: false
+											      });
+												
+												gettimelinelistCompleted();
+												gettimelinelistNotCompleted();
+											},
+											error : function(e) {
+												console.log("Error" + e);
+		
+											}
+		
+										});
+									
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$("#startdate").change(function() {
+									if($('#enddate').val() ==''){
+										$('#enddate').val($(this).val());
+									}
+								});
+								$("#starttime").change(function() {
+									if($('#endtime').val() ==''){
+										$('#endtime').val($(this).val());
+									}
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
 								$("#btnAddevent").click(function() {
 									$('.activityMasterformreset').click();
 									$('.activityMasterformsubmit').prop("disabled",
@@ -1174,7 +1220,7 @@ cursor: pointer;
 									$("#activityId").val(0);
 									$("#createdtime").val("");
 								});
-								
+								//--------------------------------------------------------------------------------------------------------------------------------------
 								$("#btnAddnotes").click(function() {
 									$(".ql-editor").html("");
 									$('.NotesMasterformclose').click();
@@ -1219,6 +1265,19 @@ cursor: pointer;
 													result) {
 												
 												validationactivitynotesformreset();
+												Swal.fire({
+											        title: '',
+											        text: 'Your notes added',
+											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+											        imageWidth: 400,
+											        imageAlt: 'Custom image',
+											        confirmButtonText: 'Ok',
+											        customClass: {
+											          confirmButton: 'btn btn-primary'
+											        },
+											        buttonsStyling: false
+											      });
+												
 												gettimelinelistCompleted();
 												gettimelinelistNotCompleted();
 
@@ -1261,6 +1320,20 @@ cursor: pointer;
 															result) {
 														
 														validationactivityeventformreset();
+														
+														Swal.fire({
+													        title: '',
+													        text: 'Your Activity event added',
+													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+													        imageWidth: 400,
+													        imageAlt: 'Custom image',
+													        confirmButtonText: 'Ok',
+													        customClass: {
+													          confirmButton: 'btn btn-primary'
+													        },
+													        buttonsStyling: false
+													      });
+														
 														gettimelinelistCompleted();
 														gettimelinelistNotCompleted();
 

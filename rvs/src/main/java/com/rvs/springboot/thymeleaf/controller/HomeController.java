@@ -6992,7 +6992,7 @@ public class HomeController {
 				status = "";
 			} else {
 				status = "<button type='button' id='" + actimaster.getActivityId()
-						+ "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx'> <span class='tooltiptextx'>Mark as Completed</span></button>";
+						+ "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
 
 			}
 			// -------------------------------------------

@@ -90,6 +90,7 @@ import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadContact;
+import com.rvs.springboot.thymeleaf.entity.LeadFiles;
 import com.rvs.springboot.thymeleaf.entity.LeadFollowers;
 import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
@@ -850,6 +851,45 @@ public class HomeController {
 			bfiles.setAssetFileid(id);
 			bfiles.setFiles_Attach(filename.toString());
 			return bfiles;
+		}else if (params.get("functiontype").equalsIgnoreCase("Lead")) {
+			StringBuilder filename = new StringBuilder();
+			if (Files_Attach != null) {
+				// File Uploading
+				String profilephotouploadRootPath = request.getServletContext().getRealPath("leadfiles");
+				// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+				File uploadRootDir = new File(profilephotouploadRootPath);
+				// Create directory if it not exists.
+				if (!uploadRootDir.exists()) {
+					uploadRootDir.mkdirs();
+				}
+
+				if (Files_Attach.getOriginalFilename().toString().length() > 0) {
+
+					String tempfilename = stringdatetime() + Files_Attach.getOriginalFilename();
+					Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+					filename.append("leadfiles/" + tempfilename);
+
+					try {
+						Files.write(fileNameandPath, Files_Attach.getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			LeadFiles bfiles = new LeadFiles();
+
+			int ContactPersonid = Integer.parseInt(params.get("LeadID"));
+			String Documenttype = params.get("Documenttype");
+			String DocNo = params.get("DocNo");
+			itemlistService.savesingletxt(Documenttype, "Documenttype");
+			int id = leadMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid);
+
+			bfiles.setFileid(id);
+			bfiles.setDocumentNo(DocNo);
+			bfiles.setDocumentType(Documenttype);
+			bfiles.setFilePath(filename.toString());
+			return bfiles;
 		} else {
 			throw new RuntimeException("functiontype is invalid");
 		}
@@ -1087,6 +1127,9 @@ public class HomeController {
 		} else if (params.get("functiontype").equalsIgnoreCase("AssetFile")) {
 			int fileid = Integer.parseInt(params.get("fileid"));
 			return assetMasterService.deleteassetFiles(fileid);
+		}  else if (params.get("functiontype").equalsIgnoreCase("Lead")) {
+			int fileid = Integer.parseInt(params.get("fileid"));
+			return leadMasterService.deleteFiles(fileid);
 		} else {
 			throw new RuntimeException("functiontype is invalid");
 		}
@@ -1261,7 +1304,7 @@ public class HomeController {
 			cp.setBranchName(bm.getBRANCH_NAME());
 			cp.setBranchCode(bm.getBranchCode());
 			// Organization Name
-			if (!cp.getOrganization().equalsIgnoreCase("")) {
+			if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase("")) {
 				cp.setOrganizationname(
 						contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
 			}
@@ -6052,6 +6095,103 @@ public class HomeController {
 		theModel.addAttribute("activityMaster", new ActivityMaster());
 		return "leadview";
 	}
+	
+	@GetMapping("leadattachment")
+	public String leadattachment(Model theModel, @RequestParam("id") int id) {
+
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+
+		LeadMaster leadMaster = new LeadMaster();
+		leadMaster = leadMasterService.findById(id);
+
+		if (!nullremover(String.valueOf(leadMaster.getOrganization())).equalsIgnoreCase("")) {
+			leadMaster.setOrganizationName(
+					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
+		}
+		List<LeadFollowers> leadfolloersls = new ArrayList();
+		String followerids = "";
+		for (LeadFollowers lf : leadMaster.getLeadFollowers()) {
+
+			followerids += lf.getEmpid() + ",";
+			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
+
+			lf.setFollowername(empobj.getStaffName());
+
+			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+					.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+			if (validProfilephoto.size() > 0) {
+
+				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
+			}
+
+			leadfolloersls.add(lf);
+		}
+		followerids = followerids.substring(0, followerids.length() - 1);
+		leadMaster.setLeadfollowerids(followerids);
+
+		if (!nullremover(String.valueOf(leadMaster.getReference())).equalsIgnoreCase("")) {
+			final String leadreference = leadMaster.getReference().toString();
+			ContactPerson cp = contactPersonService.findById(Integer.parseInt(leadreference));
+			leadMaster.setReferenceName(cp.getPeoplename());
+		}
+
+		// ----------------------------------------------------------
+		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
+
+		for (LeadContact lc : leadMaster.getLeadContact()) {
+			ContactPerson cp = contactPersonService.findById(lc.getContactPerson());
+
+			// Set primary contact
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplist.add(cp);
+
+		}
+
+		// ----------------------------------------------------------
+		theModel.addAttribute("cplist", cplist);
+		theModel.addAttribute("leadMaster", leadMaster);
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+
+		List<String> industry_type = itemlistService.findByFieldName("industry_type");
+		theModel.addAttribute("industry_type", industry_type);
+
+		theModel.addAttribute("employeelist", emplist);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		
+
+		theModel.addAttribute("personlist", cplis);
+		theModel.addAttribute("organizationlist", corglis);
+
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		theModel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		theModel.addAttribute("PURPOSE", PURPOSE);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmlist);
+
+		// theModel.addAttribute("OrganizationContacts", corg);
+		theModel.addAttribute("contactPeopleList",
+				contactPersonService.contactpersonlistbyorgname(leadMaster.getOrganization()));
+		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("lead"));
+		
+		return "leadattachment";
+	}
 
 	@PostMapping("contactpersondetails")
 	@ResponseBody
@@ -6790,61 +6930,7 @@ public class HomeController {
 
 	}
 
-	@ResponseBody
-	@PostMapping("leadeventnotesave")
-	public String leadeventnotesave(@RequestParam Map<String, String> params) {
 
-		String editor = params.get("editor");
-		String noteckbox = params.get("noteckbox");
-		String mastercategoryid = params.get("mastercategoryid");
-		int noteactivityid = Integer.parseInt(params.get("noteactivityid"));
-
-		ActivityMaster activityMaster = new ActivityMaster();
-		if (noteactivityid > 0) {
-			activityMaster = activityMasterService.findById(noteactivityid);
-		} else {
-			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
-		}
-		if (noteckbox.equalsIgnoreCase("true")) {
-			activityMaster.setStatus("Completed");
-		}
-
-		activityMaster.setHtmlnotes(editor);
-		activityMaster.setMastercategoryid(mastercategoryid);
-		activityMaster.setActivitycategory("Note");
-		activityMaster.setMastercategory("Lead");
-		activityMaster = activityMasterService.save(activityMaster);
-
-		return "Saved";
-	}
-
-	@ResponseBody
-	@PostMapping("dealeventnotesave")
-	public String dealeventnotesave(@RequestParam Map<String, String> params) {
-
-		String editor = params.get("editor");
-		String noteckbox = params.get("noteckbox");
-		String mastercategoryid = params.get("mastercategoryid");
-		int noteactivityid = Integer.parseInt(params.get("noteactivityid"));
-
-		ActivityMaster activityMaster = new ActivityMaster();
-		if (noteactivityid > 0) {
-			activityMaster = activityMasterService.findById(noteactivityid);
-		} else {
-			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
-		}
-		if (noteckbox.equalsIgnoreCase("true")) {
-			activityMaster.setStatus("Completed");
-		}
-
-		activityMaster.setHtmlnotes(editor);
-		activityMaster.setMastercategoryid(mastercategoryid);
-		activityMaster.setActivitycategory("Note");
-		activityMaster.setMastercategory("Deal");
-		activityMaster = activityMasterService.save(activityMaster);
-
-		return "Saved";
-	}
 
 	@ResponseBody
 	@PostMapping("activitymarkascompleted")

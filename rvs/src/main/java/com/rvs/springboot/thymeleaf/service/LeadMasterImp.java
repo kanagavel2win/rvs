@@ -67,5 +67,27 @@ public class LeadMasterImp implements LeadMasterService {
 
 		return keyHolder.getKey().intValue();
 	}
+	
+	@Override
+	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int leadid) {
+		final String sql="INSERT INTO `leadfiles`(`document_no`, `document_type`, `file_path`, `id`) VALUES ('"+ DocumentNo +"','"+ DocumentType  +"','"+ FilePath +"',"+ leadid +")";
+		
+		KeyHolder keyHolder =new GeneratedKeyHolder();
+		
+		jdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int deleteFiles(int id) {
+		String sql ="DELETE FROM `leadfiles` WHERE  fileid=" +id ;
+		return jdbcTemplate.update(sql);
+	}
 
 }

@@ -131,10 +131,18 @@
 	display: inline-flex;
 	margin-right: 2px;
 	margin-top: -3px;
-    width: 15px;
-    height: 15px;
+	width: 15px;
+	height: 15px;
 }
 
+.editactivity 
+{
+cursor: pointer;
+}
+.editnoteactivity
+{
+cursor: pointer;
+}
 </style>
 <script th:inline="javascript">
 	var emplanstat = 0;
@@ -334,11 +342,11 @@
 										<div class="card-action-element" style="float: right">
 											<button class="btn btn-primary btn-sm" type="button"
 												data-bs-toggle="modal" data-bs-target="#addevent"
-												alt="Add New Event">
+												alt="Add New Event" id="btnAddevent">
 												<i class="bx bx-plus bx-xs me-1"></i> Event
 											</button>
 											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-toggle="modal" data-bs-target="#addnotes"
+												data-bs-toggle="modal" data-bs-target="#addnotes" id="btnAddnotes"
 												alt="Add New Notes">
 												<i class="bx bx-plus bx-xs me-1"></i> Notes
 											</button>
@@ -346,15 +354,15 @@
 									</h5>
 									<div class="card-body">
 										<div class="divider divider-dashed">
-					                        <div class="divider-text">Planned</div>
-					                      </div>
+											<div class="divider-text">Planned</div>
+										</div>
 										<ul class="timeline widget-timeline widget-timelinePlanned">
 
 										</ul>
 										<div class="divider divider-dashed">
-					                        <div class="divider-text">Completed</div>
-					                      </div>
-					                     <ul class="timeline widget-timeline widget-timelineCompleted">
+											<div class="divider-text">Completed</div>
+										</div>
+										<ul class="timeline widget-timeline widget-timelineCompleted">
 
 										</ul>
 									</div>
@@ -383,7 +391,9 @@
 												<p>Update Notes Basic Information</p>
 											</div>
 											<form id="NotesMasterform" class="" onsubmit="return false">
-
+												<input type="hidden" name="mastercategoryidnote" id="mastercategoryidnote" />
+												<input type="hidden" name="noteactivityId" id="noteactivityId"
+																	 /> 
 												<!-- Full Editor -->
 												<div class="col-12">
 													<div class="card">
@@ -400,10 +410,12 @@
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
 														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
+														
+														
 													<button type="reset"
 														class="btn btn-label-secondary NotesMasterformclose"
-														data-bs-dismiss="modal" aria-label="Close">
-														Cancel</button>
+														aria-label="Close">
+														Reset</button>
 												</div>
 											</form>
 										</div>
@@ -438,14 +450,14 @@
 															<div class="position-relative">
 																<input type="hidden" th:field="*{mastercategoryid}"
 																	id="mastercategoryid" /> <input type="hidden"
-																	th:field="*{activityId}"
+																	th:field="*{activityId}" id="activityId"
 																	th:value="${activityMaster['activityId']}" /> <input
-																	type="hidden" th:field="*{createdtime}"
+																	type="hidden" th:field="*{createdtime}" id="createdtime"
 																	th:value="${activityMaster['createdtime']}" /> <input
 																	type="text"
 																	class="form-control   capitalize ActivityTitle"
 																	placeholder="Task details..."
-																	th:field="*{activitytitle}"
+																	th:field="*{activitytitle}" id="activitytitle"
 																	th:value="${activityMaster['activitytitle']}" />
 
 															</div>
@@ -490,7 +502,7 @@
 															<label for="addmodel">Start Date</label>
 															<div class="position-relative has-icon-left">
 																<input type="date" class="form-control  "
-																	th:field="*{startdate}"
+																	th:field="*{startdate}" id="startdate"
 																	th:value="${activityMaster['startdate']}" />
 
 
@@ -502,7 +514,7 @@
 															<label for="addmodel">Start Time</label>
 															<div class="position-relative has-icon-left">
 																<input type="time" class="form-control  "
-																	th:field="*{starttime}"
+																	th:field="*{starttime}" id="starttime"
 																	th:value="${activityMaster['starttime']}" />
 
 
@@ -514,7 +526,7 @@
 															<label for="addmodel">End Date</label>
 															<div class="position-relative has-icon-left">
 																<input type="date" class="form-control  "
-																	th:field="*{enddate}"
+																	th:field="*{enddate}" id="enddate"
 																	th:value="${activityMaster['enddate']}" />
 
 
@@ -526,7 +538,7 @@
 															<label for="addmodel">End Time</label>
 															<div class="position-relative has-icon-left">
 																<input type="time" class="form-control  "
-																	th:field="*{endtime}"
+																	th:field="*{endtime}" id="endtime"
 																	th:value="${activityMaster['endtime']}" />
 
 
@@ -540,7 +552,7 @@
 															<div class="position-relative  has-icon-left">
 																<fieldset class="form-group">
 																	<textarea class="form-control " rows="4"
-																		th:field="*{notes}"
+																		th:field="*{notes}" id="notes"
 																		th:value="${activityMaster['notes']}">
 																							</textarea>
 
@@ -570,16 +582,8 @@
 														</div>
 													</div>
 												</div>
-												<div class="col-md-12">
-													<div class="form-group">
-														<label for="addmodel">Files</label>
-														<div class="position-relative has-icon-left">
-															<input type="file" class="form-control  "
-																id="activityfiles" />
-														</div>
-													</div>
-												</div>
 												
+
 												<div class="col-md-12">
 													<br />
 													<button type="reset"
@@ -1009,6 +1013,7 @@
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								var ids="[[${leadMaster['id']}]]";
 								$("#mastercategoryid").val(ids);
+								$("#mastercategoryidnote").val(ids);
 								
 								var leadfollowerids="[[${leadMaster['leadfollowerids']}]]";
 								$("#followers").val(leadfollowerids.split(",")).change();
@@ -1028,6 +1033,7 @@
 											});
 								});
 								// --------------------------------------------------------------------
+								
 								//--------------------------------------------------------------------------------
 								//function load the history events
 								function gettimelinelistCompleted() {
@@ -1150,22 +1156,40 @@
 									$('.activityMasterformclose').click();									
 									$('.activityMasterformsubmit').prop("disabled",
 											false);
-									$('.activityMasterformsubmit').html("Submit");
+									$('.activityMasterformsubmit').html("Save");
 								}
 								function validationactivitynotesformreset() {
 									$(".ql-editor").html("");
-									$('.NotesMasterformclose').click();									
+									$('.btn-close').click();									
 									$('.NotesMasterformsubmit').prop("disabled",false);
 									$('.NotesMasterformsubmit').html("Save");
 								}
 								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
+								$("#btnAddevent").click(function() {
+									$('.activityMasterformreset').click();
+									$('.activityMasterformsubmit').prop("disabled",
+											false);
+									$('.activityMasterformsubmit').html("Save");
+									$("#activityId").val(0);
+									$("#createdtime").val("");
+								});
+								
+								$("#btnAddnotes").click(function() {
+									$(".ql-editor").html("");
+									$('.NotesMasterformclose').click();
+									$("#noteactivityId").val(0);
+									$('.NotesMasterformsubmit').prop("disabled",false);
+									$('.NotesMasterformsubmit').html("Save");
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
 								$(".NotesMasterformsubmit").click(function() {
 									var htmlnotes = $(".ql-editor").html().trim();
 									if (htmlnotes != '') {
 										$('.NotesMasterformsubmit').prop("disabled",true);
 										$('.NotesMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 										const formData = new FormData();
+										
 										formData.append("File_Attach",null);
 										formData.append("activityfollowers","");
 										formData.append("activitytitle","");
@@ -1182,11 +1206,9 @@
 										formData.append("htmlnotes",htmlnotes);													
 										formData.append("mastercategory","Lead");
 										formData.append("status","Completed");
+										formData.append("activityId",$("#noteactivityId").val());
+										formData.append("mastercategoryid",$("#mastercategoryidnote").val());
 										
-										formData.append("mastercategoryid",$("#mastercategoryid").val());
-										 for (var pair of formData.entries()) {
-										   console.log(pair); 
-										} 
 										 $.ajax({
 											type : "POST",
 											url : "activitysave",
@@ -1216,7 +1238,8 @@
 												const formData = new FormData(
 														document
 																.querySelector("#activityMasterform"));
-												formData.append("File_Attach",modalFile.files[0]);
+												//formData.append("File_Attach",modalFile.files[0]);
+												formData.append("File_Attach",null);
 												formData.append("guestid","");
 												formData.append("activityfollowers",$("#activityfollowers").val());
 												formData.append("Activitycategory","Activity");
@@ -1271,7 +1294,7 @@
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
-																		console.log(bmobj);
+																		//console.log(bmobj);
 
 																			if (bmobj.label == "Hot") {
 																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
@@ -1606,6 +1629,64 @@
 			
 			
 			//--------------------------
+			function editactivity(e){
+				var activityid= e.getAttribute("id").replace("actid","");
+				var formData = {
+						id : activityid
+					}
+
+					$.ajax({
+						type : "POST",
+						url : "getActivityMaster",
+						data : formData,
+						success : function(result) {
+							var bmobj = JSON.parse(JSON.stringify(result));
+							console.log(bmobj);
+							$("#mastercategoryid").val(bmobj.mastercategoryid);
+							$("#activityId").val(bmobj.activityId);
+							$("#createdtime").val(bmobj.createdtime);
+							$("#activitytitle").val(bmobj.activitytitle);
+							//$("#activitytype").val(bmobj.activitytype);
+							$("#startdate").val(bmobj.startdate);
+							$("#starttime").val(bmobj.starttime);
+							$("#enddate").val(bmobj.enddate);
+							$("#endtime").val(bmobj.endtime);
+							$("#notes").val(bmobj.notes);
+							$("#activityfollowers").val(bmobj.activityfollowers).change();
+							$("input[name=activitytype][value="+ bmobj.activitytype +"]").attr('checked', true);
+							$(".activitytype").removeClass("active");
+							$(".activitytype"+bmobj.activitytype).addClass("active");
+							$('#addevent').modal('show');
+						},
+						error : function(e) {
+							console.log("Error" + e);
+						}
+					});
+			};
+			//-------------------------------------
+			function editnoteactivity(e){
+				var activityid= e.getAttribute("id").replace("actid","");
+				var formData = {
+						id : activityid
+					}
+
+					$.ajax({
+						type : "POST",
+						url : "getActivityMaster",
+						data : formData,
+						success : function(result) {
+							var bmobj = JSON.parse(JSON.stringify(result));
+							console.log(bmobj);
+							$("#mastercategoryidnote").val(bmobj.mastercategoryid);
+							$("#noteactivityId").val(bmobj.activityId);
+							$(".ql-editor").html(bmobj.htmlnotes);
+							$('#addnotes').modal('show');
+						},
+						error : function(e) {
+							console.log("Error" + e);
+						}
+					});
+			};
 			
 		</script>
 </body>

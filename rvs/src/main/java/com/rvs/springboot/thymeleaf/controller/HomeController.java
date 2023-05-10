@@ -214,6 +214,7 @@ public class HomeController {
 	DateFormat displaydateFormatFirstMMMddYYYAMPM = new SimpleDateFormat("MMM-dd-yyyy hh:mm a");
 	DateFormat displaydateFormatAMPM = new SimpleDateFormat("hh:mm a");
 	DateFormat displaydateFormathhmm = new SimpleDateFormat("hh:mm");
+
 	@ModelAttribute
 	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
 
@@ -6042,7 +6043,8 @@ public class HomeController {
 		theModel.addAttribute("branchlist", bmlist);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
-		theModel.addAttribute("contactPeopleList", contactPersonService.contactpersonlistbyorgname(leadMaster.getOrganization()));
+		theModel.addAttribute("contactPeopleList",
+				contactPersonService.contactpersonlistbyorgname(leadMaster.getOrganization()));
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		// ---------------------------
@@ -6083,21 +6085,36 @@ public class HomeController {
 		return obj;
 	}
 
+	@PostMapping("getActivityMaster")
+	@ResponseBody
+	public ActivityMaster getActivityMaster(@RequestParam("id") int id) {
+
+		return activityMasterService.findById(id);
+
+	}
+
 	@PostMapping("activitysave")
 	@ResponseBody
 	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid,
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
 
-		// System.out.println(param);
+		int activityId =Integer.parseInt(param.get("activityId"));
 		ActivityMaster activityMaster = new ActivityMaster();
+		if(activityId >0) {
+			activityMaster= activityMasterService.findById(activityId);
+		}else {
+			activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));	
+		}
+		
+
 		activityMaster.setActivitycategory(param.get("Activitycategory").toString());
 		activityMaster.setActivityfollowers(param.get("activityfollowers").toString());
 		activityMaster.setActivitytitle(param.get("activitytitle").toString());
 		activityMaster.setActivitytype(param.get("activitytype").toString());
 
 		activityMaster.setDescription("");
-		activityMaster.setCreatedtime(displaydatetimeFormat.format(new Date()));
+		
 		activityMaster.setDuedate(param.get("duedate").toString());
 		activityMaster.setEnddate(param.get("enddate").toString());
 		activityMaster.setEndtime(param.get("endtime").toString());
@@ -6116,15 +6133,14 @@ public class HomeController {
 		// --------------------------------------------------
 		// Guest
 
-		/*List<ActivityMasterGuest> lsactivityMasterguest = new ArrayList();
-
-		for (String str : guestid) {
-			ActivityMasterGuest guestobj = new ActivityMasterGuest();
-			guestobj.setGuestid(str);
-			lsactivityMasterguest.add(guestobj);
-		}
-		activityMaster.setActivityMasterGuest(lsactivityMasterguest);
-		*/
+		/*
+		 * List<ActivityMasterGuest> lsactivityMasterguest = new ArrayList();
+		 * 
+		 * for (String str : guestid) { ActivityMasterGuest guestobj = new
+		 * ActivityMasterGuest(); guestobj.setGuestid(str);
+		 * lsactivityMasterguest.add(guestobj); }
+		 * activityMaster.setActivityMasterGuest(lsactivityMasterguest);
+		 */
 		// --------------------------------------------------
 		// File Uploading
 		List<ActivityMasterFiles> activityMasterFileslist = new ArrayList();
@@ -6167,7 +6183,6 @@ public class HomeController {
 		return "";
 	}
 
-	
 	@PostMapping("leadsavestage2")
 	@ResponseBody
 	public LeadMaster leadsavestage2(@RequestParam Map<String, String> params) {
@@ -6194,13 +6209,12 @@ public class HomeController {
 					.collect(Collectors.toList()).size() > 0) {
 				lfls.add(leadMaster.getLeadFollowers().stream().filter(C -> C.getEmpid() == followerid)
 						.collect(Collectors.toList()).get(0));
-			}else
-			{
-				lfls.add(new LeadFollowers(0,followerid,"",""));
+			} else {
+				lfls.add(new LeadFollowers(0, followerid, "", ""));
 			}
 		}
 		leadMaster.setLeadFollowers(lfls);
-		
+
 		leadMaster = leadMasterService.save(leadMaster);
 		for (LeadFollowers lf : leadMaster.getLeadFollowers()) {
 
@@ -6215,13 +6229,12 @@ public class HomeController {
 				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
 			}
 
-			
 		}
 		if (!nullremover(String.valueOf(leadMaster.getOrganization())).equalsIgnoreCase("")) {
 			leadMaster.setOrganizationName(
 					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
 		}
-		
+
 		return leadMaster;
 	}
 
@@ -6856,13 +6869,13 @@ public class HomeController {
 		String[] result = { "" };
 
 		ls.forEach(rowMap -> {
-			//-------------------------------------------------------------
+			// -------------------------------------------------------------
 			// Label BG Color
 			Random rand = new Random();
 			int stateNum = rand.nextInt(6);
-			String[] states = {"success", "danger", "warning", "info", "dark", "primary", "secondary"};
+			String[] states = { "success", "danger", "warning", "info", "dark", "primary", "secondary" };
 			String state = states[stateNum];
-			//-------------------------------------------------------------
+			// -------------------------------------------------------------
 			String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 			String activitytype = nullremover(String.valueOf(rowMap.get("activitytype"))).toUpperCase();
 			String startdate = nullremover(String.valueOf(rowMap.get("startdate")));
@@ -6872,7 +6885,7 @@ public class HomeController {
 			String location = nullremover(String.valueOf(rowMap.get("location")));
 			String description = nullremover(String.valueOf(rowMap.get("description")));
 			String notes = nullremover(String.valueOf(rowMap.get("notes")));
-			String htmlnotes = nullremover(String.valueOf(rowMap.get("htmlnotes")));
+			String htmlnotes = String.valueOf(rowMap.get("htmlnotes"));
 			String followers = nullremover(String.valueOf(rowMap.get("activityfollowers")));
 			String status = nullremover(String.valueOf(rowMap.get("status")));
 			ActivityMaster actimaster = activityMasterService
@@ -6950,22 +6963,23 @@ public class HomeController {
 										+ " <img class='rounded-circle' src='" + empphotos + "'"
 										+ "  alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
 										+ "</span></li>";
-								
-							}else {
-								
-								
-								String name =empobj.getStaffName();
+
+							} else {
+
+								String name = empobj.getStaffName();
 								String[] initials = name.split("\\s+");
-								
-								empphotos = "<span class='avatar-initial rounded-circle bg-label-" + state + "'>" + String.valueOf(initials[0].charAt(0) +""+ initials[initials.length - 1].charAt(0)).toUpperCase() + "</span>";
+
+								empphotos = "<span class='avatar-initial rounded-circle bg-label-" + state + "'>"
+										+ String.valueOf(
+												initials[0].charAt(0) + "" + initials[initials.length - 1].charAt(0))
+												.toUpperCase()
+										+ "</span>";
 
 								followerdetails += "<li data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx' >"
-										+  empphotos
-										+ "  <span class='tooltiptextx'>" + empobj.getStaffName()
+										+ empphotos + "  <span class='tooltiptextx'>" + empobj.getStaffName()
 										+ "</span></li>";
 							}
 
-						
 						}
 
 					}
@@ -6977,8 +6991,9 @@ public class HomeController {
 			if (status.equalsIgnoreCase("Completed")) {
 				status = "";
 			} else {
-				status="<button type='button' id='" + actimaster.getActivityId() + "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx'> <span class='tooltiptextx'>Mark as Completed</span></button>";
-				
+				status = "<button type='button' id='" + actimaster.getActivityId()
+						+ "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx'> <span class='tooltiptextx'>Mark as Completed</span></button>";
+
 			}
 			// -------------------------------------------
 			// time calculator
@@ -7000,78 +7015,82 @@ public class HomeController {
 
 			if (nullremover(String.valueOf(activitytitle)).equalsIgnoreCase("")) {
 				try {
-					timecalculator= displaydateFormatFirstMMMddYYYAMPM
-							.format(displaydatetimeFormat.parse((String) rowMap.get("createdtime")) ).toString();
-				} catch (ParseException e) {
-					//e.printStackTrace();
+					timecalculator = displaydateFormatFirstMMMddYYYAMPM
+							.format(displaydatetimeFormat.parse(String.valueOf(rowMap.get("createdtime")))).toString();
+				} catch (Exception e) {
+					// e.printStackTrace();
 				}
-			}else
-			{
+			} else {
 				if (differdate > 30) {
-				
+
 					try {
 						timecalculator = displaydateFormatFirstMMMddYYYAMPM
-								.format(displaydatetimeFormat.parse(sorteddates + " "+ starttime) ).toString()+" " + displaydateFormatAMPM.format(displaydateFormathhmm.parse(starttime)).toString().toUpperCase();
-						
-					} catch (ParseException e) {
-						//e.printStackTrace();
+								.format(displaydatetimeFormat.parse(sorteddates + " " + starttime)).toString() + " "
+								+ displaydateFormatAMPM.format(displaydateFormathhmm.parse(starttime)).toString()
+										.toUpperCase();
+
+					} catch (Exception e) {
+						// e.printStackTrace();
 					}
-							
-							
+
 				} else {
-					String temp ="";
+					String temp = "";
 					try {
-						temp = displaydateFormatAMPM.format(displaydateFormathhmm.parse(starttime)).toString().toUpperCase();
+						temp = displaydateFormatAMPM.format(displaydateFormathhmm.parse(starttime)).toString()
+								.toUpperCase();
 					} catch (ParseException e) {
-						//e.printStackTrace();
+						// e.printStackTrace();
 					}
-					
+
 					if (differdate == -1) {
-						timecalculator = " Tomorrow "+ temp;
+						timecalculator = " Tomorrow " + temp;
 					} else if (differdate < -1) {
-						timecalculator = " Next Coming in  " + differdate + " days "+ temp;
+						timecalculator = " Next Coming in  " + differdate + " days " + temp;
 					} else if (differdate > 0) {
-						timecalculator = differdate + " days ago "+temp;
+						timecalculator = differdate + " days ago " + temp;
 					} else {
-						timecalculator = differhr + "hrs " + differmins + "  mins ago "+temp;
+						timecalculator = differhr + "hrs " + differmins + "  mins ago " + temp;
 					}
 				}
 			}
 			// -------------------------------------------------
-			String eventicon="bx-note";
-			if(activitytype.equalsIgnoreCase("Call")) {
-				eventicon="bx-phone-call";
-			}else if(activitytype.equalsIgnoreCase("Task")) {
-				eventicon="bx-alarm-add";
-			}else if(activitytype.equalsIgnoreCase("Meetings")) {
-				eventicon="bx-group";
+			String eventicon = "bx-note";
+			if (activitytype.equalsIgnoreCase("Call")) {
+				eventicon = "bx-phone-call";
+			} else if (activitytype.equalsIgnoreCase("Task")) {
+				eventicon = "bx-alarm-add";
+			} else if (activitytype.equalsIgnoreCase("Meetings")) {
+				eventicon = "bx-group";
 			}
-			
-				
+
 			if (nullremover(String.valueOf(activitytitle)).equalsIgnoreCase("")) {
-				result[0] += " <li class='timeline-item timeline-item-transparent'>  <span class='timeline-indicator timeline-indicator-"+ state +"'><i class='bx "+ eventicon +"'></i></span> <div class='timeline-event'><div class='timeline-header'>";
-				result[0] += "<h6 class='mb-0'>"+ htmlnotes +"</h6>" ;
-				result[0] += "</div><p class='text-muted'>"+ timecalculator +"</p></div> </li>";
+				result[0] += " <li class='timeline-item timeline-item-transparent'>  <span class='timeline-indicator timeline-indicator-"
+						+ state + "'><i class='bx " + eventicon
+						+ "'></i></span> <div class='timeline-event'><div class='timeline-header'>";
+				result[0] += "<h6 class='mb-0'><span  id='actid" + actimaster.getActivityId()
+						+ "' class='editnoteactivity' title='Edit the event detials' onclick='editnoteactivity(this)'>" + htmlnotes + "</span></h6>";
+				result[0] += "</div><p class='text-muted'>" + timecalculator + "</p></div> </li>";
 			} else {
-				result[0] += " <li class='timeline-item timeline-item-transparent'> <span class='timeline-indicator timeline-indicator-"+ state +"'><i class='bx "+ eventicon +"'></i></span><div class='timeline-event'><div class='timeline-header'>";
-				result[0] += "<h6 class='mb-0'>" + status +" " + activitytitle + "</h6></div><p class='text-muted'>"
-						+ timecalculator
-						+ "</p> <div class='d-flex justify-content-between flex-wrap mb-2'><div><span>"
+				result[0] += " <li class='timeline-item timeline-item-transparent'> <span class='timeline-indicator timeline-indicator-"
+						+ state + "'><i class='bx " + eventicon
+						+ "'></i></span><div class='timeline-event'><div class='timeline-header'>";
+				result[0] += "<h6 class='mb-0'>" + status + " <span  id='actid" + actimaster.getActivityId()
+						+ "' class='editactivity' title='Edit the event detials' onclick='editactivity(this)'>" + activitytitle + "</span></h6></div><p class='text-muted'>"
+						+ timecalculator + "</p> <div class='d-flex justify-content-between flex-wrap mb-2'><div><span>"
 						+ " </span><div class='timeline-content'>";
 
 				if (!notes.equalsIgnoreCase("")) {
-					result[0] +=  "<p class='mb-2'>"+ notes + "<br/></p>";
+					result[0] += "<p class='mb-2'>" + notes + "<br/></p>";
 				}
 
 				result[0] += "</div>";
 
-				
 				if (!filedetails.equalsIgnoreCase("")) {
 					result[0] += "<p class='mb-2'>" + filedetails + "</p>";
 				}
 
 				if (!followerdetails.equalsIgnoreCase("")) {
-					result[0] +=  followerdetails ;
+					result[0] += followerdetails;
 				}
 
 				result[0] += "</li>";
@@ -7079,7 +7098,6 @@ public class HomeController {
 
 		});
 
-		
 		return result[0] + "<li class='timeline-end-indicator'>  <i class='bx bx-badge-check'></i> </li>";
 	}
 

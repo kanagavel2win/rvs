@@ -1,1902 +1,1788 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
-	data-textdirection="ltr">
 
-<!-- BEGIN: Head-->
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr"
+	data-theme="theme-default" th:data-assets-path="@{/assets/}"
+	data-template="vertical-menu-template">
 <head>
 <meta name="_csrf" th:content="${_csrf.token}" />
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="ICC">
-<title>Deal</title>
-<link rel="apple-touch-icon"
-	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
-<link rel="shortcut icon" type="image/x-icon"
-	th:href="@{/app-assets/images/ico/favicon.ico}">
+	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+<title>Deal View</title>
+
+<meta name="description" content="" />
+
+
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	th:href="@{/assets/img/favicon/favicon.ico}" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
-	rel="stylesheet}">
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/vendors.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
 
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/editors/quill/quill.snow.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
+<!-- Icons -->
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
 
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/editors/quill/katex.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/editors/quill/monokai-sublime.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/editors/quill/quill.snow.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/editors/quill/quill.bubble.css}">
-<!-- END: Vendor CSS-->
+<!-- Core CSS -->
+<link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}"
+	class="template-customizer-core-css" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/rtl/theme-default.css}"
+	class="template-customizer-theme-css" />
+<link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
 
-<!-- BEGIN: Theme CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap-extended.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/colors.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/components.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/dark-layout.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/select2/select2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" />
+<!-- Page CSS -->
 
-<!-- END: Theme CSS-->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/pages/page-user-view.css}" />
+<!-- Helpers -->
+<script th:src="@{/assets/vendor/js/helpers.js}"></script>
 
-<!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+<script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script th:src="@{/assets/js/config.js}"></script>
 
-
-<!-- END: Page CSS-->
-
-<!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/assets/css/style.css}">
-
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/pages/app-email.css}">
-<!-- END: Custom CSS-->
-<style>
-.badge-circle-light-warning {
-	margin-left: 10px;
+<style type="text/css">
+.contacteditbtn {
 	cursor: pointer;
 }
 
-.emptitle {
-	color: #527a00;
-	font-size: 15px;
-	line-height: 20px;
-	font-weight: 600;
-	font-family: Fira Sans, Trebuchet MS, sans-serif;
-	cursor: pointer;
-}
-
-.bxs-file-pdf {
-	color: #FF0000;
-	font-size: 50px;
-}
-
-.m2 {
-	vertical-align: middle;
-	line-height: 20px;
-}
-
-.uppercase {
-	text-transform: uppercase;
-}
-
-.capitalize {
-	text-transform: capitalize;
-}
-
-.highlight-error {
-	border-color: red;
-}
-
-.error {
-	color: red;
-}
-
-.history {
-	padding-top: 20px;
-}
-
-.timelinehistory {
-	max-height: 300px;
-	overflow-Y: auto;
-}
-
-.notes-sm {
-	font-size: 10px;
-}
-
-.acc-font-sm {
-	font-size: 14px;
-	color: #4169E1;
-}
-
-#progress {
-	padding: 0;
-	list-style-type: none;
-	font-family: arial;
-	font-size: 10px;
-	clear: both;
-	line-height: 1em;
-	margin: 0 -1px;
-	text-align: center;
-	cursor: pointer;
-}
-
-#progress li {
-	float: left;
-	padding: 10px 10px 10px 20px;
-	background: #E5E5E5;
-	color: #919191;
+.activitytypeicon {
 	position: relative;
-	border-top: 1px solid #E5E5E5;
-	border-bottom: 1px solid #E5E5E5;
-	width: 16%;
-	margin: 0 1px;
+	margin-left: -10px;
 }
 
-#progress li:before {
-	content: '';
-	border-left: 16px solid #fff;
-	border-top: 16px solid transparent;
-	border-bottom: 16px solid transparent;
-	position: absolute;
-	top: 0;
-	left: 0;
+.guestdetailslist, .followerdetailslist {
+	top: 10px;
+	font-size: 14px;
+	left: -20px;
 }
 
-#progress li:after {
-	content: '';
-	border-left: 16px solid #E5E5E5;
-	border-top: 16px solid transparent;
-	border-bottom: 16px solid transparent;
-	position: absolute;
-	top: 0;
-	left: 100%;
-	z-index: 20;
+.tooltipx {
+	position: relative;
+	display: inline-block;
 }
 
-#progress li.active {
-	background: #00CD00;
-	border-top: 1px solid #00CD00;
-	border-bottom: 1px solid #00CD00;
+.tooltipx .tooltiptextx {
+	visibility: hidden;
+	font-size: 12px;
+	min-width: 120px;
+	background-color: black;
 	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 1px;
+	/* Position the tooltip */
+	position: absolute;
+	left: 50px;
+	z-index: 1;
 }
 
-#progress li.active:after {
-	border-left-color: #00CD00;
-	color: #fff;
+.tooltipx:hover .tooltiptextx {
+	visibility: visible;
+}
+
+.btn-iconx {
+	padding: 1px;
+	display: inline-flex;
+	margin-right: 2px;
+	margin-top: -3px;
+	width: 15px;
+	height: 15px;
+}
+
+.editactivity 
+{
+cursor: pointer;
+}
+.editnoteactivity
+{
+cursor: pointer;
 }
 </style>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script th:inline="javascript">
-	var NATUREOFWORKlist = "";
-	var UNITSlist = "";
-
-	function optionshandle(radio) {
-
-		$(".ActivityTitle").attr('placeholder', radio.title + ' details...');
-	}
-
-	var edudivadd = 0;
+	var emplanstat = 0;
+	var emgstat = 0;
+	var languagelist = "";
+	var educationdegreelist = "";
+	var Nomineerelationshiplist = "";
+	
+	function optionshandle(radio)
+	{
+		
+		$(".ActivityTitle").attr('placeholder',radio.title +' details...');
+		$(".activitytype").removeClass("active");
+		$(".activitytype"+radio.title).addClass("active");
+	}	
+	
+	
 </script>
-<th:block th:each="str :${NATUREOFWORK}">
-
-	<script>
-		NATUREOFWORKlist = NATUREOFWORKlist
-				+ "<option value='[[${str}]]'>[[${str}]]</option>";
-	</script>
-</th:block>
-<th:block th:each="str :${UNITS}">
-	<script>
-		UNITSlist = UNITSlist
-				+ "<option value='[[${str}]]'>[[${str}]]</option>";
-	</script>
-</th:block>
 </head>
-<!-- END: Head-->
 
-<!-- BEGIN: Body-->
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<!-- Menu -->
+			<div th:insert="menu"></div>
+			<!-- / Menu -->
 
-<body
-	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
-	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+			<!-- Layout container -->
+			<div class="layout-page">
+				<!-- Navbar -->
+				<div th:insert="header"></div>
+				<!-- / Navbar -->
 
-	<!-- BEGIN: Header-->
-	<div th:insert="header"></div>
-	<!-- END: Header-->
+				<!-- Content wrapper -->
+				<div class="content-wrapper">
+					<!-- Content -->
 
-
-	<!-- BEGIN: Main Menu-->
-	<div th:insert="menu"></div>
-	<!-- END: Main Menu-->
-
-	<!-- BEGIN: Content-->
-	<!-- BEGIN: Content-->
-	<div class="app-content content">
-		<div class="content-overlay"></div>
-		<div class="content-wrapper">
-			<div class="content-header row">
-				<div class="content-header-left col-12 mb-2 mt-1">
-					<div class="row breadcrumbs-top">
-						<div class="col-12">
-
-							<h5 class="content-header-title float-left pr-1 mb-0">Deal</h5>
-
-							<div class="breadcrumb-wrapper col-12">
-								<ol class="breadcrumb p-0 mb-0">
-									<li class="breadcrumb-item"><a href="index"><i
-											class="bx bx-home-alt"></i></a></li>
-
-								</ol>
-
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="content-body">
-
-				<!-- Basic Vertical form layout section start -->
-				<section id="basic-vertical-layouts">
-					<div class="row match-height">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-content">
+					<div class="container-xxl flex-grow-1 container-p-y">
+						<h4 class="py-3 breadcrumb-wrapper mb-4">
+							<span class="text-muted fw-light">Works /<a
+								href="deallist">Deal</a>/
+							</span> View
+						</h4>
+						<div class="row gy-4">
+							<!-- User Sidebar -->
+							<div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+								<!-- User Card -->
+								<div class="card mb-4">
 									<div class="card-body">
-										<!--scrolling content Modal -->
-										<div class="modal fade" id="VendorStatusScrollable"
-											tabindex="-1" role="dialog"
-											aria-labelledby="VendorStatusScrollableTitle"
-											aria-hidden="true">
-											<div class="modal-dialog modal-dialog-scrollable"
-												role="document">
-												<div class="modal-content">
-													<div class="modal-header bg-warning">
-														<h5 class="modal-title white"
-															id="VendorStatusScrollableTitle"></h5>
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<i class="bx bx-x"></i>
-														</button>
-													</div>
-													<div class="modal-body">
-														<div class="col-md-12">
-															<div class="form-group">
-																<label for="addmodel" id="additemalltxt"></label>
-																<div class="position-relative">
-																	<fieldset class="form-group">
-																		<input type="text" id="additemall" name="addmodel"
-																			class="form-control capitalize">
-																	</fieldset>
-																</div>
-															</div>
-														</div>
+										<div class="user-avatar-section">
+											<div class="d-flex align-items-center flex-column">
+												<img class="img-fluid rounded my-4"
+													th:src="@{/assets/img/logo/rvslogo1.png}" height="110"
+													width="110" alt="User avatar" />
+												<div class="user-info text-center">
+													<h5 class="mb-2" th:text="${dealMaster.Title}"
+														id="Lbl_Title"></h5>
 
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-light-secondary"
-															data-dismiss="modal">
-															<i class="bx bx-x d-block d-sm-none"></i> <span
-																class="d-none d-sm-block">Close</span>
-														</button>
-														<button type="button" class="btn btn-primary ml-1"
-															id="additemallsavebtn">
-															<i class="bx bx-check d-block d-sm-none"></i> <span
-																class="d-none d-sm-block">ADD</span>
-														</button>
-													</div>
 												</div>
 											</div>
 										</div>
-										<!--scrolling content Modal -->
+										<div class="d-flex justify-content-around flex-wrap my-4 py-3">
+											<div class="d-flex align-items-start me-4 mt-3 gap-3">
+												<span class="badge bg-label-primary p-2 rounded"><i
+													class="bx bx-check bx-sm"></i></span>
+												<div>
+													<h5 class="mb-0">
+														Rs.<span th:text="${dealMaster.dealvalue}"
+															id="Lbl_dealvalue"></span>
+													</h5>
+													<span>Deal Value</span>
+												</div>
+											</div>
 
-
-										<div th:if="${save}" class="form-group col-12">
-											<button type="button"
-												class="btn mb-1 btn-success btn-lg btn-block">Deal
-												Info Updated Successfully</button>
 										</div>
-										<ul class="nav nav-tabs" role="tablist">
-											<li class="nav-item"><a class="nav-link active"
-												id="home-tab" data-toggle="tab" href="#home"
-												aria-controls="home" role="tab" aria-selected="true"> <i
-													class="bx bx-user align-middle"></i> <span
-													class="align-middle m2">Basic</span>
-											</a></li>
-											<li class="nav-item"><a class="nav-link"
-												id="project-tab" data-toggle="tab" href="#project"
-												aria-controls="project" role="tab" aria-selected="false">
-													<i class="bx bxs-bell-ring align-middle"></i> <span
-													class="align-middle m2">Project Info</span>
-											</a></li>
-											<li class="nav-item"><a class="nav-link"
-												id="profile-tab" data-toggle="tab" href="#profile"
-												aria-controls="profile" role="tab" aria-selected="false">
-													<i class="bx bxs-bell-ring align-middle"></i> <span
-													class="align-middle m2">Events & Activities</span>
-											</a></li>
-
-										</ul>
-										<form th:action="@{/dealeventpart1save}"
-											th:object="${dealMaster}" method="POST"
-											class="wizard-horizontal" id="formId"
-											enctype="multipart/form-data">
-											<div class="tab-content">
-
-
-												<div class="tab-pane active " id="home"
-													aria-labelledby="home-tab" role="tabpanel">
-
-													<div class="row">
-														<div class="col-md-12">
-															<div class="form-group">
-																<label class="emptitle">Basic Information</label>
-
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="email-id-icon">Contact Person
-																	<div
-																		class="spinner-border spinnerbordercontactperson spinner-border-sm text-primary"
-																		role="status" style="visibility: hidden">
-																		<span class="sr-only">Loading...</span>
-																	</div>
-																</label>
-
-																<div class="position-relative has-icon-left">
-																	<fieldset class="form-group">
-																		<input type="hidden"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{id}" th:value="${dealMaster['id']}">
-																		<input type="hidden"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{createddate}"
-																			th:value="${dealMaster['createddate']}"> <select
-																			class="select2 form-control form-control js-example-tags"
-																			multiple="multiple" style="width: 100%;"
-																			id="ContactPerson" th:field="*{ContactPerson}">
-																			<th:block th:each="str :${personorgls}">
-																				<th:block th:if="${#strings.arraySplit(str,'|')[3]} == ' '">
-																					<option
-																					th:value="${#strings.arraySplit(str,'|')[0]} +'-'"
-																					th:text="${#strings.arraySplit(str,'|')[1]}"></option>		
-																																									
-																				</th:block>
-																				<th:block th:unless="${#strings.arraySplit(str,'|')[3]} == ' '">
-																					<option
-																					th:value="${#strings.arraySplit(str,'|')[0]} +'-' + ${#strings.arraySplit(str,'|')[2] }"
-																					th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>																
-																				</th:block>
-																			</th:block>
-
-																		</select>
-
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-
-
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Organization </label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<select
-																			class="select2 form-control form-control js-example-tags"
-																			id="Organization" multiple="multiple"
-																			style="width: 100%;" th:field="*{Organization}">
-																			<th:block th:each="str :${organizationlist}">
-
-																				<option th:value="${str.id}"
-																					th:text="${str.orgname}"></option>
-																			</th:block>
-																		</select>
-
-
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Title</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<input type="text" id="Title"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{Title}" th:value="${dealMaster['Title']}">
-																		<div class="form-control-position">
-																			<i class="bx bx-task"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Source <label
-																	class="emptitle additem" name="addsourcedata"><i
-																		class="bx bxs-plus-circle ownstyle1"></i></label>
-																</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="form-control form-control-sm addsourcedata"
-																			id="Source" th:field="*{Source}"
-																			th:value="${dealMaster['Source']}">
-																			<th:block th:each="str :${SOURCE}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bx-news"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Reference</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select class="form-control form-control-sm"
-																			id="Reference" th:field="*{Reference}"
-																			th:value="${dealMaster['Reference']}">
-																			<option value="">-</option>
-																			<th:block th:each="str :${personlist}">
-																				<option th:value="${str.id}"
-																					th:text="${str.peoplename}"></option>
-																			</th:block>
-																		</select>
-
-																		<div class="form-control-position">
-																			<i class="bx bx-link-alt"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Purpose <label
-																	class="emptitle additem" name="addPurposedata"><i
-																		class="bx bxs-plus-circle ownstyle1"></i></label>
-																</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="form-control form-control-sm addPurposedata"
-																			id="purpose" th:field="*{purpose}"
-																			th:value="${dealMaster['purpose']}">
-																			<th:block th:each="str :${PURPOSE}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bx-news"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Pipeline</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<ul id="progress">
-																			<li class=" la lb lc ld le lf" title="Deal In">Deal
-																				In</li>
-																			<li class=" lb lc ld le lf" title="Contact made">Contact</li>
-																			<li class=" lc ld le lf "
-																				title="Site Visit Scheduled">Site Visit</li>
-																			<li class=" ld le lf" title="Project Evaluvated">Evolu</li>
-																			<li class=" le lf" title="Proposal made">Proposal</li>
-																			<li class=" lf" title="Negotiations started">Nego</li>
-																		</ul>
-																		<select class="form-control form-control-sm"
-																			id="pipeline" th:field="*{pipeline}"
-																			th:value="${dealMaster['pipeline']}"
-																			style="visibility: hidden">
-																			<option value="Deal In">Deal In</option>
-																			<option value="Contact made">Contact made</option>
-																			<option value="Site Visit Scheduled">Site
-																				Visit Scheduled</option>
-																			<option value="Project Evaluvated">Project
-																				Evoluvated</option>
-																			<option value="Proposal made">Proposal made</option>
-																			<option value="Negotiations started">Negotiations
-																				started</option>
-																		</select>
-																		<!-- <div class="form-control-position">
-																			<i class="bx bx-label"></i>
-																		</div> -->
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Expected Closing Date</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="date" id="expectedclosingdate"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{expectedclosingdate}"
-																			th:value="${dealMaster['expectedclosingdate']}">
-																		<div class="form-control-position">
-																			<i class="bx bx-label"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-12">
-															<div class="form-group">
-																<hr />
-																<label class="emptitle">PERSON Contact</label>
-															</div>
-														</div>
-														<div class="col-md-6">
-
-															<div class="form-group">
-
-																<div
-																	class="form-label-group position-relative has-icon-left">
-																	<input type="number"
-																		class="form-control  form-control-sm capitalize"
-																		id="phonework" name="phonework"
-																		placeholder="Work Phone"
-																		th:value="${contactPersonobj.phonework}" />
-																	<div class="form-control-position">
-																		<i class="bx bx-dialpad"></i>
-																	</div>
-																	<label for="phonework">Work Phone</label>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-
-																<div
-																	class="form-label-group position-relative has-icon-left">
-																	<input type="number"
-																		class="form-control  form-control-sm capitalize"
-																		id="phonepersonal" name="phonepersonal"
-																		placeholder="Personal Phone"
-																		th:value="${contactPersonobj.phonepersonal}" />
-																	<div class="form-control-position">
-																		<i class="bx bxs-phone"></i>
-																	</div>
-																	<label for="phonepersonal">Personal Phone</label>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-
-																<div
-																	class="form-label-group position-relative has-icon-left">
-																	<input type="number"
-																		class="form-control  form-control-sm capitalize"
-																		id="phoneothers" name="phoneothers"
-																		placeholder="Other Phone"
-																		th:value="${contactPersonobj.phoneothers}" />
-																	<div class="form-control-position">
-																		<i class="bx bxs-phone"></i>
-																	</div>
-																	<label for="phoneothers">Other Phone</label>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-
-																<div
-																	class="form-label-group position-relative has-icon-left">
-																	<input type="email"
-																		class="form-control  form-control-sm  email"
-																		id="emailwork" name="emailwork"
-																		placeholder="Work Email ID"
-																		th:value="${contactPersonobj.emailwork}" />
-																	<div class="form-control-position">
-																		<i class="bx bx-mail-send"></i>
-																	</div>
-																	<label for="emailwork">Work Email ID</label>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-
-																<div
-																	class="form-label-group position-relative has-icon-left">
-																	<input type="email"
-																		class="form-control  form-control-sm  email"
-																		id="emailpersonal" name="emailpersonal"
-																		placeholder="Personal Email"
-																		th:value="${contactPersonobj.emailpersonal}" />
-																	<div class="form-control-position">
-																		<i class="bx bx-mail-send"></i>
-																	</div>
-																	<label for="emailpersonal">Personal Email</label>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-
-																<div
-																	class="form-label-group position-relative has-icon-left">
-																	<input type="email"
-																		class="form-control  form-control-sm  email"
-																		id="emailothers" name="emailothers"
-																		placeholder="Other Email"
-																		th:value="${contactPersonobj.emailothers}" />
-																	<div class="form-control-position">
-																		<i class="bx bx-mail-send"></i>
-																	</div>
-																	<label for="emailothers">Other Email</label>
-																</div>
-															</div>
-														</div>
-
-
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Follower</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="select2 followers form-control form-control-sm"
-																			id="followers" th:field="*{follower}"
-																			multiple="multiple">
-																			<th:block th:each="str :${employeelist}">
-																				<option th:value="${str.empMasterid}"
-																					th:text="${str.StaffName}"></option>
-																			</th:block>
-																		</select>
-
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Notes</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<input type="text" id="notes"
-																			class="form-control form-control-sm capitalize"
-																			th:field="*{notes}" th:value="${dealMaster['notes']}">
-																		<div class="form-control-position">
-																			<i class="bx bxs-notepad"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-12">
-															<br />
-															<button type="button"
-																class="btn btn-primary mr-1 mb-1 projecttabclick"
-																style="float: right">Next</button>
-
-														</div>
-
-
-													</div>
-
-												</div>
-												<div class="tab-pane " id="project"
-													aria-labelledby="project-tab" role="tabpanel">
-
-													<div class="row">
-														<div class="col-md-12">
-															<div class="form-group">
-																<label class="emptitle">Project Location</label>
-
-															</div>
-														</div>
-
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">State</label>
-
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="form-control form-control-sm addsourcedata state"
-																			id="state" th:field="*{state}"
-																			th:value="${dealMaster['state']}">
-																			<option value="">-</option>
-																			<th:block th:each="str :${statelist}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bxs-map-alt"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">District</label>
-
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-																		<select
-																			class="form-control form-control-sm addsourcedata district"
-																			id="district" th:field="*{district}"
-																			th:value="${dealMaster['district']}">
-																			<th:block th:each="str :${districtlist}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bxs-map"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Taluk</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="text" th:field="*{taluk}"
-																			th:value="${dealMaster['taluk']}"
-																			class="form-control form-control-sm capitalize">
-																		<div class="form-control-position">
-																			<i class="bx bxs-navigation"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Village</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="text" th:field="*{village}"
-																			th:value="${dealMaster['village']}"
-																			class="form-control form-control-sm capitalize">
-																		<div class="form-control-position">
-																			<i class="bx bxs-direction-right"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Land Mark</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="text" th:field="*{lankmark}"
-																			th:value="${dealMaster['lankmark']}"
-																			class="form-control form-control-sm capitalize">
-																		<div class="form-control-position">
-																			<i class="bx bx-map-pin"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-
-														<div class="col-md-6">
-															<div class="form-group">
-																<label for="addmodel">Lat, Long</label>
-																<div class="position-relative  has-icon-left">
-																	<fieldset class="form-group">
-
-																		<input type="text" th:field="*{lanlong}"
-																			th:value="${dealMaster['lanlong']}"
-																			class="form-control form-control-sm capitalize">
-																		<div class="form-control-position">
-																			<i class="bx bx-world"></i>
-																		</div>
-																	</fieldset>
-																</div>
-															</div>
-														</div>
-
-														<div class="col-md-12">
-															<div class="form-group">
-
-																<label class="emptitle">1.Project Details</label>
-																<button class="btn btn-light-primary btn-sm"
-																	id="projectdivadd" type="button"
-																	title="Add Project Details">
-																	<i class="bx bx-plus"></i>
-																</button>
-															</div>
-														</div>
-
-														<th:block th:each="childobj, s : *{dealProjectMaster}">
-
-															<div th:class="'col-md-12 edudivdelete' + ${s.index}">
-																<label class="emptitle" th:if="${s.index != 0}"
-																	th:text=" ${s.index+1} + '.Project Details'"></label> <span
-																	class="cursor-pointer edudivdelete"
-																	th:name="${s.index}" style="float: right"> <i
-																	class="bx bx-x"></i>
-																</span>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Nature of Work <label
-																		class="emptitle additem" name="addnatureofworkdata"><i
-																			class="bx bxs-plus-circle ownstyle1"></i></label>
-																	</label>
-																	<div class="position-relative has-icon-left">
-
-																		<input type="hidden"
-																			th:field="*{dealProjectMaster[__${s.index}__].dealprojectid}"
-																			th:value="${childobj['dealprojectid']}" /> <select
-																			class="form-control form-control-sm addnatureofworkdata"
-																			th:field="*{dealProjectMaster[__${s.index}__].projecttype}"
-																			th:value="${childobj['projecttype']}">
-																			<option value="">-</option>
-																			<th:block th:each="str :${NATUREOFWORK}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bx-landscape"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Quantity</label>
-																	<div class="position-relative has-icon-left">
-																		<input type="text"
-																			class="form-control form-control-sm prjQty"
-																			placeholder="Quantity"  th:id="'prjQty'+ ${s.index} "
-																			th:field="*{dealProjectMaster[__${s.index}__].Quantity}"
-																			th:value="${childobj['Quantity']}" />
-																		<div class="form-control-position">
-																			<i class="bx bx-radio-circle-marked"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Units <label
-																		class="emptitle additem" name="addunitsdata"><i
-																			class="bx bxs-plus-circle ownstyle1"></i></label>
-																	</label>
-																	<div class="position-relative has-icon-left">
-																		<select
-																			class="form-control form-control-sm addunitsdata"
-																			th:field="*{dealProjectMaster[__${s.index}__].Unit}"
-																			th:value="${childobj['Unit']}">
-																			<option value="">-</option>
-																			<th:block th:each="str :${UNITS}">
-																				<option th:value="${str}" th:text="${str}"></option>
-																			</th:block>
-																		</select>
-																		<div class="form-control-position">
-																			<i class="bx bxs-film"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Price</label>
-																	<div class="position-relative has-icon-left">
-																		<input type="text"
-																			class="form-control  form-control-sm prjPrice"
-																			placeholder="Price" th:id="'prjPrice'+ ${s.index}"
-																			th:field="*{dealProjectMaster[__${s.index}__].Price}"
-																			th:value="${childobj['Price']}" />
-																		<div class="form-control-position">
-																			<i class="bx bx-money"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-																<div class="form-group">
-																	<label for="contact-info-icon">Total Amount</label>
-																	<div class="position-relative has-icon-left">
-																		<input type="text"
-																			class="form-control  form-control-sm prjTotal"
-																			th:id="'prjTotal'+ ${s.index}"
-																			placeholder="Total"
-																			th:field="*{dealProjectMaster[__${s.index}__].Amount}"
-																			th:value="${childobj['Amount']}" />
-																		<div class="form-control-position">
-																			<i class="bx bxs-wallet"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<script>
-																edudivadd = edudivadd + 1;
-															</script>
-
-														</th:block>
-														<span id="projectdivlast"></span>
-
-
-														<div class="col-12">
-															<br />
-															<button type="submit" class="btn btn-primary mr-1 mb-1"
-																style="float: right">Save</button>
-															<button type="button"
-																class="btn btn-light-secondary mr-1 mb-1 hometabclick">Previous</button>
-														</div>
-
-
-													</div>
-												</div>
-										</form>
-										<div class="tab-pane " id="profile"
-											aria-labelledby="profile-tab" role="tabpanel">
-											<div class="row">
-												<!-- ---------------------------- -->
-												<ul class="nav nav-pills col-md-12 ">
-													<li class="nav-item"><a class="nav-link active"
-														id="activities-tab" data-toggle="pill" href="#activities"
-														aria-expanded="false"> <i
-															class="bx bx-note align-middle"></i> Notes
-													</a></li>
-													<li class="nav-item"><a class="nav-link"
-														id="activnotes-tab" data-toggle="pill" href="#activnotes"
-														aria-expanded="true"> <i
-															class="bx bx-calendar align-middle"></i> Activity
-													</a></li>
-
-												</ul>
-												<div class="tab-content">
-													<div class="tab-pane active" id="activities"
-														role="tabpanel" aria-labelledby="activities-tab"
-														aria-expanded="false">
-														<!-- ------------------------------------------ -->
-														<div class="row">
-															<div class="col-sm-12">
-																<div id="full-wrapper">
-																	<div id="full-container">
-																		<div class="editor"></div>
-																	</div>
-																</div>
-															</div>
-															<div class="col-12">
-																<hr />
-																<input type="hidden" value="0" id="noteactivityid" />
-
-																<button type="button" id="notessave"
-																	class="btn btn-primary mr-1 mb-1" style="float: right;">
-																	Save</button>
-
-																<button type="button" id="notessavetemp"
-																	class="btn btn-primary mr-1 mb-1"
-																	style="float: right; visibility: hidden;">
-																	<div
-																		class="spinner-border spinnerbordernote spinner-border-sm "
-																		role="status" style="float: right; color: #fff;">
-																		<span class="sr-only">Loading...</span>
-																	</div>
-																	Please Wait...!
-																</button>
-
-																<div class="checkbox checkbox-success checkbox-glow">
-																	<input type="checkbox" id="noteckbox"> <label
-																		for="noteckbox">Make as done</label>
-																</div>
-															</div>
-															<div class="col-12" align="center">
-																<div class="form-group col-12 resultdivnote"
-																	style="visibility: hidden">
-																	<button type="button"
-																		class="btn mb-1 btn-success btn-lg btn-block">Note
-																		Info Updated Successfully</button>
-																</div>
-
-															</div>
-														</div>
-														<!-- ------------------------------------------ -->
-
-													</div>
-													<div role="tabpanel" class="tab-pane" id="activnotes"
-														aria-labelledby="activnotes-tab" aria-expanded="true"
-														style="width: 100%">
-														<form th:action="@{/dealeventpart2save}"
-															th:object="${activityMaster}" method="POST"
-															class="wizard-horizontal" enctype="multipart/form-data">
-															<!-- ------------------------------------------ -->
-															<div class="row">
-																<div class="col-md-12">
-																	<label for="addmodel">Activity Title</label>
-																	<div class="form-group">
-																		<div class="position-relative">
-																			<!-- <input type="hidden" value="Deal"  th:field="*{mastercategory}" /> -->
-																			<input type="hidden" th:field="*{mastercategoryid}"
-																				id="mastercategoryid" />
-																			<!-- <input type="hidden"  th:value="'Activity'"  th:field="*{activitycategory}"/> -->
-																			<input type="hidden" th:field="*{activityId}"
-																				th:value="${activityMaster['activityId']}" /> <input
-																				type="hidden" th:field="*{createdtime}"
-																				th:value="${activityMaster['createdtime']}" /> <input
-																				type="text"
-																				class="form-control  form-control-sm capitalize ActivityTitle"
-																				placeholder="Task details..."
-																				th:field="*{activitytitle}"
-																				th:value="${activityMaster['activitytitle']}" />
-
-																		</div>
-																	</div>
-																</div>
-																<div class="col-12">
-																	<div class="form-group">
-																		<div class="btn-group btn-group-toggle mb-1"
-																			data-toggle="buttons">
-																			<label
-																				th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
-																				onclick="optionshandle(this);" title="Task">
-																				<input type="radio" name="options"
-																				onclick="optionshandle(this);"
-																				th:field="*{activitytype}" value="Task" id="radio1"><i
-																				class="bx bx-alarm-add"></i>
-																			</label> <label
-																				th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
-																				onclick="optionshandle(this);" title="Call">
-																				<input type="radio" name="options"
-																				onclick="optionshandle(this);"
-																				th:field="*{activitytype}" value="Call" id="radio2"><i
-																				class="bx bx-phone-call"></i>
-																			</label> <label
-																				th:class="'btn btn-outline-primary '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
-																				onclick="optionshandle(this);" title="Meetings">
-																				<input type="radio" onclick="optionshandle(this);"
-																				name="options" th:field="*{activitytype}"
-																				value="Meetings" id="radio3"><i
-																				class="bx bx-group"></i>
-																			</label>
-																		</div>
-																	</div>
-
-
-																</div>
-
-																<div class="col-md-3">
-																	<div class="form-group">
-																		<label for="addmodel">Start Date</label>
-																		<div class="position-relative has-icon-left">
-																			<input type="date"
-																				class="form-control  form-control-sm"
-																				th:field="*{startdate}"
-																				th:value="${activityMaster['startdate']}" />
-																			<div class="form-control-position">
-																				<i class="bx bxs-calendar"></i>
-																			</div>
-
-																		</div>
-																	</div>
-																</div>
-																<div class="col-md-3">
-																	<div class="form-group">
-																		<label for="addmodel">Time</label>
-																		<div class="position-relative has-icon-left">
-																			<input type="time"
-																				class="form-control  form-control-sm"
-																				th:field="*{starttime}"
-																				th:value="${activityMaster['starttime']}" />
-																			<div class="form-control-position">
-																				<i class="bx bx-time"></i>
-																			</div>
-
-																		</div>
-																	</div>
-																</div>
-																<div class="col-md-3">
-																	<div class="form-group">
-																		<label for="addmodel">End Date</label>
-																		<div class="position-relative has-icon-left">
-																			<input type="date"
-																				class="form-control  form-control-sm"
-																				th:field="*{enddate}"
-																				th:value="${activityMaster['enddate']}" />
-																			<div class="form-control-position">
-																				<i class="bx bxs-calendar"></i>
-																			</div>
-
-																		</div>
-																	</div>
-																</div>
-																<div class="col-md-3">
-																	<div class="form-group">
-																		<label for="addmodel">Time</label>
-																		<div class="position-relative has-icon-left">
-																			<input type="time"
-																				class="form-control  form-control-sm"
-																				th:field="*{endtime}"
-																				th:value="${activityMaster['endtime']}" />
-																			<div class="form-control-position">
-																				<i class="bx bx-time"></i>
-																			</div>
-
-																		</div>
-																	</div>
-																</div>
-																<div class="col-md-12">
-																	<!-- Accordion start -->
-																	<section id="accordion-icon-wrapper">
-																		<div
-																			class="accordion collapse-icon accordion-icon-rotate"
-																			id="accordionWrapa2">
-																			<div class="card collapse-header">
-																				<div id="heading5" class="card-header"
-																					data-toggle="collapse" data-target="#accordion5"
-																					aria-expanded="false" aria-controls="accordion5"
-																					role="tablist">
-																					<span class="collapse-title"> <i
-																						class="bx bx-calendar-plus align-middle"></i> <span
-																						class="align-middle acc-font-sm">Add
-																							Guest,Location,Description,Note</span>
-																					</span>
-																				</div>
-																				<div id="accordion5" role="tabpanel"
-																					data-parent="#accordionWrapa2"
-																					aria-labelledby="heading5" class="collapse">
-																					<div class="card-content">
-																						<div class="card-body row">
-
-																							<div class="col-md-6">
-																								<div class="form-group">
-																									<label for="addmodel">Staff</label>
-																									<div class="position-relative  has-icon-left">
-																										<fieldset class="form-group">
-																											<select
-																												class="select2 form-control form-control-sm guestStaff"
-																												multiple="multiple"
-																												th:field="*{activityMasterGuest[0].guestid}">
-																												<th:block th:each="str :${employeelist}">
-																													<option th:value="${str.empMasterid}"
-																														th:text="${str.StaffName}"></option>
-																												</th:block>
-																											</select>
-
-																										</fieldset>
-																									</div>
-																								</div>
-																							</div>
-																							<div class="col-md-6">
-																								<div class="form-group">
-																									<label for="addmodel">Location</label>
-																									<div class="position-relative  has-icon-left">
-																										<fieldset class="form-group">
-																											<input type="text" id="notes"
-																												class="form-control form-control-sm capitalize"
-																												th:field="*{location}"
-																												th:value="${activityMaster['location']}">
-																											<div class="form-control-position">
-																												<i class="bx bx-map"></i>
-																											</div>
-																										</fieldset>
-																									</div>
-																								</div>
-																							</div>
-																							<div class="col-md-6">
-																								<div class="form-group">
-																									<label for="addmodel">Description </label><span
-																										class="notes-sm">(Description visible
-																										to Guest)</span>
-																									<div class="position-relative  has-icon-left">
-																										<fieldset class="form-group">
-																											<textarea
-																												class="form-control form-control-sm"
-																												rows="4" th:field="*{description}"
-																												th:value="${activityMaster['description']}">
-																													</textarea>
-																											<div class="form-control-position">
-																												<i class="bx bxs-notepad"></i>
-																											</div>
-																										</fieldset>
-																									</div>
-																								</div>
-																							</div>
-																							<div class="col-md-6">
-																								<div class="form-group">
-																									<label for="addmodel">Note </label><span
-																										class="notes-sm">(Note visible only For
-																										You)</span>
-																									<div class="position-relative  has-icon-left">
-																										<fieldset class="form-group">
-																											<textarea
-																												class="form-control form-control-sm"
-																												rows="4" th:field="*{notes}"
-																												th:value="${activityMaster['notes']}">
-																													</textarea>
-																											<div class="form-control-position">
-																												<i class="bx bx-book-bookmark"></i>
-																											</div>
-																										</fieldset>
-																									</div>
-																								</div>
-																							</div>
-
-
-																						</div>
-																					</div>
-																				</div>
-																			</div>
-																		</div>
-																	</section>
-																	<!-- Accordion end -->
-																</div>
-
-
-															</div>
-
-															<div class="col-md-6">
-																<div class="form-group">
-																	<label for="addmodel">Followers</label>
-																	<div class="position-relative  has-icon-left">
-																		<fieldset class="form-group">
-																			<select class="select2 form-control form-control-sm"
-																				multiple="multiple" id="activityfollowers"
-																				th:field="*{activityfollowers}">
-																				<th:block th:each="str :${employeelist}">
-																					<option th:value="${str.empMasterid}"
-																						th:text="${str.StaffName}"></option>
-																				</th:block>
-																			</select>
-
-																		</fieldset>
-																	</div>
-																</div>
-															</div>
-															<div class="col-md-6">
-																<div class="form-group">
-																	<label for="addmodel">Files</label>
-																	<div class="position-relative has-icon-left">
-																		<input type="file"
-																			class="form-control  form-control-sm"
-																			name="activityfiles" />
-																		<div class="form-control-position">
-																			<i class="bx bx-link"></i>
-																		</div>
-
-																	</div>
-																</div>
-															</div>
-															<div class="col-12">
-																<hr />
-
-																<button type="submit" class="btn btn-primary mr-1 mb-1"
-																	style="float: right">Save</button>
-																<button type="reset" class="btn btn-secondary mr-1 mb-1"
-																	style="float: right">Reset</button>
-																<div class="checkbox checkbox-success checkbox-glow">
-																	<input type="checkbox" id="checkboxGlow1" name="status">
-																	<label for="checkboxGlow1">Make as done</label>
-																</div>
-															</div>
-															<!-- ------------------------------------------ -->
-														</form>
-													</div>
-
-
-												</div>
-												<!-- ---------------------------- -->
-
-												<div class="col-12 history">
-
-													<!-- Timeline Widget Starts -->
-													<div class="timline-card">
-														<div class="card ">
-															<div class="card-header">
-																<h4 class="card-title">Timeline</h4>
-															</div>
-															<div class="card-content timelinehistory">
-																<div class="card-body">
-																	<ul class="widget-timeline">
-																			<div class="spinner-border spinner-border-sm text-primary" role="status">
-								                                                <span class="sr-only">Loading...</span>
-								                                            </div>
-																	</ul>
-
-																</div>
-															</div>
-														</div>
-													</div>
-													<!-- Timeline Widget Ends -->
-
-												</div>
+										<h5 class="pb-2 border-bottom mb-4">Details</h5>
+										<div class="info-container">
+											<ul class="list-unstyled">
+												<li class="mb-3"><span class="fw-bold me-2">Pipeline:</span>
+													<span th:text="${dealMaster.pipeline}"
+													id="Lbl_pipeline"></span></li>
+
+												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
+													<span th:text="${dealMaster.OrganizationName}"
+													id="Lbl_organization"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
+													<span th:text="${dealMaster.purpose}" id="Lbl_purpose"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
+													<span th:text="${dealMaster.branchname}" id="Lbl_branchname"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
+													<span th:text="${dealMaster.Source}" id="Lbl_Source"></span>
+												</li>
+
+												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
+													<span th:text="${dealMaster.ReferenceName}"
+													id="Lbl_Reference"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
+													<span th:text="${dealMaster.notes}" id="Lbl_notes"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Closing Date:</span>
+													<span th:text="${dealMaster.expectedclosingdateMMddYYY}" id="Lbl_expectedclosingdate"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
+
+													<span id="Lbl_follower"> <span
+														th:each="obj : ${dealMaster.dealFollowers}"
+														th:utext="${obj.Followername} + '<br/>'"> </span>
+												</span></li>
+
+
+											</ul>
+											<div class="d-flex justify-content-center pt-3">
+												<a href="javascript:;" class="btn btn-primary me-3"
+													data-bs-target="#editdealMasterdetails"
+													data-bs-toggle="modal"
+													id="editOrganizationContactsdetailsbtn">Edit</a>
 
 											</div>
 										</div>
 									</div>
+								</div>
+								<!-- /User Card -->
+								<!-- Connected Accounts -->
+								<div class="card mb-4">
+									<h5 class="card-header">
+										Connected People
+										<div class="card-action-element" style="float: right">
+											<button class="btn btn-primary btn-sm" type="button"
+												data-bs-toggle="modal" data-bs-target="#addNewperson"
+												alt="Add New Person">
+												<i class="bx bx-plus bx-xs me-1"></i>
+											</button>
+											<button class="btn btn-primary btn-sm" type="button"
+												data-bs-toggle="modal" data-bs-target="#linkperson"
+												alt="Link Person">
+												<i class="bx bx-link bx-xs me-1"></i>
+											</button>
+										</div>
+									</h5>
+									<div class="card-body">
+										<div class="d-flex mb-3" th:each="obj : ${cplist}">
+											<div class="flex-grow-1 row">
+												<div class="col-9 mb-sm-0 mb-2">
+													<a th:href="'contactpersonview?id='+ ${obj.id}"
+														target="_blank">
+														<h6 class="mb-0" th:text="${obj.peoplename}"></h6>
+													</a> <small class="text-muted" th:text="${obj.primarymob}"></small>
+												</div>
+												<div class="col-3 text-end">
+													<label class="switch me-0"> <input type="checkbox"
+														class="switch-input" th:name="${obj.id}"
+														th:onclick="'makeprimarycontactperson(this)'"
+														th:checked="${obj.primaryperson}" /> <span
+														class="switch-toggle-slider"> <span
+															class="switch-on"> <i class="bx bx-check"></i>
+														</span> <span class="switch-off"> <i class="bx bx-x"></i>
+														</span>
+													</span> <span class="switch-label"></span>
+													</label>
+												</div>
+											</div>
+										</div>
+
+										<div id="contactpeopdealdidv"></div>
+
+									</div>
+								</div>
+								<!-- /Connected Accounts -->
+
+							</div>
+							<!--/ User Sidebar -->
+
+							<!-- User Content -->
+							<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+								<!-- User Pills -->
+								<ul class="nav nav-pills flex-column flex-md-row mb-3">
+									<li class="nav-item"><a class="nav-link active"
+										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Activity</a>
+									</li>
+									<li class="nav-item"><a class="nav-link"
+										th:href="'dealprojectinfo?id='+${dealMaster.id}"><i class='bx bxl-ok-ru'></i>Projects</a>
+									</li>
+									<li class="nav-item"><a class="nav-link"
+										th:href="'dealattachment?id='+${dealMaster.id}"><i
+											class="bx bx-link me-1"></i>Attachment</a></li>
+
+								</ul>
+								<!--/ User Pills -->
+
+
+
+								<!-- Activity Timeline -->
+								<div class="card mb-4">
+									<h5 class="card-header">
+										Activity Timeline
+
+
+
+										<div class="card-action-element" style="float: right">
+											<button class="btn btn-primary btn-sm" type="button"
+												data-bs-toggle="modal" data-bs-target="#addevent"
+												alt="Add New Event" id="btnAddevent">
+												<i class="bx bx-plus bx-xs me-1"></i> Event
+											</button>
+											<button class="btn btn-primary btn-sm" type="button"
+												data-bs-toggle="modal" data-bs-target="#addnotes" id="btnAddnotes"
+												alt="Add New Notes">
+												<i class="bx bx-plus bx-xs me-1"></i> Notes
+											</button>
+										</div>
+									</h5>
+									<div class="card-body">
+										<div class="divider divider-dashed">
+											<div class="divider-text">Planned</div>
+										</div>
+										<ul class="timeline widget-timeline widget-timelinePlanned">
+
+										</ul>
+										<div class="divider divider-dashed">
+											<div class="divider-text">Completed</div>
+										</div>
+										<ul class="timeline widget-timeline widget-timelineCompleted">
+
+										</ul>
+									</div>
+
 
 								</div>
+								<!-- /Activity Timeline -->
 							</div>
+							<!-- User Content -->
+
+
+
+							<!-- Modal -->
+							<!-- Edit Notes Modal -->
+							<div class="modal fade" id="addnotes" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Activity Notes Information</h3>
+												<p>Update Notes Basic Information</p>
+											</div>
+											<form id="NotesMasterform" class="" onsubmit="return false">
+												<input type="hidden" name="mastercategoryidnote" id="mastercategoryidnote" />
+												<input type="hidden" name="noteactivityId" id="noteactivityId"
+																	 /> 
+												<!-- Full Editor -->
+												<div class="col-12">
+													<div class="card">
+														<h5 class="card-header"></h5>
+														<div class="card-body">
+															<div id="full-editor"></div>
+														</div>
+													</div>
+												</div>
+												<!-- /Full Editor -->
+
+
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
+														
+														
+													<button type="reset"
+														class="btn btn-label-secondary NotesMasterformclose"
+														aria-label="Close">
+														Reset</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Edit Notes Modal -->
+
+							<!-- Edit Activity Modal -->
+							<div class="modal fade" id="addevent" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button"
+												class="btn-close activityMasterformclose"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Activity Information</h3>
+												<p>Update Activity Basic Information</p>
+											</div>
+											<form id="activityMasterform" th:object="${activityMaster}"
+												class="wizard-horizontal" onsubmit="return false"
+												enctype="multipart/form-data">
+												<!-- ------------------------------------------ -->
+												<div class="row">
+													<div class="col-md-12">
+														<label for="addmodel">Activity Title</label>
+														<div class="form-group">
+															<div class="position-relative">
+																<input type="hidden" th:field="*{mastercategoryid}"
+																	id="mastercategoryid" /> <input type="hidden"
+																	th:field="*{activityId}" id="activityId"
+																	th:value="${activityMaster['activityId']}" /> <input
+																	type="hidden" th:field="*{createdtime}" id="createdtime"
+																	th:value="${activityMaster['createdtime']}" /> <input
+																	type="text"
+																	class="form-control   capitalize ActivityTitle"
+																	placeholder="Task details..."
+																	th:field="*{activitytitle}" id="activitytitle"
+																	th:value="${activityMaster['activitytitle']}" />
+
+															</div>
+														</div>
+													</div>
+													<div class="col-12">
+														<div class="form-group">
+															<div class="btn-group btn-group-toggle mb-1"
+																data-toggle="buttons">
+																<label
+																	th:class="'btn btn-outline-primary  activitytype activitytypeTask '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Task"> <input
+																	type="radio" name="options"
+																	onclick="optionshandle(this);"
+																	th:field="*{activitytype}" value="Task" id="radio1"
+																	style="visibility: hidden"><i
+																	class="bx bx-alarm-add activitytypeicon"></i>
+																</label> <label
+																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Call"> <input
+																	type="radio" name="options"
+																	onclick="optionshandle(this);"
+																	th:field="*{activitytype}" value="Call" id="radio2"
+																	style="visibility: hidden"><i
+																	class="bx bx-phone-call activitytypeicon"></i>
+																</label> <label
+																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Meetings">
+																	<input type="radio" onclick="optionshandle(this);"
+																	name="options" th:field="*{activitytype}"
+																	value="Meetings" id="radio3" style="visibility: hidden"><i
+																	class="bx bx-group activitytypeicon"></i>
+																</label>
+															</div>
+														</div>
+
+
+													</div>
+
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">Start Date</label>
+															<div class="position-relative has-icon-left">
+																<input type="date" class="form-control  "
+																	th:field="*{startdate}" id="startdate"
+																	th:value="${activityMaster['startdate']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">Start Time</label>
+															<div class="position-relative has-icon-left">
+																<input type="time" class="form-control  "
+																	th:field="*{starttime}" id="starttime"
+																	th:value="${activityMaster['starttime']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">End Date</label>
+															<div class="position-relative has-icon-left">
+																<input type="date" class="form-control  "
+																	th:field="*{enddate}" id="enddate"
+																	th:value="${activityMaster['enddate']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">End Time</label>
+															<div class="position-relative has-icon-left">
+																<input type="time" class="form-control  "
+																	th:field="*{endtime}" id="endtime"
+																	th:value="${activityMaster['endtime']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label for="addmodel">Note </label><span class="notes-sm">(Note
+																visible only For You)</span>
+															<div class="position-relative  has-icon-left">
+																<fieldset class="form-group">
+																	<textarea class="form-control " rows="4"
+																		th:field="*{notes}" id="notes"
+																		th:value="${activityMaster['notes']}">
+																							</textarea>
+
+																</fieldset>
+															</div>
+														</div>
+
+													</div>
+
+
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<label for="addmodel">Followers</label>
+														<div class="position-relative  has-icon-left">
+															<fieldset class="form-group">
+																<select class="select2 form-control "
+																	id="activityfollowers">
+																	<th:block th:each="str :${employeelist}">
+																		<option th:value="${str.empMasterid}"
+																			th:text="${str.StaffName}"></option>
+																	</th:block>
+																</select>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												
+
+												<div class="col-md-12">
+													<br />
+													<button type="reset"
+														class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
+														style="padding-right: 20px;">Reset</button>
+													<button type="submit"
+														class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
+														style="float: right">Save</button>
+
+
+												</div>
+												<!-- ------------------------------------------ -->
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!--/ Edit Activity Modal -->
+
+							<!-- Edit User Modal -->
+							<div class="modal fade" id="editdealMasterdetails" tabindex="-1"
+								aria-hidden="true">
+								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Edit Deal Information</h3>
+												<p>Update Deal Basic Information</p>
+											</div>
+											<form id="editdealMasterdetailsForm"
+												th:object="${dealMaster}" class="row g-3 needs-validation"
+												onsubmit="return false">
+												<input type="hidden" th:value="${dealMaster['id']}"
+													id="dealMasterID" name="dealMasterID" />
+
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Title">TITLE</label>
+													<div>
+														<input type="text" id="Title" th:field="*{Title}"
+															class="form-control  capitalize"
+															th:value="${dealMaster['Title']}" required>
+
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="organization">ORAGNIZATION</label>
+													<div>
+														<select class="form-select followers form-control "
+															id="organization" th:field="*{Organization}"
+															th:value="${dealMaster['Organization']}">
+															<option value="">-</option>
+															<th:block th:each="str :${organizationlist}">
+																<option th:value="${str.id}" th:text="${str.orgname}"></option>
+															</th:block>
+														</select>
+
+														<div class="invalid-feedback">Please select
+															follower.</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Source">SOURCE <label
+														class="emptitle additem" name="addsourcedata"><i
+															class="bx bxs-plus-circle ownstyle1"></i></label></label>
+													<div>
+														<select class="form-control  addsourcedata" id="Source"
+															th:field="*{Source}" th:value="${dealMaster['Source']}">
+															<th:block th:each="str :${SOURCE}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="purpose">PURPOSE <label
+														class="emptitle additem" name="addpurposedata"><i
+															class="bx bxs-plus-circle ownstyle1"></i></label></label>
+													<div>
+														<select class="form-control  addpurposedata" id="purpose"
+															th:field="*{purpose}" th:value="${dealMaster['purpose']}">
+															<th:block th:each="str :${PURPOSE}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Source">VALUE</label>
+													<div>
+														<input type="number" id="dealvalue"
+															th:field="*{dealvalue}" class="form-control  capitalize"
+															th:value="${dealMaster['dealvalue']}">
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6 Referencediv">
+													<label class="form-label" for="Reference">REFERENCE</label>
+													<div>
+
+														<select class="form-control " id="Reference"
+															th:field="*{Reference}"
+															th:value="${dealMaster['Reference']}">
+															<option value="">-</option>
+															<th:block th:each="str :${personlist}">
+																<option th:value="${str.id}" th:text="${str.peoplename}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="pipeline">PIPELINE </label>
+													<div>
+														<select class="form-control" id="pipeline" th:field="*{pipeline}" th:value="${dealMaster['pipeline']}">
+															<option value="Deal In">Deal In</option>
+															<option value="Contact made">Contact made</option>
+															<option value="Site Visit Scheduled">Site Visit Scheduled</option>
+															<option value="Project Evaluvated">Project Evoluvated</option>
+															<option value="Proposal made">Proposal made</option>
+															<option value="Negotiations started">Negotiations started</option>
+														</select>
+													</div>
+												</div>
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="phonenumber">BRANCH</label>
+													<div>
+														<select class="form-select  form-control " id="branch"
+															th:field="*{branch}" th:value="${dealMaster['branch']}"
+															required>
+															<th:block th:each="str :${branchlist}">
+																<option th:value="${str.id}"
+																	th:text="${str.BRANCH_NAME}"></option>
+															</th:block>
+														</select>
+
+													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="followers">FOLLOWER</label>
+													<div>
+														<select
+															class="select2  form-select followers form-control "
+															id="followers" name="follower" multiple="multiple"
+															required>
+															<th:block th:each="str :${employeelist}">
+																<option th:value="${str.empMasterid}"
+																	th:text="${str.StaffName}"></option>
+															</th:block>
+														</select>
+
+														<div class="invalid-feedback">Please select
+															follower.</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="notes">NOTES</label>
+													<div>
+
+														<input type="text" id="notes" th:field="*{notes}"
+															th:value="${dealMaster['notes']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="expectedclosingdate">Expected Closing Date</label>
+													<div>
+
+														<input type="text" id="expectedclosingdate" th:field="*{expectedclosingdate}"
+															th:value="${dealMaster['expectedclosingdate']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary editorganizationdatasubmit me-sm-3 me-1">Update</button>
+													<button type="button"
+														class="btn btn-label-secondary editorganizationdataclose"
+														data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Edit User Modal -->
+							<!-- Edit People Modal -->
+							<div class="modal fade" id="addNewperson" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Create People Information</h3>
+												<p>Update People Basic Information</p>
+											</div>
+											<form id="editPeopledetailsForm"
+												class="row g-3 needs-validation" onsubmit="return false">
+
+												<div class="col-12 ">
+
+
+													<label class="form-label" for="Model_peoplename">Name</label>
+													<input type="text" class="form-control"
+														id="Model_peoplename" required />
+													<div class="invalid-feedback">Please enter Person
+														Name.</div>
+												</div>
+
+												<div class="col-12">
+													<label class="form-label" for="Model_peoplecontact">Contact
+														Number </label> <input type="text"
+														class="form-control phone-number-otp-mask" pattern=".{12}"
+														id="Model_peoplecontact" required />
+													<div class="invalid-feedback">Please enter Contact.</div>
+												</div>
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary editpeopledatasubmit me-sm-3 me-1">ADD</button>
+													<button type="reset"
+														class="btn btn-label-secondary editpeopledataclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Edit People Modal -->
+							<!-- Edit People Modal -->
+							<div class="modal fade" id="linkperson" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Link People Information</h3>
+												<p>Update People Basic Information</p>
+											</div>
+											<form id="linkPeopledetailsForm" class="row g-3"
+												onsubmit="return false">
+
+												<div class="col-12 ">
+
+
+													<label class="form-label" for="Model_linkpeoplename">People
+														Name</label> <select class="form-select"
+														aria-label="Default select example"
+														id="Model_linkpeoplename" required>
+
+														<option th:each="obj : ${contactPeopleList}"
+															th:value="${obj.id}" th:text="${obj.peoplename}"></option>
+
+													</select>
+
+												</div>
+
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
+													<button type="reset"
+														class="btn btn-label-secondary linkpeopledataclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Edit People Modal -->
+
+							<!--scrolling content Modal -->
+							<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
+								role="dialog" aria-labelledby="ItemStatusScrollableTitle"
+								aria-hidden="true">
+								<div class="modal-dialog modal-dialog-scrollable"
+									role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="addmodel" id="additemalltxt"></label>
+													<div class="position-relative">
+														<fieldset class="form-group">
+															<input type="text" id="additemall" name="addmodel"
+																class="form-control capitalize">
+														</fieldset>
+													</div>
+												</div>
+											</div>
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-light-secondary"
+												data-bs-dismiss="modal">
+												<i class="bx bx-x d-block d-sm-none"></i> <span
+													class="d-none d-sm-block">Close</span>
+											</button>
+											<button type="button" class="btn btn-primary ml-1"
+												id="additemallsavebtn">
+												<i class="bx bx-check d-block d-sm-none"></i> <span
+													class="d-none d-sm-block">ADD</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--scrolling content Modal -->
+
+							<!-- /Modal -->
 						</div>
+						<!-- / Content -->
+
+						<!-- Footer -->
+						<footer class="content-footer footer bg-footer-theme">
+							<div
+								class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+								<div class="mb-2 mb-md-0"></div>
+								<div></div>
+							</div>
+						</footer>
+						<!-- / Footer -->
+
+						<div class="content-backdrop fade"></div>
 					</div>
-				</section>
-				<!-- // Basic Vertical form layout section end -->
-
-
+					<!-- Content wrapper -->
+				</div>
+				<!-- / Layout page -->
 			</div>
+
+			<!-- Overlay -->
+			<div class="layout-overlay layout-menu-toggle"></div>
+
+			<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+			<div class="drag-target"></div>
 		</div>
-	</div>
-	<!-- END: Content-->
+		<!-- / Layout wrapper -->
 
 
+		<!-- Core JS -->
+		<!-- build:js assets/vendor/js/core.js -->
+		<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+		<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+		<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
-	<div class="sidenav-overlay"></div>
-	<div class="drag-target"></div>
+		<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
-	<!-- BEGIN: Footer-->
-	<footer class="footer footer-static footer-light">
-		<p class="clearfix mb-0">
-			<span class="float-left d-inline-block"></span><span
-				class="float-right d-sm-inline-block d-none"></span>
-			<button class="btn btn-primary btn-icon scroll-top" type="button">
-				<i class="bx bx-up-arrow-alt"></i>
-			</button>
-		</p>
-	</footer>
-	<!-- END: Footer-->
+		<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+		<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+
+		<script th:src="@{/assets/vendor/js/menu.js}"></script>
+		<!-- endbuild -->
+
+		<!-- Vendors JS -->
+		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+		<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+		<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+		<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+		<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+		<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
 
 
-	<!-- BEGIN: Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
-	<script
-		th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+		<script th:src="@{/assets/vendor/libs/quill/quill.js}"></script>
 
-	<!-- BEGIN Vendor JS-->
+		<!-- Main JS -->
+		<script th:src="@{/assets/js/main.js}"></script>
 
-	<!-- BEGIN: Page Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-	<script
-		th:src="@{/app-assets/vendors/js/forms/validation/jquery.validate.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/editors/quill/katex.min.js}"></script>
-	<script
-		th:src="@{/app-assets/vendors/js/editors/quill/highlight.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/editors/quill/quill.min.js}"></script>
-	<!-- END: Page Vendor JS-->
+		<!-- Flat Picker -->
+		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+		<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+		<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+		<script th:src="@{/assets/js/forms-selects.js}"></script>
+		<!-- Page JS -->
+		<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
+		<script th:src="@{/assets/js/app-user-view.js}"></script>
+		<script th:src="@{/assets/js/app-user-view-account.js}"></script>
+		<script th:src="@{/assets/js/forms-editors.js}"></script>
 
-	<!-- BEGIN: Theme JS-->
-	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-	<script th:src="@{/app-assets/js/core/app.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-	<!-- END: Theme JS-->
 
-	<!-- BEGIN: Page JS-->
-	<script th:src="@{/app-assets/js/scripts/pages/app-email.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/editors/editor-quill.js}"></script>
+		<script>
+			$(document)
+					.ready(
+							function() {
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								var ids="[[${dealMaster['id']}]]";
+								$("#mastercategoryid").val(ids);
+								$("#mastercategoryidnote").val(ids);
+								
+								var dealfollowerids="[[${dealMaster['dealfollowerids']}]]";
+								$("#followers").val(dealfollowerids.split(",")).change();
+								
+								
+								//--------------------------------------------------------------------------------------------------------------------------------------		 		
 
-	<!-- END: Page JS-->
-	<!-- Custom Java script validations -->
-	<script th:src="@{/js/customvalidation.js}"></script>
-
-	<script>
-		$(document)
-				.ready(
-						function() {
-							//-------------------------------------------------
-							//-------------------------------------------------
-							$(document).on("click", ".additem", function() {
-
-								var name = $(this).attr('name');
-								var labeltext = "";
-								if (name == "addPurposedata") {
-									labeltext = "New Purpose Type";
-								}
-								if (name == "addsourcedata") {
-									labeltext = "New Source Type";
-								}
-								if (name == "addnatureofworkdata") {
-									labeltext = "New Nature Of Work Type";
-								}
-								if (name == "addunitsdata") {
-									labeltext = "New Unit Type";
-								}
-
-								$('#additemalltxt').text(labeltext);
-								$('#VendorStatusScrollable').modal('toggle');
-
-							});
-
-							$("#additemallsavebtn")
-									.click(
-											function() {
-												if ($("#additemall").val() != '') {
-													var name = $(
-															'#additemalltxt')
-															.text();
-													var labeltext = "";
-													if (name == "New Purpose Type") {
-														labeltext = "addPurposedata";
-													}
-													if (name == "New Source Type") {
-														labeltext = "addsourcedata";
-													}
-													if (name == "New Nature Of Work Type") {
-														labeltext = "addnatureofworkdata";
-													}
-													if (name == "New Unit Type") {
-														labeltext = "addunitsdata";
-													}
-
-													$('.' + labeltext)
-															.append(
-																	"<option value='"
-																			+ $(
-																					"#additemall")
-																					.val()
-																			+ "'>"
-																			+ $(
-																					"#additemall")
-																					.val()
-																			+ "</option>");
-
-													$("#additemall").val('');
-													$('#VendorStatusScrollable')
-															.modal('toggle');
-												}
+								$(function() {
+									var token = $("meta[name='_csrf']").attr(
+											"content");
+									var header = $("meta[name='_csrf_header']")
+											.attr("content");
+									$(document).ajaxSend(
+											function(e, xhr, options) {
+												xhr.setRequestHeader(header,
+														token);
 											});
-
-							//-------------------------------------------------
-							var ids = "[[${dealMaster['id']}]]";
-							$("#mastercategoryid").val(ids);
-							var values = "[[${dealMaster['ContactPerson']}]]";
-							var arrtemp = "[[${dealMaster['Organization']}]]"
-							var arrorg = arrtemp.split(',');
-							var arrperson = values.split(',');
-							var selectedperson = "";
-							for(var i=0;i<arrperson.length; i++)
-							{
-								if(arrorg.length>0)
-								{
-									for(var j=0;j<arrorg.length; j++)
-									{
-										selectedperson +=arrperson[i]+"-"+arrorg[j]+",";
-										if(j<arrorg.length)
-											{
-												selectedperson +=selectedperson+",";
-											}
+								});
+								// --------------------------------------------------------------------
+								
+								//--------------------------------------------------------------------------------
+								//function load the history events
+								function gettimelinelistCompleted() {
+									
+									var formData = {
+										mastercategoryid : "[[${dealMaster['id']}]]",
+										categoryType : "Deal",
+										status : "Completed"
 									}
+	
+									$.ajax({
+										type : "POST",
+										url : "gettimelinelist",
+										data : formData,
+										success : function(result) {
+	
+											$('.widget-timelineCompleted').html(result);
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
+								function gettimelinelistNotCompleted() {
+									
+									var formData = {
+										mastercategoryid : "[[${dealMaster['id']}]]",
+										categoryType : "Deal",
+										status : "NotCompleted"
+									}
+	
+									$.ajax({
+										type : "POST",
+										url : "gettimelinelist",
+										data : formData,
+										success : function(result) {
+	
+											$('.widget-timelinePlanned').html(result);
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
+								
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								// Custom list & inline suggestion
+								//------------------------------------------------------
+								$.ajax({
+											type : "GET",
+											url : "leadcplist",
+											data : "",
+											success : function(result) {
+
+												const ContactPersonTagifyEl = document
+														.querySelector('#ContactPersonTagify');
+
+												const whitelist = result;
+												// Inline
+												let ContactPersonTagify = new Tagify(
+														ContactPersonTagifyEl,
+														{
+															whitelist : whitelist,
+															maxTags : 1,
+															dropdown : {
+																maxItems : 20,
+																classname : 'tags-inline',
+																enabled : 0,
+																closeOnSelect : false
+															}
+														});
+
+											}
+										});
+								//--------------------------------------------------------------------------------------------------------------------------------------		
+								$(".Referencediv").hide();
+								if($("#Source").val()=='Referral')
+								{
+									$(".Referencediv").show();
 								}else
 								{
-									selectedperson +=arrperson[i]+"- ,";
+									$(".Referencediv").hide();
 								}
-								if(i<arrperson.length)
-								{
-									selectedperson +=selectedperson+",";
-								}
-							}
-							$('#ContactPerson').val(selectedperson.split(','))
-									.change();
-
-							var values = "[[${dealMaster['Organization']}]]";
-							$('#Organization').val(values.split(',')).change();
-
-							var values = "[[${dealMaster['follower']}]]";
-							$('.followers').val(values.split(',')).change();
-
-							var values = "[[${activityMaster['activityfollowers']}]]";
-							$('#activityfollowers').val(values.split(','))
-									.change();
-
-							var values = "[[${guestStaff}]]";
-							$('.guestStaff').val(values.split(',')).change();
-
-							//--------------------------------------------------------------------------------------------------------------------------------------		 		
-
-							$(function() {
-								var token = $("meta[name='_csrf']").attr(
-										"content");
-								var header = $("meta[name='_csrf_header']")
-										.attr("content");
-								$(document).ajaxSend(function(e, xhr, options) {
-									xhr.setRequestHeader(header, token);
-								});
-							});
-							//--------------------------------------------------------------------------------------------------------------------------------------		 
-
-							//--------------------------------------------------------------------------------------------------------------------------------------
-
-							$("#ContactPerson").change(function() {
-								contactpersonchange();
-							});
-
-							function contactpersonchange() {
-
-								var selectval = $("#ContactPerson").find(
-										":selected").val();
-								if(selectval.indexOf("-") !== -1)
-								{
-								var personid = selectval.split('-')[0];
-								if(selectval.split('-')[1] != " ")
-								{
-									$('#Organization').val(selectval.split('-')[1]).change();	
-								}
-								$(".spinnerbordercontactperson").css(
-										"visibility", "visible");
-								//---------------------------------------------------------------------------
-								var formData = {
-									personid : personid
-								}
-								$.ajax({
-									type : "POST",
-									url : "contactpersondetails",
-									data : formData,
-									success : function(result) {
-										var arr = result.split("|");
-										$('#phonework').val(arr[0].trim());
-										$('#phonepersonal').val(arr[1].trim());
-										$('#phoneothers').val(arr[2].trim());
-										$('#emailwork').val(arr[3].trim());
-										$('#emailpersonal').val(arr[4].trim());
-										$('#emailothers').val(arr[5].trim());
-										$('#followers').val(
-												arr[6].trim().split(','))
-												.change();
-										$(".spinnerbordercontactperson").css(
-												"visibility", "hidden");
-									},
-									error : function(e) {
-										console.log("Error" + e);
-										$(".spinnerbordercontactperson").css(
-												"visibility", "hidden");
+								
+								$('#Source').change(function(){
+									
+									if($(this).val()=='Referral')
+									{
+										$(".Referencediv").show();
+									}else
+									{
+										$(".Referencediv").hide();
 									}
-
 								});
-								//---------------------------------------------------------------------------
+								//--------------------------------------------------------------------------------------  
+
+								function validationformreset() {
+
+									$('.editorganizationdataclose').click();
+									$('.editorganizationdatasubmit').prop(
+											"disabled", false);
+									$('.editorganizationdatasubmit').html(
+											"Submit");
 								}
-							}
-							//--------------------------------------------------------------------------------
-							//Note Save
-							$("#notessave")
-									.click(
-											function() {
-												var editor = $('.ql-editor')
-														.html();
+								function validationlinkformreset() {
+									$('.linkpeopledataclose').click();
+									$('.linkpeopledatasubmit').prop("disabled",
+											false);
+									$('.linkpeopledatasubmit').html("Submit");
+								}
+								function validationactivityeventformreset() {
+									$('.activityMasterformreset').click();
+									$('.activityMasterformclose').click();									
+									$('.activityMasterformsubmit').prop("disabled",
+											false);
+									$('.activityMasterformsubmit').html("Save");
+								}
+								function validationactivitynotesformreset() {
+									$(".ql-editor").html("");
+									$('.btn-close').click();									
+									$('.NotesMasterformsubmit').prop("disabled",false);
+									$('.NotesMasterformsubmit').html("Save");
+								}
+								//--------------------------------------------------------------------------------------------------------------------------------------		 
+								
+								$(document).on("click",".markitascompleted",	function() {	
+										
+									
+									let activityid = $(this).attr("id");
+									var formData = { activityid : activityid }
+		
+										$.ajax({
+											type : "POST",
+											url : "activitymarkascompleted",
+											data : formData,
+											success : function(result) {
+												Swal.fire({
+											        title: '',
+											        text: 'Activity Completed',
+											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+											        imageWidth: 400,
+											        imageAlt: 'Custom image',
+											        confirmButtonText: 'Ok',
+											        customClass: {
+											          confirmButton: 'btn btn-primary'
+											        },
+											        buttonsStyling: false
+											      });
+												
+												gettimelinelistCompleted();
+												gettimelinelistNotCompleted();
+											},
+											error : function(e) {
+												console.log("Error" + e);
+		
+											}
+		
+										});
+									
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$("#startdate").change(function() {
+									if($('#enddate').val() ==''){
+										$('#enddate').val($(this).val());
+									}
+								});
+								$("#starttime").change(function() {
+									if($('#endtime').val() ==''){
+										$('#endtime').val($(this).val());
+									}
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$("#btnAddevent").click(function() {
+									$('.activityMasterformreset').click();
+									$('.activityMasterformsubmit').prop("disabled",
+											false);
+									$('.activityMasterformsubmit').html("Save");
+									$("#activityId").val(0);
+									$("#createdtime").val("");
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$("#btnAddnotes").click(function() {
+									$(".ql-editor").html("");
+									$('.NotesMasterformclose').click();
+									$("#noteactivityId").val(0);
+									$('.NotesMasterformsubmit').prop("disabled",false);
+									$('.NotesMasterformsubmit').html("Save");
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$(".NotesMasterformsubmit").click(function() {
+									var htmlnotes = $(".ql-editor").html().trim();
+									if (htmlnotes != '') {
+										$('.NotesMasterformsubmit').prop("disabled",true);
+										$('.NotesMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+										const formData = new FormData();
+										
+										formData.append("File_Attach",null);
+										formData.append("activityfollowers","");
+										formData.append("activitytitle","");
+										formData.append("activitytype","");
+										formData.append("description","");
+										formData.append("enddate","");
+										formData.append("endtime","");
+										formData.append("guestid","");
+										formData.append("notes","");
+										formData.append("startdate","");
+										formData.append("starttime","");
+										formData.append("Activitycategory","Note");
+										formData.append("duedate","");
+										formData.append("htmlnotes",htmlnotes);													
+										formData.append("mastercategory","Deal");
+										formData.append("status","Completed");
+										formData.append("activityId",$("#noteactivityId").val());
+										formData.append("mastercategoryid",$("#mastercategoryidnote").val());
+										
+										 $.ajax({
+											type : "POST",
+											url : "activitysave",
+											processData : false,
+											contentType : false,
+											data : formData,
+											success : function(
+													result) {
+												
+												validationactivitynotesformreset();
+												Swal.fire({
+											        title: '',
+											        text: 'Your notes added',
+											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+											        imageWidth: 400,
+											        imageAlt: 'Custom image',
+											        confirmButtonText: 'Ok',
+											        customClass: {
+											          confirmButton: 'btn btn-primary'
+											        },
+											        buttonsStyling: false
+											      });
+												
+												gettimelinelistCompleted();
+												gettimelinelistNotCompleted();
 
-												if (editor != '<p><br></p>') {
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+											}
+										});
+									}
+								});
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$('#activityMasterform').on('submit',function(event) {
+											const modalFile =document.getElementById("activityfiles");
+											if (event.target.checkValidity()) {
+												$('.activityMasterformsubmit').prop("disabled",true);
+												$('.activityMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+												const formData = new FormData(
+														document
+																.querySelector("#activityMasterform"));
+												//formData.append("File_Attach",modalFile.files[0]);
+												formData.append("File_Attach",null);
+												formData.append("guestid","");
+												formData.append("activityfollowers",$("#activityfollowers").val());
+												formData.append("Activitycategory","Activity");
+												formData.append("duedate","");
+												formData.append("htmlnotes","");													
+												formData.append("mastercategory","Deal");
+												formData.append("mastercategoryid",$("#mastercategoryid").val());
+												//formData.append("status","");
+												 //for (var pair of formData.entries()) {
+												  // console.log(pair); 
+												//} 
+												 $.ajax({
+													type : "POST",
+													url : "activitysave",
+													processData : false,
+													contentType : false,
+													data : formData,
+													success : function(
+															result) {
+														
+														validationactivityeventformreset();
+														
+														Swal.fire({
+													        title: '',
+													        text: 'Your Activity event added',
+													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+													        imageWidth: 400,
+													        imageAlt: 'Custom image',
+													        confirmButtonText: 'Ok',
+													        customClass: {
+													          confirmButton: 'btn btn-primary'
+													        },
+													        buttonsStyling: false
+													      });
+														
+														gettimelinelistCompleted();
+														gettimelinelistNotCompleted();
 
-													var noteckbox = "false";
-													var mastercategoryid = $(
-															"#mastercategoryid")
-															.val();
-													var noteactivityid = $(
-															"#noteactivityid")
-															.val();
-													if ($("#noteckbox").prop(
-															"checked")) {
-														noteckbox = "true";
+													},
+													error : function(e) {
+														console.log("Error"+ e);
+													}
+												});
+											} else {
+												$('.activityMasterformsubmit').prop("disabled",false);
+											}
+
+										});
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$('#editdealMasterdetailsForm').on('submit',function(event) {
+
+													if (event.target.checkValidity()) {
+														$('.editorganizationdatasubmit').prop("disabled",true);
+														$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+														const formData = new FormData(document.querySelector("#editdealMasterdetailsForm"));
+														
+														formData.append("followers",$("#followers").val());
+														/* for (var pair of formData.entries()) {
+														   console.log(pair); 
+														} */
+														$.ajax({
+																	type : "POST",
+																	url : "dealsavestage2",
+																	processData : false,
+																	contentType : false,
+																	data : formData,
+																	success : function(result) {
+																		var bmobj = JSON.parse(JSON.stringify(result));
+																		//console.log(bmobj);
+																			$('#Lbl_Title').text(bmobj.title);
+																			$('#Lbl_Source').text(bmobj.source);
+																			$('#Lbl_pipeline').text(bmobj.pipeline);
+																			$('#Lbl_notes').text(bmobj.notes);
+																			$('#Lbl_Reference').text(bmobj.referencename);
+																			$("#Lbl_organization").text(bmobj.organizationName);
+																			$("#Lbl_dealvalue").text(bmobj.dealvalue);
+																			$("#Lbl_purpose").text(bmobj.purpose);
+																			$("#Lbl_branchname").text(bmobj.branchname);
+																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
+																			
+																			
+																			
+																			$name ="";
+																			
+																			bmobj.dealFollowers.forEach((element, index, array) =>
+																           	{
+																           	    $name += element.followername+ "<br>";
+																            });
+																           	$('#Lbl_follower').html($name);
+																           	
+																			$('.editorganizationdataclose').click();
+																			$('.editorganizationdatasubmit').prop("disabled",false);
+																			$('.editorganizationdatasubmit').html("Submit");
+																		
+
+																	},
+																	error : function(
+																			e) {
+																		console
+																				.log("Error"
+																						+ e);
+																	}
+																});
+													} else {
+														$(
+																'.editorganizationdatasubmit')
+																.prop(
+																		"disabled",
+																		false);
 													}
 
-													$("#notessave").css(
-															"visibility",
-															"hidden");
-													$("#notessavetemp").css(
-															"visibility",
-															"visible");
-													var formData = {
-														editor : editor,
-														noteckbox : noteckbox,
-														mastercategoryid : mastercategoryid,
-														noteactivityid : noteactivityid
+												});
+								// --------------------------------------------------------------------
+
+								// --------------------------------------------------------------------
+
+								$(".additem").click(function() {
+									var name = $(this).attr('name');
+									var labeltext = "";
+									if (name == "addmodalcontacttype") {
+										labeltext = "New Contact Type";
+									} else if (name == "addmodaldocumenttype") {
+										labeltext = "New Document Type";
+									} else if (name == "addModel_Source") {
+										labeltext = "New Industry Type";
+									}else if (name == "addpurposedata") {
+										labeltext = "New Purpose";
+									}
+									
+									
+
+									$('#additemalltxt').text(labeltext);
+									$('#ItemStatusScrollable').modal('toggle');
+
+								});
+
+								$("#additemallsavebtn")
+										.click(
+												function() {
+													if ($("#additemall").val() != '') {
+														var name = $(
+																'#additemalltxt')
+																.text();
+														var labeltext = "";
+														if (name == "New Contact Type") {
+															labeltext = "modalcontacttype";
+														} else if (name == "New Document Type") {
+															labeltext = "modalDocumenttype";
+														} else if (name == "New Industry Type") {
+															labeltext = "addModel_Source";
+														} else if (name == "New Purpose") {
+															labeltext = "addpurposedata";
+														}
+
+														$('.' + labeltext)
+																.append(
+																		"<option value='"
+																				+ $(
+																						"#additemall")
+																						.val()
+																				+ "'>"
+																				+ $(
+																						"#additemall")
+																						.val()
+																				+ "</option>");
+														//$('.' + labeltext).val($("#additemall").val());
+														$("#additemall")
+																.val('');
+														$(
+																'#ItemStatusScrollable')
+																.modal('toggle');
+													}
+												});
+
+								// --------------------------------------------------------------------
+
+								function validationformreset() {
+									$('.editpeopledataclose').click();
+									$('.editpeopledatasubmit').prop("disabled",
+											false);
+									$('.editpeopledatasubmit').html("Submit");
+								}
+								// --------------------------------------------------------------------
+								$('#editPeopledetailsForm')
+										.on(
+												'submit',
+												function(event) {
+
+													if (event.target
+															.checkValidity()) {
+														$(
+																'.editpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		true);
+														$(
+																'.editpeopledatasubmit')
+																.html(
+																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+
+														var dealMasterID = $(
+																'#dealMasterID')
+																.val();
+														var peoplename = $(
+																'#Model_peoplename')
+																.val();
+														var phonenumber = $(
+																'#Model_peoplecontact')
+																.val();
+														var branch = $(
+																"#branch")
+																.val();
+														var followers = $(
+																"followers")
+																.val();
+														var organization = $(
+																"organization")
+																.val();
+														var formData = {
+															id : dealMasterID,
+															category : 'Deal',
+															organization : organization,
+															branch : branch,
+															peoplename : peoplename,
+															phonenumber : phonenumber,
+															followers : followers
+
+														}
+														$
+																.ajax({
+																	type : "POST",
+																	url : "workcontactpersonsavejson",
+																	data : formData,
+																	success : function(
+																			result) {
+																		validationformreset();
+																		var bmobj = JSON
+																				.parse(JSON
+																						.stringify(result));
+
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																				+ bmobj
+																				+ '" target="_blank"> <h6 class="mb-0">'
+																				+ peoplename
+																				+ '</h6></a> <small class="text-muted">'
+																				+ phonenumber
+																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
+																				+ result
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																		$(
+																				'#contactpeopdealdidv')
+																				.before(
+																						temphtml);
+
+																	},
+																	error : function(
+																			e) {
+																		console
+																				.log("Error"
+																						+ e);
+
+																	}
+
+																});
+
+													} else {
+														$(
+																'.editpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		false);
 													}
 
-													$
-															.ajax({
-																type : "POST",
-																url : "dealeventnotesave",
-																data : formData,
-																success : function(
-																		result) {
+												});
+								// --------------------------------------------------------------------
+								$('#linkPeopledetailsForm')
+										.on(
+												'submit',
+												function(event) {
 
-																	$(
-																			"#notessavetemp")
-																			.css(
-																					"visibility",
-																					"hidden");
-																	$(
-																			"#notessave")
-																			.css(
-																					"visibility",
-																					"visible");
-																	alert("Note Info Updated Successfully ");
-																	$(
-																			'.ql-editor')
-																			.html(
-																					"");
-																	gettimelinelist();
-																},
-																error : function(
-																		e) {
-																	console
-																			.log("Error"
-																					+ e);
-																	$(
-																			"#notessavetemp")
-																			.css(
-																					"visibility",
-																					"hidden");
-																	$(
-																			"#notessave")
-																			.css(
-																					"visibility",
-																					"visible");
-																}
+													if (event.target
+															.checkValidity()) {
+														$(
+																'.linkpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		true);
+														$(
+																'.linkpeopledatasubmit')
+																.html(
+																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+														var dealMasterID = $(
+																'#dealMasterID')
+																.val();
+														var linkpeoplename = $(
+																'#Model_linkpeoplename')
+																.val();
 
-															});
-													//---------------------------------------------------------
-												}
-											});
-							//--------------------------------------------------------------------------------
-							$("#profile-tab").click(function() {
-								// gettimelinelist
-								gettimelinelist();
-							});
-							//--------------------------------------------------------------------------------
-							//function load the history events
-							function gettimelinelist() {
-								var mastercategoryid = $("#mastercategoryid")
-										.val();
-								var formData = {
-									mastercategoryid : mastercategoryid,
-									categoryType : "Deal"
-								}
+														var formData = {
+															id : dealMasterID,
+															category : 'Deal',
+															linkpeoplename : linkpeoplename,
 
-								$.ajax({
-									type : "POST",
-									url : "gettimelinelist",
-									data : formData,
-									success : function(result) {
+														}
+														$
+																.ajax({
+																	type : "POST",
+																	url : "workcontactlinkpersonsavejson",
+																	data : formData,
+																	success : function(
+																			result) {
 
-										$('.widget-timeline').html(result);
-									},
-									error : function(e) {
-										console.log("Error" + e);
+																		var bmobj = JSON
+																				.parse(JSON
+																						.stringify(result));
+																		let primarymob = ""
+																		if (bmobj.primarymob != null) {
+																			primarymob = bmobj.primarymob;
+																		}
 
-									}
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																				+ bmobj.id
+																				+ '" target="_blank"> <h6 class="mb-0">'
+																				+ bmobj.peoplename
+																				+ '</h6></a> <small class="text-muted">'
+																				+ primarymob
+																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
+																				+ bmobj.id
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																		$(
+																				'#contactpeopdealdidv')
+																				.before(
+																						temphtml);
+																		validationlinkformreset();
+																	},
+																	error : function(
+																			e) {
+																		console
+																				.log("Error"
+																						+ e);
 
+																	}
+
+																});
+
+													} else {
+														$(
+																'.linkpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		false);
+													}
+
+												});
+								
+								//-------------------------------------------
+								$(document).ready(function(){
+								    setTimeout(function(){
+								    	gettimelinelistCompleted();
+								    	gettimelinelistNotCompleted();
+								     },1000); // milliseconds
 								});
+							}); // Jquery
 
-							}
-							//--------------------------------------------------------------------------------
-							$(document)
-									.on(
-											"click",
-											".badge-circle-light-warning",
-											function() {
-												let activityid = $(this).attr(
-														"id");
-												var formData = {
-													activityid : activityid
-												}
+			//------------------------------------------------------
+			function makeprimarycontactperson(elem) {
 
-												$
-														.ajax({
-															type : "POST",
-															url : "activitymarkascompleted",
-															data : formData,
-															success : function(
-																	result) {
-																$(
-																		"#"
-																				+ activityid
-																				+ "NC")
-																		.removeClass(
-																				"badge-circle-light-danger");
-																$(
-																		"#"
-																				+ activityid
-																				+ "NC")
-																		.addClass(
-																				"badge-circle-light-success");
-																$(
-																		"#"
-																				+ activityid
-																				+ "NC")
-																		.html(
-																				"<i class='bx bx-check font-size-base'></i>");
-																$(
-																		"#"
-																				+ activityid)
-																		.hide();
-															},
-															error : function(e) {
-																console
-																		.log("Error"
-																				+ e);
+				var formData = {
+					personid : elem.getAttribute("name"),
+					primarystatus : elem.checked
+				}
+				$.ajax({
+					type : "POST",
+					url : "makeprimarycontactperson",
+					data : formData,
+					success : function(result) {
 
-															}
+					},
+					error : function(e) {
+						console.log("Error" + e);
+					}
+				});
+			}
 
-														});
-											});
-							//--------------------------------------------------------------------------------
-							$('.hometabclick').click(function() {
-								$('#home-tab').click();
-							});
-							$('.projecttabclick').click(function() {
-								$('#project-tab').click();
-							});
-							//--------------------------------------------------------------------------------
-							var projectdivadd = 200;
-							$("#projectdivadd")
-									.click(
-											function() {
-												edudivadd = edudivadd + 1;
-												$("#projectdivlast")
-														.before(
-																'<div class="col-md-12 edudivdelete'+ edudivadd +'"><label class="emptitle" >'
-																		+ edudivadd
-																		+ ' .Project Details</label><span class="cursor-pointer edudivdelete"	name="'+ edudivadd +'" style="float: right"> <i	class="bx bx-x"></i></span> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Nature of Work <label class="emptitle additem" name="addnatureofworkdata"><i class="bx bxs-plus-circle ownstyle1"></i></label></label>	<div class="position-relative has-icon-left">				<input type="hidden"				name="dealProjectMaster['+ edudivadd +'].dealprojectid"	  value="0"			/>				<select class="form-control form-control-sm addnatureofworkdata" name="dealProjectMaster['+ edudivadd +'].projecttype">			<option value="">-</option>'
-																		+ NATUREOFWORKlist
-																		+ '		</select>		<div class="form-control-position">			<i class="bx bx-landscape"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Quantity</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control form-control-sm prjQty"	 id="prjQty'+ edudivadd +'"		placeholder="Quantity"   name="dealProjectMaster['+ edudivadd +'].Quantity"/>		<div class="form-control-position">			<i class="bx bx-radio-circle-marked"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Units <label	class="emptitle additem" name="addunitsdata"><i class="bx bxs-plus-circle ownstyle1"></i></label></label>	<div class="position-relative has-icon-left">		<select class="form-control form-control-sm addunitsdata"  name="dealProjectMaster['+ edudivadd +'].Unit">			<option value="">-</option>	'
-																		+ UNITSlist
-																		+ '</select>		<div class="form-control-position">			<i class="bx bxs-film"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Price</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control  form-control-sm prjPrice"	id="prjPrice'+ edudivadd +'"		placeholder="Price"   name="dealProjectMaster['+ edudivadd +'].Price"				/>		<div class="form-control-position">			<i class="bx bx-money"></i>		</div>	</div></div> 														</div> 														<div class="col-md-3 edudivdelete'+ edudivadd +'"><div class="form-group">	<label for="contact-info-icon">Total Amount</label>	<div class="position-relative has-icon-left">		<input type="text" class="form-control  form-control-sm prjTotal"	id="prjTotal'+ edudivadd +'"		placeholder="Total"  name="dealProjectMaster['+ edudivadd +'].Amount"				/>		<div class="form-control-position">			<i class="bx bxs-wallet"></i>		</div>	</div></div> 														</div> 														');
-											});
+			//------------------------------------------------------    
+			 // Date Format
+			   const flatpickrFriendly = document.querySelector('#expectedclosingdate');
+				 // Human Friendly
+				  if (flatpickrFriendly) {
+				    flatpickrFriendly.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+			// Phone
+			const phoneMask = document.querySelector('.phone-number-otp-mask');
 
-							$(document).on(
-									"click",
-									".edudivdelete",
-									function() {
-										var id = $(this).attr('name');
-										var deleteid = $(
-												"[name='dealProjectMaster["
-														+ id
-														+ "].dealprojectid")
-												.val();
-										$('.edudivdelete' + id).remove();
-										alert("Removed Successfully...!");
+			// Phone Number Input Mask
+			if (phoneMask) {
+				new Cleave(phoneMask, {
+					phone : true,
+					phoneRegionCode : 'US'
+				});
+			}
+			
+			
+			
+			//--------------------------
+			function editactivity(e){
+				var activityid= e.getAttribute("id").replace("actid","");
+				var formData = {
+						id : activityid
+					}
 
-									});
-							//--------------------------------------------------------------------------------
-							$(document).on("change", ".state", function() {
-								let state = $(this).val();
-								var formData = {
-									state : state
-								}
+					$.ajax({
+						type : "POST",
+						url : "getActivityMaster",
+						data : formData,
+						success : function(result) {
+							var bmobj = JSON.parse(JSON.stringify(result));
+							console.log(bmobj);
+							$("#mastercategoryid").val(bmobj.mastercategoryid);
+							$("#activityId").val(bmobj.activityId);
+							$("#createdtime").val(bmobj.createdtime);
+							$("#activitytitle").val(bmobj.activitytitle);
+							//$("#activitytype").val(bmobj.activitytype);
+							$("#startdate").val(bmobj.startdate);
+							$("#starttime").val(bmobj.starttime);
+							$("#enddate").val(bmobj.enddate);
+							$("#endtime").val(bmobj.endtime);
+							$("#notes").val(bmobj.notes);
+							$("#activityfollowers").val(bmobj.activityfollowers).change();
+							$("input[name=activitytype][value="+ bmobj.activitytype +"]").attr('checked', true);
+							$(".activitytype").removeClass("active");
+							$(".activitytype"+bmobj.activitytype).addClass("active");
+							$('#addevent').modal('show');
+						},
+						error : function(e) {
+							console.log("Error" + e);
+						}
+					});
+			};
+			//-------------------------------------
+			function editnoteactivity(e){
+				var activityid= e.getAttribute("id").replace("actid","");
+				var formData = {
+						id : activityid
+					}
 
-								$.ajax({
-									type : "POST",
-									url : "getdistrictlist",
-									data : formData,
-									success : function(result) {
-										$(".district").html(result);
-									},
-									error : function(e) {
-										console.log("Error" + e);
-
-									}
-
-								});
-							});
-							//--------------------------------------------------------------------------------
-							function pipeline(title) {
-
-								if (title == 'Deal In') {
-									$(".la").addClass("active");
-									$('#pipeline').val('Deal In');
-								} else if (title == 'Contact made') {
-									$(".lb").addClass("active");
-									$('#pipeline').val('Contact made');
-
-								} else if (title == 'Site Visit Scheduled') {
-									$(".lc").addClass("active");
-									$('#pipeline').val('Site Visit Scheduled');
-								} else if (title == 'Project Evaluvated') {
-									$(".ld").addClass("active");
-									$('#pipeline').val('Project Evaluvated');
-								} else if (title == 'Proposal made') {
-									$(".le").addClass("active");
-									$('#pipeline').val('Proposal made');
-
-								} else if (title == 'Negotiations started') {
-									$(".lf").addClass("active");
-									$('#pipeline').val('Negotiations started');
-								}
-							}
-
-							$(document).on("click", "#progress li", function() {
-								$("#progress li").removeClass("active");
-								let title = $(this).attr("title");
-								pipeline(title);
-							});
-							//--------------------------------------------------------------------------------
-							pipeline("[[${dealMaster['pipeline']}]]");
-							//--------------------------------------------------------------------------------
-							
-							$(document).on("change", ".prjTotal", function() {
-								let ids=$(this).attr("id").replace("prjTotal","");
-
-								let prjTotal=$("#prjTotal"+ids).val().replace("NaN","");
-								let prjQty=$("#prjQty"+ids).val().replace("NaN","");
-								
-								$("#prjPrice"+ids).val(Math.round(prjTotal / prjQty));
-								
-							});
-							$(document).on("change", ".prjPrice", function() {
-								let ids=$(this).attr("id").replace("prjPrice","");
-								let prjPrice=$("#prjPrice"+ids).val().replace("NaN","");
-								let prjQty=$("#prjQty"+ids).val().replace("NaN","");
-								
-								$("#prjTotal"+ids).val(prjPrice * prjQty);
-							});
-							$(document).on("change", ".prjQty", function() {
-								let ids=$(this).attr("id").replace("prjQty","");
-								let prjPrice=$("#prjPrice"+ids).val().replace("NaN","");
-								let prjQty=$("#prjQty"+ids).val().replace("NaN","");
-								
-									$("#prjTotal"+ids).val(prjPrice * prjQty);
-								
-							});
-							
-							//--------------------------------------------------------------------------------
-						});
-	</script>
-	<script>
-		$(".js-example-tags").select2({
-			tags : true
-		});
-
-		//--------------------------------------------------------------------------------------------------------------------------------------					
-
-		//--------------------------------------------------------------------------------------------------------------------------------------
-	</script>
+					$.ajax({
+						type : "POST",
+						url : "getActivityMaster",
+						data : formData,
+						success : function(result) {
+							var bmobj = JSON.parse(JSON.stringify(result));
+							console.log(bmobj);
+							$("#mastercategoryidnote").val(bmobj.mastercategoryid);
+							$("#noteactivityId").val(bmobj.activityId);
+							$(".ql-editor").html(bmobj.htmlnotes);
+							$('#addnotes').modal('show');
+						},
+						error : function(e) {
+							console.log("Error" + e);
+						}
+					});
+			};
+			
+		</script>
 </body>
-<!-- END: Body-->
-
 </html>
-
-
-
-

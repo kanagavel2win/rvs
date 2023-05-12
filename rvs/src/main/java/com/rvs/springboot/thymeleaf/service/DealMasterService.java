@@ -13,4 +13,9 @@ public interface DealMasterService {
 	public void updatepipeline(String str,String pipeline, String notes);
 	public List<String> getStateAll();
 	public List<String> getDistrictAll(String state);
+	
+	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id);
+	public int deleteFiles(int id);
+	public int insertContact(int contactpersonid, int dealid);
+	
 }

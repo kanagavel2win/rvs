@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Lead View</title>
+<title>Deal Project</title>
 
 <meta name="description" content="" />
 
@@ -135,13 +135,16 @@
 	height: 15px;
 }
 
-.editactivity 
-{
-cursor: pointer;
+.editactivity {
+	cursor: pointer;
 }
-.editnoteactivity
+
+.editnoteactivity  {
+	cursor: pointer;
+}
+.editdealprj
 {
-cursor: pointer;
+	cursor: pointer;
 }
 </style>
 <script th:inline="javascript">
@@ -184,7 +187,7 @@ cursor: pointer;
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
 							<span class="text-muted fw-light">Works /<a
-								href="leadlist">Lead</a>/
+								href="deallist">Deal</a>/
 							</span> View
 						</h4>
 						<div class="row gy-4">
@@ -199,7 +202,7 @@ cursor: pointer;
 													th:src="@{/assets/img/logo/rvslogo1.png}" height="110"
 													width="110" alt="User avatar" />
 												<div class="user-info text-center">
-													<h5 class="mb-2" th:text="${leadMaster.Title}"
+													<h5 class="mb-2" th:text="${dealMaster.Title}"
 														id="Lbl_Title"></h5>
 
 												</div>
@@ -211,51 +214,48 @@ cursor: pointer;
 													class="bx bx-check bx-sm"></i></span>
 												<div>
 													<h5 class="mb-0">
-														Rs.<span th:text="${leadMaster.leadvalue}"
-															id="Lbl_leadvalue"></span>
+														Rs.<span th:text="${dealMaster.dealvalue}"
+															id="Lbl_dealvalue"></span>
 													</h5>
-													<span>Lead Value</span>
+													<span>Deal Value</span>
 												</div>
 											</div>
 
 										</div>
-										<h5 class="pb-2 border-bottom mb-4">Details</h5>
+										<h5 class="pb-2 border-bottom mb-4">Details  <input type="hidden" name="mastercategoryid" id="mastercategoryid" /></h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
-												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
-													<span id="Lbl_Label"> <span
-														th:if="${leadMaster.Label} =='Hot'"
-														class="badge bg-danger" th:text="${leadMaster.Label}"></span>
-														<span th:if="${leadMaster.Label} =='Warm'"
-														class="badge bg-warning" th:text="${leadMaster.Label}"></span>
-														<span th:if="${leadMaster.Label} =='Cold'"
-														class="badge bg-primary" th:text="${leadMaster.Label}"></span>
-												</span></li>
+											
+												<li class="mb-3"><span class="fw-bold me-2">Pipeline:</span>
+													<span th:text="${dealMaster.pipeline}" id="Lbl_pipeline"></span></li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
-													<span th:text="${leadMaster.OrganizationName}"
+													<span th:text="${dealMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
-													<span th:text="${leadMaster.purpose}" id="Lbl_purpose"></span>
+													<span th:text="${dealMaster.purpose}" id="Lbl_purpose"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
-													<span th:text="${leadMaster.branchname}" id="Lbl_branchname"></span>
-												</li>
+													<span th:text="${dealMaster.branchname}"
+													id="Lbl_branchname"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
-													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
+													<span th:text="${dealMaster.Source}" id="Lbl_Source"></span>
 												</li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
-													<span th:text="${leadMaster.ReferenceName}"
+													<span th:text="${dealMaster.ReferenceName}"
 													id="Lbl_Reference"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
-													<span th:text="${leadMaster.notes}" id="Lbl_notes"></span>
+													<span th:text="${dealMaster.notes}" id="Lbl_notes"></span>
 												</li>
-												
+												<li class="mb-3"><span class="fw-bold me-2">Closing
+														Date:</span> <span
+													th:text="${dealMaster.expectedclosingdateMMddYYY}"
+													id="Lbl_expectedclosingdate"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
 
 													<span id="Lbl_follower"> <span
-														th:each="obj : ${leadMaster.leadFollowers}"
+														th:each="obj : ${dealMaster.dealFollowers}"
 														th:utext="${obj.Followername} + '<br/>'"> </span>
 												</span></li>
 
@@ -263,7 +263,7 @@ cursor: pointer;
 											</ul>
 											<div class="d-flex justify-content-center pt-3">
 												<a href="javascript:;" class="btn btn-primary me-3"
-													data-bs-target="#editleadMasterdetails"
+													data-bs-target="#editdealMasterdetails"
 													data-bs-toggle="modal"
 													id="editOrganizationContactsdetailsbtn">Edit</a>
 
@@ -313,7 +313,7 @@ cursor: pointer;
 											</div>
 										</div>
 
-										<div id="contactpeopleaddidv"></div>
+										<div id="contactpeopdealdidv"></div>
 
 									</div>
 								</div>
@@ -326,292 +326,141 @@ cursor: pointer;
 							<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
 								<!-- User Pills -->
 								<ul class="nav nav-pills flex-column flex-md-row mb-3">
+									<li class="nav-item"><a class="nav-link "
+										th:href="'dealview?id='+${dealMaster.id}"><i
+											class="bx bx-user me-1"></i>Activity</a></li>
 									<li class="nav-item"><a class="nav-link active"
-										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Activity</a>
+										href="javascript:void(0);"><i class='bx bxl-ok-ru'></i>Projects</a>
 									</li>
-									<li class="nav-item"><a class="nav-link"
-										th:href="'leadattachment?id='+${leadMaster.id}"><i
-											class="bx bx-link me-1"></i>Attachment</a></li>
+									<li class="nav-item"><a class="nav-link "
+										th:href="'dealattachment?id='+${dealMaster.id}"><i class="bx bx-link me-1"></i>Attachment</a></li>
 
 								</ul>
 								<!--/ User Pills -->
 
-
-
-								<!-- Activity Timeline -->
-								<div class="card mb-4">
-									<h5 class="card-header">
-										Activity Timeline
-
-
-
-										<div class="card-action-element" style="float: right">
-											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-toggle="modal" data-bs-target="#addevent"
-												alt="Add New Event" id="btnAddevent">
-												<i class="bx bx-plus bx-xs me-1"></i> Event
-											</button>
-											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-toggle="modal" data-bs-target="#addnotes" id="btnAddnotes"
-												alt="Add New Notes">
-												<i class="bx bx-plus bx-xs me-1"></i> Notes
-											</button>
+								<!-- Project   Card -->
+								<div class="card  mb-4">
+									<div class="card-body1">
+										<div class="card-header align-items-center">
+											<h5 class="card-action-title mb-0">
+												Project List
+												<div class="card-action-element" style="float: right">
+													<button class="btn btn-primary btn-sm" type="button"
+														data-bs-toggle="modal" data-bs-target="#addNewProject">
+														<i class="bx bx-plus bx-xs me-1"></i>
+													</button>
+												</div>
+											</h5>
 										</div>
-									</h5>
-									<div class="card-body">
-										<div class="divider divider-dashed">
-											<div class="divider-text">Planned</div>
-										</div>
-										<ul class="timeline widget-timeline widget-timelinePlanned">
-
-										</ul>
-										<div class="divider divider-dashed">
-											<div class="divider-text">Completed</div>
-										</div>
-										<ul class="timeline widget-timeline widget-timelineCompleted">
-
-										</ul>
+										<div class="table-responsive">
+						                      <table class="table border-top m-0">
+						                        <thead>
+						                          <tr>
+						                            <th>Nature of work</th>
+						                            <th>Quantity</th>
+						                            <th>Units</th>
+						                            <th>Price</th>
+						                            <th>Total</th>
+						                          </tr>
+						                        </thead>
+						                        <tbody id="dealprojectlist">
+						                          
+						                        </tbody>
+						                      </table>
+						                    </div>
 									</div>
-
-
 								</div>
-								<!-- /Activity Timeline -->
+								<!-- /Project   Card -->
 							</div>
 							<!-- User Content -->
-
-
-
-							<!-- Modal -->
-							<!-- Edit Notes Modal -->
-							<div class="modal fade" id="addnotes" tabindex="-1"
+						 <!-- Add Document -->
+							<div class="modal fade" id="addNewProject" tabindex="-1"
 								aria-hidden="true">
 								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
 									<div class="modal-content p-3 p-md-5">
-
 										<div class="modal-body">
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
-												<h3>Activity Notes Information</h3>
-												<p>Update Notes Basic Information</p>
+												<h3>Projects</h3>
+												<p>Nature of Work</p>
 											</div>
-											<form id="NotesMasterform" class="" onsubmit="return false">
-												<input type="hidden" name="mastercategoryidnote" id="mastercategoryidnote" />
-												<input type="hidden" name="noteactivityId" id="noteactivityId"
-																	 /> 
-												<!-- Full Editor -->
+											<form id="addNewprojectmodel" name="addNewprojectmodel" class="row g-3"
+												onsubmit="return false" enctype="multipart/form-data">
 												<div class="col-12">
-													<div class="card">
-														<h5 class="card-header"></h5>
-														<div class="card-body">
-															<div id="full-editor"></div>
-														</div>
+													<label class="form-label w-100" for="modalnatureofwork">Nature of Work
+														 <label class="emptitle additem"
+														name="addmodalnatureofwork"> <i
+															class="bx bxs-plus-circle ownstyle1"></i></label>
+
+													</label>
+													<div class="input-group input-group-merge">
+														<select id="modalnatureofwork"
+															class="form-select modalnatureofwork" name="modalnatureofwork" required="required">
+															<option value="">-</option>
+															<th:block th:each="str :${NATUREOFWORK}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+
+														</select>
+
 													</div>
 												</div>
-												<!-- /Full Editor -->
-
-
-
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
-														
-														
-													<button type="reset"
-														class="btn btn-label-secondary NotesMasterformclose"
-														aria-label="Close">
-														Reset</button>
+												<div class="col-12">
+													<label class="form-label" for="modalAddCardName">QUANTITY </label> 
+													<input type="number" id="modalQuantity" name="modalQuantity"
+														class="form-control" required="required"/>
+													<input type="hidden" id="projectid" name="projectid"
+														class="form-control" />
 												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit Notes Modal -->
+												<div class="col-12">
+													<label class="form-label w-100" for="modalUnits">UNITS
+														 <label class="emptitle additem"
+														name="addmodalunits"> <i
+															class="bx bxs-plus-circle ownstyle1"></i></label>
 
-							<!-- Edit Activity Modal -->
-							<div class="modal fade" id="addevent" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
-									<div class="modal-content p-3 p-md-5">
+													</label>
+													<div class="input-group input-group-merge">
+														<select id="modalUnits" name="modalunits"
+															class="form-select modalunits" required="required">
+															<option value="">-</option>
+															<th:block th:each="str :${UNITS}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
 
-										<div class="modal-body">
-											<button type="button"
-												class="btn-close activityMasterformclose"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Activity Information</h3>
-												<p>Update Activity Basic Information</p>
-											</div>
-											<form id="activityMasterform" th:object="${activityMaster}"
-												class="wizard-horizontal" onsubmit="return false"
-												enctype="multipart/form-data">
-												<!-- ------------------------------------------ -->
-												<div class="row">
-													<div class="col-md-12">
-														<label for="addmodel">Activity Title</label>
-														<div class="form-group">
-															<div class="position-relative">
-																<input type="hidden" th:field="*{mastercategoryid}"
-																	id="mastercategoryid" /> <input type="hidden"
-																	th:field="*{activityId}" id="activityId"
-																	th:value="${activityMaster['activityId']}" /> <input
-																	type="hidden" th:field="*{createdtime}" id="createdtime"
-																	th:value="${activityMaster['createdtime']}" /> <input
-																	type="text"
-																	class="form-control   capitalize ActivityTitle"
-																	placeholder="Task details..."
-																	th:field="*{activitytitle}" id="activitytitle"
-																	th:value="${activityMaster['activitytitle']}" />
-
-															</div>
-														</div>
-													</div>
-													<div class="col-12">
-														<div class="form-group">
-															<div class="btn-group btn-group-toggle mb-1"
-																data-toggle="buttons">
-																<label
-																	th:class="'btn btn-outline-primary  activitytype activitytypeTask '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Task"> <input
-																	type="radio" name="options"
-																	onclick="optionshandle(this);"
-																	th:field="*{activitytype}" value="Task" id="radio1"
-																	style="visibility: hidden"><i
-																	class="bx bx-alarm-add activitytypeicon"></i>
-																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Call"> <input
-																	type="radio" name="options"
-																	onclick="optionshandle(this);"
-																	th:field="*{activitytype}" value="Call" id="radio2"
-																	style="visibility: hidden"><i
-																	class="bx bx-phone-call activitytypeicon"></i>
-																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Meetings">
-																	<input type="radio" onclick="optionshandle(this);"
-																	name="options" th:field="*{activitytype}"
-																	value="Meetings" id="radio3" style="visibility: hidden"><i
-																	class="bx bx-group activitytypeicon"></i>
-																</label>
-															</div>
-														</div>
-
+														</select>
 
 													</div>
-
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">Start Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{startdate}" id="startdate"
-																	th:value="${activityMaster['startdate']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">Start Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{starttime}" id="starttime"
-																	th:value="${activityMaster['starttime']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{enddate}" id="enddate"
-																	th:value="${activityMaster['enddate']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{endtime}" id="endtime"
-																	th:value="${activityMaster['endtime']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="form-group">
-															<label for="addmodel">Note </label><span class="notes-sm">(Note
-																visible only For You)</span>
-															<div class="position-relative  has-icon-left">
-																<fieldset class="form-group">
-																	<textarea class="form-control " rows="4"
-																		th:field="*{notes}" id="notes"
-																		th:value="${activityMaster['notes']}">
-																							</textarea>
-
-																</fieldset>
-															</div>
-														</div>
-
-													</div>
-
-
 												</div>
-
-												<div class="col-md-12">
-													<div class="form-group">
-														<label for="addmodel">Followers</label>
-														<div class="position-relative  has-icon-left">
-															<fieldset class="form-group">
-																<select class="select2 form-control "
-																	id="activityfollowers">
-																	<th:block th:each="str :${employeelist}">
-																		<option th:value="${str.empMasterid}"
-																			th:text="${str.StaffName}"></option>
-																	</th:block>
-																</select>
-
-															</fieldset>
-														</div>
-													</div>
+												<div class="col-12">
+													<label class="form-label" for="modalPrice">Price </label> 
+													<input type="number" id="modalPrice" name="modalPrice"
+														class="form-control" required="required"/>
+												</div>
+												<div class="col-12">
+													<label class="form-label" for="modalTotalamount">Total Amount </label> 
+													<input type="number" id="modalTotalamount" name="modalTotalamount"
+ 														class="form-control" disabled />
 												</div>
 												
-
-												<div class="col-md-12">
-													<br />
-													<button type="reset"
-														class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
-														style="padding-right: 20px;">Reset</button>
+												<div class="col-12 text-center mt-4">
 													<button type="submit"
-														class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
-														style="float: right">Save</button>
-
-
+														class="btn btn-primary me-sm-3 me-1 dealprojectsave">ADD</button>
+													<button type="reset"
+														class="btn btn-label-secondary btn-reset dealprojectclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
 												</div>
-												<!-- ------------------------------------------ -->
 											</form>
 										</div>
 									</div>
 								</div>
 							</div>
-
-							<!--/ Edit Activity Modal -->
+							<!--/ Add Document -->
 
 							<!-- Edit User Modal -->
-							<div class="modal fade" id="editleadMasterdetails" tabindex="-1"
+							<div class="modal fade" id="editdealMasterdetails" tabindex="-1"
 								aria-hidden="true">
 								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
 									<div class="modal-content p-3 p-md-5">
@@ -620,14 +469,14 @@ cursor: pointer;
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
-												<h3>Edit Lead Information</h3>
-												<p>Update Lead Basic Information</p>
+												<h3>Edit Deal Information</h3>
+												<p>Update Deal Basic Information</p>
 											</div>
-											<form id="editleadMasterdetailsForm"
-												th:object="${leadMaster}" class="row g-3 needs-validation"
+											<form id="editdealMasterdetailsForm"
+												th:object="${dealMaster}" class="row g-3 needs-validation"
 												onsubmit="return false">
-												<input type="hidden" th:value="${leadMaster['id']}"
-													id="leadMasterID" name="leadMasterID" />
+												<input type="hidden" th:value="${dealMaster['id']}"
+													id="dealMasterID" name="dealMasterID" />
 
 
 												<div class="col-12 col-md-6">
@@ -635,7 +484,7 @@ cursor: pointer;
 													<div>
 														<input type="text" id="Title" th:field="*{Title}"
 															class="form-control  capitalize"
-															th:value="${leadMaster['Title']}" required>
+															th:value="${dealMaster['Title']}" required>
 
 													</div>
 
@@ -645,7 +494,7 @@ cursor: pointer;
 													<div>
 														<select class="form-select followers form-control "
 															id="organization" th:field="*{Organization}"
-															th:value="${leadMaster['Organization']}">
+															th:value="${dealMaster['Organization']}">
 															<option value="">-</option>
 															<th:block th:each="str :${organizationlist}">
 																<option th:value="${str.id}" th:text="${str.orgname}"></option>
@@ -662,7 +511,7 @@ cursor: pointer;
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addsourcedata" id="Source"
-															th:field="*{Source}" th:value="${leadMaster['Source']}">
+															th:field="*{Source}" th:value="${dealMaster['Source']}">
 															<th:block th:each="str :${SOURCE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -676,7 +525,7 @@ cursor: pointer;
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addpurposedata" id="purpose"
-															th:field="*{purpose}" th:value="${leadMaster['purpose']}">
+															th:field="*{purpose}" th:value="${dealMaster['purpose']}">
 															<th:block th:each="str :${PURPOSE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -687,9 +536,9 @@ cursor: pointer;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">VALUE</label>
 													<div>
-														<input type="number" id="leadvalue"
-															th:field="*{leadvalue}" class="form-control  capitalize"
-															th:value="${leadMaster['leadvalue']}">
+														<input type="number" id="dealvalue"
+															th:field="*{dealvalue}" class="form-control  capitalize"
+															th:value="${dealMaster['dealvalue']}">
 													</div>
 
 												</div>
@@ -699,7 +548,7 @@ cursor: pointer;
 
 														<select class="form-control " id="Reference"
 															th:field="*{Reference}"
-															th:value="${leadMaster['Reference']}">
+															th:value="${dealMaster['Reference']}">
 															<option value="">-</option>
 															<th:block th:each="str :${personlist}">
 																<option th:value="${str.id}" th:text="${str.peoplename}"></option>
@@ -710,13 +559,20 @@ cursor: pointer;
 												</div>
 
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="Label">LABEL </label>
+													<label class="form-label" for="pipeline">PIPELINE </label>
 													<div>
-														<select class="form-control " id="Label"
-															th:field="*{Label}" th:value="${leadMaster['Label']}">
-															<option value="Hot">Hot</option>
-															<option value="Cold">Cold</option>
-															<option value="Warm">Warm</option>
+														<select class="form-control" id="pipeline"
+															th:field="*{pipeline}"
+															th:value="${dealMaster['pipeline']}">
+															<option value="Deal In">Deal In</option>
+															<option value="Contact made">Contact made</option>
+															<option value="Site Visit Scheduled">Site Visit
+																Scheduled</option>
+															<option value="Project Evaluvated">Project
+																Evoluvated</option>
+															<option value="Proposal made">Proposal made</option>
+															<option value="Negotiations started">Negotiations
+																started</option>
 														</select>
 													</div>
 												</div>
@@ -725,7 +581,7 @@ cursor: pointer;
 													<label class="form-label" for="phonenumber">BRANCH</label>
 													<div>
 														<select class="form-select  form-control " id="branch"
-															th:field="*{branch}" th:value="${leadMaster['branch']}"
+															th:field="*{branch}" th:value="${dealMaster['branch']}"
 															required>
 															<th:block th:each="str :${branchlist}">
 																<option th:value="${str.id}"
@@ -757,7 +613,18 @@ cursor: pointer;
 													<div>
 
 														<input type="text" id="notes" th:field="*{notes}"
-															th:value="${leadMaster['notes']}"
+															th:value="${dealMaster['notes']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="expectedclosingdate">Expected
+														Closing Date</label>
+													<div>
+
+														<input type="text" id="expectedclosingdate"
+															th:field="*{expectedclosingdate}"
+															th:value="${dealMaster['expectedclosingdate']}"
 															class="form-control  capitalize">
 													</div>
 												</div>
@@ -1017,12 +884,12 @@ cursor: pointer;
 					.ready(
 							function() {
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								var ids="[[${leadMaster['id']}]]";
+								var ids="[[${dealMaster['id']}]]";
 								$("#mastercategoryid").val(ids);
-								$("#mastercategoryidnote").val(ids);
 								
-								var leadfollowerids="[[${leadMaster['leadfollowerids']}]]";
-								$("#followers").val(leadfollowerids.split(",")).change();
+								
+								var dealfollowerids="[[${dealMaster['dealfollowerids']}]]";
+								$("#followers").val(dealfollowerids.split(",")).change();
 								
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------		 		
@@ -1040,56 +907,7 @@ cursor: pointer;
 								});
 								// --------------------------------------------------------------------
 								
-								//--------------------------------------------------------------------------------
-								//function load the history events
-								function gettimelinelistCompleted() {
-									
-									var formData = {
-										mastercategoryid : "[[${leadMaster['id']}]]",
-										categoryType : "Lead",
-										status : "Completed"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "gettimelinelist",
-										data : formData,
-										success : function(result) {
-	
-											$('.widget-timelineCompleted').html(result);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
-								function gettimelinelistNotCompleted() {
-									
-									var formData = {
-										mastercategoryid : "[[${leadMaster['id']}]]",
-										categoryType : "Lead",
-										status : "NotCompleted"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "gettimelinelist",
-										data : formData,
-										success : function(result) {
-	
-											$('.widget-timelinePlanned').html(result);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
+								
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								// Custom list & inline suggestion
@@ -1156,56 +974,13 @@ cursor: pointer;
 											false);
 									$('.linkpeopledatasubmit').html("Submit");
 								}
-								function validationactivityeventformreset() {
-									$('.activityMasterformreset').click();
-									$('.activityMasterformclose').click();									
-									$('.activityMasterformsubmit').prop("disabled",
-											false);
-									$('.activityMasterformsubmit').html("Save");
-								}
-								function validationactivitynotesformreset() {
-									$(".ql-editor").html("");
-									$('.btn-close').click();									
-									$('.NotesMasterformsubmit').prop("disabled",false);
-									$('.NotesMasterformsubmit').html("Save");
-								}
-								//--------------------------------------------------------------------------------------------------------------------------------------		 
+								function validationformprojectreset()
+								   {
+							   				$('.dealprojectclose').click();
+							   				$('.dealprojectsave').prop("disabled",false);
+								   			$('.dealprojectsave').html("Submit");
+								   }
 								
-								$(document).on("click",".markitascompleted",	function() {	
-										
-									
-									let activityid = $(this).attr("id");
-									var formData = { activityid : activityid }
-		
-										$.ajax({
-											type : "POST",
-											url : "activitymarkascompleted",
-											data : formData,
-											success : function(result) {
-												Swal.fire({
-											        title: '',
-											        text: 'Activity Completed',
-											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-											        imageWidth: 400,
-											        imageAlt: 'Custom image',
-											        confirmButtonText: 'Ok',
-											        customClass: {
-											          confirmButton: 'btn btn-primary'
-											        },
-											        buttonsStyling: false
-											      });
-												
-												gettimelinelistCompleted();
-												gettimelinelistNotCompleted();
-											},
-											error : function(e) {
-												console.log("Error" + e);
-		
-											}
-		
-										});
-									
-								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$("#startdate").change(function() {
 									if($('#enddate').val() ==''){
@@ -1218,148 +993,48 @@ cursor: pointer;
 									}
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#btnAddevent").click(function() {
-									$('.activityMasterformreset').click();
-									$('.activityMasterformsubmit').prop("disabled",
-											false);
-									$('.activityMasterformsubmit').html("Save");
-									$("#activityId").val(0);
-									$("#createdtime").val("");
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#btnAddnotes").click(function() {
-									$(".ql-editor").html("");
-									$('.NotesMasterformclose').click();
-									$("#noteactivityId").val(0);
-									$('.NotesMasterformsubmit').prop("disabled",false);
-									$('.NotesMasterformsubmit').html("Save");
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$(".NotesMasterformsubmit").click(function() {
-									var htmlnotes = $(".ql-editor").html().trim();
-									if (htmlnotes != '') {
-										$('.NotesMasterformsubmit').prop("disabled",true);
-										$('.NotesMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-										const formData = new FormData();
-										
-										formData.append("File_Attach",null);
-										formData.append("activityfollowers","");
-										formData.append("activitytitle","");
-										formData.append("activitytype","");
-										formData.append("description","");
-										formData.append("enddate","");
-										formData.append("endtime","");
-										formData.append("guestid","");
-										formData.append("notes","");
-										formData.append("startdate","");
-										formData.append("starttime","");
-										formData.append("Activitycategory","Note");
-										formData.append("duedate","");
-										formData.append("htmlnotes",htmlnotes);													
-										formData.append("mastercategory","Lead");
-										formData.append("status","Completed");
-										formData.append("activityId",$("#noteactivityId").val());
-										formData.append("mastercategoryid",$("#mastercategoryidnote").val());
-										
-										 $.ajax({
-											type : "POST",
-											url : "activitysave",
-											processData : false,
-											contentType : false,
-											data : formData,
-											success : function(
-													result) {
-												
-												validationactivitynotesformreset();
-												Swal.fire({
-											        title: '',
-											        text: 'Your notes added',
-											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-											        imageWidth: 400,
-											        imageAlt: 'Custom image',
-											        confirmButtonText: 'Ok',
-											        customClass: {
-											          confirmButton: 'btn btn-primary'
-											        },
-											        buttonsStyling: false
-											      });
-												
-												gettimelinelistCompleted();
-												gettimelinelistNotCompleted();
-
-											},
-											error : function(e) {
-												console.log("Error"+ e);
-											}
-										});
+								function getprojectlist() {
+									
+									var formData = {
+										mastercategoryid : "[[${dealMaster['id']}]]"
 									}
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#activityMasterform').on('submit',function(event) {
-											const modalFile =document.getElementById("activityfiles");
-											if (event.target.checkValidity()) {
-												$('.activityMasterformsubmit').prop("disabled",true);
-												$('.activityMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-												const formData = new FormData(
-														document
-																.querySelector("#activityMasterform"));
-												//formData.append("File_Attach",modalFile.files[0]);
-												formData.append("File_Attach",null);
-												formData.append("guestid","");
-												formData.append("activityfollowers",$("#activityfollowers").val());
-												formData.append("Activitycategory","Activity");
-												formData.append("duedate","");
-												formData.append("htmlnotes","");													
-												formData.append("mastercategory","Lead");
-												formData.append("mastercategoryid",$("#mastercategoryid").val());
-												//formData.append("status","");
-												 //for (var pair of formData.entries()) {
-												  // console.log(pair); 
-												//} 
-												 $.ajax({
-													type : "POST",
-													url : "activitysave",
-													processData : false,
-													contentType : false,
-													data : formData,
-													success : function(
-															result) {
-														
-														validationactivityeventformreset();
-														
-														Swal.fire({
-													        title: '',
-													        text: 'Your Activity event added',
-													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-													        imageWidth: 400,
-													        imageAlt: 'Custom image',
-													        confirmButtonText: 'Ok',
-													        customClass: {
-													          confirmButton: 'btn btn-primary'
-													        },
-													        buttonsStyling: false
-													      });
-														
-														gettimelinelistCompleted();
-														gettimelinelistNotCompleted();
+	
+									$.ajax({
+										type : "POST",
+										url : "getdealprojectlist",
+										data : formData,
+										success : function(result) {
+											var htmlop="";
+											var bmobj = JSON.parse(JSON.stringify(result));
+											
+											bmobj.forEach((element, index, array) =>
+								           	{
+								           	    
+								           	 htmlop +="<tr><td class='text-nowrap editdealprj' onclick='editprojectinfo(this)' id='"+element.dealprojectid +"'>"+element.projecttype+"</td>";
+								           	 htmlop +="<td class='text-nowrap'>"+element.quantity +"</td><td>"+element.unit +"</td><td>"+element.price +"</td>";
+								           	 htmlop +="<td>"+element.amount +"</td></tr>";
 
-													},
-													error : function(e) {
-														console.log("Error"+ e);
-													}
-												});
-											} else {
-												$('.activityMasterformsubmit').prop("disabled",false);
-											}
-
-										});
+								            });
+											$('#dealprojectlist').html(htmlop);
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#editleadMasterdetailsForm').on('submit',function(event) {
+								
+								
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$('#editdealMasterdetailsForm').on('submit',function(event) {
 
 													if (event.target.checkValidity()) {
 														$('.editorganizationdatasubmit').prop("disabled",true);
 														$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														const formData = new FormData(document.querySelector("#editleadMasterdetailsForm"));
+														const formData = new FormData(document.querySelector("#editdealMasterdetailsForm"));
 														
 														formData.append("followers",$("#followers").val());
 														/* for (var pair of formData.entries()) {
@@ -1367,34 +1042,29 @@ cursor: pointer;
 														} */
 														$.ajax({
 																	type : "POST",
-																	url : "leadsavestage2",
+																	url : "dealsavestage2",
 																	processData : false,
 																	contentType : false,
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
 																		//console.log(bmobj);
-
-																			if (bmobj.label == "Hot") {
-																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
-																			} else if (bmobj.label == "Warm") {
-																				$('#Lbl_Label').html("<span class='badge bg-warning'>Warm</span>");
-																			} else {
-																				$('#Lbl_Label').html("<span class='badge bg-primary'>Cold</span>");
-																			}
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
-																			
+																			$('#Lbl_pipeline').text(bmobj.pipeline);
 																			$('#Lbl_notes').text(bmobj.notes);
 																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
-																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
+																			$("#Lbl_dealvalue").text(bmobj.dealvalue);
 																			$("#Lbl_purpose").text(bmobj.purpose);
 																			$("#Lbl_branchname").text(bmobj.branchname);
+																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
+																			
+																			
 																			
 																			$name ="";
 																			
-																			bmobj.leadFollowers.forEach((element, index, array) =>
+																			bmobj.dealFollowers.forEach((element, index, array) =>
 																           	{
 																           	    $name += element.followername+ "<br>";
 																            });
@@ -1423,7 +1093,52 @@ cursor: pointer;
 
 												});
 								// --------------------------------------------------------------------
+								// Deal Project  		  
+					  					$('#addNewprojectmodel').on('submit',function(event) {
+													if (event.target.checkValidity()) {
+														$('.dealprojectsave').prop("disabled",true);
+														$('.dealprojectsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+														
+														const formData = new FormData(document.querySelector("#addNewprojectmodel"));
+														formData.append("dealid","[[${dealMaster['id']}]]");
+														
+														 $.ajax({
+																type : "POST",
+																url : "dealprojectsave",
+																processData : false,
+																contentType : false,
+																data : formData,
+																success : function(
+																		result) {
+																	
+																	validationformprojectreset();
+																	
+																	Swal.fire({
+																        title: '',
+																        text: 'Project details updated',
+																        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+																        imageWidth: 400,
+																        imageAlt: 'Custom image',
+																        confirmButtonText: 'Ok',
+																        customClass: {
+																          confirmButton: 'btn btn-primary'
+																        },
+																        buttonsStyling: false
+																      });
+																	
+																	getprojectlist();
+																	
 
+																},
+																error : function(e) {
+																	console.log("Error"+ e);
+																}
+													});
+													} else {
+														$('.dealprojectsave').prop("disabled",false);
+													}
+					  					 });
+					  				
 								// --------------------------------------------------------------------
 
 								$(".additem").click(function() {
@@ -1510,8 +1225,8 @@ cursor: pointer;
 																.html(
 																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 
-														var leadMasterID = $(
-																'#leadMasterID')
+														var dealMasterID = $(
+																'#dealMasterID')
 																.val();
 														var peoplename = $(
 																'#Model_peoplename')
@@ -1529,8 +1244,8 @@ cursor: pointer;
 																"organization")
 																.val();
 														var formData = {
-															id : leadMasterID,
-															category : 'Lead',
+															id : dealMasterID,
+															category : 'Deal',
 															organization : organization,
 															branch : branch,
 															peoplename : peoplename,
@@ -1560,7 +1275,7 @@ cursor: pointer;
 																				+ result
 																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
 																		$(
-																				'#contactpeopleaddidv')
+																				'#contactpeopdealdidv')
 																				.before(
 																						temphtml);
 
@@ -1601,16 +1316,16 @@ cursor: pointer;
 																'.linkpeopledatasubmit')
 																.html(
 																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														var leadMasterID = $(
-																'#leadMasterID')
+														var dealMasterID = $(
+																'#dealMasterID')
 																.val();
 														var linkpeoplename = $(
 																'#Model_linkpeoplename')
 																.val();
 
 														var formData = {
-															id : leadMasterID,
-															category : 'Lead',
+															id : dealMasterID,
+															category : 'Deal',
 															linkpeoplename : linkpeoplename,
 
 														}
@@ -1640,7 +1355,7 @@ cursor: pointer;
 																				+ bmobj.id
 																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
 																		$(
-																				'#contactpeopleaddidv')
+																				'#contactpeopdealdidv')
 																				.before(
 																						temphtml);
 																		validationlinkformreset();
@@ -1665,13 +1380,32 @@ cursor: pointer;
 
 												});
 								
+								
+								//-------------------------------------------
+								function calctotalamount(){
+									let modalQuantity=	$("#modalQuantity").val();
+									let modalPrice=	$("#modalPrice").val();
+									
+									if(modalPrice !='' && modalQuantity!=''){
+										$("#modalTotalamount").val(modalPrice * modalQuantity);	
+									}
+									
+								}
+								
+								$("#modalQuantity").change(function(){
+									calctotalamount();
+								});
+								$("#modalPrice").change(function(){
+									calctotalamount();
+								});
 								//-------------------------------------------
 								$(document).ready(function(){
 								    setTimeout(function(){
-								    	gettimelinelistCompleted();
-								    	gettimelinelistNotCompleted();
+								    	getprojectlist();
+								    	
 								     },1000); // milliseconds
 								});
+								//-------------------------------------------
 							}); // Jquery
 
 			//------------------------------------------------------
@@ -1695,7 +1429,16 @@ cursor: pointer;
 			}
 
 			//------------------------------------------------------    
-
+			 // Date Format
+			   const flatpickrFriendly = document.querySelector('#expectedclosingdate');
+				 // Human Friendly
+				  if (flatpickrFriendly) {
+				    flatpickrFriendly.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
 			// Phone
 			const phoneMask = document.querySelector('.phone-number-otp-mask');
 
@@ -1707,67 +1450,41 @@ cursor: pointer;
 				});
 			}
 			
-			
-			
-			//--------------------------
-			function editactivity(e){
-				var activityid= e.getAttribute("id").replace("actid","");
-				var formData = {
-						id : activityid
-					}
-
-					$.ajax({
-						type : "POST",
-						url : "getActivityMaster",
-						data : formData,
-						success : function(result) {
-							var bmobj = JSON.parse(JSON.stringify(result));
-							console.log(bmobj);
-							$("#mastercategoryid").val(bmobj.mastercategoryid);
-							$("#activityId").val(bmobj.activityId);
-							$("#createdtime").val(bmobj.createdtime);
-							$("#activitytitle").val(bmobj.activitytitle);
-							//$("#activitytype").val(bmobj.activitytype);
-							$("#startdate").val(bmobj.startdate);
-							$("#starttime").val(bmobj.starttime);
-							$("#enddate").val(bmobj.enddate);
-							$("#endtime").val(bmobj.endtime);
-							$("#notes").val(bmobj.notes);
-							$("#activityfollowers").val(bmobj.activityfollowers).change();
-							$("input[name=activitytype][value="+ bmobj.activitytype +"]").attr('checked', true);
-							$(".activitytype").removeClass("active");
-							$(".activitytype"+bmobj.activitytype).addClass("active");
-							$('#addevent').modal('show');
-						},
-						error : function(e) {
-							console.log("Error" + e);
+			//------------------------------------------------------    
+			 
+			 function editprojectinfo(e){
+					var projectid= e.getAttribute("id");
+					
+						var formData = {
+							projectid : projectid,
+							mastercategoryid: "[[${dealMaster['id']}]]"
 						}
-					});
-			};
-			//-------------------------------------
-			function editnoteactivity(e){
-				var activityid= e.getAttribute("id").replace("actid","");
-				var formData = {
-						id : activityid
-					}
 
-					$.ajax({
-						type : "POST",
-						url : "getActivityMaster",
-						data : formData,
-						success : function(result) {
-							var bmobj = JSON.parse(JSON.stringify(result));
-							console.log(bmobj);
-							$("#mastercategoryidnote").val(bmobj.mastercategoryid);
-							$("#noteactivityId").val(bmobj.activityId);
-							$(".ql-editor").html(bmobj.htmlnotes);
-							$('#addnotes').modal('show');
-						},
-						error : function(e) {
-							console.log("Error" + e);
-						}
-					});
-			};
+						$.ajax({
+							type : "POST",
+							url : "getdealproject",
+							data : formData,
+							success : function(result) {
+								var bmobj = JSON.parse(JSON.stringify(result));
+							
+								$("#modalTotalamount").val(bmobj.amount);
+								$("#modalPrice").val(bmobj.price);
+								$("#modalQuantity").val(bmobj.quantity);								
+								$("#modalUnits").val(bmobj.unit).change();
+								$("#modalnatureofwork").val(bmobj.projecttype).change();
+								$("#projectid").val(bmobj.dealprojectid);
+								
+								$('#addNewProject').modal('show');
+							},
+							error : function(e) {
+								console.log("Error" + e);
+							}
+						});
+					
+				};
+			//------------------------------------------------------
+			
+		
 			
 		</script>
 </body>

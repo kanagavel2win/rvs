@@ -10,11 +10,14 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Period;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7687,7 +7690,16 @@ public class HomeController {
 			// -------------------------------------------
 			// time calculator
 			String timecalculator = "";
-			long differdate = Long.parseLong(String.valueOf(rowMap.get("differdate")));
+			/*LocalDateTime currentdatetime= LocalDateTime.parse(String.valueOf(rowMap.get("sorteddates")).replace(".0", "").trim().replace(" ", "T"));
+			LocalDateTime sorteddatesordered= LocalDateTime.parse(String.valueOf(rowMap.get("sorteddates")).replace(".0", "").trim().replace(" ", "T"));
+			Duration duration = Duration.between(sorteddatesordered, currentdatetime);
+		 
+			long differdays =ChronoUnit.DAYS.between(currentdatetime.toLocalDate(), sorteddatesordered.toLocalDate());					
+			long differmins = duration.toMinutes();
+			long differhr = ChronoUnit.HOURS.between(currentdatetime, sorteddatesordered);
+			*/
+			
+			long differdays = Long.parseLong(String.valueOf(rowMap.get("differdays")));
 			String differtime = String.valueOf(rowMap.get("differtime"));
 			long differmins = 0;
 			long differhr = 0;
@@ -7697,10 +7709,10 @@ public class HomeController {
 			}
 
 			if (!nullremover(String.valueOf(rowMap.get("differhr"))).equalsIgnoreCase("")) {
-				differmins = Long.parseLong(String.valueOf(rowMap.get("differhr")));
+				differhr = Long.parseLong(String.valueOf(rowMap.get("differhr")));
 			}
 
-			String sorteddates = (String) rowMap.get("sorteddates");
+			String sorteddates = (String) rowMap.get("newsorteddates");
 
 			if (nullremover(String.valueOf(activitytitle)).equalsIgnoreCase("")) {
 				try {
@@ -7710,7 +7722,7 @@ public class HomeController {
 					// e.printStackTrace();
 				}
 			} else {
-				if (differdate > 30) {
+				if (differdays > 30) {
 
 					try {
 						timecalculator = displaydateFormatFirstMMMddYYYAMPM
@@ -7731,12 +7743,12 @@ public class HomeController {
 						// e.printStackTrace();
 					}
 
-					if (differdate == -1) {
+					if (differdays == -1) {
 						timecalculator = " Tomorrow " + temp;
-					} else if (differdate < -1) {
-						timecalculator = " Next Coming in  " + differdate + " days " + temp;
-					} else if (differdate > 0) {
-						timecalculator = differdate + " days ago " + temp;
+					} else if (differdays < -1) {
+						timecalculator = " Next Coming in  " + differdays + " days " + temp;
+					} else if (differdays > 0) {
+						timecalculator = differdays + " days ago " + temp;
 					} else {
 						timecalculator = differhr + "hrs " + differmins + "  mins ago " + temp;
 					}

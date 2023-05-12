@@ -56,10 +56,12 @@ public class ActivityMasterImp implements ActivityMasterService {
 		}else {
 			status=" and status !='Completed'";
 		}
-	String sql = "select DATEDIFF(now() , t1.sorteddates)as differdate, TIME_FORMAT(TIMEDIFF(now() , t1.sorteddates), '%H:%i') as differtime, MINUTE(TIMEDIFF(now() , t1.sorteddates)) as differmins,HOUR(TIMEDIFF(now() , t1.sorteddates)) differhr,DATE_FORMAT(t1.sorteddates,'%d-%m-%Y') as sorteddates,t1.* from (SELECT (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(startdate,'%Y-%m-%d') end) sorteddates,actmaster.* FROM activitymaster as actmaster where mastercategory='"
+	String sql = "select DATEDIFF(now() , t1.sorteddates)as differdays, TIME_FORMAT(TIMEDIFF(now() , t1.sorteddates), '%H:%i') as differtime, MINUTE(TIMEDIFF(now() , t1.sorteddates)) as differmins,HOUR(TIMEDIFF(now() , t1.sorteddates)) differhr,DATE_FORMAT(t1.sorteddates,'%d-%m-%Y') as newsorteddates,t1.* from (SELECT (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(concat(startdate,' ',starttime),'%Y-%m-%d %T') end) sorteddates,actmaster.* FROM activitymaster as actmaster where mastercategory='"
 				+ mastercategory + "' and mastercategoryid=" + mastercategoryid + status
-				+ " order by (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(startdate,'%Y-%m-%d') end ) desc)t1";
+				+ " order by (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else  STR_TO_DATE(concat(startdate,' ',starttime),'%Y-%m-%d %T') end ) desc)t1  order by t1.sorteddates DESC";
 		
+		//String sql=" SELECT concat(now(),'') as currentdatetime,concat((case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(concat(startdate,' ',starttime),'%Y-%m-%d %T') end),'') sorteddates,actmaster.* FROM activitymaster as actmaster where mastercategory='"+ mastercategory + "' and mastercategoryid=" + mastercategoryid + status +" order by (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(concat(startdate,' ',starttime),'%Y-%m-%d %T') end ) desc";
+			
 		//System.out.println(sql);
 		List<Map<String, Object>> result = JdbcTemplate.queryForList(sql);
 		return result;

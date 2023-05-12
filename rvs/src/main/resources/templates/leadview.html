@@ -463,8 +463,8 @@ cursor: pointer;
 																	type="text"
 																	class="form-control   capitalize ActivityTitle"
 																	placeholder="Task details..."
-																	th:field="*{activitytitle}" id="activitytitle"
-																	th:value="${activityMaster['activitytitle']}" />
+																	th:field="*{activitytitle}" id="activitytitle" 
+																	th:value="${activityMaster['activitytitle']}" required />
 
 															</div>
 														</div>
@@ -479,7 +479,7 @@ cursor: pointer;
 																	type="radio" name="options"
 																	onclick="optionshandle(this);"
 																	th:field="*{activitytype}" value="Task" id="radio1"
-																	style="visibility: hidden"><i
+																	style="visibility: hidden" required><i
 																	class="bx bx-alarm-add activitytypeicon"></i>
 																</label> <label
 																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
@@ -487,14 +487,14 @@ cursor: pointer;
 																	type="radio" name="options"
 																	onclick="optionshandle(this);"
 																	th:field="*{activitytype}" value="Call" id="radio2"
-																	style="visibility: hidden"><i
+																	style="visibility: hidden" required><i
 																	class="bx bx-phone-call activitytypeicon"></i>
 																</label> <label
 																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
 																	onclick="optionshandle(this);" title="Meetings">
 																	<input type="radio" onclick="optionshandle(this);"
 																	name="options" th:field="*{activitytype}"
-																	value="Meetings" id="radio3" style="visibility: hidden"><i
+																	value="Meetings" id="radio3" style="visibility: hidden" required><i
 																	class="bx bx-group activitytypeicon"></i>
 																</label>
 															</div>
@@ -509,7 +509,7 @@ cursor: pointer;
 															<div class="position-relative has-icon-left">
 																<input type="date" class="form-control  "
 																	th:field="*{startdate}" id="startdate"
-																	th:value="${activityMaster['startdate']}" />
+																	th:value="${activityMaster['startdate']}" required/>
 
 
 															</div>
@@ -521,7 +521,7 @@ cursor: pointer;
 															<div class="position-relative has-icon-left">
 																<input type="time" class="form-control  "
 																	th:field="*{starttime}" id="starttime"
-																	th:value="${activityMaster['starttime']}" />
+																	th:value="${activityMaster['starttime']}"  required/>
 
 
 															</div>
@@ -559,7 +559,7 @@ cursor: pointer;
 																<fieldset class="form-group">
 																	<textarea class="form-control " rows="4"
 																		th:field="*{notes}" id="notes"
-																		th:value="${activityMaster['notes']}">
+																		th:value="${activityMaster['notes']}" required>
 																							</textarea>
 
 																</fieldset>
@@ -577,7 +577,7 @@ cursor: pointer;
 														<div class="position-relative  has-icon-left">
 															<fieldset class="form-group">
 																<select class="select2 form-control "
-																	id="activityfollowers">
+																	id="activityfollowers" required>
 																	<th:block th:each="str :${employeelist}">
 																		<option th:value="${str.empMasterid}"
 																			th:text="${str.StaffName}"></option>
@@ -1224,6 +1224,11 @@ cursor: pointer;
 											false);
 									$('.activityMasterformsubmit').html("Save");
 									$("#activityId").val(0);
+									
+									$("input[name=activitytype][value=Task]").attr('checked', true);
+									$(".activitytype").removeClass("active");
+									$(".activitytypeTask").addClass("active");
+									
 									$("#createdtime").val("");
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------

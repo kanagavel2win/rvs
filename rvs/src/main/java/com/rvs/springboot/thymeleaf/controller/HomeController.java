@@ -6582,12 +6582,13 @@ public class HomeController {
 	public DealProjectMaster getdealproject(@RequestParam Map<String, String> params) {
 
 		DealMaster dm = dealMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
-		
-		return dm.getDealProjectMaster().stream().filter(C -> C.getDealprojectid() == Integer.parseInt(params.get("projectid"))).collect(Collectors.toList()).get(0);
-		
+
+		return dm.getDealProjectMaster().stream()
+				.filter(C -> C.getDealprojectid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
 	}
 
-	
 	@PostMapping("dealprojectsave")
 	@ResponseBody
 	public String dealprojectsave(@RequestParam Map<String, String> params) {
@@ -6624,6 +6625,17 @@ public class HomeController {
 
 		}
 
+		try {
+			
+		
+		int dealvalue = dealprojectList.stream().mapToInt(o -> Integer.parseInt(o.getAmount())).sum();
+		if(dealvalue >0) {
+			dm.setDealvalue(dealvalue);
+		}
+		
+		}catch(Exception e) {
+			
+		}
 		dm.setDealProjectMaster(dealprojectList);
 
 		dealMasterService.save(dm);

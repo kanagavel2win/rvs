@@ -1006,15 +1006,18 @@
 										success : function(result) {
 											var htmlop="";
 											var bmobj = JSON.parse(JSON.stringify(result));
-											
+											var total=0;
 											bmobj.forEach((element, index, array) =>
 								           	{
 								           	    
 								           	 htmlop +="<tr><td class='text-nowrap editdealprj' onclick='editprojectinfo(this)' id='"+element.dealprojectid +"'>"+element.projecttype+"</td>";
 								           	 htmlop +="<td class='text-nowrap'>"+element.quantity +"</td><td>"+element.unit +"</td><td>"+element.price +"</td>";
 								           	 htmlop +="<td>"+element.amount +"</td></tr>";
-
+								           	total +=parseInt(element.amount);
 								            });
+											
+											
+											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td> <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total +"</p> </td> </tr>";
 											$('#dealprojectlist').html(htmlop);
 										},
 										error : function(e) {

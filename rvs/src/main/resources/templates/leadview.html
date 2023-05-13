@@ -235,7 +235,12 @@ cursor: pointer;
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${leadMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
-
+												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
+													<span th:text="${leadMaster.purpose}" id="Lbl_purpose"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
+													<span th:text="${leadMaster.branchname}" id="Lbl_branchname"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
 												</li>
@@ -246,6 +251,7 @@ cursor: pointer;
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
 													<span th:text="${leadMaster.notes}" id="Lbl_notes"></span>
 												</li>
+												
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
 
 													<span id="Lbl_follower"> <span
@@ -324,8 +330,8 @@ cursor: pointer;
 										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Activity</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
-										href="#"><i
-											class="bx bx-link me-1"></i>File</a></li>
+										th:href="'leadattachment?id='+${leadMaster.id}"><i
+											class="bx bx-link me-1"></i>Attachment</a></li>
 
 								</ul>
 								<!--/ User Pills -->
@@ -457,8 +463,8 @@ cursor: pointer;
 																	type="text"
 																	class="form-control   capitalize ActivityTitle"
 																	placeholder="Task details..."
-																	th:field="*{activitytitle}" id="activitytitle"
-																	th:value="${activityMaster['activitytitle']}" />
+																	th:field="*{activitytitle}" id="activitytitle" 
+																	th:value="${activityMaster['activitytitle']}" required />
 
 															</div>
 														</div>
@@ -473,7 +479,7 @@ cursor: pointer;
 																	type="radio" name="options"
 																	onclick="optionshandle(this);"
 																	th:field="*{activitytype}" value="Task" id="radio1"
-																	style="visibility: hidden"><i
+																	style="visibility: hidden" required><i
 																	class="bx bx-alarm-add activitytypeicon"></i>
 																</label> <label
 																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
@@ -481,14 +487,14 @@ cursor: pointer;
 																	type="radio" name="options"
 																	onclick="optionshandle(this);"
 																	th:field="*{activitytype}" value="Call" id="radio2"
-																	style="visibility: hidden"><i
+																	style="visibility: hidden" required><i
 																	class="bx bx-phone-call activitytypeicon"></i>
 																</label> <label
 																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
 																	onclick="optionshandle(this);" title="Meetings">
 																	<input type="radio" onclick="optionshandle(this);"
 																	name="options" th:field="*{activitytype}"
-																	value="Meetings" id="radio3" style="visibility: hidden"><i
+																	value="Meetings" id="radio3" style="visibility: hidden" required><i
 																	class="bx bx-group activitytypeicon"></i>
 																</label>
 															</div>
@@ -503,7 +509,7 @@ cursor: pointer;
 															<div class="position-relative has-icon-left">
 																<input type="date" class="form-control  "
 																	th:field="*{startdate}" id="startdate"
-																	th:value="${activityMaster['startdate']}" />
+																	th:value="${activityMaster['startdate']}" required/>
 
 
 															</div>
@@ -515,7 +521,7 @@ cursor: pointer;
 															<div class="position-relative has-icon-left">
 																<input type="time" class="form-control  "
 																	th:field="*{starttime}" id="starttime"
-																	th:value="${activityMaster['starttime']}" />
+																	th:value="${activityMaster['starttime']}"  required/>
 
 
 															</div>
@@ -553,7 +559,7 @@ cursor: pointer;
 																<fieldset class="form-group">
 																	<textarea class="form-control " rows="4"
 																		th:field="*{notes}" id="notes"
-																		th:value="${activityMaster['notes']}">
+																		th:value="${activityMaster['notes']}" required>
 																							</textarea>
 
 																</fieldset>
@@ -571,7 +577,7 @@ cursor: pointer;
 														<div class="position-relative  has-icon-left">
 															<fieldset class="form-group">
 																<select class="select2 form-control "
-																	id="activityfollowers">
+																	id="activityfollowers" required>
 																	<th:block th:each="str :${employeelist}">
 																		<option th:value="${str.empMasterid}"
 																			th:text="${str.StaffName}"></option>
@@ -1218,6 +1224,11 @@ cursor: pointer;
 											false);
 									$('.activityMasterformsubmit').html("Save");
 									$("#activityId").val(0);
+									
+									$("input[name=activitytype][value=Task]").attr('checked', true);
+									$(".activitytype").removeClass("active");
+									$(".activitytypeTask").addClass("active");
+									
 									$("#createdtime").val("");
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
@@ -1383,6 +1394,8 @@ cursor: pointer;
 																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
+																			$("#Lbl_purpose").text(bmobj.purpose);
+																			$("#Lbl_branchname").text(bmobj.branchname);
 																			
 																			$name ="";
 																			

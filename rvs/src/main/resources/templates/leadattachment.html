@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Deal View</title>
+<title>Lead Attachment</title>
 
 <meta name="description" content="" />
 
@@ -135,13 +135,12 @@
 	height: 15px;
 }
 
-.editactivity 
-{
-cursor: pointer;
+.editactivity {
+	cursor: pointer;
 }
-.editnoteactivity
-{
-cursor: pointer;
+
+.editnoteactivity {
+	cursor: pointer;
 }
 </style>
 <script th:inline="javascript">
@@ -184,7 +183,7 @@ cursor: pointer;
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
 							<span class="text-muted fw-light">Works /<a
-								href="deallist">Deal</a>/
+								href="leadlist">Lead</a>/
 							</span> View
 						</h4>
 						<div class="row gy-4">
@@ -199,7 +198,7 @@ cursor: pointer;
 													th:src="@{/assets/img/logo/rvslogo1.png}" height="110"
 													width="110" alt="User avatar" />
 												<div class="user-info text-center">
-													<h5 class="mb-2" th:text="${dealMaster.Title}"
+													<h5 class="mb-2" th:text="${leadMaster.Title}"
 														id="Lbl_Title"></h5>
 
 												</div>
@@ -211,10 +210,10 @@ cursor: pointer;
 													class="bx bx-check bx-sm"></i></span>
 												<div>
 													<h5 class="mb-0">
-														Rs.<span th:text="${dealMaster.dealvalue}"
-															id="Lbl_dealvalue"></span>
+														Rs.<span th:text="${leadMaster.leadvalue}"
+															id="Lbl_leadvalue"></span>
 													</h5>
-													<span>Deal Value</span>
+													<span>Lead Value</span>
 												</div>
 											</div>
 
@@ -222,36 +221,34 @@ cursor: pointer;
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
-												<li class="mb-3"><span class="fw-bold me-2">Pipeline:</span>
-													<span th:text="${dealMaster.pipeline}"
-													id="Lbl_pipeline"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
+													<span id="Lbl_Label"> <span
+														th:if="${leadMaster.Label} =='Hot'"
+														class="badge bg-danger" th:text="${leadMaster.Label}"></span>
+														<span th:if="${leadMaster.Label} =='Warm'"
+														class="badge bg-warning" th:text="${leadMaster.Label}"></span>
+														<span th:if="${leadMaster.Label} =='Cold'"
+														class="badge bg-primary" th:text="${leadMaster.Label}"></span>
+												</span></li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
-													<span th:text="${dealMaster.OrganizationName}"
+													<span th:text="${leadMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
-													<span th:text="${dealMaster.purpose}" id="Lbl_purpose"></span>
-												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
-													<span th:text="${dealMaster.branchname}" id="Lbl_branchname"></span>
-												</li>
+
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
-													<span th:text="${dealMaster.Source}" id="Lbl_Source"></span>
+													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
 												</li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
-													<span th:text="${dealMaster.ReferenceName}"
+													<span th:text="${leadMaster.ReferenceName}"
 													id="Lbl_Reference"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
-													<span th:text="${dealMaster.notes}" id="Lbl_notes"></span>
-												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Closing Date:</span>
-													<span th:text="${dealMaster.expectedclosingdateMMddYYY}" id="Lbl_expectedclosingdate"></span>
+													<span th:text="${leadMaster.notes}" id="Lbl_notes"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
 
 													<span id="Lbl_follower"> <span
-														th:each="obj : ${dealMaster.dealFollowers}"
+														th:each="obj : ${leadMaster.leadFollowers}"
 														th:utext="${obj.Followername} + '<br/>'"> </span>
 												</span></li>
 
@@ -259,7 +256,7 @@ cursor: pointer;
 											</ul>
 											<div class="d-flex justify-content-center pt-3">
 												<a href="javascript:;" class="btn btn-primary me-3"
-													data-bs-target="#editdealMasterdetails"
+													data-bs-target="#editleadMasterdetails"
 													data-bs-toggle="modal"
 													id="editOrganizationContactsdetailsbtn">Edit</a>
 
@@ -309,7 +306,7 @@ cursor: pointer;
 											</div>
 										</div>
 
-										<div id="contactpeopdealdidv"></div>
+										<div id="contactpeopleaddidv"></div>
 
 									</div>
 								</div>
@@ -322,295 +319,150 @@ cursor: pointer;
 							<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
 								<!-- User Pills -->
 								<ul class="nav nav-pills flex-column flex-md-row mb-3">
+									<li class="nav-item"><a class="nav-link"
+										th:href="'leadview?id='+${leadMaster.id}"><i
+											class="bx bx-user me-1"></i>Activity</a></li>
 									<li class="nav-item"><a class="nav-link active"
-										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Activity</a>
-									</li>
-									<li class="nav-item"><a class="nav-link"
-										th:href="'dealprojectinfo?id='+${dealMaster.id}"><i class='bx bxl-ok-ru'></i>Projects</a>
-									</li>
-									<li class="nav-item"><a class="nav-link"
-										th:href="'dealattachment?id='+${dealMaster.id}"><i
-											class="bx bx-link me-1"></i>Attachment</a></li>
+										href="javascript:void(0);"><i class="bx bx-link me-1"></i>Attachment</a></li>
 
 								</ul>
 								<!--/ User Pills -->
 
+								<!-- Document   Card -->
+								<div class="card  mb-4">
+								<input type="hidden" id="mastercategoryid" />
+									<div class="card-body1">
+										<div class="card-header align-items-center">
+											<h5 class="card-action-title mb-0">
+												Documents
+												<div class="card-action-element" style="float: right">
+													<button class="btn btn-primary btn-sm" type="button"
+														data-bs-toggle="modal" data-bs-target="#addNewDocument">
+														<i class="bx bx-plus bx-xs me-1"></i>
+													</button>
+												</div>
+											</h5>
 
-
-								<!-- Activity Timeline -->
-								<div class="card mb-4">
-									<h5 class="card-header">
-										Activity Timeline
-
-
-
-										<div class="card-action-element" style="float: right">
-											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-toggle="modal" data-bs-target="#addevent"
-												alt="Add New Event" id="btnAddevent">
-												<i class="bx bx-plus bx-xs me-1"></i> Event
-											</button>
-											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-toggle="modal" data-bs-target="#addnotes" id="btnAddnotes"
-												alt="Add New Notes">
-												<i class="bx bx-plus bx-xs me-1"></i> Notes
-											</button>
 										</div>
-									</h5>
-									<div class="card-body">
-										<div class="divider divider-dashed">
-											<div class="divider-text">Planned</div>
-										</div>
-										<ul class="timeline widget-timeline widget-timelinePlanned">
+										<div class="card-body">
+											<div class="added-cards">
+												<th:block th:each="fileObj : ${leadMaster.leadFiles}">
+													<div
+														th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.fileid}">
+														<div
+															class="d-flex justify-content-between flex-sm-row flex-column">
+															<div class="card-information">
 
-										</ul>
-										<div class="divider divider-dashed">
-											<div class="divider-text">Completed</div>
-										</div>
-										<ul class="timeline widget-timeline widget-timelineCompleted">
+																<h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
+																<span class="card-number"
+																	th:text="${fileObj.DocumentNo}"></span>
 
-										</ul>
+																<th:block th:if="${fileObj.FilePath != ''}">
+																	
+																	<a th:href="${fileObj.FilePath}" target="_blank"> <th:block
+																			th:if="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
+																			<img th:src="@{/assets/img/icons/misc/pdf.png}"
+																				alt="PDF image" width="20" class="me-2">
+																		</th:block> <th:block
+																			th:unless="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
+																			<img th:src="@{/assets/img/icons/misc/jpg.png}"
+																				alt="PDF image" width="20" class="me-2">
+																		</th:block> <small class="text-body"
+																		th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
+																	</small>
+																	</a>
+																</th:block>
+
+															</div>
+															<div class="d-flex flex-column text-start text-lg-end">
+																<div class="d-flex order-sm-0 order-1 mt-3">
+
+																	<button class="btn btn-label-secondary filedeletebtn"
+																		th:name="${fileObj.fileid}">
+																		<i class='bx bxs-trash-alt'></i>
+																	</button>
+																</div>
+
+															</div>
+														</div>
+													</div>
+
+												</th:block>
+												<span id="fileaddidv"></span>
+											</div>
+										</div>
 									</div>
-
-
 								</div>
-								<!-- /Activity Timeline -->
+
+								<!-- /Document   Card -->
+
 							</div>
 							<!-- User Content -->
 
 
 
 							<!-- Modal -->
-							<!-- Edit Notes Modal -->
-							<div class="modal fade" id="addnotes" tabindex="-1"
+							<!-- Add Document -->
+							<div class="modal fade" id="addNewDocument" tabindex="-1"
 								aria-hidden="true">
 								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
 									<div class="modal-content p-3 p-md-5">
-
 										<div class="modal-body">
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
-												<h3>Activity Notes Information</h3>
-												<p>Update Notes Basic Information</p>
+												<h3>Add Document</h3>
+												<p>Attach Files / Documents / Image</p>
 											</div>
-											<form id="NotesMasterform" class="" onsubmit="return false">
-												<input type="hidden" name="mastercategoryidnote" id="mastercategoryidnote" />
-												<input type="hidden" name="noteactivityId" id="noteactivityId"
-																	 /> 
-												<!-- Full Editor -->
+											<form id="addNewdocument" class="row g-3"
+												onsubmit="return false">
 												<div class="col-12">
-													<div class="card">
-														<h5 class="card-header"></h5>
-														<div class="card-body">
-															<div id="full-editor"></div>
-														</div>
+													<label class="form-label w-100" for="modalAddCard">Document
+														Type <label class="emptitle additem"
+														name="addmodaldocumenttype"> <i
+															class="bx bxs-plus-circle ownstyle1"></i></label>
+
+													</label>
+													<div class="input-group input-group-merge">
+														<select id="modalDocumenttype"
+															class="form-select modalDocumenttype">
+															<option value="">Default select</option>
+															<th:block th:each="str :${Documenttype}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+
+														</select>
+
 													</div>
 												</div>
-												<!-- /Full Editor -->
-
-
-
+												<div class="col-12">
+													<label class="form-label" for="modalAddCardName">Document
+														No </label> <input type="text" id="modalDocNo"
+														class="form-control" />
+												</div>
+												<div class="col-12">
+													<label class="form-label" for="modalAddCardExpiryDate">Upload
+														File (Max File Size : 20MB) </label> <input type="file"
+														id="modalFile" class="form-control"
+														accept="image/jpeg,image/png,image/jpg,application/pdf" />
+												</div>
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
-														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
-														
-														
+														class="btn btn-primary me-sm-3 me-1 documentsave">ADD</button>
 													<button type="reset"
-														class="btn btn-label-secondary NotesMasterformclose"
-														aria-label="Close">
-														Reset</button>
+														class="btn btn-label-secondary btn-reset documentclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
 												</div>
 											</form>
 										</div>
 									</div>
 								</div>
 							</div>
-							<!--/ Edit Notes Modal -->
-
-							<!-- Edit Activity Modal -->
-							<div class="modal fade" id="addevent" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button"
-												class="btn-close activityMasterformclose"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Activity Information</h3>
-												<p>Update Activity Basic Information</p>
-											</div>
-											<form id="activityMasterform" th:object="${activityMaster}"
-												class="wizard-horizontal" onsubmit="return false"
-												enctype="multipart/form-data">
-												<!-- ------------------------------------------ -->
-												<div class="row">
-													<div class="col-md-12">
-														<label for="addmodel">Activity Title</label>
-														<div class="form-group">
-															<div class="position-relative">
-																<input type="hidden" th:field="*{mastercategoryid}"
-																	id="mastercategoryid"  /> <input type="hidden"
-																	th:field="*{activityId}" id="activityId"
-																	th:value="${activityMaster['activityId']}" /> <input
-																	type="hidden" th:field="*{createdtime}" id="createdtime"
-																	th:value="${activityMaster['createdtime']}" /> <input
-																	type="text"
-																	class="form-control   capitalize ActivityTitle"
-																	placeholder="Task details..."
-																	th:field="*{activitytitle}" id="activitytitle"
-																	th:value="${activityMaster['activitytitle']}"  required/>
-
-															</div>
-														</div>
-													</div>
-													<div class="col-12">
-														<div class="form-group">
-															<div class="btn-group btn-group-toggle mb-1"
-																data-toggle="buttons">
-																<label
-																	th:class="'btn btn-outline-primary activitytypedefault activitytype activitytypeTask '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Task"> <input
-																	type="radio" name="options"
-																	onclick="optionshandle(this);"
-																	th:field="*{activitytype}" value="Task" id="radio1"
-																	style="visibility: hidden" required><i
-																	class="bx bx-alarm-add activitytypeicon"></i>
-																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Call"> <input
-																	type="radio" name="options"
-																	onclick="optionshandle(this);"
-																	th:field="*{activitytype}" value="Call" id="radio2"
-																	style="visibility: hidden" required><i
-																	class="bx bx-phone-call activitytypeicon"></i>
-																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Meetings">
-																	<input type="radio" onclick="optionshandle(this);"
-																	name="options" th:field="*{activitytype}"
-																	value="Meetings" id="radio3" style="visibility: hidden" required><i
-																	class="bx bx-group activitytypeicon"></i>
-																</label>
-															</div>
-														</div>
-
-
-													</div>
-
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">Start Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{startdate}" id="startdate"
-																	th:value="${activityMaster['startdate']}" required />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">Start Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{starttime}" id="starttime"
-																	th:value="${activityMaster['starttime']}" required />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{enddate}" id="enddate"
-																	th:value="${activityMaster['enddate']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{endtime}" id="endtime"
-																	th:value="${activityMaster['endtime']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="form-group">
-															<label for="addmodel">Note </label><span class="notes-sm">(Note
-																visible only For You)</span>
-															<div class="position-relative  has-icon-left">
-																<fieldset class="form-group">
-																	<textarea class="form-control " rows="4"
-																		th:field="*{notes}" id="notes"
-																		th:value="${activityMaster['notes']}" required>
-																							</textarea>
-
-																</fieldset>
-															</div>
-														</div>
-
-													</div>
-
-
-												</div>
-
-												<div class="col-md-12">
-													<div class="form-group">
-														<label for="addmodel">Followers</label>
-														<div class="position-relative  has-icon-left">
-															<fieldset class="form-group">
-																<select class="select2 form-control "
-																	id="activityfollowers" required>
-																	<th:block th:each="str :${employeelist}">
-																		<option th:value="${str.empMasterid}"
-																			th:text="${str.StaffName}"></option>
-																	</th:block>
-																</select>
-
-															</fieldset>
-														</div>
-													</div>
-												</div>
-												
-
-												<div class="col-md-12">
-													<br />
-													<button type="reset"
-														class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
-														style="padding-right: 20px;">Reset</button>
-													<button type="submit"
-														class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
-														style="float: right">Save</button>
-
-
-												</div>
-												<!-- ------------------------------------------ -->
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<!--/ Edit Activity Modal -->
-
+							<!--/ Add Document -->
 							<!-- Edit User Modal -->
-							<div class="modal fade" id="editdealMasterdetails" tabindex="-1"
+							<div class="modal fade" id="editleadMasterdetails" tabindex="-1"
 								aria-hidden="true">
 								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
 									<div class="modal-content p-3 p-md-5">
@@ -619,14 +471,14 @@ cursor: pointer;
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
-												<h3>Edit Deal Information</h3>
-												<p>Update Deal Basic Information</p>
+												<h3>Edit Lead Information</h3>
+												<p>Update Lead Basic Information</p>
 											</div>
-											<form id="editdealMasterdetailsForm"
-												th:object="${dealMaster}" class="row g-3 needs-validation"
+											<form id="editleadMasterdetailsForm"
+												th:object="${leadMaster}" class="row g-3 needs-validation"
 												onsubmit="return false">
-												<input type="hidden" th:value="${dealMaster['id']}"
-													id="dealMasterID" name="dealMasterID" />
+												<input type="hidden" th:value="${leadMaster['id']}"
+													id="leadMasterID" name="leadMasterID" />
 
 
 												<div class="col-12 col-md-6">
@@ -634,7 +486,7 @@ cursor: pointer;
 													<div>
 														<input type="text" id="Title" th:field="*{Title}"
 															class="form-control  capitalize"
-															th:value="${dealMaster['Title']}" required>
+															th:value="${leadMaster['Title']}" required>
 
 													</div>
 
@@ -644,7 +496,7 @@ cursor: pointer;
 													<div>
 														<select class="form-select followers form-control "
 															id="organization" th:field="*{Organization}"
-															th:value="${dealMaster['Organization']}">
+															th:value="${leadMaster['Organization']}">
 															<option value="">-</option>
 															<th:block th:each="str :${organizationlist}">
 																<option th:value="${str.id}" th:text="${str.orgname}"></option>
@@ -661,7 +513,7 @@ cursor: pointer;
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addsourcedata" id="Source"
-															th:field="*{Source}" th:value="${dealMaster['Source']}">
+															th:field="*{Source}" th:value="${leadMaster['Source']}">
 															<th:block th:each="str :${SOURCE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -675,7 +527,7 @@ cursor: pointer;
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addpurposedata" id="purpose"
-															th:field="*{purpose}" th:value="${dealMaster['purpose']}">
+															th:field="*{purpose}" th:value="${leadMaster['purpose']}">
 															<th:block th:each="str :${PURPOSE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -686,9 +538,9 @@ cursor: pointer;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">VALUE</label>
 													<div>
-														<input type="number" id="dealvalue"
-															th:field="*{dealvalue}" class="form-control  capitalize"
-															th:value="${dealMaster['dealvalue']}">
+														<input type="number" id="leadvalue"
+															th:field="*{leadvalue}" class="form-control  capitalize"
+															th:value="${leadMaster['leadvalue']}">
 													</div>
 
 												</div>
@@ -698,7 +550,7 @@ cursor: pointer;
 
 														<select class="form-control " id="Reference"
 															th:field="*{Reference}"
-															th:value="${dealMaster['Reference']}">
+															th:value="${leadMaster['Reference']}">
 															<option value="">-</option>
 															<th:block th:each="str :${personlist}">
 																<option th:value="${str.id}" th:text="${str.peoplename}"></option>
@@ -709,15 +561,13 @@ cursor: pointer;
 												</div>
 
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="pipeline">PIPELINE </label>
+													<label class="form-label" for="Label">LABEL </label>
 													<div>
-														<select class="form-control" id="pipeline" th:field="*{pipeline}" th:value="${dealMaster['pipeline']}">
-															<option value="Deal In">Deal In</option>
-															<option value="Contact made">Contact made</option>
-															<option value="Site Visit Scheduled">Site Visit Scheduled</option>
-															<option value="Project Evaluvated">Project Evoluvated</option>
-															<option value="Proposal made">Proposal made</option>
-															<option value="Negotiations started">Negotiations started</option>
+														<select class="form-control " id="Label"
+															th:field="*{Label}" th:value="${leadMaster['Label']}">
+															<option value="Hot">Hot</option>
+															<option value="Cold">Cold</option>
+															<option value="Warm">Warm</option>
 														</select>
 													</div>
 												</div>
@@ -726,7 +576,7 @@ cursor: pointer;
 													<label class="form-label" for="phonenumber">BRANCH</label>
 													<div>
 														<select class="form-select  form-control " id="branch"
-															th:field="*{branch}" th:value="${dealMaster['branch']}"
+															th:field="*{branch}" th:value="${leadMaster['branch']}"
 															required>
 															<th:block th:each="str :${branchlist}">
 																<option th:value="${str.id}"
@@ -758,16 +608,7 @@ cursor: pointer;
 													<div>
 
 														<input type="text" id="notes" th:field="*{notes}"
-															th:value="${dealMaster['notes']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="expectedclosingdate">Expected Closing Date</label>
-													<div>
-
-														<input type="text" id="expectedclosingdate" th:field="*{expectedclosingdate}"
-															th:value="${dealMaster['expectedclosingdate']}"
+															th:value="${leadMaster['notes']}"
 															class="form-control  capitalize">
 													</div>
 												</div>
@@ -1027,12 +868,12 @@ cursor: pointer;
 					.ready(
 							function() {
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								var ids="[[${dealMaster['id']}]]";
+								var ids="[[${leadMaster['id']}]]";
 								$("#mastercategoryid").val(ids);
-								$("#mastercategoryidnote").val(ids);
 								
-								var dealfollowerids="[[${dealMaster['dealfollowerids']}]]";
-								$("#followers").val(dealfollowerids.split(",")).change();
+								
+								var leadfollowerids="[[${leadMaster['leadfollowerids']}]]";
+								$("#followers").val(leadfollowerids.split(",")).change();
 								
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------		 		
@@ -1048,59 +889,7 @@ cursor: pointer;
 														token);
 											});
 								});
-								// --------------------------------------------------------------------
-								
-								//--------------------------------------------------------------------------------
-								//function load the history events
-								function gettimelinelistCompleted() {
-									
-									var formData = {
-										mastercategoryid : "[[${dealMaster['id']}]]",
-										categoryType : "Deal",
-										status : "Completed"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "gettimelinelist",
-										data : formData,
-										success : function(result) {
-	
-											$('.widget-timelineCompleted').html(result);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
-								function gettimelinelistNotCompleted() {
-									
-									var formData = {
-										mastercategoryid : "[[${dealMaster['id']}]]",
-										categoryType : "Deal",
-										status : "NotCompleted"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "gettimelinelist",
-										data : formData,
-										success : function(result) {
-	
-											$('.widget-timelinePlanned').html(result);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
-								
+							
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								// Custom list & inline suggestion
 								//------------------------------------------------------
@@ -1166,215 +955,22 @@ cursor: pointer;
 											false);
 									$('.linkpeopledatasubmit').html("Submit");
 								}
-								function validationactivityeventformreset() {
-									$('.activityMasterformreset').click();
-									$('.activityMasterformclose').click();									
-									$('.activityMasterformsubmit').prop("disabled",
-											false);
-									$('.activityMasterformsubmit').html("Save");
-								}
-								function validationactivitynotesformreset() {
-									$(".ql-editor").html("");
-									$('.btn-close').click();									
-									$('.NotesMasterformsubmit').prop("disabled",false);
-									$('.NotesMasterformsubmit').html("Save");
-								}
+								function validationformfilereset()
+							   {
+						   				$('.documentclose').click();
+						   				$('.documentsave').prop("disabled",false);
+							   			$('.documentsave').html("Submit");
+							   }
 								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
-								$(document).on("click",".markitascompleted",	function() {	
-										
-									
-									let activityid = $(this).attr("id");
-									var formData = { activityid : activityid }
-		
-										$.ajax({
-											type : "POST",
-											url : "activitymarkascompleted",
-											data : formData,
-											success : function(result) {
-												Swal.fire({
-											        title: '',
-											        text: 'Activity Completed',
-											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-											        imageWidth: 400,
-											        imageAlt: 'Custom image',
-											        confirmButtonText: 'Ok',
-											        customClass: {
-											          confirmButton: 'btn btn-primary'
-											        },
-											        buttonsStyling: false
-											      });
-												
-												gettimelinelistCompleted();
-												gettimelinelistNotCompleted();
-											},
-											error : function(e) {
-												console.log("Error" + e);
-		
-											}
-		
-										});
-									
-								});
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#startdate").change(function() {
-									if($('#enddate').val() ==''){
-										$('#enddate').val($(this).val());
-									}
-								});
-								$("#starttime").change(function() {
-									if($('#endtime').val() ==''){
-										$('#endtime').val($(this).val());
-									}
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#btnAddevent").click(function() {
-									$('.activityMasterformreset').click();
-									$('.activityMasterformsubmit').prop("disabled",
-											false);
-									$('.activityMasterformsubmit').html("Save");
-									$("#activityId").val(0);
-									
-									$("input[name=activitytype][value=Task]").attr('checked', true);
-									$(".activitytype").removeClass("active");
-									$(".activitytypeTask").addClass("active");
-									
-									$("#createdtime").val("");
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#btnAddnotes").click(function() {
-									$(".ql-editor").html("");
-									$('.NotesMasterformclose').click();
-									$("#noteactivityId").val(0);
-									$('.NotesMasterformsubmit').prop("disabled",false);
-									$('.NotesMasterformsubmit').html("Save");
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$(".NotesMasterformsubmit").click(function() {
-									var htmlnotes = $(".ql-editor").html().trim();
-									if (htmlnotes != '') {
-										$('.NotesMasterformsubmit').prop("disabled",true);
-										$('.NotesMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-										const formData = new FormData();
-										
-										formData.append("File_Attach",null);
-										formData.append("activityfollowers","");
-										formData.append("activitytitle","");
-										formData.append("activitytype","");
-										formData.append("description","");
-										formData.append("enddate","");
-										formData.append("endtime","");
-										formData.append("guestid","");
-										formData.append("notes","");
-										formData.append("startdate","");
-										formData.append("starttime","");
-										formData.append("Activitycategory","Note");
-										formData.append("duedate","");
-										formData.append("htmlnotes",htmlnotes);													
-										formData.append("mastercategory","Deal");
-										formData.append("status","Completed");
-										formData.append("activityId",$("#noteactivityId").val());
-										formData.append("mastercategoryid",$("#mastercategoryidnote").val());
-										
-										 $.ajax({
-											type : "POST",
-											url : "activitysave",
-											processData : false,
-											contentType : false,
-											data : formData,
-											success : function(
-													result) {
-												
-												validationactivitynotesformreset();
-												Swal.fire({
-											        title: '',
-											        text: 'Your notes added',
-											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-											        imageWidth: 400,
-											        imageAlt: 'Custom image',
-											        confirmButtonText: 'Ok',
-											        customClass: {
-											          confirmButton: 'btn btn-primary'
-											        },
-											        buttonsStyling: false
-											      });
-												
-												gettimelinelistCompleted();
-												gettimelinelistNotCompleted();
-
-											},
-											error : function(e) {
-												console.log("Error"+ e);
-											}
-										});
-									}
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#activityMasterform').on('submit',function(event) {
-											const modalFile =document.getElementById("activityfiles");
-											if (event.target.checkValidity()) {
-												$('.activityMasterformsubmit').prop("disabled",true);
-												$('.activityMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-												const formData = new FormData(
-														document
-																.querySelector("#activityMasterform"));
-												//formData.append("File_Attach",modalFile.files[0]);
-												formData.append("File_Attach",null);
-												formData.append("guestid","");
-												formData.append("activityfollowers",$("#activityfollowers").val());
-												formData.append("Activitycategory","Activity");
-												formData.append("duedate","");
-												formData.append("htmlnotes","");													
-												formData.append("mastercategory","Deal");
-												formData.append("mastercategoryid",$("#mastercategoryid").val());
-												//formData.append("status","");
-												 //for (var pair of formData.entries()) {
-												  // console.log(pair); 
-												//} 
-												 $.ajax({
-													type : "POST",
-													url : "activitysave",
-													processData : false,
-													contentType : false,
-													data : formData,
-													success : function(
-															result) {
-														
-														validationactivityeventformreset();
-														
-														Swal.fire({
-													        title: '',
-													        text: 'Your Activity event added',
-													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-													        imageWidth: 400,
-													        imageAlt: 'Custom image',
-													        confirmButtonText: 'Ok',
-													        customClass: {
-													          confirmButton: 'btn btn-primary'
-													        },
-													        buttonsStyling: false
-													      });
-														
-														gettimelinelistCompleted();
-														gettimelinelistNotCompleted();
-
-													},
-													error : function(e) {
-														console.log("Error"+ e);
-													}
-												});
-											} else {
-												$('.activityMasterformsubmit').prop("disabled",false);
-											}
-
-										});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#editdealMasterdetailsForm').on('submit',function(event) {
+								$('#editleadMasterdetailsForm').on('submit',function(event) {
 
 													if (event.target.checkValidity()) {
 														$('.editorganizationdatasubmit').prop("disabled",true);
 														$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														const formData = new FormData(document.querySelector("#editdealMasterdetailsForm"));
+														const formData = new FormData(document.querySelector("#editleadMasterdetailsForm"));
 														
 														formData.append("followers",$("#followers").val());
 														/* for (var pair of formData.entries()) {
@@ -1382,29 +978,32 @@ cursor: pointer;
 														} */
 														$.ajax({
 																	type : "POST",
-																	url : "dealsavestage2",
+																	url : "leadsavestage2",
 																	processData : false,
 																	contentType : false,
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
 																		//console.log(bmobj);
+
+																			if (bmobj.label == "Hot") {
+																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
+																			} else if (bmobj.label == "Warm") {
+																				$('#Lbl_Label').html("<span class='badge bg-warning'>Warm</span>");
+																			} else {
+																				$('#Lbl_Label').html("<span class='badge bg-primary'>Cold</span>");
+																			}
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
-																			$('#Lbl_pipeline').text(bmobj.pipeline);
+																			
 																			$('#Lbl_notes').text(bmobj.notes);
 																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
-																			$("#Lbl_dealvalue").text(bmobj.dealvalue);
-																			$("#Lbl_purpose").text(bmobj.purpose);
-																			$("#Lbl_branchname").text(bmobj.branchname);
-																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
-																			
-																			
+																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
 																			
 																			$name ="";
 																			
-																			bmobj.dealFollowers.forEach((element, index, array) =>
+																			bmobj.leadFollowers.forEach((element, index, array) =>
 																           	{
 																           	    $name += element.followername+ "<br>";
 																            });
@@ -1433,7 +1032,79 @@ cursor: pointer;
 
 												});
 								// --------------------------------------------------------------------
-
+					  			// File uploading 		  
+					  					 const addNewdocumentForm =document.getElementById("addNewdocument");
+					  					 const modalFile =document.getElementById("modalFile");
+					  					 addNewdocumentForm.addEventListener("submit", e =>{
+					  						 
+					  						 if($('#modalDocNo').val() == '' && modalFile.files[0] == null)
+					  				    	 {
+					  					    	  Swal.fire({
+					  							        title: '',
+					  							        text: 'Either Document No (or) Upload file is mandatory!',
+					  							        confirmButtonText: 'Ok',
+					  							        customClass: {
+					  							          confirmButton: 'btn btn-primary'
+					  							        },
+					  							        buttonsStyling: false
+					  							      });
+					  				   		 }else
+					  				   		 {	 
+							  						$('.documentsave').prop("disabled",true);
+							  						$('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+							  						const endpoint ="fileuploadjson";
+							  						const formdata= new FormData();
+							  						//console.log(modalFile.files);
+							  						
+							  						formdata.append("File_Attach",modalFile.files[0]);
+							  						formdata.append("LeadID",$("#mastercategoryid").val());
+							  						formdata.append("Documenttype",$('#modalDocumenttype').val());
+							  						formdata.append("DocNo",$('#modalDocNo').val());
+							  						formdata.append("functiontype","Lead");
+							  						
+							  						  $.ajax({
+							  			   					type : "POST",url : endpoint,
+							  			   					data : formdata,
+							  			   					contentType: false,
+							  			   	              processData: false,
+							  			   					success : function(result) {
+							  			   						
+							  			   					tempobj =JSON.parse(JSON.stringify(result));
+							  			   						
+							  			   					console.log(tempobj);
+							  								
+								  							let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.fileid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
+								  							tempresult += '<h6 class="mb-1">'+ tempobj.documentType +'</h6>';
+								  							tempresult += '<span class="card-number">'+ tempobj.documentNo +'</span>';
+								  							if(tempobj.filePath != '')
+								  							{
+								  								tempresult += '<a href="'+ tempobj.filePath +'" target="_blank">';
+								  								if(tempobj.filePath.split(".")[1] == 'pdf')
+							  									{
+								  									tempresult += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
+							  									}else
+							 									{
+							  										tempresult += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
+							 									}
+								  								tempresult += '<span class="text-body"> ' + tempobj.filePath.split("/")[1].substring(15) + '</span>';
+								  								tempresult += '</a>';
+								  							}
+								  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+								  							
+								  							tempresult += '<button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.fileid +'"   onClick="filedeleteoperation('+ tempobj.fileid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+								  								
+								  							$('#fileaddidv').before(tempresult);
+								  							
+							  			   					validationformfilereset();
+							  			   					},
+							  			   					error : function(e) {
+							  			   						console.log("Error" + e);
+							  			   					}
+							  			   				});
+					  				   		 }
+					  					 });
+					  				// --------------------------------------------------------------------
+					  				
 								// --------------------------------------------------------------------
 
 								$(".additem").click(function() {
@@ -1520,8 +1191,8 @@ cursor: pointer;
 																.html(
 																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 
-														var dealMasterID = $(
-																'#dealMasterID')
+														var leadMasterID = $(
+																'#leadMasterID')
 																.val();
 														var peoplename = $(
 																'#Model_peoplename')
@@ -1539,8 +1210,8 @@ cursor: pointer;
 																"organization")
 																.val();
 														var formData = {
-															id : dealMasterID,
-															category : 'Deal',
+															id : leadMasterID,
+															category : 'Lead',
 															organization : organization,
 															branch : branch,
 															peoplename : peoplename,
@@ -1570,7 +1241,7 @@ cursor: pointer;
 																				+ result
 																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
 																		$(
-																				'#contactpeopdealdidv')
+																				'#contactpeopleaddidv')
 																				.before(
 																						temphtml);
 
@@ -1611,16 +1282,16 @@ cursor: pointer;
 																'.linkpeopledatasubmit')
 																.html(
 																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														var dealMasterID = $(
-																'#dealMasterID')
+														var leadMasterID = $(
+																'#leadMasterID')
 																.val();
 														var linkpeoplename = $(
 																'#Model_linkpeoplename')
 																.val();
 
 														var formData = {
-															id : dealMasterID,
-															category : 'Deal',
+															id : leadMasterID,
+															category : 'Lead',
 															linkpeoplename : linkpeoplename,
 
 														}
@@ -1650,7 +1321,7 @@ cursor: pointer;
 																				+ bmobj.id
 																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
 																		$(
-																				'#contactpeopdealdidv')
+																				'#contactpeopleaddidv')
 																				.before(
 																						temphtml);
 																		validationlinkformreset();
@@ -1676,12 +1347,7 @@ cursor: pointer;
 												});
 								
 								//-------------------------------------------
-								$(document).ready(function(){
-								    setTimeout(function(){
-								    	gettimelinelistCompleted();
-								    	gettimelinelistNotCompleted();
-								     },1000); // milliseconds
-								});
+							
 							}); // Jquery
 
 			//------------------------------------------------------
@@ -1704,17 +1370,7 @@ cursor: pointer;
 				});
 			}
 
-			//------------------------------------------------------    
-			 // Date Format
-			   const flatpickrFriendly = document.querySelector('#expectedclosingdate');
-				 // Human Friendly
-				  if (flatpickrFriendly) {
-				    flatpickrFriendly.flatpickr({
-				      altInput: true,
-				      altFormat: 'F j, Y',
-				      dateFormat: 'Y-m-d'
-				    });
-				  }
+			//------------------------------------------------------
 			// Phone
 			const phoneMask = document.querySelector('.phone-number-otp-mask');
 
@@ -1725,68 +1381,54 @@ cursor: pointer;
 					phoneRegionCode : 'US'
 				});
 			}
-			
-			
-			
-			//--------------------------
-			function editactivity(e){
-				var activityid= e.getAttribute("id").replace("actid","");
-				var formData = {
-						id : activityid
-					}
-
-					$.ajax({
-						type : "POST",
-						url : "getActivityMaster",
-						data : formData,
-						success : function(result) {
-							var bmobj = JSON.parse(JSON.stringify(result));
-							console.log(bmobj);
-							$("#mastercategoryid").val(bmobj.mastercategoryid);
-							$("#activityId").val(bmobj.activityId);
-							$("#createdtime").val(bmobj.createdtime);
-							$("#activitytitle").val(bmobj.activitytitle);
-							//$("#activitytype").val(bmobj.activitytype);
-							$("#startdate").val(bmobj.startdate);
-							$("#starttime").val(bmobj.starttime);
-							$("#enddate").val(bmobj.enddate);
-							$("#endtime").val(bmobj.endtime);
-							$("#notes").val(bmobj.notes);
-							$("#activityfollowers").val(bmobj.activityfollowers).change();
-							$("input[name=activitytype][value="+ bmobj.activitytype +"]").attr('checked', true);
-							$(".activitytype").removeClass("active");
-							$(".activitytype"+bmobj.activitytype).addClass("active");
-							$('#addevent').modal('show');
-						},
-						error : function(e) {
-							console.log("Error" + e);
-						}
-					});
-			};
-			//-------------------------------------
-			function editnoteactivity(e){
-				var activityid= e.getAttribute("id").replace("actid","");
-				var formData = {
-						id : activityid
-					}
-
-					$.ajax({
-						type : "POST",
-						url : "getActivityMaster",
-						data : formData,
-						success : function(result) {
-							var bmobj = JSON.parse(JSON.stringify(result));
-							console.log(bmobj);
-							$("#mastercategoryidnote").val(bmobj.mastercategoryid);
-							$("#noteactivityId").val(bmobj.activityId);
-							$(".ql-editor").html(bmobj.htmlnotes);
-							$('#addnotes').modal('show');
-						},
-						error : function(e) {
-							console.log("Error" + e);
-						}
-					});
-			};
+			//------------------------------------------------------	
+			//------------------------------------------------------    
+		   function filedeleteoperation(id){
+		    	 Swal.fire({
+		             title: 'Are you sure?',
+		             text: "You won't be able to revert this!",
+		             icon: 'warning',
+		             showCancelButton: true,
+		             confirmButtonText: 'Yes, delete it!',
+		             customClass: {
+		               confirmButton: 'btn btn-primary me-3',
+		               cancelButton: 'btn btn-label-secondary'
+		             },
+		             buttonsStyling: false
+		           }).then(function (result) {
+		             if (result.value) {
+		              var formData = {
+		            		  fileid: id,
+		            		  functiontype : 'Lead'
+		           	 }
+		   			 $.ajax({
+		   					type : "POST",url : "Filedeletejson",
+		   					data : formData, success : function(result) {
+		   						$('.filecard'+id).remove();
+		   						Swal.fire({
+		   				              icon: 'success',
+		   				              title: 'Deleted!',
+		   				              text: 'File has been deleted.',
+		   				              customClass: {
+		   				                confirmButton: 'btn btn-success'
+		   				              }
+		   				            });
+		   					},
+		   					error : function(e) {
+		   						console.log("Error" + e);
+		   					}
+		   				});
+		               
+		               }
+		           });
+		    }
+		  
+		  	//------------------------------------------------------    
+		  	  $('.filedeletebtn').on('click', function(event){
+		    	  let id=$(this).attr("name");
+		    	  filedeleteoperation(id);
+		      });
+		//------------------------------------------------------
 			
 		</script>
 </body>

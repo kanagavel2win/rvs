@@ -1,11 +1,15 @@
 package com.rvs.springboot.thymeleaf.service;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.DealMasterRepository;
@@ -61,7 +65,7 @@ public class DealMasterImp implements DealMasterService {
 			sql = "update dealmaster set pipeline ='" + pipeline +"'  where id in ("+ str +")";
 		}else
 		{
-			sql = "update dealmaster set pipeline ='" + pipeline +"', lossbacktoleadreason= '"+ notes.trim() + "'  where id in ("+ str +")";
+			sql = "update dealmaster set pipeline ='" + pipeline +"', lossbacktodealreason= '"+ notes.trim() + "'  where id in ("+ str +")";
 		}
 		
 		JdbcTemplate.execute(sql);
@@ -81,6 +85,43 @@ public class DealMasterImp implements DealMasterService {
 			
 		return JdbcTemplate.queryForList(sql,String.class);
 	}
+	
+	@Override
+	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int dealid) {
+		final String sql="INSERT INTO `dealfiles`(`document_no`, `document_type`, `file_path`, `id`) VALUES ('"+ DocumentNo +"','"+ DocumentType  +"','"+ FilePath +"',"+ dealid +")";
 		
+		KeyHolder keyHolder =new GeneratedKeyHolder();
+		
+		JdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int deleteFiles(int id) {
+		String sql ="DELETE FROM `dealfiles` WHERE  fileid=" +id ;
+		return JdbcTemplate.update(sql);
+	}		
+	
+	@Override
+	public int insertContact(int contactpersonid, int dealid) {
+		final String sql = "INSERT INTO deal_contact(`contact_person`, `id`) VALUES ("
+				+ contactpersonid + "," + dealid + ")";
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		JdbcTemplate.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
 	
 }

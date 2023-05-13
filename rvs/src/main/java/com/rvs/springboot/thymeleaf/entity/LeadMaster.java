@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -67,6 +68,10 @@ public class LeadMaster {
 	@JoinColumn(name = "id")
 	private List<LeadFollowers> leadFollowers;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	@OrderBy("Fileid ASC")
+	private List<LeadFiles> leadFiles;
 	
 	@Transient
 	private String nextactivity;

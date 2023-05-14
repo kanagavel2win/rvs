@@ -927,13 +927,15 @@ public class HomeController {
 			int ContactPersonid = Integer.parseInt(params.get("DealID"));
 			String Documenttype = params.get("Documenttype");
 			String DocNo = params.get("DocNo");
+			String createdate=displaydateFormatFirstMMMddYYYAMPM.format(new Date());
 			itemlistService.savesingletxt(Documenttype, "Documenttype");
-			int id = dealMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid);
+			int id = dealMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid,createdate);
 
 			bfiles.setFileid(id);
 			bfiles.setDocumentNo(DocNo);
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
+			bfiles.setCreateddate(createdate);
 			return bfiles;
 		} else {
 			throw new RuntimeException("functiontype is invalid");
@@ -6596,32 +6598,46 @@ public class HomeController {
 	@ResponseBody
 	public String dealprojectsave(@RequestParam Map<String, String> params) {
 
+		//System.out.println(params);
 		DealMaster dm = dealMasterService.findById(Integer.parseInt(params.get("dealid")));
 
 		List<DealProjectMaster> dealprojectList = new ArrayList();
 		if (nullremover(String.valueOf(params.get("projectid"))).equalsIgnoreCase("")) {
 
 			dealprojectList = dm.getDealProjectMaster();
-
 			DealProjectMaster dpmobj = new DealProjectMaster();
-			dpmobj.setAmount(String.valueOf(
-					Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"))));
+			int amount =Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"));
+			int taxamount =(amount-Integer.parseInt(params.get("modalDiscountAmount")))*Integer.parseInt(params.get("modalTaxpercentage"))/100;
+			
+			dpmobj.setAmount(String.valueOf(amount + taxamount));
 			dpmobj.setPrice(params.get("modalPrice"));
 			dpmobj.setProjecttype(params.get("modalnatureofwork"));
 			dpmobj.setQuantity(params.get("modalQuantity"));
 			dpmobj.setUnit(params.get("modalunits"));
+			dpmobj.setDiscountpercentage(Integer.parseInt(params.get("modalDiscountPercentage")));
+			dpmobj.setDiscountvalue(Integer.parseInt(params.get("modalDiscountAmount")));;
+			dpmobj.setTaxamt(taxamount);
+			dpmobj.setTaxpercentage(Integer.parseInt(params.get("modalTaxpercentage")));
 
 			dealprojectList.add(dpmobj);
 
 		} else {
 			for (DealProjectMaster tempdpmobj : dm.getDealProjectMaster()) {
-				if (tempdpmobj.getDealprojectid() == Integer.parseInt(params.get("dealid"))) {
-					tempdpmobj.setAmount(String.valueOf(Integer.parseInt(params.get("modalPrice"))
-							* Integer.parseInt(params.get("modalQuantity"))));
+				if (tempdpmobj.getDealprojectid() == Integer.parseInt(params.get("projectid"))) {
+					
+					int amount =Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"));
+					int taxamount =(amount-Integer.parseInt(params.get("modalDiscountAmount")))*Integer.parseInt(params.get("modalTaxpercentage"))/100;
+					
+					tempdpmobj.setAmount(String.valueOf(amount + taxamount));
 					tempdpmobj.setPrice(params.get("modalPrice"));
 					tempdpmobj.setProjecttype(params.get("modalnatureofwork"));
 					tempdpmobj.setQuantity(params.get("modalQuantity"));
 					tempdpmobj.setUnit(params.get("modalunits"));
+					tempdpmobj.setDiscountpercentage(Integer.parseInt(params.get("modalDiscountPercentage")));
+					tempdpmobj.setDiscountvalue(Integer.parseInt(params.get("modalDiscountAmount")));
+					tempdpmobj.setTaxamt(taxamount);
+					tempdpmobj.setTaxpercentage(Integer.parseInt(params.get("modalTaxpercentage")));
+
 				}
 				dealprojectList.add(tempdpmobj);
 			}

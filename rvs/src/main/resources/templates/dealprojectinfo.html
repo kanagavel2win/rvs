@@ -139,11 +139,11 @@
 	cursor: pointer;
 }
 
-.editnoteactivity  {
+.editnoteactivity {
 	cursor: pointer;
 }
-.editdealprj
-{
+
+.editdealprj {
 	cursor: pointer;
 }
 </style>
@@ -222,10 +222,13 @@
 											</div>
 
 										</div>
-										<h5 class="pb-2 border-bottom mb-4">Details  <input type="hidden" name="mastercategoryid" id="mastercategoryid" /></h5>
+										<h5 class="pb-2 border-bottom mb-4">
+											Details <input type="hidden" name="mastercategoryid"
+												id="mastercategoryid" />
+										</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
-											
+
 												<li class="mb-3"><span class="fw-bold me-2">Pipeline:</span>
 													<span th:text="${dealMaster.pipeline}" id="Lbl_pipeline"></span></li>
 
@@ -333,7 +336,8 @@
 										href="javascript:void(0);"><i class='bx bxl-ok-ru'></i>Projects</a>
 									</li>
 									<li class="nav-item"><a class="nav-link "
-										th:href="'dealattachment?id='+${dealMaster.id}"><i class="bx bx-link me-1"></i>Attachment</a></li>
+										th:href="'dealattachment?id='+${dealMaster.id}"><i
+											class="bx bx-link me-1"></i>Files</a></li>
 
 								</ul>
 								<!--/ User Pills -->
@@ -353,27 +357,29 @@
 											</h5>
 										</div>
 										<div class="table-responsive">
-						                      <table class="table border-top m-0">
-						                        <thead>
-						                          <tr>
-						                            <th>Nature of work</th>
-						                            <th>Quantity</th>
-						                            <th>Units</th>
-						                            <th>Price</th>
-						                            <th>Total</th>
-						                          </tr>
-						                        </thead>
-						                        <tbody id="dealprojectlist">
-						                          
-						                        </tbody>
-						                      </table>
-						                    </div>
+											<table class="table border-top m-0">
+												<thead>
+													<tr>
+														<th>Nature of work</th>
+														<th>Quantity</th>
+														<th>Units</th>
+														<th>Price</th>
+														<th>Discount</th>
+														<th>Tax</th>
+														<th>Total</th>
+													</tr>
+												</thead>
+												<tbody id="dealprojectlist">
+
+												</tbody>
+											</table>
+										</div>
 									</div>
 								</div>
 								<!-- /Project   Card -->
 							</div>
 							<!-- User Content -->
-						 <!-- Add Document -->
+							<!-- Add Document -->
 							<div class="modal fade" id="addNewProject" tabindex="-1"
 								aria-hidden="true">
 								<div
@@ -386,18 +392,20 @@
 												<h3>Projects</h3>
 												<p>Nature of Work</p>
 											</div>
-											<form id="addNewprojectmodel" name="addNewprojectmodel" class="row g-3"
-												onsubmit="return false" enctype="multipart/form-data">
+											<form id="addNewprojectmodel" name="addNewprojectmodel"
+												class="row g-3" onsubmit="return false"
+												enctype="multipart/form-data">
 												<div class="col-12">
-													<label class="form-label w-100" for="modalnatureofwork">Nature of Work
-														 <label class="emptitle additem"
+													<label class="form-label w-100" for="modalnatureofwork">Nature
+														of Work <label class="emptitle additem"
 														name="addmodalnatureofwork"> <i
 															class="bx bxs-plus-circle ownstyle1"></i></label>
 
 													</label>
 													<div class="input-group input-group-merge">
 														<select id="modalnatureofwork"
-															class="form-select modalnatureofwork" name="modalnatureofwork" required="required">
+															class="form-select modalnatureofwork"
+															name="modalnatureofwork" required="required">
 															<option value="">-</option>
 															<th:block th:each="str :${NATUREOFWORK}">
 																<option th:value="${str}" th:text="${str}"></option>
@@ -408,17 +416,17 @@
 													</div>
 												</div>
 												<div class="col-12">
-													<label class="form-label" for="modalAddCardName">QUANTITY </label> 
-													<input type="number" id="modalQuantity" name="modalQuantity"
-														class="form-control" required="required"/>
-													<input type="hidden" id="projectid" name="projectid"
-														class="form-control" />
+													<label class="form-label" for="modalAddCardName">QUANTITY
+													</label> <input type="number" id="modalQuantity"
+														name="modalQuantity" class="form-control"
+														required="required" /> <input type="hidden" id="projectid"
+														name="projectid" class="form-control" />
 												</div>
 												<div class="col-12">
 													<label class="form-label w-100" for="modalUnits">UNITS
-														 <label class="emptitle additem"
-														name="addmodalunits"> <i
-															class="bx bxs-plus-circle ownstyle1"></i></label>
+														<label class="emptitle additem" name="addmodalunits">
+															<i class="bx bxs-plus-circle ownstyle1"></i>
+													</label>
 
 													</label>
 													<div class="input-group input-group-merge">
@@ -434,16 +442,37 @@
 													</div>
 												</div>
 												<div class="col-12">
-													<label class="form-label" for="modalPrice">Price </label> 
-													<input type="number" id="modalPrice" name="modalPrice"
-														class="form-control" required="required"/>
-												</div>
-												<div class="col-12">
-													<label class="form-label" for="modalTotalamount">Total Amount </label> 
-													<input type="number" id="modalTotalamount" name="modalTotalamount"
- 														class="form-control" disabled />
+													<label class="form-label" for="modalPrice">Price </label> <input
+														type="number" id="modalPrice" name="modalPrice"
+														class="form-control" required="required" />
 												</div>
 												
+												<div class="col-6">
+													<label class="form-label" for="modalDiscountPercentage">Discount % </label> <input
+														type="number" id="modalDiscountPercentage" name="modalDiscountPercentage"
+														class="form-control" required="required" value="0" />
+												</div>
+												<div class="col-6">
+													<label class="form-label" for="modalDiscountAmount">Discount Amount </label> <input
+														type="number" id="modalDiscountAmount" name="modalDiscountAmount"
+														class="form-control" required="required" value="0"  />
+												</div>
+												<div class="col-6">
+													<label class="form-label" for="modalTaxpercentage">Tax %</label> <input
+														type="number" id="modalTaxpercentage" name="modalTaxpercentage"
+														class="form-control" required="required" value="0" />
+												</div>
+												<div class="col-6">
+													<label class="form-label" for="modalTaxAmount">Tax Amount </label> <input
+														type="number" id="modalTaxAmount" name="modalTaxamount"
+														class="form-control" required="required" value="0"  disabled/>
+												</div>
+												<div class="col-12">
+													<label class="form-label" for="modalTotalamount">Total
+														Amount </label> <input type="number" id="modalTotalamount"
+														name="modalTotalamount" class="form-control" disabled />
+												</div>
+
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
 														class="btn btn-primary me-sm-3 me-1 dealprojectsave">ADD</button>
@@ -1007,17 +1036,21 @@
 											var htmlop="";
 											var bmobj = JSON.parse(JSON.stringify(result));
 											var total=0;
+											var totaldiscount=0;
+											var totaltax=0;
 											bmobj.forEach((element, index, array) =>
 								           	{
 								           	    
 								           	 htmlop +="<tr><td class='text-nowrap editdealprj' onclick='editprojectinfo(this)' id='"+element.dealprojectid +"'>"+element.projecttype+"</td>";
 								           	 htmlop +="<td class='text-nowrap'>"+element.quantity +"</td><td>"+element.unit +"</td><td>"+element.price +"</td>";
-								           	 htmlop +="<td>"+element.amount +"</td></tr>";
+								           	 htmlop +="<td>"+element.discountvalue +"</td><td>"+element.taxamt +"</td><td>"+element.amount +"</td></tr>";
 								           	total +=parseInt(element.amount);
+								           	totaldiscount +=parseInt(element.discountvalue);
+								           	totaltax +=parseInt(element.taxamt);
 								            });
 											
 											
-											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td> <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total +"</p> </td> </tr>";
+											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td> <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ totaldiscount +"</p> </td> <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ totaltax +"</p> </td> <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total +"</p> </td> </tr>";
 											$('#dealprojectlist').html(htmlop);
 										},
 										error : function(e) {
@@ -1388,16 +1421,73 @@
 								function calctotalamount(){
 									let modalQuantity=	$("#modalQuantity").val();
 									let modalPrice=	$("#modalPrice").val();
+									let modalDiscountAmount=	$("#modalDiscountAmount").val();
+									let modalTaxpercentage=	$("#modalTaxpercentage").val();
+									let modalTaxAmount=	((modalQuantity*modalPrice)-modalDiscountAmount)*modalTaxpercentage/100;
+									$("#modalTaxAmount").val(modalTaxAmount);
+									
 									
 									if(modalPrice !='' && modalQuantity!=''){
-										$("#modalTotalamount").val(modalPrice * modalQuantity);	
+										$("#modalTotalamount").val((modalPrice * modalQuantity)+modalTaxAmount-modalDiscountAmount);	
 									}
 									
 								}
 								
 								$("#modalQuantity").change(function(){
+									
 									calctotalamount();
 								});
+							
+								$("#modalDiscountPercentage").change(function(){
+									let modalDiscountPercentage=0;
+									if(	$("#modalDiscountPercentage").val()!=''){
+										modalDiscountPercentage=	$("#modalDiscountPercentage").val();
+									}else
+									{
+									$("#modalDiscountPercentage").val(0);
+									}
+									
+									let modalQuantity=	$("#modalQuantity").val();
+									let modalPrice=	$("#modalPrice").val();
+									$("#modalDiscountAmount").val((modalQuantity*modalPrice)*modalDiscountPercentage/100);
+									
+									calctotalamount();
+								});
+								
+								$("#modalTaxpercentage").change(function(){
+									let modalTaxpercentage=0;
+									if(	$("#modalTaxpercentage").val()!=''){
+										 modalTaxpercentage=	$("#modalTaxpercentage").val();
+									}else
+									{
+									$("#modalTaxpercentage").val(0);
+									}
+										
+									
+									let modalDiscountAmount=	$("#modalDiscountAmount").val();
+									let modalQuantity=	$("#modalQuantity").val();
+									let modalPrice=	$("#modalPrice").val();
+									$("#modalTaxAmount").val(((modalQuantity*modalPrice)-modalDiscountAmount)*modalTaxpercentage/100);
+									
+									calctotalamount();
+								});
+								
+								$("#modalDiscountAmount").change(function(){
+									let modalDiscountAmount=0;
+									if(	$("#modalDiscountAmount").val()!=''){
+										modalDiscountAmount=	$("#modalDiscountAmount").val();
+									}else
+									{
+										$("#modalDiscountAmount").val(0);
+										}
+									
+									let modalQuantity=	$("#modalQuantity").val();
+									let modalPrice=	$("#modalPrice").val();
+									$("#modalDiscountPercentage").val(modalDiscountAmount*100/(modalQuantity*modalPrice));
+									
+									calctotalamount();
+								});
+								
 								$("#modalPrice").change(function(){
 									calctotalamount();
 								});
@@ -1476,6 +1566,11 @@
 								$("#modalUnits").val(bmobj.unit).change();
 								$("#modalnatureofwork").val(bmobj.projecttype).change();
 								$("#projectid").val(bmobj.dealprojectid);
+								$("#modalTaxpercentage").val(bmobj.taxpercentage);
+								$("#modalTaxAmount").val(bmobj.taxamt);
+								$("#modalDiscountPercentage").val(bmobj.discountpercentage);
+								$("#modalDiscountAmount").val(bmobj.discountvalue);
+								
 								
 								$('#addNewProject').modal('show');
 							},

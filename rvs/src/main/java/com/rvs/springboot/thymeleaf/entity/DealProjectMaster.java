@@ -32,6 +32,15 @@ public class DealProjectMaster {
 	@Column
 	private String Unit;
 	@Column
+	private int Taxpercentage;
+	@Column
+	private int Taxamt;
+	@Column
+	private int Discountpercentage;
+	@Column
+	private int Discountvalue;
+	
+	@Column
 	private String Price;
 	@Column
 	private String Amount;

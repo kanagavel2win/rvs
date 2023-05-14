@@ -14,7 +14,7 @@ public interface DealMasterService {
 	public List<String> getStateAll();
 	public List<String> getDistrictAll(String state);
 	
-	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id);
+	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id, String createddate);
 	public int deleteFiles(int id);
 	public int insertContact(int contactpersonid, int dealid);
 	

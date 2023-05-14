@@ -33,6 +33,8 @@ public class DealFiles {
 	private String DocumentNo;
 	@Column
 	private String FilePath;
+	@Column
+	private String createddate;
 	
 	
 	

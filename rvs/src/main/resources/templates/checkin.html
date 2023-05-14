@@ -79,7 +79,7 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
-
+	 <!-- <div th:insert="menu"></div> --> 
         <!-- / Menu -->
 
         <!-- Layout container -->
@@ -105,7 +105,8 @@
 
 
 	 
-	 <form class="row g-3"  id="form1" onsubmit="return false" enctype="multipart/form-data">
+	 <form class="g-3"  id="form1" onsubmit="return false" enctype="multipart/form-data">
+	 <div class="row">
 	 <div class="col-sm-3">
 	  <label class="form-label">Branch</label>
       <select class="form-select" id="Branch" name="Branch" required>
@@ -128,32 +129,32 @@
  
 	</select>
 	 </div>
+	 
 	 <div class="col-sm-3">
 	  <label class="form-label">Check In Date</label>
-	  <input type="text" class="form-control flatpickr" name="CheckOutDate" id="CheckOutDate" placeholder="Apr 3 2022" required>
+	  <input type="text" class="form-control flatpickr" name="CheckInDate" id="CheckInDate" placeholder="Apr 3 2022" required>
 	  </div>
-
 	 
-	 
-
-	  
-	  <div class="col-sm-10">
-	 
-	  </div>
-	  <div class="col-sm-2">
-	   <button type="button" class="btn btn-block btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"><i class="bx bx-plus-circle "></i> Add 
+	  <div class="col-sm-3">
+	   <button type="button" class="btn btn-block btn-primary mt-4"> Search 
 			</button>
 	  </div>
 	  
+	 
+
+       
+	  <div class="row">
+	  
+	  
 	   <div class="col-sm-12">
-	  <div class="table-responsive">
+	  <div class="table-responsive mt-4">
 		 <table class="table table-sm table-bordered">
 		 <thead>
 		<tr>
 			<th width="5%">S.No</th>
-			<th>Asset</th>
+			<th>Asset Type</th>
+			<th>Asset Name</th>
 			<th>Condition</th>
-			<th>Status</th>
 			<th>Photo</th>
 			<th>Comments</th>
 			<th>Actions</th>
@@ -162,7 +163,7 @@
 		</tr>
 		</thead>
 		<tbody id="addckoutrow">
-																
+          
 
 		</tbody>
 		
@@ -175,37 +176,37 @@
 		 </table>
 		 </div>
 	</div>	
+	</div>	
+	</form>
+	
 											
-	 </form>
-	 
-	 
-	   <!--scrolling content Modal -->
-								<div class="modal fade" id="exampleModalScrollable"
-									tabindex="-1" role="dialog"
-									aria-labelledby="exampleModalScrollableTitle"
-									aria-hidden="true">
-									<div class="modal-dialog modal-dialog-scrollable modal-xl"
-										role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-<h5 class="modal-title" id="exampleModalScrollableTitle">Check Out Items</h5>
 
-
-										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-				 <form class="row g-3"  id="form2" onsubmit="return false" enctype="multipart/form-data">
+								
+								
+								
+								
+								<!-- Add New Credit Card Modal -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-simple modal-add-new-cc">
+    <div class="modal-content p-3 p-md-5">
+      <div class="modal-body">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="text-center mb-4">
+          <h3>Asset Audit Items</h3>
+         
+        </div>
+         <form class="row g-3"  id="form2" onsubmit="return false" enctype="multipart/form-data">
 				 
-				 <div class="col-sm-6">
-	 <label for="form-label">Asset Type </label>
+	 <div class="col-sm-12">
+	 <label class="form-label">Custodian </label>
 	 <select class="form-select" name="AssetType" id="AssetType" required>
 	 <option value="">-</option>
 	 <option value="Machinery">Machinery</option>
 	 </select>
 	 </div>
 	 
-	 <div class="col-sm-6">
-	 <label for="form-label">Asset Name</label>
+	 <div class="col-sm-12">
+	 <label class="form-label">Asset</label>
 	 <input type="hidden"  id="idc" /> 
 	 <input type="hidden"  name="ACondition" /> 
 	 <select class="form-select" name="AssetName" id="AssetName" required>
@@ -214,28 +215,55 @@
 	 </select>
 	 </div>
 	 
-	 <div class="col-sm-6">
-	 <label for="form-label">Photo Attach</label>
-	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" accept=".png,.jpg,.jpeg,.pdf" />
+	 
+	  <div class="col-sm-12">
+	  <label class="form-label">Asset Audit Date</label>
+	  <input type="text" class="form-control flatpickr" name="AssetAuditDate" id="AssetAuditDate" placeholder="Apr 3 2022" required>
+	  </div>
+	  
+	  
+	  				 
+	 <div class="col-sm-12">
+	 <label class="form-label">Status </label>
+	 <select class="form-select" name="Status">
+	  <option value="">-</option>
+       <option value="In Stock">In Stock</option>
+       <option value="Checked Out">Checked Out</option>
+       <option value="Out for repair">Out for repair</option>
+       <option value="In office Use">In office Use</option>
+       <option value="Damaged">Damaged</option>
+       <option value="Missing">Missing</option>
+       <option value="Repair">Repair</option>       
+       <option value="Scrap">Scrap</option>
+	 </select>
 	 </div>
 	 
-	  <div class="col-sm-6">
-	 <label for="form-label">Comments</label>
-	 <input type="text" name="Comments" class="form-control" />
+	  <div class="col-sm-12">
+	 <label class="form-label">Condition </label>
+	 <select class="form-select" name="Condition">
+	       <option value="">-</option>
+	        <option value="Fair">Fair</option>
+          	<option value="Good">Good</option>
+          	<option value="New">New</option>
+          	<option value="Poor">Poor</option>
+          	<option value="Damaged">Damaged</option>
+	 </select>
 	 </div>
 	 
-	  <div class="col-sm-6">
+	  
+ 
+	 
+	  <div class="col-sm-12">
 	  <button type="submit" id="addcheckout" class="btn btn-primary mb-1" > Submit</button>
 	 </div>
 	 
 	 
 				 </form>
-											</div>
-
-										 
-										</div>
-									</div>
-								</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Add New Credit Card Modal -->
 								
 	 
 	 </div>
@@ -243,7 +271,7 @@
     
     </div>
     
-    
+      </div>
             <!-- Footer -->
             <footer class="content-footer footer bg-footer-theme">
               <div class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
@@ -280,7 +308,7 @@
 
             <div class="content-backdrop fade"></div>
             
-    </div>
+  
     </div>
     </div>
     </div>
@@ -335,7 +363,85 @@
 	    });
   })
   
-
+  const radio = $(`[name="Status"]`);
+  const WhichLocation = $(`[name="WhichLocation"]`);
+  const vendor = $(`[name="vendor"]`);
+  const vendordiv = $(`#vendordiv`);
+  const locationdiv = $(`#locationdiv`); 
+  const form2 = $(`#form2`);
+  const AssetType = $(`[name="AssetType"]`);
+  const AssetName = $(`[name="AssetName"]`);
+  const Photo_Attach = document.querySelector(`[name="Photo_Attach"]`);
+  const Comments = $(`[name="Comments"]`);
+  
+  $(radio).change(function(e){
+		if(this.value == "Out for repair")
+		{
+			vendordiv.show();
+			locationdiv.hide();
+			WhichLocation.val('');
+		}
+		else if(this.value == "In office Use")
+		{
+			locationdiv.show();
+			vendordiv.hide();
+			vendor.val('');
+		}
+		else
+	    {
+			vendordiv.hide();
+			locationdiv.hide();
+			WhichLocation.val('');
+			vendor.val('');
+	    }
+  })
+  
+  $(form2).submit(function(e){
+	 
+		  var text=`<tr>`;
+		  var at = $(`[name="AssetType"] option:selected`).text();
+		  var an = $(`[name="AssetName"] option:selected`).text();
+		  var com = Comments.val();
+		  var i = $('#addckoutrow tr').length === 0 ? 1 : $('#addckoutrow tr').length+1;
+		   
+		  text+=`<td>${i}</td><td id="at-${i}">${at}</td><td id="an-${i}">${an}</td><td></td>`;
+		  const FilesCount = Photo_Attach.files.length;
+		      if(FilesCount > 0)
+			  {
+		    	  const file = Photo_Attach.files[0];
+		    	  const url = URL.createObjectURL(file);
+		    	  text+=`<td id="file-${i}"><a class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2" href="${url}" target="_blank"><i class="bx bx-download bx-xs"></i></a></td>`;
+			  }
+		      else
+		      {
+		    	  text+=`<td id="file-${i}">-</td>`;
+		      }
+		      text+=`<td id="com-${i}">${com}</td><td><button class="btn btn-sm btn-icon delete-record" type="button"><i class="bx bx-trash"></i></button></td></tr>`;
+		      $('#addckoutrow').append(text);
+		  
+	      e.target.reset();
+	      $(`#exampleModalScrollable`).modal('hide');
+  })
+  
+$(document).on('click','.delete-record' , function(e){
+	var tr = $(this).closest('tr');
+	 Swal.fire({
+         title: 'Are you sure?',
+         text: "You won't be able to revert this!",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Yes,  Delete Check Out Entry it!',
+         customClass: {
+             confirmButton: 'btn btn-primary me-3',
+             cancelButton: 'btn btn-label-secondary'
+         },
+         buttonsStyling: false
+     }).then(function(result) {
+    	 if (result.value) {
+    	  tr.remove();
+    	 }
+     })
+})
   </script>
     </body>
     </html>

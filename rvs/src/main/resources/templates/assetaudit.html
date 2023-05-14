@@ -1,615 +1,472 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en" data-textdirection="ltr">
 
-<!-- BEGIN: Head-->
+<html
+  xmlns:th="http://www.thymeleaf.org" 
+  lang="en"
+  class="light-style layout-navbar-fixed layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  th:data-assets-path="@{/assets/}"
+  data-template="vertical-menu-template"
+  
+>
+  <head>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-<head>
-<meta name="_csrf" th:content="${_csrf.token}"/>
-<!-- default header name is X-CSRF-TOKEN -->
-<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="ICC">
-<title>Asset Audit</title>
-<link rel="apple-touch-icon"
-	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
-<link rel="shortcut icon" type="image/x-icon"
-	th:href="@{/app-assets/images/ico/favicon.ico}">
-<link
-	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
-	rel="stylesheet}">
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+    <title>Asset Audit</title>
 
+    <meta name="description" content="" />
 
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet" type="text/css"
+    />
+
+    <!-- Icons -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/demo.css}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-select-bs5/select.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css}">
 	
-<!-- END: Vendor CSS-->
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bs-stepper/bs-stepper.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+	<link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <!-- Page CSS -->
 
-<!-- BEGIN: Theme CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap-extended.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/colors.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/components.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/dark-layout.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
-<!-- END: Theme CSS-->
+    <!-- Helpers -->
+    <script th:src="@{/assets/vendor/js/helpers.js}"></script>
 
-<!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script th:src="@{/assets/js/config.js}"></script>
+    </head>
+    <body>
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+	<!-- <div th:insert="menu"></div> -->
+        <!-- / Menu -->
 
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
 
-<!-- END: Page CSS-->
+      <div th:insert="header"></div>
 
-<!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
-<!-- END: Custom CSS-->
-<style>
-.emptitle {
-	color: #527a00;
-	font-size: 15px;
-	line-height: 20px;
-	font-weight: 600;
-	font-family: Fira Sans, Trebuchet MS, sans-serif;
-	cursor: pointer;
-}
+          <!-- / Navbar -->
 
-thead {
-	background-color: #ebebeb;
-	border-color: transparent;
-	color: #555;
-	font-weight: 700;
-	
-	transition: background-color .15s ease-in-out;
-}
-
-tbody {
-	color: #222;
-}
-
-
-tbody>tr:hover .iconalign {
-	color: #527a00;
-	cursor: pointer;
-}
-
-
-
-.view {
-	margin: auto;
-	
-}
-
-.wrapper {
-	position: relative;
-	overflow: auto;
-	border: 1px solid #ccc;
-	white-space: nowrap;
-}
-
-
-table tr td{
-	
-	border-right: 1px solid #ccc;
-}
-
-
-.table tr, table ,table td
-	{
-	
-	line-height:5px;
-		
-	}
-.red
-{
-	color:red;
-	font-size:20px;
-}
-
-.fileimage{
-	min-width:250px;
-}
-
-</style>
-
-<body
-	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
-	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
-
-		<!-- BEGIN: Header-->
-		 <div th:insert="header">  </div>
-		<!-- END: Header-->
-
-
-		<!-- BEGIN: Main Menu-->
-		<div th:insert="menu">  </div>
-		<!-- END: Main Menu-->
-
-			<!-- BEGIN: Content-->
-				<!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                            
-                           <h5 class="content-header-title float-left pr-1 mb-0">Asset Audit</h5>
-                            <div class="breadcrumb-wrapper col-12">
-                                <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="index"><i class="bx bx-home-alt"></i></a>
-                                    </li>
-                                    <li class="breadcrumb-item"><a href="assetlist">Asset List</a>
-                                    </li>
-                                	   
-                                </ol>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-body">
-              	
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+				 <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Administration/Asset/ </span>Asset Audit</h4>
               
-											
-	                <!-- Basic Vertical form layout section start -->
-	                <section id="basic-vertical-layouts">
-	                    <div class="row match-height">
-	                        <div class="col-12">
-	                            <div class="card">
-	                                <div class="card-content">
-	                                    <div class="card-body">
-                                        	<div th:if="${printstr}" class="form-group col-12">
-												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Asset Audit details are saved successfully</button>
-												<!-- <form th:action="@{/assetauditprint}" target="blank" method="POST" class="wizard-horizontal" enctype="multipart/form-data">
-													
-													<center><button type="submit"  class="btn btn-primary mr-1 mb-1" style="width:200px">Print Receipt</button>
-													</center>
-                                                 </form> -->
-											</div>
-	                                        	
-											<div class="row">
-												 <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Branch <span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               
-			                                                     <select class="select2 form-control" id="BranchID">
-			                                                     	<option value="" >-</option>
-			                                                        <th:block th:each="obj : ${branchls}">
-			                                                        	<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
-																	</th:block>
-			                                                    </select>
-                                                
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon"> Type</label>
-                                                           <div class="position-relative">
-                                                               <input type="radio" name="Status" id="radio1"
-																value="InStock" checked="" required /> 
-																<label
-																for="radio1">InStock </label>&nbsp;&nbsp; 
-																<input
-																type="radio" name="Status" id="radio2"
-																value="Custodian" required /> <label for="radio2">
-																Custodian</label>&nbsp;&nbsp; 
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   <div class="col-6">
-														<div class="form-group">
-															<label for="first-name-icon">&nbsp;</label>
-															<div class="position-relative">
-																<button type="button" id="Search"
-																	class="btn btn-primary mr-1 mb-1">Search</button>
-	
-															</div>
-														</div>
-													</div>
-												<div class="col-12">
-													<hr/>
-												</div>
-												 <div class="col-3 Custodiandiv">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Custodian <span class="red">*</span>
-                                                           
-                                                           	<div class="Custodianloding spinner-border spinner-border-sm" role="status" style="visibility:hidden;">
-					                                              <span class="sr-only">Loading...</span>
-					                                            </div>
-                                                           </label>
-                                                           <div class="position-relative">
-                                                               
-			                                                     <select class="select2 form-control" id="StaffID">
-			                                                       <!--  <th:block th:each="emp : ${EmployeeMasterobj}">
-			                                                        	<option th:value="${emp.empMasterid}" th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
-			                                                        </th:block> -->
-			                                                    </select>
-                                                
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   
-                                                   <div class="col-6">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Asset<span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                                 <select class="select2 form-control" id="AssetId">
-			                                                        <!-- <th:block th:each="ass : ${AssetMasterobj}">
-			                                                        	<option th:value="${ass.AssetId}" th:text="${ass.AssetName} + '-' + ${ass.Model} + '-' + ${ass.ACondition}+ '-' + ${ass.Status}"></option>
-			                                                        </th:block> -->
-			                                                    </select>
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                 </div>
-                                                 <div class="row">
-                                                 <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Asset Audit Date<span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               <input type="date"  class="form-control" id="AssetAuditDate" >
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-												 <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Status<span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               <select class="form-control Statusv1" id="Status">
-			                                                        <option value="In Stock">In Stock</option>
-			                                                        <option value="Checked Out">Checked Out</option>
-			                                                        <option value="Out for repair">Out for repair</option>
-			                                                        <option value="In office Use">In office Use</option>
-			                                                        <option value="Damaged">Damaged</option>
-			                                                        <option value="Missing">Missing</option>
-			                                                        <option value="Repair">Repair</option>			                                                        
-			                                                        <option value="">-</option>
-			                                                        <option value="Scrap">Scrap</option>
-																	
-			                                                    </select>
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   
-                                                   <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Condition<span class="red">*</span></label>
-                                                           <div class="position-relative">
-                                                               <select class="form-control aConditionv2" id="aCondition">
-			                                                       <option value="Fair">Fair</option>
-																	<option value="Good">Good</option>
-																	<option value="New">New</option>
-																	<option value="Poor">Poor</option>
-																	<option value="Damaged">Damaged</option>
-																	
-																</select>
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   <div class="col-3">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">Comments<span class="red"></span></label>
-                                                           <div class="position-relative">
-                                                               <input type="text"  class="form-control" id="Comments" >
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   <div class="col-12" align="center">
-                                                       <div class="form-group">
-                                                           <label for="first-name-icon">&nbsp;<span class="red"></span></label>
-                                                           <div class="position-relative">
-                                                               <button type="button" id="save" class="btn btn-primary mr-1 mb-1">ADD</button>
-                                                              
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                 </div>
-											
-                                    		
-	                                    	<hr/>
-	                                    	<form th:action="@{/assetauditsave}" 
-											method="POST" class="wizard-horizontal"
-											enctype="multipart/form-data">
-	                                    	<div class="view">
-												<div class="wrapper">
-													
-													<table class="table">
-														<thead>
-															<tr>
-																<th width="5%">S.No</th>
-																<th>CUSTODIAN</th>
-																<th>DATE</th>
-																<th>ASSET</th>
-																<th>Photo</th>
-																<th>STATUS</th>
-																<th>Condition</th>
-																<th>COMMENTS</th>
-																<th></th>
+               <div class="card">
+ 
+ 	
+ 
+ 
+ <div class="card-body">
 
-															</tr>
-														</thead>
-														<tbody>
-															
-															
-														</tbody>
-													</table>
-													
-												</div>
-											</div>
-	                                    	<div align="center">
-	                                    	<br/>	<input type="checkbox" id="receipt" name="receipt" required>
-<label for="receipt"  style="color:red; font-weight:bold"> Show Receipt After Check In</label>
-	                                    		
-	                                    	<br/>
-	                                    		<button type="submit" class="btn btn-primary mr-1 mb-1">Asset Audit</button>
-	                                    	</div>
-	                                    	</form>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </section>
-	                <!-- // Basic Vertical form layout section end -->
-				
 
+	 
+	 <form class="g-3"  id="form1" onsubmit="return false" enctype="multipart/form-data">
+	 <div class="row">
+	 <div class="col-sm-4 mb-2">
+	  <label class="form-label">Branch</label>
+      <select class="form-select" id="Branch" name="Branch" required>
+		 <option value="">--Select--</option>
+		
+ <option value="1">Coimbatore</option>
+		
+ <option value="2">Pollachi</option>
+		
+ <option value="3">Madurai</option>
+		
+ <option value="4">Salem</option>
+	</select>
+	 </div>
+
+<div class="col-sm-2 mb-md-0 mb-2">
+            <div class="form-check custom-option custom-option-icon">
+              <label class="form-check-label custom-option-content" for="Status">
+                <span class="custom-option-body">
+                  <i class="bx bx-hdd"></i>
+                  <span class="custom-option-title">IN STOCK</span>
+                </span>
+                <input name="Status" class="form-check-input" type="radio"  id="radio1" value="Checked Out" checked="" required>
+              </label>
             </div>
-        </div>
-    </div>
-			<!-- END: Content-->
-
-
-		
-		<div class="sidenav-overlay"></div>
-		<div class="drag-target"></div>
-
-		<!-- BEGIN: Footer-->
-		<footer class="footer footer-static footer-light">
-		<p class="clearfix mb-0">
-			<span class="float-left d-inline-block"></span><span
-				class="float-right d-sm-inline-block d-none"></span>
-			<button class="btn btn-primary btn-icon scroll-top" type="button">
-				<i class="bx bx-up-arrow-alt"></i>
+          </div>
+          
+           <div class="col-sm-2 mb-md-0 mb-2">
+            <div class="form-check custom-option custom-option-icon">
+              <label class="form-check-label custom-option-content" for="Status">
+                <span class="custom-option-body">
+                  <i class="bx bx-user-circle"></i>
+                  <span class="custom-option-title">CUSTODIAN</span>
+                </span>
+                <input name="Status" class="form-check-input" type="radio" id="radio2" value="Out for repair" required>
+              </label>
+            </div>
+          </div>
+          
+	 
+	  <div class="col-sm-3">
+	   <button type="button" class="btn btn-block btn-primary mt-4"> Search 
 			</button>
-		</p>
-		</footer>
-		<!-- END: Footer-->
+	  </div>
+	  
+	 
+	 
+       
+	  <div class="row mt-2">
+	  
+	   <div class="col-sm-10">
+	 
+	  </div>
+	  <div class="col-sm-2">
+	   <button type="button" class="btn btn-block btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"><i class="bx bx-plus-circle "></i> Add 
+			</button>
+	  </div>
+	  
+	   <div class="col-sm-12">
+	  <div class="table-responsive mt-4">
+		 <table class="table table-sm table-bordered">
+		 <thead>
+		<tr>
+	  <th width="5%">S.No</th>
+      <th>CUSTODIAN</th>
+      <th>DATE</th>
+      <th>ASSET</th>
+      <th>Photo</th>
+      <th>STATUS</th>
+      <th>Condition</th>
+      <th>COMMENTS</th>
+      <th></th>
+			
 
+		</tr>
+		</thead>
+		<tbody id="addckoutrow">
+      
 
-		<!-- BEGIN: Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+		</tbody>
+		
+		
+			 												
+
 	
-		<!-- BEGIN Vendor JS-->
-
-		<!-- BEGIN: Page Vendor JS-->
-		<script th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
-		<!-- END: Page Vendor JS-->
-
-		<!-- BEGIN: Theme JS-->
-		<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-		<script th:src="@{/app-assets/js/core/app.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-		<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-		<!-- END: Theme JS-->
-
-		<!-- BEGIN: Page JS-->
 		
-		<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
-		<!-- END: Page JS-->
 		
-			<script>
-			$(document).ready(function(){
-				//--------------------------------------------------------
-				$(document).on("click", ".filedivdelete", function() {
-					id= $(this).attr("id");
-					var AssetId=$('#AssetId'+id).val();
-					var AssetName= $("#AssetName"+id).text();
-					$('#AssetId').append("<option value='"+ AssetId +"'>"+ AssetName +"</option>");
-					$(this).closest("tr").remove();
-					
-				});
-				//--------------------------------------------------------
-				$(function() {
-					var token = $("meta[name='_csrf']").attr("content");
-					var header = $("meta[name='_csrf_header']").attr("content");
-					$(document).ajaxSend(function(e, xhr, options) {
-						xhr.setRequestHeader(header, token);
-					});
-				});
-				//--------------------------------------------------------
-				$("#Search").click(function(){
-					var Statussr=$("input[name='Status']:checked").val();
-					var branch = $("#BranchID").val();
-					$('#StaffID').html("");
-					$('#AssetId').html("");
-					if(branch != "")
-					{
-						
-						if(Statussr =='InStock')
-						{
-							$('.Custodiandiv').hide();
-							$('#StaffID').html("");
-							//--------------------------------------------------------
-							// Asset Details
-							 $('#AssetId').html("");
-							var BranchIDid = $("#BranchID :Selected").val();
-							var formData = {
-									branchid : BranchIDid					
-							}
-							$.ajax({
-								type : "POST",url : "getassetlistbasedonbranchallinstock",
-								data : formData,success : function(result) {
-									
-									var curstr = result.split("~|~");
-									var assetypeinstcokitem="<option value=''>-</option>";
-									for(str in curstr)
-									{
-										tempsplit=curstr[str].split("|~|");
-										if( tempsplit != '')
-										{
-											assetypeinstcokitem +="<option value='"+ tempsplit[0] +"'> "+  tempsplit[1] + "- "+  tempsplit[2] + "</option>";	
-										}
-									 	 
-									} 
-									$("#AssetId").append(assetypeinstcokitem);
-									
-								},
-								error : function(e) {
-									alert("Error" + e);
-								}
-							});	 
-							//---------------------------------		
-							
-						}else
-						{
-							$('.Custodiandiv').show();
-							//---------------------------------
-							// BranchID Details
-							var BranchIDname = $("#BranchID :Selected").text();
-							$(".Custodianloding").css("visibility","visible");
-							$('#StaffID').html("");
-							var formData = {
-									branchname : BranchIDname					
-							}
-							$.ajax({
-								type : "POST",url : "getEmployeelistbasedonbranch",
-								data : formData,success : function(result) {
-									$('#StaffID').append(result);
-									$(".Custodianloding").css("visibility","hidden");
-									 $("#StaffID").change();
-								},
-								error : function(e) {
-									alert("Error" + e);
-									$(".Custodianloding").css("visibility","hidden");
-								}
-							});
-							//---------------------------------
-						}
-						
+		 </table>
+		 </div>
+	</div>	
+	</div>	
+	</form>
+	
+											
+
 								
-					}
-				});
-				//--------------------------------------------------------
-				$(document).on("change", "#StaffID", function() {
-					
-					//--------------------------------------------------------
-					// Asset Details
-					 $('#AssetId').html("");
-					var StaffID = $("#StaffID :Selected").val();
-					var formData = {
-							StaffID : StaffID					
-					}
-					$.ajax({
-						type : "POST",url : "getassetlistbasedonbranchallstaff",
-						data : formData,success : function(result) {
-							
-							var curstr = result.split("~|~");
-							var assetypeinstcokitem="<option value=''>-</option>";
-							for(str in curstr)
-							{
-								tempsplit=curstr[str].split("|~|");
-								if( tempsplit != '')
-								{
-									assetypeinstcokitem +="<option value='"+ tempsplit[0] +"'> "+  tempsplit[1] + "- "+  tempsplit[2] + "</option>";	
-								}
-							 	 
-							} 
-							$("#AssetId").append(assetypeinstcokitem);
-							
-						},
-						error : function(e) {
-							alert("Error" + e);
-						}
-					});	 
-					//---------------------------------	
-				});
-				//--------------------------------------------------------
-				$(document).on("change", "#AssetId", function() {
-					
-					var assetname = $("#AssetId :Selected").text();
-					tempsplit=assetname.split("-");
-					var v1 =tempsplit[tempsplit.length-1].trim();
-					var v2 =tempsplit[tempsplit.length-2].trim();
-					
-					$('#aCondition').val(v2);
-					$('#Status').val(v1);
-				});
-				//--------------------------------------------------------
-				var sno=1;
-				
-				
-				
-				$("#save").click(function(){
-					
-					
-					var StaffID= $('#StaffID').val();
-					var StaffName= $('#StaffID  option:selected').text();
-					var AssetAuditDate= $('#AssetAuditDate').val();
-					var AssetId= $('#AssetId').val();
-					var AssetName= $('#AssetId  option:selected').text();
-					var Status= $('#Status').val();
-					
-					var aCondition=$('#aCondition').val();
-					var Comments= $('#Comments').val();
-					
-					if( AssetAuditDate !="" && AssetId !="" && AssetName !="" && Status !="" )
-					{
-						tempstr="<input type='hidden' id='StaffID"+ sno +"' name='StaffID' value='"+ StaffID +"'  />";
-						tempstr+="<input type='hidden' id='AssetAuditDate"+ sno +"'  name='AssetAuditDate' value='"+ AssetAuditDate +"'  />";
-						tempstr+="<input type='hidden' id='AssetId"+ sno +"'  name='AssetId' value='"+ AssetId +"'  />";
-						tempstr+="<input type='hidden' id='Status"+ sno +"'  name='Statusx' value='"+ Status +"'  />";
-						tempstr+="<input type='hidden' id='aCondition"+ sno +"'  name='aCondition' value='"+ aCondition +"'  />";
-						tempstr+="<input type='hidden' id='Comments"+ sno +"'  name='Comments' value='"+ Comments +"'  />";
-						
-						filestr="<input type='file' class='form-control fileimage'	name='Photo_Attach' accept='image/*' />";
-						
-						html="<tr><td>"+ sno +"</td><td>"+ StaffName +"</td><td>"+ AssetAuditDate +"</td><td id='AssetName"+ sno +"'>"+ AssetName +"  </td><td > "+ filestr + "  </td><td>"+ Status +"</td><td>"+ aCondition +"</td><td>"+ Comments +"</td><td><span id='"+ sno +"' class='cursor-pointer filedivdelete' style='float:right'>  <i class='bx bx-trash-alt'></i>   </span>"+ tempstr +"</td></tr>";
-												
-						$('.table').append(html);
-						$("#AssetId option[value='"+ AssetId +"']").remove();
-						sno=sno+1;
-					}else
-					{
-						alert("Please fill all mandatory fields");	
-					}
-				});
-			
-			});
-			
-			
-		</script>
+								
+								
+								
+								<!-- Add New Credit Card Modal -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-simple modal-add-new-cc">
+    <div class="modal-content p-3 p-md-5">
+      <div class="modal-body">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="text-center mb-4">
+          <h3>Asset Audit Items</h3>
+         
+        </div>
+         <form class="row g-3"  id="form2" onsubmit="return false" enctype="multipart/form-data">
+				 
+	 <div class="col-sm-12">
+	 <label class="form-label">Custodian </label>
+	 <select class="form-select" name="AssetType" id="AssetType" required>
+	 <option value="">-</option>
+	 <option value="Machinery">Machinery</option>
+	 </select>
+	 </div>
+	 
+	 <div class="col-sm-12">
+	 <label class="form-label">Asset</label>
+	 <input type="hidden"  id="idc" /> 
+	 <input type="hidden"  name="ACondition" /> 
+	 <select class="form-select" name="AssetName" id="AssetName" required>
+	 <option value="">-</option>
+	 <option value="Machinery">Machinery</option>
+	 </select>
+	 </div>
+	 
+	 
 	
-</body>
-<!-- END: Body-->
+	  
+	  
+	  				 
+	 <div class="col-sm-12">
+	 <label class="form-label">Status </label>
+	 <select class="form-select" name="Status">
+	  <option value="">-</option>
+       <option value="In Stock">In Stock</option>
+       <option value="Checked Out">Checked Out</option>
+       <option value="Out for repair">Out for repair</option>
+       <option value="In office Use">In office Use</option>
+       <option value="Damaged">Damaged</option>
+       <option value="Missing">Missing</option>
+       <option value="Repair">Repair</option>       
+       <option value="Scrap">Scrap</option>
+	 </select>
+	 </div>
+	 
+	  <div class="col-sm-12">
+	 <label class="form-label">Condition </label>
+	 <select class="form-select" name="Condition">
+	       <option value="">-</option>
+	        <option value="Fair">Fair</option>
+          	<option value="Good">Good</option>
+          	<option value="New">New</option>
+          	<option value="Poor">Poor</option>
+          	<option value="Damaged">Damaged</option>
+	 </select>
+	 </div>
+	 
+	  
+ 
+	   <div class="col-sm-12">
+	  <label class="form-label">Comments</label>
+	  <input type="text" class="form-control" name="Comments" id="Comments" placeholder="Comments" required>
+	  </div>
+	  
+	  <div class="col-sm-12">
+	  <button type="submit" id="addcheckout" class="btn btn-primary mb-1" > Submit</button>
+	 </div>
+	 
+	 
+				 </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Add New Credit Card Modal -->
+								
+	 
+	 </div>
+	 </div>
+    
+    </div>
+    
+    
+         
+            
+    </div>
+    
+       <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  Â©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , made with â¤ï¸ by
+                  <a href="https://pixinvent.com" target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
+                </div>
+                <div>
+                  <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank"
+                    >License</a
+                  >
+                  <a href="https://1.envato.market/pixinvent_portfolio" target="_blank" class="footer-link me-4"
+                    >More Themes</a
+                  >
 
-</html>
+                  <a
+                    href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
+                    target="_blank"
+                    class="footer-link me-4"
+                    >Documentation</a
+                  >
+
+                  <a href="https://pixinvent.ticksy.com/" target="_blank" class="footer-link d-none d-sm-inline-block"
+                    >Support</a
+                  >
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+            
+    </div>
+    </div>
+    </div>
+        <!-- Core JS -->
+  <!-- build:js assets/vendor/js/core.js -->
+  <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+  <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+  <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+  <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+  
+  <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+  
+
+  <script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+  <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+  
+  <script th:src="@{/assets/vendor/js/menu.js}"></script>
+  <!-- endbuild -->
 
 
+<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+  <!-- Vendors JS -->
+  <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+  <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+  <script th:src="@{/assets/vendor/libs/datatables-fixedcolumns/datatables.fixedcolumns.js}"></script>
+  <script th:src="@{/assets/vendor/libs/bs-stepper/bs-stepper.js}"></script>
+	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+	 <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+     <script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+     <script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
 
-
+  <!-- Main JS -->
+  <script th:src="@{/assets/js/main.js}"></script>
+  <script>
+  
+  var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
+	
+  $(".flatpickr").each(function(index) {
+	  $(this).flatpickr({
+	    	altInput: true,
+		    altFormat: 'F j, Y',
+		    dateFormat: 'Y-m-d',
+	    });
+  })
+  
+  const radio = $(`[name="Status"]`);
+  const WhichLocation = $(`[name="WhichLocation"]`);
+  const vendor = $(`[name="vendor"]`);
+  const vendordiv = $(`#vendordiv`);
+  const locationdiv = $(`#locationdiv`); 
+  const form2 = $(`#form2`);
+  const AssetType = $(`[name="AssetType"]`);
+  const AssetName = $(`[name="AssetName"]`);
+  const Photo_Attach = document.querySelector(`[name="Photo_Attach"]`);
+  const Comments = $(`[name="Comments"]`);
+  
+  $(radio).change(function(e){
+		if(this.value == "Out for repair")
+		{
+			vendordiv.show();
+			locationdiv.hide();
+			WhichLocation.val('');
+		}
+		else if(this.value == "In office Use")
+		{
+			locationdiv.show();
+			vendordiv.hide();
+			vendor.val('');
+		}
+		else
+	    {
+			vendordiv.hide();
+			locationdiv.hide();
+			WhichLocation.val('');
+			vendor.val('');
+	    }
+  })
+  
+  $(form2).submit(function(e){
+	 
+		  var text=`<tr>`;
+		  var at = $(`[name="AssetType"] option:selected`).text();
+		  var an = $(`[name="AssetName"] option:selected`).text();
+		  var com = Comments.val();
+		  var i = $('#addckoutrow tr').length === 0 ? 1 : $('#addckoutrow tr').length+1;
+		   
+		  text+=`<td>${i}</td><td id="at-${i}">${at}</td><td id="an-${i}">${an}</td><td></td>`;
+		  const FilesCount = Photo_Attach.files.length;
+		      if(FilesCount > 0)
+			  {
+		    	  const file = Photo_Attach.files[0];
+		    	  const url = URL.createObjectURL(file);
+		    	  text+=`<td id="file-${i}"><a class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2" href="${url}" target="_blank"><i class="bx bx-download bx-xs"></i></a></td>`;
+			  }
+		      else
+		      {
+		    	  text+=`<td id="file-${i}">-</td>`;
+		      }
+		      text+=`<td id="com-${i}">${com}</td><td><button class="btn btn-sm btn-icon delete-record" type="button"><i class="bx bx-trash"></i></button></td></tr>`;
+		      $('#addckoutrow').append(text);
+		  
+	      e.target.reset();
+	      $(`#exampleModalScrollable`).modal('hide');
+  })
+  
+$(document).on('click','.delete-record' , function(e){
+	var tr = $(this).closest('tr');
+	 Swal.fire({
+         title: 'Are you sure?',
+         text: "You won't be able to revert this!",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Yes,  Delete Check Out Entry it!',
+         customClass: {
+             confirmButton: 'btn btn-primary me-3',
+             cancelButton: 'btn btn-label-secondary'
+         },
+         buttonsStyling: false
+     }).then(function(result) {
+    	 if (result.value) {
+    	  tr.remove();
+    	 }
+     })
+})
+  </script>
+    </body>
+    </html>

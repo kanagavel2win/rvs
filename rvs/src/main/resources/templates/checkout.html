@@ -47,23 +47,21 @@
     <link rel="stylesheet" type="text/css" th:href="@{/assets/css/demo.css}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}">
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}">
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-select-bs5/select.bootstrap5.css}">
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}">
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css}">
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css}">
-	
-	<link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bs-stepper/bs-stepper.css}" />
-	<link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
-	<link rel="stylesheet" th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
-	<link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
-	<link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
-	<link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/pickr/pickr-themes.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -96,18 +94,16 @@
 				 <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Administration/Asset/ </span>Check Out</h4>
               
-               <div class="card">
- 
- 	
- 
- 
- <div class="card-body">
+         <!-- DataTable with Buttons -->
+<div class="card">
 
+<div class="card-body">
 
-	 
-	 <form class="g-3"  id="form1" onsubmit="return false" enctype="multipart/form-data">
-	 <div class="row">
-	 <div class="col-sm-3">
+<form id="form1" onsubmit="return false">
+
+<div class="row g-4">
+
+<div class="col-sm-3">
 	  <label class="form-label">Branch</label>
       <select class="form-select" id="Branch" name="Branch" required>
 		 <option value="">--Select--</option>
@@ -131,11 +127,11 @@
 	 </div>
 	 
 	 <div class="col-sm-3">
-	  <label class="form-label">Check Out Date</label>
-	  <input type="text" class="form-control flatpickr" name="CheckOutDate" id="CheckOutDate" placeholder="Apr 3 2022" required>
+	  <label class="form-label">Check In Date</label>
+	  <input type="text" class="form-control flatpickr" name="CheckInDate" id="CheckInDate" placeholder="Apr 3 2022" required>
 	  </div>
-	  
-	 <div class="col-sm-3" id="vendordiv" style="display:none;">
+	 
+	  <div class="col-sm-3" id="vendordiv" style="display:none;">
 	 <label for="form-label">Vendor </label>
 	 <select class="form-select" name="vendor" id="vendorls">
 	 <option value="">-</option>
@@ -147,228 +143,128 @@
 	 <label for="form-label">Which Location/Department </label>
 	 <input type="text" class="form-control" id="WhichLocation" name="WhichLocation">
 	 </div>
-	 </div>
-	 
-	 
-	<!--  <div class="form-check form-check-success mb-2">
-             
-            
-      
-            <input name="Status" class="form-check-input" type="radio"  id="radio1" value="Checked Out" checked="" required>
-            <label class="form-check-label" for="Status"> Checked Out &nbsp;&nbsp;</label>
-         </div> -->
-         
-         <div class="row mt-3">
-        <div class="col-md-2 mb-md-0 mb-2">
-            <div class="form-check custom-option custom-option-icon checked">
-              <label class="form-check-label custom-option-content" for="Status">
-                <span class="custom-option-body">
-                  <i class="bx bx-archive-out"></i>
-                  <span class="custom-option-title">Checked Out</span>
-                </span>
-                <input name="Status" class="form-check-input" type="radio"  id="radio1" value="Checked Out" checked="" required>
-              </label>
-            </div>
-          </div>
-          
-           <div class="col-md-2 mb-md-0 mb-2">
-            <div class="form-check custom-option custom-option-icon checked">
-              <label class="form-check-label custom-option-content" for="Status">
-                <span class="custom-option-body">
-                  <i class="bx bx-briefcase-alt-2"></i>
-                  <span class="custom-option-title">Out For Repair</span>
-                </span>
-                <input name="Status" class="form-check-input" type="radio" id="radio2" value="Out for repair" required>
-              </label>
-            </div>
-          </div>
-          
-          
-           <div class="col-md-2 mb-md-0 mb-2">
-            <div class="form-check custom-option custom-option-icon checked">
-              <label class="form-check-label custom-option-content" for="Status">
-                <span class="custom-option-body">
-                  <i class="bx bx-building-house"></i>
-                  <span class="custom-option-title">In Office Use</span>
-                </span>
-                <input name="Status" class="form-check-input" type="radio" id="radio2" value="In office Use" required>
-              </label>
-            </div>
-          </div>
-          
-          
-          
-           </div>
-          
-          
-         	<!--  <div class="form-check form-check-success mb-2">
-            <input name="Status" class="form-check-input" type="radio" id="radio2" value="Out for repair" required>
-            <label class="form-check-label" for="Status"> Out for repair &nbsp;&nbsp;</label>
-            </div>
-            	 <div class="form-check form-check-success mb-2">
-            <input name="Status" class="form-check-input" type="radio" id="radio3" value="In office Use" required>
-            <label class="form-check-label" for="Status"> In office Use &nbsp;&nbsp;</label> -->
-       
-	  <div class="row">
-	  
-	  <div class="col-sm-10">
-	 
-	  </div>
-	  <div class="col-sm-2">
-	   <button type="button" class="btn btn-block btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable"><i class="bx bx-plus-circle "></i> Add 
-			</button>
-	  </div>
-	  
-	   <div class="col-sm-12">
-	  <div class="table-responsive mt-3">
-		 <table class="table table-sm table-bordered">
-		 <thead>
-		<tr>
-			<th width="5%">S.No</th>
-			<th>Asset Type</th>
-			<th>Asset Name</th>
-			<th>Condition</th>
-			<th>Photo</th>
-			<th>Comments</th>
-			<th>Actions</th>
-			
-
-		</tr>
-		</thead>
-		<tbody id="addckoutrow">
-																
-
-		</tbody>
-		
-		
-			 												
-
 	
+	 
+	 <div class="col-sm-3">
+	  <label class="form-label">Status</label>
+      <select class="form-select" id="Status" name="Status" required>
+		 <option value="">--Select--</option>
 		
+ <option value="Checked Out">Checked Out</option>
 		
-		 </table>
-		 </div>
-	</div>	
-	</div>	
-	</form>
-	
-											
-	 
-	 
-	 
-	   <!--scrolling content Modal -->
-	<!-- 							<div class="modal fade" id="exampleModalScrollable"
-									tabindex="-1" role="dialog"
-									aria-labelledby="exampleModalScrollableTitle"
-									aria-hidden="true">
-									<div class="modal-dialog modal-simple modal-enable-otp modal-dialog-centered"
-										role="document">
-										<div class="modal-content">
-											
-											<div class="modal-body">
-											<h5 class="modal-title" id="exampleModalScrollableTitle">Check Out Items</h5>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				 <form class="row g-3"  id="form2" onsubmit="return false" enctype="multipart/form-data">
-				 
-				 <div class="col-sm-12">
-	 <label for="form-label">Asset Type </label>
-	 <select class="form-select" name="AssetType" id="AssetType" required>
-	 <option value="">-</option>
-	 <option value="Machinery">Machinery</option>
-	 </select>
+ <option value="Out for repair">Out for repair</option>
+		
+ <option value="In office Use">In office Use</option>
+		
+ 
+	</select>
 	 </div>
-	 
-	 <div class="col-sm-12">
-	 <label for="form-label">Asset Name</label>
-	 <input type="hidden"  id="idc" /> 
-	 <input type="hidden"  name="ACondition" /> 
-	 <select class="form-select" name="AssetName" id="AssetName" required>
-	 <option value="">-</option>
-	 <option value="Machinery">Machinery</option>
-	 </select>
-	 </div>
-	 
-	 <div class="col-sm-12">
-	 <label for="form-label">Photo Attach</label>
-	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" accept=".png,.jpg,.jpeg,.pdf" />
-	 </div>
-	 
-	  <div class="col-sm-12">
-	 <label for="form-label">Comments</label>
-	 <input type="text" name="Comments" class="form-control" />
-	 </div>
-	 
-	  <div class="col-sm-12">
-	  <button type="submit" id="addcheckout" class="btn btn-primary mb-1" > Submit</button>
-	 </div>
-	 
-	 
-				 </form>
-											</div>
-
-										 
-										</div>
-									</div>
-								</div> -->
-								
-								
-								
-								
-								<!-- Add New Credit Card Modal -->
-<div class="modal fade" id="exampleModalScrollable" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-simple modal-add-new-cc">
-    <div class="modal-content p-3 p-md-5">
-      <div class="modal-body">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        <div class="text-center mb-4">
-          <h3>Check Out Items</h3>
-         
-        </div>
-         <form class="row g-3"  id="form2" onsubmit="return false" enctype="multipart/form-data">
-				 
-				 <div class="col-sm-12">
-	 <label for="form-label">Asset Type </label>
-	 <select class="form-select" name="AssetType" id="AssetType" required>
-	 <option value="">-</option>
-	 <option value="Machinery">Machinery</option>
-	 </select>
-	 </div>
-	 
-	 <div class="col-sm-12">
-	 <label for="form-label">Asset Name</label>
-	 <input type="hidden"  id="idc" /> 
-	 <input type="hidden"  name="ACondition" /> 
-	 <select class="form-select" name="AssetName" id="AssetName" required>
-	 <option value="">-</option>
-	 <option value="Machinery">Machinery</option>
-	 </select>
-	 </div>
-	 
-	 <div class="col-sm-12">
-	 <label for="form-label">Photo Attach</label>
-	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" accept=".png,.jpg,.jpeg,.pdf" />
-	 </div>
-	 
-	  <div class="col-sm-12">
-	 <label for="form-label">Comments</label>
-	 <input type="text" name="Comments" class="form-control" />
-	 </div>
-	 
-	  <div class="col-sm-12">
-	  <button type="submit" id="addcheckout" class="btn btn-primary mb-1" > Submit</button>
-	 </div>
-	 
-	 
-				 </form>
-      </div>
+	  
+	  
+<div class="col-sm-12">
+  <div class="card-datatable table-responsive pt-0">
+    <table class="datatables-basic table table-bordered">
+      <thead>
+        <tr>
+                        <th></th>
+                        <th></th>
+                        <th width="5%">S.No</th>
+						<th>Asset Type</th>
+						<th>Asset Name</th>
+						<th>Condition</th>
+						<th>Photo</th>
+						<th>Comments</th>
+						<th>Actions</th>
+                      </tr>
+      </thead>
+    
+    </table>
+  </div>
     </div>
+    
+     <div class="col-sm-12 text-center">
+            <label class="switch">
+              <input type="checkbox" class="switch-input" name="receipt">
+              <span class="switch-toggle-slider">
+                <span class="switch-on">
+                  <i class="bx bx-check"></i>
+                </span>
+                <span class="switch-off">
+                  <i class="bx bx-x"></i>
+                </span>
+              </span>
+              <span class="switch-label">SHOW RECEIPT AFTER CHECK OUT?</span>
+            </label>
+          </div>
+          
+          <div class="col-sm-12 text-center mt-4">
+            <button type="submit" class="btn btn-primary me-sm-3 me-1">Check Out</button>
+            
+          </div>
+         
+    </div>
+     </form>
+</div>
+</div>
+<!-- Modal to add new record -->
+<div class="offcanvas offcanvas-end" id="add-new-record">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title" id="exampleModalLabel">New Item</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body flex-grow-1">
+    <form class="pt-0 row g-2" id="form2" onsubmit="return false">
+    
+<div class="col-sm-12">
+	 <label for="form-label">Asset Type </label>
+	 <select class="form-select" name="AssetType" id="AssetType" required>
+	 <option value="">-</option>
+	 <option value="Machinery">Machinery</option>
+	 </select>
+	 </div>
+	 
+	 <div class="col-sm-12">
+	 <label for="form-label">Asset Name</label>
+	 <input type="hidden"  id="idc" /> 
+	 <input type="hidden"  name="ACondition" /> 
+	 <select class="form-select" name="AssetName" id="AssetName" required>
+	 <option value="">-</option>
+	 <option value="Machinery">Machinery</option>
+	 </select>
+	 </div>
+	 
+	 <div class="col-sm-12">
+	 <label class="form-label">Condition </label>
+	 <select class="form-select" name="Condition">
+	       <option value="">-</option>
+	        <option value="Fair">Fair</option>
+          	<option value="Good">Good</option>
+          	<option value="New">New</option>
+          	<option value="Poor">Poor</option>
+          	<option value="Damaged">Damaged</option>
+	 </select>
+	 </div>
+	 
+	 
+	 <div class="col-sm-12">
+	 <label for="form-label">Photo Attach</label>
+	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" accept=".png,.jpg,.jpeg,.pdf" />
+	 </div>
+	 
+	  <div class="col-sm-12">
+	 <label for="form-label">Comments</label>
+	 <input type="text" name="Comments" class="form-control" />
+	 </div>
+	 
+	  <div class="col-sm-12">
+	  <button type="submit" id="addcheckout" class="btn btn-primary mb-1" > Submit</button>
+	 </div>
+	 
+    </form>
+
   </div>
 </div>
-<!--/ Add New Credit Card Modal -->
-								
-	 
-	 </div>
-	 </div>
+<!--/ DataTable with Buttons -->
     
     </div>
     
@@ -414,40 +310,57 @@
     </div>
     </div>
         <!-- Core JS -->
-  <!-- build:js assets/vendor/js/core.js -->
-  <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
-  <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
-  <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
-  <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
-  
-  <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
-  
+    <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+    <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+    <script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
-  <script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
-  <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
-  
-  <script th:src="@{/assets/vendor/js/menu.js}"></script>
-  <!-- endbuild -->
+    <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
+    <script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+    <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 
-<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-  <!-- Vendors JS -->
-  <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
-  <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
-  <script th:src="@{/assets/vendor/libs/datatables-fixedcolumns/datatables.fixedcolumns.js}"></script>
-  <script th:src="@{/assets/vendor/libs/bs-stepper/bs-stepper.js}"></script>
-	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
-	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
-	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
-	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
-	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
-	<script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
-	 <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
-     <script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
-     <script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+    <script th:src="@{/assets/vendor/js/menu.js}"></script>
+    <!-- endbuild -->
+
+     <!-- Vendors JS -->
+     <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+    <script th:src="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+    <script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+    <!-- Flat Picker -->
+    <script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+    <script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+     <script th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+    <script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+    
+    <!-- Row Group JS -->
+    <script th:src="@{/assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+    <script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+    <!-- Form Validation -->
+    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
+
+ 
 
   <!-- Main JS -->
   <script th:src="@{/assets/js/main.js}"></script>
+  
+ 
   <script>
   
   var token = $("meta[name='_csrf']").attr("content");
@@ -464,6 +377,8 @@
 	    });
   })
   
+  
+  
   const radio = $(`[name="Status"]`);
   const WhichLocation = $(`[name="WhichLocation"]`);
   const vendor = $(`[name="vendor"]`);
@@ -474,7 +389,131 @@
   const AssetName = $(`[name="AssetName"]`);
   const Photo_Attach = document.querySelector(`[name="Photo_Attach"]`);
   const Comments = $(`[name="Comments"]`);
+  const Condition = $(`[name='Condition']`);
+  const receipt = $(`[name="receipt"]`);
+  const dt_basic_table = $(`.datatables-basic`).DataTable({
+  columnDefs: [
+    {
+      // For Responsive
+      className: 'control',
+      orderable: false,
+      responsivePriority: 2,
+      searchable: false,
+      targets: 0,
+      render: function(data, type, full, meta) {
+        return '';
+      }
+    },
+    {
+      // For Checkboxes
+      targets: 1,
+      orderable: false,
+      responsivePriority: 3,
+      searchable: false,
+      checkboxes: true,
+      render: function() {
+        return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+      },
+      checkboxes: {
+        selectAllRender: '<input type="checkbox" class="form-check-input">'
+      }
+    },
+  ],
   
+  dom:
+    '<"card-header"<"head-label text-center"><"dt-action-buttons text-end"B>><"d-flex justify-content-between align-items-center row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+  displayLength: 10,
+  lengthMenu: [10, 25, 50, 75, 100],
+  buttons: [
+    {
+      extend: 'collection',
+      className: 'btn btn-label-primary dropdown-toggle me-2',
+      text: '<i class="bx bx-export me-2"></i>Export',
+      buttons: [
+        {
+          extend: 'print',
+          text: '<i class="bx bx-printer me-2" ></i>Print',
+          className: 'dropdown-item',
+          exportOptions: { columns: [3, 4, 5, 6, 7] }
+        },
+        {
+          extend: 'csv',
+          text: '<i class="bx bx-file me-2" ></i>Csv',
+          className: 'dropdown-item',
+          exportOptions: { columns: [3, 4, 5, 6, 7] }
+        },
+        {
+          extend: 'excel',
+          text: 'Excel',
+          className: 'dropdown-item',
+          exportOptions: { columns: [3, 4, 5, 6, 7] }
+        },
+        {
+          extend: 'pdf',
+          text: '<i class="bx bxs-file-pdf me-2"></i>Pdf',
+          className: 'dropdown-item',
+          exportOptions: { columns: [3, 4, 5, 6, 7] }
+        },
+        {
+          extend: 'copy',
+          text: '<i class="bx bx-copy me-2" ></i>Copy',
+          className: 'dropdown-item',
+          exportOptions: { columns: [3, 4, 5, 6, 7] }
+        }
+      ]
+    },
+    {
+      text: '<i class="bx bx-plus me-2"></i> <span class="d-none d-lg-inline-block" >Add Item </span>',
+      className: 'create-new btn btn-primary'
+    }
+  ],
+  responsive: {
+    details: {
+      display: $.fn.dataTable.Responsive.display.modal({
+        header: function(row) {
+          var data = row.data();
+          return 'Details of Item';
+        }
+      }),
+      type: 'column',
+      renderer: function(api, rowIdx, columns) {
+        var data = $.map(columns, function(col, i) {
+          return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
+            ? '<tr data-dt-row="' +
+                col.rowIndex +
+                '" data-dt-column="' +
+                col.columnIndex +
+                '">' +
+                '<td>' +
+                col.title +
+                ':' +
+                '</td> ' +
+                '<td>' +
+                col.data +
+                '</td>' +
+                '</tr>'
+            : '';
+        }).join('');
+
+        return data ? $('<table class="table"/><tbody />').append(data) : false;
+      }
+    }
+  }
+});
+
+
+console.log(dt_basic_table.row);
+
+
+
+
+  const e = document.querySelector(".create-new")
+          , t = document.querySelector("#add-new-record");
+        e && e.addEventListener("click", function() {
+            offCanvasEl = new bootstrap.Offcanvas(t),
+            offCanvasEl.show();
+        })
+        
   $(radio).change(function(e){
 		if(this.value == "Out for repair")
 		{
@@ -498,30 +537,43 @@
   })
   
   $(form2).submit(function(e){
-	 
-		  var text=`<tr>`;
-		  var at = $(`[name="AssetType"] option:selected`).text();
-		  var an = $(`[name="AssetName"] option:selected`).text();
-		  var com = Comments.val();
-		  var i = $('#addckoutrow tr').length === 0 ? 1 : $('#addckoutrow tr').length+1;
-		   
-		  text+=`<td>${i}</td><td id="at-${i}">${at}</td><td id="an-${i}">${an}</td><td></td>`;
-		  const FilesCount = Photo_Attach.files.length;
-		      if(FilesCount > 0)
-			  {
-		    	  const file = Photo_Attach.files[0];
-		    	  const url = URL.createObjectURL(file);
-		    	  text+=`<td id="file-${i}"><a class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2" href="${url}" target="_blank"><i class="bx bx-download bx-xs"></i></a></td>`;
-			  }
-		      else
-		      {
-		    	  text+=`<td id="file-${i}">-</td>`;
-		      }
-		      text+=`<td id="com-${i}">${com}</td><td><button class="btn btn-sm btn-icon delete-record" type="button"><i class="bx bx-trash"></i></button></td></tr>`;
-		      $('#addckoutrow').append(text);
-		  
+	  var at = $(`[name="AssetType"] option:selected`).text();
+	  var an = $(`[name="AssetName"] option:selected`).text();
+	  var ac = $(`[name="Condition"] option:selected`).text();
+	  //var i = $('.datatables-basic tbody>tr').length === 0 ? 1 : $('.datatables-basic tbody>tr').length+1;
+	  
+	  var rowCount = dt_basic_table.rows().count();
+	  rowCount = rowCount+1;
+	  
+	  var com = Comments.val();
+	  const FilesCount = Photo_Attach.files.length;
+	  var url;
+      if(FilesCount > 0)
+	  {
+    	  const file = Photo_Attach.files[0];
+    	   url = URL.createObjectURL(file);
+    	   url = `<a class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2" href="${url}" target="_blank"><i class="bx bx-download bx-xs"></i></a>`;
+	  }
+      else
+      {
+    	   url = '-';
+      }
+      var text=`<button class="btn btn-sm btn-icon delete-record" type="button"><i class="bx bx-trash"></i></button>`;
+      
+	  dt_basic_table.row.add([
+		  '',
+          '',
+          rowCount,
+          at,
+          an,
+          ac,
+          url,
+          com,
+          text,
+      ] ).draw( false );
+	  
 	      e.target.reset();
-	      $(`#exampleModalScrollable`).modal('hide');
+	      offCanvasEl.hide();
   })
   
 $(document).on('click','.delete-record' , function(e){
@@ -539,7 +591,9 @@ $(document).on('click','.delete-record' , function(e){
          buttonsStyling: false
      }).then(function(result) {
     	 if (result.value) {
-    	  tr.remove();
+    		 dt_basic_table.row(tr)
+    	        .remove()
+    	        .draw();
     	 }
      })
 })

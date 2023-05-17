@@ -12,6 +12,6 @@ public interface LeadMasterService {
 	public List<LeadMaster> saveall(List<LeadMaster> objList);
 	public int insertContact(int contactpersonid, int leadid);
 	
-	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id);
+	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id, String createddate);
 	public int deleteFiles(int id);
 }

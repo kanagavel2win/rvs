@@ -889,12 +889,14 @@ public class HomeController {
 			String Documenttype = params.get("Documenttype");
 			String DocNo = params.get("DocNo");
 			itemlistService.savesingletxt(Documenttype, "Documenttype");
-			int id = leadMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid);
+			String createdate=displaydateFormatFirstMMMddYYYAMPM.format(new Date());
+			int id = leadMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid,createdate);
 
 			bfiles.setFileid(id);
 			bfiles.setDocumentNo(DocNo);
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
+			bfiles.setCreateddate(createdate);
 			return bfiles;
 		} else if (params.get("functiontype").equalsIgnoreCase("Deal")) {
 			StringBuilder filename = new StringBuilder();

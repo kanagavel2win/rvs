@@ -87,6 +87,10 @@
 <script th:src="@{/assets/js/config.js}"></script>
 
 <style type="text/css">
+.filecreateddate {
+	float: right;
+}
+
 .contacteditbtn {
 	cursor: pointer;
 }
@@ -349,42 +353,55 @@
 												<th:block th:each="fileObj : ${leadMaster.leadFiles}">
 													<div
 														th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.fileid}">
-														<div
-															class="d-flex justify-content-between flex-sm-row flex-column">
+														
 															<div class="card-information">
 
-																<h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
-																<span class="card-number"
-																	th:text="${fileObj.DocumentNo}"></span>
-
-																<th:block th:if="${fileObj.FilePath != ''}">
-																	
-																	<a th:href="${fileObj.FilePath}" target="_blank"> <th:block
-																			th:if="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
-																			<img th:src="@{/assets/img/icons/misc/pdf.png}"
-																				alt="PDF image" width="20" class="me-2">
-																		</th:block> <th:block
-																			th:unless="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
-																			<img th:src="@{/assets/img/icons/misc/jpg.png}"
-																				alt="PDF image" width="20" class="me-2">
-																		</th:block> <small class="text-body"
-																		th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
-																	</small>
-																	</a>
-																</th:block>
+																	<table style="width: 100%;">
+														 			<tr>
+														 				<td>
+														 					<h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
+														 				</td>
+														 				<td>
+														 					<small class="text-muted filecreateddate" th:text="${fileObj.createddate}"  style="float:right"></small>
+														 				</td>
+														 			</tr>
+														 			<tr>
+														 				<td>
+														 					<span class="card-number" th:text="${fileObj.DocumentNo}"></span>
+														 				</td>
+														 				<td rowspan="2"> 
+													 						<div  style="float:right">
+																				<button class="btn btn-label-secondary filedeletebtn"
+																					th:name="${fileObj.fileid}">
+																					<i class='bx bxs-trash-alt'></i>
+																				</button>
+																			</div>
+														 				</td>
+														 			</tr>
+														 			<tr>
+														 				<td>
+														 					<th:block th:if="${fileObj.FilePath != ''}">
+																				<a th:href="${fileObj.FilePath}" target="_blank"> <th:block
+																						th:if="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
+																						<img th:src="@{/assets/img/icons/misc/pdf.png}"
+																							alt="PDF image" width="20" class="me-2">
+																					</th:block> <th:block
+																						th:unless="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
+																						<img th:src="@{/assets/img/icons/misc/jpg.png}"
+																							alt="PDF image" width="20" class="me-2">
+																					</th:block> <small class="text-body"
+																					th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
+																				</small>
+																				</a>
+																			</th:block>
+														 				</td>
+														 			</tr>
+														 		</table>
+														 	
 
 															</div>
-															<div class="d-flex flex-column text-start text-lg-end">
-																<div class="d-flex order-sm-0 order-1 mt-3">
-
-																	<button class="btn btn-label-secondary filedeletebtn"
-																		th:name="${fileObj.fileid}">
-																		<i class='bx bxs-trash-alt'></i>
-																	</button>
-																</div>
-
-															</div>
-														</div>
+															
+														
 													</div>
 
 												</th:block>
@@ -1073,9 +1090,12 @@
 							  			   						
 							  			   					console.log(tempobj);
 							  								
-								  							let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.fileid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
-								  							tempresult += '<h6 class="mb-1">'+ tempobj.documentType +'</h6>';
-								  							tempresult += '<span class="card-number">'+ tempobj.documentNo +'</span>';
+								  			   				let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.fileid  +'"><div>';		                              
+								  							tempresult += '<table style="width: 100%;"><tr><td><h6 class="mb-1">'+ tempobj.documentType +'</h6></td>';
+								  							tempresult += '<td><small class="text-muted filecreateddate" style="float:right">'+ tempobj.createddate +'</small></td></tr>';
+								  							tempresult += '<tr><td><span class="card-number">'+ tempobj.documentNo +'</span></td>';
+								  							tempresult += '<td rowspan="2"><div  style="float:right"><button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.fileid +'"   onClick="filedeleteoperation('+ tempobj.fileid +')"><i class="bx bxs-trash-alt"></i></button></div></td></tr>';
+								  							tempresult += '<tr><td>';
 								  							if(tempobj.filePath != '')
 								  							{
 								  								tempresult += '<a href="'+ tempobj.filePath +'" target="_blank">';
@@ -1089,10 +1109,9 @@
 								  								tempresult += '<span class="text-body"> ' + tempobj.filePath.split("/")[1].substring(15) + '</span>';
 								  								tempresult += '</a>';
 								  							}
-								  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
 								  							
-								  							tempresult += '<button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.fileid +'"   onClick="filedeleteoperation('+ tempobj.fileid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
-								  								
+								  							tempresult += '</td></tr></div></div></div></div>';
+								  							
 								  							$('#fileaddidv').before(tempresult);
 								  							
 							  			   					validationformfilereset();

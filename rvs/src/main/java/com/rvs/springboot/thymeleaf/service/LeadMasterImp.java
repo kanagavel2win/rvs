@@ -69,8 +69,8 @@ public class LeadMasterImp implements LeadMasterService {
 	}
 	
 	@Override
-	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int leadid) {
-		final String sql="INSERT INTO `leadfiles`(`document_no`, `document_type`, `file_path`, `id`) VALUES ('"+ DocumentNo +"','"+ DocumentType  +"','"+ FilePath +"',"+ leadid +")";
+	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int leadid, String createddate) {
+		final String sql="INSERT INTO `leadfiles`(`document_no`, `document_type`, `file_path`, `id`,createddate) VALUES ('"+ DocumentNo +"','"+ DocumentType  +"','"+ FilePath +"',"+ leadid +",'"+ createddate +"')";
 		
 		KeyHolder keyHolder =new GeneratedKeyHolder();
 		

@@ -116,17 +116,24 @@ public class menuactivelist {
 					
 		}else if(menutitle.equalsIgnoreCase("deal"))
 		{
-			activemenus.put("Contact", true);
+			activemenus.put("WorkItem", true);
 			activemenus.put("deal", true);
 			
 					
 		}else if(menutitle.equalsIgnoreCase("project"))
 		{
-			activemenus.put("Contact", true);
+			activemenus.put("WorkItem", true);
+			activemenus.put("project", true);
+			
+					
+		}else if(menutitle.equalsIgnoreCase("projecttemplatelist"))
+		{
+			activemenus.put("WorkItem", true);
 			activemenus.put("project", true);
 			
 					
 		}
+		
 		
 		
 		

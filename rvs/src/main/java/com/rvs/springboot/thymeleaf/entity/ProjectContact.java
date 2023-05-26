@@ -14,27 +14,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Table(name = "projecttemplateactivitymaster")
-public class ProjectTemplateActivityMaster {
+@Getter @Setter @NoArgsConstructor  @AllArgsConstructor @ToString
+@Table(name="projectContact")
+
+public class ProjectContact {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int projectactivityid;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int projectcontactid;
+
 	@Column
-	private String activitytype;
-	@Column
-	private String activitytitle;
-	@Column
-	private String notes;
-	@Column
-	private int duedate;
-	@Column
-	private String activityorder;
+	private int contactPerson;
 	
 	
-}
+	}

@@ -7,48 +7,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import com.rvs.springboot.thymeleaf.dao.ProjectTemplateMasterRepository;
-import com.rvs.springboot.thymeleaf.entity.ProjectTemplatePhase;
+import com.rvs.springboot.thymeleaf.dao.ProjectTemplateBoardRepository;
+import com.rvs.springboot.thymeleaf.entity.ProjectTemplateBoard;
 
 @Service
-public class ProjectTemplateMasterImp implements ProjectTemplateMasterService {
+public class ProjectTemplateBoardImp implements ProjectTemplateBoardService {
 
 	@Autowired
-	ProjectTemplateMasterRepository ProjectTemplateMasterRepo;
+	ProjectTemplateBoardRepository ProjectTemplateBoardRepo;
 	@Autowired
 	private JdbcTemplate JdbcTemplate;
 	
 	
 	@Override
-	public ProjectTemplatePhase save(ProjectTemplatePhase obj) {
-		return ProjectTemplateMasterRepo.save(obj);
+	public ProjectTemplateBoard save(ProjectTemplateBoard obj) {
+		return ProjectTemplateBoardRepo.save(obj);
 	}
 
 	@Override
-	public ProjectTemplatePhase findById(Integer id) {
-		Optional<ProjectTemplatePhase> obj=ProjectTemplateMasterRepo.findById(id);
+	public ProjectTemplateBoard findById(Integer id) {
+		Optional<ProjectTemplateBoard> obj=ProjectTemplateBoardRepo.findById(id);
 		
-		ProjectTemplatePhase bm=null;
+		ProjectTemplateBoard bm=null;
 		
 		if(obj.isPresent())
 		{	
 			bm=obj.get();
 		}else
 		{
-			throw new RuntimeException("Did find any records of ProjectTemplateMaster id "+ id);
+			throw new RuntimeException("Did find any records of ProjectTemplateBoard id "+ id);
 		}
 		return bm;
 	}
 
 	@Override
-	public List<ProjectTemplatePhase> findAll() {
+	public List<ProjectTemplateBoard> findAll() {
 		
-		return ProjectTemplateMasterRepo.findAll();
+		return ProjectTemplateBoardRepo.findAll();
 	}
 
 	@Override
-	public List<ProjectTemplatePhase> saveall(List<ProjectTemplatePhase> objList) {
-		return ProjectTemplateMasterRepo.saveAll(objList);
+	public List<ProjectTemplateBoard> saveall(List<ProjectTemplateBoard> objList) {
+		return ProjectTemplateBoardRepo.saveAll(objList);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,27 +15,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Table(name = "projecttemplateactivitymaster")
-public class ProjectTemplateActivityMaster {
+@Getter @Setter @NoArgsConstructor  @AllArgsConstructor @ToString
+@Table(name="projectFollowers")
+
+public class ProjectFollowers {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int projectactivityid;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int projectfollowerid;
+
 	@Column
-	private String activitytype;
-	@Column
-	private String activitytitle;
-	@Column
-	private String notes;
-	@Column
-	private int duedate;
-	@Column
-	private String activityorder;
+	private int empid;
+
+	@Transient
+	private String Followername;
 	
+	@Transient
+	private String Followerimg;
 	
-}
+	}

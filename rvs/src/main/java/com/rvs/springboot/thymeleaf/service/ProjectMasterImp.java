@@ -102,5 +102,43 @@ public class ProjectMasterImp implements ProjectMasterService {
 		
 	}
 		
+	@Override
+	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int projectid, String createddate) {
+		final String sql="INSERT INTO `projectfiles`(`document_no`, `document_type`, `file_path`, `id`, createddate) VALUES ('"+ DocumentNo +"','"+ DocumentType  +"','"+ FilePath +"',"+ projectid +",'"+ createddate + "')";
+		
+		KeyHolder keyHolder =new GeneratedKeyHolder();
+		
+		JdbcTemplate.update(connection -> {
+		    PreparedStatement ps = connection.prepareStatement(sql, 
+		                           Statement.RETURN_GENERATED_KEYS);
+
+		    return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int deleteFiles(int id) {
+		String sql ="DELETE FROM `projectfiles` WHERE  fileid=" +id ;
+		return JdbcTemplate.update(sql);
+	}		
+	
+	@Override
+	public int insertContact(int contactpersonid, int projectid) {
+		final String sql = "INSERT INTO project_contact(`contact_person`, `id`) VALUES ("
+				+ contactpersonid + "," + projectid + ")";
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		JdbcTemplate.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			return ps;
+		}, keyHolder);
+
+		return keyHolder.getKey().intValue();
+	}
+	
 	
 }

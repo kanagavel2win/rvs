@@ -19,13 +19,24 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "projecttaskmaster")
-public class ProjectTaskMaster {
+@Table(name="projectfiles")
+
+public class ProjectFiles {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int projecttaskid;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int Fileid;
+
 	@Column
-	private String projecttasktitle;
+	private String DocumentType;
+	@Column
+	private String DocumentNo;
+	@Column
+	private String FilePath;
+	@Column
+	private String createddate;
 	
+	
+	
+
 }

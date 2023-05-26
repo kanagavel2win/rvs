@@ -1,15 +1,10 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -24,20 +19,30 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "projecttemplatetaskmaster")
-public class ProjectTemplateTaskMaster {
+@Table(name = "projectItemmaster")
+public class ProjectItemMaster {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int projecttaskid;
+	private int projectitemid;
 	@Column
-	private String tasktitle;
+	private String projecttype;
 	@Column
-	private String taskorder;
+	private String Quantity;
+	@Column
+	private String Unit;
+	@Column
+	private int Taxpercentage;
+	@Column
+	private int Taxamt;
+	@Column
+	private int Discountpercentage;
+	@Column
+	private int Discountvalue;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "projecttemplatetaskId")
-	private List<ProjectTemplateActivityMaster> projectTemplateActivityMaster;
-	
+	@Column
+	private String Price;
+	@Column
+	private String Amount;
 	
 }

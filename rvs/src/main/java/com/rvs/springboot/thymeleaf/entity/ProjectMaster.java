@@ -10,7 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,41 +32,98 @@ public class ProjectMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	//@Column
+	//private String ContactPerson;
+	@Column
+	private String Organization;
 	@Column
 	private String Title;
 	@Column
-	private String startdate;
+	private String Source;
 	@Column
-	private String enddate;
+	private String Reference;
+	@Column
+	private String purpose;
+	@Column
+	private String startdate;
+	
+	@Column
+	private String expectedclosingdate;
 	@Column
 	private String pipeline;
 	@Column
-	private String followers;
-	@Column
 	private String label;
 	@Column
-	private String description;
+	private String notes;
+	
 	@Column
-	private String branch;
+	int branch;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private List<ProjectContact> projectContact;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private List<ProjectFollowers> projectFollowers;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	@OrderBy("Fileid ASC")
+	private List<ProjectFiles> projectFiles;
+	
 	@Column
-	private String assigntouser;
+	private String state;
+	@Column
+	private String district;
+	@Column
+	private String taluk;
+	@Column
+	private String village;
+	@Column
+	private String lankmark;
+	@Column
+	private String lanlong;
 	@Column
 	private String createddate;
 	@Column
-	private String dealid;
+	private String lossbacktoleadreason;
 	@Column
-	private String ContactPerson;
+	private int leadid;
 	@Column
-	private String Organization;
-	
+	private int projectvalue;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "projectId")
-	private List<ProjectdetailsMaster> projectdetailMaster;
+	@OrderBy("projectitemid ASC")
+	private List<ProjectItemMaster> projectItemMaster;
+	
+	
+	@Transient
+	private String nextactivity;
+	
+	
+	@Transient
+	private String OrganizationName;
 
-
+	@Transient
+	private String ContactPersonName;
 	
+	@Transient
+	private String ReferenceName;
+	@Transient
+	private String createddateMMddYYY;
 	
+	@Transient
+	private String expectedclosingdateMMddYYY;
 	
+	@Transient
+	private String expectedstartdateMMddYYY;
+	
+	@Transient
+	private String branchname;
+	
+	@Transient
+	private String projectfollowerids;
 	
 }

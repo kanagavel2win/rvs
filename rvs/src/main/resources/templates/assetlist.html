@@ -140,7 +140,7 @@
 											<span class="tf-icons bx bx-plus me-1"></span>New
 										</button>
 									</div>
-									<div class="col-lg-4 col-sm-12">
+									<div class="col-lg-3 col-sm-12">
 									<label class="form-label">Status:</label>
 									<select class="form-select" id="Status" data-column="">
 									<option value="">-</option>
@@ -149,8 +149,23 @@
 									<option value="In office Use">In office Use</option>
 									 </select>
 									</div>
-									<div class="col-lg-4 col-sm-12"></div>
-									<div class="col-lg-2 col-md-12">
+									<div class="col-lg-3 col-sm-12">
+									<label class="form-label">Branch:</label>
+									<select class="form-select" id="Branch" data-column="3">
+									 <option value="">-</option>
+									 
+									 </select>
+									</div>
+									
+									<div class="col-lg-3 col-sm-12">
+									<label class="form-label">Custodian:</label>
+									<select class="form-select" id="Custodian"  data-column="5">
+									<option value="">-</option>
+									 
+									 </select>
+									</div>
+									
+									<div class="col-lg-1 col-sm-12">
 										<button type="button" class="btn text-nowrap d-inline-block" 
 											data-bs-toggle="modal"
 											data-bs-target="#exampleModalScrollable">
@@ -589,6 +604,12 @@
 	
 	cart_count();
 	
+	var custodian = [];
+	var branchname = [];
+    const Branch = $('#Branch');
+    const Custodian = $('#Custodian');
+	
+	
 	  var dt_basic_table = $('.datatables-basic');
 	    var dt_basic = dt_basic_table.DataTable({
 	    	 ajax: {
@@ -631,10 +652,47 @@
 			      ],
 			      
 			      "rowCallback": function(row, data) {
+			    	  
 			          $(row).attr("id", "row_" + data.assetId); // assuming the first column contains the unique ID
 			        //  console.log(data.assetId,row);
+			         
 			        },
+			        
+			        "initComplete": function(){
+			        	filterDuplicateRows();	
+			        }
 	    });
+	    
+	    function filterDuplicateRows() {
+	    dt_basic.rows().every(function(rowIdx, tableLoop, rowLoop) {
+	    	if(this.data().branchname != '' && this.data().branchname != null)
+	    	{
+	    		branchname.push(this.data().branchname);
+	    	}
+	    
+	    	if(this.data().custodian != '' && this.data().custodian != null)
+	    	{
+	    		custodian.push(this.data().custodian);	
+	    	}
+	    	
+	    })
+	    branchname = [...new Set(branchname)];
+	    custodian = [...new Set(custodian)];
+	    
+	    $.each(branchname, function(key, value) {
+	    	Branch.append($('<option></option>').val(value).text(value));
+	    	});
+	    
+	    $.each(custodian, function(key, value) {
+	    	Custodian.append($('<option></option>').val(value).text(value));
+	    	});
+	    
+	    }
+	    
+	    
+	   
+	
+	    
  
 	    function cart_count() {
 			var count = 0;
@@ -647,9 +705,12 @@
 		}
 	    
 	    
+	   
+	    
+	    
 	    
 	    function hiderow(id){
-	    	if($('#Status').val() != '')
+	    	if($('#Status').val() != '' && Branch.val() != '')
 	    	{
 	    	var currentRow = $('#row_'+id);
 	    	var col1 = currentRow.find( "td:eq(1)").html();
@@ -668,7 +729,7 @@
 	    	}
 	    	else
 	    	{
-	    		alert("Please Select Status");
+	    		alert("Please Select Status,Branch");
 	    		
 	    	}
 	    }
@@ -690,6 +751,8 @@
 				   $('#cart > tbody').html('');
 				   dt_basic.ajax.reload();
 				   cart_count();
+				   Branch.val('');
+				   Custodian.val('');
 				   alert("Reset Your Cart");
 		   }
 		   
@@ -708,6 +771,15 @@
 			   $('#checkin').hide();
 		   }
 	   })
+	   
+	   
+	    
+	   
+	    $('#Branch,#Custodian').change(function (){
+	    	var column = $(this).data('column');
+	    	console.log(column);
+	    	dt_basic_table.DataTable().column(column).search(this.value, false, true).draw();
+	    })
 	   
 	  /*  $('#exampleModalScrollable').on('hide.bs.modal', function() {
 		   $('#cart > tbody').html('');
@@ -980,10 +1052,12 @@ $('#wizard-asset-listing-form').on('submit', function(event){
     	    	const formdata= new FormData(document.querySelector("#wizard-asset-listing-form"));
     	    	//formdata.append("empMasterid", $('#empMasterid').val())
     	    	$.ajax({
-						type : "POST",url : "assetsavejson",
-						data : formdata, contentType: false,
-	   	              processData: false,success : function(result) {
-	   	            	  
+						type : "POST",
+						url : "assetsavejson",
+						data : formdata, 
+						contentType: false,
+	   	                processData: false,
+	   	                success : function(result) {
 	   	            	Swal.fire({
 					        title: 'Success!',
 					        text: 'New Asset is Added Successfully',

@@ -248,7 +248,7 @@
 	 
 	 <div class="col-sm-12">
 	 <label for="form-label">Photo Attach</label>
-	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" accept=".png,.jpg,.jpeg,.pdf" />
+	 <input type="file" name="Photo_Attach" class="form-control Photo_Attach" multiple="" accept=".png,.jpg,.jpeg,.pdf" />
 	 </div>
 	 
 	  <div class="col-sm-12">
@@ -364,7 +364,8 @@
   <script>
   
   var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
+  var header = $("meta[name='_csrf_header']").attr("content");
+  
 	$(document).ajaxSend(function(e, xhr, options) {
 		xhr.setRequestHeader(header, token);
 	});
@@ -391,7 +392,9 @@
   const Comments = $(`[name="Comments"]`);
   const Condition = $(`[name='Condition']`);
   const receipt = $(`[name="receipt"]`);
+  
   const dt_basic_table = $(`.datatables-basic`).DataTable({
+	  
   columnDefs: [
     {
       // For Responsive
@@ -576,6 +579,7 @@ console.log(dt_basic_table.row);
 	      offCanvasEl.hide();
   })
   
+  
 $(document).on('click','.delete-record' , function(e){
 	var tr = $(this).closest('tr');
 	 Swal.fire({
@@ -597,6 +601,7 @@ $(document).on('click','.delete-record' , function(e){
     	 }
      })
 })
+
   </script>
     </body>
     </html>

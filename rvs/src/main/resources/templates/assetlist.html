@@ -134,16 +134,24 @@
 
 								<div class="row g-3">
 
-									<div class="col-lg-6 col-md-12">
-										<button type="button" class="btn btn-warning"
+									<div class="col-lg-2 col-sm-12">
+										<button type="button" class="btn btn-warning mt-4"
 											data-bs-toggle="modal" data-bs-target="#addasset">
 											<span class="tf-icons bx bx-plus me-1"></span>New
 										</button>
 									</div>
-									<div class="col-lg-4 col-md-12"></div>
-
+									<div class="col-lg-4 col-sm-12">
+									<label class="form-label">Status:</label>
+									<select class="form-select" id="Status" data-column="">
+									<option value="">-</option>
+									<option value="In Stock">In Stock</option>
+									<option value="Checked Out">Checked Out</option>
+									<option value="In office Use">In office Use</option>
+									 </select>
+									</div>
+									<div class="col-lg-4 col-sm-12"></div>
 									<div class="col-lg-2 col-md-12">
-										<button type="button" class="btn text-nowrap d-inline-block"
+										<button type="button" class="btn text-nowrap d-inline-block" 
 											data-bs-toggle="modal"
 											data-bs-target="#exampleModalScrollable">
 											<span class="tf-icons bx bx-md bx-cart"></span> <span
@@ -221,10 +229,7 @@
 												id="checkin">
 												<i class="bx bx-download isize"></i> Check In
 											</button>
-											<button type="button" class="btn btn-success  mr-1 mb-1"
-												id="assettransfer">
-												<i class="bx bx-transfer isize"></i> Asset Transfer
-											</button>
+											 
 										</div>
 
 
@@ -568,6 +573,8 @@
 
 	<!-- Main JS -->
 	<script th:src="@{/assets/js/main.js}"></script>
+	
+	 <script th:src="@{/assets/js/tables-datatables-advanced.js}"></script>
 
 
 
@@ -642,6 +649,8 @@
 	    
 	    
 	    function hiderow(id){
+	    	if($('#Status').val() != '')
+	    	{
 	    	var currentRow = $('#row_'+id);
 	    	var col1 = currentRow.find( "td:eq(1)").html();
 			var col2 = currentRow.find( "td:eq(2)").html();
@@ -656,6 +665,12 @@
 						currentRow.hide();
 					});
 			cart_count();
+	    	}
+	    	else
+	    	{
+	    		alert("Please Select Status");
+	    		
+	    	}
 	    }
 	    
 	      
@@ -669,7 +684,35 @@
   			cart_count();
 	    })
 	    
+	   $('#Status').change(function(e){
+		   
+		   if(Number($('#cartcount').text()) > 0){
+				   $('#cart > tbody').html('');
+				   dt_basic.ajax.reload();
+				   cart_count();
+				   alert("Reset Your Cart");
+		   }
+		   
+		   
+		   dt_basic_table.DataTable().column(4).search(this.value, false, true).draw();
+		   
+
+		   if(this.value=="Checked Out" || this.value=="In office Use")
+		   {
+			   $('#checkout').hide();
+			   $('#checkin').show();
+		   }
+		   else
+		   {
+			   $('#checkout').show();
+			   $('#checkin').hide();
+		   }
+	   })
 	   
+	  /*  $('#exampleModalScrollable').on('hide.bs.modal', function() {
+		   $('#cart > tbody').html('');
+		   cart_count();
+		}); */
 	    
 	    
 	   				// --------------------------------------------------------------------

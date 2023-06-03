@@ -8289,6 +8289,7 @@ public class HomeController {
 		ProjectTemplateBoard projectTemplateBoard = projectTemplateBoardService.findById(id);
 
 		theModel.addAttribute("projectTemplateBoard", projectTemplateBoard);
+		theModel.addAttribute("activityMaster", new ActivityMaster());
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
 		return "projecttemplate";
 	}

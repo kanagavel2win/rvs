@@ -79,6 +79,7 @@ public class DealMaster {
 	private String lankmark;
 	@Column
 	private String lanlong;
+	
 	@Column
 	private String createddate;
 	@Column

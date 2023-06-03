@@ -365,7 +365,185 @@
 							</div>
 							<!--scrolling content Modal -->
 
+							<!-- Edit Activity Modal -->
+							<div class="modal fade" id="addevent" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+									<div class="modal-content p-3 p-md-5">
 
+										<div class="modal-body">
+											<button type="button"
+												class="btn-close activityMasterformclose"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3>Activity Information</h3>
+												<p>Update Activity Basic Information</p>
+											</div>
+											<form id="activityMasterform" th:object="${activityMaster}"
+												class="wizard-horizontal" onsubmit="return false"
+												enctype="multipart/form-data">
+												<!-- ------------------------------------------ -->
+												<div class="row">
+													<div class="col-md-12">
+														<label for="addmodel">Activity Title</label>
+														<div class="form-group">
+															<div class="position-relative">
+																<input type="hidden" th:field="*{mastercategoryid}"
+																	id="mastercategoryid"  /> <input type="hidden"
+																	th:field="*{activityId}" id="activityId"
+																	th:value="${activityMaster['activityId']}" /> <input
+																	type="hidden" th:field="*{createdtime}" id="createdtime"
+																	th:value="${activityMaster['createdtime']}" /> <input
+																	type="text"
+																	class="form-control   capitalize ActivityTitle"
+																	placeholder="Task details..."
+																	th:field="*{activitytitle}" id="activitytitle"
+																	th:value="${activityMaster['activitytitle']}"  required/>
+
+															</div>
+														</div>
+													</div>
+													<div class="col-12">
+														<div class="form-group">
+															<div class="btn-group btn-group-toggle mb-1"
+																data-toggle="buttons">
+																<label
+																	th:class="'btn btn-outline-primary activitytypedefault activitytype activitytypeTask '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Task"> <input
+																	type="radio" name="options"
+																	onclick="optionshandle(this);"
+																	th:field="*{activitytype}" value="Task" id="radio1"
+																	style="visibility: hidden" required><i
+																	class="bx bx-alarm-add activitytypeicon"></i>
+																</label> <label
+																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Call"> <input
+																	type="radio" name="options"
+																	onclick="optionshandle(this);"
+																	th:field="*{activitytype}" value="Call" id="radio2"
+																	style="visibility: hidden" required><i
+																	class="bx bx-phone-call activitytypeicon"></i>
+																</label> <label
+																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
+																	onclick="optionshandle(this);" title="Meetings">
+																	<input type="radio" onclick="optionshandle(this);"
+																	name="options" th:field="*{activitytype}"
+																	value="Meetings" id="radio3" style="visibility: hidden" required><i
+																	class="bx bx-group activitytypeicon"></i>
+																</label>
+															</div>
+														</div>
+
+
+													</div>
+
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">Start Date</label>
+															<div class="position-relative has-icon-left">
+																<input type="date" class="form-control  "
+																	th:field="*{startdate}" id="startdate"
+																	th:value="${activityMaster['startdate']}" required />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">Start Time</label>
+															<div class="position-relative has-icon-left">
+																<input type="time" class="form-control  "
+																	th:field="*{starttime}" id="starttime"
+																	th:value="${activityMaster['starttime']}" required />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">End Date</label>
+															<div class="position-relative has-icon-left">
+																<input type="date" class="form-control  "
+																	th:field="*{enddate}" id="enddate"
+																	th:value="${activityMaster['enddate']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="addmodel">End Time</label>
+															<div class="position-relative has-icon-left">
+																<input type="time" class="form-control  "
+																	th:field="*{endtime}" id="endtime"
+																	th:value="${activityMaster['endtime']}" />
+
+
+															</div>
+														</div>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label for="addmodel">Note </label><span class="notes-sm">(Note
+																visible only For You)</span>
+															<div class="position-relative  has-icon-left">
+																<fieldset class="form-group">
+																	<textarea class="form-control " rows="4"
+																		th:field="*{notes}" id="notes"
+																		th:value="${activityMaster['notes']}" required>
+																							</textarea>
+
+																</fieldset>
+															</div>
+														</div>
+
+													</div>
+
+
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<label for="addmodel">Followers</label>
+														<div class="position-relative  has-icon-left">
+															<fieldset class="form-group">
+																<select class="select2 form-control "
+																	id="activityfollowers" required>
+																	<th:block th:each="str :${employeelist}">
+																		<option th:value="${str.empMasterid}"
+																			th:text="${str.StaffName}"></option>
+																	</th:block>
+																</select>
+
+															</fieldset>
+														</div>
+													</div>
+												</div>
+												
+
+												<div class="col-md-12">
+													<br />
+													<button type="reset"
+														class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
+														style="padding-right: 20px;">Reset</button>
+													<button type="submit"
+														class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
+														style="float: right">Save</button>
+
+
+												</div>
+												<!-- ------------------------------------------ -->
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!--/ Edit Activity Modal -->
 							<!-- /Modal -->
 						</div>
 						<!-- / Content -->

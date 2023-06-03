@@ -342,6 +342,60 @@
 								</ul>
 								<!--/ User Pills -->
 
+							  <!-- Address Card -->
+							                  <div class="card mb-4">
+							                    <div class="card-body">
+							                      <h5 class="pb-2 border-bottom mb-4">Address</h5>
+							                      <div class="info-container">
+							                        <ul class="list-unstyled">
+							                          <li class="mb-3">
+							                            <span class="fw-bold me-2">State:</span>
+							                            <span th:text="${BranchMaster.COUNTRY}" id="Lbl_AddressCountry"></span>
+							                          </li>
+							                          <li class="mb-3">
+							                            <span class="fw-bold me-2">District:</span>
+							                            <span  th:text="${BranchMaster.BRANCH_ADDRESSLINE1}"  id="Lbl_AddressAddress1"></span>
+							                          </li>
+							                          <li class="mb-3">
+							                            <span class="fw-bold me-2">Address Line 2:</span>
+							                            <span  th:text="${BranchMaster.BRANCH_ADDRESSLINE2}"  id="Lbl_AddressAddress2"></span>
+							                          </li>
+							                          <li class="mb-3">
+							                            <span class="fw-bold me-2">Landmark:</span>
+							                            <span th:text="${BranchMaster.BRANCH_ADDRESSLandMark}"  id="Lbl_AddressLandmark"></span>
+							                          </li>
+							                          <li class="mb-3">
+							                            <span class="fw-bold me-2">Village:</span>
+							                            <span th:text="${BranchMaster.BRANCH_ADDRESSVillage}" id="Lbl_AddressVillage"></span>
+							                          </li>
+							                          <li class="mb-3">
+							                            <span class="fw-bold me-2">City/Town:</span>
+							                            <span th:text="${BranchMaster.CITY}"  id="Lbl_AddressCity"></span>
+							                          </li>
+							                          <li class="mb-3">
+							                            <span class="fw-bold me-2">State:</span>
+							                            <span th:text="${BranchMaster.STATE}" id="Lbl_AddressState"></span>
+							                          </li>
+							                        <li class="mb-3">
+							                            <span class="fw-bold me-2">Pin code:</span>
+							                            <span th:text="${BranchMaster.ZIP_CODE}" id="Lbl_AddressZipCode"></span>
+							                          </li>
+							                        </ul>
+							                        <div class="d-flex justify-content-center pt-3">
+							                          <a
+							                            href="javascript:;"
+							                            class="btn btn-primary me-3"
+							                            data-bs-target="#addNewAddress"
+							                            data-bs-toggle="modal"
+							                            >Edit</a
+							                          >
+							                          
+							                        </div>
+							                      </div>
+							                    </div>
+							                  </div>
+							                  <!-- /Address Card -->
+							                  
 								<!-- Project   Card -->
 								<div class="card  mb-4">
 									<div class="card-body1">

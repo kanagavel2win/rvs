@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Project Project</title>
+<title>Project Items</title>
 
 <meta name="description" content="" />
 
@@ -72,7 +72,6 @@
 	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
-<link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" />
 <!-- Page CSS -->
 
 <link rel="stylesheet"
@@ -347,7 +346,75 @@
 
 								</ul>
 								<!--/ User Pills -->
+								<!-- Address Card -->
+								<div class="card card-action mb-4">
+									<div class="card-header align-items-center">
+										<h5 class="card-action-title mb-0">Project Location</h5>
+										<div class="card-action-element">
+											<button class="btn btn-primary btn-sm edit-address"
+												type="button" data-bs-toggle="modal"
+												data-bs-target="#addNewAddress">Edit</button>
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="row">
+											<div class="col-xl-7 col-12">
+												<dl class="row mb-0">
+													<dt class="col-sm-4 mb-3 text-nowrap">Line 1:</dt>
+													<dd class="col-sm-8">
+														<span th:text="${projectMaster.addressline1}"
+															id="Lbl_Addressaddressline1"></span>
+													</dd>
 
+													<dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt>
+													<dd class="col-sm-8">
+														<span th:text="${projectMaster.lankmark}"
+															id="Lbl_Addresslankmark"></span>
+													</dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">District:</dt>
+													<dd class="col-sm-8">
+														<span th:text="${projectMaster.district}"
+															id="Lbl_Addressdistrict"></span>
+													</dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt>
+													<dd class="col-sm-8">
+														<span th:text="${projectMaster.pincode}"
+															id="Lbl_Addresspincode"></span>
+													</dd>
+												</dl>
+											</div>
+											<div class="col-xl-5 col-12">
+												<dl class="row mb-0">
+													<dt class="col-sm-4 mb-3 text-nowrap">Line 2:</dt>
+													<dd class="col-sm-8">
+														<span th:text="${projectMaster.addressline2}"
+															id="Lbl_Addressaddressline2"></span>
+													</dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">City/Town:</dt>
+													<dd class="col-sm-8">
+														<span th:text="${projectMaster.taluk}" id="Lbl_Addresstaluk"></span>
+													</dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">State:</dt>
+													<dd class="col-sm-8">
+														<span th:text="${projectMaster.state}" id="Lbl_Addressstate"></span>
+													</dd>
+
+													<dt class="col-sm-4 mb-3 text-nowrap">Lat, Long:</dt>
+													<dd class="col-sm-8">
+														<span th:text="${projectMaster.lanlong}"
+															id="Lbl_Addresslanlong"></span>
+													</dd>
+												</dl>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- /Address Card -->
 								<!-- Project   Card -->
 								<div class="card  mb-4">
 									<div class="card-body1">
@@ -369,9 +436,8 @@
 														<th>Nature of work</th>
 														<th>Quantity</th>
 														<th>Units</th>
-														<th>Price</th>
-														<th>Discount</th>
-														<th>Tax</th>
+														<th>Price per Unit</th>
+														
 														<th>Total</th>
 													</tr>
 												</thead>
@@ -425,8 +491,8 @@
 													<label class="form-label" for="modalAddCardName">QUANTITY
 													</label> <input type="number" id="modalQuantity"
 														name="modalQuantity" class="form-control"
-														required="required" /> <input type="hidden" id="projectid"
-														name="projectid" class="form-control" />
+														required="required" /> <input type="hidden"
+														id="projectitemid" name="projectitemid"  class="form-control" />
 												</div>
 												<div class="col-12">
 													<label class="form-label w-100" for="modalUnits">UNITS
@@ -448,31 +514,12 @@
 													</div>
 												</div>
 												<div class="col-12">
-													<label class="form-label" for="modalPrice">Price </label> <input
+													<label class="form-label" for="modalPrice">Price Per Unit </label> <input
 														type="number" id="modalPrice" name="modalPrice"
 														class="form-control" required="required" />
 												</div>
+
 												
-												<div class="col-6">
-													<label class="form-label" for="modalDiscountPercentage">Discount % </label> <input
-														type="number" id="modalDiscountPercentage" name="modalDiscountPercentage"
-														class="form-control" required="required" value="0" />
-												</div>
-												<div class="col-6">
-													<label class="form-label" for="modalDiscountAmount">Discount Amount </label> <input
-														type="number" id="modalDiscountAmount" name="modalDiscountAmount"
-														class="form-control" required="required" value="0"  />
-												</div>
-												<div class="col-6">
-													<label class="form-label" for="modalTaxpercentage">Tax %</label> <input
-														type="number" id="modalTaxpercentage" name="modalTaxpercentage"
-														class="form-control" required="required" value="0" />
-												</div>
-												<div class="col-6">
-													<label class="form-label" for="modalTaxAmount">Tax Amount </label> <input
-														type="number" id="modalTaxAmount" name="modalTaxamount"
-														class="form-control" required="required" value="0"  disabled/>
-												</div>
 												<div class="col-12">
 													<label class="form-label" for="modalTotalamount">Total
 														Amount </label> <input type="number" id="modalTotalamount"
@@ -495,8 +542,8 @@
 							<!--/ Add Document -->
 
 							<!-- Edit User Modal -->
-							<div class="modal fade" id="editprojectMasterdetails" tabindex="-1"
-								aria-hidden="true">
+							<div class="modal fade" id="editprojectMasterdetails"
+								tabindex="-1" aria-hidden="true">
 								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
 									<div class="modal-content p-3 p-md-5">
 
@@ -508,8 +555,8 @@
 												<p>Update Project Basic Information</p>
 											</div>
 											<form id="editprojectMasterdetailsForm"
-												th:object="${projectMaster}" class="row g-3 needs-validation"
-												onsubmit="return false">
+												th:object="${projectMaster}"
+												class="row g-3 needs-validation" onsubmit="return false">
 												<input type="hidden" th:value="${projectMaster['id']}"
 													id="projectMasterID" name="projectMasterID" />
 
@@ -546,7 +593,8 @@
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addsourcedata" id="Source"
-															th:field="*{Source}" th:value="${projectMaster['Source']}">
+															th:field="*{Source}"
+															th:value="${projectMaster['Source']}">
 															<th:block th:each="str :${SOURCE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -560,7 +608,8 @@
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addpurposedata" id="purpose"
-															th:field="*{purpose}" th:value="${projectMaster['purpose']}">
+															th:field="*{purpose}"
+															th:value="${projectMaster['purpose']}">
 															<th:block th:each="str :${PURPOSE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -572,7 +621,8 @@
 													<label class="form-label" for="Source">VALUE</label>
 													<div>
 														<input type="number" id="projectvalue"
-															th:field="*{projectvalue}" class="form-control  capitalize"
+															th:field="*{projectvalue}"
+															class="form-control  capitalize"
 															th:value="${projectMaster['projectvalue']}">
 													</div>
 
@@ -616,12 +666,11 @@
 													<label class="form-label" for="label">LABEL </label>
 													<div>
 														<select class="form-control" id="label"
-															th:field="*{label}"
-															th:value="${projectMaster['label']}">
+															th:field="*{label}" th:value="${projectMaster['label']}">
 															<option value="To Do">To Do</option>
 															<option value="In Progress">In Progress</option>
 															<option value="On Hold">On Hold</option>
-															
+
 														</select>
 													</div>
 												</div>
@@ -630,8 +679,8 @@
 													<label class="form-label" for="phonenumber">BRANCH</label>
 													<div>
 														<select class="form-select  form-control " id="branch"
-															th:field="*{branch}" th:value="${projectMaster['branch']}"
-															required>
+															th:field="*{branch}"
+															th:value="${projectMaster['branch']}" required>
 															<th:block th:each="str :${branchlist}">
 																<option th:value="${str.id}"
 																	th:text="${str.BRANCH_NAME}"></option>
@@ -671,8 +720,7 @@
 														Start Date</label>
 													<div>
 
-														<input type="text" id="startdate"
-															th:field="*{startdate}"
+														<input type="text" id="startdate" th:field="*{startdate}"
 															th:value="${projectMaster['startdate']}"
 															class="form-control  capitalize">
 													</div>
@@ -799,7 +847,89 @@
 								</div>
 							</div>
 							<!--/ Edit People Modal -->
+<!-- Add New Address Modal -->
+							<div class="modal fade" id="addNewAddress" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-lg modal-simple modal-add-new-address">
+									<div class="modal-content p-3 p-md-5">
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h3 class="address-title">Address</h3>
+												<p class="address-subtitle">Add/Update Address Details</p>
+											</div>
+											<form id="addNewAddressForm" class="row g-3"
+												onsubmit="return false">
+												
+												<div class="col-12">
+													<label class="form-label" for="modalAddressAddress1">Address
+														Line 1</label> <input type="text" id="modalAddressAddress1"
+														name="modalAddressAddress1" class="form-control"
+														placeholder="Flat, House no, Building, Apartment"
+														th:value="${projectMaster.addressline1}" required />
+												</div>
+												<div class="col-12">
+													<label class="form-label" for="modalAddressAddress2">Address
+														Line 2</label> <input type="text" id="modalAddressAddress2"
+														name="modalAddressAddress2" class="form-control"
+														placeholder="Area, Street, Sector"
+														th:value="${projectMaster.addressline2}" />
+												</div>
+												<div class="col-12">
+													<label class="form-label" for="modalAddressLandmark">Landmark</label>
+													<input type="text" id="modalAddressLandmark"
+														name="modalAddressLandmark" class="form-control"
+														placeholder="E.g. near Kovai All India Radio"
+														th:value="${projectMaster.lankmark}" />
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalAddresstaluk">City</label>
+													<input type="text" id="modalAddresstaluk"
+														name="modalAddresstaluk" class="form-control"
+														th:value="${projectMaster.taluk}" required />
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalAddressdistrict">District</label>
+													<input type="text" id="modalAddressdistrict"
+														name="modalAddressdistrict" class="form-control"
+														th:value="${projectMaster.district}" required />
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalAddressState">State</label>
+													<input type="text" id="modalAddressState"
+														name="modalAddressState" class="form-control"
+														th:value="${projectMaster.state}" required />
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalAddresspincode">PinCode</label> 
+													<input type="number" id="modalAddresspincode"
+														name="modalAddresspincode" class="form-control"
+														th:value="${projectMaster.pincode}" />
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalAddresslanlong">Lat, Long</label> 
+													<input type="number" id="modalAddresslanlong"
+														name="modalAddresslanlong" class="form-control"
+														th:value="${projectMaster.lanlong}" />
+												</div>
 
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary me-sm-3 me-1 editprojectAddressdatasubmit">Update</button>
+													<button type="button"
+														class="btn btn-label-secondary editprojectAddressdataclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Add New Address Modal -->
 							<!--scrolling content Modal -->
 							<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
 								role="dialog" aria-labelledby="ItemStatusScrollableTitle"
@@ -914,9 +1044,6 @@
 		<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
 		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
 
-
-		<script th:src="@{/assets/vendor/libs/quill/quill.js}"></script>
-
 		<!-- Main JS -->
 		<script th:src="@{/assets/js/main.js}"></script>
 
@@ -936,8 +1063,7 @@
 		<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
 		<script th:src="@{/assets/js/app-user-view.js}"></script>
 		<script th:src="@{/assets/js/app-user-view-account.js}"></script>
-		<script th:src="@{/assets/js/forms-editors.js}"></script>
-
+		
 
 		<script>
 			$(document)
@@ -1040,7 +1166,12 @@
 							   				$('.projectprojectsave').prop("disabled",false);
 								   			$('.projectprojectsave').html("Submit");
 								   }
-								
+								function validationformaddressreset()
+								   {
+							   				$('.editprojectAddressdataclose').click();
+							   				$('.editprojectAddressdatasubmit').prop("disabled",false);
+								   			$('.editprojectAddressdatasubmit').html("Submit");
+								   }
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$("#startdate").change(function() {
 									if($('#enddate').val() ==''){
@@ -1053,6 +1184,63 @@
 									}
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
+								 //------------------------------------------------------------------------ 			 
+								 $('.editprojectAddressdatasubmit').on('click', function(event){
+
+								    	  $('.editprojectAddressdatasubmit').prop("disabled",true);
+								    	  
+								    	    if(event.target.checkValidity()){
+								    	    	$('.editprojectAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+								    	    	var projectMasterID=$("#projectMasterID").val();
+								    	    	var modalAddressAddress1 =$('#modalAddressAddress1').val();
+								    	    	var modalAddressAddress2 =$('#modalAddressAddress2').val();
+								    	    	var modalAddressLandmark =$('#modalAddressLandmark').val();
+								    	    	var modalAddresstaluk =$('#modalAddresstaluk').val();
+								    	    	var modalAddressdistrict =$('#modalAddressdistrict').val();
+								    	    	var modalAddressState =$('#modalAddressState').val();
+								    	    	var modalAddresspincode =$('#modalAddresspincode').val();
+								    	    	var modalAddresslanlong =$('#modalAddresslanlong').val();
+								    	    	
+								    	    	var formData = {
+								    	    			projectMasterID: projectMasterID,
+								  	        			AddressAddress1 : modalAddressAddress1,
+								  	        			AddressAddress2 : modalAddressAddress2,
+								  	        			AddressLandmark : modalAddressLandmark,
+								  	        			AddressTaluk : modalAddresstaluk,
+								  	        			AddressDistrict : modalAddressdistrict,
+								  	        			AddressState : modalAddressState,
+								  	        			AddressPinCode : modalAddresspincode,
+								  	        			AddressLanlong : modalAddresslanlong,
+								  	        			functiontype : 'Project'
+								  				 }
+								  				 $.ajax({
+								  						type : "POST",url : "Addressupdatejson",
+								  						data : formData, success : function(result) {
+								  							var bmobj = JSON.parse(JSON.stringify(result));
+								  						//	console.log(bmobj);
+								  							 $('#Lbl_Addressaddressline1').text(bmobj.addressline1);
+								  							$('#Lbl_Addressaddressline2').text(bmobj.addressline2);
+								  							$('#Lbl_Addresslankmark').text(bmobj.lankmark);
+								  							$('#Lbl_Addresstaluk').text(bmobj.taluk);
+								  							$('#Lbl_Addressdistrict').text(bmobj.district);
+								  							$('#Lbl_Addressstate').text(bmobj.state);
+								  							$('#Lbl_Addresspincode').text(bmobj.pincode); 
+								  							$('#Lbl_Addresslanlong').text(bmobj.lanlong); 
+															validationformaddressreset();
+								  						},
+								  						error : function(e) {
+								  							console.log("Error" + e);
+								  						}
+								  					});
+								  	        }	
+								    	    else
+								        	{
+								    	    	$('.editprojectAddressdatasubmit').prop("disabled",false);
+								        	}
+								      });
+							  		
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								
 								function getprojectlist() {
 									
 									var formData = {
@@ -1067,21 +1255,18 @@
 											var htmlop="";
 											var bmobj = JSON.parse(JSON.stringify(result));
 											var total=0;
-											var totaldiscount=0;
-											var totaltax=0;
+											
 											bmobj.forEach((element, index, array) =>
 								           	{
-								           	    
-								           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editprojectinfo(this)' id='"+element.projectprojectid +"'>"+element.projecttype+"</td>";
+								           	  //  console.log(element);
+								           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editprojectinfo(this)' id='"+element.projectitemid +"'>"+element.projecttype+"</td>";
 								           	 htmlop +="<td class='text-nowrap'>"+element.quantity +"</td><td>"+element.unit +"</td><td>"+element.price +"</td>";
-								           	 htmlop +="<td>"+element.discountvalue +"</td><td>"+element.taxamt +"</td><td>"+element.amount +"</td></tr>";
+								           	 htmlop +="<td>"+element.amount +"</td></tr>";
 								           	total +=parseInt(element.amount);
-								           	totaldiscount +=parseInt(element.discountvalue);
-								           	totaltax +=parseInt(element.taxamt);
 								            });
 											
 											
-											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td> <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ totaldiscount +"</p> </td> <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ totaltax +"</p> </td> <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total +"</p> </td> </tr>";
+											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total +"</p> </td> </tr>";
 											$('#projectprojectlist').html(htmlop);
 										},
 										error : function(e) {
@@ -1168,11 +1353,11 @@
 														$('.projectprojectsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 														
 														const formData = new FormData(document.querySelector("#addNewprojectmodel"));
-														formData.append("projectid","[[${projectMaster['id']}]]");
+														formData.append("projectid", "[[${projectMaster['id']}]]");
 														
 														 $.ajax({
 																type : "POST",
-																url : "projectprojectsave",
+																url : "projectitemsave",
 																processData : false,
 																contentType : false,
 																data : formData,
@@ -1453,14 +1638,9 @@
 								function calctotalamount(){
 									let modalQuantity=	$("#modalQuantity").val();
 									let modalPrice=	$("#modalPrice").val();
-									let modalDiscountAmount=	$("#modalDiscountAmount").val();
-									let modalTaxpercentage=	$("#modalTaxpercentage").val();
-									let modalTaxAmount=	((modalQuantity*modalPrice)-modalDiscountAmount)*modalTaxpercentage/100;
-									$("#modalTaxAmount").val(modalTaxAmount);
-									
 									
 									if(modalPrice !='' && modalQuantity!=''){
-										$("#modalTotalamount").val((modalPrice * modalQuantity)+modalTaxAmount-modalDiscountAmount);	
+										$("#modalTotalamount").val((modalPrice * modalQuantity));	
 									}
 									
 								}
@@ -1470,55 +1650,6 @@
 									calctotalamount();
 								});
 							
-								$("#modalDiscountPercentage").change(function(){
-									let modalDiscountPercentage=0;
-									if(	$("#modalDiscountPercentage").val()!=''){
-										modalDiscountPercentage=	$("#modalDiscountPercentage").val();
-									}else
-									{
-									$("#modalDiscountPercentage").val(0);
-									}
-									
-									let modalQuantity=	$("#modalQuantity").val();
-									let modalPrice=	$("#modalPrice").val();
-									$("#modalDiscountAmount").val((modalQuantity*modalPrice)*modalDiscountPercentage/100);
-									
-									calctotalamount();
-								});
-								
-								$("#modalTaxpercentage").change(function(){
-									let modalTaxpercentage=0;
-									if(	$("#modalTaxpercentage").val()!=''){
-										 modalTaxpercentage=	$("#modalTaxpercentage").val();
-									}else
-									{
-									$("#modalTaxpercentage").val(0);
-									}
-										
-									
-									let modalDiscountAmount=	$("#modalDiscountAmount").val();
-									let modalQuantity=	$("#modalQuantity").val();
-									let modalPrice=	$("#modalPrice").val();
-									$("#modalTaxAmount").val(((modalQuantity*modalPrice)-modalDiscountAmount)*modalTaxpercentage/100);
-									
-									calctotalamount();
-								});
-								
-								$("#modalDiscountAmount").change(function(){
-									let modalDiscountAmount=0;
-									if(	$("#modalDiscountAmount").val()!=''){
-										modalDiscountAmount=	$("#modalDiscountAmount").val();
-									}else
-									{
-										$("#modalDiscountAmount").val(0);
-										}
-									
-									let modalQuantity=	$("#modalQuantity").val();
-									let modalPrice=	$("#modalPrice").val();
-									$("#modalDiscountPercentage").val(modalDiscountAmount*100/(modalQuantity*modalPrice));
-									
-									calctotalamount();
-								});
 								
 								$("#modalPrice").change(function(){
 									calctotalamount();
@@ -1598,21 +1729,17 @@
 
 						$.ajax({
 							type : "POST",
-							url : "getprojectproject",
+							url : "getprojectitem",
 							data : formData,
 							success : function(result) {
 								var bmobj = JSON.parse(JSON.stringify(result));
-							
+								//console.log(bmobj);
 								$("#modalTotalamount").val(bmobj.amount);
 								$("#modalPrice").val(bmobj.price);
 								$("#modalQuantity").val(bmobj.quantity);								
 								$("#modalUnits").val(bmobj.unit).change();
 								$("#modalnatureofwork").val(bmobj.projecttype).change();
-								$("#projectid").val(bmobj.projectprojectid);
-								$("#modalTaxpercentage").val(bmobj.taxpercentage);
-								$("#modalTaxAmount").val(bmobj.taxamt);
-								$("#modalDiscountPercentage").val(bmobj.discountpercentage);
-								$("#modalDiscountAmount").val(bmobj.discountvalue);
+								$("#projectitemid").val(bmobj.projectitemid);
 								
 								
 								$('#addNewProject').modal('show');

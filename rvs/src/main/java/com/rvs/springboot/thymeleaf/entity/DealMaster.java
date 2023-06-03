@@ -67,16 +67,21 @@ public class DealMaster {
 	@OrderBy("Fileid ASC")
 	private List<DealFiles> dealFiles;
 	
+	
 	@Column
-	private String state;
+	private String addressline1;
 	@Column
-	private String district;
+	private String addressline2;
+	@Column
+	private String lankmark;
 	@Column
 	private String taluk;
 	@Column
-	private String village;
+	private String district;
 	@Column
-	private String lankmark;
+	private String state;
+	@Column
+	private String pincode;	
 	@Column
 	private String lanlong;
 	
@@ -97,26 +102,18 @@ public class DealMaster {
 	
 	@Transient
 	private String nextactivity;
-	
-	
 	@Transient
 	private String OrganizationName;
-
 	@Transient
 	private String ContactPersonName;
-	
 	@Transient
 	private String ReferenceName;
 	@Transient
 	private String createddateMMddYYY;
-	
 	@Transient
 	private String expectedclosingdateMMddYYY;
-	
-	
 	@Transient
 	private String branchname;
-	
 	@Transient
 	private String dealfollowerids;
 	

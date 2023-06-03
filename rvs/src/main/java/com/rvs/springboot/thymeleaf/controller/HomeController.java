@@ -106,6 +106,7 @@ import com.rvs.springboot.thymeleaf.entity.OrganizationFiles;
 import com.rvs.springboot.thymeleaf.entity.ProjectContact;
 import com.rvs.springboot.thymeleaf.entity.ProjectFiles;
 import com.rvs.springboot.thymeleaf.entity.ProjectFollowers;
+import com.rvs.springboot.thymeleaf.entity.ProjectItemMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateBoard;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplatePhase;
@@ -1050,7 +1051,37 @@ public class HomeController {
 			bm.setAddress_ZIP(params.get("AddressZipCode"));
 			bm = employeeMasterService.save(bm);
 			return bm;
-		} else {
+		}else if (params.get("functiontype").equalsIgnoreCase("Deal")) {
+			int dealMasterID = Integer.parseInt(params.get("dealMasterID"));
+			DealMaster bm = dealMasterService.findById(dealMasterID);
+			bm.setAddressline1(params.get("AddressAddress1"));
+			bm.setAddressline2(params.get("AddressAddress2"));
+			bm.setLankmark(params.get("AddressLandmark"));
+			bm.setTaluk(params.get("AddressTaluk"));
+			bm.setDistrict(params.get("AddressDistrict"));
+			bm.setState(params.get("AddressState"));
+			bm.setPincode(params.get("AddressPinCode"));
+			bm.setLanlong(params.get("AddressLanlong"));
+			
+			bm = dealMasterService.save(bm);
+			return bm;
+		}  else if (params.get("functiontype").equalsIgnoreCase("Project")) {
+			int projectMasterID = Integer.parseInt(params.get("projectMasterID"));
+			ProjectMaster bm = projectMasterService.findById(projectMasterID);
+			bm.setAddressline1(params.get("AddressAddress1"));
+			bm.setAddressline2(params.get("AddressAddress2"));
+			bm.setLankmark(params.get("AddressLandmark"));
+			bm.setTaluk(params.get("AddressTaluk"));
+			bm.setDistrict(params.get("AddressDistrict"));
+			bm.setState(params.get("AddressState"));
+			bm.setPincode(params.get("AddressPinCode"));
+			bm.setLanlong(params.get("AddressLanlong"));
+			
+			bm = projectMasterService.save(bm);
+			return bm;
+		}  
+		
+		else {
 			throw new RuntimeException("functiontype is invalid");
 		}
 	}
@@ -6708,6 +6739,13 @@ public class HomeController {
 
 		return dealMasterService.findById(Integer.parseInt(params.get("mastercategoryid"))).getDealProjectMaster();
 	}
+	
+	@PostMapping("getprojectprojectlist")
+	@ResponseBody
+	public List<ProjectItemMaster> getprojectprojectlist(@RequestParam Map<String, String> params) {
+
+		return projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid"))).getProjectItemMaster();
+	}
 
 	@PostMapping("getdealproject")
 	@ResponseBody
@@ -6717,6 +6755,18 @@ public class HomeController {
 
 		return dm.getDealProjectMaster().stream()
 				.filter(C -> C.getDealprojectid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
+	}
+	
+	@PostMapping("getprojectitem")
+	@ResponseBody
+	public ProjectItemMaster getprojectitem(@RequestParam Map<String, String> params) {
+
+		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
+
+		return dm.getProjectItemMaster().stream()
+				.filter(C -> C.getProjectitemid() == Integer.parseInt(params.get("projectid")))
 				.collect(Collectors.toList()).get(0);
 
 	}
@@ -6734,20 +6784,13 @@ public class HomeController {
 			dealprojectList = dm.getDealProjectMaster();
 			DealProjectMaster dpmobj = new DealProjectMaster();
 			int amount = Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"));
-			int taxamount = (amount - Integer.parseInt(params.get("modalDiscountAmount")))
-					* Integer.parseInt(params.get("modalTaxpercentage")) / 100;
-
-			dpmobj.setAmount(String.valueOf(amount + taxamount));
+			
+			dpmobj.setAmount(String.valueOf(amount));
 			dpmobj.setPrice(params.get("modalPrice"));
 			dpmobj.setProjecttype(params.get("modalnatureofwork"));
 			dpmobj.setQuantity(params.get("modalQuantity"));
 			dpmobj.setUnit(params.get("modalunits"));
-			dpmobj.setDiscountpercentage(Integer.parseInt(params.get("modalDiscountPercentage")));
-			dpmobj.setDiscountvalue(Integer.parseInt(params.get("modalDiscountAmount")));
-			;
-			dpmobj.setTaxamt(taxamount);
-			dpmobj.setTaxpercentage(Integer.parseInt(params.get("modalTaxpercentage")));
-
+		
 			dealprojectList.add(dpmobj);
 
 		} else {
@@ -6756,19 +6799,13 @@ public class HomeController {
 
 					int amount = Integer.parseInt(params.get("modalPrice"))
 							* Integer.parseInt(params.get("modalQuantity"));
-					int taxamount = (amount - Integer.parseInt(params.get("modalDiscountAmount")))
-							* Integer.parseInt(params.get("modalTaxpercentage")) / 100;
-
-					tempdpmobj.setAmount(String.valueOf(amount + taxamount));
+					
+					tempdpmobj.setAmount(String.valueOf(amount ));
 					tempdpmobj.setPrice(params.get("modalPrice"));
 					tempdpmobj.setProjecttype(params.get("modalnatureofwork"));
 					tempdpmobj.setQuantity(params.get("modalQuantity"));
 					tempdpmobj.setUnit(params.get("modalunits"));
-					tempdpmobj.setDiscountpercentage(Integer.parseInt(params.get("modalDiscountPercentage")));
-					tempdpmobj.setDiscountvalue(Integer.parseInt(params.get("modalDiscountAmount")));
-					tempdpmobj.setTaxamt(taxamount);
-					tempdpmobj.setTaxpercentage(Integer.parseInt(params.get("modalTaxpercentage")));
-
+					
 				}
 				dealprojectList.add(tempdpmobj);
 			}
@@ -6788,6 +6825,64 @@ public class HomeController {
 		dm.setDealProjectMaster(dealprojectList);
 
 		dealMasterService.save(dm);
+
+		return "";
+	}
+
+	@PostMapping("projectitemsave")
+	@ResponseBody
+	public String projectprojectsave(@RequestParam Map<String, String> params) {
+
+		// System.out.println(params);
+		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+
+		List<ProjectItemMaster> projectprojectList = new ArrayList();
+		if (nullremover(String.valueOf(params.get("projectitemid"))).equalsIgnoreCase("")) {
+
+			projectprojectList = dm.getProjectItemMaster();
+			ProjectItemMaster dpmobj = new ProjectItemMaster();
+			int amount = Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"));
+			
+			dpmobj.setAmount(String.valueOf(amount));
+			dpmobj.setPrice(params.get("modalPrice"));
+			dpmobj.setProjecttype(params.get("modalnatureofwork"));
+			dpmobj.setQuantity(params.get("modalQuantity"));
+			dpmobj.setUnit(params.get("modalunits"));
+		
+			projectprojectList.add(dpmobj);
+
+		} else {
+			for (ProjectItemMaster tempdpmobj : dm.getProjectItemMaster()) {
+				if (tempdpmobj.getProjectitemid() == Integer.parseInt(params.get("projectitemid"))) {
+
+					int amount = Integer.parseInt(params.get("modalPrice"))
+							* Integer.parseInt(params.get("modalQuantity"));
+					
+					tempdpmobj.setAmount(String.valueOf(amount));
+					tempdpmobj.setPrice(params.get("modalPrice"));
+					tempdpmobj.setProjecttype(params.get("modalnatureofwork"));
+					tempdpmobj.setQuantity(params.get("modalQuantity"));
+					tempdpmobj.setUnit(params.get("modalunits"));
+					
+				}
+				projectprojectList.add(tempdpmobj);
+			}
+
+		}
+
+		try {
+
+			int projectvalue = projectprojectList.stream().mapToInt(o -> Integer.parseInt(o.getAmount())).sum();
+			if (projectvalue > 0) {
+				dm.setProjectvalue(projectvalue);
+			}
+
+		} catch (Exception e) {
+
+		}
+		dm.setProjectItemMaster(projectprojectList);
+
+		projectMasterService.save(dm);
 
 		return "";
 	}

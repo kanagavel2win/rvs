@@ -672,7 +672,9 @@
 									$('.editPhasedatasubmit').prop("disabled",false);
 									$('.editPhasedatasubmit').html("Save");
 								});
-								
+								$(".addactivity").click(function() {
+									$("#addevent").modal('show');
+								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$('#editPhasedetailsForm').on('submit',function(event) {
 											if (event.target.checkValidity()) {

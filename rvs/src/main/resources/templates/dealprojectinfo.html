@@ -419,7 +419,7 @@
 											<h5 class="card-action-title mb-0">
 												Project List
 												<div class="card-action-element" style="float: right">
-													<button class="btn btn-primary btn-sm" type="button"
+													<button class="btn btn-primary btn-sm addNewProjectbtn" type="button"
 														data-bs-toggle="modal" data-bs-target="#addNewProject">
 														<i class="bx bx-plus bx-xs me-1"></i>
 													</button>
@@ -1140,6 +1140,7 @@
 							   				$('.dealprojectclose').click();
 							   				$('.dealprojectsave').prop("disabled",false);
 								   			$('.dealprojectsave').html("Submit");
+								   			
 								   }
 								function validationformaddressreset()
 								   {
@@ -1158,7 +1159,12 @@
 										$('#endtime').val($(this).val());
 									}
 								});
-								 //------------------------------------------------------------------------ 			 
+								 //------------------------------------------------------------------------ 
+ 								 $('.addNewProjectbtn').on('click', function(event){
+ 									$("#projectid").val("");
+ 									validationformprojectreset();
+ 								 });
+ 								//------------------------------------------------------------------------
 								 $('.editprojectAddressdatasubmit').on('click', function(event){
 
 								    	  $('.editprojectAddressdatasubmit').prop("disabled",true);

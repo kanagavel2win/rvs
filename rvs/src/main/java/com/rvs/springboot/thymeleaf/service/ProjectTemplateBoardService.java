@@ -2,6 +2,7 @@ package com.rvs.springboot.thymeleaf.service;
 
 import java.util.List;
 
+import com.rvs.springboot.thymeleaf.entity.ProjectTemplateActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateBoard;
 
 public interface ProjectTemplateBoardService {
@@ -11,4 +12,5 @@ public interface ProjectTemplateBoardService {
 	public List<ProjectTemplateBoard> findAll();
 	public List<ProjectTemplateBoard> saveall(List<ProjectTemplateBoard> objList);
 	public void deletenullrows();
+	public void ProjectTemplateActivityMastersave(ProjectTemplateActivityMaster obj, int projecttemplatephaseid);
 }

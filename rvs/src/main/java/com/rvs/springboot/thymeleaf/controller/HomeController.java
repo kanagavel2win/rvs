@@ -108,6 +108,7 @@ import com.rvs.springboot.thymeleaf.entity.ProjectFiles;
 import com.rvs.springboot.thymeleaf.entity.ProjectFollowers;
 import com.rvs.springboot.thymeleaf.entity.ProjectItemMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
+import com.rvs.springboot.thymeleaf.entity.ProjectTemplateActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateBoard;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplatePhase;
 import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
@@ -7110,6 +7111,38 @@ public class HomeController {
 		activityMaster = activityMasterService.save(activityMaster);
 		return "";
 	}
+	
+	
+	@PostMapping("projecttemplateactivitysave")
+	@ResponseBody
+	public String projecttemplateactivitysave(@RequestParam Map<String, String> param,
+			HttpServletRequest request) {
+
+		int boardid=Integer.parseInt(param.get("boardid"));
+		int phaseid=Integer.parseInt(param.get("phaseid"));
+		
+		ProjectTemplateBoard proTemplateBoard =projectTemplateBoardService.findById(boardid);
+		ProjectTemplatePhase projectTemplatePhase= proTemplateBoard.getProjectTemplatePhase().stream().filter(C -> C.getId()== phaseid).collect(Collectors.toList()).get(0);
+				
+		int activityId = Integer.parseInt(param.get("projectactivityid"));
+		ProjectTemplateActivityMaster activityMaster = new ProjectTemplateActivityMaster();
+		
+		if (activityId > 0) {
+			activityMaster = projectTemplatePhase.getProjecttemplateactivityMaster().stream().filter(C -> C.getProjectactivityid()== activityId).collect(Collectors.toList()).get(0);
+			
+		} 
+
+		activityMaster.setActivitytitle(param.get("activitytitle").toString());
+		activityMaster.setActivitytype(param.get("activitytype").toString());
+		activityMaster.setActivityorder(Integer.parseInt(param.get("activityorder")));	
+		activityMaster.setNotes(param.get("notes").toString());
+		activityMaster.setDaysfromprojectstartdate(Integer.parseInt(param.get("daysfromprojectstartdate").toString()));
+		activityMaster.setActivityfollowers(param.get("activityfollowers"));
+		
+		projectTemplateBoardService.ProjectTemplateActivityMastersave(activityMaster, phaseid);
+		
+		return "";
+	}
 
 	@PostMapping("leadsavestage2")
 	@ResponseBody
@@ -8322,7 +8355,7 @@ public class HomeController {
 			proobj = projectTemplateMasterService.findById(id);
 		}
 		themodel.addAttribute("projecttemplateobject", proobj);
-
+		
 		return "projecttemplate";
 	}
 
@@ -8384,7 +8417,8 @@ public class HomeController {
 		ProjectTemplateBoard projectTemplateBoard = projectTemplateBoardService.findById(id);
 
 		theModel.addAttribute("projectTemplateBoard", projectTemplateBoard);
-		theModel.addAttribute("activityMaster", new ActivityMaster());
+		theModel.addAttribute("employeelist", EffectiveEmployee(employeeMasterService.findAll()));
+		theModel.addAttribute("projectTemplateactivityMaster", new ProjectTemplateActivityMaster());
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
 		return "projecttemplate";
 	}

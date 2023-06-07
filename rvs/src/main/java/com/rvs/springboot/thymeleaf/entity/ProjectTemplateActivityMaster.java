@@ -32,9 +32,12 @@ public class ProjectTemplateActivityMaster {
 	@Column
 	private String notes;
 	@Column
-	private int duedate;
+	private int daysfromprojectstartdate;
 	@Column
-	private String activityorder;
+	private int activityorder;
+	
+	@Column
+	private String activityfollowers;
 	
 	
 }

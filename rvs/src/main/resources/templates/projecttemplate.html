@@ -144,11 +144,9 @@
 }
 
 .addactivity {
-    cursor: pointer;
-
-    color: #0000FF;
+	cursor: pointer;
+	color: #0000FF;
 }
-
 </style>
 <script th:inline="javascript">
 	var emplanstat = 0;
@@ -239,20 +237,24 @@
 																<div class="accordion-body">
 																	<table class="table">
 																		<thead>
-													                      <tr>
-													                        <th>Activity Type</th>
-																			<th>Activity Name</th>
-																			<th>Order</th>
-																			<th></th>
-													                      </tr>
-													                    </thead>
+																			<tr>
+																				<th>Activity Type</th>
+																				<th>Activity Name</th>
+																				<th>Order</th>
+																				<th></th>
+																			</tr>
+																		</thead>
 																		<tbody class="table-border-bottom-0">
-																			
-																		 </tbody>
+																		<tr th:each="activiObj : ${childobj.projecttemplateactivityMaster}" >
+																			<td th:text="${activiObj.activitytype}"></td>
+																			<td th:text="${activiObj.activitytitle}"></td>
+																			<td th:text="${activiObj.activityorder}"></td>
+																		</tr>
+
+																		</tbody>
 																	</table>
-																	<br/>
-																	<span class="addactivity col-12" th:name="${childobj.id}">+ Add
-																		Activity</span>
+																	<br /> <span class="addactivity col-12"
+																		th:name="${childobj.id}">+ Add Activity</span>
 
 
 																</div>
@@ -380,7 +382,8 @@
 												<h3>Activity Information</h3>
 												<p>Update Activity Basic Information</p>
 											</div>
-											<form id="activityMasterform" th:object="${activityMaster}"
+											<form id="activityMasterform"
+												th:object="${projectTemplateactivityMaster}"
 												class="wizard-horizontal" onsubmit="return false"
 												enctype="multipart/form-data">
 												<!-- ------------------------------------------ -->
@@ -389,17 +392,19 @@
 														<label for="addmodel">Activity Title</label>
 														<div class="form-group">
 															<div class="position-relative">
-																<input type="hidden" th:field="*{mastercategoryid}"
-																	id="mastercategoryid"  /> <input type="hidden"
-																	th:field="*{activityId}" id="activityId"
-																	th:value="${activityMaster['activityId']}" /> <input
-																	type="hidden" th:field="*{createdtime}" id="createdtime"
-																	th:value="${activityMaster['createdtime']}" /> <input
-																	type="text"
+																<input type="hidden" id="phaseid" name="phaseid" /> <input
+																	type="hidden" name="boardid"
+																	th:value="${projectTemplateBoard.id}" /> <input
+																	type="hidden" th:field="*{projectactivityid}"
+																	id="projectactivityid"
+																	th:value="${projectTemplateactivityMaster['projectactivityid']}" />
+
+																<input type="text"
 																	class="form-control   capitalize ActivityTitle"
 																	placeholder="Task details..."
 																	th:field="*{activitytitle}" id="activitytitle"
-																	th:value="${activityMaster['activitytitle']}"  required/>
+																	th:value="${projectTemplateactivityMaster['activitytitle']}"
+																	required />
 
 															</div>
 														</div>
@@ -409,7 +414,7 @@
 															<div class="btn-group btn-group-toggle mb-1"
 																data-toggle="buttons">
 																<label
-																	th:class="'btn btn-outline-primary activitytypedefault activitytype activitytypeTask '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
+																	th:class="'btn btn-outline-primary activitytypedefault activitytype activitytypeTask '+ ${projectTemplateactivityMaster['activitytype']=='Task' ? 'active' :''} "
 																	onclick="optionshandle(this);" title="Task"> <input
 																	type="radio" name="options"
 																	onclick="optionshandle(this);"
@@ -417,7 +422,7 @@
 																	style="visibility: hidden" required><i
 																	class="bx bx-alarm-add activitytypeicon"></i>
 																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
+																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${projectTemplateactivityMaster['activitytype']=='Call' ? 'active' :''} "
 																	onclick="optionshandle(this);" title="Call"> <input
 																	type="radio" name="options"
 																	onclick="optionshandle(this);"
@@ -425,11 +430,12 @@
 																	style="visibility: hidden" required><i
 																	class="bx bx-phone-call activitytypeicon"></i>
 																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
+																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${projectTemplateactivityMaster['activitytype']=='Meetings' ? 'active' :''} "
 																	onclick="optionshandle(this);" title="Meetings">
 																	<input type="radio" onclick="optionshandle(this);"
 																	name="options" th:field="*{activitytype}"
-																	value="Meetings" id="radio3" style="visibility: hidden" required><i
+																	value="Meetings" id="radio3" style="visibility: hidden"
+																	required><i
 																	class="bx bx-group activitytypeicon"></i>
 																</label>
 															</div>
@@ -440,11 +446,14 @@
 
 													<div class="col-md-6">
 														<div class="form-group">
-															<label for="addmodel">Start Date</label>
+															<label for="addmodel">days from project start
+																date</label>
 															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{startdate}" id="startdate"
-																	th:value="${activityMaster['startdate']}" required />
+																<input type="number" class="form-control  "
+																	th:field="*{daysfromprojectstartdate}"
+																	id="daysfromprojectstartdate"
+																	th:value="${projectTemplateactivityMaster['daysfromprojectstartdate']}"
+																	required />
 
 
 															</div>
@@ -452,40 +461,20 @@
 													</div>
 													<div class="col-md-6">
 														<div class="form-group">
-															<label for="addmodel">Start Time</label>
+															<label for="addmodel">Activity Order
+																</label>
 															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{starttime}" id="starttime"
-																	th:value="${activityMaster['starttime']}" required />
+																<input type="number" class="form-control  "
+																	th:field="*{activityorder}"
+																	id="activityorder"
+																	th:value="${projectTemplateactivityMaster['activityorder']}"
+																	required />
 
 
 															</div>
 														</div>
 													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{enddate}" id="enddate"
-																	th:value="${activityMaster['enddate']}" />
 
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{endtime}" id="endtime"
-																	th:value="${activityMaster['endtime']}" />
-
-
-															</div>
-														</div>
-													</div>
 													<div class="col-md-12">
 														<div class="form-group">
 															<label for="addmodel">Note </label><span class="notes-sm">(Note
@@ -494,7 +483,8 @@
 																<fieldset class="form-group">
 																	<textarea class="form-control " rows="4"
 																		th:field="*{notes}" id="notes"
-																		th:value="${activityMaster['notes']}" required>
+																		th:value="${projectTemplateactivityMaster['notes']}"
+																		required>
 																							</textarea>
 
 																</fieldset>
@@ -512,7 +502,7 @@
 														<div class="position-relative  has-icon-left">
 															<fieldset class="form-group">
 																<select class="select2 form-control "
-																	id="activityfollowers" required>
+																	id="activityfollowers" name="activityfollowers" required>
 																	<th:block th:each="str :${employeelist}">
 																		<option th:value="${str.empMasterid}"
 																			th:text="${str.StaffName}"></option>
@@ -523,7 +513,7 @@
 														</div>
 													</div>
 												</div>
-												
+
 
 												<div class="col-md-12">
 													<br />
@@ -673,6 +663,16 @@
 									$('.editPhasedatasubmit').html("Save");
 								});
 								$(".addactivity").click(function() {
+									$('.activityMasterformreset').click();
+									$('.activityMasterformsubmit').prop("disabled",
+											false);
+									$('.activityMasterformsubmit').html("Save");
+									$("#activityId").val(0);
+									
+									$("input[name=activitytype][value=Task]").attr('checked', true);
+									$(".activitytype").removeClass("active");
+									$(".activitytypeTask").addClass("active");
+									$("#phaseid").val($(this).attr("name"));
 									$("#addevent").modal('show');
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
@@ -682,6 +682,7 @@
 												$('.editPhasedatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 												const formData = new FormData(document.querySelector("#editPhasedetailsForm"));
 												formData.append("boardid",$("#boardid").val());
+												formData.append("phaseid",$("#phaseid").val());
 												
 												$.ajax({
 													type : "POST",
@@ -721,8 +722,63 @@
 
 										});
 								// --------------------------------------------------------------------
+								function validationactivityeventformreset() {
+									$('.activityMasterformreset').click();
+									$('.activityMasterformclose').click();									
+									$('.activityMasterformsubmit').prop("disabled",
+											false);
+									$('.activityMasterformsubmit').html("Save");
+								}
 								
-							
+								// --------------------------------------------------------------------
+								$('#activityMasterform').on('submit',function(event) {
+									
+									if (event.target.checkValidity()) {
+										$('.activityMasterformsubmit').prop("disabled",true);
+										$('.activityMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+										const formData = new FormData(
+												document
+														.querySelector("#activityMasterform"));
+										//formData.append("mastercategoryid",$("#mastercategoryid").val());
+										
+										$.ajax({
+											type : "POST",
+											url : "projecttemplateactivitysave",
+											processData : false,
+											contentType : false,
+											data : formData,
+											success : function(
+													result) {
+												
+												validationactivityeventformreset();
+												
+												Swal.fire({
+											        title: '',
+											        text: 'Your Activity event added',
+											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+											        imageWidth: 400,
+											        imageAlt: 'Custom image',
+											        confirmButtonText: 'Ok',
+											        customClass: {
+											          confirmButton: 'btn btn-primary'
+											        },
+											        buttonsStyling: false
+											      });
+												
+												//gettimelinelistCompleted();
+												//gettimelinelistNotCompleted();
+
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+											}
+										});
+									} else {
+										$('.activityMasterformsubmit').prop("disabled",false);
+									}
+
+								});
+								// --------------------------------------------------------------------
 							}); // Jquery
 
 		

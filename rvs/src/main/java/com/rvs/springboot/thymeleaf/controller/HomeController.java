@@ -7948,6 +7948,17 @@ public class HomeController {
 		return "";
 	}
 
+
+	@ResponseBody
+	@PostMapping("getboarddetails")
+	public ProjectTemplateBoard getboarddetails(@RequestParam Map<String, String> params) {
+
+		String boardid = params.get("boardid");
+		return projectTemplateBoardService.findById(Integer.parseInt(boardid));
+				
+	}
+
+	
 	@ResponseBody
 	@PostMapping("gettimelinelist")
 	public String gettimelinelist(@RequestParam Map<String, String> params) {

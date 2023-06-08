@@ -147,6 +147,44 @@
 	cursor: pointer;
 	color: #0000FF;
 }
+
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.accordion:after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
 </style>
 <script th:inline="javascript">
 	var emplanstat = 0;
@@ -219,6 +257,7 @@
 											<div class="col-md">
 												<div class="accordion mt-3 accordion-header-primary"
 													id="accordionStyle1">
+													
 													<th:block
 														th:each="childobj, s : *{projectTemplateBoard.projectTemplatePhase}">
 														<div class="accordion-item card">
@@ -262,7 +301,8 @@
 
 														</div>
 													</th:block>
-
+													
+													
 												</div>
 											</div>
 											<!--/ Accordion Header Color -->
@@ -778,10 +818,59 @@
 									}
 
 								});
+								//--------------------------------------------------------------------------------
+								//function load the history events
+								function getphaseandactivitydetails() {
+									
+									var formData = {
+										boardid : "[[${projectTemplateBoard.id}]]",
+										
+									}
+	
+									$.ajax({
+										type : "POST",
+										url : "getboarddetails",
+										data : formData,
+										success : function(result) {
+											console.log(result);
+											html = "";
+											let i=0;
+											result.projectTemplatePhase.forEach(function (obj) {
+											   i++;
+												html +='<div class="accordion-item card"><h2 class="accordion-header"><button type="button" class="accordion" ';
+												html +='  style="background-color: #f2f2f6;">'+ obj.phaseName +  '</button> </h2>';
+												html +=' <div  class="panel" ><div class="accordion-body">';
+												html +=' <table class="table"><thead><tr><th>Activity Type</th><th>Activity Name</th><th>Order</th><th></th></tr></thead><tbody class="table-border-bottom-0">';
+												obj.projecttemplateactivityMaster.forEach(function (Actobj) {
+													html +='  <tr>	<td>'+ Actobj.activitytype +'</td> <td>'+ Actobj.activitytitle +'</td> <td>'+ Actobj.activityorder +'</td> </tr>';
+												}); 
+												
+												html += ' </tbody>	</table> <br /> <span class="addactivity col-12" name="'+ obj.id +'">+ Add Activity</span></div></div></div>';
+			
+											});
+												
+										
+										//$("#accordionStyle1").html(html);
+										
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
 								// --------------------------------------------------------------------
+								$(document).ready(function(){
+								    setTimeout(function(){
+								    	getphaseandactivitydetails();
+								    	
+								     },500); // milliseconds
+								});
 							}); // Jquery
-
-		
+			// --------------------------------------------------------------------
+				
 			
 		</script>
 </body>

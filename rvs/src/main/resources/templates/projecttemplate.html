@@ -702,7 +702,7 @@
 									$('.editPhasedatasubmit').prop("disabled",false);
 									$('.editPhasedatasubmit').html("Save");
 								});
-								$(".addactivity").click(function() {
+								$(document).on("click",".addactivity", function() {
 									$('.activityMasterformreset').click();
 									$('.activityMasterformsubmit').prop("disabled",
 											false);
@@ -837,20 +837,20 @@
 											let i=0;
 											result.projectTemplatePhase.forEach(function (obj) {
 											   i++;
-												html +='<div class="accordion-item card"><h2 class="accordion-header"><button type="button" class="accordion" ';
-												html +='  style="background-color: #f2f2f6;">'+ obj.phaseName +  '</button> </h2>';
-												html +=' <div  class="panel" ><div class="accordion-body">';
+												html +='<div class="accordion-item card"><h2 class="accordion-header"><button type="button" class="accordion-button collapsed" ';
+												html +=`style="background-color: #f2f2f6;" data-bs-toggle="collapse" data-bs-target="#accordionStyle-${obj.id}" id="accordionStyle${obj.id}" aria-expanded="false"> ${obj.phaseName}</button> </h2>`;
+												html +=`<div id="accordionStyle-${obj.id}" class="accordion-collapse collapse" data-bs-parent="#accordionStyle${obj.id}">`;
 												html +=' <table class="table"><thead><tr><th>Activity Type</th><th>Activity Name</th><th>Order</th><th></th></tr></thead><tbody class="table-border-bottom-0">';
 												obj.projecttemplateactivityMaster.forEach(function (Actobj) {
 													html +='  <tr>	<td>'+ Actobj.activitytype +'</td> <td>'+ Actobj.activitytitle +'</td> <td>'+ Actobj.activityorder +'</td> </tr>';
 												}); 
 												
-												html += ' </tbody>	</table> <br /> <span class="addactivity col-12" name="'+ obj.id +'">+ Add Activity</span></div></div></div>';
+												html += `</tbody></table> <br /><span class="addactivity col-12"name="${obj.id}">+ Add Activity</span></div></div></div>`;
 			
 											});
 												
 										
-										//$("#accordionStyle1").html(html);
+										$("#accordionStyle1").html(html);
 										
 										},
 										error : function(e) {

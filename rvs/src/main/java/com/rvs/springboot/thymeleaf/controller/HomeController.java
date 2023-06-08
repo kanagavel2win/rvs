@@ -8372,9 +8372,20 @@ public class HomeController {
 
 	@ResponseBody
 	@PostMapping("projecttemplatesave")
+	
 	public String projecttemplatesave(Model themodel, @RequestParam Map<String, String> params) {
 
-		System.out.println(params);
+		//System.out.println(params);
+		
+		if(params.containsKey("boardName"))
+		{
+			
+			ProjectTemplateBoard projectTemplateBoard = new ProjectTemplateBoard();
+			projectTemplateBoard.setBoardName(params.get("boardName"));
+			projectTemplateBoardService.save(projectTemplateBoard);
+		}else
+		{
+		
 		ProjectTemplateBoard projectTemplateBoard = projectTemplateBoardService
 				.findById(Integer.parseInt(params.get("boardid")));
 
@@ -8401,7 +8412,7 @@ public class HomeController {
 		}
 
 		projectTemplateBoardService.save(projectTemplateBoard);
-
+		}
 		return "";
 	}
 
@@ -8487,7 +8498,12 @@ public class HomeController {
 
 			projectfolloersls.add(lf);
 		}
-		followerids = followerids.substring(0, followerids.length() - 1);
+	
+		if(!followerids.equalsIgnoreCase(""))
+		{
+			followerids = followerids.substring(0, followerids.length() - 1);		
+		}
+	
 		projectMaster.setProjectfollowerids(followerids);
 
 		if (!nullremover(String.valueOf(projectMaster.getReference())).equalsIgnoreCase("")) {

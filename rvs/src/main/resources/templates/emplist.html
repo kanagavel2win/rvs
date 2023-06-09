@@ -54,6 +54,9 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+    <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+	
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
@@ -157,7 +160,7 @@
                         <input
                           type="text"
                           id="firstName"
-                          class="form-control dt-full-name"
+                          class="form-control "
                            required
                         />
                           
@@ -170,7 +173,7 @@
                          <input
                           type="text"
                           id="lastName"
-                          class="form-control dt-full-name"
+                          class="form-control "
                            required
                         />
                        <div class="invalid-feedback">Please enter the Last Name.</div>
@@ -183,7 +186,7 @@
                          <input
                           type="text"
                           id="phonenumber"
-                          class="form-control dt-full-name"
+                          class="form-control phone-number-otp-mask" pattern=".{12}"  
                            required
                         />
                        <div class="invalid-feedback">Please enter the Phone Number.</div>
@@ -195,9 +198,9 @@
                       <div>
                         
                          <input
-                          type="text"
+                          type="email"
                           id="email"
-                          class="form-control dt-full-name"
+                          class="form-control "
                            required
                         />
                        <div class="invalid-feedback">Please enter the Email.</div>
@@ -358,6 +361,8 @@
     <script th:src="@{/assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js}"></script>
     <script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+    <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
     <script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
     <!-- Form Validation -->
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
@@ -677,7 +682,7 @@
       	{
     	  $('.newbranchdatasubmit').prop("disabled",true);
     	  
-    	    if(event.target.checkValidity()){
+    	    if(event.target.checkValidity() & $('#joiningDate').val()!=''){
     	    	$('.newbranchdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
     	    	  
     	    	var firstName =$('#firstName').val();
@@ -754,6 +759,19 @@
 	    });
 	  }
    
+	 
+	  
+	    // Phone
+		 const phoneMask1 = document.querySelector('.phone-number-otp-mask');
+
+	    // Phone Number Input Mask
+	    if (phoneMask1) {
+	      new Cleave(phoneMask1, {
+	        phone: true,
+	        phoneRegionCode: 'US'
+	      });
+	    }
+	    
     </script>
   </body>
 </html>

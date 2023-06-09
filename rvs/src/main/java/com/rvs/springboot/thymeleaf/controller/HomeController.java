@@ -2380,13 +2380,15 @@ public class HomeController {
 		EmployeeMaster employeemasternew = new EmployeeMaster();
 		employeemasternew = employeeMasterService.findById(id);
 		// DOB MM DD format
-		try {
-			employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
-					.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
-		} catch (ParseException e) {
-			e.printStackTrace();
+		if(!nullremover(String.valueOf(employeemasternew.getDateofBirth())).equalsIgnoreCase(""))
+		{
+			try {
+				employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
-
 		if (employeemasternew.getEmployeeAccNo().size() == 0) {
 			List<EmployeeAccNo> empAccNols = new ArrayList();
 			empAccNols.add(new EmployeeAccNo());

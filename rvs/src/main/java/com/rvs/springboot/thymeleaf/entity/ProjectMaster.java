@@ -35,6 +35,9 @@ public class ProjectMaster {
 	//@Column
 	//private String ContactPerson;
 	@Column
+	private String board;
+	
+	@Column
 	private String Organization;
 	@Column
 	private String Title;
@@ -131,5 +134,8 @@ public class ProjectMaster {
 	
 	@Transient
 	private String projectfollowerids;
+	
+	@Transient
+	private String boardName;
 	
 }

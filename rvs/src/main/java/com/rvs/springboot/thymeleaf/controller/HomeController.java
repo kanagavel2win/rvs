@@ -1052,7 +1052,7 @@ public class HomeController {
 			bm.setAddress_ZIP(params.get("AddressZipCode"));
 			bm = employeeMasterService.save(bm);
 			return bm;
-		}else if (params.get("functiontype").equalsIgnoreCase("Deal")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("Deal")) {
 			int dealMasterID = Integer.parseInt(params.get("dealMasterID"));
 			DealMaster bm = dealMasterService.findById(dealMasterID);
 			bm.setAddressline1(params.get("AddressAddress1"));
@@ -1063,10 +1063,10 @@ public class HomeController {
 			bm.setState(params.get("AddressState"));
 			bm.setPincode(params.get("AddressPinCode"));
 			bm.setLanlong(params.get("AddressLanlong"));
-			
+
 			bm = dealMasterService.save(bm);
 			return bm;
-		}  else if (params.get("functiontype").equalsIgnoreCase("Project")) {
+		} else if (params.get("functiontype").equalsIgnoreCase("Project")) {
 			int projectMasterID = Integer.parseInt(params.get("projectMasterID"));
 			ProjectMaster bm = projectMasterService.findById(projectMasterID);
 			bm.setAddressline1(params.get("AddressAddress1"));
@@ -1077,11 +1077,11 @@ public class HomeController {
 			bm.setState(params.get("AddressState"));
 			bm.setPincode(params.get("AddressPinCode"));
 			bm.setLanlong(params.get("AddressLanlong"));
-			
+
 			bm = projectMasterService.save(bm);
 			return bm;
-		}  
-		
+		}
+
 		else {
 			throw new RuntimeException("functiontype is invalid");
 		}
@@ -2380,8 +2380,7 @@ public class HomeController {
 		EmployeeMaster employeemasternew = new EmployeeMaster();
 		employeemasternew = employeeMasterService.findById(id);
 		// DOB MM DD format
-		if(!nullremover(String.valueOf(employeemasternew.getDateofBirth())).equalsIgnoreCase(""))
-		{
+		if (!nullremover(String.valueOf(employeemasternew.getDateofBirth())).equalsIgnoreCase("")) {
 			try {
 				employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
@@ -6742,7 +6741,7 @@ public class HomeController {
 
 		return dealMasterService.findById(Integer.parseInt(params.get("mastercategoryid"))).getDealProjectMaster();
 	}
-	
+
 	@PostMapping("getprojectprojectlist")
 	@ResponseBody
 	public List<ProjectItemMaster> getprojectprojectlist(@RequestParam Map<String, String> params) {
@@ -6761,7 +6760,7 @@ public class HomeController {
 				.collect(Collectors.toList()).get(0);
 
 	}
-	
+
 	@PostMapping("getprojectitem")
 	@ResponseBody
 	public ProjectItemMaster getprojectitem(@RequestParam Map<String, String> params) {
@@ -6787,13 +6786,13 @@ public class HomeController {
 			dealprojectList = dm.getDealProjectMaster();
 			DealProjectMaster dpmobj = new DealProjectMaster();
 			int amount = Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"));
-			
+
 			dpmobj.setAmount(String.valueOf(amount));
 			dpmobj.setPrice(params.get("modalPrice"));
 			dpmobj.setProjecttype(params.get("modalnatureofwork"));
 			dpmobj.setQuantity(params.get("modalQuantity"));
 			dpmobj.setUnit(params.get("modalunits"));
-		
+
 			dealprojectList.add(dpmobj);
 
 		} else {
@@ -6802,13 +6801,13 @@ public class HomeController {
 
 					int amount = Integer.parseInt(params.get("modalPrice"))
 							* Integer.parseInt(params.get("modalQuantity"));
-					
-					tempdpmobj.setAmount(String.valueOf(amount ));
+
+					tempdpmobj.setAmount(String.valueOf(amount));
 					tempdpmobj.setPrice(params.get("modalPrice"));
 					tempdpmobj.setProjecttype(params.get("modalnatureofwork"));
 					tempdpmobj.setQuantity(params.get("modalQuantity"));
 					tempdpmobj.setUnit(params.get("modalunits"));
-					
+
 				}
 				dealprojectList.add(tempdpmobj);
 			}
@@ -6845,13 +6844,13 @@ public class HomeController {
 			projectprojectList = dm.getProjectItemMaster();
 			ProjectItemMaster dpmobj = new ProjectItemMaster();
 			int amount = Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"));
-			
+
 			dpmobj.setAmount(String.valueOf(amount));
 			dpmobj.setPrice(params.get("modalPrice"));
 			dpmobj.setProjecttype(params.get("modalnatureofwork"));
 			dpmobj.setQuantity(params.get("modalQuantity"));
 			dpmobj.setUnit(params.get("modalunits"));
-		
+
 			projectprojectList.add(dpmobj);
 
 		} else {
@@ -6860,13 +6859,13 @@ public class HomeController {
 
 					int amount = Integer.parseInt(params.get("modalPrice"))
 							* Integer.parseInt(params.get("modalQuantity"));
-					
+
 					tempdpmobj.setAmount(String.valueOf(amount));
 					tempdpmobj.setPrice(params.get("modalPrice"));
 					tempdpmobj.setProjecttype(params.get("modalnatureofwork"));
 					tempdpmobj.setQuantity(params.get("modalQuantity"));
 					tempdpmobj.setUnit(params.get("modalunits"));
-					
+
 				}
 				projectprojectList.add(tempdpmobj);
 			}
@@ -7027,26 +7026,26 @@ public class HomeController {
 
 	@PostMapping("getProjectTemplateActivityMaster")
 	@ResponseBody
-	public ProjectTemplateActivityMaster getProjectTemplateActivityMaster(@RequestParam("id") int id, @RequestParam("boardid") int boardid) {
+	public ProjectTemplateActivityMaster getProjectTemplateActivityMaster(@RequestParam("id") int id,
+			@RequestParam("boardid") int boardid) {
 
-		ProjectTemplateBoard proTemplateBoard =projectTemplateBoardService.findById(boardid);
+		ProjectTemplateBoard proTemplateBoard = projectTemplateBoardService.findById(boardid);
 		ProjectTemplateActivityMaster actobj = new ProjectTemplateActivityMaster();
-		
-		for(ProjectTemplatePhase phase :proTemplateBoard.getProjectTemplatePhase())
-		{
-			if(phase.getProjecttemplateactivityMaster().stream().filter(C -> C.getProjectactivityid() == id).collect(Collectors.toList()).size() >0)
-			{
-				actobj=phase.getProjecttemplateactivityMaster().stream().filter(C -> C.getProjectactivityid() == id).collect(Collectors.toList()).get(0);
-				actobj.setTempphaseid(String.valueOf(phase.getId()));	
+
+		for (ProjectTemplatePhase phase : proTemplateBoard.getProjectTemplatePhase()) {
+			if (phase.getProjecttemplateactivityMaster().stream().filter(C -> C.getProjectactivityid() == id)
+					.collect(Collectors.toList()).size() > 0) {
+				actobj = phase.getProjecttemplateactivityMaster().stream().filter(C -> C.getProjectactivityid() == id)
+						.collect(Collectors.toList()).get(0);
+				actobj.setTempphaseid(String.valueOf(phase.getId()));
 			}
-			
+
 		}
-		
+
 		return actobj;
 
 	}
 
-	
 	@PostMapping("activitysave")
 	@ResponseBody
 	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid,
@@ -7135,36 +7134,36 @@ public class HomeController {
 		activityMaster = activityMasterService.save(activityMaster);
 		return "";
 	}
-	
-	
+
 	@PostMapping("projecttemplateactivitysave")
 	@ResponseBody
-	public String projecttemplateactivitysave(@RequestParam Map<String, String> param,
-			HttpServletRequest request) {
+	public String projecttemplateactivitysave(@RequestParam Map<String, String> param, HttpServletRequest request) {
 
-		int boardid=Integer.parseInt(param.get("boardid"));
-		int phaseid=Integer.parseInt(param.get("phaseid"));
-		
-		ProjectTemplateBoard proTemplateBoard =projectTemplateBoardService.findById(boardid);
-		ProjectTemplatePhase projectTemplatePhase= proTemplateBoard.getProjectTemplatePhase().stream().filter(C -> C.getId()== phaseid).collect(Collectors.toList()).get(0);
-				
+		int boardid = Integer.parseInt(param.get("boardid"));
+		int phaseid = Integer.parseInt(param.get("phaseid"));
+
+		ProjectTemplateBoard proTemplateBoard = projectTemplateBoardService.findById(boardid);
+		ProjectTemplatePhase projectTemplatePhase = proTemplateBoard.getProjectTemplatePhase().stream()
+				.filter(C -> C.getId() == phaseid).collect(Collectors.toList()).get(0);
+
 		int activityId = Integer.parseInt(param.get("projectactivityid"));
 		ProjectTemplateActivityMaster activityMaster = new ProjectTemplateActivityMaster();
-		
+
 		if (activityId > 0) {
-			activityMaster = projectTemplatePhase.getProjecttemplateactivityMaster().stream().filter(C -> C.getProjectactivityid()== activityId).collect(Collectors.toList()).get(0);
-			
-		} 
+			activityMaster = projectTemplatePhase.getProjecttemplateactivityMaster().stream()
+					.filter(C -> C.getProjectactivityid() == activityId).collect(Collectors.toList()).get(0);
+
+		}
 
 		activityMaster.setActivitytitle(param.get("activitytitle").toString());
 		activityMaster.setActivitytype(param.get("activitytype").toString());
-		activityMaster.setActivityorder(Integer.parseInt(param.get("activityorder")));	
+		activityMaster.setActivityorder(Integer.parseInt(param.get("activityorder")));
 		activityMaster.setNotes(param.get("notes").toString());
 		activityMaster.setDaysfromprojectstartdate(Integer.parseInt(param.get("daysfromprojectstartdate").toString()));
 		activityMaster.setActivityfollowers(param.get("activityfollowers"));
-		
+
 		projectTemplateBoardService.ProjectTemplateActivityMastersave(activityMaster, phaseid);
-		
+
 		return "";
 	}
 
@@ -7316,6 +7315,7 @@ public class HomeController {
 		projectMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
 		projectMaster.setStartdate(params.get("startdate"));
 		projectMaster.setLabel(params.get("label"));
+		projectMaster.setBoard(params.get("board"));
 
 		List<ProjectFollowers> lfls = new ArrayList<>();
 
@@ -7375,7 +7375,12 @@ public class HomeController {
 				// e.printStackTrace();
 			}
 		}
-
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
+			projectMaster.setBoardName(
+					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
+		}
+		// ----------------------------------------------------------
 		return projectMaster;
 	}
 
@@ -7645,6 +7650,7 @@ public class HomeController {
 		String phonenumber = params.get("phonenumber");
 		String Purpose = params.get("Purpose");
 		String startDate = params.get("startDate");
+		String board = params.get("board");
 
 		int projectValue = 0;
 		if (!params.get("projectValue").equalsIgnoreCase("")) {
@@ -7742,7 +7748,7 @@ public class HomeController {
 		projectMaster.setBranch(branch);
 		projectMaster.setProjectvalue(projectValue);
 		projectMaster.setStartdate(startDate);
-
+		projectMaster.setBoard(board);
 		List<ProjectFollowers> lmlis = new ArrayList();
 		ProjectFollowers lfobj = new ProjectFollowers();
 		lmlis.add(new ProjectFollowers(0, Integer.parseInt(followers), "", ""));
@@ -7972,17 +7978,15 @@ public class HomeController {
 		return "";
 	}
 
-
 	@ResponseBody
 	@PostMapping("getboarddetails")
 	public ProjectTemplateBoard getboarddetails(@RequestParam Map<String, String> params) {
 
 		String boardid = params.get("boardid");
 		return projectTemplateBoardService.findById(Integer.parseInt(boardid));
-				
+
 	}
 
-	
 	@ResponseBody
 	@PostMapping("gettimelinelist")
 	public String gettimelinelist(@RequestParam Map<String, String> params) {
@@ -8361,6 +8365,8 @@ public class HomeController {
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", bmlist);
 
+		themodel.addAttribute("board", projectTemplateBoardService.findAll());
+
 		return "projectlist";
 	}
 
@@ -8390,52 +8396,50 @@ public class HomeController {
 			proobj = projectTemplateMasterService.findById(id);
 		}
 		themodel.addAttribute("projecttemplateobject", proobj);
-		
+
 		return "projecttemplate";
 	}
 
 	@ResponseBody
 	@PostMapping("projecttemplatesave")
-	
+
 	public String projecttemplatesave(Model themodel, @RequestParam Map<String, String> params) {
 
-		//System.out.println(params);
-		
-		if(params.containsKey("boardName"))
-		{
-			
+		// System.out.println(params);
+
+		if (params.containsKey("boardName")) {
+
 			ProjectTemplateBoard projectTemplateBoard = new ProjectTemplateBoard();
 			projectTemplateBoard.setBoardName(params.get("boardName"));
 			projectTemplateBoardService.save(projectTemplateBoard);
-		}else
-		{
-		
-		ProjectTemplateBoard projectTemplateBoard = projectTemplateBoardService
-				.findById(Integer.parseInt(params.get("boardid")));
-
-		List<ProjectTemplatePhase> ProjectTemplatePhaselist = projectTemplateBoard.getProjectTemplatePhase();
-
-		if (Integer.parseInt(params.get("Model_phase_id")) == 0) {
-			ProjectTemplatePhase ptpobj = new ProjectTemplatePhase();
-			ptpobj.setPhaseName(params.get("Model_Phasename"));
-			ptpobj.setOrderID(Integer.parseInt(params.get("Model_orderID")));
-			ProjectTemplatePhaselist.add(ptpobj);
-			projectTemplateBoard.setProjectTemplatePhase(ProjectTemplatePhaselist);
 		} else {
-			List<ProjectTemplatePhase> ProjectTemplatePhaselisttemp = new ArrayList<>();
 
-			for (ProjectTemplatePhase temp1 : ProjectTemplatePhaselist) {
-				if (temp1.getId() == Integer.parseInt(params.get("Model_phase_id"))) {
-					temp1.setPhaseName(params.get("Model_Phasename"));
-					temp1.setOrderID(Integer.parseInt(params.get("Model_orderID")));
+			ProjectTemplateBoard projectTemplateBoard = projectTemplateBoardService
+					.findById(Integer.parseInt(params.get("boardid")));
+
+			List<ProjectTemplatePhase> ProjectTemplatePhaselist = projectTemplateBoard.getProjectTemplatePhase();
+
+			if (Integer.parseInt(params.get("Model_phase_id")) == 0) {
+				ProjectTemplatePhase ptpobj = new ProjectTemplatePhase();
+				ptpobj.setPhaseName(params.get("Model_Phasename"));
+				ptpobj.setOrderID(Integer.parseInt(params.get("Model_orderID")));
+				ProjectTemplatePhaselist.add(ptpobj);
+				projectTemplateBoard.setProjectTemplatePhase(ProjectTemplatePhaselist);
+			} else {
+				List<ProjectTemplatePhase> ProjectTemplatePhaselisttemp = new ArrayList<>();
+
+				for (ProjectTemplatePhase temp1 : ProjectTemplatePhaselist) {
+					if (temp1.getId() == Integer.parseInt(params.get("Model_phase_id"))) {
+						temp1.setPhaseName(params.get("Model_Phasename"));
+						temp1.setOrderID(Integer.parseInt(params.get("Model_orderID")));
+					}
+
+					ProjectTemplatePhaselisttemp.add(temp1);
 				}
-
-				ProjectTemplatePhaselisttemp.add(temp1);
+				projectTemplateBoard.setProjectTemplatePhase(ProjectTemplatePhaselisttemp);
 			}
-			projectTemplateBoard.setProjectTemplatePhase(ProjectTemplatePhaselisttemp);
-		}
 
-		projectTemplateBoardService.save(projectTemplateBoard);
+			projectTemplateBoardService.save(projectTemplateBoard);
 		}
 		return "";
 	}
@@ -8522,12 +8526,11 @@ public class HomeController {
 
 			projectfolloersls.add(lf);
 		}
-	
-		if(!followerids.equalsIgnoreCase(""))
-		{
-			followerids = followerids.substring(0, followerids.length() - 1);		
+
+		if (!followerids.equalsIgnoreCase("")) {
+			followerids = followerids.substring(0, followerids.length() - 1);
 		}
-	
+
 		projectMaster.setProjectfollowerids(followerids);
 
 		if (!nullremover(String.valueOf(projectMaster.getReference())).equalsIgnoreCase("")) {
@@ -8577,6 +8580,11 @@ public class HomeController {
 			}
 		}
 		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
+			projectMaster.setBoardName(
+					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
+		}
+		// ----------------------------------------------------------
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -8617,6 +8625,8 @@ public class HomeController {
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
 		theModel.addAttribute("activityMaster", new ActivityMaster());
+		theModel.addAttribute("board", projectTemplateBoardService.findAll());
+
 		return "projectevents";
 	}
 
@@ -8701,6 +8711,12 @@ public class HomeController {
 			}
 		}
 		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
+			projectMaster.setBoardName(
+					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
+		}
+
+		// ----------------------------------------------------------
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -8740,7 +8756,7 @@ public class HomeController {
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
-
+		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		return "projectattachment";
 	}
 
@@ -8825,6 +8841,12 @@ public class HomeController {
 			}
 		}
 		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
+			projectMaster.setBoardName(
+					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
+		}
+
+		// ----------------------------------------------------------
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -8869,7 +8891,7 @@ public class HomeController {
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
-
+		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		return "projectiteminfo";
 	}
 

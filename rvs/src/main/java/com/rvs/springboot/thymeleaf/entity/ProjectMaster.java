@@ -75,6 +75,11 @@ public class ProjectMaster {
 	@OrderBy("Fileid ASC")
 	private List<ProjectFiles> projectFiles;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "projectid")
+	@OrderBy("orderID ASC")
+	private List<ProjectPhases> projectPhases;
+	
 
 	@Column
 	private String addressline1;

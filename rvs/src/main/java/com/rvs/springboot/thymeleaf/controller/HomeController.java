@@ -108,6 +108,7 @@ import com.rvs.springboot.thymeleaf.entity.ProjectFiles;
 import com.rvs.springboot.thymeleaf.entity.ProjectFollowers;
 import com.rvs.springboot.thymeleaf.entity.ProjectItemMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
+import com.rvs.springboot.thymeleaf.entity.ProjectPhases;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplateBoard;
 import com.rvs.springboot.thymeleaf.entity.ProjectTemplatePhase;
@@ -6761,7 +6762,20 @@ public class HomeController {
 
 	}
 
-	@PostMapping("getprojectitem")
+	@GetMapping("getprojectobj")
+	@ResponseBody
+	public ProjectMaster getproject(@RequestParam Map<String, String> params) {
+
+		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+		for (ProjectPhases pm : dm.getProjectPhases()) {
+			pm.setActivityMaster(activityMasterService.findByMastercategoryAndMastercategoryid("Project",
+					String.valueOf(pm.getId())));
+		}
+		return dm;
+
+	}
+
+	@PostMapping("getproject")
 	@ResponseBody
 	public ProjectItemMaster getprojectitem(@RequestParam Map<String, String> params) {
 
@@ -7987,6 +8001,8 @@ public class HomeController {
 
 	}
 
+	
+
 	@ResponseBody
 	@PostMapping("gettimelinelist")
 	public String gettimelinelist(@RequestParam Map<String, String> params) {
@@ -8441,6 +8457,27 @@ public class HomeController {
 
 			projectTemplateBoardService.save(projectTemplateBoard);
 		}
+		return "";
+	}
+
+	@ResponseBody
+	@PostMapping("projectphasessave")
+
+	public String projectphasessave(Model themodel, @RequestParam Map<String, String> params) {
+
+		// System.out.println(params);
+		ProjectMaster pmobj = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+
+		List<ProjectPhases> pphls = pmobj.getProjectPhases();
+
+		ProjectPhases ptpobj = new ProjectPhases();
+		ptpobj.setPhaseName(params.get("Model_Phasename"));
+		ptpobj.setOrderID(Integer.parseInt(params.get("Model_orderID")));
+		pphls.add(ptpobj);
+		pmobj.setProjectPhases(pphls);
+
+		projectMasterService.save(pmobj);
+
 		return "";
 	}
 

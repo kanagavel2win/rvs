@@ -7023,6 +7023,28 @@ public class HomeController {
 
 	}
 
+	@PostMapping("getProjectTemplateActivityMaster")
+	@ResponseBody
+	public ProjectTemplateActivityMaster getProjectTemplateActivityMaster(@RequestParam("id") int id, @RequestParam("boardid") int boardid) {
+
+		ProjectTemplateBoard proTemplateBoard =projectTemplateBoardService.findById(boardid);
+		ProjectTemplateActivityMaster actobj = new ProjectTemplateActivityMaster();
+		
+		for(ProjectTemplatePhase phase :proTemplateBoard.getProjectTemplatePhase())
+		{
+			if(phase.getProjecttemplateactivityMaster().stream().filter(C -> C.getProjectactivityid() == id).collect(Collectors.toList()).size() >0)
+			{
+				actobj=phase.getProjecttemplateactivityMaster().stream().filter(C -> C.getProjectactivityid() == id).collect(Collectors.toList()).get(0);
+				actobj.setTempphaseid(String.valueOf(phase.getId()));	
+			}
+			
+		}
+		
+		return actobj;
+
+	}
+
+	
 	@PostMapping("activitysave")
 	@ResponseBody
 	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid,

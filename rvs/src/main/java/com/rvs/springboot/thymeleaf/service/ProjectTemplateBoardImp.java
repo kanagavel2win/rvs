@@ -66,18 +66,24 @@ public class ProjectTemplateBoardImp implements ProjectTemplateBoardService {
 	@Override
 	public void ProjectTemplateActivityMastersave(ProjectTemplateActivityMaster obj, int projecttemplatephaseid) {
 		
-		
-		final String sql="INSERT INTO `projecttemplateactivitymaster`(`projectactivityid`,`activityorder`,`activitytitle`,`activitytype`,`daysfromprojectstartdate`,`notes`,`projecttemplatephaseid`,activityfollowers) VALUES "
-		+ "("+ obj.getProjectactivityid() +","+obj.getActivityorder() +",'"+obj.getActivitytitle() +"','"+obj.getActivitytype() +"',"+obj.getDaysfromprojectstartdate() +",'"+obj.getNotes() +"',"+ projecttemplatephaseid +","+ obj.getActivityfollowers() +")";
-		KeyHolder keyHolder =new GeneratedKeyHolder();
-		
-		JdbcTemplate.update(connection -> {
-		    PreparedStatement ps = connection.prepareStatement(sql, 
-		                           Statement.RETURN_GENERATED_KEYS);
-
-		    return ps;
-		}, keyHolder);
-
+		if(obj.getProjectactivityid() > 0)
+		{
+			String sql = "UPDATE projecttemplateactivitymaster SET activityorder ="+obj.getActivityorder() +" ,activitytitle ='"+obj.getActivitytitle() +"' ,activitytype = '"+obj.getActivitytype() +"',daysfromprojectstartdate ="+obj.getDaysfromprojectstartdate() +" ,notes ='"+obj.getNotes() +"',activityfollowers="+ obj.getActivityfollowers() +"  WHERE projectactivityid = " + obj.getProjectactivityid();
+			JdbcTemplate.execute(sql);
+			
+		}else
+		{
+			final String sql="INSERT INTO `projecttemplateactivitymaster`(`projectactivityid`,`activityorder`,`activitytitle`,`activitytype`,`daysfromprojectstartdate`,`notes`,`projecttemplatephaseid`,activityfollowers) VALUES "
+			+ "("+ obj.getProjectactivityid() +","+obj.getActivityorder() +",'"+obj.getActivitytitle() +"','"+obj.getActivitytype() +"',"+obj.getDaysfromprojectstartdate() +",'"+obj.getNotes() +"',"+ projecttemplatephaseid +","+ obj.getActivityfollowers() +")";
+			KeyHolder keyHolder =new GeneratedKeyHolder();
+			
+			JdbcTemplate.update(connection -> {
+			    PreparedStatement ps = connection.prepareStatement(sql, 
+			                           Statement.RETURN_GENERATED_KEYS);
+	
+			    return ps;
+			}, keyHolder);
+		}
 		
 	}
 

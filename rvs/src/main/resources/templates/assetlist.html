@@ -146,7 +146,7 @@
 									</div>
 									<div class="col-lg-3 col-sm-12">
 									<label class="form-label">Branch:</label>
-									<select class="form-select" id="Branch" data-column="3">
+									<select class="form-select" id="Branch1" data-column="3">
 									 <option value="">-</option>
 									 
 									 </select>
@@ -609,7 +609,7 @@
 	
 	var custodian = [];
 	var branchname = [];
-    const Branch = $('#Branch');
+    const Branch = $('#Branch1');
     const Custodian = $('#Custodian');
 	
 	
@@ -778,7 +778,7 @@
 	   
 	    
 	   
-	    $('#Branch,#Custodian').change(function (){
+	    $('#Branch1,#Custodian').change(function (){
 	    	var column = $(this).data('column');
 	    	console.log(column);
 	    	dt_basic_table.DataTable().column(column).search(this.value, false, true).draw();

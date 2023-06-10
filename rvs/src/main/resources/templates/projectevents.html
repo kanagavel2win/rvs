@@ -150,7 +150,16 @@ cursor: pointer;
 	font-weight: bold;
 	padding-left: 10px;
 }
+.bxs-check-circle
+{
+ color : #39da8a;
+}
 
+.strikeout
+{
+  text-decoration: line-through;
+
+}
 </style>
 <script th:inline="javascript">
 	var emplanstat = 0;
@@ -341,7 +350,7 @@ cursor: pointer;
 								<!-- User Pills -->
 								<ul class="nav nav-pills flex-column flex-md-row mb-3">
 									<li class="nav-item"><a class="nav-link active"
-										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Activity</a>
+										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Plan</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'projectiteminfo?id='+${projectMaster.id}"><i class='bx bxl-ok-ru'></i>Projects</a>
@@ -358,7 +367,7 @@ cursor: pointer;
 								<!-- Activity Timeline -->
 								<div class="card mb-4">
 									<h5 class="card-header">
-										Project Activity
+										Project Plan
 
 
 
@@ -1287,6 +1296,7 @@ cursor: pointer;
 										
 									
 									let activityid = $(this).attr("id");
+									let phaseid = $(this).attr("name");
 									var formData = { activityid : activityid }
 		
 										$.ajax({
@@ -1307,8 +1317,8 @@ cursor: pointer;
 											        buttonsStyling: false
 											      });
 												
-												gettimelinelistCompleted();
-												gettimelinelistNotCompleted();
+												getphaseandactivitydetails_part(phaseid);
+												
 											},
 											error : function(e) {
 												console.log("Error" + e);
@@ -1391,8 +1401,18 @@ cursor: pointer;
 															}else if(actobj.activitytype =='Meetings'){
 																tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
 															}
-															status = "<button type='button' id='" + actobj.activityId + "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
-		   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td  class="editactivity" id="actid'+ actobj.activityId+'" name="'+ phaseid +'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
+															
+															cmpclass= "";
+															if(actobj.status =="Completed")
+															{
+																status ="<i class='bx bxs-check-circle'></i>";
+																cmpclass="strikeout";
+															}else
+															{
+																status = "<button type='button' id='" + actobj.activityId + "' name='"+ obj.id +"' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
+															}
+															
+															html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td  class="editactivity '+ cmpclass +'" id="actid'+ actobj.activityId+'" name="'+ phaseid +'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
 		   													
 	   													});
 	   																							
@@ -1435,7 +1455,7 @@ cursor: pointer;
 											   html +='<div class="accordion-item card"><h2 class="accordion-header"><button type="button" class="accordion-button collapsed" ';
    												html +=`style="background-color: #f2f2f6;" data-bs-toggle="collapse" data-bs-target="#accordionStyle-${obj.id}" id="accordionStyle${obj.id}" aria-expanded="false"> ${obj.phaseName}</button> </h2>`;
    												html +=`<div id="accordionStyle-${obj.id}" class="accordion-collapse collapse" data-bs-parent="#accordionStyle${obj.id}">`;
-   												html +=' <table class="table"><thead><tr><th></th><th>Done</th><th>Activity</th><th></th><th>Date</th><th>Notes</th></tr></thead><tbody class="table-border-bottom-0 activitycontainer'+ obj.id +'">';
+   												html +=' <div class="table-responsive text-nowrap"><table class="table"><thead><tr><th></th><th>Done</th><th>Activity</th><th></th><th>Date</th><th>Notes</th></tr></thead><tbody class="table-border-bottom-0 activitycontainer'+ obj.id +'">';
    												obj.activityMaster.forEach(function (actobj) {
    													
    													let tempicon="";
@@ -1447,13 +1467,22 @@ cursor: pointer;
 														tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
 													}
 													
-													status = "<button type='button' id='" + actobj.activityId + "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
-
+													cmpclass= "";
+													if(actobj.status =="Completed")
+													{
+														status ="<i class='bx bxs-check-circle'></i>";
+														cmpclass="strikeout";
+													}else
+													{
+													status = "<button type='button' id='" + actobj.activityId + "'   name='"+ obj.id +"' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
+														
+													}
 													
-   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td class="editactivity" name="'+ obj.id +'"  id="actid'+ actobj.activityId+'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
+													
+   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td class="editactivity '+ cmpclass +'" name="'+ obj.id +'"  id="actid'+ actobj.activityId+'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
    												});
    												
-   												html += `</tbody></table> <br /><span class="addactivity col-12" name="${obj.id}">+ Add Activity</span></div></div></div>`;
+   												html += `</tbody></table></div> <br /><span class="addactivity col-12" name="${obj.id}">+ Add Activity</span></div></div></div>`;
 											   												
 											   												
 											});

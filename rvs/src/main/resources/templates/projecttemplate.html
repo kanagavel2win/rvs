@@ -146,44 +146,16 @@
 .addactivity {
 	cursor: pointer;
 	color: #0000FF;
+	
 }
 
-.accordion {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
+.acticon
+{
+	
+	padding-right: 20px;
+	color:green;
 }
 
-.active, .accordion:hover {
-  background-color: #ccc;
-}
-
-.accordion:after {
-  content: '\002B';
-  color: #777;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
-}
-
-.active:after {
-  content: "\2212";
-}
-
-.panel {
-  padding: 0 18px;
-  background-color: white;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-}
 
 </style>
 <script th:inline="javascript">
@@ -258,49 +230,6 @@
 												<div class="accordion mt-3 accordion-header-primary"
 													id="accordionStyle1">
 													
-													<th:block
-														th:each="childobj, s : *{projectTemplateBoard.projectTemplatePhase}">
-														<div class="accordion-item card">
-															<h2 class="accordion-header">
-																<button type="button" class="accordion-button collapsed"
-																	data-bs-toggle="collapse"
-																	th:data-bs-target="'#accordionStyle1-' + ${s.index}"
-																	aria-expanded="false"
-																	style="background-color: #f2f2f6;"
-																	th:text="${childobj.phaseName}"></button>
-															</h2>
-
-															<div th:id="'accordionStyle1-' + ${s.index}"
-																class="accordion-collapse collapse"
-																th:data-bs-parent="'#accordionStyle'+ ${s.index}">
-																<div class="accordion-body">
-																	<table class="table">
-																		<thead>
-																			<tr>
-																				<th>Activity Type</th>
-																				<th>Activity Name</th>
-																				<th>Order</th>
-																				<th></th>
-																			</tr>
-																		</thead>
-																		<tbody class="table-border-bottom-0">
-																		<tr th:each="activiObj : ${childobj.projecttemplateactivityMaster}" >
-																			<td th:text="${activiObj.activitytype}"></td>
-																			<td th:text="${activiObj.activitytitle}"></td>
-																			<td th:text="${activiObj.activityorder}"></td>
-																		</tr>
-
-																		</tbody>
-																	</table>
-																	<br /> <span class="addactivity col-12"
-																		th:name="${childobj.id}">+ Add Activity</span>
-
-
-																</div>
-															</div>
-
-														</div>
-													</th:block>
 													
 													
 												</div>
@@ -321,7 +250,7 @@
 							</div>
 							<!--/ User Sidebar -->
 
-							<!-- Edit People Modal -->
+							<!-- Edit Phases Modal -->
 							<div class="modal fade" id="addNewBoard" tabindex="-1"
 								aria-hidden="true">
 								<div
@@ -433,7 +362,7 @@
 														<div class="form-group">
 															<div class="position-relative">
 																<input type="hidden" id="phaseid" name="phaseid" /> <input
-																	type="hidden" name="boardid"
+																	type="hidden" name="boardid"  id="boardidA"
 																	th:value="${projectTemplateBoard.id}" /> <input
 																	type="hidden" th:field="*{projectactivityid}"
 																	id="projectactivityid"
@@ -748,8 +677,7 @@
 													        buttonsStyling: false
 													      });
 														
-														gettimelinelistCompleted();
-														gettimelinelistNotCompleted();
+														getphaseandactivitydetails();
 
 													},
 													error : function(e) {
@@ -790,7 +718,6 @@
 											success : function(
 													result) {
 												
-												validationactivityeventformreset();
 												
 												Swal.fire({
 											        title: '',
@@ -805,9 +732,9 @@
 											        buttonsStyling: false
 											      });
 												
-												//gettimelinelistCompleted();
-												//gettimelinelistNotCompleted();
-
+												getphaseandactivitydetails_part($("#phaseid").val());
+												validationactivityeventformreset();
+												
 											},
 											error : function(e) {
 												console.log("Error"+ e);
@@ -818,6 +745,53 @@
 									}
 
 								});
+								//--------------------------------------------------------------------------------
+								function getphaseandactivitydetails_part(phaseid) {
+									
+									var formData = {
+											boardid : "[[${projectTemplateBoard.id}]]",
+										}
+		
+										$.ajax({
+											type : "POST",
+											url : "getboarddetails",
+											data : formData,
+											success : function(result) {
+												console.log(result);
+												html = "";
+												result.projectTemplatePhase.forEach(function (obj) {
+												
+													if(obj.id == phaseid)
+													{
+													   obj.projecttemplateactivityMaster.forEach(function (Actobj) {
+															let tempicon="";
+															if(Actobj.activitytype =='Task'){
+																tempicon ='<i class="bx bx-alarm-add activitytypeicon acticon "></i>';
+															}else if(Actobj.activitytype =='Call'){
+																tempicon ='<i class="bx bx-phone-call activitytypeicon acticon"></i>';
+															}else if(Actobj.activitytype =='Meetings'){
+																tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
+															}
+															html +='  <tr>	<td>'+ tempicon +'   <span class="editactivity" id="actid'+ Actobj.projectactivityid+'" onclick="editactivity(this)">' + Actobj.activitytitle +'</span></td> <td>'+ Actobj.daysfromprojectstartdate +'</td> <td>'+ Actobj.activityorder +'</td><td>'+ Actobj.notes +'</td> </tr>';
+															
+													   	}); 
+													}	
+													
+												});
+													
+											
+											$(".activitycontainer"+ phaseid).html(html);
+											
+											},
+											error : function(e) {
+												console.log("Error" + e);
+		
+											}
+		
+										});
+									
+								}
+								
 								//--------------------------------------------------------------------------------
 								//function load the history events
 								function getphaseandactivitydetails() {
@@ -832,21 +806,32 @@
 										url : "getboarddetails",
 										data : formData,
 										success : function(result) {
-											console.log(result);
+											//console.log(result);
 											html = "";
 											let i=0;
 											result.projectTemplatePhase.forEach(function (obj) {
 											   i++;
-												html +='<div class="accordion-item card"><h2 class="accordion-header"><button type="button" class="accordion-button collapsed" ';
+											   html +='<div class="accordion-item card"><h2 class="accordion-header"><button type="button" class="accordion-button collapsed" ';
 												html +=`style="background-color: #f2f2f6;" data-bs-toggle="collapse" data-bs-target="#accordionStyle-${obj.id}" id="accordionStyle${obj.id}" aria-expanded="false"> ${obj.phaseName}</button> </h2>`;
 												html +=`<div id="accordionStyle-${obj.id}" class="accordion-collapse collapse" data-bs-parent="#accordionStyle${obj.id}">`;
-												html +=' <table class="table"><thead><tr><th>Activity Type</th><th>Activity Name</th><th>Order</th><th></th></tr></thead><tbody class="table-border-bottom-0">';
+												html +=' <table class="table"><thead><tr><th>Activity Name</th><th>Start Day</th><th>Order</th><th>Notes</th></tr></thead><tbody class="table-border-bottom-0 activitycontainer'+ obj.id +'">';
 												obj.projecttemplateactivityMaster.forEach(function (Actobj) {
-													html +='  <tr>	<td>'+ Actobj.activitytype +'</td> <td>'+ Actobj.activitytitle +'</td> <td>'+ Actobj.activityorder +'</td> </tr>';
+													
+													let tempicon="";
+													if(Actobj.activitytype =='Task'){
+														tempicon ='<i class="bx bx-alarm-add activitytypeicon acticon "></i>';
+													}else if(Actobj.activitytype =='Call'){
+														tempicon ='<i class="bx bx-phone-call activitytypeicon acticon"></i>';
+													}else if(Actobj.activitytype =='Meetings'){
+														tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
+													}
+													
+														html +='  <tr>	<td>'+ tempicon +'   <span class="editactivity" id="actid'+ Actobj.projectactivityid+'" onclick="editactivity(this)">' + Actobj.activitytitle +'</span></td> <td>'+ Actobj.daysfromprojectstartdate +'</td> <td>'+ Actobj.activityorder +'</td><td>'+ Actobj.notes +'</td> </tr>';
+												
 												}); 
 												
 												html += `</tbody></table> <br /><span class="addactivity col-12"name="${obj.id}">+ Add Activity</span></div></div></div>`;
-			
+												
 											});
 												
 										
@@ -870,7 +855,40 @@
 								});
 							}); // Jquery
 			// --------------------------------------------------------------------
-				
+			//--------------------------
+			function editactivity(e){
+				var activityid= e.getAttribute("id").replace("actid","");
+				var formData = {
+						id : activityid,
+						boardid: $("#boardid").val()
+					}
+
+					$.ajax({
+						type : "POST",
+						url : "getProjectTemplateActivityMaster",
+						data : formData,
+						success : function(result) {
+							var bmobj = JSON.parse(JSON.stringify(result));
+							//console.log(bmobj);
+							
+							$("#phaseid").val(bmobj.tempphaseid);
+							$("#boardidA").val($("#boardid").val());
+							$("#projectactivityid").val(bmobj.projectactivityid);
+							$("#activitytitle").val(bmobj.activitytitle);
+							$("#daysfromprojectstartdate").val(bmobj.daysfromprojectstartdate);
+							$("#activityorder").val(bmobj.activityorder);
+							$("#notes").val(bmobj.notes);
+							$("#activityfollowers").val(bmobj.activityfollowers).change();
+							$("input[name=activitytype][value="+ bmobj.activitytype +"]").attr('checked', true);
+							$(".activitytype").removeClass("active");
+							$(".activitytype"+bmobj.activitytype).addClass("active");
+							$('#addevent').modal('show'); 
+						},
+						error : function(e) {
+							console.log("Error" + e);
+						}
+					});
+			};
 			
 		</script>
 </body>

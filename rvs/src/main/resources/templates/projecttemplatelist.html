@@ -192,6 +192,7 @@
 											<th></th>
 											<th>id</th>
 											<th>Template Name</th>
+											<th>Phases</th>
 											<th>Task</th>
 											<th>Call</th>
 											<th>Meeting</th>
@@ -514,6 +515,7 @@
 			        { data: 'boardName' },
 			        { data: '' },			        
 			        { data: '' },
+			        { data: '' },
 			        { data: '' }
 			      ],
 			      columnDefs: [
@@ -556,19 +558,55 @@
 				     {
 				           targets:4,
 				           render: function(data, type, full, meta) {
-				           	 return '';
+				           	 return full['projectTemplatePhase'].length;
 				           }
 				     },
 				     {
 				           targets:5,
 				           render: function(data, type, full, meta) {
-				           	 return '';
+ 								tcount=0;
+				        	   
+				        	   full['projectTemplatePhase'].forEach(function (arrayItem) {
+				        		   arrayItem.projecttemplateactivityMaster.forEach(function (arrayItem2) {
+				        			   if(arrayItem2.activitytype == 'Task'){
+				        				   tcount++;
+				        			   }
+				        		   });
+				        		});
+				        	   
+				           	 return tcount;
 				           }
 				     },
 				     {
 				           targets:6,
 				           render: function(data, type, full, meta) {
-				           	 return '';
+								tcount=0;
+				        	   
+				        	   full['projectTemplatePhase'].forEach(function (arrayItem) {
+				        		   arrayItem.projecttemplateactivityMaster.forEach(function (arrayItem2) {
+				        			   if(arrayItem2.activitytype == 'Call'){
+				        				   tcount++;
+				        			   }
+				        		   });
+				        		});
+				        	   
+				           	 return tcount;
+				           }
+				     },
+				     {
+				           targets:7,
+				           render: function(data, type, full, meta) {
+								tcount=0;
+				        	   
+				        	   full['projectTemplatePhase'].forEach(function (arrayItem) {
+				        		   arrayItem.projecttemplateactivityMaster.forEach(function (arrayItem2) {
+				        			   if(arrayItem2.activitytype == 'Meetings'){
+				        				   tcount++;
+				        			   }
+				        		   });
+				        		});
+				        	   
+				           	 return tcount;
 				           }
 				     },
 			         

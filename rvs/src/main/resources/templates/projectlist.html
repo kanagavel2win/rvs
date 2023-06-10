@@ -259,6 +259,20 @@
 
 									</div>
 									<div class="col-sm-12">
+										<label class="form-label" for="board">Board</label>
+										<div>
+											
+											<select class="form-control  addboarddata" id="board"
+												name="board" required>
+												<th:block th:each="str :${board}">
+													<option th:value="${str.id}" th:text="${str.boardName}"></option>
+												</th:block>
+											</select>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
 										<label class="form-label" for="Purpose">PURPOSE<label
 											class="emptitle additem" name="addPurposedata"><i
 												class="bx bxs-plus-circle ownstyle1"></i></label></label>
@@ -916,7 +930,7 @@
 			   var phonenumber= $("#phonenumber").val(); 
 			   var branch=$("#branch").val(); 
 			   var projectValue=$("#projectValue").val();
-			   
+			   var board=$("board").val();
 			   
 			   var formData = {
 					   ContactPerson: String(ContactPersonTagify),
@@ -931,7 +945,8 @@
 					   branch:branch,
 					   Purpose:Purpose,
 					   projectValue: projectValue,
-					   startDate: startDate
+					   startDate: startDate,
+					   board: board
 				 }
 			   
 			   

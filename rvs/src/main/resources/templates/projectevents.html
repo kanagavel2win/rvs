@@ -143,6 +143,14 @@ cursor: pointer;
 {
 cursor: pointer;
 }
+
+.addactivity {
+	cursor: pointer;
+	color: #0000FF;
+	font-weight: bold;
+	padding-left: 10px;
+}
+
 </style>
 <script th:inline="javascript">
 	var emplanstat = 0;
@@ -222,7 +230,9 @@ cursor: pointer;
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
-												<li class="mb-3"><span class="fw-bold me-2">Pipeline:</span>
+												<li class="mb-3"><span class="fw-bold me-2">Pipeline:
+												
+												</span>
 													<span th:text="${projectMaster.pipeline}"
 													id="Lbl_pipeline"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
@@ -232,6 +242,9 @@ cursor: pointer;
 													id="Lbl_organization"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${projectMaster.purpose}" id="Lbl_purpose"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Board:</span>
+													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
 													<span th:text="${projectMaster.branchname}" id="Lbl_branchname"></span>
@@ -345,36 +358,31 @@ cursor: pointer;
 								<!-- Activity Timeline -->
 								<div class="card mb-4">
 									<h5 class="card-header">
-										Activity Timeline
+										Project Activity
 
 
 
 										<div class="card-action-element" style="float: right">
+											
 											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-toggle="modal" data-bs-target="#addevent"
-												alt="Add New Event" id="btnAddevent">
-												<i class="bx bx-plus bx-xs me-1"></i> Event
+												data-bs-target="#addNewBoard" data-bs-toggle="modal"
+													id="addNewBoardbtn">
+												<i class="bx bx-plus bx-xs me-1"></i> Phase
 											</button>
-											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-toggle="modal" data-bs-target="#addnotes" id="btnAddnotes"
-												alt="Add New Notes">
-												<i class="bx bx-plus bx-xs me-1"></i> Notes
-											</button>
+											
 										</div>
 									</h5>
 									<div class="card-body">
-										<div class="divider divider-dashed">
-											<div class="divider-text">Planned</div>
-										</div>
-										<ul class="timeline widget-timeline widget-timelinePlanned">
-
-										</ul>
-										<div class="divider divider-dashed">
-											<div class="divider-text">Completed</div>
-										</div>
-										<ul class="timeline widget-timeline widget-timelineCompleted">
-
-										</ul>
+										<!-- Accordion Header Color -->
+											<div class="col-md">
+												<div class="accordion mt-3 accordion-header-primary"
+													id="accordionStyle1">
+													
+													
+													
+												</div>
+											</div>
+											<!--/ Accordion Header Color -->
 									</div>
 
 
@@ -386,6 +394,53 @@ cursor: pointer;
 
 
 							<!-- Modal -->
+							
+							<!-- Edit Phases Modal -->
+							<div class="modal fade" id="addNewBoard" tabindex="-1"
+								aria-hidden="true">
+								<div
+									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+									<div class="modal-content p-3 p-md-5">
+
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h5>Phase Details</h5>
+
+											</div>
+											<form id="editPhasedetailsForm"
+												class="row g-3 needs-validation" onsubmit="return false">
+
+												<div class="col-12 ">
+													<label class="form-label" for="Model_Phasename">Name</label>
+													<input type="text" class="form-control"
+														id="Model_Phasename" name="Model_Phasename" required /> <input
+														type="hidden" id="Model_phase_id" name="Model_phase_id" />
+													 <input
+														type="hidden"  name="projectid" th:value="${projectMaster.id}" />
+												</div>
+												<div class="col-12 ">
+													<label class="form-label" for="Model_orderID">Order
+														No</label> <input type="number" class="form-control"
+														id="Model_orderID" name="Model_orderID" required />
+												</div>
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary editPhasedatasubmit me-sm-3 me-1">ADD</button>
+													<button type="reset"
+														class="btn btn-label-secondary editPhasedataclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Edit Phase Modal -->
+							
+							
 							<!-- Edit Notes Modal -->
 							<div class="modal fade" id="addnotes" tabindex="-1"
 								aria-hidden="true">
@@ -458,8 +513,9 @@ cursor: pointer;
 														<label for="addmodel">Activity Title</label>
 														<div class="form-group">
 															<div class="position-relative">
-																<input type="hidden" th:field="*{mastercategoryid}"
-																	id="mastercategoryid"  /> <input type="hidden"
+																<input type="hidden" id="phaseid" name="phaseid" />
+																
+																<input type="hidden"
 																	th:field="*{activityId}" id="activityId"
 																	th:value="${activityMaster['activityId']}" /> <input
 																	type="hidden" th:field="*{createdtime}" id="createdtime"
@@ -581,7 +637,7 @@ cursor: pointer;
 														<div class="position-relative  has-icon-left">
 															<fieldset class="form-group">
 																<select class="select2 form-control "
-																	id="activityfollowers" required>
+																	id="activityfollowers" name="activityfollowers" required>
 																	<th:block th:each="str :${employeelist}">
 																		<option th:value="${str.empMasterid}"
 																			th:text="${str.StaffName}"></option>
@@ -658,6 +714,18 @@ cursor: pointer;
 
 														<div class="invalid-feedback">Please select
 															follower.</div>
+													</div>
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="board">Board</label>
+													<div>
+														<select class="form-control" id="board"
+															 th:field="*{board}" required>
+															<th:block th:each="str :${board}">
+																<option th:value="${str.id}" th:text="${str.boardName}"></option>
+															</th:block>
+														</select>
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
@@ -1207,6 +1275,12 @@ cursor: pointer;
 									$('.NotesMasterformsubmit').prop("disabled",false);
 									$('.NotesMasterformsubmit').html("Save");
 								}
+								function validationphaseformreset() {
+									$('.editPhasedataclose').click();
+									$("#Model_phase_id").val(0);
+									$('.editPhasedatasubmit').prop("disabled",false);
+									$('.editPhasedatasubmit').html("Save");
+								}
 								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
 								$(document).on("click",".markitascompleted",	function() {	
@@ -1245,6 +1319,165 @@ cursor: pointer;
 									
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
+								$('#editPhasedetailsForm').on('submit',function(event) {
+											if (event.target.checkValidity()) {
+												$('.editPhasedatasubmit').prop("disabled",true);
+												$('.editPhasedatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+												const formData = new FormData(document.querySelector("#editPhasedetailsForm"));
+												
+												$.ajax({
+													type : "POST",
+													url : "projectphasessave",
+													processData : false,
+													contentType : false,
+													data : formData,
+													success : function(
+															result) {
+														
+														validationphaseformreset();
+														
+														Swal.fire({
+													        title: '',
+													        text: 'Your Phase event Updated',
+													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+													        imageWidth: 400,
+													        imageAlt: 'Custom image',
+													        confirmButtonText: 'Ok',
+													        customClass: {
+													          confirmButton: 'btn btn-primary'
+													        },
+													        buttonsStyling: false
+													      });
+														
+														getphaseandactivitydetails();
+
+													},
+													error : function(e) {
+														console.log("Error"+ e);
+													}
+												});
+											} else {
+												$('.editPhasedatasubmit').prop("disabled",false);
+											}
+
+										});
+								// --------------------------------------------------------------------
+								//--------------------------------------------------------------------------------
+								function getphaseandactivitydetails_part(phaseid) {
+									
+									var formData = {
+											projectid : "[[${projectMaster.id}]]",
+											
+										}
+		
+										$.ajax({
+											type : "GET",
+											url : "getprojectobj",
+											data : formData,
+											success : function(result) {
+												console.log(result);
+												html = "";
+												let i=0;
+												result.projectPhases.forEach(function (obj) {
+												  
+													if(obj.id == phaseid)
+													{
+														obj.activityMaster.forEach(function (actobj) {
+		   													let tempicon="";
+															if(actobj.activitytype =='Task'){
+																tempicon ='<i class="bx bx-alarm-add activitytypeicon acticon "></i>';
+															}else if(actobj.activitytype =='Call'){
+																tempicon ='<i class="bx bx-phone-call activitytypeicon acticon"></i>';
+															}else if(actobj.activitytype =='Meetings'){
+																tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
+															}
+															status = "<button type='button' id='" + actobj.activityId + "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
+		   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td  class="editactivity" id="actid'+ actobj.activityId+'" name="'+ phaseid +'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
+		   													
+	   													});
+	   																							
+													}												
+												});
+													
+											
+											$(".activitycontainer"+ phaseid).html(html);
+											
+											},
+											error : function(e) {
+												console.log("Error" + e);
+		
+											}
+		
+										});
+									
+								}
+								
+								//--------------------------------------------------------------------------------
+								//function load the history events
+								function getphaseandactivitydetails() {
+									
+									var formData = {
+										projectid : "[[${projectMaster.id}]]",
+										
+									}
+	
+									$.ajax({
+										type : "GET",
+										url : "getprojectobj",
+										data : formData,
+										success : function(result) {
+											console.log(result);
+											html = "";
+											let i=0;
+											result.projectPhases.forEach(function (obj) {
+											   i++;
+
+											   html +='<div class="accordion-item card"><h2 class="accordion-header"><button type="button" class="accordion-button collapsed" ';
+   												html +=`style="background-color: #f2f2f6;" data-bs-toggle="collapse" data-bs-target="#accordionStyle-${obj.id}" id="accordionStyle${obj.id}" aria-expanded="false"> ${obj.phaseName}</button> </h2>`;
+   												html +=`<div id="accordionStyle-${obj.id}" class="accordion-collapse collapse" data-bs-parent="#accordionStyle${obj.id}">`;
+   												html +=' <table class="table"><thead><tr><th></th><th>Done</th><th>Activity</th><th></th><th>Date</th><th>Notes</th></tr></thead><tbody class="table-border-bottom-0 activitycontainer'+ obj.id +'">';
+   												obj.activityMaster.forEach(function (actobj) {
+   													
+   													let tempicon="";
+													if(actobj.activitytype =='Task'){
+														tempicon ='<i class="bx bx-alarm-add activitytypeicon acticon "></i>';
+													}else if(actobj.activitytype =='Call'){
+														tempicon ='<i class="bx bx-phone-call activitytypeicon acticon"></i>';
+													}else if(actobj.activitytype =='Meetings'){
+														tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
+													}
+													
+													status = "<button type='button' id='" + actobj.activityId + "' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
+
+													
+   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td class="editactivity" name="'+ obj.id +'"  id="actid'+ actobj.activityId+'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
+   												});
+   												
+   												html += `</tbody></table> <br /><span class="addactivity col-12" name="${obj.id}">+ Add Activity</span></div></div></div>`;
+											   												
+											   												
+											});
+												
+										
+										$("#accordionStyle1").html(html);
+										
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
+								// --------------------------------------------------------------------
+								$(document).ready(function(){
+								    setTimeout(function(){
+								    	getphaseandactivitydetails();
+								    	
+								     },500); // milliseconds
+								});
+								// --------------------------------------------------------------------
 								$("#startdate").change(function() {
 									if($('#enddate').val() ==''){
 										$('#enddate').val($(this).val());
@@ -1256,7 +1489,8 @@ cursor: pointer;
 									}
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#btnAddevent").click(function() {
+								
+								$(document).on("click",".addactivity", function() {
 									$('.activityMasterformreset').click();
 									$('.activityMasterformsubmit').prop("disabled",
 											false);
@@ -1268,6 +1502,8 @@ cursor: pointer;
 									$(".activitytypeTask").addClass("active");
 									
 									$("#createdtime").val("");
+									$("#phaseid").val($(this).attr("name"));
+									$("#addevent").modal('show');
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$("#btnAddnotes").click(function() {
@@ -1327,8 +1563,8 @@ cursor: pointer;
 											        buttonsStyling: false
 											      });
 												
-												gettimelinelistCompleted();
-												gettimelinelistNotCompleted();
+											//	gettimelinelistCompleted();
+											//	gettimelinelistNotCompleted();
 
 											},
 											error : function(e) {
@@ -1346,7 +1582,7 @@ cursor: pointer;
 												const formData = new FormData(
 														document
 																.querySelector("#activityMasterform"));
-												//formData.append("File_Attach",modalFile.files[0]);
+												
 												formData.append("File_Attach",null);
 												formData.append("guestid","");
 												formData.append("activityfollowers",$("#activityfollowers").val());
@@ -1354,11 +1590,8 @@ cursor: pointer;
 												formData.append("duedate","");
 												formData.append("htmlnotes","");													
 												formData.append("mastercategory","Project");
-												formData.append("mastercategoryid",$("#mastercategoryid").val());
-												//formData.append("status","");
-												 //for (var pair of formData.entries()) {
-												  // console.log(pair); 
-												//} 
+												formData.append("mastercategoryid",$("#phaseid").val());
+												
 												 $.ajax({
 													type : "POST",
 													url : "activitysave",
@@ -1368,7 +1601,7 @@ cursor: pointer;
 													success : function(
 															result) {
 														
-														validationactivityeventformreset();
+														
 														
 														Swal.fire({
 													        title: '',
@@ -1383,8 +1616,10 @@ cursor: pointer;
 													        buttonsStyling: false
 													      });
 														
-														gettimelinelistCompleted();
-														gettimelinelistNotCompleted();
+														getphaseandactivitydetails_part($("#phaseid").val());
+														validationactivityeventformreset();
+														//gettimelinelistCompleted();
+														//gettimelinelistNotCompleted();
 
 													},
 													error : function(e) {
@@ -1416,7 +1651,7 @@ cursor: pointer;
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
-																		//console.log(bmobj);
+																		console.log(bmobj);
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
@@ -1429,7 +1664,7 @@ cursor: pointer;
 																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
 																			$("#Lbl_expectedstartdate").text(bmobj.expectedstartdateMMddYYY);
 																			$("#Lbl_label").text(bmobj.label);	
-																			
+																			$("#Lbl_board").text(bmobj.boardName);	
 																			
 																			
 																			$name ="";
@@ -1772,6 +2007,7 @@ cursor: pointer;
 			//--------------------------
 			function editactivity(e){
 				var activityid= e.getAttribute("id").replace("actid","");
+				var phaseid= e.getAttribute("name");
 				var formData = {
 						id : activityid
 					}
@@ -1783,11 +2019,14 @@ cursor: pointer;
 						success : function(result) {
 							var bmobj = JSON.parse(JSON.stringify(result));
 							console.log(bmobj);
+							
+							$("#phaseid").val(phaseid);
+							
 							$("#mastercategoryid").val(bmobj.mastercategoryid);
 							$("#activityId").val(bmobj.activityId);
 							$("#createdtime").val(bmobj.createdtime);
 							$("#activitytitle").val(bmobj.activitytitle);
-							//$("#activitytype").val(bmobj.activitytype);
+							
 							$("#startdate").val(bmobj.startdate);
 							$("#starttime").val(bmobj.starttime);
 							$("#enddate").val(bmobj.enddate);

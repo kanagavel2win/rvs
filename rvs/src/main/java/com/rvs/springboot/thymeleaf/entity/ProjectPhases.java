@@ -1,5 +1,8 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,28 +23,20 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "projecttemplateactivitymaster")
-public class ProjectTemplateActivityMaster {
+@Table(name = "projectphase")
+public class ProjectPhases {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int projectactivityid;
+	private int id;
 	@Column
-	private String activitytype;
-	@Column
-	private String activitytitle;
-	@Column
-	private String notes;
-	@Column
-	private int daysfromprojectstartdate;
-	@Column
-	private int activityorder;
+	private String phaseName;
 	
 	@Column
-	private String activityfollowers;
-	
+	private int orderID;
 	
 	@Transient
-	private String tempphaseid;
+	private List<ActivityMaster> activityMaster;
+	
 	
 }

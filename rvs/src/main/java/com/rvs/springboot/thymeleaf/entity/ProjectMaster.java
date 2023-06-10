@@ -35,6 +35,9 @@ public class ProjectMaster {
 	//@Column
 	//private String ContactPerson;
 	@Column
+	private String board;
+	
+	@Column
 	private String Organization;
 	@Column
 	private String Title;
@@ -71,6 +74,11 @@ public class ProjectMaster {
 	@JoinColumn(name = "id")
 	@OrderBy("Fileid ASC")
 	private List<ProjectFiles> projectFiles;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "projectid")
+	@OrderBy("orderID ASC")
+	private List<ProjectPhases> projectPhases;
 	
 
 	@Column
@@ -131,5 +139,8 @@ public class ProjectMaster {
 	
 	@Transient
 	private String projectfollowerids;
+	
+	@Transient
+	private String boardName;
 	
 }

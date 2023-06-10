@@ -237,6 +237,9 @@
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${projectMaster.purpose}" id="Lbl_purpose"></span>
 												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Board:</span>
+													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
 													<span th:text="${projectMaster.branchname}"
 													id="Lbl_branchname"></span></li>
@@ -532,6 +535,19 @@
 															follower.</div>
 													</div>
 												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="board">Board</label>
+													<div>
+														<select class="form-control" id="board"
+															 th:field="*{board}" required>
+															<th:block th:each="str :${board}">
+																<option th:value="${str.id}" th:text="${str.boardName}"></option>
+															</th:block>
+														</select>
+													</div>
+												</div>
+												
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">SOURCE <label
 														class="emptitle additem" name="addsourcedata"><i
@@ -1078,7 +1094,7 @@
 																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
 																			$("#Lbl_expectedstartdate").text(bmobj.expectedstartdateMMddYYY);
 																			$("#Lbl_label").text(bmobj.label);	
-																			
+																			$("#Lbl_board").text(bmobj.boardName);	
 																			
 																			
 																			$name ="";

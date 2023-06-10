@@ -219,6 +219,7 @@ public class HomeController {
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
+	DateFormat displaydateFormatyyyMMddHHmm = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	DateFormat displaydatetimeFormatHHmm = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 	DateFormat displaydateFormatFirstMMMddYYY = new SimpleDateFormat("MMM-dd-yyyy");
@@ -6768,8 +6769,44 @@ public class HomeController {
 
 		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
 		for (ProjectPhases pm : dm.getProjectPhases()) {
-			pm.setActivityMaster(activityMasterService.findByMastercategoryAndMastercategoryid("Project",
-					String.valueOf(pm.getId())));
+			
+			List<ActivityMaster> amls= activityMasterService.findByMastercategoryAndMastercategoryid("Project",
+					String.valueOf(pm.getId()));
+			
+			for(ActivityMaster am : amls)
+			{
+				if (!nullremover(String.valueOf(am.getActivityfollowers())).equalsIgnoreCase("")) {
+					EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(am.getActivityfollowers()));
+
+					if (empobj != null) {
+						String empphotos = "<button type='button' class='step-trigger' aria-selected='false' disabled='disabled'>  <span class='bs-stepper-circle'><i class='bx bx-user'></i></span></button>";
+
+						List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+								.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo"))
+								.collect(Collectors.toList());
+						if (validProfilephoto.size() > 0) {
+
+							empphotos = validProfilephoto.get(0).getFilePath();
+						}
+
+						am.setFollowerimg("<span data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx'>"
+								+ " <img class='rounded-circle' src='" + empphotos
+								+ " ' alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
+								+ "</span></span>");
+					}
+				}
+				
+				try {
+					am. setStartdatestrformate(displaydateFormatFirstMMMddYYYAMPM
+								.format(displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' '+ am.getStarttime() )).toString().toUpperCase());
+					
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				}
+			}
+			
+			pm.setActivityMaster(amls);
 		}
 		return dm;
 

@@ -134,12 +134,7 @@
 
 								<div class="row g-3">
 
-									<div class="col-lg-2 col-sm-12">
-										<button type="button" class="btn btn-warning mt-4"
-											data-bs-toggle="modal" data-bs-target="#addasset">
-											<span class="tf-icons bx bx-plus me-1"></span>New
-										</button>
-									</div>
+									
 									<div class="col-lg-3 col-sm-12">
 									<label class="form-label">Status:</label>
 									<select class="form-select" id="Status" data-column="">
@@ -151,7 +146,7 @@
 									</div>
 									<div class="col-lg-3 col-sm-12">
 									<label class="form-label">Branch:</label>
-									<select class="form-select" id="Branch" data-column="3">
+									<select class="form-select" id="Branch1" data-column="3">
 									 <option value="">-</option>
 									 
 									 </select>
@@ -164,6 +159,14 @@
 									 
 									 </select>
 									</div>
+									
+									<div class="col-lg-2 col-sm-12">
+										<button type="button" class="btn btn-warning mt-4"
+											data-bs-toggle="modal" data-bs-target="#addasset">
+											<span class="tf-icons bx bx-plus me-1"></span>New
+										</button>
+									</div>
+									
 									
 									<div class="col-lg-1 col-sm-12">
 										<button type="button" class="btn text-nowrap d-inline-block" 
@@ -606,7 +609,7 @@
 	
 	var custodian = [];
 	var branchname = [];
-    const Branch = $('#Branch');
+    const Branch = $('#Branch1');
     const Custodian = $('#Custodian');
 	
 	
@@ -775,7 +778,7 @@
 	   
 	    
 	   
-	    $('#Branch,#Custodian').change(function (){
+	    $('#Branch1,#Custodian').change(function (){
 	    	var column = $(this).data('column');
 	    	console.log(column);
 	    	dt_basic_table.DataTable().column(column).search(this.value, false, true).draw();

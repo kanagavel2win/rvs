@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.jboss.logging.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -4126,7 +4127,16 @@ public class HomeController {
 
 		return "assetlist";
 	}
-
+	
+	@ResponseBody
+	@GetMapping("assetlistbyids")
+	public List<AssetMaster> assetlistbyids(@RequestParam Map<String,String> params) {
+		
+		List<Integer> assetids = Arrays.asList(params.get("assetids").split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+		List<AssetMaster> ls =assetMasterService.findByManyassetIds(assetids);
+		return ls;
+	}
+	
 	@ResponseBody
 	@GetMapping("assetlistjson")
 	public List<AssetMaster> assetlistjson() {

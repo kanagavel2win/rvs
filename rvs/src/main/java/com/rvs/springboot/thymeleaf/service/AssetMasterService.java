@@ -12,6 +12,7 @@ public interface AssetMasterService {
 	public void updatetheAssetStatus(String status,int rowid, String updatetime, String StaffID);
 	public void updatetheAssetStatus(String status,int rowid, String updatetime, String StaffID,String Condition);
 	public List<AssetMaster> findbyStaffID(String StaffID);
+	public List<AssetMaster> findByManyassetIds(List<Integer> assetidlist);
 	public int getmaxid();
 	
 	public int insertassetFiles(String FilePath, int assetid);

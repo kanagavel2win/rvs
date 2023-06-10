@@ -100,4 +100,10 @@ public class AssetMasterImp implements AssetMasterService {
 		return jdbctemplate.update(sql);
 	}
 
+	@Override
+	public List<AssetMaster> findByManyassetIds(List<Integer> assetidlist) {
+	
+		return assetRepo.findByManyassetIds(assetidlist);
+	}
+
 }

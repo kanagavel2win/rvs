@@ -258,20 +258,7 @@
 										</div>
 
 									</div>
-									<div class="col-sm-12">
-										<label class="form-label" for="board">Board</label>
-										<div>
-											
-											<select class="form-control  addboarddata" id="board"
-												name="board" required>
-												<th:block th:each="str :${board}">
-													<option th:value="${str.id}" th:text="${str.boardName}"></option>
-												</th:block>
-											</select>
-
-										</div>
-
-									</div>
+									
 									<div class="col-sm-12">
 										<label class="form-label" for="Purpose">PURPOSE<label
 											class="emptitle additem" name="addPurposedata"><i
@@ -393,7 +380,22 @@
 												class="form-control  capitalize">
 										</div>
 									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="board">Board</label>
+										<div>
+											
+											<select class="form-control  addboarddata" id="board"
+												name="board" >
+												<option value="">-</option>
+												</th:block>
+												<th:block th:each="str :${board}">
+													<option th:value="${str.id}" th:text="${str.boardName}"></option>
+												</th:block>
+											</select>
 
+										</div>
+
+									</div>
 
 
 
@@ -914,7 +916,7 @@
         	    console.log(pair); 
         	}  */
           $('.newprojectdatasubmit').prop("disabled",true);	
-      	  if(event.target.checkValidity())
+      	  if(event.target.checkValidity() && $("#startDate").val() != "")
       	 	{
       		$('.newprojectdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
         	   var ContactPersonTagify = $("#ContactPersonTagify").val();
@@ -930,7 +932,7 @@
 			   var phonenumber= $("#phonenumber").val(); 
 			   var branch=$("#branch").val(); 
 			   var projectValue=$("#projectValue").val();
-			   var board=$("board").val();
+			   var board=$("#board").val();
 			   
 			   var formData = {
 					   ContactPerson: String(ContactPersonTagify),
@@ -977,7 +979,21 @@
 				}
 				
 			});
-      	 }
+      	 }else
+    	{
+      		$('.newprojectdatasubmit').prop("disabled",false);
+      		
+			    		Swal.fire({
+			        title: '',
+			        text: 'Please enter the Start date ',
+			        
+			        confirmButtonText: 'Ok',
+			        customClass: {
+			          confirmButton: 'btn btn-primary'
+			        },
+			        buttonsStyling: false
+			      });
+    		 }
         	//------------------------------------------------------------------------
 	    });
     //------------------------------------------------------------------------

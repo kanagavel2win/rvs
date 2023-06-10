@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class ProjectTemplateBoard {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "projecttemplateboard")
+	@OrderBy("orderID ASC")
 	private List<ProjectTemplatePhase> projectTemplatePhase;
 	
 	

@@ -541,6 +541,7 @@
 													<div>
 														<select class="form-control" id="board"
 															 th:field="*{board}" required>
+															  <option value="">-</option>
 															<th:block th:each="str :${board}">
 																<option th:value="${str.id}" th:text="${str.boardName}"></option>
 															</th:block>

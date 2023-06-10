@@ -6769,12 +6769,11 @@ public class HomeController {
 
 		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
 		for (ProjectPhases pm : dm.getProjectPhases()) {
-			
-			List<ActivityMaster> amls= activityMasterService.findByMastercategoryAndMastercategoryid("Project",
+
+			List<ActivityMaster> amls = activityMasterService.findByMastercategoryAndMastercategoryid("Project",
 					String.valueOf(pm.getId()));
-			
-			for(ActivityMaster am : amls)
-			{
+
+			for (ActivityMaster am : amls) {
 				if (!nullremover(String.valueOf(am.getActivityfollowers())).equalsIgnoreCase("")) {
 					EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(am.getActivityfollowers()));
 
@@ -6789,23 +6788,25 @@ public class HomeController {
 							empphotos = validProfilephoto.get(0).getFilePath();
 						}
 
-						am.setFollowerimg("<span data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx'>"
-								+ " <img class='rounded-circle' src='" + empphotos
-								+ " ' alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
-								+ "</span></span>");
+						am.setFollowerimg(
+								"<span data-bs-toggle='tooltip' data-popup='tooltip-custom' data-bs-placement='top' class='avatar  pull-up tooltipx'>"
+										+ " <img class='rounded-circle' src='" + empphotos
+										+ " ' alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
+										+ "</span></span>");
 					}
 				}
-				
+
 				try {
-					am. setStartdatestrformate(displaydateFormatFirstMMMddYYYAMPM
-								.format(displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' '+ am.getStarttime() )).toString().toUpperCase());
-					
+					am.setStartdatestrformate(displaydateFormatFirstMMMddYYYAMPM
+							.format(displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' ' + am.getStarttime()))
+							.toString().toUpperCase());
+
 				} catch (ParseException e) {
-					
+
 					e.printStackTrace();
 				}
 			}
-			
+
 			pm.setActivityMaster(amls);
 		}
 		return dm;
@@ -7781,7 +7782,56 @@ public class HomeController {
 		}
 		cp = contactPersonService.save(cp);
 
-		// ----------------------------
+		// ------------------------------------------------------------------------------------
+		List<ProjectPhases> prjphasels = new ArrayList();
+
+		if (!nullremover(String.valueOf(board)).equalsIgnoreCase("")) {
+
+			ProjectTemplateBoard ptboard = projectTemplateBoardService.findById(Integer.parseInt(board));
+
+			for (ProjectTemplatePhase obj : ptboard.getProjectTemplatePhase()) {
+				ProjectPhases tempProjectPhases = new ProjectPhases();
+
+				tempProjectPhases.setPhaseName(obj.getPhaseName());
+				tempProjectPhases.setOrderID(obj.getOrderID());
+
+				List<ActivityMaster> actmls = new ArrayList();
+				for (ProjectTemplateActivityMaster pactmobj : obj.getProjecttemplateactivityMaster()) {
+
+					Calendar cal = Calendar.getInstance();
+					String tempdate = "";
+					try {
+						cal.setTime(displaydateFormatrev.parse(startDate));
+						cal.add(Calendar.DAY_OF_MONTH, pactmobj.getDaysfromprojectstartdate());
+						tempdate = displaydateFormatrev.format(cal.getTime()).toString();
+
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+
+					ActivityMaster am = new ActivityMaster();
+
+					am.setActivitycategory("Activity");
+					am.setActivitytitle(pactmobj.getActivitytitle());
+					am.setActivityfollowers(pactmobj.getActivityfollowers());
+					am.setActivitytype(pactmobj.getActivitytype());
+					am.setCreatedtime(displaydatetimeFormat.format(new Date()));
+					am.setStartdate(tempdate);
+					am.setStarttime("09:00");
+					am.setEnddate(tempdate);
+					am.setEndtime("18:00");
+					am.setMastercategory("Project");
+					am.setMastercategoryid("");
+					am.setNotes(pactmobj.getNotes());
+					actmls.add(am);
+				}
+
+				tempProjectPhases.setActivityMaster(actmls);
+				prjphasels.add(tempProjectPhases);
+
+			}
+		}
+		// ------------------------------------------------------------------------------------
 		ProjectMaster projectMaster = new ProjectMaster();
 		List<ProjectContact> lclist = new ArrayList<ProjectContact>();
 		ProjectContact lc = new ProjectContact();
@@ -7806,8 +7856,22 @@ public class HomeController {
 
 		projectMaster.setProjectFollowers(lmlis);
 		projectMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
+		projectMaster.setProjectPhases(prjphasels);
+		projectMaster = projectMasterService.save(projectMaster);
+		// System.out.println(projectMaster);
 
-		projectMasterService.save(projectMaster);
+		List<ActivityMaster> amtempls = new ArrayList();
+
+		for (ProjectPhases ppobj : projectMaster.getProjectPhases()) {
+			for (ActivityMaster amtempobj : ppobj.getActivityMaster()) {
+				amtempobj.setMastercategoryid(String.valueOf(ppobj.getId()));
+				amtempls.add(amtempobj);
+			}
+
+		}
+
+		activityMasterService.saveall(amtempls);
+
 		// ----------------------------
 		itemlistService.savesingletxt(Source, "SOURCE");
 		itemlistService.savesingletxt(Purpose, "PURPOSE");
@@ -8037,8 +8101,6 @@ public class HomeController {
 		return projectTemplateBoardService.findById(Integer.parseInt(boardid));
 
 	}
-
-	
 
 	@ResponseBody
 	@PostMapping("gettimelinelist")

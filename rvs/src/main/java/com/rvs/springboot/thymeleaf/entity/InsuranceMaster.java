@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,8 +34,6 @@ public class InsuranceMaster {
 	private int Insuranceid;
 	
 	@Column
-	private String VendorName;
-	@Column
 	private String InsuranceTo;
 	@Column
 	private String StaffID;
@@ -44,4 +43,8 @@ public class InsuranceMaster {
 	@JoinColumn(name = "Insuranceid")
 	private List<InsuranceDetails> InsuranceDetails;
 
+	@Transient
+	private String staffassetname;
+	
+	
 }

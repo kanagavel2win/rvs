@@ -5323,88 +5323,64 @@ public class HomeController {
 
 	@GetMapping("insurancelist")
 	public String insurancelist(Model theModel) {
-		List<String> datastaff = new ArrayList<String>();
-		List<String> dataasset = new ArrayList<String>();
-		List<InsuranceMaster> ls = new ArrayList<InsuranceMaster>();
-		ls = insuranceMasterService.findAll();
+		
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Insurance"));
+		
+		return "insurancelist";
 
-		Date todaydate = new Date();
+	}
 
-		for (InsuranceMaster obj : ls) {
+	@ResponseBody
+	@GetMapping("insurancelistjson")
+	public List<InsuranceMaster> insurancelistjson() {
 
-			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(obj.getVendorName()));
+		List<InsuranceMaster> lnsurancels = insuranceMasterService.findAll();
 
-			String namestr = "";
+		List<InsuranceMaster> lnsurancels_temp = new ArrayList();
+
+		for (InsuranceMaster obj : lnsurancels) {
 
 			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
+
 				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
-				namestr = asset.getAssetName();
-
-				for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
-					String str = "";
-					str += obj.getInsuranceid() + " |";
-					str += vendor.getName() + " |";
-					str += namestr + " |";
-					str += objindetail.getPolicyName() + " |";
-
-					if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
-						try {
-							str += displaydateFormat
-									.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())) + " |";
-
-							long differ_in_time = todaydate.getTime()
-									- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
-							str += insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)) + " |";
-
-						} catch (ParseException e) {
-						}
-					} else {
-						str += objindetail.getPTo() + " |";
-					}
-
-					dataasset.add(str);
-				}
+				obj.setStaffassetname(asset.getAssetName().toString());
 
 			} else {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
-
-				namestr = employee.getStaffName();
-
-				EmployeeEmgContact emglsnew = new EmployeeEmgContact();
-
-				for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
-					String str = "";
-					str += obj.getInsuranceid() + " |";
-					str += vendor.getName() + " |";
-					str += namestr + " |";
-					str += objindetail.getPolicyName() + " |";
-					if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
-						try {
-							str += displaydateFormat
-									.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())) + " |";
-
-							long differ_in_time = todaydate.getTime()
-									- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
-
-							str += insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)) + " |";
-
-						} catch (ParseException e) {
-						}
-					} else {
-						str += objindetail.getPTo() + " | |";
-					}
-
-					datastaff.add(str);
-				}
+				obj.setStaffassetname(employee.getStaffName().toString());
 
 			}
 
+			for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
+
+				VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(objindetail.getVendorName()));
+				objindetail.setVendorNamestr(vendor.getName());
+
+				if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
+					try {
+						objindetail.setDuedateformate(displaydateFormatFirstMMMddYYY
+								.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())));
+
+						long differ_in_time = new Date().getTime()
+								- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
+
+						objindetail.setDueindicatorcolor(insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)));
+
+					} catch (ParseException e) {
+					}
+				} else {
+					objindetail.setDuedateformate("");
+					objindetail.setDueindicatorcolor("");
+
+				}
+
+				
+			}
+
+			lnsurancels_temp.add(obj);
 		}
 
-		theModel.addAttribute("datastaff", datastaff);
-		theModel.addAttribute("dataasset", dataasset);
-		return "insurancelist";
-
+		return lnsurancels_temp;
 	}
 
 	public String insuranetimecolor(long timr) {

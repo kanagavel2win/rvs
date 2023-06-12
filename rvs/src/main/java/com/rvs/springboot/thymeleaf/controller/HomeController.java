@@ -4127,16 +4127,17 @@ public class HomeController {
 
 		return "assetlist";
 	}
-	
+
 	@ResponseBody
 	@GetMapping("assetlistbyids")
-	public List<AssetMaster> assetlistbyids(@RequestParam Map<String,String> params) {
-		
-		List<Integer> assetids = Arrays.asList(params.get("assetids").split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
-		List<AssetMaster> ls =assetMasterService.findByManyassetIds(assetids);
+	public List<AssetMaster> assetlistbyids(@RequestParam Map<String, String> params) {
+
+		List<Integer> assetids = Arrays.asList(params.get("assetids").split(",")).stream()
+				.map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+		List<AssetMaster> ls = assetMasterService.findByManyassetIds(assetids);
 		return ls;
 	}
-	
+
 	@ResponseBody
 	@GetMapping("assetlistjson")
 	public List<AssetMaster> assetlistjson() {
@@ -6989,7 +6990,11 @@ public class HomeController {
 			ContactPerson cp = contactPersonService.findById(Integer.parseInt(leadreference));
 			leadMaster.setReferenceName(cp.getPeoplename());
 		}
-
+		if (!nullremover(String.valueOf(leadMaster.getBranch())).equalsIgnoreCase("")) {
+			int branchid = leadMaster.getBranch();
+			BranchMaster bm = branchMasterService.findById(branchid);
+			leadMaster.setBranchname(bm.getBRANCH_NAME());
+		}
 		// ----------------------------------------------------------
 		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
 
@@ -7478,26 +7483,31 @@ public class HomeController {
 			String strarr1 = strarr[1];
 			cp = contactPersonService.findById(Integer.parseInt(strarr1));
 			// ----------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			if (strarrorg.length > 1) {
+				if (strarrorg.length > 1) {
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
 
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
 				}
+			} else {
+				cp.setOrganization("");
 			}
 			// ----------------------------------------
 		} else {
@@ -7514,25 +7524,29 @@ public class HomeController {
 			cpcls.add(cpc);
 			cp.setContactPersonContact(cpcls);
 			// -------------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				if (strarrorg.length > 1) {
 
-			if (strarrorg.length > 1) {
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
-
-			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
 				}
+			} else {
+				cp.setOrganization("");
 			}
 			// --------------------------------------------------------------
 
@@ -7603,27 +7617,33 @@ public class HomeController {
 			String strarr1 = strarr[1];
 			cp = contactPersonService.findById(Integer.parseInt(strarr1));
 			// ----------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			if (strarrorg.length > 1) {
+				if (strarrorg.length > 1) {
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
 
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
 				}
+			} else {
+				cp.setOrganization("");
 			}
+
 			// ----------------------------------------
 		} else {
 			cp.setBranchid(1);
@@ -7639,26 +7659,32 @@ public class HomeController {
 			cpcls.add(cpc);
 			cp.setContactPersonContact(cpcls);
 			// -------------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				if (strarrorg.length > 1) {
 
-			if (strarrorg.length > 1) {
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
+				}
 
 			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
-				}
+				cp.setOrganization("");
 			}
+
 			// --------------------------------------------------------------
 
 		}
@@ -7731,26 +7757,31 @@ public class HomeController {
 			String strarr1 = strarr[1];
 			cp = contactPersonService.findById(Integer.parseInt(strarr1));
 			// ----------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				if (strarrorg.length > 1) {
 
-			if (strarrorg.length > 1) {
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
+
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
+				}
 
 			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
-
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
-				}
+				cp.setOrganization("");
 			}
 			// ----------------------------------------
 		} else {
@@ -7767,25 +7798,30 @@ public class HomeController {
 			cpcls.add(cpc);
 			cp.setContactPersonContact(cpcls);
 			// -------------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				if (strarrorg.length > 1) {
 
-			if (strarrorg.length > 1) {
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
+				}
 
 			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
-				}
+				cp.setOrganization("");
 			}
 			// --------------------------------------------------------------
 

@@ -238,7 +238,12 @@
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${leadMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
-
+												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
+													<span th:text="${leadMaster.purpose}" id="Lbl_purpose"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
+													<span th:text="${leadMaster.branchname}" id="Lbl_branchname"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
 												</li>
@@ -1017,6 +1022,9 @@
 																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
+																			$("#Lbl_purpose").text(bmobj.purpose);
+																			$("#Lbl_branchname").text(bmobj.branchname);
+																			
 																			
 																			$name ="";
 																			

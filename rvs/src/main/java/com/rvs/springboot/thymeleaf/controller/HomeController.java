@@ -5397,25 +5397,7 @@ public class HomeController {
 		return color;
 	}
 
-	@GetMapping("insurancenew")
-	public String insurancenew(Model themodel) {
-
-		InsuranceMaster insuranceobj = new InsuranceMaster();
-		List<InsuranceDetails> setinsuranceDetails = new ArrayList<InsuranceDetails>();
-		setinsuranceDetails.add(new InsuranceDetails());
-		insuranceobj.setInsuranceDetails(setinsuranceDetails);
-		List<VendorMaster> vm = vendorMasterService.findAll();
-		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
-		branchls = branchMasterService.findAll();
-
-		themodel.addAttribute("branchls", branchls);
-		themodel.addAttribute("insurancemaster", insuranceobj);
-		themodel.addAttribute("vm", vm);
-		List<String> PolicyCover = itemlistService.findByFieldName("PolicyCover");
-		themodel.addAttribute("PolicyCover", PolicyCover);
-
-		return "insurance";
-	}
+	
 
 	@GetMapping("insurance")
 	public String insurancedetails(Model themodel, @RequestParam("id") int id) {

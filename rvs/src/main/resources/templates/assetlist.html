@@ -776,6 +776,26 @@
 	   })
 	   
 	   
+	   $(`#checkout`).click(function (){
+		   var cartid="";
+		   $('.removefromcart').each(function(index) {
+			 cartid = cartid+","+$(this).attr('name');
+			});
+		   cartid = cartid.substring(1,cartid.length);
+		   window.location.href = 'checkout?id='+cartid;
+	   })
+	   
+	   
+	   $(`#checkin`).click(function (){
+		   var cartid="";
+		   $('.removefromcart').each(function(index) {
+			 cartid = cartid+","+$(this).attr('name');
+			});
+		   cartid = cartid.substring(1,cartid.length);
+		   window.location.href = 'checkin?id='+cartid;
+	   })
+	   
+	   
 	    
 	   
 	    $('#Branch1,#Custodian').change(function (){

@@ -21,7 +21,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Check Out</title>
+    <title>Checkout List</title>
 
     <meta name="description" content="" />
 
@@ -62,6 +62,13 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}" />
+     
+    <!-- Row Group CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css}" />
+    <!-- Form Validation -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+
+
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -99,7 +106,7 @@
 
 <div class="card-body">
 
-<form id="form1" onsubmit="return false">
+<form id="form1" th:action="@{/checkoutsave}" method="POST" enctype="multipart/form-data">
 
 <div class="row g-4">
 
@@ -107,20 +114,15 @@
 	  <label class="form-label">Branch</label>
       <select class="form-select" id="Branch" name="Branch" required>
 		 <option value="">--Select--</option>
-		
- <option value="1">Coimbatore</option>
-		
- <option value="2">Pollachi</option>
-		
- <option value="3">Madurai</option>
-		
- <option value="4">Salem</option>
+			<th:block th:each="emp : ${branchls}">
+			<option th:value="${emp.id}" th:text="${emp.BRANCH_NAME}"></option>
+			</th:block>
 	</select>
 	 </div>
 
 	 <div class="col-sm-3">
 	  <label class="form-label">Custodian</label>
-      <select class="form-select" id="Custodian" name="Custodian" required>
+      <select class="form-select" id="StaffID" name="StaffID" required>
 		 <option value="">--Select--</option>
  
 	</select>
@@ -128,14 +130,16 @@
 	 
 	 <div class="col-sm-3">
 	  <label class="form-label">Check In Date</label>
-	  <input type="text" class="form-control flatpickr" name="CheckInDate" id="CheckInDate" placeholder="Apr 3 2022" required>
+	  <input type="text" class="form-control flatpickr" name="CheckOutDate" id="CheckOutDate" th:value="${today}" placeholder="Apr 3 2022" required>
 	  </div>
 	 
 	  <div class="col-sm-3" id="vendordiv" style="display:none;">
 	 <label for="form-label">Vendor </label>
 	 <select class="form-select" name="vendor" id="vendorls">
-	 <option value="">-</option>
-	 <option value="1">INDUS INSTRUMENTS - Machinery</option>
+	<option value="">-</option>
+	<th:block th:each="ven : ${vendorls}">
+	<option th:value="${ven.vendormasterid}" th:text="${ven.Name} + ' - '+${ven.AssetType}"></option>
+	</th:block>
 	 </select>
 	 </div>
 	 
@@ -144,6 +148,12 @@
 	 <input type="text" class="form-control" id="WhichLocation" name="WhichLocation">
 	 </div>
 	
+	<script> var ASSETTYPElist="<option value='' >-</option>";  var rowsno=0; </script>
+    <th:block th:each="str : ${ASSETTYPE}">
+	<script>
+   ASSETTYPElist += "<option value='[[${str}]]'>[[${str}]]</option>";
+    </script>
+	</th:block>
 	 
 	 <div class="col-sm-3">
 	  <label class="form-label">Status</label>
@@ -163,20 +173,44 @@
 	  
 <div class="col-sm-12">
   <div class="card-datatable table-responsive pt-0">
-    <table class="datatables-basic table table-bordered">
+    <table class="datatables-basic table">
       <thead>
         <tr>
                         <th></th>
                         <th></th>
-                        <th width="5%">S.No</th>
+                        <th>S.No</th>
 						<th>Asset Type</th>
 						<th>Asset Name</th>
 						<th>Condition</th>
 						<th>Photo</th>
 						<th>Comments</th>
-						<th>Actions</th>
+						<th>Action</th>
+						
                       </tr>
       </thead>
+      <tbody>
+  <tr th:each="selasset, stat: ${selectedasset}">
+  <td></td>
+  <td></td>
+    <td th:text="${stat.index+1}"></td>
+		<td>
+		<input type="hidden" th:value="${selasset.AssetType}" name="AssetType" /> 
+		<span th:text="${selasset.AssetType}"></span>
+		</td>
+	   <td>
+	   <input type="hidden" th:value="${selasset.AssetId}" name="AssetName" /> 
+	    <span th:text="${selasset.AssetName}"></span>
+	    </td>
+		<td>
+		 <input type="hidden" th:value="${selasset.ACondition}" name="ACondition" /> 
+		 <span th:text="${selasset.ACondition}"></span>
+		</td>
+		 <td class="Photo_Attach"><input type='file' name='Photo_Attach' class="form-control Photo_Attach"  accept="image/*" multiple /></td>
+		 <td><input type='text' name='Comments' class="form-control" /> </td>
+		 <td><span id="1" class="cursor-pointer filedivdelete">  <i class="bx bx-trash-alt"></i> </span></td>
+		  <script>  rowsno="[[${stat.index+1}]]"; </script>
+		</tr>
+      </tbody>
     
     </table>
   </div>
@@ -206,8 +240,9 @@
      </form>
 </div>
 </div>
+
 <!-- Modal to add new record -->
-<div class="offcanvas offcanvas-end" id="add-new-record">
+<!-- <div class="offcanvas offcanvas-end" id="add-new-record">
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title" id="exampleModalLabel">New Item</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -263,7 +298,7 @@
     </form>
 
   </div>
-</div>
+</div> -->
 <!--/ DataTable with Buttons -->
     
     </div>
@@ -309,7 +344,9 @@
     </div>
     </div>
     </div>
-        <!-- Core JS -->
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
     <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
     <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
     <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
@@ -355,10 +392,8 @@
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
     <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
 
- 
-
-  <!-- Main JS -->
-  <script th:src="@{/assets/js/main.js}"></script>
+    <!-- Main JS -->
+    <script th:src="@{/assets/js/main.js}"></script>
   
  
   <script>
@@ -385,42 +420,36 @@
   const vendor = $(`[name="vendor"]`);
   const vendordiv = $(`#vendordiv`);
   const locationdiv = $(`#locationdiv`); 
-  const form2 = $(`#form2`);
-  const AssetType = $(`[name="AssetType"]`);
-  const AssetName = $(`[name="AssetName"]`);
-  const Photo_Attach = document.querySelector(`[name="Photo_Attach"]`);
-  const Comments = $(`[name="Comments"]`);
-  const Condition = $(`[name='Condition']`);
-  const receipt = $(`[name="receipt"]`);
+
   
   const dt_basic_table = $(`.datatables-basic`).DataTable({
 	  
   columnDefs: [
-    {
-      // For Responsive
-      className: 'control',
-      orderable: false,
-      responsivePriority: 2,
-      searchable: false,
-      targets: 0,
-      render: function(data, type, full, meta) {
-        return '';
-      }
-    },
-    {
-      // For Checkboxes
-      targets: 1,
-      orderable: false,
-      responsivePriority: 3,
-      searchable: false,
-      checkboxes: true,
-      render: function() {
-        return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-      },
-      checkboxes: {
-        selectAllRender: '<input type="checkbox" class="form-check-input">'
-      }
-    },
+	    {
+	          // For Responsive
+	          className: 'control',
+	          orderable: false,
+	          responsivePriority: 1,
+	          searchable: false,
+	          targets: 0,
+	          render: function(data, type, full, meta) {
+	            return '';
+	          }
+	        },
+	        {
+	          // For Checkboxes
+	          targets: 1,
+	          orderable: false,
+	          responsivePriority: 2,
+	          searchable: false,
+	          checkboxes: true,
+	          render: function() {
+	            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+	          },
+	          checkboxes: {
+	            selectAllRender: '<input type="checkbox" class="form-check-input">'
+	          }
+	        },
   ],
   
   dom:
@@ -465,42 +494,22 @@
         }
       ]
     },
-    {
-      text: '<i class="bx bx-plus me-2"></i> <span class="d-none d-lg-inline-block" >Add Item </span>',
-      className: 'create-new btn btn-primary'
-    }
   ],
   responsive: {
-    details: {
-      display: $.fn.dataTable.Responsive.display.modal({
-        header: function(row) {
-          var data = row.data();
-          return 'Details of Item';
-        }
-      }),
-      type: 'column',
-      renderer: function(api, rowIdx, columns) {
-        var data = $.map(columns, function(col, i) {
-          return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
-            ? '<tr data-dt-row="' +
-                col.rowIndex +
-                '" data-dt-column="' +
-                col.columnIndex +
-                '">' +
-                '<td>' +
-                col.title +
-                ':' +
-                '</td> ' +
-                '<td>' +
-                col.data +
-                '</td>' +
-                '</tr>'
-            : '';
-        }).join('');
-
-        return data ? $('<table class="table"/><tbody />').append(data) : false;
+      details: {
+          display: $.fn.dataTable.Responsive.display.modal({
+              header: function(a) {
+                  return "Details of " + a.data().full_name
+              }
+          }),
+          type: "column",
+          renderer: function(a, t, e) {
+              e = $.map(e, function(a, t) {
+                  return "" !== a.title ? '<tr data-dt-row="' + a.rowIndex + '" data-dt-column="' + a.columnIndex + '"><td>' + a.title + ":</td> <td>" + a.data + "</td></tr>" : ""
+              }).join("");
+              return !!e && $('<table class="table"/><tbody />').append(e)
+          }
       }
-    }
   }
 });
 
@@ -539,69 +548,57 @@ console.log(dt_basic_table.row);
 	    }
   })
   
-  $(form2).submit(function(e){
-	  var at = $(`[name="AssetType"] option:selected`).text();
-	  var an = $(`[name="AssetName"] option:selected`).text();
-	  var ac = $(`[name="Condition"] option:selected`).text();
-	  //var i = $('.datatables-basic tbody>tr').length === 0 ? 1 : $('.datatables-basic tbody>tr').length+1;
-	  
-	  var rowCount = dt_basic_table.rows().count();
-	  rowCount = rowCount+1;
-	  
-	  var com = Comments.val();
-	  const FilesCount = Photo_Attach.files.length;
-	  var url;
-      if(FilesCount > 0)
-	  {
-    	  const file = Photo_Attach.files[0];
-    	   url = URL.createObjectURL(file);
-    	   url = `<a class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2" href="${url}" target="_blank"><i class="bx bx-download bx-xs"></i></a>`;
-	  }
-      else
-      {
-    	   url = '-';
-      }
-      var text=`<button class="btn btn-sm btn-icon delete-record" type="button"><i class="bx bx-trash"></i></button>`;
-      
-	  dt_basic_table.row.add([
-		  '',
-          '',
-          rowCount,
-          at,
-          an,
-          ac,
-          url,
-          com,
-          text,
-      ] ).draw( false );
-	  
-	      e.target.reset();
-	      offCanvasEl.hide();
-  })
   
-  
-$(document).on('click','.delete-record' , function(e){
-	var tr = $(this).closest('tr');
-	 Swal.fire({
-         title: 'Are you sure?',
-         text: "You won't be able to revert this!",
-         icon: 'warning',
-         showCancelButton: true,
-         confirmButtonText: 'Yes,  Delete Check Out Entry it!',
-         customClass: {
-             confirmButton: 'btn btn-primary me-3',
-             cancelButton: 'btn btn-label-secondary'
-         },
-         buttonsStyling: false
-     }).then(function(result) {
-    	 if (result.value) {
-    		 dt_basic_table.row(tr)
-    	        .remove()
-    	        .draw();
-    	 }
-     })
-})
+  $("#Branch").change(function(){
+					
+					var branch = $("#Branch").val();
+					$('#StaffID').html("");
+					$('.AssetType').val("");
+					$('.assetypeinstcokitem').html("");
+					if(branch != "")
+					{
+						//---------------------------------
+						// Branch Details
+						var branchname = $("#Branch :Selected").text();
+						$(".Custodianloding").css("visibility","visible");
+						$('#StaffID').html("");
+						var formData = {
+								branchname : branchname					
+						}
+						$.ajax({
+							type : "POST",url : "getEmployeelistbasedonbranch",
+							data : formData,success : function(result) {
+								$('#StaffID').append(result);
+								$(".Custodianloding").css("visibility","hidden");
+							},
+							error : function(e) {
+								alert("Error" + e);
+								$(".Custodianloding").css("visibility","hidden");
+							}
+						});
+						//---------------------------------
+						// Asset Details
+						$('.assetdetails').html("");
+						var branchid = $("#Branch :Selected").val();
+						var formData = {
+								branchid : branchid					
+						}
+						$.ajax({
+							type : "POST",url : "getassetlistbasedonbranch",
+							data : formData,success : function(result) {
+								instockItemlist=result;
+							},
+							error : function(e) {
+								alert("Error" + e);
+							}
+						});						
+					}
+				});
 
+
+        $(document).on("click", ".filedivdelete", function() {
+			$(this).closest("tr").remove();
+		});
   </script>
     </body>
     </html>

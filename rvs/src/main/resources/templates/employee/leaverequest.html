@@ -21,7 +21,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Leave Approval List</title>
+    <title>Leave Request List</title>
 
     <meta name="description" content="" />
 
@@ -291,7 +291,7 @@
     </div>
     <!-- / Layout wrapper -->
 
-   <!-- Core JS -->
+  <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
     <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
@@ -307,7 +307,7 @@
     <!-- endbuild -->
 
      <!-- Vendors JS -->
-     <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+    <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
     <script th:src="@{/assets/vendor/libs/bootstrap-select/bootstrap-select.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
     <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
@@ -340,10 +340,6 @@
 
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
-
-    <!-- Page JS -->
-    <!-- <script th:src="@{/assets/js/tables-datatables-basic.js}"></script> -->
-    <script th:src="@{/assets/js/form-validation.js}"></script> 
     <script>
      
     const flatpickrFriendly = document.querySelector('#startdate');
@@ -427,22 +423,20 @@
 					      ],
 					      columnDefs: [
 					        {
-					          // For Responsive
-					          className: 'control',
-					          orderable: false,
-					          responsivePriority: 2,
-					          searchable: false,
-					          visible: true,
-					          targets: 0,
-					          render: function(data, type, full, meta) {
-					            return '';
-					          }
+					        	className: 'control',
+						          orderable: false,
+						          responsivePriority: 1,
+						          searchable: false,
+						          targets: 0,
+						          render: function(data, type, full, meta) {
+						            return '';
+						          }
 					        },
 					        {
 					          // For Checkboxes
 					          targets: 1,
 					          orderable: false,
-					          responsivePriority: 3,
+					          responsivePriority: 2,
 					          searchable: false,
 					          checkboxes: true,
 					          render: function() {

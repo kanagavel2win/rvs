@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,8 @@ public class InsuranceDetails {
 	private int InsuranceDetailsid;
 
 	@Column
+	private String VendorName;	
+	@Column
 	private String PolicyName;
 	@Column
 	private String PolicyNo;
@@ -49,5 +52,19 @@ public class InsuranceDetails {
 	private String doc_Attach;
 	@Column
 	private String status;
+	
+	@Transient
+	private String VendorNamestr;
+	
+	@Transient
+	private String timestr;
+	
+	@Transient
+	private String dueindicatorcolor;
+	@Transient
+	private String duedateformate;
+	
+	
+	
 
 }

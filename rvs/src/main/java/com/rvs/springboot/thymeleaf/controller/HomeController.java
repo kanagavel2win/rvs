@@ -4127,16 +4127,17 @@ public class HomeController {
 
 		return "assetlist";
 	}
-	
+
 	@ResponseBody
 	@GetMapping("assetlistbyids")
-	public List<AssetMaster> assetlistbyids(@RequestParam Map<String,String> params) {
-		
-		List<Integer> assetids = Arrays.asList(params.get("assetids").split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
-		List<AssetMaster> ls =assetMasterService.findByManyassetIds(assetids);
+	public List<AssetMaster> assetlistbyids(@RequestParam Map<String, String> params) {
+
+		List<Integer> assetids = Arrays.asList(params.get("assetids").split(",")).stream()
+				.map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+		List<AssetMaster> ls = assetMasterService.findByManyassetIds(assetids);
 		return ls;
 	}
-	
+
 	@ResponseBody
 	@GetMapping("assetlistjson")
 	public List<AssetMaster> assetlistjson() {
@@ -5322,88 +5323,64 @@ public class HomeController {
 
 	@GetMapping("insurancelist")
 	public String insurancelist(Model theModel) {
-		List<String> datastaff = new ArrayList<String>();
-		List<String> dataasset = new ArrayList<String>();
-		List<InsuranceMaster> ls = new ArrayList<InsuranceMaster>();
-		ls = insuranceMasterService.findAll();
+		
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Insurance"));
+		
+		return "insurancelist";
 
-		Date todaydate = new Date();
+	}
 
-		for (InsuranceMaster obj : ls) {
+	@ResponseBody
+	@GetMapping("insurancelistjson")
+	public List<InsuranceMaster> insurancelistjson() {
 
-			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(obj.getVendorName()));
+		List<InsuranceMaster> lnsurancels = insuranceMasterService.findAll();
 
-			String namestr = "";
+		List<InsuranceMaster> lnsurancels_temp = new ArrayList();
+
+		for (InsuranceMaster obj : lnsurancels) {
 
 			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
+
 				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
-				namestr = asset.getAssetName();
-
-				for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
-					String str = "";
-					str += obj.getInsuranceid() + " |";
-					str += vendor.getName() + " |";
-					str += namestr + " |";
-					str += objindetail.getPolicyName() + " |";
-
-					if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
-						try {
-							str += displaydateFormat
-									.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())) + " |";
-
-							long differ_in_time = todaydate.getTime()
-									- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
-							str += insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)) + " |";
-
-						} catch (ParseException e) {
-						}
-					} else {
-						str += objindetail.getPTo() + " |";
-					}
-
-					dataasset.add(str);
-				}
+				obj.setStaffassetname(asset.getAssetName().toString());
 
 			} else {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
-
-				namestr = employee.getStaffName();
-
-				EmployeeEmgContact emglsnew = new EmployeeEmgContact();
-
-				for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
-					String str = "";
-					str += obj.getInsuranceid() + " |";
-					str += vendor.getName() + " |";
-					str += namestr + " |";
-					str += objindetail.getPolicyName() + " |";
-					if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
-						try {
-							str += displaydateFormat
-									.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())) + " |";
-
-							long differ_in_time = todaydate.getTime()
-									- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
-
-							str += insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)) + " |";
-
-						} catch (ParseException e) {
-						}
-					} else {
-						str += objindetail.getPTo() + " | |";
-					}
-
-					datastaff.add(str);
-				}
+				obj.setStaffassetname(employee.getStaffName().toString());
 
 			}
 
+			for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
+
+				VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(objindetail.getVendorName()));
+				objindetail.setVendorNamestr(vendor.getName());
+
+				if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
+					try {
+						objindetail.setDuedateformate(displaydateFormatFirstMMMddYYY
+								.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())));
+
+						long differ_in_time = new Date().getTime()
+								- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
+
+						objindetail.setDueindicatorcolor(insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)));
+
+					} catch (ParseException e) {
+					}
+				} else {
+					objindetail.setDuedateformate("");
+					objindetail.setDueindicatorcolor("");
+
+				}
+
+				
+			}
+
+			lnsurancels_temp.add(obj);
 		}
 
-		theModel.addAttribute("datastaff", datastaff);
-		theModel.addAttribute("dataasset", dataasset);
-		return "insurancelist";
-
+		return lnsurancels_temp;
 	}
 
 	public String insuranetimecolor(long timr) {
@@ -5420,25 +5397,7 @@ public class HomeController {
 		return color;
 	}
 
-	@GetMapping("insurancenew")
-	public String insurancenew(Model themodel) {
-
-		InsuranceMaster insuranceobj = new InsuranceMaster();
-		List<InsuranceDetails> setinsuranceDetails = new ArrayList<InsuranceDetails>();
-		setinsuranceDetails.add(new InsuranceDetails());
-		insuranceobj.setInsuranceDetails(setinsuranceDetails);
-		List<VendorMaster> vm = vendorMasterService.findAll();
-		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
-		branchls = branchMasterService.findAll();
-
-		themodel.addAttribute("branchls", branchls);
-		themodel.addAttribute("insurancemaster", insuranceobj);
-		themodel.addAttribute("vm", vm);
-		List<String> PolicyCover = itemlistService.findByFieldName("PolicyCover");
-		themodel.addAttribute("PolicyCover", PolicyCover);
-
-		return "insurance";
-	}
+	
 
 	@GetMapping("insurance")
 	public String insurancedetails(Model themodel, @RequestParam("id") int id) {
@@ -6989,7 +6948,11 @@ public class HomeController {
 			ContactPerson cp = contactPersonService.findById(Integer.parseInt(leadreference));
 			leadMaster.setReferenceName(cp.getPeoplename());
 		}
-
+		if (!nullremover(String.valueOf(leadMaster.getBranch())).equalsIgnoreCase("")) {
+			int branchid = leadMaster.getBranch();
+			BranchMaster bm = branchMasterService.findById(branchid);
+			leadMaster.setBranchname(bm.getBRANCH_NAME());
+		}
 		// ----------------------------------------------------------
 		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
 
@@ -7478,26 +7441,31 @@ public class HomeController {
 			String strarr1 = strarr[1];
 			cp = contactPersonService.findById(Integer.parseInt(strarr1));
 			// ----------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			if (strarrorg.length > 1) {
+				if (strarrorg.length > 1) {
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
 
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
 				}
+			} else {
+				cp.setOrganization("");
 			}
 			// ----------------------------------------
 		} else {
@@ -7514,25 +7482,29 @@ public class HomeController {
 			cpcls.add(cpc);
 			cp.setContactPersonContact(cpcls);
 			// -------------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				if (strarrorg.length > 1) {
 
-			if (strarrorg.length > 1) {
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
-
-			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
 				}
+			} else {
+				cp.setOrganization("");
 			}
 			// --------------------------------------------------------------
 
@@ -7603,27 +7575,33 @@ public class HomeController {
 			String strarr1 = strarr[1];
 			cp = contactPersonService.findById(Integer.parseInt(strarr1));
 			// ----------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			if (strarrorg.length > 1) {
+				if (strarrorg.length > 1) {
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
 
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
 				}
+			} else {
+				cp.setOrganization("");
 			}
+
 			// ----------------------------------------
 		} else {
 			cp.setBranchid(1);
@@ -7639,26 +7617,32 @@ public class HomeController {
 			cpcls.add(cpc);
 			cp.setContactPersonContact(cpcls);
 			// -------------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				if (strarrorg.length > 1) {
 
-			if (strarrorg.length > 1) {
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
+				}
 
 			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
-				}
+				cp.setOrganization("");
 			}
+
 			// --------------------------------------------------------------
 
 		}
@@ -7731,26 +7715,31 @@ public class HomeController {
 			String strarr1 = strarr[1];
 			cp = contactPersonService.findById(Integer.parseInt(strarr1));
 			// ----------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				if (strarrorg.length > 1) {
 
-			if (strarrorg.length > 1) {
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
+
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
+				}
 
 			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
-
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
-				}
+				cp.setOrganization("");
 			}
 			// ----------------------------------------
 		} else {
@@ -7767,25 +7756,30 @@ public class HomeController {
 			cpcls.add(cpc);
 			cp.setContactPersonContact(cpcls);
 			// -------------------------------------------------
+			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
+				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
+						"");
+				strorg = strorg.replace("\"", "");
+				String[] strarrorg = strorg.split(",");
 
-			String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "");
-			strorg = strorg.replace("\"", "");
-			String[] strarrorg = strorg.split(",");
+				if (strarrorg.length > 1) {
 
-			if (strarrorg.length > 1) {
+					cp.setOrganization(String.valueOf(strarrorg[1]));
 
-				cp.setOrganization(String.valueOf(strarrorg[1]));
+				} else {
+					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
+						OrganizationContacts contactOrganization = new OrganizationContacts();
+						contactOrganization.setOrgname(strarrorg[0]);
+						contactOrganization.setBranchid(branch);
+						contactOrganization.setCustomer_supplier("Customer");
+						contactOrganization.setFollowers(params.get("followers"));
+						contactOrganization = contactOrganizationService.save(contactOrganization);
+						cp.setOrganization(String.valueOf(contactOrganization.getId()));
+					}
+				}
 
 			} else {
-				if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-					OrganizationContacts contactOrganization = new OrganizationContacts();
-					contactOrganization.setOrgname(strarrorg[0]);
-					contactOrganization.setBranchid(branch);
-					contactOrganization.setCustomer_supplier("Customer");
-					contactOrganization.setFollowers(params.get("followers"));
-					contactOrganization = contactOrganizationService.save(contactOrganization);
-					cp.setOrganization(String.valueOf(contactOrganization.getId()));
-				}
+				cp.setOrganization("");
 			}
 			// --------------------------------------------------------------
 

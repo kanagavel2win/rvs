@@ -4606,7 +4606,7 @@ public class HomeController {
 
 		// ------------------------------------------------------------------------------------
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
-				.filter(C -> C.getStatus().equalsIgnoreCase("In Stock")
+				.filter(C -> String.valueOf(C.getStatus()).equalsIgnoreCase("In Stock")
 						&& String.valueOf(C.getBranch()).equalsIgnoreCase(branch))
 				.collect(Collectors.toList());
 		// ------------------------------------------------------------------------------------
@@ -5323,9 +5323,9 @@ public class HomeController {
 
 	@GetMapping("insurancelist")
 	public String insurancelist(Model theModel) {
-		
+
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Insurance"));
-		
+
 		return "insurancelist";
 
 	}
@@ -5374,7 +5374,6 @@ public class HomeController {
 
 				}
 
-				
 			}
 
 			lnsurancels_temp.add(obj);
@@ -5396,8 +5395,6 @@ public class HomeController {
 
 		return color;
 	}
-
-	
 
 	@GetMapping("insurance")
 	public String insurancedetails(Model themodel, @RequestParam("id") int id) {
@@ -5428,7 +5425,128 @@ public class HomeController {
 		List<String> PolicyCover = itemlistService.findByFieldName("PolicyCover");
 		themodel.addAttribute("PolicyCover", PolicyCover);
 
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Insurance"));
+
 		return "insurance";
+	}
+
+	@ResponseBody
+	@PostMapping("getpolicydetailslist")
+	public List<InsuranceDetails> getpolicydetailslist(@RequestParam("id") int id) {
+
+		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
+
+		for (InsuranceDetails objindetail : insurancemasternew.getInsuranceDetails()) {
+
+			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(objindetail.getVendorName()));
+			objindetail.setVendorNamestr(vendor.getName());
+
+			EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(objindetail.getNominee()));
+			objindetail.setNominee_name_str(employee.getStaffName().toString());
+
+			try {
+				objindetail.setPFrom_str(displaydateFormatFirstMMMddYYY
+						.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPFrom())));
+				objindetail.setPTo_str(displaydateFormatFirstMMMddYYY
+						.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())));
+
+			} catch (ParseException e) {
+
+			}
+
+		}
+		return insurancemasternew.getInsuranceDetails();
+
+	}
+
+	@ResponseBody
+	@PostMapping("getpolicydetails")
+	public InsuranceDetails getpolicydetails(@RequestParam("id") int id, @RequestParam("policyid") int policyid) {
+
+		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
+		return insurancemasternew.getInsuranceDetails().stream().filter(C -> C.getInsuranceDetailsid() == policyid)
+				.collect(Collectors.toList()).get(0);
+	}
+
+	@ResponseBody
+	@PostMapping("policydetailsavejson")
+	public InsuranceMaster policydetailsavejson(@RequestParam Map<String, String> params,
+			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
+			HttpServletRequest request) {
+
+		//System.out.println(Files_Attach.getOriginalFilename().toString());
+		//System.out.println(params);
+		InsuranceMaster insurancemasternew = insuranceMasterService
+				.findById(Integer.parseInt(params.get("Insuranceid")));
+
+		StringBuilder filename = new StringBuilder();
+		if (Files_Attach != null) {
+			// File Uploading
+			String profilephotouploadRootPath = request.getServletContext().getRealPath("insurancepolicy");
+			// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+			File uploadRootDir = new File(profilephotouploadRootPath);
+			// Create directory if it not exists.
+			if (!uploadRootDir.exists()) {
+				uploadRootDir.mkdirs();
+			}
+
+			if (Files_Attach.getOriginalFilename().toString().length() > 0) {
+
+				String tempfilename = stringdatetime() + Files_Attach.getOriginalFilename();
+				Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+				filename.append("insurancepolicy/" + tempfilename);
+
+				try {
+					Files.write(fileNameandPath, Files_Attach.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		if (nullremover(String.valueOf(params.get("InsuranceDetailsid"))).equalsIgnoreCase("")) {
+
+			InsuranceDetails insuDetails = new InsuranceDetails();
+
+			insuDetails.setCover(params.get("Cover"));
+			insuDetails.setCoverageAmount(params.get("CoverageAmount"));
+			insuDetails.setDoc_Attach(filename.toString());
+			insuDetails.setNominee(params.get("Nominee"));
+			insuDetails.setNotes(params.get("Notes"));
+			insuDetails.setPFrom(params.get("PFrom"));
+			insuDetails.setPTo(params.get("PTo"));
+			insuDetails.setStatus(params.get("status"));
+			insuDetails.setVendorName(params.get("VendorName"));
+			insuDetails.setPolicyName(params.get("PolicyName"));
+			insuDetails.setPolicyNo(params.get("PolicyNo"));
+			insuDetails.setPremium(params.get("Premium"));
+			insurancemasternew.getInsuranceDetails().add(insuDetails);
+		} else {
+			for (InsuranceDetails insuDetails : insurancemasternew.getInsuranceDetails()) {
+				if (insuDetails.getInsuranceDetailsid() == Integer.parseInt(params.get("InsuranceDetailsid"))) {
+
+					insuDetails.setCover(params.get("Cover"));
+					insuDetails.setCoverageAmount(params.get("CoverageAmount"));
+					if (!nullremover(String.valueOf(filename.toString())).equalsIgnoreCase("")) {
+						insuDetails.setDoc_Attach(filename.toString());	
+					}
+					
+					insuDetails.setNominee(params.get("Nominee"));
+					insuDetails.setNotes(params.get("Notes"));
+					insuDetails.setPFrom(params.get("PFrom"));
+					insuDetails.setPTo(params.get("PTo"));
+					insuDetails.setStatus(params.get("status"));
+					insuDetails.setVendorName(params.get("VendorName"));
+					insuDetails.setPolicyName(params.get("PolicyName"));
+					insuDetails.setPolicyNo(params.get("PolicyNo"));
+					insuDetails.setPremium(params.get("Premium"));
+				}
+			}
+		}
+
+		return insuranceMasterService.save(insurancemasternew);
+
 	}
 
 	@PostMapping("insurancesave")

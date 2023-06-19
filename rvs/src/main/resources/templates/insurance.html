@@ -1,64 +1,108 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
-	data-textdirection="ltr">
 
-<!-- BEGIN: Head-->
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr"
+	data-theme="theme-default" th:data-assets-path="@{/assets/}"
+	data-template="vertical-menu-template">
 <head>
 <meta name="_csrf" th:content="${_csrf.token}" />
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta charset="utf-8" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="ICC">
+	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
 <title>Insurance</title>
-<link rel="apple-touch-icon"
-	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
-<link rel="shortcut icon" type="image/x-icon"
-	th:href="@{/app-assets/images/ico/favicon.ico}">
+
+<meta name="description" content="" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	th:href="@{/assets/img/favicon/favicon.ico}" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
-	rel="stylesheet}">
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/vendors.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
-<!-- END: Vendor CSS-->
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
 
-<!-- BEGIN: Theme CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/bootstrap-extended.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/colors.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/components.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/dark-layout.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
-<!-- END: Theme CSS-->
+<!-- Icons -->
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
 
-<!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
-<!-- END: Page CSS-->
+<!-- Core CSS -->
+<link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}"
+	class="template-customizer-core-css" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/rtl/theme-default.css}"
+	class="template-customizer-theme-css" />
+<link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
 
-<!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css"
-	th:href="@{/assets/css/style.css}">
-<!-- END: Custom CSS-->
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/animate-css/animate.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/select2/select2.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+
+<!-- Page CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/pages/page-profile.css}" />
+<!-- Helpers -->
+<script th:src="@{/assets/vendor/js/helpers.js}"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+<script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script th:src="@{/assets/js/config.js}"></script>
+
+
 <style>
+.bx-check-circle {
+	color: green;
+}
+
+.pop_cursor {
+	cursor: pointer;
+}
+
+.pop_cursor:hover {
+	font-weight: bold;
+}
+
+.contacteditbtn {
+	cursor: pointer;
+}
+
+.bx-donate-heart {
+	font-size: 100px;
+}
+
 .emptitle {
 	color: #527a00;
 	font-size: 15px;
@@ -68,735 +112,588 @@
 	cursor: pointer;
 }
 
-.uppercase {
-	text-transform: uppercase;
-}
-
-.capitalize {
-	text-transform: capitalize;
-}
-
-.bxs-file-pdf {
-	color: #FF0000;
-	font-size: 50px;
-}
-
-.addnewVendor {
-	float: right;
-}
-.red
+.policyedit
 {
-color:red;
-font-size:18px;
+	color: #527a00;
+	cursor: pointer
 }
 </style>
-<script>
-
-var edudivadd = 0;
-var PolicyCover="";
-var emgcontact="";
-</script>
 </head>
-<!-- END: Head-->
 
-<!-- BEGIN: Body-->
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<!-- Menu -->
+			<div th:insert="menu"></div>
+			<!-- / Menu -->
 
-<body
-	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
-	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+			<!-- Layout container -->
+			<div class="layout-page">
+				<!-- Navbar -->
 
-	<!-- BEGIN: Header-->
-	<div th:insert="header"></div>
-	<!-- END: Header-->
+				<div th:insert="header"></div>
+
+				<!-- / Navbar -->
+
+				<!-- Content wrapper -->
+				<div class="content-wrapper">
+					<!-- Content -->
+
+					<div class="container-xxl flex-grow-1 container-p-y">
+						<h4 class="py-3 breadcrumb-wrapper mb-4">
+							<span class="text-muted fw-light">Insurance</span>
+						</h4>
+
+						<!-- Header -->
+						<div class="row">
+							<div class="col-12">
+								<div class="card mb-4">
+									<div class="user-profile-header-banner">
+										<img th:src="@{/assets/img/pages/profile-banner.png}"
+											alt="Banner image" class="rounded-top" />
+									</div>
+									<div
+										class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+										<div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+											<i
+												class='bx bx-donate-heart d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img'></i>
+
+										</div>
+										<div class="flex-grow-1 mt-3 mt-sm-5">
+											<div
+												class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
+												<div class="user-profile-info">
+													<h4 th:if="${insurancemaster.InsuranceTo} == 'Asset'"
+														th:text="${am.AssetName}"></h4>
+													<h4 th:if="${insurancemaster.InsuranceTo} == 'Staff'"
+														th:text="${em.StaffName}"></h4>
+													<ul
+														class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+														<li class="list-inline-item fw-semibold"><i
+															class="bx bx-pen"></i> <th:block
+																th:text="${insurancemaster.InsuranceTo}"></th:block></li>
 
 
-	<!-- BEGIN: Main Menu-->
-	<div th:insert="menu"></div>
-	<!-- END: Main Menu-->
+													</ul>
+												</div>
 
-	<!-- BEGIN: Content-->
-	<!-- BEGIN: Content-->
-	<div class="app-content content">
-		<div class="content-overlay"></div>
-		<div class="content-wrapper">
-			<div class="content-header row">
-				<div class="content-header-left col-12 mb-2 mt-1">
-					<div class="row breadcrumbs-top">
-						<div class="col-12">
-							<h5 class="content-header-title float-left pr-1 mb-0">Insurance</h5>
-							<div class="breadcrumb-wrapper col-12">
-								<a href="insurancenew" class="addnewVendor"><button
-										type="button" class="btn btn-warning mr-1 mb-1">Add
-										Insurance</button></a>
-								<ol class="breadcrumb p-0 mb-0">
-									<li class="breadcrumb-item"><a href="index"><i
-											class="bx bx-home-alt"></i></a></li>
-									<li class="breadcrumb-item"><a href="#">Insurance</a></li>
-
-								</ol>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="content-body">
-
-				<div th:if="${save}" class="form-group col-12">
-					<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Insurance
-						Info Updated Successfully</button>
-				</div>
-				<!--scrolling content Modal -->
-				<div class="modal fade" id="VendorStatusScrollable" tabindex="-1"
-					role="dialog" aria-labelledby="VendorStatusScrollableTitle"
-					aria-hidden="true">
-					<div class="modal-dialog modal-dialog-scrollable" role="document">
-						<div class="modal-content">
-							<div class="modal-header bg-warning">
-								<h5 class="modal-title white" id="VendorStatusScrollableTitle"></h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<i class="bx bx-x"></i>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="addmodel" id="additemalltxt"></label>
-										<div class="position-relative">
-											<fieldset class="form-group">
-												<input type="text" id="additemall" name="addmodel"
-													class="form-control capitalize">
-											</fieldset>
+											</div>
 										</div>
 									</div>
 								</div>
-
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i> <span
-										class="d-none d-sm-block">Close</span>
-								</button>
-								<button type="button" class="btn btn-primary ml-1"
-									id="additemallsavebtn">
-									<i class="bx bx-check d-block d-sm-none"></i> <span
-										class="d-none d-sm-block">ADD</span>
-								</button>
 							</div>
 						</div>
-					</div>
-				</div>
-				<!--scrolling content Modal -->
-				<form th:action="@{/insurancesave}" th:object="${insurancemaster}"
-					method="POST" class="wizard-horizontal"
-					enctype="multipart/form-data">
-					<!-- Basic Vertical form layout section start -->
-					<section id="basic-vertical-layouts">
-						<div class="row match-height">
-							<div class="col-12">
-								<div class="card">
-									<div class="card-content">
-										<div class="card-body">
-
-											<div class="form-body">
-												<div class="row">
-													<div class="col-md-12">
-														<div class="form-group">
-
-															<label class="emptitle">General</label>
-														</div>
-													</div>
-													<div class="col-6">
-														<div class="form-group">
-															<label for="first-name-icon">Branch </label>
-															<div class="position-relative">
-
-																<select class="select2 form-control" id="Branch"
-																	name="Branch">
-																	<option value="">--Select--</option>
-																	<th:block th:each="emp : ${branchls}">
-																		<option th:value="${emp.id}"
-																			th:text="${emp.BRANCH_NAME}"></option>
-																	</th:block>
-																</select>
-																		
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="email-id-icon">Insurance To <span
-																class="red">*</span></label>
-															<div class="position-relative has-icon-left">
-																<fieldset class="form-group">
-																	<input type="radio" id='radio1'
-																		th:field="*{InsuranceTo}" name="InsuranceTo" value="Staff" checked=""
-																		required /> <label for="radio1">Staff</label>&nbsp;&nbsp;
-
-																	<input type="radio" id='radio2'
-																		th:field="*{InsuranceTo}"  name="InsuranceTo" value="Asset" required /> <label
-																		for="radio2"> Asset</label>
-
-																</fieldset>
-															</div>
-														</div>
-													</div>
+						<!--/ Header -->
 
 
+						<!-- User Profile Content -->
+						<div class="row">
 
-													<div class="col-md-6 staffblock">
-														<div class="form-group">
-															<label for="email-id-icon">Staff
-																<div
-																	class="Custodianloding spinner-border spinner-border-sm"
-																	role="status" style="visibility: hidden;">
-																	<span class="sr-only">Loading...</span>
-																</div>
-															</label>
-															<div class="position-relative has-icon-left">
-																<fieldset class="form-group">
-																	<select class="form-control StaffName" id="StaffID"
-																		th:field="*{StaffID}">
-																		 <th:block th:if="${em}">
-																			<option th:value="${em.empMasterid}"
-																			th:text="${em.StaffName} + ' (RVS000' + ${em.empMasterid} +')'"></option>
-																		</th:block> 
-																		<option value="">-</option>
-																		
-																	</select>
-																	<div class="form-control-position">
-																		<i class="bx bx-street-view"></i>
-																	</div>
-																</fieldset>
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6 assetblock">
-														<div class="form-group">
-															<label for="email-id-icon">Asset
-																<div
-																	class="Custodianlodingb spinner-border spinner-border-sm"
-																	role="status" style="visibility: hidden;">
-																	<span class="sr-only">Loading...</span>
-																</div>
-															</label>
-															<div class="position-relative has-icon-left">
-																<fieldset class="form-group">
-																	<select class="form-control" id="AssetName"
-																		th:field="*{AssetNameID}">
-																		<option value="">-</option>
-																		 <th:block th:if="${am}">
-																			<option th:value="${am.AssetId}"
-																			th:text="${am.AssetType} +'-' + ${am.AssetName} +'-' + ${am.ACondition} "></option>
-																		</th:block> 
-																		
-																		
-																		
+							<!-- <div class="col-xl-4 col-lg-5 col-md-5"> -->
+							<div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
 
-																	</select>
-																	<div class="form-control-position">
-																		<i class="bx bxs-navigation"></i>
-																	</div>
-																</fieldset>
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="first-name-icon">Vendor Name
-															 <span class="red">*</span>
-															</label>
-															<div class="position-relative has-icon-left">
-																<input type="hidden"
-																	th:value="${insurancemaster['Insuranceid']}"
-																	th:field="*{Insuranceid}" />
-																<fieldset class="form-group">
-																	<select class="form-control" th:field="*{VendorName}">
-																		<option value="">-</option>
-																		<th:block th:each="vmobj :${vm}">
-																			<option th:value="${vmobj.vendormasterid}"
-																				th:text="${vmobj.Name}"></option>
-																		</th:block>
+								<!-- Billing Address -->
+								<div class="card card-action mb-4">
+									<div class="card-header align-items-center">
+										<h5 class="card-action-title mb-0">Policy Details</h5>
+										<div class="card-action-element" style="float: right">
+											<button class="btn btn-primary btn-sm addNewpolicyDetails"
+												type="button" data-bs-toggle="modal"
+												data-bs-target="#addNewpolicyDetails">
+												<i class="bx bx-plus bx-xs me-1"></i>
+											</button>
+										</div>
+									</div>
+									<div class="card-body" id="policydetailslist"></div>
+								</div>
+								<!--/ Billing Address -->
+							</div>
 
-																	</select>
-																	<div class="form-control-position">
-																		<i class="bx bx-first-aid"></i>
-																	</div>
-																</fieldset>
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="form-group">
 
-															<label class="emptitle">1.Details</label>
-															<button class="btn btn-light-primary btn-sm"
-																	id="edudivadd" type="button" title="Add new education">
-																	<i class="bx bx-plus"></i>
-																</button>
-														</div>
-													</div>
-													
-													
-													<th:block th:each="childobj, s : *{InsuranceDetails}">
-													
-													<div th:class="'col-md-12 edudivdelete' + ${s.index}">
-															<label class="emptitle" th:if="${s.index != 0}" th:text=" ${s.index+1} + '.Details'"></label>
-															
-															<span class="cursor-pointer edudivdelete"
-																th:name="${s.index}" style="float: right"> <i
-																class="bx bx-x"></i>
-															</span>
-														</div>
-													
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-													
-														<div class="form-group">
-															<label for="password-icon">Policy Name <span class="red">*</span></label>
-															<div class="position-relative has-icon-left">
-																<input type="hidden"
-																			th:field="*{InsuranceDetails[__${s.index}__].InsuranceDetailsid}"
-																			th:value="${childobj['InsuranceDetailsid']}" /> 
-																			
-																<input type="text" class="form-control "
-																	th:value="${childobj['PolicyName']}"
-																	th:field="*{InsuranceDetails[__${s.index}__].PolicyName}"
-																	 placeholder="Policy Name">
-																<div class="form-control-position">
-																	<i class="bx bxs-cog"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-6 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">Policy No</label>
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control "
-																	th:value="${childobj['PolicyNo']}"
-																	th:field="*{InsuranceDetails[__${s.index}__].PolicyNo}"
-																	 placeholder="Policy No">
-																<div class="form-control-position">
-																	<i class="bx bx-detail"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">Premium</label>
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control "
-																	th:value="${childobj['Premium']}"
-																	th:field="*{InsuranceDetails[__${s.index}__].Premium}"
-																	 placeholder="Premium">
-																<div class="form-control-position">
-																	<i class="bx bxs-dollar-circle"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="email-id-icon">Cover
-																<label class="emptitle additem" name="addCoverdata"><i
-																			class="bx bxs-plus-circle ownstyle1"></i></label>
-															</label>
-															<div class="position-relative has-icon-left">
-																<fieldset class="form-group">
-																	<select class="form-control addCoverdata" id="Cover" th:field="*{InsuranceDetails[__${s.index}__].Cover}">
-																		<option value="">-</option>
-																		<th:block th:each="str :${PolicyCover}">
-																			<option th:value="${str}" th:text="${str}"></option>
-																			<script>
-																			PolicyCover = PolicyCover + "<option value='[[${str}]]'>[[${str}]]</option>";
-																			</script>
-																		</th:block>
-																	</select>
-																	<div class="form-control-position">
-																		<i class="bx bx-test-tube"></i>
-																	</div>
-																</fieldset>
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">From</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control "
-																	th:value="${childobj['PFrom']}"
-																	 th:field="*{InsuranceDetails[__${s.index}__].PFrom}" placeholder="From">
-																<div class="form-control-position">
-																	<i class="bx bxs-calendar"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">To</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control "
-																	th:value="${childobj['PTo']}" th:field="*{InsuranceDetails[__${s.index}__].PTo}"
-																	placeholder="To">
-																<div class="form-control-position">
-																	<i class="bx bx-calendar-event"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">Coverage Amount</label>
-															<div class="position-relative has-icon-left">
-																<input type="text" class="form-control "
-																	th:value="${childobj['CoverageAmount']}"
-																	 th:field="*{InsuranceDetails[__${s.index}__].CoverageAmount}" placeholder="Total">
-																<div class="form-control-position">
-																	<i class="bx bx-plus-medical"></i>
-																</div>
-															</div>
-														</div>
-													</div>
+						</div>
+						<!--/ User Profile Content -->
 
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">Nominee</label>
-															<div class="position-relative has-icon-left">
-																<fieldset class="form-group">
-																	<select class="form-control employeenomineedetails"
-																		 th:field="*{InsuranceDetails[__${s.index}__].Nominee}" >
-																		<option value="">-</option>
-																		<th:block th:each="emglsnewobj :${ememgcontact}">
-																			<option th:value="${emglsnewobj.empEmgContactid}"
-																				th:text="${emglsnewobj.Emg_Name} + '(' + ${emglsnewobj.Emg_Relation} +')'"></option>
-																				
-																		<script>
-																		emgcontact= emgcontact + "<option value='[[${emglsnewobj.empEmgContactid}]]'>[[${emglsnewobj.Emg_Name} + '(' + ${emglsnewobj.Emg_Relation} +')']]</option>";
-																		</script>
-																		
-																		</th:block>
-																	</select>
-																	<div class="form-control-position">
-																		<i class="bx bxs-bookmark-plus"></i>
-																	</div>
-																</fieldset>
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">Notes</label>
-															<div class="position-relative has-icon-left">
 
-																<textarea class="form-control"
-																	th:value="${childobj['Notes']}"
-																	 th:field="*{InsuranceDetails[__${s.index}__].Notes}"
-																	  placeholder="Notes" height="100px"></textarea>
+						<!-- Modal -->
 
-																<div class="form-control-position">
-																	<i class="bx bx-notepad"></i>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">Files</label>
-															<div class="position-relative">
-																<input type="hidden" class="form-control "
-																	th:value="${childobj['doc_Attach']}"
-																	 th:field="*{InsuranceDetails[__${s.index}__].doc_Attach}" />
-																
-																<a th:if="${childobj['doc_Attach']} !='' and ${childobj['doc_Attach']}" th:href="${childobj['doc_Attach']}" target="_blank">View & Download</a>	 
-																<input type="file" class="form-control"  name="doc_Attach" />
-
-															</div>
-														</div>
-													</div>
-													<div th:class="'col-md-3 edudivdelete' + ${s.index}">
-														<div class="form-group">
-															<label for="password-icon">Policy Status</label>
-															<div class="position-relative has-icon-left">
-																<fieldset class="form-group">
-																	<select class="form-control"
-																		 th:field="*{InsuranceDetails[__${s.index}__].status}" >
-																		<option value="Display">Display</option>
-																		<option value="Move to Archive">Move to Archive</option>
-																		
-																	</select>
-																	<div class="form-control-position">
-																		<i class="bx bxs-bookmark-plus"></i>
-																	</div>
-																</fieldset>
-															</div>
-														</div>
-													</div>
-													<script>edudivadd = edudivadd+1;</script>
-													
+						<!-- Add New Emf Address Modal -->
+						<div class="modal fade" id="addNewpolicyDetails" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-lg modal-simple modal-add-new-address">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3 class="address-title">Policy</h3>
+											<p class="address-subtitle">Policy details</p>
+										</div>
+										<form id="addpolicydetailsForm" class="row g-3"
+											onsubmit="return false">
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalEmg_Name">Vendor
+													Name</label> <select class="form-control" id="VendorName" name="VendorName">
+													<option value="">-</option>
+													<th:block th:each="vmobj :${vm}">
+														<option th:value="${vmobj.vendormasterid}"
+															th:text="${vmobj.Name}"></option>
 													</th:block>
-													
-													<span id="edudivlast"></span>
-													
-													<div class="col-12 d-flex justify-content-end">
-														<button type="submit" class="btn btn-primary mr-1 mb-1">Save</button>
-														<button type="reset"
-															class="btn btn-light-secondary mr-1 mb-1">Reset</button>
-														<a href="insurancelist"><button type="button"
-																class="btn btn-warning mr-1 mb-1">Cancel</button></a>
-													</div>
 
-												</div>
+												</select> <input type="hidden" id="InsuranceDetailsid"
+													name="InsuranceDetailsid" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="PolicyName">Policy
+													Name</label> <input type="text" id="PolicyName"
+													class="form-control" name="PolicyName" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="PolicyNo">Policy No</label> <input
+													type="text" id="PolicyNo" class="form-control"
+													name="PolicyNo" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Premium">Premium</label> <input
+													type="text" id="Premium" class="form-control"
+													name="Premium" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Cover">Cover <label
+													class="emptitle additem" name="addCoverdata"><i
+														class="bx bxs-plus-circle ownstyle1"></i></label>
+												</label> <select class="form-control addCoverdata" id="Cover"
+													name="Cover">
+													<option value="">-</option>
+													<th:block th:each="str :${PolicyCover}">
+														<option th:value="${str}" th:text="${str}"></option>
+
+													</th:block>
+												</select>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="PFrom">Start Date</label> <input
+													type="date" id="PFrom" class="form-control" name="PFrom" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="PTo">End Date</label> <input
+													type="date" id="PTo" class="form-control" name="PTo" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="CoverageAmount">Coverage
+													Amount </label> <input type="text" id="CoverageAmount"
+													class="form-control" name="CoverageAmount" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Notes">Notes </label> <input
+													type="text" id="Notes" class="form-control" name="Notes" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="status">status</label> <select
+													class="form-control" name="status" id="status">
+													<option value="Display">Display</option>
+													<option value="Move to Archive">Move to Archive</option>
+
+												</select>
+											</div>
+											<div class="col-12 col-md-6">
+
+												<label class="form-label" for="Nominee">Nominee</label> <select
+													class="form-control employeenomineedetails" name="Nominee" id="Nominee">
+													<option value="">-</option>
+													<th:block th:each="emglsnewobj :${ememgcontact}">
+														<option th:value="${emglsnewobj.empEmgContactid}"
+															th:text="${emglsnewobj.Emg_Name} + '(' + ${emglsnewobj.Emg_Relation} +')'"></option>
+
+													</th:block>
+												</select>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Nominee">Policy File
+													Copy</label> <input type="file"
+														id="modalFile" class="form-control"
+														accept="image/jpeg,image/png,image/jpg,application/pdf" />
 											</div>
 
-										</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary me-sm-3 me-1 editpolicyDetailsdatasubmit"
+													onclick="">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary editpolicyDetailsdataclose"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
 						</div>
-					</section>
-					<!-- // Basic Vertical form layout section end -->
-				</form>
+						<!--/ Add New Emg Address Modal -->
 
+						<!--scrolling content Modal -->
+						<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
+							role="dialog" aria-labelledby="ItemStatusScrollableTitle"
+							aria-hidden="true">
+							<div class="modal-dialog modal-dialog-scrollable" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="addmodel" id="additemalltxt"></label>
+												<div class="position-relative">
+													<fieldset class="form-group">
+														<input type="text" id="additemall" name="addmodel"
+															class="form-control capitalize">
+													</fieldset>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-light-secondary"
+											data-bs-dismiss="modal">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Close</span>
+										</button>
+										<button type="button" class="btn btn-primary ml-1"
+											id="additemallsavebtn">
+											<i class="bx bx-check d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">ADD</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--scrolling content Modal -->
+
+						<!-- /Modal -->
+					</div>
+					<!-- / Content -->
+
+					<!-- Footer -->
+					<footer class="content-footer footer bg-footer-theme">
+						<div
+							class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+							<div class="mb-2 mb-md-0">
+								©
+								<script>
+                    document.write(new Date().getFullYear());
+                  </script>
+								, made with ❤️ by <a href="https://pixinvent.com"
+									target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
+							</div>
+							<div>
+								<a href="https://themeforest.net/licenses/standard"
+									class="footer-link me-4" target="_blank">License</a> <a
+									href="https://1.envato.market/pixinvent_portfolio"
+									target="_blank" class="footer-link me-4">More Themes</a> <a
+									href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
+									target="_blank" class="footer-link me-4">Documentation</a> <a
+									href="https://pixinvent.ticksy.com/" target="_blank"
+									class="footer-link d-none d-sm-inline-block">Support</a>
+							</div>
+						</div>
+					</footer>
+					<!-- / Footer -->
+
+					<div class="content-backdrop fade"></div>
+				</div>
+				<!-- Content wrapper -->
 			</div>
+			<!-- / Layout page -->
 		</div>
+
+		<!-- Overlay -->
+		<div class="layout-overlay layout-menu-toggle"></div>
+
+		<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+		<div class="drag-target"></div>
 	</div>
-	<!-- END: Content-->
+	<!-- / Layout wrapper -->
 
-
-
-	<div class="sidenav-overlay"></div>
-	<div class="drag-target"></div>
-
-	<!-- BEGIN: Footer-->
-	<footer class="footer footer-static footer-light">
-		<p class="clearfix mb-0">
-			<span class="float-left d-inline-block"></span><span
-				class="float-right d-sm-inline-block d-none"></span>
-			<button class="btn btn-primary btn-icon scroll-top" type="button">
-				<i class="bx bx-up-arrow-alt"></i>
-			</button>
-		</p>
-	</footer>
-	<!-- END: Footer-->
-
-	<!-- Custom Java script validations -->
-	<script th:src="@{/js/customvalidation.js}"></script>
-
-	<!-- BEGIN: Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<!-- Core JS -->
+	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
 	<script
-		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+
+	<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+
+	<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+	<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+
+	<script th:src="@{/assets/vendor/js/menu.js}"></script>
+	<!-- endbuild -->
+
+	<!-- Vendors JS -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
 	<script
-		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
-	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
-	<!-- BEGIN Vendor JS-->
+		th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+	<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<!-- Form Validation -->
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
 
-	<!-- BEGIN: Page Vendor JS-->
-	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
-	<!-- END: Page Vendor JS-->
+	<!-- Main JS -->
+	<script th:src="@{/assets/js/main.js}"></script>
 
-	<!-- BEGIN: Theme JS-->
-	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
-	<script th:src="@{/app-assets/js/core/app.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
-	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
-	<!-- END: Theme JS-->
+	<!-- Flat Picker -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
 
-	<!-- BEGIN: Page JS-->
-	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
-	<!-- END: Page JS-->
+	<!-- Page JS -->
+	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
+	<script th:src="@{/assets/js/app-user-view.js}"></script>
+	<script th:src="@{/assets/js/app-user-view-account.js}"></script>
 
+	
+	
 	<script>
-			$(document).ready(function(){
-				//--------------------------------------------------------
-				$(function() {
-					var token = $("meta[name='_csrf']").attr("content");
-					var header = $("meta[name='_csrf_header']").attr("content");
-					$(document).ajaxSend(function(e, xhr, options) {
-						xhr.setRequestHeader(header, token);
-					});
-				});
-				//--------------------------------------------------------
-				
-				$('.StaffName').change(function(){
+	
+	const Experiencefrom = flatpickr("#PFrom1", {
+		  altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	     });
+	
+	const Experiencento = flatpickr("#PTo1", {
+		  altInput: true,
+	      altFormat: 'F j, Y',
+	      dateFormat: 'Y-m-d'
+	     });
+	
+    $(document).ready(function() {  
+    	//--------------------------------------------------------------------------------------------------------------------------------------
+    	 	$('#addpolicydetailsForm').on('submit', function(event){
+    	 		
+    	 	   if(event.target.checkValidity()){
+    	 		   
+    	 		  $('.documentsave').prop("disabled",true);
+				  $('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 					
-						var staffid=$('.StaffName').val();
-						
-					 	var formData = {
-					 			staffid : staffid					
-						}
-						$.ajax({
-							type : "POST",url : "employeenomineedetails",
-							data : formData,success : function(result) {
-								$(".employeenomineedetails option").remove();
-								$('.employeenomineedetails').append(result);
-							},
-							error : function(e) {
-							}
-						});
-				});
-				
-				$(document).on("click", ".filedivdelete", function() {
-					$(this).closest("tr").remove();
-				});
-				
-				$('input[type=radio][name=InsuranceTo]').change(function(){
-					var InsuranceTo= $(this).val();
-					if(InsuranceTo =='Staff')
-					{
-						$(".staffblock").show();
-						$(".assetblock").hide();
+					
+    	 		  let formdata= new FormData(document.querySelector("#addpolicydetailsForm"));
+    	 		  const modalFile =document.getElementById("modalFile");
+    	 		  formdata.append("File_Attach",modalFile.files[0]);
+    	 		  formdata.append("Insuranceid","[[${insurancemaster['Insuranceid']}]]");
+    	 		 
+    	 		 
+    	 		  $.ajax({
+	   					type : "POST",url : "policydetailsavejson",
+	   					data : formdata,
+	   					contentType: false,
+	   	                processData: false,
+	   					success : function(result) {
+	   						
+	   						getpolicydetaillist();
+	   						validationformfilereset();
+	   					},
+    	 			 error : function(e) {
+						console.log("Error" + e);
+
 					}
-					if(InsuranceTo =='Asset')
-					{
-						$(".staffblock").hide();
-						$(".assetblock").show();
-					}
-					
-				});
+    	 		  });
+    	 		  
+    	 	   }
+    	 	});    	
+    	//--------------------------------------------------------------------------------------------------------------------------------------
+   		function validationformfilereset()
+			   {
+		   				$('.editpolicyDetailsdataclose').click();
+		   				$('.editpolicyDetailsdatasubmit').prop("disabled",false);
+			   			$('.editpolicyDetailsdatasubmit').html("Submit");
+			   }
+    	//--------------------------------------------------------------------------------------------------------------------------------------
+   		$(document).on("click", ".addNewpolicyDetails", function() {
+   			document.getElementById("addpolicydetailsForm").reset();
+   		
+   		});
+    	
+    	$(document).on("click", ".additem", function() {
+			
+				var name = $(this).attr('name');
+				var labeltext = "";
+				if (name == "addCoverdata") {
+					labeltext = "New Cover Type";
+				}
 				
-				$('#InsuranceTo').change();
-				
-				
-				//--------------------------------------------------------
-				$("#Branch").change(function(){
-					
-					var branch = $("#Branch").val();
-					$('#StaffID').html("");
-					$('#AssetName').html("");
-					
-					if(branch != "")
-					{
-						//---------------------------------
-						// Branch Details
-						var branchname = $("#Branch :Selected").text();
-						$(".Custodianloding").css("visibility","visible");
-						$('#StaffID').html("");
-						var formData = {
-								branchname : branchname					
-						}
-						$.ajax({
-							type : "POST",url : "getEmployeelistbasedonbranch",
-							data : formData,success : function(result) {
-								$('#StaffID').append(result);
-								$(".Custodianloding").css("visibility","hidden");
-								
-							},
-							error : function(e) {
-								alert("Error" + e);
-								$(".Custodianloding").css("visibility","hidden");
-							}
-						});
-						//---------------------------------
-						// Asset Details
-						$(".Custodianlodingb").css("visibility","visible");
-						var branchid = $("#Branch :Selected").val();
-						var formData = {
-								branchid : branchid					
-						}
-						$.ajax({
-							type : "POST",url : "getassetlistbasedonbranchselect",
-							data : formData,success : function(result) {
-								
-								$('#AssetName').append(result);
-								$(".Custodianlodingb").css("visibility","hidden");
-							},
-							error : function(e) {
-								alert("Error" + e);
-								$(".Custodianlodingb").css("visibility","hidden");
-							}
-						});						
-					}
-				});
-				//-------------------------------
-				
-					$(document).on("click", ".additem", function() {
-				
-					var name = $(this).attr('name');
+				$('#additemalltxt').text(labeltext);
+				$('#ItemStatusScrollable').modal('toggle');
+
+			});
+
+			$("#additemallsavebtn").click(
+			function() {
+				if ($("#additemall").val() != '') {
+					var name = $('#additemalltxt').text();
 					var labeltext = "";
-					if (name == "addCoverdata") {
-						labeltext = "New Cover Type";
+					if (name == "New Cover Type") {
+						labeltext = "addCoverdata";
 					}
 					
-					$('#additemalltxt').text(labeltext);
-					$('#VendorStatusScrollable').modal('toggle');
-
-				});
-
-				$("#additemallsavebtn").click(
-				function() {
-					if ($("#additemall").val() != '') {
-						var name = $('#additemalltxt').text();
-						var labeltext = "";
-						if (name == "New Cover Type") {
-							labeltext = "addCoverdata";
-						}
-						
-						$('.' + labeltext).append(
-								"<option value='"
-										+ $("#additemall").val()
-										+ "'>"
-										+ $("#additemall").val()
-										+ "</option>");
-						
-						$("#additemall").val('');
-						$('#VendorStatusScrollable').modal(
-								'toggle');
-					}
-				});
-				//--------------------------------------------------------
-
-				$("#edudivadd")
-						.click(
-								function() {
-									edudivadd = edudivadd + 1;
-									$("#edudivlast")
-											.before('	<div class="col-md-12 edudivdelete' + edudivadd +'"> <hr/>	<label class="emptitle">' + edudivadd +'.Details</label> 	 	<span class="cursor-pointer edudivdelete" 		name="' + edudivadd +'" style="float: right"> <i 		class="bx bx-x"></i> 	</span> </div> 													 													<div class="col-md-3 edudivdelete' + edudivadd + '"> 													 <div class="form-group"> 	<label for="password-icon">Policy Name</label> 	<div class="position-relative has-icon-left"> 		<input type="text" class="form-control " 				name="InsuranceDetails[' + edudivadd + '].PolicyName" 			 placeholder="Policy Name"> 		<div class="form-control-position"> 			<i class="bx bxs-cog"></i> 		</div> 	</div> </div> 													</div> 													<div class="col-md-6 edudivdelete' + edudivadd + '"> <div class="form-group"> 	<label for="password-icon">Policy No</label> 	<div class="position-relative has-icon-left"> 		<input type="text" class="form-control " 			name="InsuranceDetails[' + edudivadd + '].PolicyNo}" 			 placeholder="Policy No"> 		<div class="form-control-position"> 			<i class="bx bx-detail"></i> 		</div> 	</div> </div> 													</div> 													<div class="col-md-3 edudivdelete' + edudivadd + '"> <div class="form-group"> 	<label for="password-icon">Premium</label> 	<div class="position-relative has-icon-left"> 		<input type="text" class="form-control " 	name="InsuranceDetails[' + edudivadd + '].Premium" 			 placeholder="Premium"> 		<div class="form-control-position"> 			<i class="bx bxs-dollar-circle"></i> 		</div> 	</div> </div> 													</div> 													<div class="col-md-3 edudivdelete' + edudivadd + '"> <div class="form-group"> 	<label for="email-id-icon">Cover 		<label class="emptitle additem" name="addCoverdata"><i 					class="bx bxs-plus-circle ownstyle1"></i></label> 	</label> 	<div class="position-relative has-icon-left"> 		<fieldset class="form-group"> 			<select class="form-control addCoverdata" id="Cover" name="InsuranceDetails[' + edudivadd + '].Cover"> 				<option value="">-</option>  	'+ PolicyCover +'		</select> 			<div class="form-control-position"> 				<i class="bx bx-test-tube"></i> 			</div> 		</fieldset> 	</div> </div> 													</div> 													<div class="col-md-3 edudivdelete' + edudivadd + '"> <div class="form-group"> 	<label for="password-icon">From</label> 	<div class="position-relative has-icon-left"> 		<input type="date" class="form-control " 	name="InsuranceDetails[' + edudivadd + '].PFrom" placeholder="From"> 		<div class="form-control-position"> 			<i class="bx bxs-calendar"></i> 		</div> 	</div> </div> 													</div> 													<div class="col-md-3 edudivdelete' + edudivadd + '"> <div class="form-group"> 	<label for="password-icon">To</label> 	<div class="position-relative has-icon-left"> 		<input type="date" class="form-control " 	name="InsuranceDetails[' + edudivadd + '].PTo" 			placeholder="To"> 		<div class="form-control-position"> 			<i class="bx bx-calendar-event"></i> 		</div> 	</div> </div> 													</div> 													<div class="col-md-3 edudivdelete' + edudivadd +'"> <div class="form-group"> 	<label for="password-icon">Coverage Amount</label> 	<div class="position-relative has-icon-left"> 		<input type="text" class="form-control " 				 name="InsuranceDetails[' + edudivadd + '].CoverageAmount" placeholder="Total"> 		<div class="form-control-position"> 			<i class="bx bx-plus-medical"></i> 		</div> 	</div> </div> 													</div>  													<div class="col-md-3 edudivdelete' + edudivadd +'"> <div class="form-group"> 	<label for="password-icon">Nominee</label> 	<div class="position-relative has-icon-left"> 		<fieldset class="form-group"> 			<select class="form-control employeenomineedetails" 				 name="InsuranceDetails[' + edudivadd + '].Nominee" > 				<option value="">-</option> '+ emgcontact +'				</select> 			<div class="form-control-position"> 				<i class="bx bxs-bookmark-plus"></i> 			</div> 		</fieldset> 	</div> </div> 													</div> 													<div class="col-md-3 edudivdelete' + edudivadd +'"> <div class="form-group"> 	<label for="password-icon">Notes</label> 	<div class="position-relative has-icon-left">  		<textarea class="form-control" 	name="InsuranceDetails[' + edudivadd + '].Notes" 			  placeholder="Notes" height="100px"></textarea>  		<div class="form-control-position"> 			<i class="bx bx-notepad"></i> 		</div> 	</div> </div> 													</div> 													<div class="col-md-3 edudivdelete' + edudivadd + '"> <div class="form-group"> 	<label for="password-icon">Files</label> 	<div class="position-relative">  <input type="hidden" class="form-control " 	name="InsuranceDetails[' + edudivadd + '].doc_Attach" />		<input type="file" class="form-control"  name="doc_Attach" />  	</div> </div> 													</div> <div th:class="col-md-3 edudivdelete' + edudivadd +'"> 														<div class="form-group"> 															<label for="password-icon">Policy Status</label> 															<div class="position-relative has-icon-left"> 																<fieldset class="form-group"> 																	<select class="form-control" 																		 name="InsuranceDetails[' + edudivadd +'].status" > 																		<option value="Display">Display</option> 																		<option value="Move to Archive">Move to Archive</option> 																		 																	</select> 																	<div class="form-control-position"> 																		<i class="bx bxs-bookmark-plus"></i> 																	</div> 																</fieldset> 															</div> 														</div> 													</div>');
-								});
-
-				$(document).on("click", ".edudivdelete", function() {
+					$('.' + labeltext).append(
+							"<option value='"
+									+ $("#additemall").val()
+									+ "'>"
+									+ $("#additemall").val()
+									+ "</option>");
 					
-					
-					var id = $(this).attr('name');
-					
-					
-					var deleteid=$("[name='InsuranceDetails["+ id +"].InsuranceDetailsid").val();
-					
-					
-							$('.edudivdelete' + id).remove();
-							alert("Removed Successfully...!");
-					
-				});
-				//--------------------------------------------------------
-				
+					$("#additemall").val('');
+					$('#ItemStatusScrollable').modal(
+							'toggle');
+				}
 			});
 			
+			//--------------------------------------------------------------------------------------------------------------------------------------
 			
-			var InsuranceTo= $('input[type=radio][name=InsuranceTo]:checked').val();
-			if(InsuranceTo =='Staff')
-			{
-				$(".staffblock").show();
-				$(".assetblock").hide();
-			}
-			if(InsuranceTo =='Asset')
-			{
-				$(".staffblock").hide();
-				$(".assetblock").show();
-			}
-			
-			
-		</script>
+			function getpolicydetaillist() {
+				
+				var formData = {
+					id : "[[${insurancemaster['Insuranceid']}]]"
+				}
 
+				$.ajax({
+					type : "POST",
+					url : "getpolicydetailslist",
+					data : formData,
+					success : function(result) {
+						var htmlop="";
+						var bmobj = JSON.parse(JSON.stringify(result));
+						console.log(bmobj);
+						
+						bmobj.forEach((element, index, array) =>
+			           	{
+			         	 	htmlop += '<div class="row editemg"><hr /><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit" onClick="policyeditfunction('+ element.insuranceDetailsid +')">'+ element.vendorNamestr + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">From :</dt>		<dd class="col-sm-8">'+ element.pfrom_str + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">To:</dt>		<dd class="col-sm-8">'+ element.pto_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Cover:</dt>		<dd class="col-sm-8">'+ element.cover + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Coverage Amount:</dt>		<dd class="col-sm-8">'+ element.coverageAmount + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
+			         	 	htmlop += '<a href="'+ element.doc_Attach +'" target="_blank">';
+			         	 	if(element.doc_Attach != '')
+			         	 	{
+				         	 	if(element.doc_Attach.split(".")[1] == 'pdf')
+								{
+				         	 		htmlop += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
+								}else
+								{
+									htmlop += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
+								}
+			         	 	}
+			         	 	htmlop += '</a></dd>	</dl></div> </div>';
+				          
+			            });
+						
+						$('#policydetailslist').html(htmlop);
+						
+					},
+					error : function(e) {
+						console.log("Error" + e);
+
+					}
+
+				});
+
+			}
+			
+		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+		$(document).ready(function(){
+		    setTimeout(function(){
+		    	getpolicydetaillist();
+		    	
+		     },500); // milliseconds
+		});
+		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+		$(function() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+			});
+		});
+		
+		
+    });
+    
+    
+  //--------------------------------------------------------------------------------------------------------------------------------------
+	
+	function policyeditfunction(id) {
+		var policyid = id;
+		
+		var formData = {
+				id : "[[${insurancemaster['Insuranceid']}]]",
+				policyid: policyid
+			}
+
+		$.ajax({
+			type : "POST",
+			url : "getpolicydetails",
+			data : formData,
+			success : function(result) {
+				var htmlop="";
+				var bmobj = JSON.parse(JSON.stringify(result));
+				console.log(bmobj);
+				
+				$("#PFrom").val(bmobj.pfrom);
+				$("#PTo").val(bmobj.pto);
+				$("#InsuranceDetailsid").val(bmobj.insuranceDetailsid);
+				$("#VendorName").val(bmobj.vendorName).change();
+				$("#PolicyName").val(bmobj.policyName);
+				$("#PolicyNo").val(bmobj.policyNo);
+				$("#Premium").val(bmobj.premium);
+				$("#Cover").val(bmobj.cover).change();
+				
+				$("#CoverageAmount").val(bmobj.coverageAmount);
+				$("#Notes").val(bmobj.notes);
+				$("#status").val(bmobj.status);
+				$("#Nominee").val(bmobj.nominee).change();
+				
+				$('#addNewpolicyDetails').modal('toggle');
+			},
+			error : function(e) {
+				console.log("Error" + e);
+
+			}
+
+		});
+
+		
+	}
+	
+</script>
 </body>
-<!-- END: Body-->
-
 </html>
-
-
-
-

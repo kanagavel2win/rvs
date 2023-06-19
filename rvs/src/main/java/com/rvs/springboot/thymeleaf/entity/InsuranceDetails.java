@@ -64,6 +64,12 @@ public class InsuranceDetails {
 	@Transient
 	private String duedateformate;
 	
+	@Transient
+	private String PFrom_str;
+	@Transient
+	private String PTo_str;
+	@Transient
+	private String Nominee_name_str;
 	
 	
 

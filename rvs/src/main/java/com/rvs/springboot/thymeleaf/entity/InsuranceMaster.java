@@ -43,6 +43,11 @@ public class InsuranceMaster {
 	@JoinColumn(name = "Insuranceid")
 	private List<InsuranceDetails> InsuranceDetails;
 
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "Insuranceid")
+	private List<InsuranceClaimHistory> insuranceClaimHistory;
+	
 	@Transient
 	private String staffassetname;
 	

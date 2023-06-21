@@ -208,6 +208,41 @@
 									<div class="card-body" id="policydetailslist"></div>
 								</div>
 								<!--/ Billing Address -->
+								 <!-- Bordered Table -->
+					              <div class="card card-action mb-4">
+					                <div class="card-header align-items-center">
+										<h5 class="card-action-title mb-0">Claim History</h5>
+										<div class="card-action-element" style="float: right">
+											<button class="btn btn-primary btn-sm addNewpolicyHistoryDetails"
+												type="button" data-bs-toggle="modal"
+												data-bs-target="#addNewpolicyHistoryDetails">
+												<i class="bx bx-plus bx-xs me-1"></i>
+											</button>
+										</div>
+									</div>
+					                <div class="card-body">
+					                  <div class="table-responsive text-nowrap">
+					                    <table class="table table-bordered">
+					                      <thead>
+					                        <tr>
+					                          <th>Policy No</th>
+					                          <th>Claim Date</th>
+					                          <th>Amount</th>
+					                          <th>Reason</th>
+					                          
+					                        </tr>
+					                      </thead>
+					                      <tbody class="table-border-bottom-0" id="policyClaimdetailslist">
+					                        <tr>
+					                         
+					                        </tr>
+					                      </tbody>
+					                    </table>
+					                  </div>
+					                </div>
+					              </div>
+					              <!--/ Bordered Table -->
+								
 							</div>
 
 
@@ -217,7 +252,7 @@
 
 						<!-- Modal -->
 
-						<!-- Add New Emf Address Modal -->
+						<!-- Add New Policy Address Modal -->
 						<div class="modal fade" id="addNewpolicyDetails" tabindex="-1"
 							aria-hidden="true">
 							<div
@@ -330,7 +365,69 @@
 								</div>
 							</div>
 						</div>
-						<!--/ Add New Emg Address Modal -->
+						<!--/ Add New Policy Address Modal -->
+
+						<!-- Add New Policy History Modal -->
+						<div class="modal fade" id="addNewpolicyHistoryDetails" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-lg modal-simple modal-add-new-address">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3 class="address-title">Claim Details</h3>
+											
+										</div>
+										<form id="addpolicyClaimdetailsForm" class="row g-3"
+											onsubmit="return false">
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modalEmg_Name">Policy No
+													</label> <select class="form-control" id="policyNo" name="policyNo">
+													<option value="">-</option>
+													<th:block th:each="vmobj :${insurancemaster.InsuranceDetails}">
+														<option th:value="${vmobj.PolicyNo}"
+															th:text="${vmobj.PolicyNo}"></option>
+													</th:block>
+
+												</select> <input type="hidden" id="InsuranceClaimDetailsid"
+													name="InsuranceClaimDetailsid" />
+											</div>
+										
+											
+											
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="claimDate">Claim Date</label> <input
+													type="date" id="claimDate" class="form-control" name="claimDate" />
+											</div>
+											
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="claimAmount">
+													Amount </label> <input type="text" id="claimAmount"
+													class="form-control" name="claimAmount" />
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="reason">Reason </label> <input
+													type="text" id="reason" class="form-control" name="reason" />
+											</div>
+											
+
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary me-sm-3 me-1 editpolicyClaimDetailsdatasubmit"
+													onclick="">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary editpolicyClaimDetailsdataclose"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add New Policy History Modal -->
 
 						<!--scrolling content Modal -->
 						<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
@@ -533,7 +630,37 @@
     	 		  });
     	 		  
     	 	   }
-    	 	});    	
+    	 	});   
+    	 	//--------------------------------------------------------------------------------------------------------------------------------------
+    	 	$('#addpolicyClaimdetailsForm').on('submit', function(event){
+    	 		
+    	 	   if(event.target.checkValidity()){
+    	 		   
+    	 		  $('.editpolicyClaimDetailsdatasubmit').prop("disabled",true);
+				  $('.editpolicyClaimDetailsdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+					
+					
+    	 		  let formdata= new FormData(document.querySelector("#addpolicyClaimdetailsForm"));
+    	 		  formdata.append("Insuranceid","[[${insurancemaster['Insuranceid']}]]");
+    	 		 
+    	 		  $.ajax({
+	   					type : "POST",url : "policyClaimdetailsavejson",
+	   					data : formdata,
+	   					contentType: false,
+	   	                processData: false,
+	   					success : function(result) {
+	   						
+	   						getinsuranceclaimdetailslist();
+	   						validationformclaimreset();
+	   					},
+    	 			 error : function(e) {
+						console.log("Error" + e);
+
+					}
+    	 		  });
+    	 		  
+    	 	   }
+    	 	});   
     	//--------------------------------------------------------------------------------------------------------------------------------------
    		function validationformfilereset()
 			   {
@@ -541,9 +668,21 @@
 		   				$('.editpolicyDetailsdatasubmit').prop("disabled",false);
 			   			$('.editpolicyDetailsdatasubmit').html("Submit");
 			   }
+    	
+   		function validationformclaimreset()
+		   {
+	   				$('.editpolicyClaimDetailsdataclose').click();
+	   				$('.editpolicyClaimDetailsdatasubmit').prop("disabled",false);
+		   			$('.editpolicyClaimDetailsdatasubmit').html("Submit");
+		   }
     	//--------------------------------------------------------------------------------------------------------------------------------------
    		$(document).on("click", ".addNewpolicyDetails", function() {
    			document.getElementById("addpolicydetailsForm").reset();
+   		
+   		});
+    	
+   		$(document).on("click", ".addNewpolicyHistoryDetails", function() {
+   			document.getElementById("addpolicyClaimdetailsForm").reset();
    		
    		});
     	
@@ -597,27 +736,67 @@
 					success : function(result) {
 						var htmlop="";
 						var bmobj = JSON.parse(JSON.stringify(result));
-						console.log(bmobj);
+						//console.log(bmobj);
 						
 						bmobj.forEach((element, index, array) =>
 			           	{
-			         	 	htmlop += '<div class="row editemg"><hr /><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit" onClick="policyeditfunction('+ element.insuranceDetailsid +')">'+ element.vendorNamestr + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">From :</dt>		<dd class="col-sm-8">'+ element.pfrom_str + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">To:</dt>		<dd class="col-sm-8">'+ element.pto_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Cover:</dt>		<dd class="col-sm-8">'+ element.cover + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Coverage Amount:</dt>		<dd class="col-sm-8">'+ element.coverageAmount + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
-			         	 	htmlop += '<a href="'+ element.doc_Attach +'" target="_blank">';
-			         	 	if(element.doc_Attach != '')
-			         	 	{
-				         	 	if(element.doc_Attach.split(".")[1] == 'pdf')
-								{
-				         	 		htmlop += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
-								}else
-								{
-									htmlop += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
-								}
-			         	 	}
-			         	 	htmlop += '</a></dd>	</dl></div> </div>';
-				          
+			           		if(element.status != 'Move to Archive')
+			           		{
+			           			
+				           		htmlop += '<div class="row editemg"><hr /><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit" onClick="policyeditfunction('+ element.insuranceDetailsid +')">'+ element.vendorNamestr + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">From :</dt>		<dd class="col-sm-8">'+ element.pfrom_str + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">To:</dt>		<dd class="col-sm-8">'+ element.pto_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Cover:</dt>		<dd class="col-sm-8">'+ element.cover + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Coverage Amount:</dt>		<dd class="col-sm-8">'+ element.coverageAmount + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
+				         	 	htmlop += '<a href="'+ element.doc_Attach +'" target="_blank">';
+				         	 	if(element.doc_Attach != '')
+				         	 	{
+					         	 	if(element.doc_Attach.split(".")[1] == 'pdf')
+									{
+					         	 		htmlop += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
+									}else
+									{
+										htmlop += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
+									}
+				         	 	}
+				         	 	htmlop += '</a></dd>	</dl></div> </div>';
+			           		}
+			         	 	
 			            });
 						
 						$('#policydetailslist').html(htmlop);
+						
+					},
+					error : function(e) {
+						console.log("Error" + e);
+
+					}
+
+				});
+
+			}
+			
+
+			//--------------------------------------------------------------------------------------------------------------------------------------
+			
+			function getinsuranceclaimdetailslist() {
+				
+				var formData = {
+					id : "[[${insurancemaster['Insuranceid']}]]"
+				}
+
+				$.ajax({
+					type : "POST",
+					url : "insuranceclaimdetails",
+					data : formData,
+					success : function(result) {
+						var htmlop="";
+						var bmobj = JSON.parse(JSON.stringify(result));
+						//console.log(bmobj);
+						
+						bmobj.forEach((element, index, array) =>
+			           	{
+			           		htmlop +='<tr><td class="policyedit" onClick="policyclaimeditfunction('+ element.insuranceClaimid +')">'+element.policyNo +'</td><td>'+element.claimDateMMMddYYYFormate +'</td><td>'+element.claimAmount +'</td><td>'+element.reason +'</td></tr>';
+			         	 	
+			            });
+						
+						$('#policyClaimdetailslist').html(htmlop);
 						
 					},
 					error : function(e) {
@@ -633,7 +812,7 @@
 		$(document).ready(function(){
 		    setTimeout(function(){
 		    	getpolicydetaillist();
-		    	
+		    	getinsuranceclaimdetailslist();
 		     },500); // milliseconds
 		});
 		//--------------------------------------------------------------------------------------------------------------------------------------		 		
@@ -693,6 +872,45 @@
 
 		
 	}
+  
+	//--------------------------------------------------------------------------------------------------------------------------------------
+	
+	function policyclaimeditfunction(id) {
+		var claimid = id;
+		
+		var formData = {
+				id : "[[${insurancemaster['Insuranceid']}]]",
+				claimid: claimid
+			}
+
+		$.ajax({
+			type : "POST",
+			url : "getclaimpolicydetails",
+			data : formData,
+			success : function(result) {
+				var htmlop="";
+				var bmobj = JSON.parse(JSON.stringify(result));
+				//console.log(bmobj);
+				
+				$("#InsuranceClaimDetailsid").val(bmobj.insuranceClaimid);
+				$("#policyNo").val(bmobj.policyNo);
+				$("#claimDate").val(bmobj.claimDate);
+				$("#claimAmount").val(bmobj.claimAmount).change();
+				$("#reason").val(bmobj.reason);
+				
+				
+				$('#addNewpolicyHistoryDetails').modal('toggle');
+			},
+			error : function(e) {
+				console.log("Error" + e);
+
+			}
+
+		});
+
+		
+	}
+	//--------------------------------------------------------------------------------------------------------------------------------------
 	
 </script>
 </body>

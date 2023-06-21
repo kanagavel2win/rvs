@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.jboss.logging.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -91,6 +90,7 @@ import com.rvs.springboot.thymeleaf.entity.HireMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
 import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
+import com.rvs.springboot.thymeleaf.entity.InsuranceClaimHistory;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadContact;
@@ -5396,6 +5396,28 @@ public class HomeController {
 		return color;
 	}
 
+	@ResponseBody
+	@PostMapping("insuranceclaimdetails")
+	public List<InsuranceClaimHistory> insuranceclaimdetails(Model themodel, @RequestParam("id") int id) {
+
+	List<InsuranceClaimHistory>	ls= insuranceMasterService.findById(id).getInsuranceClaimHistory();
+		
+	for(InsuranceClaimHistory obj : ls)
+	{
+		try {
+			obj.setClaimDateMMMddYYYFormate(displaydateFormatFirstMMMddYYY
+					.format(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getClaimDate())));
+			
+
+		} catch (ParseException e) {
+
+		}
+	}	
+		
+		return ls;
+
+	}
+
 	@GetMapping("insurance")
 	public String insurancedetails(Model themodel, @RequestParam("id") int id) {
 
@@ -5467,6 +5489,15 @@ public class HomeController {
 		return insurancemasternew.getInsuranceDetails().stream().filter(C -> C.getInsuranceDetailsid() == policyid)
 				.collect(Collectors.toList()).get(0);
 	}
+	
+	@ResponseBody
+	@PostMapping("getclaimpolicydetails")
+	public InsuranceClaimHistory getclaimpolicydetails(@RequestParam("id") int id, @RequestParam("claimid") int claimid) {
+
+		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
+		return insurancemasternew.getInsuranceClaimHistory().stream().filter(C -> C.getInsuranceClaimid()== claimid)
+				.collect(Collectors.toList()).get(0);
+	}
 
 	@ResponseBody
 	@PostMapping("policydetailsavejson")
@@ -5474,8 +5505,8 @@ public class HomeController {
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
 
-		//System.out.println(Files_Attach.getOriginalFilename().toString());
-		//System.out.println(params);
+		// System.out.println(Files_Attach.getOriginalFilename().toString());
+		// System.out.println(params);
 		InsuranceMaster insurancemasternew = insuranceMasterService
 				.findById(Integer.parseInt(params.get("Insuranceid")));
 
@@ -5529,9 +5560,9 @@ public class HomeController {
 					insuDetails.setCover(params.get("Cover"));
 					insuDetails.setCoverageAmount(params.get("CoverageAmount"));
 					if (!nullremover(String.valueOf(filename.toString())).equalsIgnoreCase("")) {
-						insuDetails.setDoc_Attach(filename.toString());	
+						insuDetails.setDoc_Attach(filename.toString());
 					}
-					
+
 					insuDetails.setNominee(params.get("Nominee"));
 					insuDetails.setNotes(params.get("Notes"));
 					insuDetails.setPFrom(params.get("PFrom"));
@@ -5541,6 +5572,42 @@ public class HomeController {
 					insuDetails.setPolicyName(params.get("PolicyName"));
 					insuDetails.setPolicyNo(params.get("PolicyNo"));
 					insuDetails.setPremium(params.get("Premium"));
+				}
+			}
+		}
+
+		return insuranceMasterService.save(insurancemasternew);
+
+	}
+
+	@ResponseBody
+	@PostMapping("policyClaimdetailsavejson")
+	public InsuranceMaster policyClaimdetailsavejson(@RequestParam Map<String, String> params) {
+
+	//	System.out.println(params);
+
+		InsuranceMaster insurancemasternew = insuranceMasterService
+				.findById(Integer.parseInt(params.get("Insuranceid")));
+
+		if (nullremover(String.valueOf(params.get("InsuranceClaimDetailsid"))).equalsIgnoreCase("")) {
+
+			InsuranceClaimHistory insuDetails = new InsuranceClaimHistory();
+
+			insuDetails.setClaimAmount(params.get("claimAmount"));
+			insuDetails.setClaimDate(params.get("claimDate"));
+			insuDetails.setPolicyNo(params.get("policyNo"));
+			insuDetails.setReason(params.get("reason"));
+			insurancemasternew.getInsuranceClaimHistory().add(insuDetails);
+
+		} else {
+			for (InsuranceClaimHistory insuDetails : insurancemasternew.getInsuranceClaimHistory()) {
+				if (insuDetails.getInsuranceClaimid() == Integer.parseInt(params.get("InsuranceClaimDetailsid"))) {
+
+					insuDetails.setClaimAmount(params.get("claimAmount"));
+					insuDetails.setClaimDate(params.get("claimDate"));
+					insuDetails.setPolicyNo(params.get("policyNo"));
+					insuDetails.setReason(params.get("reason"));
+
 				}
 			}
 		}

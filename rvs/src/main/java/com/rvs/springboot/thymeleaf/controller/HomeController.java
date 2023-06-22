@@ -5463,9 +5463,14 @@ public class HomeController {
 			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(objindetail.getVendorName()));
 			objindetail.setVendorNamestr(vendor.getName());
 
-			EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(objindetail.getNominee()));
-			objindetail.setNominee_name_str(employee.getStaffName().toString());
-
+			if(insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff"))
+			{
+				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(objindetail.getNominee()));
+				objindetail.setNominee_name_str(employee.getStaffName().toString());
+			}else
+			{
+				objindetail.setNominee_name_str("");
+			}
 			try {
 				objindetail.setPFrom_str(displaydateFormatFirstMMMddYYY
 						.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPFrom())));

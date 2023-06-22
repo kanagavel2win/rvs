@@ -137,7 +137,12 @@ public class menuactivelist {
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Insurance", true);
+		}else if(menutitle.equalsIgnoreCase("Invoice"))
+		{
+			activemenus.put("Invoice", true);
+			
 		}
+		
 		
 		
 		

@@ -87,7 +87,6 @@
 <script th:src="@{/assets/js/config.js}"></script>
 
 <style type="text/css">
-
 .filecreateddate {
 	float: right;
 }
@@ -343,7 +342,9 @@
 											class='bx bxl-ok-ru'></i>Projects</a></li>
 									<li class="nav-item"><a class="nav-link active"
 										href="javascript:void(0);"><i class="bx bx-link me-1"></i>Files</a></li>
-
+									<li class="nav-item"><a class="nav-link "
+										th:href="'projectaccounts?id='+${projectMaster.id}"><i
+											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Accounts</a></li>
 								</ul>
 								<!--/ User Pills -->
 
@@ -372,32 +373,32 @@
 														th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.fileid}">
 														<div>
 															<div class="card-information">
-														 		<table style="width: 100%;">
-														 			<tr>
-														 				<td>
-														 					<h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
-														 				</td>
-														 				<td>
-														 					<small class="text-muted filecreateddate" th:text="${fileObj.createddate}"  style="float:right"></small>
-														 				</td>
-														 			</tr>
-														 			<tr>
-														 				<td>
-														 					<span class="card-number" th:text="${fileObj.DocumentNo}"></span>
-														 				</td>
-														 				<td rowspan="2"> 
-													 						<div  style="float:right">
-																				<button class="btn btn-label-secondary filedeletebtn"
+																<table style="width: 100%;">
+																	<tr>
+																		<td>
+																			<h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
+																		</td>
+																		<td><small class="text-muted filecreateddate"
+																			th:text="${fileObj.createddate}" style="float: right"></small>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td><span class="card-number"
+																			th:text="${fileObj.DocumentNo}"></span></td>
+																		<td rowspan="2">
+																			<div style="float: right">
+																				<button
+																					class="btn btn-label-secondary filedeletebtn"
 																					th:name="${fileObj.fileid}">
 																					<i class='bx bxs-trash-alt'></i>
 																				</button>
 																			</div>
-														 				</td>
-														 			</tr>
-														 			<tr>
-														 				<td>
-														 					<th:block th:if="${fileObj.FilePath != ''}">
-																				<a th:href="${fileObj.FilePath}" target="_blank"> <th:block
+																		</td>
+																	</tr>
+																	<tr>
+																		<td><th:block th:if="${fileObj.FilePath != ''}">
+																				<a th:href="${fileObj.FilePath}" target="_blank">
+																					<th:block
 																						th:if="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
 																						<img th:src="@{/assets/img/icons/misc/pdf.png}"
 																							alt="PDF image" width="20" class="me-2">
@@ -409,12 +410,11 @@
 																					th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
 																				</small>
 																				</a>
-																			</th:block>
-														 				</td>
-														 			</tr>
-														 		</table>
-														 	</div>
-															
+																			</th:block></td>
+																	</tr>
+																</table>
+															</div>
+
 														</div>
 													</div>
 
@@ -490,8 +490,8 @@
 							<!--/ Add Document -->
 
 							<!-- Edit User Modal -->
-							<div class="modal fade" id="editprojectMasterdetails" tabindex="-1"
-								aria-hidden="true">
+							<div class="modal fade" id="editprojectMasterdetails"
+								tabindex="-1" aria-hidden="true">
 								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
 									<div class="modal-content p-3 p-md-5">
 
@@ -503,8 +503,8 @@
 												<p>Update Project Basic Information</p>
 											</div>
 											<form id="editprojectMasterdetailsForm"
-												th:object="${projectMaster}" class="row g-3 needs-validation"
-												onsubmit="return false">
+												th:object="${projectMaster}"
+												class="row g-3 needs-validation" onsubmit="return false">
 												<input type="hidden" th:value="${projectMaster['id']}"
 													id="projectMasterID" name="projectMasterID" />
 
@@ -535,27 +535,28 @@
 															follower.</div>
 													</div>
 												</div>
-												
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="board">Board</label>
 													<div>
 														<select class="form-control" id="board"
-															 th:field="*{board}" required>
-															  <option value="">-</option>
+															th:field="*{board}" required>
+															<option value="">-</option>
 															<th:block th:each="str :${board}">
 																<option th:value="${str.id}" th:text="${str.boardName}"></option>
 															</th:block>
 														</select>
 													</div>
 												</div>
-												
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">SOURCE <label
 														class="emptitle additem" name="addsourcedata"><i
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addsourcedata" id="Source"
-															th:field="*{Source}" th:value="${projectMaster['Source']}">
+															th:field="*{Source}"
+															th:value="${projectMaster['Source']}">
 															<th:block th:each="str :${SOURCE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -569,7 +570,8 @@
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addpurposedata" id="purpose"
-															th:field="*{purpose}" th:value="${projectMaster['purpose']}">
+															th:field="*{purpose}"
+															th:value="${projectMaster['purpose']}">
 															<th:block th:each="str :${PURPOSE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -581,7 +583,8 @@
 													<label class="form-label" for="Source">VALUE</label>
 													<div>
 														<input type="number" id="projectvalue"
-															th:field="*{projectvalue}" class="form-control  capitalize"
+															th:field="*{projectvalue}"
+															class="form-control  capitalize"
 															th:value="${projectMaster['projectvalue']}">
 													</div>
 
@@ -624,12 +627,11 @@
 													<label class="form-label" for="label">LABEL </label>
 													<div>
 														<select class="form-control" id="label"
-															th:field="*{label}"
-															th:value="${projectMaster['label']}">
+															th:field="*{label}" th:value="${projectMaster['label']}">
 															<option value="To Do">To Do</option>
 															<option value="In Progress">In Progress</option>
 															<option value="On Hold">On Hold</option>
-															
+
 														</select>
 													</div>
 												</div>
@@ -638,8 +640,8 @@
 													<label class="form-label" for="phonenumber">BRANCH</label>
 													<div>
 														<select class="form-select  form-control " id="branch"
-															th:field="*{branch}" th:value="${projectMaster['branch']}"
-															required>
+															th:field="*{branch}"
+															th:value="${projectMaster['branch']}" required>
 															<th:block th:each="str :${branchlist}">
 																<option th:value="${str.id}"
 																	th:text="${str.BRANCH_NAME}"></option>
@@ -679,8 +681,7 @@
 														Start Date</label>
 													<div>
 
-														<input type="text" id="startdate"
-															th:field="*{startdate}"
+														<input type="text" id="startdate" th:field="*{startdate}"
 															th:value="${projectMaster['startdate']}"
 															class="form-control  capitalize">
 													</div>

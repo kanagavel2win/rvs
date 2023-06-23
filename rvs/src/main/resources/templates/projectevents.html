@@ -135,13 +135,12 @@
 	height: 15px;
 }
 
-.editactivity 
-{
-cursor: pointer;
+.editactivity {
+	cursor: pointer;
 }
-.editnoteactivity
-{
-cursor: pointer;
+
+.editnoteactivity {
+	cursor: pointer;
 }
 
 .addactivity {
@@ -150,15 +149,13 @@ cursor: pointer;
 	font-weight: bold;
 	padding-left: 10px;
 }
-.bxs-check-circle
-{
- color : #39da8a;
+
+.bxs-check-circle {
+	color: #39da8a;
 }
 
-.strikeout
-{
-  text-decoration: line-through;
-
+.strikeout {
+	text-decoration: line-through;
 }
 </style>
 <script th:inline="javascript">
@@ -240,10 +237,8 @@ cursor: pointer;
 										<div class="info-container">
 											<ul class="list-unstyled">
 												<li class="mb-3"><span class="fw-bold me-2">Pipeline:
-												
-												</span>
-													<span th:text="${projectMaster.pipeline}"
-													id="Lbl_pipeline"></span></li>
+
+												</span> <span th:text="${projectMaster.pipeline}" id="Lbl_pipeline"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
 													<span th:text="${projectMaster.label}" id="Lbl_label"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
@@ -256,8 +251,8 @@ cursor: pointer;
 													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
-													<span th:text="${projectMaster.branchname}" id="Lbl_branchname"></span>
-												</li>
+													<span th:text="${projectMaster.branchname}"
+													id="Lbl_branchname"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${projectMaster.Source}" id="Lbl_Source"></span>
 												</li>
@@ -272,9 +267,10 @@ cursor: pointer;
 														Date:</span> <span
 													th:text="${projectMaster.expectedstartdateMMddYYY}"
 													id="Lbl_expectedstartdate"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Closing Date:</span>
-													<span th:text="${projectMaster.expectedclosingdateMMddYYY}" id="Lbl_expectedclosingdate"></span>
-												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Closing
+														Date:</span> <span
+													th:text="${projectMaster.expectedclosingdateMMddYYY}"
+													id="Lbl_expectedclosingdate"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
 
 													<span id="Lbl_follower"> <span
@@ -353,12 +349,14 @@ cursor: pointer;
 										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Plan</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
-										th:href="'projectiteminfo?id='+${projectMaster.id}"><i class='bx bxl-ok-ru'></i>Projects</a>
-									</li>
+										th:href="'projectiteminfo?id='+${projectMaster.id}"><i
+											class='bx bxl-ok-ru'></i>Projects</a></li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'projectattachment?id='+${projectMaster.id}"><i
 											class="bx bx-link me-1"></i>Files</a></li>
-
+									<li class="nav-item"><a class="nav-link "
+										th:href="'projectaccounts?id='+${projectMaster.id}"><i
+											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Accounts</a></li>
 								</ul>
 								<!--/ User Pills -->
 
@@ -372,26 +370,22 @@ cursor: pointer;
 
 
 										<div class="card-action-element" style="float: right">
-											
+
 											<button class="btn btn-primary btn-sm" type="button"
 												data-bs-target="#addNewBoard" data-bs-toggle="modal"
-													id="addNewBoardbtn">
+												id="addNewBoardbtn">
 												<i class="bx bx-plus bx-xs me-1"></i> Phase
 											</button>
-											
+
 										</div>
 									</h5>
 									<div class="card-body">
 										<!-- Accordion Header Color -->
-											<div class="col-md">
-												<div class="accordion mt-3 accordion-header-primary"
-													id="accordionStyle1">
-													
-													
-													
-												</div>
-											</div>
-											<!--/ Accordion Header Color -->
+										<div class="col-md">
+											<div class="accordion mt-3 accordion-header-primary"
+												id="accordionStyle1"></div>
+										</div>
+										<!--/ Accordion Header Color -->
 									</div>
 
 
@@ -403,7 +397,7 @@ cursor: pointer;
 
 
 							<!-- Modal -->
-							
+
 							<!-- Edit Phases Modal -->
 							<div class="modal fade" id="addNewBoard" tabindex="-1"
 								aria-hidden="true">
@@ -426,8 +420,8 @@ cursor: pointer;
 													<input type="text" class="form-control"
 														id="Model_Phasename" name="Model_Phasename" required /> <input
 														type="hidden" id="Model_phase_id" name="Model_phase_id" />
-													 <input
-														type="hidden"  name="projectid" th:value="${projectMaster.id}" />
+													<input type="hidden" name="projectid"
+														th:value="${projectMaster.id}" />
 												</div>
 												<div class="col-12 ">
 													<label class="form-label" for="Model_orderID">Order
@@ -448,8 +442,8 @@ cursor: pointer;
 								</div>
 							</div>
 							<!--/ Edit Phase Modal -->
-							
-							
+
+
 							<!-- Edit Notes Modal -->
 							<div class="modal fade" id="addnotes" tabindex="-1"
 								aria-hidden="true">
@@ -465,9 +459,9 @@ cursor: pointer;
 												<p>Update Notes Basic Information</p>
 											</div>
 											<form id="NotesMasterform" class="" onsubmit="return false">
-												<input type="hidden" name="mastercategoryidnote" id="mastercategoryidnote" />
-												<input type="hidden" name="noteactivityId" id="noteactivityId"
-																	 /> 
+												<input type="hidden" name="mastercategoryidnote"
+													id="mastercategoryidnote" /> <input type="hidden"
+													name="noteactivityId" id="noteactivityId" />
 												<!-- Full Editor -->
 												<div class="col-12">
 													<div class="card">
@@ -484,12 +478,11 @@ cursor: pointer;
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
 														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
-														
-														
+
+
 													<button type="reset"
 														class="btn btn-label-secondary NotesMasterformclose"
-														aria-label="Close">
-														Reset</button>
+														aria-label="Close">Reset</button>
 												</div>
 											</form>
 										</div>
@@ -522,18 +515,17 @@ cursor: pointer;
 														<label for="addmodel">Activity Title</label>
 														<div class="form-group">
 															<div class="position-relative">
-																<input type="hidden" id="phaseid" name="phaseid" />
-																
-																<input type="hidden"
-																	th:field="*{activityId}" id="activityId"
+																<input type="hidden" id="phaseid" name="phaseid" /> <input
+																	type="hidden" th:field="*{activityId}" id="activityId"
 																	th:value="${activityMaster['activityId']}" /> <input
-																	type="hidden" th:field="*{createdtime}" id="createdtime"
+																	type="hidden" th:field="*{createdtime}"
+																	id="createdtime"
 																	th:value="${activityMaster['createdtime']}" /> <input
 																	type="text"
 																	class="form-control   capitalize ActivityTitle"
 																	placeholder="Task details..."
 																	th:field="*{activitytitle}" id="activitytitle"
-																	th:value="${activityMaster['activitytitle']}"  required/>
+																	th:value="${activityMaster['activitytitle']}" required />
 
 															</div>
 														</div>
@@ -563,7 +555,8 @@ cursor: pointer;
 																	onclick="optionshandle(this);" title="Meetings">
 																	<input type="radio" onclick="optionshandle(this);"
 																	name="options" th:field="*{activitytype}"
-																	value="Meetings" id="radio3" style="visibility: hidden" required><i
+																	value="Meetings" id="radio3" style="visibility: hidden"
+																	required><i
 																	class="bx bx-group activitytypeicon"></i>
 																</label>
 															</div>
@@ -646,7 +639,8 @@ cursor: pointer;
 														<div class="position-relative  has-icon-left">
 															<fieldset class="form-group">
 																<select class="select2 form-control "
-																	id="activityfollowers" name="activityfollowers" required>
+																	id="activityfollowers" name="activityfollowers"
+																	required>
 																	<th:block th:each="str :${employeelist}">
 																		<option th:value="${str.empMasterid}"
 																			th:text="${str.StaffName}"></option>
@@ -657,7 +651,7 @@ cursor: pointer;
 														</div>
 													</div>
 												</div>
-												
+
 
 												<div class="col-md-12">
 													<br />
@@ -680,8 +674,8 @@ cursor: pointer;
 							<!--/ Edit Activity Modal -->
 
 							<!-- Edit User Modal -->
-							<div class="modal fade" id="editprojectMasterdetails" tabindex="-1"
-								aria-hidden="true">
+							<div class="modal fade" id="editprojectMasterdetails"
+								tabindex="-1" aria-hidden="true">
 								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
 									<div class="modal-content p-3 p-md-5">
 
@@ -693,8 +687,8 @@ cursor: pointer;
 												<p>Update Project Basic Information</p>
 											</div>
 											<form id="editprojectMasterdetailsForm"
-												th:object="${projectMaster}" class="row g-3 needs-validation"
-												onsubmit="return false">
+												th:object="${projectMaster}"
+												class="row g-3 needs-validation" onsubmit="return false">
 												<input type="hidden" th:value="${projectMaster['id']}"
 													id="projectMasterID" name="projectMasterID" />
 
@@ -725,13 +719,13 @@ cursor: pointer;
 															follower.</div>
 													</div>
 												</div>
-												
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="board">Board</label>
 													<div>
 														<select class="form-control" id="board"
-															 th:field="*{board}" >
-															 <option value="">-</option>
+															th:field="*{board}">
+															<option value="">-</option>
 															<th:block th:each="str :${board}">
 																<option th:value="${str.id}" th:text="${str.boardName}"></option>
 															</th:block>
@@ -744,7 +738,8 @@ cursor: pointer;
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addsourcedata" id="Source"
-															th:field="*{Source}" th:value="${projectMaster['Source']}">
+															th:field="*{Source}"
+															th:value="${projectMaster['Source']}">
 															<th:block th:each="str :${SOURCE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -758,7 +753,8 @@ cursor: pointer;
 															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
 														<select class="form-control  addpurposedata" id="purpose"
-															th:field="*{purpose}" th:value="${projectMaster['purpose']}">
+															th:field="*{purpose}"
+															th:value="${projectMaster['purpose']}">
 															<th:block th:each="str :${PURPOSE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -770,7 +766,8 @@ cursor: pointer;
 													<label class="form-label" for="Source">VALUE</label>
 													<div>
 														<input type="number" id="projectvalue"
-															th:field="*{projectvalue}" class="form-control  capitalize"
+															th:field="*{projectvalue}"
+															class="form-control  capitalize"
 															th:value="${projectMaster['projectvalue']}">
 													</div>
 
@@ -794,13 +791,18 @@ cursor: pointer;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="pipeline">PIPELINE </label>
 													<div>
-														<select class="form-control" id="pipeline" th:field="*{pipeline}" th:value="${projectMaster['pipeline']}">
+														<select class="form-control" id="pipeline"
+															th:field="*{pipeline}"
+															th:value="${projectMaster['pipeline']}">
 															<option value="Project In">Project In</option>
 															<option value="Contact made">Contact made</option>
-															<option value="Site Visit Scheduled">Site Visit Scheduled</option>
-															<option value="Project Evaluvated">Project Evoluvated</option>
+															<option value="Site Visit Scheduled">Site Visit
+																Scheduled</option>
+															<option value="Project Evaluvated">Project
+																Evoluvated</option>
 															<option value="Proposal made">Proposal made</option>
-															<option value="Negotiations started">Negotiations started</option>
+															<option value="Negotiations started">Negotiations
+																started</option>
 														</select>
 													</div>
 												</div>
@@ -808,12 +810,11 @@ cursor: pointer;
 													<label class="form-label" for="label">LABEL </label>
 													<div>
 														<select class="form-control" id="label"
-															th:field="*{label}"
-															th:value="${projectMaster['label']}">
+															th:field="*{label}" th:value="${projectMaster['label']}">
 															<option value="To Do">To Do</option>
 															<option value="In Progress">In Progress</option>
 															<option value="On Hold">On Hold</option>
-															
+
 														</select>
 													</div>
 												</div>
@@ -821,8 +822,8 @@ cursor: pointer;
 													<label class="form-label" for="phonenumber">BRANCH</label>
 													<div>
 														<select class="form-select  form-control " id="branch"
-															th:field="*{branch}" th:value="${projectMaster['branch']}"
-															required>
+															th:field="*{branch}"
+															th:value="${projectMaster['branch']}" required>
 															<th:block th:each="str :${branchlist}">
 																<option th:value="${str.id}"
 																	th:text="${str.BRANCH_NAME}"></option>
@@ -869,10 +870,12 @@ cursor: pointer;
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="expectedclosingdate">Expected Closing Date</label>
+													<label class="form-label" for="expectedclosingdate">Expected
+														Closing Date</label>
 													<div>
 
-														<input type="text" id="expectedclosingdate" th:field="*{expectedclosingdate}"
+														<input type="text" id="expectedclosingdate"
+															th:field="*{expectedclosingdate}"
 															th:value="${projectMaster['expectedclosingdate']}"
 															class="form-control  capitalize">
 													</div>

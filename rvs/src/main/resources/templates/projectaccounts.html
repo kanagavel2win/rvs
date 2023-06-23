@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Project Items</title>
+<title>Project Accounts</title>
 
 <meta name="description" content="" />
 
@@ -340,98 +340,28 @@
 									<li class="nav-item"><a class="nav-link "
 										th:href="'projectview?id='+${projectMaster.id}"><i
 											class="bx bx-user me-1"></i>Plan</a></li>
-									<li class="nav-item"><a class="nav-link active"
+									<li class="nav-item"><a class="nav-link "
 										href="javascript:void(0);"><i class='bx bxl-ok-ru'></i>Projects</a>
 									</li>
 									<li class="nav-item"><a class="nav-link "
 										th:href="'projectattachment?id='+${projectMaster.id}"><i
 											class="bx bx-link me-1"></i>Files</a></li>
-									<li class="nav-item"><a class="nav-link "
+									<li class="nav-item"><a class="nav-link active"
 										th:href="'projectaccounts?id='+${projectMaster.id}"><i
 											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Accounts</a></li>
 								</ul>
 								<!--/ User Pills -->
-								<!-- Address Card -->
-								<div class="card card-action mb-4">
-									<div class="card-header align-items-center">
-										<h5 class="card-action-title mb-0">Project Location</h5>
-										<div class="card-action-element">
-											<button class="btn btn-primary btn-sm edit-address"
-												type="button" data-bs-toggle="modal"
-												data-bs-target="#addNewAddress">Edit</button>
-										</div>
-									</div>
-									<div class="card-body">
-										<div class="row">
-											<div class="col-xl-7 col-12">
-												<dl class="row mb-0">
-													<dt class="col-sm-4 mb-3 text-nowrap">Line 1:</dt>
-													<dd class="col-sm-8">
-														<span th:text="${projectMaster.addressline1}"
-															id="Lbl_Addressaddressline1"></span>
-													</dd>
 
-													<dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt>
-													<dd class="col-sm-8">
-														<span th:text="${projectMaster.lankmark}"
-															id="Lbl_Addresslankmark"></span>
-													</dd>
-
-													<dt class="col-sm-4 mb-3 text-nowrap">District:</dt>
-													<dd class="col-sm-8">
-														<span th:text="${projectMaster.district}"
-															id="Lbl_Addressdistrict"></span>
-													</dd>
-
-													<dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt>
-													<dd class="col-sm-8">
-														<span th:text="${projectMaster.pincode}"
-															id="Lbl_Addresspincode"></span>
-													</dd>
-												</dl>
-											</div>
-											<div class="col-xl-5 col-12">
-												<dl class="row mb-0">
-													<dt class="col-sm-4 mb-3 text-nowrap">Line 2:</dt>
-													<dd class="col-sm-8">
-														<span th:text="${projectMaster.addressline2}"
-															id="Lbl_Addressaddressline2"></span>
-													</dd>
-
-													<dt class="col-sm-4 mb-3 text-nowrap">City/Town:</dt>
-													<dd class="col-sm-8">
-														<span th:text="${projectMaster.taluk}"
-															id="Lbl_Addresstaluk"></span>
-													</dd>
-
-													<dt class="col-sm-4 mb-3 text-nowrap">State:</dt>
-													<dd class="col-sm-8">
-														<span th:text="${projectMaster.state}"
-															id="Lbl_Addressstate"></span>
-													</dd>
-
-													<dt class="col-sm-4 mb-3 text-nowrap">Lat, Long:</dt>
-													<dd class="col-sm-8">
-														<span th:text="${projectMaster.lanlong}"
-															id="Lbl_Addresslanlong"></span>
-													</dd>
-												</dl>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<!-- /Address Card -->
 								<!-- Project   Card -->
 								<div class="card  mb-4">
 									<div class="card-body1">
 										<div class="card-header align-items-center">
 											<h5 class="card-action-title mb-0">
-												Project List
+												Invoice List
 												<div class="card-action-element" style="float: right">
 													<button class="btn btn-primary btn-sm addNewProjectbtn"
 														type="button" data-bs-toggle="modal"
-														data-bs-target="#addNewProject">
+														data-bs-target="#invoicemodel">
 														<i class="bx bx-plus bx-xs me-1"></i>
 													</button>
 												</div>
@@ -441,12 +371,11 @@
 											<table class="table border-top m-0">
 												<thead>
 													<tr>
-														<th>Nature of work</th>
-														<th>Quantity</th>
-														<th>Units</th>
-														<th>Price per Unit</th>
-
-														<th>Total</th>
+														<th>Invoice #</th>
+														<th>Type</th>
+														<th>Date</th>
+														<th>Due Date</th>
+														<th>Amount</th>
 													</tr>
 												</thead>
 												<tbody id="projectprojectlist">
@@ -457,89 +386,468 @@
 									</div>
 								</div>
 								<!-- /Project   Card -->
+
+								<!-- Receipts   Card -->
+								<div class="card  mb-4">
+									<div class="card-body1">
+										<div class="card-header align-items-center">
+											<h5 class="card-action-title mb-0">
+												Receipts List
+												<div class="card-action-element" style="float: right">
+													<button class="btn btn-primary btn-sm addreceiptbtn"
+														type="button" data-bs-toggle="modal"
+														data-bs-target="#receiptmodel">
+														<i class="bx bx-plus bx-xs me-1"></i>
+													</button>
+												</div>
+											</h5>
+										</div>
+										<div class="table-responsive">
+											<table class="table border-top m-0">
+												<thead>
+													<tr>
+														<th>Ref #</th>
+														<th>Invoice #</th>
+														<th>Date</th>
+														<th>Account</th>
+														<th>Notes</th>
+														<th>Amount Paid</th>
+													</tr>
+												</thead>
+												<tbody id="receiptslist">
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!-- /Receipts   Card -->
 							</div>
 							<!-- User Content -->
-							<!-- Add Document -->
-							<div class="modal fade" id="addNewProject" tabindex="-1"
+							<!-- Add Invoice -->
+							<div class="modal fade" id="invoicemodel" tabindex="-1"
 								aria-hidden="true">
-								<div
-									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-dialog modal-xl modal-simple modal-add-new-cc">
+									<div class="modal-content p-3 p-md-5">
+										<div class="modal-bodyx">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+
+											<!-- -------- -->
+											<!-- Invoice Add-->
+											<div class="col-lg-12 col-12 mb-lg-0 mb-4">
+												<div class="card invoice-preview-card">
+													<div class="card-body">
+														<div class="row p-sm-3 p-0">
+															<div class="col-md-4 mb-md-0 mb-4">
+																<div class="d-flex svg-illustration mb-4 gap-2">
+																	<img th:src="@{/assets/img/logo/favicon.ico}" /> <span
+																		class="app-brand-text h3 mb-0 fw-bold">RVSLS</span>
+																</div>
+																<p class="mb-1">29, Palani Illam, Sundaram Brothers
+																	Layout,</p>
+																<p class="mb-1">Ramanathapuram, Tamil Nadu 641045</p>
+																<p class="mb-0">+91 96005 35855, helpdesk@rvsls.com</p>
+															</div>
+															<div class="col-md-4">
+																<dl class="row mb-2">
+																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<span class="text-capitalize mb-0 text-nowrap">Tally
+																			Invoice No#</span>
+																	</dt>
+																	<dd class="col-sm-6 d-flex justify-content-md-end">
+																		<div class="w-px-150">
+																			<input type="text" class="form-control"
+																				 id="invoiceId" />
+																		</div>
+																	</dd>
+																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<span class="fw-normal">Invoice Type:</span>
+																	</dt>
+																	<dd class="col-sm-6 d-flex justify-content-md-end">
+																		<div class="w-px-150">
+																			<select id="modalEditUserStatus" name="modalEditUserStatus"
+																				class="form-select" aria-label="Default select example">
+																				<option selected>-</option>
+																				<option value="Tax Invoice">Tax Invoice</option>
+																				<option value="Proforma Invoice">Proforma Invoice</option>
+																				<option value="Bill">Bill</option>
+																			</select>
+																		</div>
+																	</dd>
+																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<span class="fw-normal">Receivable :</span>
+																	</dt>
+																	<dd class="col-sm-6 d-flex justify-content-md-end">
+																		<div class="w-px-150">
+																			<select id="modalEditUserStatus" name="modalEditUserStatus"
+																				class="form-select" aria-label="Default select example">
+																				<option selected>-</option>
+																				<option value="0">On Due</option>
+																				<option value="30">30 Days</option>
+																				<option value="60">60 Days</option>
+																				<option value="90">90 Days</option>
+																			</select>
+																		</div>
+																	</dd>
+																</dl>
+															</div>
+															<div class="col-md-4">
+																<dl class="row mb-2">
+																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<span class=" text-capitalize mb-0 text-nowrap">Invoice
+																			Date:</span>
+																	</dt>
+																	<dd class="col-sm-6 d-flex justify-content-md-end">
+																		<div class="w-px-150">
+																			<input type="text" class="form-control"
+																				 id="invoicedate" />
+																		</div>
+																	</dd>
+																	
+																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<span class="fw-normal">Due Date:</span>
+																	</dt>
+																	<dd class="col-sm-6 d-flex justify-content-md-end">
+																		<div class="w-px-150">
+																			<input type="text" class="form-control date-picker" id="duedate"
+																				 />
+																		</div>
+																	</dd>
+																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<span class="fw-normal">GST State Code:</span>
+																	</dt>
+																	<dd class="col-sm-6 d-flex justify-content-md-end">
+																		<div class="w-px-150">
+																			<input type="text" class="form-control date-picker" />
+																		</div>
+																	</dd>
+																</dl>
+															</div>
+														</div>
+
+														<hr class="my-4 mx-n4" />
+
+														<div class="row p-sm-3 p-0">
+															<div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-4">
+																<h6 class="pb-2">Invoice To:</h6>
+																<p class="mb-1">
+																	<input type="text" class="col-12" value="Thomas shelby" />
+																</p>
+																<p class="mb-1">
+																	<input type="text" class="col-12"
+																		value="Shelby Company Limited" />
+																</p>
+																<p class="mb-1">
+																	<input type="text" class="col-12"
+																		value="Small Heath, B10 0HF, UK" />
+																</p>
+																<p class="mb-1">
+																	<input type="text" class="col-12" value="718-986-6062" />
+																</p>
+																<p class="mb-0">
+																	<input type="text" class="col-12"
+																		value="peakyFBlinders@gmail.com" />
+																</p>
+															</div>
+															<div class="col-md-6 col-sm-7">
+																<h6 class="pb-2">Bill To:</h6>
+																<p class="mb-1">
+																	<input type="text" class="col-12" value="Thomas shelby" />
+																</p>
+																<p class="mb-1">
+																	<input type="text" class="col-12"
+																		value="Shelby Company Limited" />
+																</p>
+																<p class="mb-1">
+																	<input type="text" class="col-12"
+																		value="Small Heath, B10 0HF, UK" />
+																</p>
+																<p class="mb-1">
+																	<input type="text" class="col-12" value="718-986-6062" />
+																</p>
+																<p class="mb-0">
+																	<input type="text" class="col-12"
+																		value="peakyFBlinders@gmail.com" />
+																</p>
+															</div>
+														</div>
+
+														<hr class="mx-n4" />
+
+														<form class="source-item py-sm-3">
+															<div class="mb-3" data-repeater-list="group-a">
+																<div class="repeater-wrapper pt-0 pt-md-4"
+																	data-repeater-item>
+																	<div
+																		class="d-flex border rounded position-relative pe-0">
+																		<div class="row w-100 m-0 p-3">
+																			<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0">
+																				<p class="mb-2 repeater-title">Item Description</p>
+																				<select class="form-select item-details mb-2">
+																					<option selected disabled>Select Item</option>
+																					<option value="App Design">App Design</option>
+																					<option value="App Customization">App
+																						Customization</option>
+																					<option value="ABC Template">ABC Template</option>
+																					<option value="App Development">App
+																						Development</option>
+																				</select>
+																				<textarea class="form-control" rows="2"
+																					placeholder="Item Information"></textarea>
+																			</div>
+																			<div class="col-md-2 col-12 mb-md-0 mb-3">
+																				<p class="mb-2 repeater-title">Qty</p>
+																				<input type="number"
+																					class="form-control invoice-item-qty"
+																					placeholder="1" min="1" max="50" />
+																			</div>
+																			<div class="col-md-2 col-12 mb-md-0 mb-3">
+																				<p class="mb-2 repeater-title">Unit</p>
+																				<input type="number"
+																					class="form-control invoice-item-qty"
+																					 />
+																			</div>
+																			<div class="col-md-2 col-12 mb-md-0 mb-3">
+																				<p class="mb-2 repeater-title">Price</p>
+																				<input type="number"
+																					class="form-control invoice-item-price mb-2"
+																					 />
+																				<div>
+																					<span>Discount Per Unit:</span> <span
+																						class="discount me-2">0%</span> <span
+																						class="tax-1 me-2" data-bs-toggle="tooltip"
+																						data-bs-placement="top" title="CGST %">0%</span> <span
+																						class="tax-2" data-bs-toggle="tooltip"
+																						data-bs-placement="top" title="SGST %">0%</span> <span
+																						class="tax-2" data-bs-toggle="tooltip"
+																						data-bs-placement="top" title="IGST %">0%</span>
+																				</div>
+																			</div>
+
+																			<div class="col-md-2 col-12 pe-0">
+																				<p class="mb-2 repeater-title">Taxable Amount</p>
+																				<p class="mb-0">24000.00</p>
+																			</div>
+																		</div>
+																		<div
+																			class="d-flex flex-column align-items-center justify-content-between border-start p-2">
+																			<i class="bx bx-x fs-4 text-muted cursor-pointer"
+																				data-repeater-delete></i>
+																			<div class="dropdown">
+																				<i
+																					class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown"
+																					role="button" id="dropdownMenuButton"
+																					data-bs-toggle="dropdown"
+																					data-bs-auto-close="outside" aria-expanded="false">
+																				</i>
+																				<div
+																					class="dropdown-menu dropdown-menu-end w-px-300 p-3"
+																					aria-labelledby="dropdownMenuButton">
+																					<div class="row g-3">
+																						<div class="col-12">
+																							<label for="discountInput" class="form-label">Discount(%)</label>
+																							<input type="number" class="form-control"
+																								id="discountInput" min="0" max="100" />
+																						</div>
+																						<div class="col-md-6">
+																							<label for="taxInput1" class="form-label">CGST
+																								% 1</label> <select name="tax-1-input" id="taxInput1"
+																								class="form-select tax-select">
+																								<option value="0%" selected>0%</option>
+																								<option value="1%">1%</option>
+																								<option value="10%">10%</option>
+																								<option value="18%">18%</option>
+																								<option value="40%">40%</option>
+																							</select>
+																						</div>
+																						<div class="col-md-6">
+																							<label for="taxInput2" class="form-label">SGST
+																								% 2</label> <select name="tax-2-input" id="taxInput2"
+																								class="form-select tax-select">
+																								<option value="0%" selected>0%</option>
+																								<option value="1%">1%</option>
+																								<option value="10%">10%</option>
+																								<option value="18%">18%</option>
+																								<option value="40%">40%</option>
+																							</select>
+																						</div>
+																						<div class="col-md-12">
+																							<label for="taxInput2" class="form-label">IGST
+																								% 2</label> <select name="tax-2-input" id="taxInput2"
+																								class="form-select tax-select">
+																								<option value="0%" selected>0%</option>
+																								<option value="1%">1%</option>
+																								<option value="10%">10%</option>
+																								<option value="18%">18%</option>
+																								<option value="40%">40%</option>
+																							</select>
+																						</div>
+																					</div>
+																					<div class="dropdown-divider my-3"></div>
+																					<button type="button"
+																						class="btn btn-label-primary btn-apply-changes">Apply</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-12">
+																	<button type="button" class="btn btn-primary"
+																		data-repeater-create>Add Item</button>
+																</div>
+															</div>
+														</form>
+
+														<hr class="my-4 mx-n4" />
+
+														<div class="row py-sm-3">
+															<div class="col-6">
+																<div class="mb-3">
+																	<label for="note" class="form-label fw-semibold">Note:</label>
+																	<textarea class="form-control" rows="2" id="note"
+																		placeholder="Invoice note"></textarea>
+																</div>
+															</div>
+															<div class="col-md-6 d-flex justify-content-end">
+																<div class="invoice-calculations">
+																	<div class="d-flex justify-content-between mb-2">
+																		<span class="w-px-100">Total:</span> <span
+																			class="fw-semibold">0.00</span>
+																	</div>
+																	<div class="d-flex justify-content-between mb-2">
+																		<span class="w-px-100">CGST:</span> <span
+																			class="fw-semibold">0.00</span>
+																	</div>
+																	<div class="d-flex justify-content-between mb-2">
+																		<span class="w-px-100">SGST:</span> <span
+																			class="fw-semibold">0.00</span>
+																	</div>
+																	<div class="d-flex justify-content-between mb-2">
+																		<span class="w-px-100">IGST:</span> <span
+																			class="fw-semibold">0.00</span>
+																	</div>
+																	<hr />
+																	<div class="d-flex justify-content-between">
+																		<span class="w-px-100">Total Amount:</span> <span
+																			class="fw-semibold">0.00</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+
+
+													</div>
+												</div>
+											</div>
+											<!-- /Invoice Add-->
+											<!-- -------- -->
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ Add Invoice -->
+							<!-- Edit Receipt Modal -->
+							<div class="modal fade" id="receiptmodel" tabindex="-1"
+								aria-hidden="true">
+								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
 									<div class="modal-content p-3 p-md-5">
 										<div class="modal-body">
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
-												<h3>Projects</h3>
-												<p>Nature of Work</p>
+												<h5>Payment Receipt</h5>
 											</div>
-											<form id="addNewprojectmodel" name="addNewprojectmodel"
-												class="row g-3" onsubmit="return false"
-												enctype="multipart/form-data">
-												<div class="col-12">
-													<label class="form-label w-100" for="modalnatureofwork">Nature
-														of Work <label class="emptitle additem"
-														name="addmodalnatureofwork"> <i
-															class="bx bxs-plus-circle ownstyle1"></i></label>
-
+												<div class="row p-sm-3 p-0">
+															<div class="col-md-6 mb-md-0 mb-4">
+																
+																<p class="mb-1"><b>Invoice No# :</b> </p>
+																<p class="mb-1"><b>Due Date :</b></p>
+																<p class="mb-0"></p>
+															</div>
+															<div class="col-md-6">
+																<p class="mb-1"><b>Amount :</b> </p>
+																<p class="mb-1"><b>Total paid :</b></p>
+																<p class="mb-0"><b>Balance Due :</b></p>
+															</div>
+															
+														</div>
+											
+											<form id="editUserForm" class="row g-3"
+												onsubmit="return false">
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalEditUserFirstName">Ref #</label> <input type="text" id="modalEditUserFirstName"
+														name="modalEditUserFirstName" class="form-control"
+														 />
+												</div>
+											
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalEditUserLastName">Date</label> <input type="text" id="modalEditUserLastName"
+														name="modalEditUserLastName" class="form-control"
+														/>
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalEditUserStatus">Deposited To</label>
+													<select id="modalEditUserStatus" name="modalEditUserStatus"
+														class="form-select" aria-label="Default select example">
+														<option selected>-</option>
+														<option value="SBI">SBI</option>
+														<option value="IDBI">IDBI</option>
+														<option value="LVB">LVB</option>
+														<option value="Axis 1">Axis 1</option>
+														<option value="Axis 2">Axis 2</option>
+														<option value="Cash 1">Cash 1</option>
+														<option value="Cash 2">Cash 2</option>
+														<option value="SBI Sukumar">SBI Sukumar</option>
+														<option value="SBI Balakumar">SBI Balakumar</option>
+														<option value="TDS">TDS</option>
+														
+													</select>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalEditUserStatus">Mode of Payment</label>
+													<select id="modalEditUserStatus" name="modalEditUserStatus"
+														class="form-select" aria-label="Default select example">
+														<option selected>-</option>
+														<option value="NEFT">NEFT</option>
+														<option value="RTGS">RTGS</option>
+														<option value="Cash">Cash</option>
+														<option value="Paypal">Paypal</option>
+														<option value="Paytm">Paytm</option>
+														<option value="Gpay">Gpay</option>
+														<option value="Other UPI">Other UPI</option>
+													</select>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modalEditTaxID">Amount
+														</label> <input type="text" id="modalEditTaxID"
+														name="modalEditTaxID"
+														class="form-control modal-edit-tax-id"
+														 />
+												</div>
+												<div class="col-12 col-md-6">
+												<br/>
+													<label class="switch"> <input type="checkbox"
+														class="switch-input" /> <span
+														class="switch-toggle-slider"> <span
+															class="switch-on"></span> <span class="switch-off"></span>
+													</span> <span class="switch-label">Pay in Full</span>
 													</label>
-													<div class="input-group input-group-merge">
-														<select id="modalnatureofwork"
-															class="form-select modalnatureofwork"
-															name="modalnatureofwork" required="required">
-															<option value="">-</option>
-															<th:block th:each="str :${NATUREOFWORK}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-
-														</select>
-
-													</div>
 												</div>
 												<div class="col-12">
-													<label class="form-label" for="modalAddCardName">QUANTITY
-													</label> <input type="number" id="modalQuantity"
-														name="modalQuantity" class="form-control"
-														required="required" /> <input type="hidden"
-														id="projectitemid" name="projectitemid"
-														class="form-control" />
+													<label class="form-label" for="modalEditTaxID">Notes
+														</label> <input type="text" id="modalEditTaxID"
+														name="modalEditTaxID"
+														class="form-control modal-edit-tax-id"
+														/>
 												</div>
-												<div class="col-12">
-													<label class="form-label w-100" for="modalUnits">UNITS
-														<label class="emptitle additem" name="addmodalunits">
-															<i class="bx bxs-plus-circle ownstyle1"></i>
-													</label>
-
-													</label>
-													<div class="input-group input-group-merge">
-														<select id="modalUnits" name="modalunits"
-															class="form-select modalunits" required="required">
-															<option value="">-</option>
-															<th:block th:each="str :${UNITS}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-
-														</select>
-
-													</div>
-												</div>
-												<div class="col-12">
-													<label class="form-label" for="modalPrice">Price
-														Per Unit </label> <input type="number" id="modalPrice"
-														name="modalPrice" class="form-control" required="required" />
-												</div>
-
-
-												<div class="col-12">
-													<label class="form-label" for="modalTotalamount">Total
-														Amount </label> <input type="number" id="modalTotalamount"
-														name="modalTotalamount" class="form-control" disabled />
-												</div>
-
+												
 												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary me-sm-3 me-1 projectprojectsave">ADD</button>
-													<button type="reset"
-														class="btn btn-label-secondary btn-reset projectprojectclose"
+													<button type="submit" class="btn btn-primary me-sm-3 me-1">ADD</button>
+													<button type="reset" class="btn btn-label-secondary"
 														data-bs-dismiss="modal" aria-label="Close">
 														Cancel</button>
 												</div>
@@ -548,8 +856,7 @@
 									</div>
 								</div>
 							</div>
-							<!--/ Add Document -->
-
+							<!--/ Edit User Modal -->
 							<!-- Edit User Modal -->
 							<div class="modal fade" id="editprojectMasterdetails"
 								tabindex="-1" aria-hidden="true">
@@ -868,89 +1175,7 @@
 								</div>
 							</div>
 							<!--/ Edit People Modal -->
-							<!-- Add New Address Modal -->
-							<div class="modal fade" id="addNewAddress" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-lg modal-simple modal-add-new-address">
-									<div class="modal-content p-3 p-md-5">
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3 class="address-title">Address</h3>
-												<p class="address-subtitle">Add/Update Address Details</p>
-											</div>
-											<form id="addNewAddressForm" class="row g-3"
-												onsubmit="return false">
 
-												<div class="col-12">
-													<label class="form-label" for="modalAddressAddress1">Address
-														Line 1</label> <input type="text" id="modalAddressAddress1"
-														name="modalAddressAddress1" class="form-control"
-														placeholder="Flat, House no, Building, Apartment"
-														th:value="${projectMaster.addressline1}" required />
-												</div>
-												<div class="col-12">
-													<label class="form-label" for="modalAddressAddress2">Address
-														Line 2</label> <input type="text" id="modalAddressAddress2"
-														name="modalAddressAddress2" class="form-control"
-														placeholder="Area, Street, Sector"
-														th:value="${projectMaster.addressline2}" />
-												</div>
-												<div class="col-12">
-													<label class="form-label" for="modalAddressLandmark">Landmark</label>
-													<input type="text" id="modalAddressLandmark"
-														name="modalAddressLandmark" class="form-control"
-														placeholder="E.g. near Kovai All India Radio"
-														th:value="${projectMaster.lankmark}" />
-												</div>
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalAddresstaluk">City</label>
-													<input type="text" id="modalAddresstaluk"
-														name="modalAddresstaluk" class="form-control"
-														th:value="${projectMaster.taluk}" required />
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalAddressdistrict">District</label>
-													<input type="text" id="modalAddressdistrict"
-														name="modalAddressdistrict" class="form-control"
-														th:value="${projectMaster.district}" required />
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalAddressState">State</label>
-													<input type="text" id="modalAddressState"
-														name="modalAddressState" class="form-control"
-														th:value="${projectMaster.state}" required />
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalAddresspincode">PinCode</label>
-													<input type="number" id="modalAddresspincode"
-														name="modalAddresspincode" class="form-control"
-														th:value="${projectMaster.pincode}" />
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalAddresslanlong">Lat,
-														Long</label> <input type="number" id="modalAddresslanlong"
-														name="modalAddresslanlong" class="form-control"
-														th:value="${projectMaster.lanlong}" />
-												</div>
-
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary me-sm-3 me-1 editprojectAddressdatasubmit">Update</button>
-													<button type="button"
-														class="btn btn-label-secondary editprojectAddressdataclose"
-														data-bs-dismiss="modal" aria-label="Close">
-														Cancel</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Add New Address Modal -->
 							<!--scrolling content Modal -->
 							<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
 								role="dialog" aria-labelledby="ItemStatusScrollableTitle"
@@ -1187,12 +1412,7 @@
 							   				$('.projectprojectsave').prop("disabled",false);
 								   			$('.projectprojectsave').html("Submit");
 								   }
-								function validationformaddressreset()
-								   {
-							   				$('.editprojectAddressdataclose').click();
-							   				$('.editprojectAddressdatasubmit').prop("disabled",false);
-								   			$('.editprojectAddressdatasubmit').html("Submit");
-								   }
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$("#startdate").change(function() {
 									if($('#enddate').val() ==''){
@@ -1210,61 +1430,6 @@
 									validationformprojectreset();
 								 });
 								
-								 //------------------------------------------------------------------------ 			 
-								 $('.editprojectAddressdatasubmit').on('click', function(event){
-
-								    	  $('.editprojectAddressdatasubmit').prop("disabled",true);
-								    	  
-								    	    if(event.target.checkValidity()){
-								    	    	$('.editprojectAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-								    	    	var projectMasterID=$("#projectMasterID").val();
-								    	    	var modalAddressAddress1 =$('#modalAddressAddress1').val();
-								    	    	var modalAddressAddress2 =$('#modalAddressAddress2').val();
-								    	    	var modalAddressLandmark =$('#modalAddressLandmark').val();
-								    	    	var modalAddresstaluk =$('#modalAddresstaluk').val();
-								    	    	var modalAddressdistrict =$('#modalAddressdistrict').val();
-								    	    	var modalAddressState =$('#modalAddressState').val();
-								    	    	var modalAddresspincode =$('#modalAddresspincode').val();
-								    	    	var modalAddresslanlong =$('#modalAddresslanlong').val();
-								    	    	
-								    	    	var formData = {
-								    	    			projectMasterID: projectMasterID,
-								  	        			AddressAddress1 : modalAddressAddress1,
-								  	        			AddressAddress2 : modalAddressAddress2,
-								  	        			AddressLandmark : modalAddressLandmark,
-								  	        			AddressTaluk : modalAddresstaluk,
-								  	        			AddressDistrict : modalAddressdistrict,
-								  	        			AddressState : modalAddressState,
-								  	        			AddressPinCode : modalAddresspincode,
-								  	        			AddressLanlong : modalAddresslanlong,
-								  	        			functiontype : 'Project'
-								  				 }
-								  				 $.ajax({
-								  						type : "POST",url : "Addressupdatejson",
-								  						data : formData, success : function(result) {
-								  							var bmobj = JSON.parse(JSON.stringify(result));
-								  						//	console.log(bmobj);
-								  							 $('#Lbl_Addressaddressline1').text(bmobj.addressline1);
-								  							$('#Lbl_Addressaddressline2').text(bmobj.addressline2);
-								  							$('#Lbl_Addresslankmark').text(bmobj.lankmark);
-								  							$('#Lbl_Addresstaluk').text(bmobj.taluk);
-								  							$('#Lbl_Addressdistrict').text(bmobj.district);
-								  							$('#Lbl_Addressstate').text(bmobj.state);
-								  							$('#Lbl_Addresspincode').text(bmobj.pincode); 
-								  							$('#Lbl_Addresslanlong').text(bmobj.lanlong); 
-															validationformaddressreset();
-								  						},
-								  						error : function(e) {
-								  							console.log("Error" + e);
-								  						}
-								  					});
-								  	        }	
-								    	    else
-								        	{
-								    	    	$('.editprojectAddressdatasubmit').prop("disabled",false);
-								        	}
-								      });
-							  		
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								
 								function getprojectlist() {
@@ -1685,9 +1850,11 @@
 								    setTimeout(function(){
 								    	getprojectlist();
 								    	
-								     },1000); // milliseconds
+								     },500); // milliseconds
 								});
 								//-------------------------------------------
+								
+								$("#invoicemodel").modal('toggle');
 							}); // Jquery
 
 			//------------------------------------------------------
@@ -1726,6 +1893,27 @@
 					 // Human Friendly
 					  if (expectedstatingdate) {
 						  expectedstatingdate.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }
+					 
+					 
+				  const invoiceDate = document.querySelector('#invoicedate');
+					 // Human Friendly
+					  if (invoiceDate) {
+						  invoiceDate.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }
+						 
+				  const duedate = document.querySelector('#duedate');
+					 // Human Friendly
+					  if (duedate) {
+						  duedate.flatpickr({
 					      altInput: true,
 					      altFormat: 'F j, Y',
 					      dateFormat: 'Y-m-d'

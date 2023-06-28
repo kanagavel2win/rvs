@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -93,6 +94,8 @@ import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
 import com.rvs.springboot.thymeleaf.entity.InsuranceClaimHistory;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
+import com.rvs.springboot.thymeleaf.entity.InvoiceItemMaster;
+import com.rvs.springboot.thymeleaf.entity.InvoiceMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadContact;
 import com.rvs.springboot.thymeleaf.entity.LeadFiles;
 import com.rvs.springboot.thymeleaf.entity.LeadFollowers;
@@ -9206,9 +9209,18 @@ public class HomeController {
 		theModel.addAttribute("PURPOSE", PURPOSE);
 
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		
+		/*
+		 * String NATUREOFWORKtemp=""; for(String str: NATUREOFWORK) { NATUREOFWORKtemp=
+		 * NATUREOFWORKtemp.concat("<option value='"+ str + "'>"+ str+ "</option>"); }
+		 */
 		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		/*
+		 * String UNITStemp=""; for(String str: UNITS) { UNITStemp=
+		 * UNITStemp.concat("<option value=\'"+ str + "\'>"+ str+ "</option>"); }
+		 */
 		theModel.addAttribute("UNITS", UNITS);
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
@@ -9358,4 +9370,161 @@ public class HomeController {
 		return "projectiteminfo";
 	}
 
+	@ResponseBody
+	@PostMapping("projectinvoicesave")
+	public ProjectMaster projectinvoicesave(@RequestParam Map<String,String> params) {
+		
+		
+		params.forEach((a,b) -> System.out.println(a + " - "+ b));
+		
+		ProjectMaster pm= projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+		List<InvoiceMaster> invls= new ArrayList();
+		
+		String tempinvoiceid= nullremover(String.valueOf(params.get("invoiceid")));	
+		
+		if(!tempinvoiceid.equalsIgnoreCase(""))
+		{
+			List<InvoiceMaster> ls= new ArrayList();
+			
+			for(InvoiceMaster invm : pm.getInvoiceList())
+			{
+				if(invm.getInvoiceid()== Integer.parseInt(tempinvoiceid)) {
+					invm.setBilladdressline1(String.valueOf(params.get("billaddressline1")));
+					invm.setBilladdressline2(String.valueOf(params.get("billaddressline2")));
+					invm.setBillcity(String.valueOf(params.get("billaddresscity")));
+					invm.setBillEmail(String.valueOf(params.get("billEmail")));
+					invm.setBillGSTNo(String.valueOf(params.get("billGSTNo")));
+					invm.setBillMobileno(String.valueOf(params.get("billMobileno")));
+					invm.setBillpincode(String.valueOf(params.get("billaddresspincode")));
+					invm.setBillstate(String.valueOf(params.get("billaddressState")));
+					invm.setDueDate(String.valueOf(params.get("dueDate")));
+					invm.setGSTCode(String.valueOf(params.get("GSTCode")));
+					invm.setInvoiceaddresscity(String.valueOf(params.get("invoiceaddresscity")));
+					invm.setInvoiceaddressline1(String.valueOf(params.get("invoiceaddressline1")));
+					invm.setInvoiceaddressline2(String.valueOf(params.get("invoiceaddressline2")));
+					invm.setInvoiceaddresspincode(String.valueOf(params.get("invoiceaddresspincode")));
+					invm.setInvoiceaddressState(String.valueOf(params.get("invoiceaddressState")));
+					invm.setInvoiceDate(String.valueOf(params.get("invoiceDate")));
+					invm.setInvoiceEmail(String.valueOf(params.get("invoiceEmail")));
+					invm.setInvoiceMobileno(String.valueOf(params.get("invoiceMobileno")));
+					invm.setInvoiceType(String.valueOf(params.get("invoiceType")));
+					invm.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
+					invm.setNotes(String.valueOf(params.get("note")));
+					invm.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout,Ramanathapuram, Tamil Nadu 641045");
+					invm.setReceivable(String.valueOf(params.get("receivable")));
+					invm.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
+					
+					List<InvoiceItemMaster> invitemls= new ArrayList();
+					for(int i =1; i<=Integer.parseInt(params.get("invoiceitemcount"));i++){
+						
+						InvoiceItemMaster initem= new InvoiceItemMaster();
+						int invitemids=0;
+						if(!nullremover(String.valueOf(params.get("InvoiceItemid"+i))).equalsIgnoreCase("")) {
+							invitemids =Integer.parseInt(params.get("InvoiceItemid"+ i));
+							final int tempi=i;
+							initem=invm.getInvoiceItemMasterlist().stream().filter(C -> C.getInvoiceitemid() == Integer.parseInt(params.get("InvoiceItemid"+ tempi))).collect(Collectors.toList()).get(0);					
+						}
+						
+						invitemls.add(addupdatedInvoiceMaster(params,initem, i,invitemids));
+					}
+					invm.setInvoiceItemMasterlist(invitemls);
+					
+				}
+				ls.add(invm);
+				
+			}
+			pm.setInvoiceList(ls);
+			
+		}else
+		{
+			InvoiceMaster newinv= new InvoiceMaster();
+			
+			newinv.setBilladdressline1(String.valueOf(params.get("billaddressline1")));
+			newinv.setBilladdressline2(String.valueOf(params.get("billaddressline2")));
+			newinv.setBillcity(String.valueOf(params.get("billaddresscity")));
+			newinv.setBillEmail(String.valueOf(params.get("billEmail")));
+			newinv.setBillGSTNo(String.valueOf(params.get("billGSTNo")));
+			newinv.setBillMobileno(String.valueOf(params.get("billMobileno")));
+			newinv.setBillpincode(String.valueOf(params.get("billaddresspincode")));
+			newinv.setBillstate(String.valueOf(params.get("billaddressState")));
+			newinv.setDueDate(String.valueOf(params.get("dueDate")));
+			newinv.setGSTCode(String.valueOf(params.get("GSTCode")));
+			newinv.setInvoiceaddresscity(String.valueOf(params.get("invoiceaddresscity")));
+			newinv.setInvoiceaddressline1(String.valueOf(params.get("invoiceaddressline1")));
+			newinv.setInvoiceaddressline2(String.valueOf(params.get("invoiceaddressline2")));
+			newinv.setInvoiceaddresspincode(String.valueOf(params.get("invoiceaddresspincode")));
+			newinv.setInvoiceaddressState(String.valueOf(params.get("invoiceaddressState")));
+			newinv.setInvoiceDate(String.valueOf(params.get("invoiceDate")));
+			newinv.setInvoiceEmail(String.valueOf(params.get("invoiceEmail")));
+			newinv.setInvoiceMobileno(String.valueOf(params.get("invoiceMobileno")));
+			newinv.setInvoiceType(String.valueOf(params.get("invoiceType")));
+			newinv.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
+			newinv.setNotes(String.valueOf(params.get("note")));
+			newinv.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout,Ramanathapuram, Tamil Nadu 641045");
+			newinv.setReceivable(String.valueOf(params.get("receivable")));
+			newinv.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
+			
+			List<InvoiceItemMaster> invitemls= new ArrayList();
+			for(int i =1; i<=Integer.parseInt(params.get("invoiceitemcount"));i++){
+				
+				invitemls.add(addupdatedInvoiceMaster(params,new InvoiceItemMaster(), i,0));
+			}
+			newinv.setInvoiceItemMasterlist(invitemls);
+			
+			pm.getInvoiceList().add(newinv);
+		}
+		
+				
+				
+	 return projectMasterService.save(pm);		
+	}
+	
+	
+	public InvoiceItemMaster addupdatedInvoiceMaster(Map<String,String> params,InvoiceItemMaster invitemmaster, int index , int itemid ) {
+		
+		invitemmaster.setInvoiceitemid(itemid);
+		
+		long price = Long.parseLong(String.valueOf(params.get("Price"+index)));
+		long qty =  Long.parseLong(String.valueOf(params.get("Quantity"+index)));
+		long taxableAmount =price *  qty ;
+		
+		long Discountper= Long.parseLong(String.valueOf(params.get("Discountper"+index)));
+		long CGSTper= Long.parseLong(String.valueOf(params.get("CGSTper"+index)));
+		long SGSTper= Long.parseLong(String.valueOf(params.get("SGSTper"+index)));
+		long IGSTper= Long.parseLong(String.valueOf(params.get("IGSTper"+index)));
+	
+
+		long Discountamt =taxableAmount * (Discountper/100);
+		long afetdiscountamount =  taxableAmount -Discountamt;
+		
+		long IGSTamount =afetdiscountamount * (IGSTper/100);
+		long SGSTamount =afetdiscountamount * (SGSTper/100);
+		long CGSTamount=afetdiscountamount * (CGSTper/100);
+		
+		
+		invitemmaster.setDiscountamt(Discountamt);
+		invitemmaster.setDiscountper(Discountper);
+		
+		invitemmaster.setCGSTamount(CGSTamount);
+		invitemmaster.setCGSTper(CGSTper);
+		
+		invitemmaster.setIGSTamount(IGSTamount);
+		invitemmaster.setIGSTper(IGSTper);
+		
+		invitemmaster.setSGSTamount(SGSTamount);
+		invitemmaster.setSGSTper(SGSTper);
+		
+		invitemmaster.setInvoiceItem(String.valueOf(params.get("InvoiceItem"+index)));
+		invitemmaster.setDescription(String.valueOf(params.get("Description"+index)));	
+		invitemmaster.setQuantity(qty);
+		invitemmaster.setPrice(price);
+		invitemmaster.setUnit(String.valueOf(params.get("Unit"+index)));
+		
+		invitemmaster.setTaxableAmount(afetdiscountamount);
+		
+		
+		return invitemmaster;
+	}
 }
+
+

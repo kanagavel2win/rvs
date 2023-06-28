@@ -81,6 +81,11 @@ public class ProjectMaster {
 	private List<ProjectPhases> projectPhases;
 	
 
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name =  "projectid")
+	@OrderBy("invoiceid ASC")
+	List<InvoiceMaster> invoiceList;
+	
 	@Column
 	private String addressline1;
 	@Column

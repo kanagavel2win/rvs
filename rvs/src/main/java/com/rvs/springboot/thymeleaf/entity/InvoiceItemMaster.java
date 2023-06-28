@@ -32,29 +32,29 @@ public class InvoiceItemMaster {
 	@Column
 	private String Description;
 	@Column
-	private long Quantity;
+	private double Quantity;
 	@Column
 	private String Unit;
 	@Column
-	private long Price;
+	private double Price;
 	@Column
-	private long Discountper;
+	private double Discountper;
 	@Column
-	private long Discountamt;
+	private double Discountamt;
 	@Column
-	private long CGSTper;
+	private double CGSTper;
 	@Column
-	private long CGSTamount;
+	private double CGSTamount;
 	@Column
-	private long SGSTper;
+	private double SGSTper;
 	@Column
-	private long SGSTamount;
+	private double SGSTamount;
 	@Column
-	private long IGSTper;
+	private double IGSTper;
 	@Column
-	private long IGSTamount;
+	private double IGSTamount;
 	@Column
-	private long TaxableAmount;
+	private double TaxableAmount;
 	
 	
 }

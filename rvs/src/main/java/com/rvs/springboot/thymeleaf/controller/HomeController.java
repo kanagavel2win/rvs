@@ -5403,20 +5403,18 @@ public class HomeController {
 	@PostMapping("insuranceclaimdetails")
 	public List<InsuranceClaimHistory> insuranceclaimdetails(Model themodel, @RequestParam("id") int id) {
 
-	List<InsuranceClaimHistory>	ls= insuranceMasterService.findById(id).getInsuranceClaimHistory();
-		
-	for(InsuranceClaimHistory obj : ls)
-	{
-		try {
-			obj.setClaimDateMMMddYYYFormate(displaydateFormatFirstMMMddYYY
-					.format(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getClaimDate())));
-			
+		List<InsuranceClaimHistory> ls = insuranceMasterService.findById(id).getInsuranceClaimHistory();
 
-		} catch (ParseException e) {
+		for (InsuranceClaimHistory obj : ls) {
+			try {
+				obj.setClaimDateMMMddYYYFormate(displaydateFormatFirstMMMddYYY
+						.format(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getClaimDate())));
 
+			} catch (ParseException e) {
+
+			}
 		}
-	}	
-		
+
 		return ls;
 
 	}
@@ -5466,12 +5464,10 @@ public class HomeController {
 			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(objindetail.getVendorName()));
 			objindetail.setVendorNamestr(vendor.getName());
 
-			if(insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff"))
-			{
+			if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(objindetail.getNominee()));
 				objindetail.setNominee_name_str(employee.getStaffName().toString());
-			}else
-			{
+			} else {
 				objindetail.setNominee_name_str("");
 			}
 			try {
@@ -5497,13 +5493,14 @@ public class HomeController {
 		return insurancemasternew.getInsuranceDetails().stream().filter(C -> C.getInsuranceDetailsid() == policyid)
 				.collect(Collectors.toList()).get(0);
 	}
-	
+
 	@ResponseBody
 	@PostMapping("getclaimpolicydetails")
-	public InsuranceClaimHistory getclaimpolicydetails(@RequestParam("id") int id, @RequestParam("claimid") int claimid) {
+	public InsuranceClaimHistory getclaimpolicydetails(@RequestParam("id") int id,
+			@RequestParam("claimid") int claimid) {
 
 		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
-		return insurancemasternew.getInsuranceClaimHistory().stream().filter(C -> C.getInsuranceClaimid()== claimid)
+		return insurancemasternew.getInsuranceClaimHistory().stream().filter(C -> C.getInsuranceClaimid() == claimid)
 				.collect(Collectors.toList()).get(0);
 	}
 
@@ -5592,7 +5589,7 @@ public class HomeController {
 	@PostMapping("policyClaimdetailsavejson")
 	public InsuranceMaster policyClaimdetailsavejson(@RequestParam Map<String, String> params) {
 
-	//	System.out.println(params);
+		// System.out.println(params);
 
 		InsuranceMaster insurancemasternew = insuranceMasterService
 				.findById(Integer.parseInt(params.get("Insuranceid")));
@@ -9209,7 +9206,7 @@ public class HomeController {
 		theModel.addAttribute("PURPOSE", PURPOSE);
 
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
-		
+
 		/*
 		 * String NATUREOFWORKtemp=""; for(String str: NATUREOFWORK) { NATUREOFWORKtemp=
 		 * NATUREOFWORKtemp.concat("<option value='"+ str + "'>"+ str+ "</option>"); }
@@ -9235,6 +9232,7 @@ public class HomeController {
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		return "projectaccounts";
 	}
+
 	@GetMapping("projectiteminfo")
 	public String projectproject(Model theModel, @RequestParam("id") int id) {
 
@@ -9372,23 +9370,20 @@ public class HomeController {
 
 	@ResponseBody
 	@PostMapping("projectinvoicesave")
-	public ProjectMaster projectinvoicesave(@RequestParam Map<String,String> params) {
-		
-		
-		params.forEach((a,b) -> System.out.println(a + " - "+ b));
-		
-		ProjectMaster pm= projectMasterService.findById(Integer.parseInt(params.get("projectid")));
-		List<InvoiceMaster> invls= new ArrayList();
-		
-		String tempinvoiceid= nullremover(String.valueOf(params.get("invoiceid")));	
-		
-		if(!tempinvoiceid.equalsIgnoreCase(""))
-		{
-			List<InvoiceMaster> ls= new ArrayList();
-			
-			for(InvoiceMaster invm : pm.getInvoiceList())
-			{
-				if(invm.getInvoiceid()== Integer.parseInt(tempinvoiceid)) {
+	public ProjectMaster projectinvoicesave(@RequestParam Map<String, String> params) {
+
+		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+		List<InvoiceMaster> invls = new ArrayList();
+
+		String tempinvoiceid = nullremover(String.valueOf(params.get("invoiceid")));
+
+		if (!tempinvoiceid.equalsIgnoreCase("")) {
+			List<InvoiceMaster> ls = new ArrayList();
+
+			for (InvoiceMaster invm : pm.getInvoiceList()) {
+				if (invm.getInvoiceid() == Integer.parseInt(tempinvoiceid)) {
 					invm.setBilladdressline1(String.valueOf(params.get("billaddressline1")));
 					invm.setBilladdressline2(String.valueOf(params.get("billaddressline2")));
 					invm.setBillcity(String.valueOf(params.get("billaddresscity")));
@@ -9413,32 +9408,33 @@ public class HomeController {
 					invm.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout,Ramanathapuram, Tamil Nadu 641045");
 					invm.setReceivable(String.valueOf(params.get("receivable")));
 					invm.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
-					
-					List<InvoiceItemMaster> invitemls= new ArrayList();
-					for(int i =1; i<=Integer.parseInt(params.get("invoiceitemcount"));i++){
-						
-						InvoiceItemMaster initem= new InvoiceItemMaster();
-						int invitemids=0;
-						if(!nullremover(String.valueOf(params.get("InvoiceItemid"+i))).equalsIgnoreCase("")) {
-							invitemids =Integer.parseInt(params.get("InvoiceItemid"+ i));
-							final int tempi=i;
-							initem=invm.getInvoiceItemMasterlist().stream().filter(C -> C.getInvoiceitemid() == Integer.parseInt(params.get("InvoiceItemid"+ tempi))).collect(Collectors.toList()).get(0);					
+
+					List<InvoiceItemMaster> invitemls = new ArrayList();
+					for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
+
+						InvoiceItemMaster initem = new InvoiceItemMaster();
+						int invitemids = 0;
+						if (!nullremover(String.valueOf(params.get("InvoiceItemid" + i))).equalsIgnoreCase("")) {
+							invitemids = Integer.parseInt(params.get("InvoiceItemid" + i));
+							final int tempi = i;
+							initem = invm.getInvoiceItemMasterlist().stream().filter(
+									C -> C.getInvoiceitemid() == Integer.parseInt(params.get("InvoiceItemid" + tempi)))
+									.collect(Collectors.toList()).get(0);
 						}
-						
-						invitemls.add(addupdatedInvoiceMaster(params,initem, i,invitemids));
+
+						invitemls.add(addupdatedInvoiceMaster(params, initem, i, invitemids));
 					}
 					invm.setInvoiceItemMasterlist(invitemls);
-					
+
 				}
 				ls.add(invm);
-				
+
 			}
 			pm.setInvoiceList(ls);
-			
-		}else
-		{
-			InvoiceMaster newinv= new InvoiceMaster();
-			
+
+		} else {
+			InvoiceMaster newinv = new InvoiceMaster();
+
 			newinv.setBilladdressline1(String.valueOf(params.get("billaddressline1")));
 			newinv.setBilladdressline2(String.valueOf(params.get("billaddressline2")));
 			newinv.setBillcity(String.valueOf(params.get("billaddresscity")));
@@ -9463,68 +9459,109 @@ public class HomeController {
 			newinv.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout,Ramanathapuram, Tamil Nadu 641045");
 			newinv.setReceivable(String.valueOf(params.get("receivable")));
 			newinv.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
-			
-			List<InvoiceItemMaster> invitemls= new ArrayList();
-			for(int i =1; i<=Integer.parseInt(params.get("invoiceitemcount"));i++){
-				
-				invitemls.add(addupdatedInvoiceMaster(params,new InvoiceItemMaster(), i,0));
+
+			List<InvoiceItemMaster> invitemls = new ArrayList();
+			for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
+
+				invitemls.add(addupdatedInvoiceMaster(params, new InvoiceItemMaster(), i, 0));
 			}
 			newinv.setInvoiceItemMasterlist(invitemls);
-			
+
 			pm.getInvoiceList().add(newinv);
 		}
-		
-				
-				
-	 return projectMasterService.save(pm);		
-	}
-	
-	
-	public InvoiceItemMaster addupdatedInvoiceMaster(Map<String,String> params,InvoiceItemMaster invitemmaster, int index , int itemid ) {
-		
-		invitemmaster.setInvoiceitemid(itemid);
-		
-		long price = Long.parseLong(String.valueOf(params.get("Price"+index)));
-		long qty =  Long.parseLong(String.valueOf(params.get("Quantity"+index)));
-		long taxableAmount =price *  qty ;
-		
-		long Discountper= Long.parseLong(String.valueOf(params.get("Discountper"+index)));
-		long CGSTper= Long.parseLong(String.valueOf(params.get("CGSTper"+index)));
-		long SGSTper= Long.parseLong(String.valueOf(params.get("SGSTper"+index)));
-		long IGSTper= Long.parseLong(String.valueOf(params.get("IGSTper"+index)));
-	
 
-		long Discountamt =taxableAmount * (Discountper/100);
-		long afetdiscountamount =  taxableAmount -Discountamt;
-		
-		long IGSTamount =afetdiscountamount * (IGSTper/100);
-		long SGSTamount =afetdiscountamount * (SGSTper/100);
-		long CGSTamount=afetdiscountamount * (CGSTper/100);
-		
-		
+		return projectMasterService.save(pm);
+	}
+
+	public InvoiceItemMaster addupdatedInvoiceMaster(Map<String, String> params, InvoiceItemMaster invitemmaster,
+			int index, int itemid) {
+
+		invitemmaster.setInvoiceitemid(itemid);
+
+		double price = Double.parseDouble(String.valueOf(params.get("Price" + index)));
+		double qty = Double.parseDouble(String.valueOf(params.get("Quantity" + index)));
+		double taxableAmount = price * qty;
+
+		double Discountper = Double.parseDouble(String.valueOf(params.get("Discountper" + index)));
+		double CGSTper = Double.parseDouble(String.valueOf(params.get("CGSTper" + index)));
+		double SGSTper = Double.parseDouble(String.valueOf(params.get("SGSTper" + index)));
+		double IGSTper = Double.parseDouble(String.valueOf(params.get("IGSTper" + index)));
+
+		double dt=Discountper / 100;
+		double Discountamt =taxableAmount * dt;
+		double afetdiscountamount = taxableAmount - Discountamt;
+
+		double it=IGSTper / 100;
+		double ct=CGSTper / 100;
+		double st=SGSTper / 100;
+		double IGSTamount = afetdiscountamount * it;
+		double SGSTamount = afetdiscountamount * st;
+		double CGSTamount = afetdiscountamount * ct;
+
 		invitemmaster.setDiscountamt(Discountamt);
 		invitemmaster.setDiscountper(Discountper);
-		
+
 		invitemmaster.setCGSTamount(CGSTamount);
 		invitemmaster.setCGSTper(CGSTper);
-		
+
 		invitemmaster.setIGSTamount(IGSTamount);
 		invitemmaster.setIGSTper(IGSTper);
-		
+
 		invitemmaster.setSGSTamount(SGSTamount);
 		invitemmaster.setSGSTper(SGSTper);
-		
-		invitemmaster.setInvoiceItem(String.valueOf(params.get("InvoiceItem"+index)));
-		invitemmaster.setDescription(String.valueOf(params.get("Description"+index)));	
+
+		invitemmaster.setInvoiceItem(String.valueOf(params.get("InvoiceItem" + index)));
+		invitemmaster.setDescription(String.valueOf(params.get("Description" + index)));
 		invitemmaster.setQuantity(qty);
 		invitemmaster.setPrice(price);
-		invitemmaster.setUnit(String.valueOf(params.get("Unit"+index)));
-		
+		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
+
 		invitemmaster.setTaxableAmount(afetdiscountamount);
-		
-		
+
 		return invitemmaster;
 	}
+
+	@PostMapping("getprojectinvoicelist")
+	@ResponseBody
+	public List<InvoiceMaster> getprojectinvoicelist(@RequestParam Map<String, String> params) {
+
+		List<InvoiceMaster> ls = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getInvoiceList();
+		for (InvoiceMaster obj : ls) {
+			try {
+				obj.setInvoiceDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
+				obj.setDueDateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+			} catch (ParseException e) {
+
+				// e.printStackTrace();
+			}
+
+		}
+
+		return ls;
+	}
+
+	@PostMapping("getinvoiceitem")
+	@ResponseBody
+	public InvoiceMaster getinvoiceitem(@RequestParam Map<String, String> params) {
+
+		InvoiceMaster obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getInvoiceList().stream().filter(C -> C.getInvoiceid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
+		try {
+			obj.setInvoiceDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
+			obj.setDueDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+		return obj;
+
+	}
+
 }
-
-

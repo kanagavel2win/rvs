@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,12 @@ public class InvoiceMaster {
 	private String invoiceDate;
 	@Column
 	private String dueDate;
+	
+	@Transient
+	private String invoiceDateMMMddyyyy;
+	@Transient
+	private String dueDateMMMddyyyy;
+	
 	@Column
 	private String invoiceType;
 	@Column

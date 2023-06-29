@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -96,6 +95,7 @@ import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
 import com.rvs.springboot.thymeleaf.entity.InvoiceItemMaster;
 import com.rvs.springboot.thymeleaf.entity.InvoiceMaster;
+import com.rvs.springboot.thymeleaf.entity.InvoiceReceiptMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadContact;
 import com.rvs.springboot.thymeleaf.entity.LeadFiles;
 import com.rvs.springboot.thymeleaf.entity.LeadFollowers;
@@ -9517,7 +9517,8 @@ public class HomeController {
 		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
 
 		invitemmaster.setTaxableAmount(afetdiscountamount);
-
+		invitemmaster.setTotalamountAmount(afetdiscountamount+ CGSTamount + SGSTamount + IGSTamount );
+		
 		return invitemmaster;
 	}
 
@@ -9564,4 +9565,128 @@ public class HomeController {
 
 	}
 
+	
+	
+	@PostMapping("getprojectreceiptlist")
+	@ResponseBody
+	public List<InvoiceReceiptMaster> getprojectreceiptlist(@RequestParam Map<String, String> params) {
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
+		List<InvoiceReceiptMaster> ls =pm.getReceiptList();
+		List<InvoiceMaster> invls =pm.getInvoiceList();
+				
+		for (InvoiceReceiptMaster obj : ls) {
+			try {
+				obj.setRecepitDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
+			
+				obj.setInvoiceNo(invls.stream().filter(C-> C.getInvoiceid() == Integer.parseInt(obj.getInvoiceid())).collect(Collectors.toList()).get(0).getInvoiceNo());
+						
+			} catch (ParseException e) {
+
+				// e.printStackTrace();
+			}
+
+		}
+
+		return ls;
+	}
+
+	@PostMapping("getreceiptitem")
+	@ResponseBody
+	public InvoiceReceiptMaster getreceiptitem(@RequestParam Map<String, String> params) {
+
+		InvoiceReceiptMaster obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getReceiptList().stream().filter(C -> C.getRecepitid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
+		try {
+			obj.setRecepitDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+		return obj;
+
+	}
+	
+	@PostMapping("getinvoicereceiptitem")
+	@ResponseBody
+	public Map<String,String> getinvoicereceiptitem(@RequestParam Map<String, String> params) {
+
+		Map<String,String> map= new HashMap<>();
+		
+		double totalpaidamount = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getReceiptList().stream().filter(C-> C.getInvoiceid().equalsIgnoreCase(params.get("invoiceid"))).mapToDouble(InvoiceReceiptMaster::getAmount).sum();
+
+		map.put("totalpaidamount", String.valueOf(totalpaidamount));
+		
+		InvoiceMaster inv=  projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid"))).getInvoiceList().stream().filter(C -> C.getInvoiceid() ==Integer.parseInt(params.get("invoiceid"))).collect(Collectors.toList()).get(0);
+
+		try {
+			inv.setDueDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(inv.getDueDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+		
+		double totalinvoiceamount =inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster:: getTotalamountAmount).sum();
+		map.put("Invoiceno", inv.getInvoiceNo());
+		map.put("duedate", inv.getDueDateMMMddyyyy());
+		map.put("amount",  String.valueOf(totalinvoiceamount));
+		map.put("balanceamount",  String.valueOf(totalinvoiceamount-totalpaidamount));
+		map.put("invoiceid",  String.valueOf(inv.getInvoiceid()));
+		map.put("invoiceid",  String.valueOf(inv.getInvoiceid()));
+		
+		return map;
+
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("projectreceiptsave")
+	public ProjectMaster projectreceiptsave(@RequestParam Map<String, String> params) {
+
+		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+		List<InvoiceReceiptMaster> invls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("recepitid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<InvoiceReceiptMaster> ls = new ArrayList();
+
+			for (InvoiceReceiptMaster invm : pm.getReceiptList()) {
+				if (invm.getRecepitid()== Integer.parseInt(tempreceiptid)) {
+					
+					invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+					invm.setAmount(Double.parseDouble(params.get("amount")));	
+					invm.setDepositedto(String.valueOf(params.get("depositedto")));
+					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+					invm.setNotes(String.valueOf(params.get("notes")));
+					invm.setRecepitDate(String.valueOf(params.get("recepitDate")));			
+				}
+				ls.add(invm);
+
+			}
+			pm.setReceiptList(ls);
+		} else {
+			InvoiceReceiptMaster invm = new InvoiceReceiptMaster();
+
+			invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+			invm.setAmount(Double.parseDouble(params.get("amount")));	
+			invm.setDepositedto(String.valueOf(params.get("depositedto")));
+			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+			invm.setNotes(String.valueOf(params.get("notes")));
+			invm.setRecepitDate(String.valueOf(params.get("recepitDate")));	
+			invm.setInvoiceid(String.valueOf(params.get("recinvoiceid")));	
+			
+			pm.getReceiptList().add(invm);
+		}
+
+		return projectMasterService.save(pm);
+	}
 }

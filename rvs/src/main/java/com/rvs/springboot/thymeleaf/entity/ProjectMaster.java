@@ -86,6 +86,12 @@ public class ProjectMaster {
 	@OrderBy("invoiceid ASC")
 	List<InvoiceMaster> invoiceList;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name =  "projectid")
+	@OrderBy("recepitid ASC")
+	List<InvoiceReceiptMaster> receiptList;
+	
+	
 	@Column
 	private String addressline1;
 	@Column

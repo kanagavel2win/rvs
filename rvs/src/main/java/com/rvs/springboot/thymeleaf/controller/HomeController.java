@@ -47,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rvs.springboot.thymeleaf.entity.AccountTransfer;
 import com.rvs.springboot.thymeleaf.entity.ActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterGuest;
@@ -123,6 +124,7 @@ import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
 import com.rvs.springboot.thymeleaf.pojo.tagify;
+import com.rvs.springboot.thymeleaf.service.AccountTransferService;
 import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetAuditService;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
@@ -217,6 +219,9 @@ public class HomeController {
 
 	@Autowired
 	ProjectTemplateMasterService projectTemplateMasterService;
+
+	@Autowired
+	AccountTransferService accountTransferService;
 
 	@Autowired
 	ProjectTemplateBoardService projectTemplateBoardService;
@@ -1695,7 +1700,7 @@ public class HomeController {
 							.format(displaydateFormatrev.parse(hireobj.get(0).getEmployeehiredate())).toString());
 					em.setT_joindatetimeline(getTimeage(hireobj.get(0).getEmployeehiredate()));
 				} catch (ParseException e) {
-					e.printStackTrace();
+					// e.printStackTrace();
 				}
 			}
 			// -------------------------------------------
@@ -9487,13 +9492,13 @@ public class HomeController {
 		double SGSTper = Double.parseDouble(String.valueOf(params.get("SGSTper" + index)));
 		double IGSTper = Double.parseDouble(String.valueOf(params.get("IGSTper" + index)));
 
-		double dt=Discountper / 100;
-		double Discountamt =taxableAmount * dt;
+		double dt = Discountper / 100;
+		double Discountamt = taxableAmount * dt;
 		double afetdiscountamount = taxableAmount - Discountamt;
 
-		double it=IGSTper / 100;
-		double ct=CGSTper / 100;
-		double st=SGSTper / 100;
+		double it = IGSTper / 100;
+		double ct = CGSTper / 100;
+		double st = SGSTper / 100;
 		double IGSTamount = afetdiscountamount * it;
 		double SGSTamount = afetdiscountamount * st;
 		double CGSTamount = afetdiscountamount * ct;
@@ -9517,8 +9522,8 @@ public class HomeController {
 		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
 
 		invitemmaster.setTaxableAmount(afetdiscountamount);
-		invitemmaster.setTotalamountAmount(afetdiscountamount+ CGSTamount + SGSTamount + IGSTamount );
-		
+		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + SGSTamount + IGSTamount);
+
 		return invitemmaster;
 	}
 
@@ -9565,23 +9570,22 @@ public class HomeController {
 
 	}
 
-	
-	
 	@PostMapping("getprojectreceiptlist")
 	@ResponseBody
 	public List<InvoiceReceiptMaster> getprojectreceiptlist(@RequestParam Map<String, String> params) {
 
 		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
-		List<InvoiceReceiptMaster> ls =pm.getReceiptList();
-		List<InvoiceMaster> invls =pm.getInvoiceList();
-				
+		List<InvoiceReceiptMaster> ls = pm.getReceiptList();
+		List<InvoiceMaster> invls = pm.getInvoiceList();
+
 		for (InvoiceReceiptMaster obj : ls) {
 			try {
 				obj.setRecepitDateMMMddyyyy(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
-			
-				obj.setInvoiceNo(invls.stream().filter(C-> C.getInvoiceid() == Integer.parseInt(obj.getInvoiceid())).collect(Collectors.toList()).get(0).getInvoiceNo());
-						
+
+				obj.setInvoiceNo(invls.stream().filter(C -> C.getInvoiceid() == Integer.parseInt(obj.getInvoiceid()))
+						.collect(Collectors.toList()).get(0).getInvoiceNo());
+
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -9601,8 +9605,8 @@ public class HomeController {
 				.collect(Collectors.toList()).get(0);
 
 		try {
-			obj.setRecepitDateMMMddyyyy(displaydateFormatFirstMMMddYYY
-					.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
+			obj.setRecepitDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
 		} catch (ParseException e) {
 
 			// e.printStackTrace();
@@ -9610,41 +9614,44 @@ public class HomeController {
 		return obj;
 
 	}
-	
+
 	@PostMapping("getinvoicereceiptitem")
 	@ResponseBody
-	public Map<String,String> getinvoicereceiptitem(@RequestParam Map<String, String> params) {
+	public Map<String, String> getinvoicereceiptitem(@RequestParam Map<String, String> params) {
 
-		Map<String,String> map= new HashMap<>();
-		
+		Map<String, String> map = new HashMap<>();
+
 		double totalpaidamount = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getReceiptList().stream().filter(C-> C.getInvoiceid().equalsIgnoreCase(params.get("invoiceid"))).mapToDouble(InvoiceReceiptMaster::getAmount).sum();
+				.getReceiptList().stream().filter(C -> C.getInvoiceid().equalsIgnoreCase(params.get("invoiceid")))
+				.mapToDouble(InvoiceReceiptMaster::getAmount).sum();
 
 		map.put("totalpaidamount", String.valueOf(totalpaidamount));
-		
-		InvoiceMaster inv=  projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid"))).getInvoiceList().stream().filter(C -> C.getInvoiceid() ==Integer.parseInt(params.get("invoiceid"))).collect(Collectors.toList()).get(0);
+
+		InvoiceMaster inv = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getInvoiceList().stream().filter(C -> C.getInvoiceid() == Integer.parseInt(params.get("invoiceid")))
+				.collect(Collectors.toList()).get(0);
 
 		try {
-			inv.setDueDateMMMddyyyy(displaydateFormatFirstMMMddYYY
-					.format(displaydateFormatrev.parse(inv.getDueDate())).toString());
+			inv.setDueDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(inv.getDueDate())).toString());
 		} catch (ParseException e) {
 
 			// e.printStackTrace();
 		}
-		
-		double totalinvoiceamount =inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster:: getTotalamountAmount).sum();
+
+		double totalinvoiceamount = inv.getInvoiceItemMasterlist().stream()
+				.mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
 		map.put("Invoiceno", inv.getInvoiceNo());
 		map.put("duedate", inv.getDueDateMMMddyyyy());
-		map.put("amount",  String.valueOf(totalinvoiceamount));
-		map.put("balanceamount",  String.valueOf(totalinvoiceamount-totalpaidamount));
-		map.put("invoiceid",  String.valueOf(inv.getInvoiceid()));
-		map.put("invoiceid",  String.valueOf(inv.getInvoiceid()));
-		
+		map.put("amount", String.valueOf(totalinvoiceamount));
+		map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
+		map.put("invoiceid", String.valueOf(inv.getInvoiceid()));
+		map.put("invoiceid", String.valueOf(inv.getInvoiceid()));
+
 		return map;
 
 	}
-	
-	
+
 	@ResponseBody
 	@PostMapping("projectreceiptsave")
 	public ProjectMaster projectreceiptsave(@RequestParam Map<String, String> params) {
@@ -9660,14 +9667,14 @@ public class HomeController {
 			List<InvoiceReceiptMaster> ls = new ArrayList();
 
 			for (InvoiceReceiptMaster invm : pm.getReceiptList()) {
-				if (invm.getRecepitid()== Integer.parseInt(tempreceiptid)) {
-					
+				if (invm.getRecepitid() == Integer.parseInt(tempreceiptid)) {
+
 					invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
-					invm.setAmount(Double.parseDouble(params.get("amount")));	
+					invm.setAmount(Double.parseDouble(params.get("amount")));
 					invm.setDepositedto(String.valueOf(params.get("depositedto")));
 					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
 					invm.setNotes(String.valueOf(params.get("notes")));
-					invm.setRecepitDate(String.valueOf(params.get("recepitDate")));			
+					invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
 				}
 				ls.add(invm);
 
@@ -9677,16 +9684,75 @@ public class HomeController {
 			InvoiceReceiptMaster invm = new InvoiceReceiptMaster();
 
 			invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
-			invm.setAmount(Double.parseDouble(params.get("amount")));	
+			invm.setAmount(Double.parseDouble(params.get("amount")));
 			invm.setDepositedto(String.valueOf(params.get("depositedto")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
 			invm.setNotes(String.valueOf(params.get("notes")));
-			invm.setRecepitDate(String.valueOf(params.get("recepitDate")));	
-			invm.setInvoiceid(String.valueOf(params.get("recinvoiceid")));	
-			
+			invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
+			invm.setInvoiceid(String.valueOf(params.get("recinvoiceid")));
+
 			pm.getReceiptList().add(invm);
 		}
 
 		return projectMasterService.save(pm);
 	}
+
+	@GetMapping("accounttransfer")
+	public String getaccounttranser(Model themodel) {
+
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("AccountTransfer"));
+
+		return "accounttransfer";
+	}
+
+	@ResponseBody
+	@GetMapping("accounttransferlistjson")
+	public List<AccountTransfer> accounttransferlistjson(Model themodel) {
+		List<AccountTransfer> atList = accountTransferService.findAll();
+
+		for (AccountTransfer am : atList) {
+
+			try {
+				am.setTDateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(am.getTDate().toString())));
+			} catch (ParseException e) {
+				// e.printStackTrace();
+			}
+
+		}
+		atList =atList.stream().sorted(Comparator.comparing(AccountTransfer :: getAccounttransferid).reversed()).toList();	
+		
+		return atList;
+
+	}
+
+	@ResponseBody
+	@PostMapping("accountTransfersavejson")
+	public AccountTransfer accountTransfersavejson(@RequestParam Map<String, String> params) {
+		
+		AccountTransfer obj = new AccountTransfer();
+		String accounttransferid = nullremover(String.valueOf(params.get("accounttransferid")));
+
+		if (!accounttransferid.equalsIgnoreCase("")) {
+		
+			obj.setAccounttransferid(Integer.parseInt(accounttransferid));
+		}
+		obj.setNotes(String.valueOf(params.get("Notes")));
+		obj.setTAmount(String.valueOf(params.get("tAmount")));
+		obj.setTDate(String.valueOf(params.get("tDate")));
+		obj.setTDepositTo(String.valueOf(params.get("tDepositTo")));
+		obj.setTwithdrawfrom(String.valueOf(params.get("twithdrawfrom")));
+		return accountTransferService.save(obj);
+	}
+
+	@ResponseBody
+	@PostMapping("getaccounttransferitem")
+	public AccountTransfer getaccounttransferitem(@RequestParam Map<String, String> params) {
+		
+		
+		return accountTransferService.findById(Integer.parseInt(params.get("tid")));
+	}
+
+	
+	
 }

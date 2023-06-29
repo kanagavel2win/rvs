@@ -141,7 +141,16 @@ public class menuactivelist {
 		{
 			activemenus.put("Invoice", true);
 			
+		}else if(menutitle.equalsIgnoreCase("AccountTransfer"))
+		{
+			activemenus.put("AccountTransfer", true);
+			
+		}else if(menutitle.equalsIgnoreCase("Income"))
+		{
+			activemenus.put("Income", true);
+			
 		}
+		
 		
 		
 		

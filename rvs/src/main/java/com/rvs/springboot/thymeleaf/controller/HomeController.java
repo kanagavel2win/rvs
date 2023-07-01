@@ -4609,7 +4609,7 @@ public class HomeController {
 		themodel.addAttribute("selectedasset", selectedasset);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
 		themodel.addAttribute("today", displaydateFormatrev.format(new Date()));
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Check Out"));
 		return "checkout";
 	}
 
@@ -4873,7 +4873,7 @@ public class HomeController {
 		request.getSession().setAttribute("printcheckoutstr", printstr);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
 		
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Check Out"));
 
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		return "checkout";
@@ -4887,7 +4887,7 @@ public class HomeController {
 
 		themodel.addAttribute("staffname", temp[0]);
 		themodel.addAttribute("printstr", printstr);
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Check Out"));
 		return "checkoutprint";
 	}
 
@@ -4917,7 +4917,7 @@ public class HomeController {
 		themodel.addAttribute("emp", emp);
 		themodel.addAttribute("selectedasset", selectedasset);
 		themodel.addAttribute("today", displaydateFormatrev.format(new Date()));
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Check In"));
 		return "checkin";
 	}
 
@@ -5084,7 +5084,7 @@ public class HomeController {
 
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Check In"));
 		return "checkin";
 	}
 
@@ -5240,7 +5240,7 @@ public class HomeController {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("assetaudit"));
 		return "assetaudit";
 	}
 
@@ -5340,7 +5340,7 @@ public class HomeController {
 		themodel.addAttribute("branchls", branchls);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("assetaudit"));
 		return "assetaudit";
 	}
 

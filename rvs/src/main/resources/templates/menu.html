@@ -47,10 +47,37 @@
 						<div data-i18n="Branches">Branches</div>
 				</a></li>
 				<li class="menu-item"
-					th:classappend="${menuactivelist.get('AssetManagement')} ? ' active' :'' "><a
-					href="assetlist" class="menu-link">
+					th:classappend="${menuactivelist.get('AssetManagement')} ? ' active open' :'' "><a
+					href="" class="menu-link menu-toggle">
 						<div data-i18n="Asset Management">Asset Management</div>
-				</a></li>
+				</a>
+						 <ul class="menu-sub">
+								<li class="menu-item"
+									th:classappend="${menuactivelist.get('Asset List')} ? ' active' :'' "><a
+									href="assetlist" class="menu-link">
+										<div data-i18n="Asset List">Asset List</div>
+								</a></li>
+								<li class="menu-item"
+									th:classappend="${menuactivelist.get('Check Out')} ? ' active' :'' "><a
+									href="checkout" class="menu-link">
+										<div data-i18n="Check Out">Check Out</div>
+								</a></li>
+								<li class="menu-item"
+									th:classappend="${menuactivelist.get('Check In')} ? ' active' :'' "><a
+									href="checkin" class="menu-link">
+										<div data-i18n="Check In">Check In</div>
+								</a></li>
+								<li class="menu-item"
+									th:classappend="${menuactivelist.get('assetaudit')} ? ' active' :'' "><a
+									href="assetaudit" class="menu-link">
+										<div data-i18n="Audit">Audit</div>
+								</a></li>
+								
+							</ul>
+				
+				
+				
+				</li>
 				<li class="menu-item"
 					th:classappend="${menuactivelist.get('HR Management')} ? ' active open ' :'' ">
 

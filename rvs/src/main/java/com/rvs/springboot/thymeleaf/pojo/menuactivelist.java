@@ -149,12 +149,33 @@ public class menuactivelist {
 		{
 			activemenus.put("Income", true);
 			
-		}else if(menutitle.equalsIgnoreCase("asset"))
+		}else if(menutitle.equalsIgnoreCase("Asset List"))
 		{
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
+			activemenus.put("Asset List", true);
+			
+			
+		}else if(menutitle.equalsIgnoreCase("Check Out"))
+		{
+			activemenus.put("Administration", true);
+			activemenus.put("AssetManagement", true);
+			activemenus.put("Check Out", true);
+			
+		}else if(menutitle.equalsIgnoreCase("Check In"))
+		{
+			activemenus.put("Administration", true);
+			activemenus.put("AssetManagement", true);
+			activemenus.put("Check In", true);
+			
+		}else if(menutitle.equalsIgnoreCase("assetaudit"))
+		{
+			activemenus.put("Administration", true);
+			activemenus.put("AssetManagement", true);
+			activemenus.put("assetaudit", true);
 			
 		}
+		
 		
 		
 		

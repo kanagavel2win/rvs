@@ -48,6 +48,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rvs.springboot.thymeleaf.entity.AccountTransfer;
+import com.rvs.springboot.thymeleaf.entity.AccountsIncome;
 import com.rvs.springboot.thymeleaf.entity.ActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterGuest;
@@ -124,6 +125,7 @@ import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
 import com.rvs.springboot.thymeleaf.pojo.tagify;
+import com.rvs.springboot.thymeleaf.service.AccountIncomeService;
 import com.rvs.springboot.thymeleaf.service.AccountTransferService;
 import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetAuditService;
@@ -222,6 +224,9 @@ public class HomeController {
 
 	@Autowired
 	AccountTransferService accountTransferService;
+	
+	@Autowired
+	AccountIncomeService accountIncomeService;
 
 	@Autowired
 	ProjectTemplateBoardService projectTemplateBoardService;
@@ -9752,7 +9757,69 @@ public class HomeController {
 		
 		return accountTransferService.findById(Integer.parseInt(params.get("tid")));
 	}
-
 	
+	//accountIncomeService
+	
+	
+	@GetMapping("accountincome")
+	public String getaccountincome(Model themodel) {
+
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Income"));
+
+		return "accountincome";
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("accountincomelistjson")
+	public List<AccountsIncome> accountincomelistjson(Model themodel) {
+		List<AccountsIncome> atList = accountIncomeService.findAll();
+
+		for (AccountsIncome am : atList) {
+
+			try {
+				am.setIdateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(am.getIdate().toString())));
+			} catch (ParseException e) {
+				// e.printStackTrace();
+			}
+
+		}
+		atList =atList.stream().sorted(Comparator.comparing(AccountsIncome :: getAccountIncomeid).reversed()).toList();	
+		
+		return atList;
+
+	}
+
+	@ResponseBody
+	@PostMapping("accountsincomesavejson")
+	public AccountsIncome accountsincomesavejson(@RequestParam Map<String, String> params) {
+		//System.out.println(params);
+		
+		AccountsIncome obj = new AccountsIncome();
+		String accounttransferid = nullremover(String.valueOf(params.get("accountIncomeid")));
+
+		if (!accounttransferid.equalsIgnoreCase("")) {
+		
+			obj.setAccountIncomeid(Integer.parseInt(accounttransferid));
+		}
+		obj.setIamount(String.valueOf(params.get("iamount")));
+		obj.setIcategory(String.valueOf(params.get("icategory")));
+		obj.setIdate(String.valueOf(params.get("idate")));
+		obj.setIdepositto(String.valueOf(params.get("idepositto")));
+		obj.setIdescription(String.valueOf(params.get("idescription")));
+		obj.setIfrom(String.valueOf(params.get("ifrom")));
+		obj.setRefNo(String.valueOf(params.get("refNo")));
+		
+		return accountIncomeService.save(obj);
+	}
+
+	@ResponseBody
+	@PostMapping("getaccountincomeitem")
+	public AccountsIncome getaccountincomeitem(@RequestParam Map<String, String> params) {
+		
+		
+		return accountIncomeService.findById(Integer.parseInt(params.get("tid")));
+	}
 	
 }

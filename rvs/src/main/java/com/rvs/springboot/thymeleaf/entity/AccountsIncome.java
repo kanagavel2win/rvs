@@ -33,16 +33,16 @@ public class AccountsIncome {
 	@Column
 	private String idepositto;
 	@Column
+	private String refNo;
+	@Column
 	private String idate;
-	
-	@Transient
-	private String idateMMMddyyyy;
-	
 	@Column
 	private String icategory;
 	@Column
 	private String idescription;
 	@Column
 	private String iamount;
+	@Transient
+	private String idateMMMddyyyy;
 	
 }

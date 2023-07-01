@@ -1,5 +1,10 @@
 package com.rvs.springboot.thymeleaf.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,7 +13,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +28,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.rvs.springboot.thymeleaf.entity.AssetMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
+import com.rvs.springboot.thymeleaf.entity.CheckIn;
+import com.rvs.springboot.thymeleaf.entity.CheckInFiles;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
@@ -39,6 +47,8 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
 import com.rvs.springboot.thymeleaf.entity.LeaveMaster;
 import com.rvs.springboot.thymeleaf.entity.Login;
 import com.rvs.springboot.thymeleaf.entity.payslip;
+import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
+import com.rvs.springboot.thymeleaf.service.AssetMasterService;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
@@ -76,10 +86,15 @@ public class EmployeeController {
 	private LoginService loginService;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-
+	@Autowired
+	private AssetMasterService	assetMasterService;
 	@Autowired
 	private PaySlipService paySlipService;
+	@Autowired
+	menuactivelist menuactivelistobj;
+	DateFormat displaydatetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
+	
 	@ModelAttribute
 	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
 		homeController.addAttributes(themodel, session, request);
@@ -365,5 +380,167 @@ public class EmployeeController {
 		String[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
 				"October", "November", "December" };
 		return monthNames[month - 1];
+	}
+	
+	@GetMapping("assettransfer")
+	public String assettransfer(Model themodel,
+			@RequestParam(name = "id", required = false, defaultValue = "") String ids) {
+
+		List<AssetMaster> assetMaster = assetMasterService.findAll();
+		List<AssetMaster> selectedasset = new ArrayList<AssetMaster>();
+		if (!ids.equalsIgnoreCase("")) {
+			String[] strarr = ids.split(",");
+
+			for (String ai : strarr) {
+				selectedasset.add(assetMaster.stream().filter(C -> C.getAssetId() == Integer.parseInt(ai))
+						.collect(Collectors.toList()).get(0));
+			}
+		}
+
+		List<AssetMaster> aobjls = selectedasset.stream()
+				.filter(C -> !(String.valueOf(C.getStaffID())).equalsIgnoreCase("null")
+						&& !(String.valueOf(C.getStaffID())).equalsIgnoreCase(""))
+				.collect(Collectors.toList());
+		EmployeeMaster emp = new EmployeeMaster();
+
+		if (aobjls.size() > 0) {
+			emp = employeeMasterService.findById(Integer.parseInt(aobjls.get(0).getStaffID()));
+
+		}
+		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
+		branchls = branchMasterService.findAll();
+		themodel.addAttribute("branchls", branchls);
+		themodel.addAttribute("emp", emp);
+		themodel.addAttribute("selectedasset", selectedasset);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		return "employee/assettransfer";
+	}
+	
+	@PostMapping("assettranferprint")
+	public String assettranferprint(Model themodel, HttpSession session, HttpServletRequest request) {
+
+		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printcheckinstr");
+		String printcheckinstrEmpname = (String) request.getSession().getAttribute("printcheckinstrEmpname");
+		String printcheckinstrEmpnameto = (String) request.getSession().getAttribute("printcheckinstrEmpnameto");
+		themodel.addAttribute("printstr", printstr);
+		themodel.addAttribute("printcheckinstrEmpname", printcheckinstrEmpname);
+		themodel.addAttribute("printcheckinstrEmpnameto", printcheckinstrEmpnameto);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		return "employee/assettranferprint";
+	}
+
+	@PostMapping("assettransfersave")
+	public String assettransfersave(Model themodel, @RequestParam(name = "StaffID") String StaffID,
+			@RequestParam(name = "StaffIDto") String StaffIDto, @RequestParam(name = "CheckInDate") String CheckInDate,
+			@RequestParam(name = "checkbox") boolean[] checkbox, @RequestParam(name = "AssetName") String[] AssetId,
+			@RequestParam(name = "ACondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
+			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
+			HttpServletRequest request) {
+
+		List<CheckIn> objList = new ArrayList<CheckIn>();
+
+		// -----------------------------------------
+		// File Uploading
+		String profilephotouploadRootPath = request.getServletContext().getRealPath("checkinphoto");
+
+		File uploadRootDir = new File(profilephotouploadRootPath);
+		// Create directory if it not exists.
+		if (!uploadRootDir.exists()) {
+			uploadRootDir.mkdirs();
+		}
+		// -----------------------------------------
+		String sysdate = displaydatetimeFormat.format(new Date());
+		for (int i = 0; i < AssetId.length; i++) {
+			if (checkbox[i] == true) {
+
+				CheckIn obj = new CheckIn();
+				obj.setAssetId(AssetId[i]);
+				obj.setStaffID(StaffID);
+				obj.setCheckInDate(CheckInDate);
+				obj.setStatus("In Stock");
+				obj.setACondition(Condition[i]);
+				obj.setStaffIDto(StaffIDto);
+				obj.setStaffIDtoapproved("No");
+
+				if (Comments.length > 0) {
+					obj.setComments(Comments[i]);
+				}
+				// assetMasterService.updatetheAssetStatus(Status[i],
+				// Integer.parseInt(AssetId[i]), sysdate, "");
+
+				if (Photo_Attach.length > 0) {
+					if (Photo_Attach[i].getOriginalFilename().toString().length() > 0) {
+						List<CheckInFiles> checkMasterfiles = new ArrayList<CheckInFiles>();
+						CheckInFiles chekinfiles = new CheckInFiles();
+						StringBuilder filename = new StringBuilder();
+						String tempfilename = homeController.stringdatetime() + Photo_Attach[i].getOriginalFilename();
+						Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+						filename.append(tempfilename);
+						chekinfiles.setPhoto_Attach("checkinphoto/" + filename);
+						try {
+							Files.write(fileNameandPath, Photo_Attach[i].getBytes());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						checkMasterfiles.add(chekinfiles);
+						obj.setCheckInFiles(checkMasterfiles);
+					}
+				}
+
+				objList.add(obj);
+			}
+		}
+		ArrayList<String> printstr = new ArrayList<String>();
+
+		List<CheckIn> CheckInobj = homeController.checkinService.saveall(objList);
+		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
+		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
+		String Empname = "";
+		String Empnameto = "";
+		for (CheckIn obj : CheckInobj) {
+			String str = "";
+
+			int staffid = Integer.parseInt(obj.getStaffID());
+			int assetid = Integer.parseInt(obj.getAssetId());
+			int staffidto = Integer.parseInt(obj.getStaffIDto());
+			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
+					.collect(Collectors.toList()).get(0);
+
+			EmployeeMaster empobj = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffid)
+					.collect(Collectors.toList()).get(0);
+
+			EmployeeMaster empobjto = EmployeeMasterobj.stream().filter(C -> C.getEmpMasterid() == staffidto)
+					.collect(Collectors.toList()).get(0);
+
+			String tempstr = obj.getComments();
+			if (obj.getComments() == null) {
+				tempstr = "";
+			}
+
+			str += assobj.getAssetName() + " |";
+			str += assobj.getBrand() + " |";
+			str += assobj.getModel() + " |";
+			str += assobj.getSerialNumber() + " |";
+			str += obj.getACondition() + " |";
+			str += tempstr + " |";
+
+			printstr.add(str);
+			Empname = empobj.getStaffName();
+			Empnameto = empobjto.getStaffName();
+		}
+
+		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
+				.filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
+
+		themodel.addAttribute("printstr", printstr);
+		request.getSession().setAttribute("printcheckinstrEmpname", Empname);
+		request.getSession().setAttribute("printcheckinstrEmpnameto", Empnameto);
+		request.getSession().setAttribute("printcheckinstr", printstr);
+
+		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
+		themodel.addAttribute("EmployeeMasterobj", homeController.EffectiveEmployee(EmployeeMasterobj));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		
+		return "employee/assettransfer";
 	}
 }

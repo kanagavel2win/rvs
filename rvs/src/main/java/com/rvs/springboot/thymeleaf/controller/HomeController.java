@@ -4669,7 +4669,7 @@ public class HomeController {
 
 		// ------------------------------------------------------------------------------------
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
-				.filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+				.filter(C -> nullremover(String.valueOf(C.getStatus())).equalsIgnoreCase("In Stock")).collect(Collectors.toList());
 		// ------------------------------------------------------------------------------------
 		for (AssetMaster obj : AssetMasterobj) {
 			result += obj.getAssetId() + "|~|" + obj.getAssetType() + "|~|" + obj.getAssetName() + "-"
@@ -5240,6 +5240,7 @@ public class HomeController {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "assetaudit";
 	}
 

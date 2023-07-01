@@ -138,12 +138,30 @@
 	cursor: pointer;
 }
 
-.editnoteactivity {
+.editnoteactivity{
 	cursor: pointer;
 }
 
+ .generatenewreceipt 
+ {
+ cursor: pointer;
+ }
 .editprojectprj {
 	cursor: pointer;
+}
+
+.editprojectprj1{
+	padding-left:10px;
+	vertical-align: middle;
+	margin-top:-5px;
+	cursor: pointer;
+}
+.sameasInvoiceto
+{
+	float: right;
+	padding-left: 10px;
+	font-weight: normal;
+	font-size:13px;
 }
 </style>
 <script th:inline="javascript">
@@ -341,13 +359,13 @@
 										th:href="'projectview?id='+${projectMaster.id}"><i
 											class="bx bx-user me-1"></i>Plan</a></li>
 									<li class="nav-item"><a class="nav-link "
-										href="javascript:void(0);"><i class='bx bxl-ok-ru'></i>Projects</a>
+										th:href="'projectiteminfo?id='+${projectMaster.id}"><i class='bx bxl-ok-ru'></i>Projects</a>
 									</li>
 									<li class="nav-item"><a class="nav-link "
 										th:href="'projectattachment?id='+${projectMaster.id}"><i
 											class="bx bx-link me-1"></i>Files</a></li>
 									<li class="nav-item"><a class="nav-link active"
-										th:href="'projectaccounts?id='+${projectMaster.id}"><i
+										><i
 											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Accounts</a></li>
 								</ul>
 								<!--/ User Pills -->
@@ -359,7 +377,7 @@
 											<h5 class="card-action-title mb-0">
 												Invoice List
 												<div class="card-action-element" style="float: right">
-													<button class="btn btn-primary btn-sm addNewProjectbtn"
+													<button class="btn btn-primary btn-sm addNewInvoicebtn"
 														type="button" data-bs-toggle="modal"
 														data-bs-target="#invoicemodel">
 														<i class="bx bx-plus bx-xs me-1"></i>
@@ -378,7 +396,7 @@
 														<th>Amount</th>
 													</tr>
 												</thead>
-												<tbody id="projectprojectlist">
+												<tbody id="projectinvoicelist">
 
 												</tbody>
 											</table>
@@ -393,13 +411,7 @@
 										<div class="card-header align-items-center">
 											<h5 class="card-action-title mb-0">
 												Receipts List
-												<div class="card-action-element" style="float: right">
-													<button class="btn btn-primary btn-sm addreceiptbtn"
-														type="button" data-bs-toggle="modal"
-														data-bs-target="#receiptmodel">
-														<i class="bx bx-plus bx-xs me-1"></i>
-													</button>
-												</div>
+												
 											</h5>
 										</div>
 										<div class="table-responsive">
@@ -410,7 +422,7 @@
 														<th>Invoice #</th>
 														<th>Date</th>
 														<th>Account</th>
-														<th>Notes</th>
+														
 														<th>Amount Paid</th>
 													</tr>
 												</thead>
@@ -427,326 +439,273 @@
 							<!-- Add Invoice -->
 							<div class="modal fade" id="invoicemodel" tabindex="-1"
 								aria-hidden="true">
-								<div class="modal-dialog modal-xl modal-simple modal-add-new-cc">
-									<div class="modal-content p-3 p-md-5">
-										<div class="modal-bodyx">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
 
-											<!-- -------- -->
-											<!-- Invoice Add-->
-											<div class="col-lg-12 col-12 mb-lg-0 mb-4">
-												<div class="card invoice-preview-card">
-													<div class="card-body">
-														<div class="row p-sm-3 p-0">
-															<div class="col-md-4 mb-md-0 mb-4">
-																<div class="d-flex svg-illustration mb-4 gap-2">
-																	<img th:src="@{/assets/img/logo/favicon.ico}" /> <span
-																		class="app-brand-text h3 mb-0 fw-bold">RVSLS</span>
+								
+									<div
+										class="modal-dialog modal-xl modal-simple modal-add-new-cc">
+										<div class="modal-content p-3 p-md-5">
+											<div class="modal-bodyx">
+												<button type="button" class="btn-close"
+													data-bs-dismiss="modal" aria-label="Close"></button>
+												<form  class="row g-3 needs-validation"  id="editinvoiceformx"
+										onsubmit="return false">
+												<!-- -------- -->
+												<!-- Invoice Add-->
+												<div class="col-lg-12 col-12 mb-lg-0 mb-4">
+													<div class="card invoice-preview-card">
+														<div class="card-body">
+															<div class="row p-sm-3 p-0">
+																<div class="col-md-4 mb-md-0 mb-4">
+																	<div class="d-flex svg-illustration mb-4 gap-2">
+																		<img th:src="@{/assets/img/logo/favicon.ico}" /> <span
+																			class="app-brand-text h3 mb-0 fw-bold">RVSLS</span>
+																	</div>
+																	<p class="mb-1">29, Palani Illam, Sundaram Brothers
+																		Layout,</p>
+																	<p class="mb-1">Ramanathapuram, Tamil Nadu 641045</p>
+																	<p class="mb-0">+91 96005 35855, helpdesk@rvsls.com</p>
 																</div>
-																<p class="mb-1">29, Palani Illam, Sundaram Brothers
-																	Layout,</p>
-																<p class="mb-1">Ramanathapuram, Tamil Nadu 641045</p>
-																<p class="mb-0">+91 96005 35855, helpdesk@rvsls.com</p>
-															</div>
-															<div class="col-md-4">
-																<dl class="row mb-2">
-																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																		<span class="text-capitalize mb-0 text-nowrap">Tally
-																			Invoice No#</span>
-																	</dt>
-																	<dd class="col-sm-6 d-flex justify-content-md-end">
-																		<div class="w-px-150">
-																			<input type="text" class="form-control"
-																				 id="invoiceId" />
-																		</div>
-																	</dd>
-																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																		<span class="fw-normal">Invoice Type:</span>
-																	</dt>
-																	<dd class="col-sm-6 d-flex justify-content-md-end">
-																		<div class="w-px-150">
-																			<select id="modalEditUserStatus" name="modalEditUserStatus"
-																				class="form-select" aria-label="Default select example">
-																				<option selected>-</option>
-																				<option value="Tax Invoice">Tax Invoice</option>
-																				<option value="Proforma Invoice">Proforma Invoice</option>
-																				<option value="Bill">Bill</option>
-																			</select>
-																		</div>
-																	</dd>
-																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																		<span class="fw-normal">Receivable :</span>
-																	</dt>
-																	<dd class="col-sm-6 d-flex justify-content-md-end">
-																		<div class="w-px-150">
-																			<select id="modalEditUserStatus" name="modalEditUserStatus"
-																				class="form-select" aria-label="Default select example">
-																				<option selected>-</option>
-																				<option value="0">On Due</option>
-																				<option value="30">30 Days</option>
-																				<option value="60">60 Days</option>
-																				<option value="90">90 Days</option>
-																			</select>
-																		</div>
-																	</dd>
-																</dl>
-															</div>
-															<div class="col-md-4">
-																<dl class="row mb-2">
-																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																		<span class=" text-capitalize mb-0 text-nowrap">Invoice
-																			Date:</span>
-																	</dt>
-																	<dd class="col-sm-6 d-flex justify-content-md-end">
-																		<div class="w-px-150">
-																			<input type="text" class="form-control"
-																				 id="invoicedate" />
-																		</div>
-																	</dd>
-																	
-																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																		<span class="fw-normal">Due Date:</span>
-																	</dt>
-																	<dd class="col-sm-6 d-flex justify-content-md-end">
-																		<div class="w-px-150">
-																			<input type="text" class="form-control date-picker" id="duedate"
-																				 />
-																		</div>
-																	</dd>
-																	<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																		<span class="fw-normal">GST State Code:</span>
-																	</dt>
-																	<dd class="col-sm-6 d-flex justify-content-md-end">
-																		<div class="w-px-150">
-																			<input type="text" class="form-control date-picker" />
-																		</div>
-																	</dd>
-																</dl>
-															</div>
-														</div>
+																<div class="col-md-4">
+																	<dl class="row mb-2">
+																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																			<span class="text-capitalize mb-0 text-nowrap">Tally
+																				Invoice No#</span>
+																		</dt>
+																		<dd class="col-sm-6 d-flex justify-content-md-end">
+																			<div class="w-px-150">
+																				<input type="text" class="form-control"
+																					id="invoiceNo" name="invoiceNo" required /> <input
+																					type="hidden" class="form-control" id="invoiceid"
+																					name="invoiceid" />
+																			</div>
+																		</dd>
+																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																			<span class="fw-normal">Invoice Type:</span>
+																		</dt>
+																		<dd class="col-sm-6 d-flex justify-content-md-end">
+																			<div class="w-px-150">
+																				<select id="invoiceType" name="invoiceType"
+																					class="form-select"
+																					aria-label="Default select example" required>
+																					<option value="">-</option>
+																					<option value="Tax Invoice">Tax Invoice</option>
+																					<option value="Proforma Invoice">Proforma
+																						Invoice</option>
+																					<option value="Bill">Bill</option>
+																				</select>
+																			</div>
+																		</dd>
+																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																			<span class="fw-normal">Receivable :</span>
+																		</dt>
+																		<dd class="col-sm-6 d-flex justify-content-md-end">
+																			<div class="w-px-150">
+																				<select id="receivable" name="receivable"
+																					class="form-select"
+																					aria-label="Default select example" required>
+																					<option value="">-</option>
+																					<option value="0">On Due</option>
+																					<option value="30">30 Days</option>
+																					<option value="60">60 Days</option>
+																					<option value="90">90 Days</option>
+																				</select>
+																			</div>
+																		</dd>
+																	</dl>
+																</div>
+																<div class="col-md-4">
+																	<dl class="row mb-2">
+																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																			<span class=" text-capitalize mb-0 text-nowrap">Invoice
+																				Date:</span>
+																		</dt>
+																		<dd class="col-sm-6 d-flex justify-content-md-end">
+																			<div class="w-px-150">
+																				<input type="date" class="form-control"
+																					id="invoiceDate" name="invoiceDate" required />
+																			</div>
+																		</dd>
 
-														<hr class="my-4 mx-n4" />
-
-														<div class="row p-sm-3 p-0">
-															<div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-4">
-																<h6 class="pb-2">Invoice To:</h6>
-																<p class="mb-1">
-																	<input type="text" class="col-12" value="Thomas shelby" />
-																</p>
-																<p class="mb-1">
-																	<input type="text" class="col-12"
-																		value="Shelby Company Limited" />
-																</p>
-																<p class="mb-1">
-																	<input type="text" class="col-12"
-																		value="Small Heath, B10 0HF, UK" />
-																</p>
-																<p class="mb-1">
-																	<input type="text" class="col-12" value="718-986-6062" />
-																</p>
-																<p class="mb-0">
-																	<input type="text" class="col-12"
-																		value="peakyFBlinders@gmail.com" />
-																</p>
+																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																			<span class="fw-normal">Due Date:</span>
+																		</dt>
+																		<dd class="col-sm-6 d-flex justify-content-md-end">
+																			<div class="w-px-150">
+																				<input type="date" class="form-control date-picker"
+																					id="dueDate" name="dueDate" required/>
+																			</div>
+																		</dd>
+																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																			<span class="fw-normal">GST State Code:</span>
+																		</dt>
+																		<dd class="col-sm-6 d-flex justify-content-md-end">
+																			<div class="w-px-150">
+																				<input type="nubmer" id="GSTCode" name="GSTCode"
+																					class="form-control date-picker" required/>
+																			</div>
+																		</dd>
+																	</dl>
+																</div>
 															</div>
-															<div class="col-md-6 col-sm-7">
-																<h6 class="pb-2">Bill To:</h6>
-																<p class="mb-1">
-																	<input type="text" class="col-12" value="Thomas shelby" />
-																</p>
-																<p class="mb-1">
-																	<input type="text" class="col-12"
-																		value="Shelby Company Limited" />
-																</p>
-																<p class="mb-1">
-																	<input type="text" class="col-12"
-																		value="Small Heath, B10 0HF, UK" />
-																</p>
-																<p class="mb-1">
-																	<input type="text" class="col-12" value="718-986-6062" />
-																</p>
-																<p class="mb-0">
-																	<input type="text" class="col-12"
-																		value="peakyFBlinders@gmail.com" />
-																</p>
+
+															<hr />
+
+															<div class="row p-sm-3 p-0">
+																<div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-4 "
+																	style="padding-right: 3%;">
+																	<h6 class="pb-2">Invoice To:</h6>
+																	<p class="row mb-1">
+																		<input type="text" class="col-12 form-control lxd"
+																			name="invoiceaddressline1" id="invoiceaddressline1"
+																			Placeholder="Address Line1" />
+																	</p>
+																	<p class="row mb-1">
+																		<input type="text" class="col-12 form-control lxd"
+																			name="invoiceaddressline2" id="invoiceaddressline2"
+																			Placeholder="Address Line2" />
+																	</p>
+																	<p class="row mb-1">
+																		<input type="text" class="col-6 form-control lxd"
+																			name="invoiceaddresscity" id="invoiceaddresscity"
+																			Placeholder="City / District" style="width: 50%" />
+																		<input type="text" class="col-6 form-control lxd"
+																			name="invoiceaddresspincode"
+																			id="invoiceaddresspincode" Placeholder="Pincode"
+																			style="width: 50%" />
+																	</p>
+																	<p class="row mb-1">
+																		<input type="text" class="col-6 form-control lxd"
+																			name="invoiceaddressState" id="invoiceaddressState"
+																			Placeholder="State" style="width: 50%" /> <input
+																			type="text" class="col-6 form-control lxd"
+																			name="invoiceMobileno" id="invoiceMobileno"
+																			Placeholder="Contact No" style="width: 50%" />
+																	</p>
+																	<p class="row mb-1">
+																		<input type="text" class="col-6 form-control lxd"
+																			name="invoiceEmail" id="invoiceEmail"
+																			Placeholder="Email ID" style="width: 50%" /> <input
+																			type="text" class="col-6 form-control lxd"
+																			name="invoiceGSTNo" id="invoiceGSTNo"
+																			Placeholder="GST" style="width: 50%" />
+																	</p>
+																</div>
+																<div class="col-md-6 col-sm-7">
+																	<h6 class="pb-2">Bill To:
+																		 <label for="sameasInvoiceto" class="sameasInvoiceto">Same as Invoice to Address</label>
+																		 <input type="checkbox" class="sameasInvoiceto" id="sameasInvoiceto" name="sameasInvoiceto" value="sameasInvoiceto">
+  																		
+																	</h6>
+																	<p class="row mb-1">
+																		<input type="text" class="col-12 form-control lxd"
+																			name="billaddressline1" id="billaddressline1"
+																			Placeholder="Address Line1" />
+																	</p>
+																	<p class="row mb-1">
+																		<input type="text" class="col-12 form-control lxd"
+																			name="billaddressline2" id="billaddressline2"
+																			Placeholder="Address Line2" />
+																	</p>
+																	<p class="row mb-1">
+																		<input type="text" class="col-6 form-control lxd"
+																			name="billaddresscity" id="billaddresscity"
+																			Placeholder="City / District" style="width: 50%" />
+																		<input type="text" class="col-6 form-control lxd"
+																			name="billaddresspincode" id="billaddresspincode"
+																			Placeholder="Pincode" style="width: 50%" />
+																	</p>
+																	<p class="row mb-1">
+																		<input type="text" class="col-6 form-control lxd"
+																			name="billaddressState" id="billaddressState"
+																			Placeholder="State" style="width: 50%" /> <input
+																			type="text" class="col-6 form-control lxd"
+																			name="billMobileno" id="billMobileno"
+																			Placeholder="Contact No" style="width: 50%" />
+																	</p>
+																	<p class="row mb-1">
+																		<input type="text" class="col-6 form-control lxd"
+																			name="billEmail" id="billEmail"
+																			Placeholder="Email ID" style="width: 50%" /> <input
+																			type="text" class="col-6 form-control lxd"
+																			name="billGSTNo" id="billGSTNo" Placeholder="GST"
+																			style="width: 50%" />
+																	</p>
+																</div>
 															</div>
-														</div>
 
-														<hr class="mx-n4" />
+															<hr class="mx-n4" />
 
-														<form class="source-item py-sm-3">
 															<div class="mb-3" data-repeater-list="group-a">
 																<div class="repeater-wrapper pt-0 pt-md-4"
-																	data-repeater-item>
-																	<div
-																		class="d-flex border rounded position-relative pe-0">
-																		<div class="row w-100 m-0 p-3">
-																			<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0">
-																				<p class="mb-2 repeater-title">Item Description</p>
-																				<select class="form-select item-details mb-2">
-																					<option selected disabled>Select Item</option>
-																					<option value="App Design">App Design</option>
-																					<option value="App Customization">App
-																						Customization</option>
-																					<option value="ABC Template">ABC Template</option>
-																					<option value="App Development">App
-																						Development</option>
-																				</select>
-																				<textarea class="form-control" rows="2"
-																					placeholder="Item Information"></textarea>
-																			</div>
-																			<div class="col-md-2 col-12 mb-md-0 mb-3">
-																				<p class="mb-2 repeater-title">Qty</p>
-																				<input type="number"
-																					class="form-control invoice-item-qty"
-																					placeholder="1" min="1" max="50" />
-																			</div>
-																			<div class="col-md-2 col-12 mb-md-0 mb-3">
-																				<p class="mb-2 repeater-title">Unit</p>
-																				<input type="number"
-																					class="form-control invoice-item-qty"
-																					 />
-																			</div>
-																			<div class="col-md-2 col-12 mb-md-0 mb-3">
-																				<p class="mb-2 repeater-title">Price</p>
-																				<input type="number"
-																					class="form-control invoice-item-price mb-2"
-																					 />
-																				<div>
-																					<span>Discount Per Unit:</span> <span
-																						class="discount me-2">0%</span> <span
-																						class="tax-1 me-2" data-bs-toggle="tooltip"
-																						data-bs-placement="top" title="CGST %">0%</span> <span
-																						class="tax-2" data-bs-toggle="tooltip"
-																						data-bs-placement="top" title="SGST %">0%</span> <span
-																						class="tax-2" data-bs-toggle="tooltip"
-																						data-bs-placement="top" title="IGST %">0%</span>
-																				</div>
-																			</div>
-
-																			<div class="col-md-2 col-12 pe-0">
-																				<p class="mb-2 repeater-title">Taxable Amount</p>
-																				<p class="mb-0">24000.00</p>
-																			</div>
-																		</div>
-																		<div
-																			class="d-flex flex-column align-items-center justify-content-between border-start p-2">
-																			<i class="bx bx-x fs-4 text-muted cursor-pointer"
-																				data-repeater-delete></i>
-																			<div class="dropdown">
-																				<i
-																					class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown"
-																					role="button" id="dropdownMenuButton"
-																					data-bs-toggle="dropdown"
-																					data-bs-auto-close="outside" aria-expanded="false">
-																				</i>
-																				<div
-																					class="dropdown-menu dropdown-menu-end w-px-300 p-3"
-																					aria-labelledby="dropdownMenuButton">
-																					<div class="row g-3">
-																						<div class="col-12">
-																							<label for="discountInput" class="form-label">Discount(%)</label>
-																							<input type="number" class="form-control"
-																								id="discountInput" min="0" max="100" />
-																						</div>
-																						<div class="col-md-6">
-																							<label for="taxInput1" class="form-label">CGST
-																								% 1</label> <select name="tax-1-input" id="taxInput1"
-																								class="form-select tax-select">
-																								<option value="0%" selected>0%</option>
-																								<option value="1%">1%</option>
-																								<option value="10%">10%</option>
-																								<option value="18%">18%</option>
-																								<option value="40%">40%</option>
-																							</select>
-																						</div>
-																						<div class="col-md-6">
-																							<label for="taxInput2" class="form-label">SGST
-																								% 2</label> <select name="tax-2-input" id="taxInput2"
-																								class="form-select tax-select">
-																								<option value="0%" selected>0%</option>
-																								<option value="1%">1%</option>
-																								<option value="10%">10%</option>
-																								<option value="18%">18%</option>
-																								<option value="40%">40%</option>
-																							</select>
-																						</div>
-																						<div class="col-md-12">
-																							<label for="taxInput2" class="form-label">IGST
-																								% 2</label> <select name="tax-2-input" id="taxInput2"
-																								class="form-select tax-select">
-																								<option value="0%" selected>0%</option>
-																								<option value="1%">1%</option>
-																								<option value="10%">10%</option>
-																								<option value="18%">18%</option>
-																								<option value="40%">40%</option>
-																							</select>
-																						</div>
-																					</div>
-																					<div class="dropdown-divider my-3"></div>
-																					<button type="button"
-																						class="btn btn-label-primary btn-apply-changes">Apply</button>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
+																	id="invoiceitemlist">
+															 </div>
 															</div>
 															<div class="row">
 																<div class="col-12">
-																	<button type="button" class="btn btn-primary"
-																		data-repeater-create>Add Item</button>
+																	<button type="button" class="btn btn-primary" id="addnewinvoiceitem"
+																		>Add Item</button>
 																</div>
 															</div>
-														</form>
 
-														<hr class="my-4 mx-n4" />
 
-														<div class="row py-sm-3">
-															<div class="col-6">
-																<div class="mb-3">
-																	<label for="note" class="form-label fw-semibold">Note:</label>
-																	<textarea class="form-control" rows="2" id="note"
-																		placeholder="Invoice note"></textarea>
+															<hr class="my-4 mx-n4" />
+
+															<div class="row py-sm-3">
+																<div class="col-6">
+																	<div class="mb-3">
+																		<label for="note" class="form-label fw-semibold">Note:</label>
+																		<textarea class="form-control" rows="2" id="note" name="note"
+																			placeholder="Invoice note"></textarea>
+																	</div>
+																</div>
+																<div class="col-md-6 d-flex justify-content-end">
+																	<div class="invoice-calculations">
+																		<div class="d-flex justify-content-between mb-2">
+																			<span class="w-px-100">Total:</span> <span
+																				class="fw-semibold" id="totalamtwithouttax">0.00</span>
+																		</div>
+																		<div class="d-flex justify-content-between mb-2">
+																			<span class="w-px-100">CGST:</span> <span
+																				class="fw-semibold"  id="totalCGST">0.00</span>
+																		</div>
+																		<div class="d-flex justify-content-between mb-2">
+																			<span class="w-px-100">SGST:</span> <span
+																				class="fw-semibold" id="totalSGST">0.00</span>
+																		</div>
+																		<div class="d-flex justify-content-between mb-2">
+																			<span class="w-px-100">IGST:</span> <span
+																				class="fw-semibold" id="totalIGST">0.00</span>
+																		</div>
+																		<hr />
+																		<div class="d-flex justify-content-between">
+																			<span class="w-px-100">Total Amount:</span> <span
+																				class="fw-semibold" id="totalamount">0.00</span>
+																		</div>
+
+																	</div>
 																</div>
 															</div>
-															<div class="col-md-6 d-flex justify-content-end">
-																<div class="invoice-calculations">
-																	<div class="d-flex justify-content-between mb-2">
-																		<span class="w-px-100">Total:</span> <span
-																			class="fw-semibold">0.00</span>
-																	</div>
-																	<div class="d-flex justify-content-between mb-2">
-																		<span class="w-px-100">CGST:</span> <span
-																			class="fw-semibold">0.00</span>
-																	</div>
-																	<div class="d-flex justify-content-between mb-2">
-																		<span class="w-px-100">SGST:</span> <span
-																			class="fw-semibold">0.00</span>
-																	</div>
-																	<div class="d-flex justify-content-between mb-2">
-																		<span class="w-px-100">IGST:</span> <span
-																			class="fw-semibold">0.00</span>
-																	</div>
-																	<hr />
-																	<div class="d-flex justify-content-between">
-																		<span class="w-px-100">Total Amount:</span> <span
-																			class="fw-semibold">0.00</span>
-																	</div>
-																</div>
+															<div align="center">
+																<button type="submit"
+																	class="btn btn-primary editInvoicesubmit me-sm-3 me-1">Save
+																	The Invoice</button>
+
+																<button type="reset"
+																	class="btn btn-label-secondary editInvoiceclose"
+																	data-bs-dismiss="modal" aria-label="Close">
+																	Cancel</button>
+
 															</div>
 														</div>
-
-
 													</div>
 												</div>
+												<!-- /Invoice Add-->
+												<!-- -------- -->
+											</form>
 											</div>
-											<!-- /Invoice Add-->
-											<!-- -------- -->
 										</div>
 									</div>
-								</div>
+								
 							</div>
 							<!--/ Add Invoice -->
 							<!-- Edit Receipt Modal -->
@@ -760,40 +719,42 @@
 											<div class="text-center mb-4">
 												<h5>Payment Receipt</h5>
 											</div>
+											<form  class="row g-3 needs-validation"  id="editreceiptformx"
+										onsubmit="return false">
 												<div class="row p-sm-3 p-0">
 															<div class="col-md-6 mb-md-0 mb-4">
 																
-																<p class="mb-1"><b>Invoice No# :</b> </p>
-																<p class="mb-1"><b>Due Date :</b></p>
+																<p class="mb-1"><b>Invoice No# :</b>     <span id="invoiceNotxt"></span>
+																<input type="hidden" id="recepitid" name="recepitid" />
+																<input type="hidden" id="recinvoiceid" name="recinvoiceid" required/>
+																</p>
+																<p class="mb-1"><b>Due Date :</b>     <span id="duedatetxt"></span></p>
 																<p class="mb-0"></p>
 															</div>
 															<div class="col-md-6">
-																<p class="mb-1"><b>Amount :</b> </p>
-																<p class="mb-1"><b>Total paid :</b></p>
-																<p class="mb-0"><b>Balance Due :</b></p>
+																<p class="mb-1"><b>Amount :</b>     <span id="invoiceamounttxt"></span></p>
+																<p class="mb-1"><b>Total paid :</b>     <span id="invoicetotalpaidNotxt"></span></p>
+																<p class="mb-0"><b>Balance Due :</b>     <span id="invoiceBalancetxt"></span></p>
 															</div>
 															
 														</div>
 											
-											<form id="editUserForm" class="row g-3"
-												onsubmit="return false">
+											
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalEditUserFirstName">Ref #</label> <input type="text" id="modalEditUserFirstName"
-														name="modalEditUserFirstName" class="form-control"
-														 />
+													<label class="form-label" for="recepitNo">Ref #</label> <input type="text" id="recepitNo"
+														name="recepitNo" class="form-control" required/>
 												</div>
 											
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalEditUserLastName">Date</label> <input type="text" id="modalEditUserLastName"
-														name="modalEditUserLastName" class="form-control"
-														/>
+													<label class="form-label" for="recepitDate">Date</label> <input type="date" id="recepitDate"
+														name="recepitDate" class="form-control" required/>
 												</div>
 												
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalEditUserStatus">Deposited To</label>
-													<select id="modalEditUserStatus" name="modalEditUserStatus"
-														class="form-select" aria-label="Default select example">
-														<option selected>-</option>
+													<label class="form-label" for="depositedto">Deposited To</label>
+													<select id="depositedto" name="depositedto"
+														class="form-select" aria-label="Default select example" required>
+														<option value="">-</option>
 														<option value="SBI">SBI</option>
 														<option value="IDBI">IDBI</option>
 														<option value="LVB">LVB</option>
@@ -808,10 +769,10 @@
 													</select>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalEditUserStatus">Mode of Payment</label>
-													<select id="modalEditUserStatus" name="modalEditUserStatus"
-														class="form-select" aria-label="Default select example">
-														<option selected>-</option>
+													<label class="form-label" for="modeofPayment">Mode of Payment</label>
+													<select id="modeofPayment" name="modeofPayment"
+														class="form-select" aria-label="Default select example" required>
+														<option value="">-</option>
 														<option value="NEFT">NEFT</option>
 														<option value="RTGS">RTGS</option>
 														<option value="Cash">Cash</option>
@@ -822,32 +783,36 @@
 													</select>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="modalEditTaxID">Amount
-														</label> <input type="text" id="modalEditTaxID"
-														name="modalEditTaxID"
-														class="form-control modal-edit-tax-id"
+													<label class="form-label" for="amount">Amount
+														</label> <input type="text" id="amount"
+														name="amount"
+														class="form-control modal-edit-tax-id" required
 														 />
 												</div>
 												<div class="col-12 col-md-6">
 												<br/>
 													<label class="switch"> <input type="checkbox"
-														class="switch-input" /> <span
+														class="switch-input"  id="payfull"/> <span
 														class="switch-toggle-slider"> <span
 															class="switch-on"></span> <span class="switch-off"></span>
 													</span> <span class="switch-label">Pay in Full</span>
 													</label>
 												</div>
 												<div class="col-12">
-													<label class="form-label" for="modalEditTaxID">Notes
-														</label> <input type="text" id="modalEditTaxID"
-														name="modalEditTaxID"
+													<label class="form-label" for="notes">Notes
+														</label> <input type="text" id="notes" 
+														name="notes"
 														class="form-control modal-edit-tax-id"
 														/>
 												</div>
 												
 												<div class="col-12 text-center mt-4">
-													<button type="submit" class="btn btn-primary me-sm-3 me-1">ADD</button>
-													<button type="reset" class="btn btn-label-secondary"
+													<button type="submit"
+																	class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
+																	The Receipt</button>
+
+													<button type="reset"
+														class="btn btn-label-secondary editReceiptclose"
 														data-bs-dismiss="modal" aria-label="Close">
 														Cancel</button>
 												</div>
@@ -856,6 +821,10 @@
 									</div>
 								</div>
 							</div>
+							
+							
+							
+							
 							<!--/ Edit User Modal -->
 							<!-- Edit User Modal -->
 							<div class="modal fade" id="editprojectMasterdetails"
@@ -1220,6 +1189,7 @@
 							<!--scrolling content Modal -->
 
 							<!-- /Modal -->
+							
 						</div>
 						<!-- / Content -->
 
@@ -1230,6 +1200,7 @@
 								<div class="mb-2 mb-md-0"></div>
 								<div></div>
 							</div>
+							
 						</footer>
 						<!-- / Footer -->
 
@@ -1312,12 +1283,31 @@
 
 
 		<script>
+		var invoiceIncre=0;
 			$(document)
 					.ready(
 							function() {
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								var ids="[[${projectMaster['id']}]]";
 								$("#mastercategoryid").val(ids);
+								
+								var NATUREOFWORK="[[${NATUREOFWORK}]]";
+								var UNITS="[[${UNITS}]]";
+								
+								NATUREOFWORK_temp="";
+								
+								var array = NATUREOFWORK.replace("[","").replace("]","").split(",");
+								for(i=0;i<array.length;i++){
+									NATUREOFWORK_temp += "<option value='" +array[i] + "'>"+array[i] + "</option>";
+								}
+								
+								UNITS_temp="";
+								var array = UNITS.replace("[","").replace("]","").split(",");
+								for(i=0;i<array.length;i++){
+									UNITS_temp += "<option value='" +array[i] + "'>"+array[i] + "</option>";
+								}
+								
 								
 								
 								var projectfollowerids="[[${projectMaster['projectfollowerids']}]]";
@@ -1341,35 +1331,7 @@
 								
 								
 								
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								// Custom list & inline suggestion
-								//------------------------------------------------------
-								$.ajax({
-											type : "GET",
-											url : "leadcplist",
-											data : "",
-											success : function(result) {
-
-												const ContactPersonTagifyEl = document
-														.querySelector('#ContactPersonTagify');
-
-												const whitelist = result;
-												// Inline
-												let ContactPersonTagify = new Tagify(
-														ContactPersonTagifyEl,
-														{
-															whitelist : whitelist,
-															maxTags : 1,
-															dropdown : {
-																maxItems : 20,
-																classname : 'tags-inline',
-																enabled : 0,
-																closeOnSelect : false
-															}
-														});
-
-											}
-										});
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------		
 								$(".Referencediv").hide();
 								if($("#Source").val()=='Referral')
@@ -1413,6 +1375,24 @@
 								   			$('.projectprojectsave').html("Submit");
 								   }
 								
+								function validationinvoiceformreset()
+								   {
+							   				$('.editInvoiceclose').click();
+							   				$('.editInvoicesubmit').prop("disabled",false);
+							   				$('#invoiceitemlist').html("");
+							   				invoiceIncre=0;
+							   				invoiceamountCalculator();
+								   			$('.editInvoicesubmit').html("Save The Invoice");
+								   			
+								   }
+								
+								function validationreceiptformreset()
+								   {
+									$('.editReceiptclose').click();
+					   				$('.editReceiptsubmit').prop("disabled",false);
+						   			$('.editReceiptsubmit').html("Save");
+								   			
+								   }
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$("#startdate").change(function() {
 									if($('#enddate').val() ==''){
@@ -1425,50 +1405,91 @@
 									}
 								});
 								 //------------------------------------------------------------------------ 
-								 $('.addNewProjectbtn').on('click', function(event){
+								 $('.addNewInvoicebtn').on('click', function(event){
 									$("#projectitemid").val("");
-									validationformprojectreset();
-								 });
-								
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								
-								function getprojectlist() {
 									
-									var formData = {
-										mastercategoryid : "[[${projectMaster['id']}]]"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "getprojectprojectlist",
-										data : formData,
-										success : function(result) {
-											var htmlop="";
-											var bmobj = JSON.parse(JSON.stringify(result));
-											var total=0;
-											
-											bmobj.forEach((element, index, array) =>
-								           	{
-								           	  //  console.log(element);
-								           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editprojectinfo(this)' id='"+element.projectitemid +"'>"+element.projecttype+"</td>";
-								           	 htmlop +="<td class='text-nowrap'>"+element.quantity +"</td><td>"+element.unit +"</td><td>"+element.price +"</td>";
-								           	 htmlop +="<td>"+element.amount +"</td></tr>";
-								           	total +=parseInt(element.amount);
-								            });
-											
-											
-											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total +"</p> </td> </tr>";
-											$('#projectprojectlist').html(htmlop);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
+									
+									validationinvoiceformreset();
+								 });
+								 
+								 
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------
+								
+								
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$('#editinvoiceformx').on('submit',function(event) {
+									if (event.target.checkValidity()) {
+										$('.editInvoicesubmit').prop("disabled",true);
+										$('.editInvoicesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+										const formData = new FormData(document.querySelector("#editinvoiceformx"));
+										formData.append("projectid","[[${projectMaster['id']}]]");
+										formData.append("invoiceitemcount", invoiceIncre);
+										
+										$.ajax({
+											type : "POST",
+											url : "projectinvoicesave",
+											processData : false,
+											contentType : false,
+											data : formData,
+											success : function(
+													result) {
+												
+												validationinvoiceformreset();
+												
+												getinvoicelist();
+
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+											}
+										});
+									} else {
+										$('.editInvoicesubmit').prop("disabled",false);
+									}
+								});
+								// --------------------------------------------------------------------
+								
+								$("#addnewinvoiceitem").click(function() {
+									invoiceIncre = invoiceIncre+1;
+									
+									html='<div class="d-flex border rounded position-relative pe-0 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" /> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="0" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="0" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="0" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="0" name="SGSTper'+ invoiceIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+									$('#invoiceitemlist').append(html);
+								});
+								
+								//--------------------------------------------------------------------------------------------------------------------------------------
+								$('#editreceiptformx').on('submit',function(event) {
+									if (event.target.checkValidity()) {
+										$('.editReceiptsubmit').prop("disabled",true);
+										$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+										const formData = new FormData(document.querySelector("#editreceiptformx"));
+										formData.append("projectid","[[${projectMaster['id']}]]");
+										
+										$.ajax({
+											type : "POST",
+											url : "projectreceiptsave",
+											processData : false,
+											contentType : false,
+											data : formData,
+											success : function(
+													result) {
+												
+												validationreceiptformreset();
+												
+												getreceiptlist();
+
+											},
+											error : function(e) {
+												console.log("Error"+ e);
+											}
+										});
+									} else {
+										$('.editReceiptsubmit').prop("disabled",false);
+									}
+								});
+								// --------------------------------------------------------------------
+								
+								
 								
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------
@@ -1537,54 +1558,8 @@
 
 												});
 								// --------------------------------------------------------------------
-								// Project Project  		  
-					  					$('#addNewprojectmodel').on('submit',function(event) {
-													if (event.target.checkValidity()) {
-														$('.projectprojectsave').prop("disabled",true);
-														$('.projectprojectsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														
-														const formData = new FormData(document.querySelector("#addNewprojectmodel"));
-														formData.append("projectid", "[[${projectMaster['id']}]]");
-														
-														 $.ajax({
-																type : "POST",
-																url : "projectitemsave",
-																processData : false,
-																contentType : false,
-																data : formData,
-																success : function(
-																		result) {
-																	
-																	validationformprojectreset();
-																	
-																	Swal.fire({
-																        title: '',
-																        text: 'Project details updated',
-																        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-																        imageWidth: 400,
-																        imageAlt: 'Custom image',
-																        confirmButtonText: 'Ok',
-																        customClass: {
-																          confirmButton: 'btn btn-primary'
-																        },
-																        buttonsStyling: false
-																      });
-																	
-																	getprojectlist();
-																	
-
-																},
-																error : function(e) {
-																	console.log("Error"+ e);
-																}
-													});
-													} else {
-														$('.projectprojectsave').prop("disabled",false);
-													}
-					  					 });
-					  				
+								
 								// --------------------------------------------------------------------
-
 								$(".additem").click(function() {
 									var name = $(this).attr('name');
 									var labeltext = "";
@@ -1651,7 +1626,93 @@
 											false);
 									$('.editpeopledatasubmit').html("Submit");
 								}
-								// --------------------------------------------------------------------
+								// ----------------------------------------------------------------------------------------------------------------------------------------
+								function getinvoicelist() {
+									
+									var formData = {
+										mastercategoryid : "[[${projectMaster['id']}]]"
+									}
+	
+									$.ajax({
+										type : "POST",
+										url : "getprojectinvoicelist",
+										data : formData,
+										success : function(result) {
+											var htmlop="";
+											var bmobj = JSON.parse(JSON.stringify(result));
+											var total=0;
+											//console.log(bmobj);
+											
+											bmobj.forEach((element, index, array) =>
+								           	{
+								           		var sub_total=0;
+								           	  
+								           		element.invoiceItemMasterlist.forEach((elementx, indexx, arrayx) =>
+									           	  {
+									           		sub_total +=elementx.taxableAmount + elementx.cgstamount + elementx.sgstamount+ elementx.igstamount; 
+									           	  });
+									           	  
+									           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editinvoiceinfo(this)' id='"+element.invoiceid +"'>"+element.invoiceNo+"</td>";
+									           	 htmlop +="<td class='text-nowrap'>"+element.invoiceType +"</td><td class='text-nowrap'>"+element.invoiceDateMMMddyyyy +"</td><td>"+element.dueDateMMMddyyyy +"</td>";
+									           	 htmlop +="<td>"+sub_total.toFixed(2) +" <i class='bx bx-money  generatenewreceipt' onclick='generatereceipt("+element.invoiceid +")'  ></i></td></tr>";
+									           	 total +=parseFloat(sub_total);
+								            });
+											
+											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
+												
+											$('#projectinvoicelist').html(htmlop);
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
+								
+								
+								// ----------------------------------------------------------------------------------------------------------------------------------------
+								function getreceiptlist() {
+									
+									var formData = {
+										mastercategoryid : "[[${projectMaster['id']}]]"
+									}
+	
+									$.ajax({
+										type : "POST",
+										url : "getprojectreceiptlist",
+										data : formData,
+										success : function(result) {
+											var htmlop="";
+											var bmobj = JSON.parse(JSON.stringify(result));
+											var total=0;
+											//console.log(bmobj);
+											
+											bmobj.forEach((element, index, array) =>
+								           	{
+								           		var sub_total=0;
+								           	  
+								           		
+									           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editreceiptinfo(this)' id='"+element.recepitid +"'>"+element.recepitNo+"</td>";
+									           	 htmlop +="<td class='text-nowrap'>"+element.invoiceNo +"</td><td class='text-nowrap'>"+element.recepitDateMMMddyyyy +"</td><td>"+element.depositedto +"</td>";
+									           	 htmlop +="<td>"+element.amount.toFixed(2) +"</td></tr>";
+									           	 total +=parseFloat(element.amount);
+								            });
+											
+											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
+												
+											$('#receiptslist').html(htmlop);
+										},
+										error : function(e) {
+											console.log("Error" + e);
+	
+										}
+	
+									});
+	
+								}
+								// ----------------------------------------------------------------------------------------------------------------------------------------
 								$('#editPeopledetailsForm')
 										.on(
 												'submit',
@@ -1848,13 +1909,46 @@
 								//-------------------------------------------
 								$(document).ready(function(){
 								    setTimeout(function(){
-								    	getprojectlist();
 								    	
+								    	getinvoicelist();
+								    	getreceiptlist();
 								     },500); // milliseconds
 								});
 								//-------------------------------------------
+								/* $('#receivable').change(function() {
+									var currentDate = new Date();
+									alert(currentDate);
+									currentDate.setDate(currentDate.getDate() + $(this).val());
+									var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+									var formattedDate = currentDate.toLocaleDateString('en-CA', options).replace(/\//g, '-');
+
+									alert(formattedDate);
+									$("#dueDate").val(formattedDate);
+								}); */
+								//-------------------------------------------
+								$('#sameasInvoiceto').change(function() {
+							        if(this.checked) {
+							         $("#billaddressline1").val($("#invoiceaddressline1").val());
+							         $("#billaddressline2").val($("#invoiceaddressline2").val());
+							         $("#billaddresscity").val($("#invoiceaddresscity").val());
+							         $("#billaddressState").val($("#invoiceaddressState").val());
+							         $("#billaddresspincode").val($("#invoiceaddresspincode").val());
+							         $("#billMobileno").val($("#invoiceMobileno").val());
+							         $("#billEmail").val($("#invoiceEmail").val());
+							         $("#billGSTNo").val($("#invoiceGSTNo").val());
+							        }							              
+							    });
+
 								
-								$("#invoicemodel").modal('toggle');
+								//-------------------------------------------
+								$('#payfull').change(function() {
+							        if(this.checked) {
+							        	$("#amount").val($('#invoiceBalancetxt').text());
+							        	
+							        }
+								});
+								//--------------------------------------------
+								//$("#invoicemodel").modal('toggle');
 							}); // Jquery
 
 			//------------------------------------------------------
@@ -1900,7 +1994,7 @@
 					  }
 					 
 					 
-				  const invoiceDate = document.querySelector('#invoicedate');
+				  const invoiceDate = document.querySelector('#invoiceDatex');
 					 // Human Friendly
 					  if (invoiceDate) {
 						  invoiceDate.flatpickr({
@@ -1910,7 +2004,7 @@
 					    });
 					  }
 						 
-				  const duedate = document.querySelector('#duedate');
+				  const duedate = document.querySelector('#dueDatex');
 					 // Human Friendly
 					  if (duedate) {
 						  duedate.flatpickr({
@@ -1933,7 +2027,7 @@
 			
 			//------------------------------------------------------    
 			 
-			 function editprojectinfo(e){
+			 function editinvoiceinfo(e){
 					var projectid= e.getAttribute("id");
 					
 						var formData = {
@@ -1943,31 +2037,256 @@
 
 						$.ajax({
 							type : "POST",
-							url : "getprojectitem",
+							url : "getinvoiceitem",
 							data : formData,
 							success : function(result) {
 								var bmobj = JSON.parse(JSON.stringify(result));
 								//console.log(bmobj);
-								$("#modalTotalamount").val(bmobj.amount);
-								$("#modalPrice").val(bmobj.price);
-								$("#modalQuantity").val(bmobj.quantity);								
-								$("#modalUnits").val(bmobj.unit).change();
-								$("#modalnatureofwork").val(bmobj.projecttype).change();
-								$("#projectitemid").val(bmobj.projectitemid);
 								
-								
-								$('#addNewProject').modal('show');
+								$("#invoiceid").val(bmobj.invoiceid);
+								$("#invoiceNo").val(bmobj.invoiceNo);
+								$("#invoiceDate").val(bmobj.invoiceDate);
+								$("#dueDate").val(bmobj.dueDate);
+								$("#invoiceType").val(bmobj.invoiceType).change();
+								$("#receivable").val(bmobj.receivable).change();
+								$("#GSTCode").val(bmobj.gstcode).change();
+								$("#invoiceaddressline1").val(bmobj.invoiceaddressline1);
+								$("#invoiceaddressline2").val(bmobj.invoiceaddressline2);
+								$("#invoiceaddresscity").val(bmobj.invoiceaddresscity);
+								$("#invoiceaddressState").val(bmobj.invoiceaddressState);
+								$("#invoiceaddresspincode").val(bmobj.invoiceaddresspincode);
+								$("#invoiceMobileno").val(bmobj.invoiceMobileno);
+								$("#invoiceEmail").val(bmobj.invoiceEmail);
+								$("#invoiceGSTNo").val(bmobj.invoiceGSTNo);
+								$("#billaddressline1").val(bmobj.billaddressline1);
+								$("#billaddressline2").val(bmobj.billaddressline2);
+								$("#billaddresscity").val(bmobj.billcity);
+								$("#billaddressState").val(bmobj.billstate);
+								$("#billaddresspincode").val(bmobj.billpincode);
+								$("#billMobileno").val(bmobj.billMobileno);
+								$("#billEmail").val(bmobj.billEmail);
+								$("#billGSTNo").val(bmobj.billGSTNo);
+								$("#note").val(bmobj.notes);
+
+								invoiceIncre = 0 ;
+								html="";
+								bmobj.invoiceItemMasterlist.forEach((element, index, array) =>
+					           	{
+					           	 	invoiceIncre= invoiceIncre+1;
+									html +='<div class="d-flex border rounded position-relative pe-0 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" value="'+ element.invoiceitemid + '"/> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="'+ element.invoiceItem + '">'+ element.invoiceItem + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" value="'+ element.quantity + '" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="'+ element.discountper + '" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="'+ element.igstper + '" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ invoiceIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+					           	});
+					           	
+								$('#invoiceitemlist').append(html);
+								invoiceamountCalculator();
+								$('#invoicemodel').modal('show');
 							},
 							error : function(e) {
 								console.log("Error" + e);
 							}
 						});
 					
-				};
+				}
 			//------------------------------------------------------
+			//
+			// 
+			$('.invoice-item-qty').on('change',function(event) {
+				invoiceamountCalculator();
+				onchange="invoiceamountCalculator()"
+			});
+			$('.invoice-item-price').on('change',function(event) {
+				invoiceamountCalculator();
+				
+			});
+			//------------------------------------------------------------------------------------
+			function applydiscountandtax(e){
+				var rowid= e.getAttribute("name");
+				
+				Discountper =$("#Discountper"+ rowid).val();
+				if(Discountper ==""){
+					$("#Discountperip"+ rowid).val(0);
+					$("#Discountpertxt"+ rowid).text("0%");
+				}else{
+					$("#Discountperip"+ rowid).val($("#Discountper"+ rowid).val());	
+					$("#Discountpertxt"+ rowid).text($("#Discountper"+ rowid).val()+ "%");
+				}
+				$("#CGSTperip"+ rowid).val($("#CGSTper"+ rowid).val());
+				$("#IGSTperip"+ rowid).val($("#IGSTper"+ rowid).val());
+				$("#SGSTperip"+ rowid).val($("#SGSTper"+ rowid).val());
+				
+				
+				$("#CGSTpertxt"+ rowid).text($("#CGSTper"+ rowid).val()+ "%");
+				$("#IGSTpertxt"+ rowid).text($("#IGSTper"+ rowid).val()+ "%");
+				$("#SGSTpertxt"+ rowid).text($("#SGSTper"+ rowid).val()+ "%");
+				$('.more-options-dropdown').click();
+				invoiceamountCalculator();
+			}
+			//------------------------------------------------------
+			function generatereceipt(invoiceid)
+			{
+				
+				$("#recepitid").val("");
+				
+				var formData = {
+						invoiceid : invoiceid,
+						mastercategoryid: "[[${projectMaster['id']}]]"
+					}
+
+					$.ajax({
+						type : "POST",
+						url : "getinvoicereceiptitem",
+						data : formData,
+						success : function(result) {
+							var bmobj = JSON.parse(JSON.stringify(result));
+							//console.log(bmobj);
+							
+							$("#invoiceNotxt").text(bmobj.Invoiceno);
+							$("#duedatetxt").text(bmobj.duedate);
+							$("#invoiceamounttxt").text(bmobj.amount);
+							$("#invoicetotalpaidNotxt").text(bmobj.totalpaidamount);
+							$("#invoiceBalancetxt").text(bmobj.balanceamount);
+							$("#recinvoiceid").val(bmobj.invoiceid);
+							
+							$('#receiptmodel').modal('show');
+						},
+						error : function(e) {
+							console.log("Error" + e);
+						}
+					});
+				
+			}
+			//------------------------------------------------------------------------------------
+			function invoiceamountCalculator(){
+				totalamtwithouttax =0.00;
+				totalCGST =0.00;
+				totalSGST =0.00;
+				totalIGST =0.00;
+				totalamount =0.00;
+				
+				for( i =1; i<=invoiceIncre;i++)
+				{
+					 price = $("#Price"+i).val();
+					 qty = $("#Quantity"+i).val();
+					 taxableAmount =price *  qty ;
+					 
+					 CGSTper = $("#CGSTperip"+i).val();
+					 IGSTper = $("#IGSTperip"+i).val();
+					 SGSTper = $("#SGSTperip"+i).val();
+					 Discountper = $("#Discountperip"+i).val();
+					 
+					 Discountamt =taxableAmount * (Discountper/100);
+					 afetdiscountamount =  taxableAmount -Discountamt;
+					$('#taxableamount'+i).text(afetdiscountamount.toFixed(2));
+					
+					IGSTamount =afetdiscountamount * (IGSTper/100);
+					SGSTamount =afetdiscountamount * (SGSTper/100);
+					CGSTamount=afetdiscountamount * (CGSTper/100);
+					
+					
+					totalamtwithouttax = totalamtwithouttax+afetdiscountamount;
+					totalCGST =totalCGST+CGSTamount;
+					totalSGST = totalSGST+SGSTamount;
+					totalIGST = totalIGST+IGSTamount;
+					
+					
+				}
+				
+				$('#totalCGST').text(totalCGST.toFixed(2));
+				$('#totalSGST').text(totalSGST.toFixed(2));
+				$('#totalIGST').text(totalIGST.toFixed(2));
+				$('#totalamount').text((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(2));
+				$('#totalamtwithouttax').text(totalamtwithouttax.toFixed(2));
+				
+				
+									
+			}
+			//------------------------------------------------------------------------------------
+			function deleteinvoiceItem(id){
+				
+				 Swal.fire({
+		             title: 'Are you sure?',
+		             text: "You won't be able to revert this!",
+		             icon: 'warning',
+		             showCancelButton: true,
+		             confirmButtonText: 'Yes, delete it!',
+		             customClass: {
+		               confirmButton: 'btn btn-primary me-3',
+		               cancelButton: 'btn btn-label-secondary'
+		             },
+		             buttonsStyling: false
+		           }).then(function (result) {
+		             if (result.value) {
+		            	 $(".incontact"+id).remove();
+		            	 invoiceIncre=invoiceIncre-1;
+		            	 invoiceamountCalculator();
+				   			
+		               }
+		           });
+				
+			}
 			
-		
+			//------------------------------------------------------------------------------------
 			
+			 function editreceiptinfo(e){
+					var projectid= e.getAttribute("id");
+					
+						var formData = {
+							projectid : projectid,
+							mastercategoryid: "[[${projectMaster['id']}]]"
+						}
+
+						$.ajax({
+							type : "POST",
+							url : "getreceiptitem",
+							data : formData,
+							success : function(result) {
+								var bmobj = JSON.parse(JSON.stringify(result));
+							//	console.log(bmobj);
+								
+								$("#recepitid").val(bmobj.recepitid);
+								$("#recepitNo").val(bmobj.recepitNo);
+								$("#recepitDate").val(bmobj.recepitDate);
+								$("#recinvoiceid").val(bmobj.invoiceid);
+								$("#depositedto").val(bmobj.depositedto).change();
+								$("#modeofPayment").val(bmobj.modeofPayment).change();
+								$("#amount").val(bmobj.amount);
+								$("#notes").val(bmobj.notes);
+								
+							
+								var formData = {
+										invoiceid : bmobj.invoiceid,
+										mastercategoryid: "[[${projectMaster['id']}]]"
+									}
+
+									$.ajax({
+										type : "POST",
+										url : "getinvoicereceiptitem",
+										data : formData,
+										success : function(result) {
+											var bmobj = JSON.parse(JSON.stringify(result));
+											//console.log(bmobj);
+											
+											$("#invoiceNotxt").text(bmobj.Invoiceno);
+											$("#duedatetxt").text(bmobj.duedate);
+											$("#invoiceamounttxt").text(bmobj.amount);
+											$("#invoicetotalpaidNotxt").text(bmobj.totalpaidamount);
+											$("#invoiceBalancetxt").text(bmobj.balanceamount);
+											$("#recinvoiceid").val(bmobj.invoiceid);
+											
+											$('#receiptmodel').modal('show');
+										},
+										error : function(e) {
+											console.log("Error" + e);
+										}
+									});
+								
+							},
+							error : function(e) {
+								console.log("Error" + e);
+							}
+						});
+					
+				}
+			//------------------------------------------------------
 		</script>
 </body>
 </html>

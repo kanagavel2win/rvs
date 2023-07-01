@@ -21,7 +21,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Employee List</title>
+    <title>Account Transfer List</title>
 
     <meta name="description" content="" />
 
@@ -66,9 +66,7 @@
      
     <!-- Row Group CSS -->
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css}" />
-    <!-- Form Validation -->
-    <link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
-
+    
 
     <!-- Page CSS -->
 
@@ -109,19 +107,10 @@
           <div class="content-wrapper">
             <!-- Content -->
 				 <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">HR Management / </span>Employee</h4>
+              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Account Transfer </span></h4>
 
 <!-- Users List -->
-                       <!--  <div class="col-md-6 mb-4">
-                          <label for="TagifyUserList" class="form-label">Users List</label>
-                          <input
-                            id="TagifyUserList"
-                            name="TagifyUserList"
-                            class="form-control"
-                            
-                          />
-                        </div>
-                        <input type="button" id="tv" value="click" /> -->
+                     
               <!-- DataTable with Buttons -->
               <div class="card">
                 <div class="card-datatable table-responsive pt-0">
@@ -131,13 +120,12 @@
                         <th></th>
                         <th></th>
                         <th>id</th>
-                        <th>Full Name</th>
-                        <th>Contact</th>
-                        <th>Branch</th>
-                        <th>Position</th>
-                        <th>Salary</th>
-                        <th>Joining Date</th>
-                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Notes</th>
+                        
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -149,123 +137,106 @@
 			<button class="btnoffcanvas btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd" style="visibility:hidden" ></button>
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
 			  <div class="offcanvas-header">
-			    <h5 id="offcanvasEndLabel" class="offcanvas-title">New Employee</h5>
+			    <h5 id="offcanvasEndLabel" class="offcanvas-title">Account Transfer</h5>
 			    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			  </div>
 			 <div class="offcanvas-body flex-grow-1">
-                  <form class="add-new-record pt-0 row g-2 needs-validation" id="form-add-new-record" onsubmit="return false" novalidate>
+                  <form class="add-new-record pt-0 row g-2 " id="form-add-new-record" onsubmit="return false" >
                      <div class="col-sm-12">
-                      <label class="form-label" for="firstName">First Name</label>
+                      <label class="form-label" for="tDate">Transfer Date</label>
                       <div>
                         <input
-                          type="text"
-                          id="firstName"
+                          type="date"
+                          id="tDate"
                           class="form-control "
                            required
                         />
+                         <input
+                          type="hidden"
+                          id="accounttransferid"
+                        />
                           
-                          <div class="invalid-feedback">Please enter First Name.</div>
+                          <div class="invalid-feedback">Please enter Transfer Date.</div>
                       </div>
                     </div> 
-                    <div class="col-sm-12">
-                      <label class="form-label" for="lastName">Last Name</label>
-                      <div>
-                         <input
-                          type="text"
-                          id="lastName"
-                          class="form-control "
-                           required
-                        />
-                       <div class="invalid-feedback">Please enter the Last Name.</div>
-                      </div>
-                       
-                    </div>
-                    <div class="col-sm-12">
-                      <label class="form-label" for="phonenumber">Phone</label>
-                      <div>
-                         <input
-                          type="text"
-                          id="phonenumber"
-                          class="form-control phone-number-otp-mask" pattern=".{12}"  
-                           required
-                        />
-                       <div class="invalid-feedback">Please enter the Phone Number.</div>
-                      </div>
-                       
-                    </div>
-                    <div class="col-sm-12">
-                      <label class="form-label" for="email">Email</label>
+                     <div class="col-sm-12">
+                      <label class="form-label" for="tAmount">Amount</label>
                       <div>
                         
-                         <input
-                          type="email"
-                          id="email"
-                          class="form-control "
-                           required
-                        />
-                       <div class="invalid-feedback">Please enter the Email.</div>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="tAmount"
+                            required
+                          />
+                          <div class="invalid-feedback">Please enter Amount</div>
                       </div>
-                       
                     </div>
-                    
+                  
                     <div class="col-sm-12">
-                      <label class="form-label" for="branch_name">Branch </label>
+                      <label class="form-label" for="twithdrawfrom">From  </label>
                       <div>
                         
-                        <select class="form-select" id="branch_name" required>
-                           <option value="">Select Branch</option>
-                           <option th:each="obj :${BranchList}" th:value="${obj.BRANCH_NAME}"  th:text="${obj.BRANCH_NAME}"></option>
+                        <select class="form-select" id="twithdrawfrom" required>
+                           <option value="">Select From Account</option>
+                           <option value="SBI">SBI</option>
+							<option value="IDBI">IDBI</option>
+							<option value="LVB">LVB</option>
+							<option value="Axis 1">Axis 1</option>
+							<option value="Axis 2">Axis 2</option>
+							<option value="Cash 1">Cash 1</option>
+							<option value="Cash 2">Cash 2</option>
+							<option value="SBI Sukumar">SBI Sukumar</option>
+							<option value="SBI Balakumar">SBI Balakumar</option>
+							<option value="TDS">TDS</option>
                            
                          </select>
                           
-                          <div class="invalid-feedback">Please select the branch.</div>
+                          <div class="invalid-feedback">Please select the from.</div>
                       </div>
                     </div>
                      <div class="col-sm-12">
-                      <label class="form-label" for="position">Position </label>
+                      <label class="form-label" for="tDepositTo">Deposit To </label>
                       <div>
                         
-                        <select class="form-select" id="position" required>
-                           <option value="">Select Position</option>
-                           <option th:each="str :${JobTitle}" th:value="${str}"  th:text="${str}"></option>
+                       <select class="form-select" id="tDepositTo" required>
+                           <option value="">Select Deposit To</option>
+                           <option value="SBI">SBI</option>
+							<option value="IDBI">IDBI</option>
+							<option value="LVB">LVB</option>
+							<option value="Axis 1">Axis 1</option>
+							<option value="Axis 2">Axis 2</option>
+							<option value="Cash 1">Cash 1</option>
+							<option value="Cash 2">Cash 2</option>
+							<option value="SBI Sukumar">SBI Sukumar</option>
+							<option value="SBI Balakumar">SBI Balakumar</option>
+							<option value="TDS">TDS</option>
                            
                          </select>
                           
-                          <div class="invalid-feedback">Please enter Position.</div>
+                          <div class="invalid-feedback">Please enter Deposit To.</div>
                       </div>
                     </div>
-                    <div class="col-sm-12">
-                      <label class="form-label" for="salary">Salary</label>
-                      <div>
-                        
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="salary"
-                            required
-                          />
-                          <div class="invalid-feedback">Please enter Salary</div>
-                      </div>
-                    </div>
+                   
                      
                     <div class="col-sm-12">
-                      <label class="form-label" for="joiningDate">Joining Date</label>
+                      <label class="form-label" for="Notes">Notes</label>
                       <div>
                         <input
                             type="text"
                             class="form-control"
-                            id="joiningDate"
+                            id="Notes"
                             required
                           />
-                          <div class="invalid-feedback">Please enter a valid Joining Date</div>
+                          <div class="invalid-feedback">Notes</div>
                       </div>
                     </div>
                     
                     
                  
                     <div class="col-sm-12">
-                      <button type="submit" class="btn btn-primary newbranchdatasubmit me-sm-3 me-1">Submit</button>
-                      <button type="reset" class="btn btn-outline-secondary newbranchdataclose" data-bs-dismiss="offcanvas">Cancel</button>
+                      <button type="submit" class="btn btn-primary accounttransferdatasubmit me-sm-3 me-1">Submit</button>
+                      <button type="reset" class="btn btn-outline-secondary accounttransferdataclose" data-bs-dismiss="offcanvas">Cancel</button>
                     </div>
                   </form>
                 </div>
@@ -275,7 +246,6 @@
 
             <!-- Footer -->
             <footer class="content-footer footer bg-footer-theme">
-              
             </footer>
             <!-- / Footer -->
 
@@ -336,17 +306,12 @@
     <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
 	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
     <script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
-    <!-- Form Validation -->
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js}"></script>
-    <script th:src="@{/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js}"></script>
-
+  
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
 
     <!-- Page JS -->
-    <!-- <script th:src="@{/assets/js/tables-datatables-basic.js}"></script> -->
-    <script th:src="@{/assets/js/form-validation.js}"></script> 
+  
     <script>
     $(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------
@@ -355,7 +320,8 @@
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	
     	$(document).on("click", ".create-new", function() {	
-    		
+    		$("#accounttransferid").val(0);
+    		validationformreset();
     		$('.btnoffcanvas').click();
     	});
     	
@@ -376,27 +342,24 @@
     	  	// DataTable with buttons
     	  	// --------------------------------------------------------------------
 
-    	  	// --------------------------------------------------------------------
-
 			  if (dt_basic_table.length) {
 			    var dt_basic = dt_basic_table.DataTable({
 			    	 ajax: {
-			             "url": "employeelistjson",
+			             "url": "accounttransferlistjson",
 			             "type": "GET",
 			             "dataSrc": "",
 			         },
 			      columns: [
 			        { data: '' },
-			        { data: 'empMasterid' },
-			        { data: 'empMasterid' },
-			        { data: 'staffName' },
-			        { data: 't_primary_email' },
-			        { data: 't_branch_name' },
-			        { data: 't_position' },
-			        { data: 't_salary' },
+			        { data: 'accounttransferid' },
+			        { data: 'accounttransferid' },
+			        { data: 'tdateMMMddyyyy' },
+			        { data: 'tamount' },
+			        { data: 'twithdrawfrom' },
+			        { data: 'tdepositTo' },
+			        { data: 'notes' },
 			        { data: '' },
-			        { data: 't_branch_name' },
-			        { data: '' }
+			        
 			      ],
 			      columnDefs: [
 			        {
@@ -430,118 +393,7 @@
 			          visible: false
 			        },
 			       
-			         
-			         
-			        {
-			            // Avatar image/badge, Name and post
-			            targets: 3,
-			            responsivePriority: 1,
-			            render: function(data, type, full, meta) {
-			              var $user_img = full['t_emp_img'],
-			                $name = full['staffName'];
-			                $empMasterid=full['empMasterid'];
-			               
-			              if ($user_img != "") {
-			               // For Avatar image
-			                var $output =
-			                  '<img src="' + $user_img + '" alt="Avatar" class="rounded-circle">';
-			              } else {
-			                // For Avatar badge
-			                var stateNum = Math.floor(Math.random() * 6);
-			                var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
-			                var $state = states[stateNum],
-			                  $name = full['staffName'],
-			                  $initials = $name.match(/\b\w/g) || [];
-			                $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
-			                $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
-			              }
-			              // Creates full output for row
-			              var $row_output =
-			                '<div class="d-flex justify-content-start align-items-center">' +
-			                '<div class="avatar-wrapper">' +
-			                '<div class="avatar me-2">' +
-			                $output +
-			                '</div>' +
-			                '</div>' +
-			                '<div class="d-flex flex-column">' +
-			                '<span class="emp_name text-truncate">' +
-			                $name +
-			                '</span>' +
-			                '<small class="emp_post text-truncate text-muted">RVS000' +
-			                $empMasterid +
-			                '</small>' +
-			                '</div>' +
-			                '</div>';
-			              return $row_output;
-			            }
-			          },
-		          	{
-			           targets: 4,
-			           render: function(data, type, full, meta) {
-			           	 $t_primary_contactno = full['t_primary_contactno'];
-			           	 $t_primary_email = full['t_primary_email'];
-			           	 
-			           	 $row_output = $t_primary_contactno +'<br/><small class="emp_post text-truncate text-muted">' + $t_primary_email + '</small>';
-			           	 return $row_output;
-			           }
-			         },
-			        {
-			           targets: 8,
-			           render: function(data, type, full, meta) {
-			           	 $t_joindateMMformat = full['t_joindateMMformat'];
-			           	 $t_joindatetimeline = full['t_joindatetimeline'];
-			           	 
-			           	 $row_output = $t_joindateMMformat +'<br/><small class="emp_post text-truncate text-muted">' + $t_joindatetimeline + '</small>';
-			           	 return $row_output;
-			           }
-			         },
-			         {
-			             targets: 9,
-			             render: function(data, type, full, meta) {
-			             	 $t_currentStatus = full['t_currentStatus'];
-			             	$row_output ="";
-			             	 if($t_currentStatus =='Full-Time')
-			            	 {
-			             		 $row_output ='<span class="badge rounded-pill bg-success">' + $t_currentStatus +'</span>';
-			          		 }
-			             	 else if($t_currentStatus =='Part-Time')
-			            	 {
-			             		 $row_output ='<span class="badge rounded-pill bg-warning">' + $t_currentStatus +'</span>';
-			          		 }
-			             	 else
-			             	{
-			             		$row_output ='<span class="badge rounded-pill bg-danger">' + $t_currentStatus +'</span>';	 
-			             	}
-			             	 
-			             	 return $row_output;
-			             }
-			           },
-			          
-			          
-			        {
-			          // Label
-			          targets: -2,
-			          render: function(data, type, full, meta) {
-			            var $status_number = full['t_currentStatus'];
-			            var $status = {
-			              1: { title: 'Current', class: 'bg-label-primary' },
-			              2: { title: 'Professional', class: ' bg-label-success' },
-			              3: { title: 'Rejected', class: ' bg-label-danger' },
-			              4: { title: 'Resigned', class: ' bg-label-warning' },
-			              5: { title: 'Applied', class: ' bg-label-info' }
-			            };
-			            if (typeof $status[$status_number] === 'undefined') {
-			              return data;
-			            }
-			            return (
-			              '<span class="badge rounded-pill ' +
-			              $status[$status_number].class +
-			              '">' +
-			              $status[$status_number].title +
-			              '</span>'
-			            );
-			          }
-			        },
+			     
 			        {
 			          // Actions
 			          targets: -1,
@@ -550,7 +402,7 @@
 			          searchable: false,
 			          render: function(data, type, full, meta) {
 			            return (
-			              '<a href="emp?id='+ full['empMasterid'] +'" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
+			              '<a onclick="editacctransItem('+ full['accounttransferid']  +')"   class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
 			            );
 			          }
 			        }
@@ -599,7 +451,7 @@
 			          ]
 			        },
 			        {
-			          text: '<i class="bx bx-plus me-2"></i> <span class="d-none d-lg-inline-block" >Employee </span>',
+			          text: '<i class="bx bx-plus me-2"></i> <span class="d-none d-lg-inline-block" >Account Transfer </span>',
 			          className: 'create-new btn btn-primary'
 			        }
 			      ],
@@ -636,92 +488,75 @@
 			        }
 			      }
 			    });
-			    $('div.head-label').html('<h5 class="card-title mb-0">Employees</h5>');
+			    $('div.head-label').html('<h5 class="card-title mb-0">Account Transfers</h5>');
   		}
    // --------------------------------------------------------------------
    		function validationformreset()
 	   {
-   				$('.newbranchdataclose').click();
-   				$('.newbranchdatasubmit').prop("disabled",false);
+   				$('.accounttransferdataclose').click();
+   				$('.accounttransferdatasubmit').prop("disabled",false);
 	   			$('.needs-validation').removeClass("was-validated");
 	   			$('.needs-validation').trigger("reset");
-	   			$('.newbranchdatasubmit').html("Submit");
+	   			$('.accounttransferdatasubmit').html("Submit");
 	   }
    	// --------------------------------------------------------------------
-      $('.needs-validation').on('submit', function(event){
-    	 
-    	  if(true)
-      	{
-    	  $('.newbranchdatasubmit').prop("disabled",true);
-    	  
-    	    if(event.target.checkValidity() & $('#joiningDate').val()!=''){
-    	    	$('.newbranchdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-    	    	  
-    	    	var firstName =$('#firstName').val();
-	        	var lastName =$('#lastName').val();
-	        	var phonenumber =$('#phonenumber').val();
-	        	var email =$('#email').val();
-	        	var branch_name =$('#branch_name').val();
-	        	var position =$('#position').val();
-	        	var salary =$('#salary').val();
-	        	var joiningDate =$('#joiningDate').val();
-	        	
+	
+	//--------------------------------------------------------------------
+   	$('#form-add-new-record').on('submit', function(event){
+	    	 
+		  if (event.target.checkValidity()) {
+				$('.accounttransferdatasubmit').prop("disabled",true);
+				$('.accounttransferdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+				
+				var accounttransferid =$('#accounttransferid').val();
+	        	var tDate =$('#tDate').val();
+	        	var tAmount =$('#tAmount').val();
+	        	var twithdrawfrom =$('#twithdrawfrom').val();
+	        	var tDepositTo =$('#tDepositTo').val();
+	        	var Notes =$('#Notes').val();
+		        
         	
 	        	 var formData = {
-	        			 firstName : firstName,
-	        			 lastName : lastName,
-	        			 phonenumber : phonenumber,
-	        			 email : email,
-	        			 branch_name : branch_name,
-	        			 position : position,
-	        			 salary : salary,
-	        			 joiningDate: joiningDate
+	        			 accounttransferid : accounttransferid,
+	        			 tDate : tDate,
+	        			 tAmount : tAmount,
+	        			 twithdrawfrom : twithdrawfrom,
+	        			 tDepositTo : tDepositTo,
+	        			 Notes : Notes
 				 }
-				 $.ajax({
-						type : "POST",url : "employeesavejson",
-						data : formData, success : function(result) {
-							validationformreset();
-							Swal.fire({
-						        title: 'Congratulations!',
-						        text: 'New Employee is Added Successfully',
-						        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-						        imageWidth: 400,
-						        imageAlt: 'Custom image',
-						        confirmButtonText: 'Welcome',
-						        customClass: {
-						          confirmButton: 'btn btn-primary'
-						        },
-						        buttonsStyling: false
-						      });
-							
-							$('.datatables-basic').DataTable().ajax.reload();
-							
-							
-						},
-						error : function(e) {
-							console.log("Error" + e);
-							
-						}
-						
-					});
-        	 }
 	        	
-	        
-    	    else
-        	{
-    	    	$('.newbranchdatasubmit').prop("disabled",false);
-        	}
+				$.ajax({
+					type : "POST",
+					url : "accountTransfersavejson",
+					data : formData,
+					success : function(
+							result) {
+						
+					validationformreset();
+						
+					$('.datatables-basic').DataTable().ajax.reload();
+					
+
+					},
+					error : function(e) {
+						console.log("Error"+ e);
+					}
+				});
+			} else {
+				$('.accounttransferdatasubmit').prop("disabled",false);
+			}
+    	 
     	    
-      }
-	    });
-  		
-    	});
-  //------------------------------------------------------------------------
- 
+      
+	    }); 
+    //------------------------------------------------------------------------
+      		
+   });// Jquery
+  
     // Users List suggestion
     //------------------------------------------------------
     // Date Format
-   const flatpickrFriendly = document.querySelector('#joiningDate');
+   const flatpickrFriendly = document.querySelector('#tDatex');
 	 // Human Friendly
 	  if (flatpickrFriendly) {
 	    flatpickrFriendly.flatpickr({
@@ -730,20 +565,39 @@
 	      dateFormat: 'Y-m-d'
 	    });
 	  }
-   
-	 
-	  
-	    // Phone
-		 const phoneMask1 = document.querySelector('.phone-number-otp-mask');
+	//------------------------------------------------------------------------
+	   function editacctransItem(e){
+		   var tid= e;
+			
+			var formData = {
+					tid : tid
+					
+				}
 
-	    // Phone Number Input Mask
-	    if (phoneMask1) {
-	      new Cleave(phoneMask1, {
-	        phone: true,
-	        phoneRegionCode: 'US'
-	      });
-	    }
-	    
+				$.ajax({
+					type : "POST",
+					url : "getaccounttransferitem",
+					data : formData,
+					success : function(result) {
+						var bmobj = JSON.parse(JSON.stringify(result));
+						console.log(bmobj);
+						
+						$("#accounttransferid").val(bmobj.accounttransferid);
+						$("#tDate").val(bmobj.tdate);
+						$("#tAmount").val(bmobj.tamount);
+						$("#twithdrawfrom").val(bmobj.twithdrawfrom).change();
+						$("#tDepositTo").val(bmobj.tdepositTo).change();
+						$("#Notes").val(bmobj.notes);
+						
+						$('.btnoffcanvas').click();
+					},
+					error : function(e) {
+						console.log("Error" + e);
+					}
+				});
+		   
+		};
+	//------------------------------------------------------------------------   
     </script>
   </body>
 </html>

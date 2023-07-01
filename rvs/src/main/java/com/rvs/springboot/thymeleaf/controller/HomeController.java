@@ -47,6 +47,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rvs.springboot.thymeleaf.entity.AccountTransfer;
+import com.rvs.springboot.thymeleaf.entity.AccountsIncome;
 import com.rvs.springboot.thymeleaf.entity.ActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterGuest;
@@ -93,6 +95,9 @@ import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
 import com.rvs.springboot.thymeleaf.entity.InsuranceClaimHistory;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
+import com.rvs.springboot.thymeleaf.entity.InvoiceItemMaster;
+import com.rvs.springboot.thymeleaf.entity.InvoiceMaster;
+import com.rvs.springboot.thymeleaf.entity.InvoiceReceiptMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadContact;
 import com.rvs.springboot.thymeleaf.entity.LeadFiles;
 import com.rvs.springboot.thymeleaf.entity.LeadFollowers;
@@ -120,6 +125,8 @@ import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
 import com.rvs.springboot.thymeleaf.pojo.tagify;
+import com.rvs.springboot.thymeleaf.service.AccountIncomeService;
+import com.rvs.springboot.thymeleaf.service.AccountTransferService;
 import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetAuditService;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
@@ -214,6 +221,12 @@ public class HomeController {
 
 	@Autowired
 	ProjectTemplateMasterService projectTemplateMasterService;
+
+	@Autowired
+	AccountTransferService accountTransferService;
+	
+	@Autowired
+	AccountIncomeService accountIncomeService;
 
 	@Autowired
 	ProjectTemplateBoardService projectTemplateBoardService;
@@ -1692,7 +1705,7 @@ public class HomeController {
 							.format(displaydateFormatrev.parse(hireobj.get(0).getEmployeehiredate())).toString());
 					em.setT_joindatetimeline(getTimeage(hireobj.get(0).getEmployeehiredate()));
 				} catch (ParseException e) {
-					e.printStackTrace();
+					// e.printStackTrace();
 				}
 			}
 			// -------------------------------------------
@@ -5400,20 +5413,18 @@ public class HomeController {
 	@PostMapping("insuranceclaimdetails")
 	public List<InsuranceClaimHistory> insuranceclaimdetails(Model themodel, @RequestParam("id") int id) {
 
-	List<InsuranceClaimHistory>	ls= insuranceMasterService.findById(id).getInsuranceClaimHistory();
-		
-	for(InsuranceClaimHistory obj : ls)
-	{
-		try {
-			obj.setClaimDateMMMddYYYFormate(displaydateFormatFirstMMMddYYY
-					.format(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getClaimDate())));
-			
+		List<InsuranceClaimHistory> ls = insuranceMasterService.findById(id).getInsuranceClaimHistory();
 
-		} catch (ParseException e) {
+		for (InsuranceClaimHistory obj : ls) {
+			try {
+				obj.setClaimDateMMMddYYYFormate(displaydateFormatFirstMMMddYYY
+						.format(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getClaimDate())));
 
+			} catch (ParseException e) {
+
+			}
 		}
-	}	
-		
+
 		return ls;
 
 	}
@@ -5463,12 +5474,10 @@ public class HomeController {
 			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(objindetail.getVendorName()));
 			objindetail.setVendorNamestr(vendor.getName());
 
-			if(insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff"))
-			{
+			if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(objindetail.getNominee()));
 				objindetail.setNominee_name_str(employee.getStaffName().toString());
-			}else
-			{
+			} else {
 				objindetail.setNominee_name_str("");
 			}
 			try {
@@ -5494,13 +5503,14 @@ public class HomeController {
 		return insurancemasternew.getInsuranceDetails().stream().filter(C -> C.getInsuranceDetailsid() == policyid)
 				.collect(Collectors.toList()).get(0);
 	}
-	
+
 	@ResponseBody
 	@PostMapping("getclaimpolicydetails")
-	public InsuranceClaimHistory getclaimpolicydetails(@RequestParam("id") int id, @RequestParam("claimid") int claimid) {
+	public InsuranceClaimHistory getclaimpolicydetails(@RequestParam("id") int id,
+			@RequestParam("claimid") int claimid) {
 
 		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
-		return insurancemasternew.getInsuranceClaimHistory().stream().filter(C -> C.getInsuranceClaimid()== claimid)
+		return insurancemasternew.getInsuranceClaimHistory().stream().filter(C -> C.getInsuranceClaimid() == claimid)
 				.collect(Collectors.toList()).get(0);
 	}
 
@@ -5589,7 +5599,7 @@ public class HomeController {
 	@PostMapping("policyClaimdetailsavejson")
 	public InsuranceMaster policyClaimdetailsavejson(@RequestParam Map<String, String> params) {
 
-	//	System.out.println(params);
+		// System.out.println(params);
 
 		InsuranceMaster insurancemasternew = insuranceMasterService
 				.findById(Integer.parseInt(params.get("Insuranceid")));
@@ -9206,9 +9216,18 @@ public class HomeController {
 		theModel.addAttribute("PURPOSE", PURPOSE);
 
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+
+		/*
+		 * String NATUREOFWORKtemp=""; for(String str: NATUREOFWORK) { NATUREOFWORKtemp=
+		 * NATUREOFWORKtemp.concat("<option value='"+ str + "'>"+ str+ "</option>"); }
+		 */
 		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		/*
+		 * String UNITStemp=""; for(String str: UNITS) { UNITStemp=
+		 * UNITStemp.concat("<option value=\'"+ str + "\'>"+ str+ "</option>"); }
+		 */
 		theModel.addAttribute("UNITS", UNITS);
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
@@ -9223,6 +9242,7 @@ public class HomeController {
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		return "projectaccounts";
 	}
+
 	@GetMapping("projectiteminfo")
 	public String projectproject(Model theModel, @RequestParam("id") int id) {
 
@@ -9358,4 +9378,448 @@ public class HomeController {
 		return "projectiteminfo";
 	}
 
+	@ResponseBody
+	@PostMapping("projectinvoicesave")
+	public ProjectMaster projectinvoicesave(@RequestParam Map<String, String> params) {
+
+		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+		List<InvoiceMaster> invls = new ArrayList();
+
+		String tempinvoiceid = nullremover(String.valueOf(params.get("invoiceid")));
+
+		if (!tempinvoiceid.equalsIgnoreCase("")) {
+			List<InvoiceMaster> ls = new ArrayList();
+
+			for (InvoiceMaster invm : pm.getInvoiceList()) {
+				if (invm.getInvoiceid() == Integer.parseInt(tempinvoiceid)) {
+					invm.setBilladdressline1(String.valueOf(params.get("billaddressline1")));
+					invm.setBilladdressline2(String.valueOf(params.get("billaddressline2")));
+					invm.setBillcity(String.valueOf(params.get("billaddresscity")));
+					invm.setBillEmail(String.valueOf(params.get("billEmail")));
+					invm.setBillGSTNo(String.valueOf(params.get("billGSTNo")));
+					invm.setBillMobileno(String.valueOf(params.get("billMobileno")));
+					invm.setBillpincode(String.valueOf(params.get("billaddresspincode")));
+					invm.setBillstate(String.valueOf(params.get("billaddressState")));
+					invm.setDueDate(String.valueOf(params.get("dueDate")));
+					invm.setGSTCode(String.valueOf(params.get("GSTCode")));
+					invm.setInvoiceaddresscity(String.valueOf(params.get("invoiceaddresscity")));
+					invm.setInvoiceaddressline1(String.valueOf(params.get("invoiceaddressline1")));
+					invm.setInvoiceaddressline2(String.valueOf(params.get("invoiceaddressline2")));
+					invm.setInvoiceaddresspincode(String.valueOf(params.get("invoiceaddresspincode")));
+					invm.setInvoiceaddressState(String.valueOf(params.get("invoiceaddressState")));
+					invm.setInvoiceDate(String.valueOf(params.get("invoiceDate")));
+					invm.setInvoiceEmail(String.valueOf(params.get("invoiceEmail")));
+					invm.setInvoiceMobileno(String.valueOf(params.get("invoiceMobileno")));
+					invm.setInvoiceType(String.valueOf(params.get("invoiceType")));
+					invm.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
+					invm.setNotes(String.valueOf(params.get("note")));
+					invm.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout,Ramanathapuram, Tamil Nadu 641045");
+					invm.setReceivable(String.valueOf(params.get("receivable")));
+					invm.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
+
+					List<InvoiceItemMaster> invitemls = new ArrayList();
+					for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
+
+						InvoiceItemMaster initem = new InvoiceItemMaster();
+						int invitemids = 0;
+						if (!nullremover(String.valueOf(params.get("InvoiceItemid" + i))).equalsIgnoreCase("")) {
+							invitemids = Integer.parseInt(params.get("InvoiceItemid" + i));
+							final int tempi = i;
+							initem = invm.getInvoiceItemMasterlist().stream().filter(
+									C -> C.getInvoiceitemid() == Integer.parseInt(params.get("InvoiceItemid" + tempi)))
+									.collect(Collectors.toList()).get(0);
+						}
+
+						invitemls.add(addupdatedInvoiceMaster(params, initem, i, invitemids));
+					}
+					invm.setInvoiceItemMasterlist(invitemls);
+
+				}
+				ls.add(invm);
+
+			}
+			pm.setInvoiceList(ls);
+
+		} else {
+			InvoiceMaster newinv = new InvoiceMaster();
+
+			newinv.setBilladdressline1(String.valueOf(params.get("billaddressline1")));
+			newinv.setBilladdressline2(String.valueOf(params.get("billaddressline2")));
+			newinv.setBillcity(String.valueOf(params.get("billaddresscity")));
+			newinv.setBillEmail(String.valueOf(params.get("billEmail")));
+			newinv.setBillGSTNo(String.valueOf(params.get("billGSTNo")));
+			newinv.setBillMobileno(String.valueOf(params.get("billMobileno")));
+			newinv.setBillpincode(String.valueOf(params.get("billaddresspincode")));
+			newinv.setBillstate(String.valueOf(params.get("billaddressState")));
+			newinv.setDueDate(String.valueOf(params.get("dueDate")));
+			newinv.setGSTCode(String.valueOf(params.get("GSTCode")));
+			newinv.setInvoiceaddresscity(String.valueOf(params.get("invoiceaddresscity")));
+			newinv.setInvoiceaddressline1(String.valueOf(params.get("invoiceaddressline1")));
+			newinv.setInvoiceaddressline2(String.valueOf(params.get("invoiceaddressline2")));
+			newinv.setInvoiceaddresspincode(String.valueOf(params.get("invoiceaddresspincode")));
+			newinv.setInvoiceaddressState(String.valueOf(params.get("invoiceaddressState")));
+			newinv.setInvoiceDate(String.valueOf(params.get("invoiceDate")));
+			newinv.setInvoiceEmail(String.valueOf(params.get("invoiceEmail")));
+			newinv.setInvoiceMobileno(String.valueOf(params.get("invoiceMobileno")));
+			newinv.setInvoiceType(String.valueOf(params.get("invoiceType")));
+			newinv.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
+			newinv.setNotes(String.valueOf(params.get("note")));
+			newinv.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout,Ramanathapuram, Tamil Nadu 641045");
+			newinv.setReceivable(String.valueOf(params.get("receivable")));
+			newinv.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
+
+			List<InvoiceItemMaster> invitemls = new ArrayList();
+			for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
+
+				invitemls.add(addupdatedInvoiceMaster(params, new InvoiceItemMaster(), i, 0));
+			}
+			newinv.setInvoiceItemMasterlist(invitemls);
+
+			pm.getInvoiceList().add(newinv);
+		}
+
+		return projectMasterService.save(pm);
+	}
+
+	public InvoiceItemMaster addupdatedInvoiceMaster(Map<String, String> params, InvoiceItemMaster invitemmaster,
+			int index, int itemid) {
+
+		invitemmaster.setInvoiceitemid(itemid);
+
+		double price = Double.parseDouble(String.valueOf(params.get("Price" + index)));
+		double qty = Double.parseDouble(String.valueOf(params.get("Quantity" + index)));
+		double taxableAmount = price * qty;
+
+		double Discountper = Double.parseDouble(String.valueOf(params.get("Discountper" + index)));
+		double CGSTper = Double.parseDouble(String.valueOf(params.get("CGSTper" + index)));
+		double SGSTper = Double.parseDouble(String.valueOf(params.get("SGSTper" + index)));
+		double IGSTper = Double.parseDouble(String.valueOf(params.get("IGSTper" + index)));
+
+		double dt = Discountper / 100;
+		double Discountamt = taxableAmount * dt;
+		double afetdiscountamount = taxableAmount - Discountamt;
+
+		double it = IGSTper / 100;
+		double ct = CGSTper / 100;
+		double st = SGSTper / 100;
+		double IGSTamount = afetdiscountamount * it;
+		double SGSTamount = afetdiscountamount * st;
+		double CGSTamount = afetdiscountamount * ct;
+
+		invitemmaster.setDiscountamt(Discountamt);
+		invitemmaster.setDiscountper(Discountper);
+
+		invitemmaster.setCGSTamount(CGSTamount);
+		invitemmaster.setCGSTper(CGSTper);
+
+		invitemmaster.setIGSTamount(IGSTamount);
+		invitemmaster.setIGSTper(IGSTper);
+
+		invitemmaster.setSGSTamount(SGSTamount);
+		invitemmaster.setSGSTper(SGSTper);
+
+		invitemmaster.setInvoiceItem(String.valueOf(params.get("InvoiceItem" + index)));
+		invitemmaster.setDescription(String.valueOf(params.get("Description" + index)));
+		invitemmaster.setQuantity(qty);
+		invitemmaster.setPrice(price);
+		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
+
+		invitemmaster.setTaxableAmount(afetdiscountamount);
+		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + SGSTamount + IGSTamount);
+
+		return invitemmaster;
+	}
+
+	@PostMapping("getprojectinvoicelist")
+	@ResponseBody
+	public List<InvoiceMaster> getprojectinvoicelist(@RequestParam Map<String, String> params) {
+
+		List<InvoiceMaster> ls = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getInvoiceList();
+		for (InvoiceMaster obj : ls) {
+			try {
+				obj.setInvoiceDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
+				obj.setDueDateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+			} catch (ParseException e) {
+
+				// e.printStackTrace();
+			}
+
+		}
+
+		return ls;
+	}
+
+	@PostMapping("getinvoiceitem")
+	@ResponseBody
+	public InvoiceMaster getinvoiceitem(@RequestParam Map<String, String> params) {
+
+		InvoiceMaster obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getInvoiceList().stream().filter(C -> C.getInvoiceid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
+		try {
+			obj.setInvoiceDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
+			obj.setDueDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+		return obj;
+
+	}
+
+	@PostMapping("getprojectreceiptlist")
+	@ResponseBody
+	public List<InvoiceReceiptMaster> getprojectreceiptlist(@RequestParam Map<String, String> params) {
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
+		List<InvoiceReceiptMaster> ls = pm.getReceiptList();
+		List<InvoiceMaster> invls = pm.getInvoiceList();
+
+		for (InvoiceReceiptMaster obj : ls) {
+			try {
+				obj.setRecepitDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
+
+				obj.setInvoiceNo(invls.stream().filter(C -> C.getInvoiceid() == Integer.parseInt(obj.getInvoiceid()))
+						.collect(Collectors.toList()).get(0).getInvoiceNo());
+
+			} catch (ParseException e) {
+
+				// e.printStackTrace();
+			}
+
+		}
+
+		return ls;
+	}
+
+	@PostMapping("getreceiptitem")
+	@ResponseBody
+	public InvoiceReceiptMaster getreceiptitem(@RequestParam Map<String, String> params) {
+
+		InvoiceReceiptMaster obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getReceiptList().stream().filter(C -> C.getRecepitid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
+		try {
+			obj.setRecepitDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+		return obj;
+
+	}
+
+	@PostMapping("getinvoicereceiptitem")
+	@ResponseBody
+	public Map<String, String> getinvoicereceiptitem(@RequestParam Map<String, String> params) {
+
+		Map<String, String> map = new HashMap<>();
+
+		double totalpaidamount = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getReceiptList().stream().filter(C -> C.getInvoiceid().equalsIgnoreCase(params.get("invoiceid")))
+				.mapToDouble(InvoiceReceiptMaster::getAmount).sum();
+
+		map.put("totalpaidamount", String.valueOf(totalpaidamount));
+
+		InvoiceMaster inv = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getInvoiceList().stream().filter(C -> C.getInvoiceid() == Integer.parseInt(params.get("invoiceid")))
+				.collect(Collectors.toList()).get(0);
+
+		try {
+			inv.setDueDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(inv.getDueDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+
+		double totalinvoiceamount = inv.getInvoiceItemMasterlist().stream()
+				.mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
+		map.put("Invoiceno", inv.getInvoiceNo());
+		map.put("duedate", inv.getDueDateMMMddyyyy());
+		map.put("amount", String.valueOf(totalinvoiceamount));
+		map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
+		map.put("invoiceid", String.valueOf(inv.getInvoiceid()));
+		map.put("invoiceid", String.valueOf(inv.getInvoiceid()));
+
+		return map;
+
+	}
+
+	@ResponseBody
+	@PostMapping("projectreceiptsave")
+	public ProjectMaster projectreceiptsave(@RequestParam Map<String, String> params) {
+
+		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+		List<InvoiceReceiptMaster> invls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("recepitid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<InvoiceReceiptMaster> ls = new ArrayList();
+
+			for (InvoiceReceiptMaster invm : pm.getReceiptList()) {
+				if (invm.getRecepitid() == Integer.parseInt(tempreceiptid)) {
+
+					invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+					invm.setAmount(Double.parseDouble(params.get("amount")));
+					invm.setDepositedto(String.valueOf(params.get("depositedto")));
+					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+					invm.setNotes(String.valueOf(params.get("notes")));
+					invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
+				}
+				ls.add(invm);
+
+			}
+			pm.setReceiptList(ls);
+		} else {
+			InvoiceReceiptMaster invm = new InvoiceReceiptMaster();
+
+			invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+			invm.setAmount(Double.parseDouble(params.get("amount")));
+			invm.setDepositedto(String.valueOf(params.get("depositedto")));
+			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+			invm.setNotes(String.valueOf(params.get("notes")));
+			invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
+			invm.setInvoiceid(String.valueOf(params.get("recinvoiceid")));
+
+			pm.getReceiptList().add(invm);
+		}
+
+		return projectMasterService.save(pm);
+	}
+
+	@GetMapping("accounttransfer")
+	public String getaccounttranser(Model themodel) {
+
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("AccountTransfer"));
+
+		return "accounttransfer";
+	}
+
+	@ResponseBody
+	@GetMapping("accounttransferlistjson")
+	public List<AccountTransfer> accounttransferlistjson(Model themodel) {
+		List<AccountTransfer> atList = accountTransferService.findAll();
+
+		for (AccountTransfer am : atList) {
+
+			try {
+				am.setTDateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(am.getTDate().toString())));
+			} catch (ParseException e) {
+				// e.printStackTrace();
+			}
+
+		}
+		atList =atList.stream().sorted(Comparator.comparing(AccountTransfer :: getAccounttransferid).reversed()).toList();	
+		
+		return atList;
+
+	}
+
+	@ResponseBody
+	@PostMapping("accountTransfersavejson")
+	public AccountTransfer accountTransfersavejson(@RequestParam Map<String, String> params) {
+		
+		AccountTransfer obj = new AccountTransfer();
+		String accounttransferid = nullremover(String.valueOf(params.get("accounttransferid")));
+
+		if (!accounttransferid.equalsIgnoreCase("")) {
+		
+			obj.setAccounttransferid(Integer.parseInt(accounttransferid));
+		}
+		obj.setNotes(String.valueOf(params.get("Notes")));
+		obj.setTAmount(String.valueOf(params.get("tAmount")));
+		obj.setTDate(String.valueOf(params.get("tDate")));
+		obj.setTDepositTo(String.valueOf(params.get("tDepositTo")));
+		obj.setTwithdrawfrom(String.valueOf(params.get("twithdrawfrom")));
+		return accountTransferService.save(obj);
+	}
+
+	@ResponseBody
+	@PostMapping("getaccounttransferitem")
+	public AccountTransfer getaccounttransferitem(@RequestParam Map<String, String> params) {
+		
+		
+		return accountTransferService.findById(Integer.parseInt(params.get("tid")));
+	}
+	
+	//accountIncomeService
+	
+	
+	@GetMapping("accountincome")
+	public String getaccountincome(Model themodel) {
+
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Income"));
+
+		return "accountincome";
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("accountincomelistjson")
+	public List<AccountsIncome> accountincomelistjson(Model themodel) {
+		List<AccountsIncome> atList = accountIncomeService.findAll();
+
+		for (AccountsIncome am : atList) {
+
+			try {
+				am.setIdateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(am.getIdate().toString())));
+			} catch (ParseException e) {
+				// e.printStackTrace();
+			}
+
+		}
+		atList =atList.stream().sorted(Comparator.comparing(AccountsIncome :: getAccountIncomeid).reversed()).toList();	
+		
+		return atList;
+
+	}
+
+	@ResponseBody
+	@PostMapping("accountsincomesavejson")
+	public AccountsIncome accountsincomesavejson(@RequestParam Map<String, String> params) {
+		//System.out.println(params);
+		
+		AccountsIncome obj = new AccountsIncome();
+		String accounttransferid = nullremover(String.valueOf(params.get("accountIncomeid")));
+
+		if (!accounttransferid.equalsIgnoreCase("")) {
+		
+			obj.setAccountIncomeid(Integer.parseInt(accounttransferid));
+		}
+		obj.setIamount(String.valueOf(params.get("iamount")));
+		obj.setIcategory(String.valueOf(params.get("icategory")));
+		obj.setIdate(String.valueOf(params.get("idate")));
+		obj.setIdepositto(String.valueOf(params.get("idepositto")));
+		obj.setIdescription(String.valueOf(params.get("idescription")));
+		obj.setIfrom(String.valueOf(params.get("ifrom")));
+		obj.setRefNo(String.valueOf(params.get("refNo")));
+		
+		return accountIncomeService.save(obj);
+	}
+
+	@ResponseBody
+	@PostMapping("getaccountincomeitem")
+	public AccountsIncome getaccountincomeitem(@RequestParam Map<String, String> params) {
+		
+		
+		return accountIncomeService.findById(Integer.parseInt(params.get("tid")));
+	}
+	
 }

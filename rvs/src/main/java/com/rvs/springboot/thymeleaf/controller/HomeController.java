@@ -4609,6 +4609,7 @@ public class HomeController {
 		themodel.addAttribute("selectedasset", selectedasset);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
 		themodel.addAttribute("today", displaydateFormatrev.format(new Date()));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "checkout";
 	}
 
@@ -4866,11 +4867,14 @@ public class HomeController {
 		}
 
 		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
-				.filter(C -> C.getStatus().equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+				.filter(C ->nullremover( String.valueOf( C.getStatus())).equalsIgnoreCase("In Stock")).collect(Collectors.toList());
 
 		themodel.addAttribute("printstr", printstr);
 		request.getSession().setAttribute("printcheckoutstr", printstr);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
+		
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		return "checkout";
 	}
@@ -4883,7 +4887,7 @@ public class HomeController {
 
 		themodel.addAttribute("staffname", temp[0]);
 		themodel.addAttribute("printstr", printstr);
-
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "checkoutprint";
 	}
 
@@ -4913,7 +4917,7 @@ public class HomeController {
 		themodel.addAttribute("emp", emp);
 		themodel.addAttribute("selectedasset", selectedasset);
 		themodel.addAttribute("today", displaydateFormatrev.format(new Date()));
-
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "checkin";
 	}
 
@@ -4947,7 +4951,7 @@ public class HomeController {
 		themodel.addAttribute("branchls", branchls);
 		themodel.addAttribute("emp", emp);
 		themodel.addAttribute("selectedasset", selectedasset);
-
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "assettransfer";
 	}
 
@@ -4982,7 +4986,7 @@ public class HomeController {
 
 	@PostMapping("checkinsave")
 	public String checkinsave(Model themodel, @RequestParam(name = "StaffID") String StaffID,
-			@RequestParam(name = "CheckInDate") String CheckInDate, @RequestParam(name = "checkbox") boolean[] checkbox,
+			@RequestParam(name = "CheckInDate") String CheckInDate, @RequestParam(name = "checkbox", required = false) boolean[] checkbox ,
 			@RequestParam(name = "AssetName") String[] AssetId, @RequestParam(name = "Status") String[] Status,
 			@RequestParam(name = "ACondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
@@ -5072,7 +5076,7 @@ public class HomeController {
 		}
 
 		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
-				.filter(C -> !(C.getStatus().equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
+				.filter(C -> !(nullremover(String.valueOf(C.getStatus())).equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
 
 		themodel.addAttribute("printstr", printstr);
 		request.getSession().setAttribute("printcheckinstrEmpname", Empname);
@@ -5080,6 +5084,7 @@ public class HomeController {
 
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "checkin";
 	}
 
@@ -5091,7 +5096,7 @@ public class HomeController {
 
 		themodel.addAttribute("printstr", printstr);
 		themodel.addAttribute("printcheckinstrEmpname", printcheckinstrEmpname);
-
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "checkinprint";
 	}
 
@@ -5104,6 +5109,7 @@ public class HomeController {
 		themodel.addAttribute("printstr", printstr);
 		themodel.addAttribute("printcheckinstrEmpname", printcheckinstrEmpname);
 		themodel.addAttribute("printcheckinstrEmpnameto", printcheckinstrEmpnameto);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "assettranferprint";
 	}
 
@@ -5217,6 +5223,8 @@ public class HomeController {
 
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		
 		return "assettransfer";
 	}
 
@@ -5229,7 +5237,7 @@ public class HomeController {
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchls", branchls);
-
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
 		return "assetaudit";
@@ -5331,6 +5339,7 @@ public class HomeController {
 		themodel.addAttribute("branchls", branchls);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj);
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "assetaudit";
 	}
 

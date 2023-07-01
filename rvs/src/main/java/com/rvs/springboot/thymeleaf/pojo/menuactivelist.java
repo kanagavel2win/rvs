@@ -149,7 +149,13 @@ public class menuactivelist {
 		{
 			activemenus.put("Income", true);
 			
+		}else if(menutitle.equalsIgnoreCase("asset"))
+		{
+			activemenus.put("Administration", true);
+			activemenus.put("AssetManagement", true);
+			
 		}
+		
 		
 		
 		

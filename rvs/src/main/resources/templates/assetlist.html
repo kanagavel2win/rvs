@@ -132,7 +132,7 @@
 
 							<div class="card-header">
 
-								<div class="row g-3">
+								<div class="row gy-3">
 
 									
 									<div class="col-lg-3 col-sm-12">
@@ -160,24 +160,24 @@
 									 </select>
 									</div>
 									
-									<div class="col-lg-2 col-sm-12">
-										<button type="button" class="btn btn-warning mt-4"
-											data-bs-toggle="modal" data-bs-target="#addasset">
+						
+									
+									
+									<div class="col-sm-3">
+          
+            <div class="demo-inline-spacing">
+            
+            <button type="button" class="btn btn-secondary mt-4">Cart<span class="badge bg-white text-primary ms-1" id="cartcount"> </span> </button>
+            
+             <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#addasset">
 											<span class="tf-icons bx bx-plus me-1"></span>New
 										</button>
-									</div>
+              
+            </div>
+          </div>
 									
 									
-									<div class="col-lg-1 col-sm-12">
-										<button type="button" class="btn text-nowrap d-inline-block" 
-											data-bs-toggle="modal"
-											data-bs-target="#exampleModalScrollable">
-											<span class="tf-icons bx bx-md bx-cart"></span> <span
-												class="badge bg-danger rounded-pill badge-notifications"
-												id="cartcount" style="padding: 0.2rem 0.4rem;">0</span>
-										</button>
-
-									</div>
+									
 
 								</div>
 							</div>
@@ -593,6 +593,8 @@
 	<script th:src="@{/assets/js/main.js}"></script>
 	
 	 <script th:src="@{/assets/js/tables-datatables-advanced.js}"></script>
+	 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/collect.js/4.36.1/collect.js"></script>
 
 
 
@@ -611,6 +613,7 @@
 	var branchname = [];
     const Branch = $('#Branch1');
     const Custodian = $('#Custodian');
+    var collection;
 	
 	
 	  var dt_basic_table = $('.datatables-basic');
@@ -667,29 +670,15 @@
 	    });
 	    
 	    function filterDuplicateRows() {
-	    dt_basic.rows().every(function(rowIdx, tableLoop, rowLoop) {
-	    	if(this.data().branchname != '' && this.data().branchname != null)
-	    	{
-	    		branchname.push(this.data().branchname);
-	    	}
-	    
-	    	if(this.data().custodian != '' && this.data().custodian != null)
-	    	{
-	    		custodian.push(this.data().custodian);	
-	    	}
-	    	
-	    })
-	    branchname = [...new Set(branchname)];
-	    custodian = [...new Set(custodian)];
-	    
-	    $.each(branchname, function(key, value) {
-	    	Branch.append($('<option></option>').val(value).text(value));
-	    	});
-	    
-	    $.each(custodian, function(key, value) {
-	    	Custodian.append($('<option></option>').val(value).text(value));
-	    	});
-	    
+	     collection = collect(dt_basic.rows().data().toArray());
+	     var branchname = collection.pluck('branchname').filter(function(value) {return value != '' && value != null}).unique().all();
+	     $.each(branchname, function(key, value) {
+		    	Branch.append($('<option></option>').val(value).text(value));
+		  });
+	     var custodian = collection.pluck('custodian').filter(function(value) {return value != '' && value != null}).unique().all();
+	     $.each(custodian, function(key, value) {
+		    	Custodian.append($('<option></option>').val(value).text(value));
+		  });
 	    }
 	    
 	    
@@ -759,6 +748,16 @@
 				   alert("Reset Your Cart");
 		   }
 		   
+		   if(this.value == 'In Stock'){
+			   Custodian.val('');
+			   Custodian.attr('disabled',true);
+		   }
+		   else{
+			   Custodian.val('');
+			   Custodian.attr('disabled',false);
+		   }
+		   
+		   Branch.val('');
 		   
 		   dt_basic_table.DataTable().column(4).search(this.value, false, true).draw();
 		   
@@ -775,6 +774,12 @@
 		   }
 	   })
 	   
+	   Custodian.change(function(e){
+	   var branchname = collection.where('custodian',this.value).pluck('branchname').unique().all();
+	   var status = collection.where('custodian',this.value).pluck('status').unique().all();
+	   $('#Status').val(status[0]);
+	   Branch.val(branchname[0]);
+	   })
 	   
 	   $(`#checkout`).click(function (){
 		   var cartid="";

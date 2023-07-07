@@ -2,6 +2,9 @@ package com.rvs.springboot.thymeleaf.pojo;
 
 import java.util.HashMap;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;

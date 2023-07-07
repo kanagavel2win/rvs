@@ -91,6 +91,17 @@ public class ProjectMaster {
 	@OrderBy("recepitid ASC")
 	List<InvoiceReceiptMaster> receiptList;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name =  "projectid")
+	@OrderBy("projectpurchaseid ASC")
+	List<ProjectpurchaseMaster> ProjectpurchaseMasterList;
+	
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name =  "projectid")
+	@OrderBy("recepitid ASC")
+	List<ProjectpurchasePaymentMaster> purchasePaymentMasterList;
+	
 	
 	@Column
 	private String addressline1;

@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Project Accounts</title>
+<title>Project Invoice & Receipt</title>
 
 <meta name="description" content="" />
 
@@ -370,6 +370,8 @@
 									<li class="nav-item"><a class="nav-link" th:href="'projectpurchase?id='+${projectMaster.id}">
 										<i
 											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Purchase</a></li>
+									<li class="nav-item"><a class="nav-link" th:href="'projectexpense?id='+${projectMaster.id}"><i
+											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
 								</ul>
 								<!--/ User Pills -->
 
@@ -2094,7 +2096,7 @@
 			// 
 			$('.invoice-item-qty').on('change',function(event) {
 				invoiceamountCalculator();
-				onchange="invoiceamountCalculator()"
+				
 			});
 			$('.invoice-item-price').on('change',function(event) {
 				invoiceamountCalculator();

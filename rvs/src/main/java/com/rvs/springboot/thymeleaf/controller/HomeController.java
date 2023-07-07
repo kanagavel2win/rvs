@@ -110,6 +110,7 @@ import com.rvs.springboot.thymeleaf.entity.OrganizationContact;
 import com.rvs.springboot.thymeleaf.entity.OrganizationContacts;
 import com.rvs.springboot.thymeleaf.entity.OrganizationFiles;
 import com.rvs.springboot.thymeleaf.entity.ProjectContact;
+import com.rvs.springboot.thymeleaf.entity.ProjectExpense;
 import com.rvs.springboot.thymeleaf.entity.ProjectFiles;
 import com.rvs.springboot.thymeleaf.entity.ProjectFollowers;
 import com.rvs.springboot.thymeleaf.entity.ProjectItemMaster;
@@ -9895,7 +9896,7 @@ public class HomeController {
 	
 		
 	@GetMapping("projectpurchase")
-	public String projectexpense(Model theModel, @RequestParam("id") int id) {
+	public String projectpurchase(Model theModel, @RequestParam("id") int id) {
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
 		ProjectMaster projectMaster = new ProjectMaster();
@@ -10152,6 +10153,253 @@ public class HomeController {
 		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + SGSTamount + IGSTamount);
 
 		return invitemmaster;
+	}
+	
+	
+
+	@GetMapping("projectexpense")
+	public String projectexpense(Model theModel, @RequestParam("id") int id) {
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+
+		ProjectMaster projectMaster = new ProjectMaster();
+		projectMaster = projectMasterService.findById(id);
+
+		if (!nullremover(String.valueOf(projectMaster.getOrganization())).equalsIgnoreCase("")) {
+			projectMaster.setOrganizationName(contactOrganizationService
+					.findById(Integer.parseInt(projectMaster.getOrganization())).getOrgname());
+		}
+		List<ProjectFollowers> projectfolloersls = new ArrayList();
+		String followerids = "";
+		for (ProjectFollowers lf : projectMaster.getProjectFollowers()) {
+
+			followerids += lf.getEmpid() + ",";
+			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
+
+			lf.setFollowername(empobj.getStaffName());
+
+			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+					.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+			if (validProfilephoto.size() > 0) {
+
+				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
+			}
+
+			projectfolloersls.add(lf);
+		}
+		followerids = followerids.substring(0, followerids.length() - 1);
+		projectMaster.setProjectfollowerids(followerids);
+
+		if (!nullremover(String.valueOf(projectMaster.getReference())).equalsIgnoreCase("")) {
+			final String projectreference = projectMaster.getReference().toString();
+			ContactPerson cp = contactPersonService.findById(Integer.parseInt(projectreference));
+			projectMaster.setReferenceName(cp.getPeoplename());
+		}
+
+		if (!nullremover(String.valueOf(projectMaster.getBranch())).equalsIgnoreCase("")) {
+			int branchid = projectMaster.getBranch();
+			BranchMaster bm = branchMasterService.findById(branchid);
+			projectMaster.setBranchname(bm.getBRANCH_NAME());
+		}
+		// ----------------------------------------------------------
+		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
+
+		for (ProjectContact lc : projectMaster.getProjectContact()) {
+			ContactPerson cp = contactPersonService.findById(lc.getContactPerson());
+
+			// Set primary contact
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplist.add(cp);
+
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+			try {
+				projectMaster.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(projectMaster.getExpectedclosingdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+
+		if (!nullremover(String.valueOf(projectMaster.getStartdate())).equalsIgnoreCase("")) {
+			try {
+				projectMaster.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(projectMaster.getStartdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
+			projectMaster.setBoardName(
+					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
+		}
+
+		// ----------------------------------------------------------
+		theModel.addAttribute("cplist", cplist);
+		theModel.addAttribute("projectMaster", projectMaster);
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+
+		List<String> industry_type = itemlistService.findByFieldName("industry_type");
+		theModel.addAttribute("industry_type", industry_type);
+
+		theModel.addAttribute("employeelist", emplist);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		// Next Activity & Followers Details
+		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> followersmap = new HashMap();
+		String followerstr = "";
+
+		theModel.addAttribute("personlist", cplis);
+		theModel.addAttribute("organizationlist", corglis);
+
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		theModel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		theModel.addAttribute("PURPOSE", PURPOSE);
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+
+		/*
+		 * String NATUREOFWORKtemp=""; for(String str: NATUREOFWORK) { NATUREOFWORKtemp=
+		 * NATUREOFWORKtemp.concat("<option value='"+ str + "'>"+ str+ "</option>"); }
+		 */
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		/*
+		 * String UNITStemp=""; for(String str: UNITS) { UNITStemp=
+		 * UNITStemp.concat("<option value=\'"+ str + "\'>"+ str+ "</option>"); }
+		 */
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmlist);
+
+		theModel.addAttribute("contactPeopleList",
+				contactPersonService.contactpersonlistbyorgname(projectMaster.getOrganization()));
+		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
+		theModel.addAttribute("board", projectTemplateBoardService.findAll());
+		
+		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream().filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
+		
+		return "projectexpense1";
+	}
+
+	@ResponseBody
+	@PostMapping("projectexpensesave")
+	public ProjectMaster projectexpensesave(@RequestParam Map<String, String> params) {
+
+		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+		
+		List<ProjectExpense> invls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("prjExpenseid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<ProjectExpense> ls = new ArrayList();
+
+			for (ProjectExpense invm : pm.getProjectExpenseList()) {
+				if (invm.getPrjExpenseid() == Integer.parseInt(tempreceiptid)) {
+
+					invm.setCategory(String.valueOf(params.get("category")));
+					invm.setDescription(String.valueOf(params.get("Description")));
+					invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
+					invm.setNotes(String.valueOf(params.get("Notes")));
+					invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
+					invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
+					invm.setQuantity(Double.parseDouble(params.get("Quantity")));
+					invm.setStaff(String.valueOf(params.get("staff")));
+					invm.setTotal(Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));	
+					invm.setAmount(Double.parseDouble(params.get("Amount")));
+					invm.setUnit(String.valueOf(params.get("unit")));
+					invm.setVehicle(String.valueOf(params.get("vehicle")));			
+					
+				}
+				ls.add(invm);
+
+			}
+			pm.setProjectExpenseList(ls);
+			
+		} else {
+			ProjectExpense invm = new ProjectExpense();
+
+			invm.setCategory(String.valueOf(params.get("category")));
+			invm.setDescription(String.valueOf(params.get("Description")));
+			invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
+			invm.setNotes(String.valueOf(params.get("Notes")));
+			invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
+			invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
+			invm.setQuantity(Double.parseDouble(params.get("Quantity")));
+			invm.setStaff(String.valueOf(params.get("staff")));
+			invm.setTotal(Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));	
+			invm.setAmount(Double.parseDouble(params.get("Amount")));
+			invm.setUnit(String.valueOf(params.get("unit")));
+			invm.setVehicle(String.valueOf(params.get("vehicle")));	
+
+			pm.getProjectExpenseList().add(invm);
+		}
+
+		return projectMasterService.save(pm);
+	}
+	
+	@PostMapping("getprojectexpenselist")
+	@ResponseBody
+	public List<ProjectExpense> getprojectexpenselist(@RequestParam Map<String, String> params) {
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
+		List<ProjectExpense> ls = pm.getProjectExpenseList();
+		List<EmployeeMaster> emplist = employeeMasterService.findAll();
+		
+		for (ProjectExpense obj : ls) {
+			try {
+				
+				obj.setPrjExpenseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getPrjExpenseDate())).toString());
+				
+				obj.setStaffname(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(params.get("mastercategoryid"))).collect(Collectors.toList()).get(0).getStaffName());	
+				
+				
+			} catch (ParseException e) {
+
+				// e.printStackTrace();
+			}
+
+		}
+
+		return ls;
+	}
+	
+	@PostMapping("getexpenseitem")
+	@ResponseBody
+	public ProjectExpense getexpenseitem(@RequestParam Map<String, String> params) {
+
+		ProjectExpense obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getProjectExpenseList().stream().filter(C -> C.getPrjExpenseid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
+		
+		return obj;
+
 	}
 	
 }

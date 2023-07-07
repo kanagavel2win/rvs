@@ -102,10 +102,14 @@ public class ProjectMaster {
 	@OrderBy("recepitid ASC")
 	List<ProjectpurchasePaymentMaster> purchasePaymentMasterList;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "projectId")
+	@OrderBy("prjExpenseid ASC")
+	private List<ProjectExpense> projectExpenseList;
 	
 	@Column
 	private String addressline1;
-	@Column
+	@Column 
 	private String addressline2;
 	@Column
 	private String lankmark;
@@ -133,6 +137,8 @@ public class ProjectMaster {
 	@JoinColumn(name = "projectId")
 	@OrderBy("projectitemid ASC")
 	private List<ProjectItemMaster> projectItemMaster;
+	
+	
 	
 	
 	@Transient

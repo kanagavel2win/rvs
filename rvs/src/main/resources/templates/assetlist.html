@@ -792,8 +792,6 @@
 	   
 	   Custodian.change(function(e){
 	   var branchname = collection.where('custodian',this.value).pluck('branchname').unique().all();
-	   var status = collection.where('custodian',this.value).pluck('status').unique().all();
-	   $('#Status').val(status[0]);
 	   Branch.val(branchname[0]);
 	   })
 	   
@@ -803,7 +801,7 @@
 			 cartid = cartid+","+$(this).attr('name');
 			});
 		   cartid = cartid.substring(1,cartid.length);
-		   window.location.href = 'checkout?id='+cartid;
+		   window.location.href = 'checkout?id='+cartid+'&branchname='+Branch.val()+'&Status='+$('#Status').val()+'&Custodian='+$('#Custodian').val();
 	   })
 	   
 	   

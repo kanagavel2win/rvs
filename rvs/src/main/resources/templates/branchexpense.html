@@ -21,7 +21,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Branch View</title>
+    <title>Branch Expense</title>
 
 	  <meta name="description" content="" />
 	  
@@ -434,10 +434,10 @@ cursor:pointer;
 					<!-- User Pills -->
 					<ul class="nav nav-pills flex-column flex-md-row mb-3">
 								
-						<li class="nav-item"><a class="nav-link active">
+						<li class="nav-item"><a class="nav-link " th:href="'editbranch?id='+${BranchMaster.id}">
 							<i
-								class="menu-icon tf-icons bx bx-food-menu me-1"></i>Purchase</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="'branchexpense?id='+${BranchMaster.id}"><i
+								class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
+						<li class="nav-item"><a class="nav-link active" ><i
 								class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
 					</ul>
 					<!--/ User Pills -->
@@ -447,11 +447,11 @@ cursor:pointer;
 						<div class="card-body1">
 							<div class="card-header align-items-center">
 								<h5 class="card-action-title mb-0">
-									Purchase List
+									Expense List
 									<div class="card-action-element" style="float: right">
-										<button class="btn btn-primary btn-sm addNewPurchasebtn"
+										<button class="btn btn-primary btn-sm addNewExpensebtn"
 											type="button" data-bs-toggle="modal"
-											data-bs-target="#Purchasemodel">
+											data-bs-target="#Expensemodel">
 											<i class="bx bx-plus bx-xs me-1"></i>
 										</button>
 									</div>
@@ -461,14 +461,14 @@ cursor:pointer;
 								<table class="table border-top m-0">
 									<thead>
 										<tr>
-											<th>Purchase #</th>
-											<th>Type</th>
+											<th>Staff #</th>
+											<th>Supplier</th>
 											<th>Date</th>
-											<th>Due Date</th>
+											<th>Notes</th>
 											<th>Amount</th>
 										</tr>
 									</thead>
-									<tbody id="branchPurchaselist">
+									<tbody id="branchExpenselist">
 
 									</tbody>
 								</table>
@@ -477,42 +477,14 @@ cursor:pointer;
 					</div>
 					<!-- /Project   Card -->
 
-					<!-- Receipts   Card -->
-					<div class="card  mb-4">
-						<div class="card-body1">
-							<div class="card-header align-items-center">
-								<h5 class="card-action-title mb-0">
-									Payment Receipts List
-									
-								</h5>
-							</div>
-							<div class="table-responsive">
-								<table class="table border-top m-0">
-									<thead>
-										<tr>
-											<th>Ref #</th>
-											<th>Purchase #</th>
-											<th>Date</th>
-											<th>Account</th>
-											
-											<th>Amount Paid</th>
-										</tr>
-									</thead>
-									<tbody id="receiptslist">
-
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-					<!-- /Receipts   Card -->
+					
 				</div>
 				<!-- User Content -->
               </div>
 
               <!-- Modal -->
-              <!-- Add Purchase -->
-				<div class="modal fade" id="Purchasemodel" tabindex="-1"
+              <!-- Add Expense -->
+				<div class="modal fade" id="Expensemodel" tabindex="-1"
 					aria-hidden="true">
 	
 					
@@ -522,10 +494,10 @@ cursor:pointer;
 								<div class="modal-bodyx">
 									<button type="button" class="btn-close"
 										data-bs-dismiss="modal" aria-label="Close"></button>
-									<form  class="row g-3 needs-validation"  id="editPurchaseformx"
+									<form  class="row g-3 needs-validation"  id="editExpenseformx"
 							onsubmit="return false">
 									<!-- -------- -->
-									<!-- Purchase Add-->
+									<!-- Expense Add-->
 									<div class="col-lg-12 col-12 mb-lg-0 mb-4">
 										<div class="card invoice-preview-card">
 											<div class="card-body">
@@ -534,30 +506,14 @@ cursor:pointer;
 														<dl class="row mb-2">
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																<span class="text-capitalize mb-0 text-nowrap">
-																	Purchase No#</span>
+																	Expense No#</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
 																<div class="w-px-150">
 																	<input type="text" class="form-control"
-																		id="branchpurchaseNo" name="branchpurchaseNo" required /> <input
-																		type="hidden" class="form-control" id="branchpurchaseid"
-																		name="branchpurchaseid" />
-																</div>
-															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Supplier Invoice Type:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select id="branchpurchaseType" name="branchpurchaseType"
-																		class="form-select"
-																		aria-label="Default select example" required>
-																		<option value="">-</option>
-																		<option value="Tax Invoice">Tax Invoice</option>
-																		<option value="Proforma Invoice">Proforma
-																			Invoice</option>
-																		<option value="Bill">Bill</option>
-																	</select>
+																		id="branchexpenseNo" name="branchexpenseNo" required /> <input
+																		type="hidden" class="form-control" id="branchexpenseid"
+																		name="branchexpenseid" />
 																</div>
 															</dd>
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
@@ -567,7 +523,7 @@ cursor:pointer;
 																<div class="w-px-150">
 																	<select
 																		class="form-select  form-control "
-																		id="purchase_employeeid" name="purchase_employeeid" 
+																		id="expense_employeeid" name="expense_employeeid" 
 																		required>
 																		<option value="">-</option>
 																		<th:block th:each="str :${EffectiveEmployee}">
@@ -583,7 +539,7 @@ cursor:pointer;
 															<dd class="col-sm-6 d-flex justify-content-md-end">
 																<div class="w-px-150">
 																	<select class="form-select followers form-control "
-																		id="purchase_supplierid" name="purchase_supplierid" >
+																		id="expense_supplierid" name="expense_supplierid" >
 																		<option value="">-</option>
 																		<th:block th:each="str :${supplierlist}">
 																			<option th:value="${str.id}" th:text="${str.orgname}"></option>
@@ -603,34 +559,51 @@ cursor:pointer;
 															<dd class="col-sm-6 d-flex justify-content-md-end">
 																<div class="w-px-150">
 																	<input type="date" class="form-control"
-																		id="branchpurchaseDate" name="branchpurchaseDate" required />
+																		id="branchexpenseDate" name="branchexpenseDate" required />
 																</div>
 															</dd>
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Receivable :</span>
+																<span class="fw-normal">Paid From:</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
 																<div class="w-px-150">
-																	<select id="receivable" name="receivable"
-																		class="form-select"
-																		aria-label="Default select example" required>
+																	<select class="form-select followers form-control "
+																		id="depitedfrom" name="depitedfrom" >
 																		<option value="">-</option>
-																		<option value="0">On Due</option>
-																		<option value="30">30 Days</option>
-																		<option value="60">60 Days</option>
-																		<option value="90">90 Days</option>
+																		<option value="SBI">SBI</option>
+																		<option value="IDBI">IDBI</option>
+																		<option value="LVB">LVB</option>
+																		<option value="Axis 1">Axis 1</option>
+																		<option value="Axis 2">Axis 2</option>
+																		<option value="Cash 1">Cash 1</option>
+																		<option value="Cash 2">Cash 2</option>
+																		<option value="SBI Sukumar">SBI Sukumar</option>
+																		<option value="SBI Balakumar">SBI Balakumar</option>
+																		<option value="TDS">TDS</option>
 																	</select>
 																</div>
 															</dd>
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Due Date:</span>
+																<span class="fw-normal">Mode of Payment :</span>
 															</dt>
+															
 															<dd class="col-sm-6 d-flex justify-content-md-end">
 																<div class="w-px-150">
-																	<input type="date" class="form-control date-picker"
-																		id="dueDate" name="dueDate" required/>
+																	<select id="modeofPayment" name="modeofPayment"
+																		class="form-select"
+																		aria-label="Default select example" required>
+																		<option value="">-</option>
+																		<option value="NEFT">NEFT</option>
+																		<option value="RTGS">RTGS</option>
+																		<option value="Cash">Cash</option>
+																		<option value="Paypal">Paypal</option>
+																		<option value="Paytm">Paytm</option>
+																		<option value="Gpay">Gpay</option>
+																		<option value="Other UPI">Other UPI</option>
+																	</select>
 																</div>
 															</dd>
+															
 															
 														</dl>
 													</div>
@@ -641,12 +614,12 @@ cursor:pointer;
 											
 												<div class="mb-3" data-repeater-list="group-a">
 													<div class="repeater-wrapper pt-0 pt-md-4"
-														id="purchaseitemlist">
+														id="expenseitemlist">
 												 </div>
 												</div>
 												<div class="row">
 													<div class="col-12">
-														<button type="button" class="btn btn-primary" id="addnewpurchaseitem"
+														<button type="button" class="btn btn-primary" id="addnewexpenseitem"
 															>Add Item</button>
 													</div>
 												</div>
@@ -659,7 +632,7 @@ cursor:pointer;
 														<div class="mb-3">
 															<label for="note" class="form-label fw-semibold">Note:</label>
 															<textarea class="form-control" rows="2" id="note" name="note"
-																placeholder="Purchase note"></textarea>
+																placeholder="Expense note"></textarea>
 														</div>
 													</div>
 													<div class="col-md-6 d-flex justify-content-end">
@@ -691,11 +664,11 @@ cursor:pointer;
 												</div>
 												<div align="center">
 													<button type="submit"
-														class="btn btn-primary editPurchasesubmit me-sm-3 me-1">Save
-														The Purchase</button>
+														class="btn btn-primary editExpensesubmit me-sm-3 me-1">Save
+														The Expense</button>
 	
 													<button type="reset"
-														class="btn btn-label-secondary editPurchaseclose"
+														class="btn btn-label-secondary editExpenseclose"
 														data-bs-dismiss="modal" aria-label="Close">
 														Cancel</button>
 	
@@ -712,122 +685,7 @@ cursor:pointer;
 					
 				</div>
 				<!--/ Add Invoice -->
-				<!-- Edit Receipt Modal -->
-				<div class="modal fade" id="receiptmodel" tabindex="-1"
-					aria-hidden="true">
-					<div class="modal-dialog modal-lg modal-simple modal-edit-user">
-						<div class="modal-content p-3 p-md-5">
-							<div class="modal-body">
-								<button type="button" class="btn-close"
-									data-bs-dismiss="modal" aria-label="Close"></button>
-								<div class="text-center mb-4">
-									<h5>Payment Receipt</h5>
-								</div>
-								<form  class="row g-3 needs-validation"  id="editreceiptformx"
-							onsubmit="return false">
-									<div class="row p-sm-3 p-0">
-												<div class="col-md-6 mb-md-0 mb-4">
-													
-													<p class="mb-1"><b>Invoice No# :</b>     <span id="branchpurchaseNotxt"></span>
-													<input type="hidden" id="recepitid" name="recepitid" />
-													<input type="hidden" id="recbranchpurchaseid" name="recbranchpurchaseid" required/>
-													</p>
-													<p class="mb-1"><b>Due Date :</b>     <span id="duedatetxt"></span></p>
-													<p class="mb-0"></p>
-												</div>
-												<div class="col-md-6">
-													<p class="mb-1"><b>Amount :</b>     <span id="purpaymentamounttxt"></span></p>
-													<p class="mb-1"><b>Total paid :</b>     <span id="purpaymenttotalpaidNotxt"></span></p>
-													<p class="mb-0"><b>Balance Due :</b>     <span id="purpaymentBalancetxt"></span></p>
-												</div>
-												
-											</div>
-								
-								
-									<div class="col-12 col-md-6">
-										<label class="form-label" for="recepitNo">Ref #</label> <input type="text" id="recepitNo"
-											name="recepitNo" class="form-control" required/>
-									</div>
-								
-									<div class="col-12 col-md-6">
-										<label class="form-label" for="recepitDate">Date</label> <input type="date" id="recepitDate"
-											name="recepitDate" class="form-control" required/>
-									</div>
-									
-									<div class="col-12 col-md-6">
-										<label class="form-label" for="depitedfrom">Paid From</label>
-										<select id="depitedfrom" name="depitedfrom"
-											class="form-select" aria-label="Default select example" required>
-											<option value="">-</option>
-											<option value="SBI">SBI</option>
-											<option value="IDBI">IDBI</option>
-											<option value="LVB">LVB</option>
-											<option value="Axis 1">Axis 1</option>
-											<option value="Axis 2">Axis 2</option>
-											<option value="Cash 1">Cash 1</option>
-											<option value="Cash 2">Cash 2</option>
-											<option value="SBI Sukumar">SBI Sukumar</option>
-											<option value="SBI Balakumar">SBI Balakumar</option>
-											<option value="TDS">TDS</option>
-											
-										</select>
-									</div>
-									<div class="col-12 col-md-6">
-										<label class="form-label" for="modeofPayment">Mode of Payment</label>
-										<select id="modeofPayment" name="modeofPayment"
-											class="form-select" aria-label="Default select example" required>
-											<option value="">-</option>
-											<option value="NEFT">NEFT</option>
-											<option value="RTGS">RTGS</option>
-											<option value="Cash">Cash</option>
-											<option value="Paypal">Paypal</option>
-											<option value="Paytm">Paytm</option>
-											<option value="Gpay">Gpay</option>
-											<option value="Other UPI">Other UPI</option>
-										</select>
-									</div>
-									<div class="col-12 col-md-6">
-										<label class="form-label" for="amount">Amount
-											</label> <input type="text" id="amount"
-											name="amount"
-											class="form-control modal-edit-tax-id" required
-											 />
-									</div>
-									<div class="col-12 col-md-6">
-									<br/>
-										<label class="switch"> <input type="checkbox"
-											class="switch-input"  id="payfull"/> <span
-											class="switch-toggle-slider"> <span
-												class="switch-on"></span> <span class="switch-off"></span>
-										</span> <span class="switch-label">Pay in Full</span>
-										</label>
-									</div>
-									<div class="col-12">
-										<label class="form-label" for="notes">Notes
-											</label> <input type="text" id="notes" 
-											name="notes"
-											class="form-control modal-edit-tax-id"
-											/>
-									</div>
-									
-									<div class="col-12 text-center mt-4">
-										<button type="submit"
-														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
-														The Receipt</button>
-	
-										<button type="reset"
-											class="btn btn-label-secondary editReceiptclose"
-											data-bs-dismiss="modal" aria-label="Close">
-											Cancel</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
 				
-				<!-- /Edit Receipt Modal -->
-							
 							
               <!-- Edit User Modal -->
               <div class="modal fade" id="editBranchdetails" tabindex="-1" aria-hidden="true">
@@ -1833,12 +1691,12 @@ Model_CURRENT_STATUS
 
 				function validationinvoiceformreset()
 				   {
-			   				$('.editPurchaseclose').click();
-			   				$('.editPurchasesubmit').prop("disabled",false);
-			   				$('#purchaseitemlist').html("");
-			   				purchaseIncre=0;
+			   				$('.editExpenseclose').click();
+			   				$('.editExpensesubmit').prop("disabled",false);
+			   				$('#expenseitemlist').html("");
+			   				expenseIncre=0;
 			   				invoiceamountCalculator();
-				   			$('.editPurchasesubmit').html("Save The Invoice");
+				   			$('.editExpensesubmit').html("Save The Invoice");
 				   			
 				   }
 				
@@ -1850,8 +1708,8 @@ Model_CURRENT_STATUS
 				   			
 				   }
 			//------------------------------------------------------------------------ 
-			 $('.addNewPurchasebtn').on('click', function(event){
-				$("#branchpurchaseid").val("");
+			 $('.addNewExpensebtn').on('click', function(event){
+				$("#branchexpenseid").val("");
 				
 				
 				validationinvoiceformreset();
@@ -1862,17 +1720,17 @@ Model_CURRENT_STATUS
   				$('#modalcontactid').val("-");
   			  });
   			//--------------------------------------------------------------------------------------------------------------------------------------
-				$('#editPurchaseformx').on('submit',function(event) {
+				$('#editExpenseformx').on('submit',function(event) {
 					if (event.target.checkValidity()) {
-						$('.editPurchasesubmit').prop("disabled",true);
-						$('.editPurchasesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-						const formData = new FormData(document.querySelector("#editPurchaseformx"));
+						$('.editExpensesubmit').prop("disabled",true);
+						$('.editExpensesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+						const formData = new FormData(document.querySelector("#editExpenseformx"));
 						formData.append("branchid","[[${BranchMaster['id']}]]");
-						formData.append("branchpurchaseitemcount", purchaseIncre);
+						formData.append("branchexpenseitemcount", expenseIncre);
 						
 						$.ajax({
 							type : "POST",
-							url : "branchbranchpurchasesave",
+							url : "branchbranchexpensesave",
 							processData : false,
 							contentType : false,
 							data : formData,
@@ -1881,7 +1739,7 @@ Model_CURRENT_STATUS
 								
 								validationinvoiceformreset();
 								
-								getpurchaselist();
+								getexpenselist();
 
 							},
 							error : function(e) {
@@ -1889,52 +1747,20 @@ Model_CURRENT_STATUS
 							}
 						});
 					} else {
-						$('.editPurchasesubmit').prop("disabled",false);
+						$('.editExpensesubmit').prop("disabled",false);
 					}
 				});
 				// --------------------------------------------------------------------
 				
-				$("#addnewpurchaseitem").click(function() {
-					purchaseIncre = purchaseIncre+1;
+				$("#addnewexpenseitem").click(function() {
+					expenseIncre = expenseIncre+1;
 					
-					html='<div class="d-flex border rounded position-relative pe-0 incontact'+ purchaseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchpurchaseitemid'+ purchaseIncre +'" name="branchpurchaseitemid'+ purchaseIncre +'" /> <select class="form-select item-details mb-2" id="BranchpurchaseItem'+ purchaseIncre +'" name="BranchpurchaseItem'+ purchaseIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ purchaseIncre +'" name="Description'+ purchaseIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ purchaseIncre +'" name="Quantity'+ purchaseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ purchaseIncre +'" name="Unit'+ purchaseIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ purchaseIncre +'" name="Price'+ purchaseIncre +'" required/> <input type="hidden" id="Discountperip'+ purchaseIncre +'" value="0" name="Discountper'+ purchaseIncre +'" /> <input type="hidden" id="CGSTperip'+ purchaseIncre +'" value="0" name="CGSTper'+ purchaseIncre +'" /> <input type="hidden" id="IGSTperip'+ purchaseIncre +'" value="0" name="IGSTper'+ purchaseIncre +'" /> <input type="hidden" id="SGSTperip'+ purchaseIncre +'" value="0" name="SGSTper'+ purchaseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  purchaseIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  purchaseIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  purchaseIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  purchaseIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  purchaseIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectpurchaseItem('+ purchaseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ purchaseIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ purchaseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ purchaseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ purchaseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ purchaseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
-					$('#purchaseitemlist').append(html);
+					html='<div class="d-flex border rounded position-relative pe-0 incontact'+ expenseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchexpenseitemid'+ expenseIncre +'" name="branchexpenseitemid'+ expenseIncre +'" /> <select class="form-select item-details mb-2" id="BranchexpenseItem'+ expenseIncre +'" name="BranchexpenseItem'+ expenseIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ expenseIncre +'" name="Description'+ expenseIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ expenseIncre +'" name="Quantity'+ expenseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ expenseIncre +'" name="Unit'+ expenseIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ expenseIncre +'" name="Price'+ expenseIncre +'" required/> <input type="hidden" id="Discountperip'+ expenseIncre +'" value="0" name="Discountper'+ expenseIncre +'" /> <input type="hidden" id="CGSTperip'+ expenseIncre +'" value="0" name="CGSTper'+ expenseIncre +'" /> <input type="hidden" id="IGSTperip'+ expenseIncre +'" value="0" name="IGSTper'+ expenseIncre +'" /> <input type="hidden" id="SGSTperip'+ expenseIncre +'" value="0" name="SGSTper'+ expenseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  expenseIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  expenseIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  expenseIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  expenseIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  expenseIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectexpenseItem('+ expenseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ expenseIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ expenseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ expenseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ expenseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ expenseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+					$('#expenseitemlist').append(html);
 				});
-				
-				//--------------------------------------------------------------------------------------------------------------------------------------
-				$('#editreceiptformx').on('submit',function(event) {
-					if (event.target.checkValidity()) {
-						$('.editReceiptsubmit').prop("disabled",true);
-						$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-						const formData = new FormData(document.querySelector("#editreceiptformx"));
-						formData.append("branchid","[[${BranchMaster['id']}]]");
-						
-						$.ajax({
-							type : "POST",
-							url : "branchpurchasepaymentsave",
-							processData : false,
-							contentType : false,
-							data : formData,
-							success : function(
-									result) {
-								
-								validationreceiptformreset();
-								
-								getreceiptlist();
-
-							},
-							error : function(e) {
-								console.log("Error"+ e);
-							}
-						});
-					} else {
-						$('.editReceiptsubmit').prop("disabled",false);
-					}
-				});
-				// --------------------------------------------------------------------
 				
 				// ----------------------------------------------------------------------------------------------------------------------------------------
-								function getpurchaselist() {
+								function getexpenselist() {
 									
 									var formData = {
 										mastercategoryid : "[[${BranchMaster['id']}]]"
@@ -1942,31 +1768,31 @@ Model_CURRENT_STATUS
 	
 									$.ajax({
 										type : "POST",
-										url : "getbranchpurchaselist",
+										url : "getbranchexpenselist",
 										data : formData,
 										success : function(result) {
 											var htmlop="";
 											var bmobj = JSON.parse(JSON.stringify(result));
 											var total=0;
-											//console.log(bmobj);
+											console.log(bmobj);
 											
 											bmobj.forEach((element, index, array) =>
 								           	{
 								           		var sub_total=0;
 								           	  
-								           		element.branchpurchaseItemMasterlist.forEach((elementx, indexx, arrayx) =>
+								           		element.branchexpenseItemMasterlist.forEach((elementx, indexx, arrayx) =>
 									           	  {
 									           		sub_total +=elementx.taxableAmount + elementx.cgstamount + elementx.sgstamount+ elementx.igstamount; 
 									           	  });
 									           	  
-									           	 htmlop +="<tr><td class='text-nowrap editbranchprj' onclick='editpurchaseinfo(this)' id='"+element.branchpurchaseid +"'>"+element.branchpurchaseNo+"</td>";
-									           	 htmlop +="<td class='text-nowrap'>"+element.branchpurchaseType +"</td><td class='text-nowrap'>"+element.branchpurchaseDateMMMddyyyy +"</td><td>"+element.dueDateMMMddyyyy +"</td>";
-									           	 htmlop +="<td>"+sub_total.toFixed(2) +" <i class='bx bx-money  generatenewreceipt' onclick='generatereceipt("+element.branchpurchaseid +")'  ></i></td></tr>";
+									           	 htmlop +="<tr><td class='text-nowrap editbranchprj' onclick='editexpenseinfo(this)' id='"+element.branchexpenseid +"'>"+element.employee_name+"</td>";
+									           	 htmlop +="<td class='text-nowrap'>"+element.supplier_name +"</td><td class='text-nowrap'>"+element.branchexpenseDateMMMddyyyy +"</td><td>"+element.notes +"</td>";
+									           	 htmlop +="<td>"+sub_total.toFixed(2) +"</td></tr>";
 									           	 total +=parseFloat(sub_total);
 								            });
 											
 											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
-											$('#branchPurchaselist').html(htmlop);
+											$('#branchExpenselist').html(htmlop);
 										},
 										error : function(e) {
 											console.log("Error" + e);
@@ -1978,47 +1804,6 @@ Model_CURRENT_STATUS
 								}
 								
 								
-								// ----------------------------------------------------------------------------------------------------------------------------------------
-								function getreceiptlist() {
-									
-									var formData = {
-										mastercategoryid : "[[${BranchMaster['id']}]]"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "getbranchpurpaymentlist",
-										data : formData,
-										success : function(result) {
-											var htmlop="";
-											var bmobj = JSON.parse(JSON.stringify(result));
-											var total=0;
-											//console.log(bmobj);
-											
-											bmobj.forEach((element, index, array) =>
-								           	{
-								           		var sub_total=0;
-								           	  
-								           		
-									           	 htmlop +="<tr><td class='text-nowrap editbranchprj' onclick='editreceiptinfo(this)' id='"+element.recepitid +"'>"+element.recepitNo+"</td>";
-									           	 htmlop +="<td class='text-nowrap'>"+element.purchaseNo +"</td><td class='text-nowrap'>"+element.recepitDateMMMddyyyy +"</td><td>"+element.depitedfrom +"</td>";
-									           	 htmlop +="<td>"+element.amount.toFixed(2) +"</td></tr>";
-									           	 total +=parseFloat(element.amount);
-								            });
-											
-											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
-												
-											$('#receiptslist').html(htmlop);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
-								// ----------------------------------------------------------------------------------------------------------------------------------------
 								
   			// --------------------------------------------------------------------
   			
@@ -2344,8 +2129,8 @@ Model_CURRENT_STATUS
 			$(document).ready(function(){
 			    setTimeout(function(){
 			    	
-			    	getpurchaselist();
-			    	getreceiptlist();
+			    	getexpenselist();
+			    	
 			     },500); // milliseconds
 			});
 			//-------------------------------------------
@@ -2495,7 +2280,7 @@ Model_CURRENT_STATUS
 	    }    
 	  //------------------------------------------------------    
 		 
-		 function editpurchaseinfo(e){
+		 function editexpenseinfo(e){
 				var branchid= e.getAttribute("id");
 				
 					var formData = {
@@ -2505,33 +2290,32 @@ Model_CURRENT_STATUS
 
 					$.ajax({
 						type : "POST",
-						url : "getbranchpurchaseitem",
+						url : "getbranchexpenseitem",
 						data : formData,
 						success : function(result) {
 							var bmobj = JSON.parse(JSON.stringify(result));
-							//console.log(bmobj);
+							console.log(bmobj);
 							
-							$("#branchpurchaseid").val(bmobj.branchpurchaseid);
-							$("#branchpurchaseNo").val(bmobj.branchpurchaseNo);
-							$("#branchpurchaseDate").val(bmobj.branchpurchaseDate);
-							$("#dueDate").val(bmobj.dueDate);
-							$("#branchpurchaseType").val(bmobj.branchpurchaseType).change();
-							$("#receivable").val(bmobj.receivable).change();
-							$("#purchase_employeeid").val(bmobj.employeeid).change();
-							$("#purchase_supplierid").val(bmobj.supplierid).change();
+							$("#branchexpenseid").val(bmobj.branchexpenseid);
+							$("#branchexpenseNo").val(bmobj.branchexpenseNo);
+							$("#branchexpenseDate").val(bmobj.branchexpenseDate);
+							$("#depitedfrom").val(bmobj.depitedfrom).change();
+							$("#modeofPayment").val(bmobj.modeofPayment).change();
+							$("#expense_supplierid").val(bmobj.supplierid).change();
+							$("#expense_employeeid").val(bmobj.employeeid).change();
 							$("#note").val(bmobj.notes);
 
-							purchaseIncre = 0 ;
+							expenseIncre = 0 ;
 							html="";
-							bmobj.branchpurchaseItemMasterlist.forEach((element, index, array) =>
+							bmobj.branchexpenseItemMasterlist.forEach((element, index, array) =>
 				           	{
-				           	 	purchaseIncre= purchaseIncre+1;
-								html +='<div class="d-flex border rounded position-relative pe-0 incontact'+ purchaseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchpurchaseitemid'+ purchaseIncre +'" name="branchpurchaseitemid'+ purchaseIncre +'" value="'+ element.branchpurchaseitemid + '"/> <select class="form-select item-details mb-2" id="BranchpurchaseItem'+ purchaseIncre +'" name="BranchpurchaseItem'+ purchaseIncre +'" required> <option value="'+ element.branchpurchaseItem + '">'+ element.branchpurchaseItem + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ purchaseIncre +'" name="Description'+ purchaseIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ purchaseIncre +'" value="'+ element.quantity + '" name="Quantity'+ purchaseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ purchaseIncre +'" name="Unit'+ purchaseIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ purchaseIncre +'" name="Price'+ purchaseIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ purchaseIncre +'" value="'+ element.discountper + '" name="Discountper'+ purchaseIncre +'" /> <input type="hidden" id="CGSTperip'+ purchaseIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ purchaseIncre +'" /> <input type="hidden" id="IGSTperip'+ purchaseIncre +'" value="'+ element.igstper + '" name="IGSTper'+ purchaseIncre +'" /> <input type="hidden" id="SGSTperip'+ purchaseIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ purchaseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  purchaseIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  purchaseIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  purchaseIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  purchaseIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  purchaseIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectpurchaseItem('+ purchaseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ purchaseIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ purchaseIncre +'" class="form-select tax-select"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ purchaseIncre +'" class="form-select tax-select"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ purchaseIncre +'" class="form-select tax-select"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ purchaseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+				           	 	expenseIncre= expenseIncre+1;
+								html +='<div class="d-flex border rounded position-relative pe-0 incontact'+ expenseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchexpenseitemid'+ expenseIncre +'" name="branchexpenseitemid'+ expenseIncre +'" value="'+ element.branchexpenseitemid + '"/> <select class="form-select item-details mb-2" id="BranchexpenseItem'+ expenseIncre +'" name="BranchexpenseItem'+ expenseIncre +'" required> <option value="'+ element.branchexpenseItem + '">'+ element.branchexpenseItem + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ expenseIncre +'" name="Description'+ expenseIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ expenseIncre +'" value="'+ element.quantity + '" name="Quantity'+ expenseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ expenseIncre +'" name="Unit'+ expenseIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ expenseIncre +'" name="Price'+ expenseIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ expenseIncre +'" value="'+ element.discountper + '" name="Discountper'+ expenseIncre +'" /> <input type="hidden" id="CGSTperip'+ expenseIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ expenseIncre +'" /> <input type="hidden" id="IGSTperip'+ expenseIncre +'" value="'+ element.igstper + '" name="IGSTper'+ expenseIncre +'" /> <input type="hidden" id="SGSTperip'+ expenseIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ expenseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  expenseIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  expenseIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  expenseIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  expenseIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  expenseIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectexpenseItem('+ expenseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ expenseIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ expenseIncre +'" class="form-select tax-select"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ expenseIncre +'" class="form-select tax-select"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ expenseIncre +'" class="form-select tax-select"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ expenseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
 				           	});
-				           	
-							$('#purchaseitemlist').append(html);
+						
+							$('#expenseitemlist').html(html);
 							invoiceamountCalculator();
-							$('#Purchasemodel').modal('show');
+							$('#Expensemodel').modal('show');
 						},
 						error : function(e) {
 							console.log("Error" + e);
@@ -2574,39 +2358,7 @@ Model_CURRENT_STATUS
 			invoiceamountCalculator();
 		}
 		//------------------------------------------------------
-		function generatereceipt(branchpurchaseid)
-		{
-			
-			$("#recepitid").val("");
-			
-			var formData = {
-					branchpurchaseid : branchpurchaseid,
-					mastercategoryid: "[[${BranchMaster['id']}]]"
-				}
-
-				$.ajax({
-					type : "POST",
-					url : "getbranchpurchasepaymentitem",
-					data : formData,
-					success : function(result) {
-						var bmobj = JSON.parse(JSON.stringify(result));
-						//console.log(bmobj);
-						
-						$("#branchpurchaseNotxt").text(bmobj.purchaseno);
-						$("#duedatetxt").text(bmobj.duedate);
-						$("#purpaymentamounttxt").text(bmobj.amount);
-						$("#purpaymenttotalpaidNotxt").text(bmobj.totalpaidamount);
-						$("#purpaymentBalancetxt").text(bmobj.balanceamount);
-						$("#recbranchpurchaseid").val(bmobj.purchaseid);
-						
-						$('#receiptmodel').modal('show');
-					},
-					error : function(e) {
-						console.log("Error" + e);
-					}
-				});
-			
-		}
+	
 		//------------------------------------------------------------------------------------
 		function invoiceamountCalculator(){
 			totalamtwithouttax =0.00;
@@ -2615,7 +2367,7 @@ Model_CURRENT_STATUS
 			totalIGST =0.00;
 			totalamount =0.00;
 			
-			for( i =1; i<=purchaseIncre;i++)
+			for( i =1; i<=expenseIncre;i++)
 			{
 				 price = $("#Price"+i).val();
 				 qty = $("#Quantity"+i).val();
@@ -2653,7 +2405,7 @@ Model_CURRENT_STATUS
 								
 		}
 		//------------------------------------------------------------------------------------
-		function deleteprojectpurchaseItem(id){
+		function deleteprojectexpenseItem(id){
 			
 			 Swal.fire({
 	             title: 'Are you sure?',
@@ -2669,7 +2421,7 @@ Model_CURRENT_STATUS
 	           }).then(function (result) {
 	             if (result.value) {
 	            	 $(".incontact"+id).remove();
-	            	 purchaseIncre=purchaseIncre-1;
+	            	 expenseIncre=expenseIncre-1;
 	            	 invoiceamountCalculator();
 			   			
 	               }
@@ -2677,68 +2429,6 @@ Model_CURRENT_STATUS
 			
 		}
 		
-		//------------------------------------------------------------------------------------
-		
-		 function editreceiptinfo(e){
-				var branchid= e.getAttribute("id");
-				
-					var formData = {
-						branchid : branchid,
-						mastercategoryid: "[[${BranchMaster['id']}]]"
-					}
-
-					$.ajax({
-						type : "POST",
-						url : "getbranchpurpaymentreceiptitem",
-						data : formData,
-						success : function(result) {
-							var bmobj = JSON.parse(JSON.stringify(result));
-							//console.log(bmobj);
-							
-							$("#recepitid").val(bmobj.recepitid);
-							$("#recepitNo").val(bmobj.recepitNo);
-							$("#recepitDate").val(bmobj.recepitDate);
-							$("#recbranchpurchaseid").val(bmobj.branchpurchaseid);
-							$("#depitedfrom").val(bmobj.depitedfrom).change();
-							$("#modeofPayment").val(bmobj.modeofPayment).change();
-							$("#amount").val(bmobj.amount);
-							$("#notes").val(bmobj.notes);
-							
-						
-							var formData = {
-									branchpurchaseid : bmobj.purchaseid,
-									mastercategoryid: "[[${BranchMaster['id']}]]"
-								}
-
-								$.ajax({
-									type : "POST",
-									url : "getbranchpurchasepaymentMasteritem",
-									data : formData,
-									success : function(result) {
-										var bmobj = JSON.parse(JSON.stringify(result));
-										//console.log(bmobj);
-										
-										$("#branchpurchaseNotxt").text(bmobj.purchaseno);
-										$("#duedatetxt").text(bmobj.duedate);
-										$("#purpaymentamounttxt").text(bmobj.amount);
-										$("#purpaymenttotalpaidNotxt").text(bmobj.totalpaidamount);
-										$("#purpaymentBalancetxt").text(bmobj.balanceamount);
-										$("#recbranchpurchaseid").val(bmobj.purchaseid);
-										
-										$('#receiptmodel').modal('show');
-									},
-									error : function(e) {
-										console.log("Error" + e);
-									}
-								});
-							
-						},
-						error : function(e) {
-							console.log("Error" + e);
-						}
-					});
-				
-			}
 		//------------------------------------------------------
     </script>
 		  </body>

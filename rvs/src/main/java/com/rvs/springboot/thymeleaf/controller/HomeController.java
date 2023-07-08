@@ -63,6 +63,8 @@ import com.rvs.springboot.thymeleaf.entity.BranchContact;
 import com.rvs.springboot.thymeleaf.entity.BranchEffective;
 import com.rvs.springboot.thymeleaf.entity.BranchFiles;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
+import com.rvs.springboot.thymeleaf.entity.BranchexpenseItemMaster;
+import com.rvs.springboot.thymeleaf.entity.BranchexpenseMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchaseItemMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchaseMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchasePaymentMaster;
@@ -1669,6 +1671,97 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		return "branchadd";
 	}
 
+	@GetMapping("branchexpense")
+	public String branchexpense(Model theModel, @RequestParam("id") int branchid) {
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+
+		BranchMaster bm = branchMasterService.findById(branchid);
+		if (bm.getBranchAccNo().size() == 0) {
+			List<BranchAccNo> BranchAccNols = new ArrayList();
+			BranchAccNols.add(new BranchAccNo());
+			bm.setBranchAccNo(BranchAccNols);
+			bm = branchMasterService.save(bm);
+		}
+		// ---------------------------------------
+		// Get Primary contact
+		List<BranchContact> branchContactls = bm.getBranchContact().stream().filter(C -> C.getPrimarycontact() == true)
+				.collect(Collectors.toList());
+		if (branchContactls.size() == 0) {
+			theModel.addAttribute("primaryContact", false);
+		} else {
+			theModel.addAttribute("primaryContact", true);
+		}
+		// ---------------------------------------
+		if (!bm.getCOMES_UNDER().equalsIgnoreCase("Self")) {
+			int comes_underint = Integer.parseInt(bm.getCOMES_UNDER());
+			List<BranchMaster> templist = bmlist.stream().filter(C -> C.getId() == comes_underint)
+					.collect(Collectors.toList());
+			if (templist.size() > 0) {
+				bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
+			}
+		} else {
+			bm.setCOMES_UNDER_name("Self");
+		}
+		if (!bm.getB_TYPE().equalsIgnoreCase("")) {
+			bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
+		}
+		if (!nullremover(String.valueOf(bm.getBRANCH_IN_CHARGE())).equalsIgnoreCase("")) {
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(bm.getBRANCH_IN_CHARGE()));
+			bm.setBRANCH_IN_CHARGE_img(getemp_photo(empobj));
+			bm.setBRANCH_IN_CHARGE_name(empobj.getStaffName());
+
+		}
+		if (!bm.getSTATED_DATE().equalsIgnoreCase("")) {
+
+			try {
+				bm.setStartdateMMformat(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(bm.getSTATED_DATE())).toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
+		}
+
+		// -------------------------------------------
+		// Branch Effective
+		List<BranchEffective> branchEffective = new ArrayList<>();
+		branchEffective = branchMasterService.findById(branchid).getBranchEffective();
+		if (branchEffective.size() > 0) {
+			branchEffective.sort(Comparator.comparing(BranchEffective::getEffectivedate));
+			bm.setEffectiveon(branchEffective.get(branchEffective.size() - 1).getEffectivedate());
+			try {
+				bm.setEffectiveonMMformat(
+						displaydateFormatFirstMMMddYYY
+								.format(displaydateFormatrev
+										.parse(branchEffective.get(branchEffective.size() - 1).getEffectivedate()))
+								.toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		// -------------------------------------------
+		// -------------------------------------------
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+
+		theModel.addAttribute("BranchMaster", bm);
+		theModel.addAttribute("BranchList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_branchlist"));
+		
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		theModel.addAttribute("supplierlist",
+				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+						.collect(Collectors.toList()));
+
+		return "branchexpense";
+	}
 	public String getemp_photo(EmployeeMaster obj) {
 		String str = "";
 		List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream()
@@ -10772,4 +10865,164 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 	}
 
+	
+	@ResponseBody
+	@PostMapping("branchbranchexpensesave")
+	public BranchMaster branchbranchexpensesave(@RequestParam Map<String, String> params) {
+
+		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
+
+		BranchMaster pm = branchMasterService.findById(Integer.parseInt(params.get("branchid")));
+		List<BranchexpenseMaster> invls = new ArrayList();
+
+		String tempbranchexpenseid = nullremover(String.valueOf(params.get("branchexpenseid")));
+
+		if (!tempbranchexpenseid.equalsIgnoreCase("")) {
+			List<BranchexpenseMaster> ls = new ArrayList();
+
+			for (BranchexpenseMaster invm : pm.getBranchexpenseMasterList()) {
+				if (invm.getBranchexpenseid() == Integer.parseInt(tempbranchexpenseid)) {
+					invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+					invm.setBranchexpenseDate(String.valueOf(params.get("branchexpenseDate")));
+					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+					invm.setNotes(String.valueOf(params.get("note")));
+					invm.setBranchexpenseNo(String.valueOf(params.get("branchexpenseNo")));
+					invm.setEmployeeid(String.valueOf(params.get("expense_employeeid")));
+					invm.setSupplierid(String.valueOf(params.get("expense_supplierid")));
+
+					List<BranchexpenseItemMaster> invitemls = new ArrayList();
+					for (int i = 1; i <= Integer.parseInt(params.get("branchexpenseitemcount")); i++) {
+
+						BranchexpenseItemMaster initem = new BranchexpenseItemMaster();
+						int invitemids = 0;
+						if (!nullremover(String.valueOf(params.get("BranchexpenseItemid" + i)))
+								.equalsIgnoreCase("")) {
+							invitemids = Integer.parseInt(params.get("BranchexpenseItemid" + i));
+							final int tempi = i;
+							initem = invm.getBranchexpenseItemMasterlist().stream()
+									.filter(C -> C.getBranchexpenseitemid() == Integer
+											.parseInt(params.get("BranchexpenseItemid" + tempi)))
+									.collect(Collectors.toList()).get(0);
+						}
+
+						invitemls.add(addupdatedBranchexpenseMaster(params, initem, i, invitemids));
+					}
+					invm.setBranchexpenseItemMasterlist(invitemls);
+
+				}
+				ls.add(invm);
+
+			}
+			pm.setBranchexpenseMasterList(ls);
+
+		} else {
+			BranchexpenseMaster newinv = new BranchexpenseMaster();
+
+			newinv.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+			newinv.setBranchexpenseDate(String.valueOf(params.get("branchexpenseDate")));
+			newinv.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+			newinv.setNotes(String.valueOf(params.get("note")));
+			newinv.setBranchexpenseNo(String.valueOf(params.get("branchexpenseNo")));
+			newinv.setEmployeeid(String.valueOf(params.get("expense_employeeid")));
+			newinv.setSupplierid(String.valueOf(params.get("expense_supplierid")));
+
+			List<BranchexpenseItemMaster> invitemls = new ArrayList();
+			for (int i = 1; i <= Integer.parseInt(params.get("branchexpenseitemcount")); i++) {
+
+				invitemls.add(addupdatedBranchexpenseMaster(params, new BranchexpenseItemMaster(), i, 0));
+			}
+			newinv.setBranchexpenseItemMasterlist(invitemls);
+
+			pm.getBranchexpenseMasterList().add(newinv);
+		}
+
+		return branchMasterService.save(pm);
+	}
+
+	public BranchexpenseItemMaster addupdatedBranchexpenseMaster(Map<String, String> params,
+			BranchexpenseItemMaster invitemmaster, int index, int itemid) {
+
+		invitemmaster.setBranchexpenseitemid(itemid);
+
+		double price = Double.parseDouble(String.valueOf(params.get("Price" + index)));
+		double qty = Double.parseDouble(String.valueOf(params.get("Quantity" + index)));
+		double taxableAmount = price * qty;
+
+		double Discountper = Double.parseDouble(String.valueOf(params.get("Discountper" + index)));
+		double CGSTper = Double.parseDouble(String.valueOf(params.get("CGSTper" + index)));
+		double SGSTper = Double.parseDouble(String.valueOf(params.get("SGSTper" + index)));
+		double IGSTper = Double.parseDouble(String.valueOf(params.get("IGSTper" + index)));
+
+		double dt = Discountper / 100;
+		double Discountamt = taxableAmount * dt;
+		double afetdiscountamount = taxableAmount - Discountamt;
+
+		double it = IGSTper / 100;
+		double ct = CGSTper / 100;
+		double st = SGSTper / 100;
+		double IGSTamount = afetdiscountamount * it;
+		double SGSTamount = afetdiscountamount * st;
+		double CGSTamount = afetdiscountamount * ct;
+
+		invitemmaster.setDiscountamt(Discountamt);
+		invitemmaster.setDiscountper(Discountper);
+
+		invitemmaster.setCGSTamount(CGSTamount);
+		invitemmaster.setCGSTper(CGSTper);
+
+		invitemmaster.setIGSTamount(IGSTamount);
+		invitemmaster.setIGSTper(IGSTper);
+
+		invitemmaster.setSGSTamount(SGSTamount);
+		invitemmaster.setSGSTper(SGSTper);
+
+		invitemmaster.setBranchexpenseItem(String.valueOf(params.get("BranchexpenseItem" + index)));
+		invitemmaster.setDescription(String.valueOf(params.get("Description" + index)));
+		invitemmaster.setQuantity(qty);
+		invitemmaster.setPrice(price);
+		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
+
+		invitemmaster.setTaxableAmount(afetdiscountamount);
+		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + SGSTamount + IGSTamount);
+
+		return invitemmaster;
+	}
+	@PostMapping("getbranchexpenselist")
+	@ResponseBody
+	public List<BranchexpenseMaster> getbranchexpenselist(@RequestParam Map<String, String> params) {
+
+		List<BranchexpenseMaster> ls = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getBranchexpenseMasterList();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		
+		for (BranchexpenseMaster obj : ls) {
+			try {
+				obj.setBranchexpenseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getBranchexpenseDate())).toString());
+				
+				obj.setEmployee_name(employeeMasterService.findById(Integer.parseInt(obj.getEmployeeid())).getStaffName());
+				obj.setSupplier_name(corglis.stream().filter(C -> C.getId() == Integer.parseInt(obj.getSupplierid())).collect(Collectors.toList()).get(0).getOrgname());
+				
+			} catch (ParseException e) {
+
+				// e.printStackTrace();
+			}
+
+		}
+
+		return ls;
+	}
+	
+	@PostMapping("getbranchexpenseitem")
+	@ResponseBody
+	public BranchexpenseMaster getbranchexpenseitem(@RequestParam Map<String, String> params) {
+
+		BranchexpenseMaster obj = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getBranchexpenseMasterList().stream()
+				.filter(C -> C.getBranchexpenseid() == Integer.parseInt(params.get("branchid")))
+				.collect(Collectors.toList()).get(0);
+
+		return obj;
+
+	}
 }

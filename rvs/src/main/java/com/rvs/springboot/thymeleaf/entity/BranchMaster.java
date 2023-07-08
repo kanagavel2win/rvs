@@ -99,6 +99,11 @@ public class BranchMaster {
 	@OrderBy("recepitid ASC")
 	List<BranchpurchasePaymentMaster> purchasePaymentMasterList;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name =  "branchid")
+	@OrderBy("branchexpenseid ASC")
+	List<BranchexpenseMaster> branchexpenseMasterList;
+	
 	@Transient
 	private String BRANCH_IN_CHARGE_img;
 	@Transient

@@ -1673,6 +1673,7 @@ public class HomeController {
 				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
 						.collect(Collectors.toList()));
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
 		return "branchadd";
 	}
 
@@ -1765,6 +1766,7 @@ public class HomeController {
 				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
 						.collect(Collectors.toList()));
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
 		return "branchexpense";
 	}
 
@@ -9231,8 +9233,7 @@ public class HomeController {
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
-		
-		
+
 		return "projectaccounts";
 	}
 
@@ -9609,6 +9610,12 @@ public class HomeController {
 
 			// e.printStackTrace();
 		}
+		
+		for (ProjectpurchaseItemMaster expensechild : obj.getProjectpurchaseItemMasterlist()) {
+			Accountsheads ahobj = accountheadsService.findById(Integer.parseInt(expensechild.getProjectpurchaseItem()));
+			expensechild.setProjectpurchaseItem_name (ahobj.getCategory());
+			}
+		
 		return obj;
 
 	}
@@ -10167,6 +10174,7 @@ public class HomeController {
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
 		return "projectpurchase";
 	}
 
@@ -10438,6 +10446,7 @@ public class HomeController {
 		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
 				.filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses_objectlist());
 		return "projectexpense1";
 	}
 
@@ -10755,6 +10764,7 @@ public class HomeController {
 
 				// e.printStackTrace();
 			}
+			
 
 		}
 
@@ -10779,6 +10789,12 @@ public class HomeController {
 
 			// e.printStackTrace();
 		}
+		
+		for (BranchpurchaseItemMaster expensechild : obj.getBranchpurchaseItemMasterlist() ) {
+			Accountsheads ahobj = accountheadsService.findById(Integer.parseInt(expensechild.getBranchpurchaseItem()));
+			expensechild.setBranchpurchaseItem_name(ahobj.getCategory());
+		}
+		
 		return obj;
 
 	}
@@ -11036,6 +11052,11 @@ public class HomeController {
 				.getBranchexpenseMasterList().stream()
 				.filter(C -> C.getBranchexpenseid() == Integer.parseInt(params.get("branchid")))
 				.collect(Collectors.toList()).get(0);
+		for (BranchexpenseItemMaster expensechild : obj.getBranchexpenseItemMasterlist()) {
+			Accountsheads ahobj = accountheadsService.findById(Integer.parseInt(expensechild.getBranchexpenseItem()));
+
+			expensechild.setBranchexpenseItem_name(ahobj.getCategory());
+			}
 		return obj;
 	}
 
@@ -11092,6 +11113,18 @@ public class HomeController {
 		});
 
 		return strls;
+
+	}
+	
+	public List<Accountsheads> getaaccountsHeads_Expenses_objectlist() {
+
+		
+		List<Accountsheads> ls = accountheadsService.findAll().stream()
+				.filter(C -> C.getMastergroup().equalsIgnoreCase("Expenses")).collect(Collectors.toList());
+
+		
+
+		return ls;
 
 	}
 

@@ -193,7 +193,7 @@
 															<tr>
 																<th></th>
 																<th></th>
-																<th>S.No</th>
+																
 																<th>ASSET</th>
 																<th>Condition</th>
 																<th>Status</th>
@@ -210,7 +210,7 @@
 																	th:id="'checkboxGlow'+ ${stat.index+1} "
 																	name="checkbox" checked=""> <label
 																	th:for="'checkboxGlow'+ ${stat.index+1}"></label></td>
-																<td align="center" th:text="${stat.index+1}"></td>
+																
 																<td><input type="hidden"
 																	th:value="${selasset.AssetId}" name="AssetName" /> <span
 																	th:text="'&nbsp;'+ ${selasset.AssetName} + '&nbsp;'"></span>
@@ -430,41 +430,56 @@
 						});
 
 		console.log(dt_basic_table.row);
+		
+		
+		$("#Branch").change(function() {
+			  var branch = $("#Branch").val();
+			  $('#StaffID').html("");
 
-		$("#Search")
-				.click(
-						function() {
-							var StaffID = $("#StaffID").val();
-							if (StaffID != "") {
-								$('.tblbody')
-										.html(
-												"<tr  class='loadingrow'><td colspan='6' align='center'><br/><br/><div class='Custodianloding spinner-border spinner-border-sm' role='status'><span class='sr-only'>Loading...</span></div><br/><br/>&nbsp;</td></tr>");
+			  if (branch != "") {
+			    var branchname = $("#Branch option:selected").text();
+			    $(".Custodianloding").css("visibility", "visible");
+			    $('#StaffID').html("");
 
-								var formData = {
-									StaffID : StaffID
-								}
-								$.ajax({
-									type : "POST",
-									url : "getCheckoutlistfromassetMaster",
-									data : formData,
-									success : function(result) {
-										if (result != "") {
-											//$('.tblbody').html(result);
-										} else {
-											//$('.tblbody').html("<tr class='loadingrow'><td colspan='6' align='center'><br/> No Item Found<br/></td></tr></tr>");
+			    $.ajax({
+			      type: "POST",
+			      url: "getEmployeelistbasedonbranch",
+			      data: { branchname: branchname },
+			      success: function(result) {
+			        $('#StaffID').html(result);
+			        $(".Custodianloding").css("visibility", "hidden");
+			      },
+			      error: function(e) {
+			        alert("Error: " + e);
+			        $(".Custodianloding").css("visibility", "hidden");
+			      }
+			    });
 
-										}
+			    $('.tblbody').html("<tr class='loadingrow'><td colspan='6' align='center'><br/> <br/></td></tr></tr>");
+			  }
+			});
 
-									},
-									error : function(e) {
-										alert("Error" + e);
-										console.log(e);
+		
+		
 
-									}
-								});
-							}
+		$("#Search").click(function() {
+			  var StaffID = $("#StaffID").val();
+			  if (StaffID != '') {
+			    $.post("getCheckoutlistfromassetMaster", { StaffID: StaffID })
+			      .done(function(result) {
+			        if (result) {
+			          $('.tblbody').html(result);
+			        } else {
+			          // $('.tblbody').html("<tr class='loadingrow'><td colspan='6' align='center'><br/> No Item Found<br/></td></tr></tr>");
+			        }
+			      })
+			      .fail(function(e) {
+			        alert("Error: " + e);
+			        console.log(e);
+			      });
+			  }
+			});
 
-						});
 	</script>
 </body>
 </html>

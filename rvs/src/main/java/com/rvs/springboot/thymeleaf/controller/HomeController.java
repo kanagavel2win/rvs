@@ -5064,18 +5064,18 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		int i = 0;
 		for (AssetMaster am : amls) {
 			i++;
-			res += "<tr><td align='center'><div class='checkbox checkbox-success checkbox-glow'>";
-			res += "<input type='checkbox' id='checkboxGlow" + i + "' name='checkbox' checked=''>";
-			res += "<label for='checkboxGlow" + i + "'></label></div></td>";
+			res += "<tr><td class='dt-checkboxes-cell'>";
+			res += "<input type='checkbox' id='checkboxGlow" + i + "' name='checkbox' class='dt-checkboxes form-check-input' checked=''>";
+			res += "<label for='checkboxGlow" + i + "'></label></td>";
 			res += "<td align='left'><input type='hidden' 	value='" + am.getAssetId()
 					+ "' name='AssetName' /> <span>&nbsp; " + am.getAssetName() + "&nbsp;</span></td>";
-			res += "<td><select required='' id='ACondition' name='ACondition' class='form-control select'>";
+			res += "<td><select required='' id='ACondition' name='ACondition' class='form-select select'>";
 			res += "<option value='" + am.getACondition() + "' > " + am.getACondition()
 					+ "</option><option value='Fair'>Fair</option><option value='Good'>Good</option><option value='New'>New</option><option value='Poor'>Poor</option>";
 			res += "</select></td>";
-			res += "<td><select  required='' id='Status' name='Status' class='form-control selectstatus'><option value='In Stock'>Return</option><option value='Scrap'>Scrap</option>";
+			res += "<td><select  required='' id='Status' name='Status' class='form-select selectstatus'><option value='In Stock'>Return</option><option value='Scrap'>Scrap</option>";
 			res += "</select></td>";
-			res += "<td class='Photo_Attach'><input type='file' name='Photo_Attach' class='form-control Photo_Attach' /></td>";
+			res += "<td class='Photo_Attach'><input type='file' name='Photo_Attach[]' class='form-control Photo_Attach'  accept='image/*' multiple/></td>";
 			res += "<td><input type='text' name='Comments' class='form-control'/></td></tr>";
 
 		}

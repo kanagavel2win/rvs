@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -87,6 +88,16 @@ public class BranchMaster {
 	@JoinColumn(name = "branchid")
 	private List<BranchEffective> branchEffective;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name =  "branchid")
+	@OrderBy("branchpurchaseid ASC")
+	List<BranchpurchaseMaster> BranchpurchaseMasterList;
+	
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name =  "branchid")
+	@OrderBy("recepitid ASC")
+	List<BranchpurchasePaymentMaster> purchasePaymentMasterList;
 	
 	@Transient
 	private String BRANCH_IN_CHARGE_img;

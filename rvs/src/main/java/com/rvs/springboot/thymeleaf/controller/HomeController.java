@@ -63,6 +63,9 @@ import com.rvs.springboot.thymeleaf.entity.BranchContact;
 import com.rvs.springboot.thymeleaf.entity.BranchEffective;
 import com.rvs.springboot.thymeleaf.entity.BranchFiles;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
+import com.rvs.springboot.thymeleaf.entity.BranchpurchaseItemMaster;
+import com.rvs.springboot.thymeleaf.entity.BranchpurchaseMaster;
+import com.rvs.springboot.thymeleaf.entity.BranchpurchasePaymentMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckIn;
 import com.rvs.springboot.thymeleaf.entity.CheckInFiles;
 import com.rvs.springboot.thymeleaf.entity.CheckOut;
@@ -231,7 +234,7 @@ public class HomeController {
 
 	@Autowired
 	AccountTransferService accountTransferService;
-	
+
 	@Autowired
 	AccountIncomeService accountIncomeService;
 
@@ -486,6 +489,15 @@ public class HomeController {
 		theModel.addAttribute("Headofficelist", bmlist);
 		BranchMaster obj_bm = new BranchMaster();
 		theModel.addAttribute("BranchMaster", obj_bm);
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		theModel.addAttribute("supplierlist",
+				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+						.collect(Collectors.toList()));
 
 		return "branchadd";
 
@@ -502,6 +514,16 @@ public class HomeController {
 
 		theModel.addAttribute("BranchMaster", bmobj);
 		theModel.addAttribute("save", true);
+theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		theModel.addAttribute("supplierlist",
+				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+						.collect(Collectors.toList()));
+
 		return "branchadd";
 	}
 
@@ -1635,6 +1657,15 @@ public class HomeController {
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_branchlist"));
+		
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		theModel.addAttribute("supplierlist",
+				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+						.collect(Collectors.toList()));
+
 		return "branchadd";
 	}
 
@@ -4676,7 +4707,8 @@ public class HomeController {
 
 		// ------------------------------------------------------------------------------------
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll().stream()
-				.filter(C -> nullremover(String.valueOf(C.getStatus())).equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+				.filter(C -> nullremover(String.valueOf(C.getStatus())).equalsIgnoreCase("In Stock"))
+				.collect(Collectors.toList());
 		// ------------------------------------------------------------------------------------
 		for (AssetMaster obj : AssetMasterobj) {
 			result += obj.getAssetId() + "|~|" + obj.getAssetType() + "|~|" + obj.getAssetName() + "-"
@@ -4874,12 +4906,13 @@ public class HomeController {
 		}
 
 		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
-				.filter(C ->nullremover( String.valueOf( C.getStatus())).equalsIgnoreCase("In Stock")).collect(Collectors.toList());
+				.filter(C -> nullremover(String.valueOf(C.getStatus())).equalsIgnoreCase("In Stock"))
+				.collect(Collectors.toList());
 
 		themodel.addAttribute("printstr", printstr);
 		request.getSession().setAttribute("printcheckoutstr", printstr);
 		themodel.addAttribute("AssetMasterobj", AssetMasterobj1);
-		
+
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Check Out"));
 
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
@@ -4928,8 +4961,6 @@ public class HomeController {
 		return "checkin";
 	}
 
-
-
 	@ResponseBody
 	@PostMapping("getCheckoutlistfromassetMaster")
 	public String getCheckoutlistfromassetMaster(@RequestParam("StaffID") String StaffID) {
@@ -4961,7 +4992,8 @@ public class HomeController {
 
 	@PostMapping("checkinsave")
 	public String checkinsave(Model themodel, @RequestParam(name = "StaffID") String StaffID,
-			@RequestParam(name = "CheckInDate") String CheckInDate, @RequestParam(name = "checkbox", required = false) boolean[] checkbox ,
+			@RequestParam(name = "CheckInDate") String CheckInDate,
+			@RequestParam(name = "checkbox", required = false) boolean[] checkbox,
 			@RequestParam(name = "AssetName") String[] AssetId, @RequestParam(name = "Status") String[] Status,
 			@RequestParam(name = "ACondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
@@ -5051,7 +5083,8 @@ public class HomeController {
 		}
 
 		List<AssetMaster> AssetMasterobj1 = assetMasterService.findAll().stream()
-				.filter(C -> !(nullremover(String.valueOf(C.getStatus())).equalsIgnoreCase("In Stock"))).collect(Collectors.toList());
+				.filter(C -> !(nullremover(String.valueOf(C.getStatus())).equalsIgnoreCase("In Stock")))
+				.collect(Collectors.toList());
 
 		themodel.addAttribute("printstr", printstr);
 		request.getSession().setAttribute("printcheckinstrEmpname", Empname);
@@ -5074,8 +5107,6 @@ public class HomeController {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
 		return "checkinprint";
 	}
-
-	
 
 	@GetMapping("assetaudit")
 	public String assetaudit(Model themodel) {
@@ -9412,14 +9443,14 @@ public class HomeController {
 
 		return ls;
 	}
-	
+
 	@PostMapping("getprojectpurchaselist")
 	@ResponseBody
 	public List<ProjectpurchaseMaster> getprojectpurchaselist(@RequestParam Map<String, String> params) {
 
 		List<ProjectpurchaseMaster> ls = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
 				.getProjectpurchaseMasterList();
-		
+
 		for (ProjectpurchaseMaster obj : ls) {
 			try {
 				obj.setProjectpurchaseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
@@ -9456,13 +9487,14 @@ public class HomeController {
 		return obj;
 
 	}
-	
+
 	@PostMapping("getpurchaseitem")
 	@ResponseBody
 	public ProjectpurchaseMaster getpurchaseitem(@RequestParam Map<String, String> params) {
 
 		ProjectpurchaseMaster obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getProjectpurchaseMasterList()  .stream().filter(C -> C.getProjectpurchaseid() == Integer.parseInt(params.get("projectid")))
+				.getProjectpurchaseMasterList().stream()
+				.filter(C -> C.getProjectpurchaseid() == Integer.parseInt(params.get("projectid")))
 				.collect(Collectors.toList()).get(0);
 
 		try {
@@ -9517,8 +9549,9 @@ public class HomeController {
 				obj.setRecepitDateMMMddyyyy(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
 
-				obj.setPurchaseNo(invls.stream().filter(C -> C.getProjectpurchaseid() == Integer.parseInt(obj.getPurchaseid()))
-						.collect(Collectors.toList()).get(0).getProjectpurchaseNo());
+				obj.setPurchaseNo(
+						invls.stream().filter(C -> C.getProjectpurchaseid() == Integer.parseInt(obj.getPurchaseid()))
+								.collect(Collectors.toList()).get(0).getProjectpurchaseNo());
 
 			} catch (ParseException e) {
 
@@ -9548,14 +9581,15 @@ public class HomeController {
 		return obj;
 
 	}
-	
+
 	@PostMapping("getpurpaymentreceiptitem")
 	@ResponseBody
 	public ProjectpurchasePaymentMaster getpurpaymentreceiptitem(@RequestParam Map<String, String> params) {
 
-		ProjectpurchasePaymentMaster obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getPurchasePaymentMasterList() .stream().filter(C -> C.getRecepitid()== Integer.parseInt(params.get("projectid")))
-				.collect(Collectors.toList()).get(0);
+		ProjectpurchasePaymentMaster obj = projectMasterService
+				.findById(Integer.parseInt(params.get("mastercategoryid"))).getPurchasePaymentMasterList().stream()
+				.filter(C -> C.getRecepitid() == Integer.parseInt(params.get("projectid"))).collect(Collectors.toList())
+				.get(0);
 
 		try {
 			obj.setRecepitDateMMMddyyyy(
@@ -9599,11 +9633,11 @@ public class HomeController {
 		map.put("amount", String.valueOf(totalinvoiceamount));
 		map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
 		map.put("invoiceid", String.valueOf(inv.getInvoiceid()));
-	
+
 		return map;
 
 	}
-	
+
 	@PostMapping("getpurchasepaymentMasteritem")
 	@ResponseBody
 	public Map<String, String> getpurchasepaymentMasteritem(@RequestParam Map<String, String> params) {
@@ -9611,13 +9645,15 @@ public class HomeController {
 		Map<String, String> map = new HashMap<>();
 
 		double totalpaidamount = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getPurchasePaymentMasterList() .stream().filter(C -> C.getPurchaseid().equalsIgnoreCase(params.get("projectpurchaseid")))
+				.getPurchasePaymentMasterList().stream()
+				.filter(C -> C.getPurchaseid().equalsIgnoreCase(params.get("projectpurchaseid")))
 				.mapToDouble(ProjectpurchasePaymentMaster::getAmount).sum();
 
 		map.put("totalpaidamount", String.valueOf(totalpaidamount));
 
 		ProjectpurchaseMaster inv = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getProjectpurchaseMasterList().stream().filter(C -> C.getProjectpurchaseid()  == Integer.parseInt(params.get("projectpurchaseid")))
+				.getProjectpurchaseMasterList().stream()
+				.filter(C -> C.getProjectpurchaseid() == Integer.parseInt(params.get("projectpurchaseid")))
 				.collect(Collectors.toList()).get(0);
 
 		try {
@@ -9635,11 +9671,11 @@ public class HomeController {
 		map.put("amount", String.valueOf(totalinvoiceamount));
 		map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
 		map.put("purchaseid", String.valueOf(inv.getProjectpurchaseid()));
-	
+
 		return map;
 
 	}
-	
+
 	@PostMapping("getpurchasepaymentitem")
 	@ResponseBody
 	public Map<String, String> getpurchasepaymentitem(@RequestParam Map<String, String> params) {
@@ -9647,13 +9683,15 @@ public class HomeController {
 		Map<String, String> map = new HashMap<>();
 
 		double totalpaidamount = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getPurchasePaymentMasterList().stream().filter(C -> C.getPurchaseid().equalsIgnoreCase(params.get("projectpurchaseid")))
+				.getPurchasePaymentMasterList().stream()
+				.filter(C -> C.getPurchaseid().equalsIgnoreCase(params.get("projectpurchaseid")))
 				.mapToDouble(ProjectpurchasePaymentMaster::getAmount).sum();
 
 		map.put("totalpaidamount", String.valueOf(totalpaidamount));
 
 		ProjectpurchaseMaster inv = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getProjectpurchaseMasterList().stream().filter(C -> C.getProjectpurchaseid() == Integer.parseInt(params.get("projectpurchaseid")))
+				.getProjectpurchaseMasterList().stream()
+				.filter(C -> C.getProjectpurchaseid() == Integer.parseInt(params.get("projectpurchaseid")))
 				.collect(Collectors.toList()).get(0);
 
 		try {
@@ -9670,8 +9708,8 @@ public class HomeController {
 		map.put("duedate", inv.getDueDateMMMddyyyy());
 		map.put("amount", String.valueOf(totalinvoiceamount));
 		map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
-		map.put("purchaseid", String.valueOf(inv.getProjectpurchaseid() ));
-		
+		map.put("purchaseid", String.valueOf(inv.getProjectpurchaseid()));
+
 		return map;
 
 	}
@@ -9720,7 +9758,7 @@ public class HomeController {
 
 		return projectMasterService.save(pm);
 	}
-	
+
 	@ResponseBody
 	@PostMapping("projectpurchasepaymentsave")
 	public ProjectMaster projectpurchasepaymentsave(@RequestParam Map<String, String> params) {
@@ -9749,7 +9787,7 @@ public class HomeController {
 
 			}
 			pm.setPurchasePaymentMasterList(ls);
-			
+
 		} else {
 			ProjectpurchasePaymentMaster invm = new ProjectpurchasePaymentMaster();
 
@@ -9790,8 +9828,9 @@ public class HomeController {
 			}
 
 		}
-		atList =atList.stream().sorted(Comparator.comparing(AccountTransfer :: getAccounttransferid).reversed()).toList();	
-		
+		atList = atList.stream().sorted(Comparator.comparing(AccountTransfer::getAccounttransferid).reversed())
+				.toList();
+
 		return atList;
 
 	}
@@ -9799,12 +9838,12 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping("accountTransfersavejson")
 	public AccountTransfer accountTransfersavejson(@RequestParam Map<String, String> params) {
-		
+
 		AccountTransfer obj = new AccountTransfer();
 		String accounttransferid = nullremover(String.valueOf(params.get("accounttransferid")));
 
 		if (!accounttransferid.equalsIgnoreCase("")) {
-		
+
 			obj.setAccounttransferid(Integer.parseInt(accounttransferid));
 		}
 		obj.setNotes(String.valueOf(params.get("Notes")));
@@ -9818,14 +9857,12 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping("getaccounttransferitem")
 	public AccountTransfer getaccounttransferitem(@RequestParam Map<String, String> params) {
-		
-		
+
 		return accountTransferService.findById(Integer.parseInt(params.get("tid")));
 	}
-	
-	//accountIncomeService
-	
-	
+
+	// accountIncomeService
+
 	@GetMapping("accountincome")
 	public String getaccountincome(Model themodel) {
 
@@ -9833,8 +9870,7 @@ public class HomeController {
 
 		return "accountincome";
 	}
-	
-	
+
 	@ResponseBody
 	@GetMapping("accountincomelistjson")
 	public List<AccountsIncome> accountincomelistjson(Model themodel) {
@@ -9850,8 +9886,8 @@ public class HomeController {
 			}
 
 		}
-		atList =atList.stream().sorted(Comparator.comparing(AccountsIncome :: getAccountIncomeid).reversed()).toList();	
-		
+		atList = atList.stream().sorted(Comparator.comparing(AccountsIncome::getAccountIncomeid).reversed()).toList();
+
 		return atList;
 
 	}
@@ -9859,13 +9895,13 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping("accountsincomesavejson")
 	public AccountsIncome accountsincomesavejson(@RequestParam Map<String, String> params) {
-		//System.out.println(params);
-		
+		// System.out.println(params);
+
 		AccountsIncome obj = new AccountsIncome();
 		String accounttransferid = nullremover(String.valueOf(params.get("accountIncomeid")));
 
 		if (!accounttransferid.equalsIgnoreCase("")) {
-		
+
 			obj.setAccountIncomeid(Integer.parseInt(accounttransferid));
 		}
 		obj.setIamount(String.valueOf(params.get("iamount")));
@@ -9875,26 +9911,23 @@ public class HomeController {
 		obj.setIdescription(String.valueOf(params.get("idescription")));
 		obj.setIfrom(String.valueOf(params.get("ifrom")));
 		obj.setRefNo(String.valueOf(params.get("refNo")));
-		
+
 		return accountIncomeService.save(obj);
 	}
 
 	@ResponseBody
 	@PostMapping("getaccountincomeitem")
 	public AccountsIncome getaccountincomeitem(@RequestParam Map<String, String> params) {
-		
-		
+
 		return accountIncomeService.findById(Integer.parseInt(params.get("tid")));
 	}
-	
+
 	@ResponseBody
 	@GetMapping("springtest")
-	public String springtest()
-	{
+	public String springtest() {
 		return springtestobj.getDb_connect();
 	}
-	
-		
+
 	@GetMapping("projectpurchase")
 	public String projectpurchase(Model theModel, @RequestParam("id") int id) {
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
@@ -9996,7 +10029,6 @@ public class HomeController {
 		List<ContactPerson> cplis = contactPersonService.findAll();
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
-		
 		// Next Activity & Followers Details
 		HashMap<Integer, String> nextactmap = new HashMap();
 		HashMap<Integer, String> followersmap = new HashMap();
@@ -10004,7 +10036,9 @@ public class HomeController {
 
 		theModel.addAttribute("personlist", cplis);
 		theModel.addAttribute("organizationlist", corglis);
-		theModel.addAttribute("supplierlist", corglis.stream().filter(C-> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier")).collect(Collectors.toList()));
+		theModel.addAttribute("supplierlist",
+				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+						.collect(Collectors.toList()));
 
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		theModel.addAttribute("SOURCE", MEMBERIN);
@@ -10016,7 +10050,7 @@ public class HomeController {
 		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
-		
+
 		theModel.addAttribute("UNITS", UNITS);
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
@@ -10031,8 +10065,7 @@ public class HomeController {
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		return "projectpurchase";
 	}
-	
-	
+
 	@ResponseBody
 	@PostMapping("projectprojectpurchasesave")
 	public ProjectMaster projectprojectpurchasesave(@RequestParam Map<String, String> params) {
@@ -10057,17 +10090,19 @@ public class HomeController {
 					invm.setProjectpurchaseNo(String.valueOf(params.get("projectpurchaseNo")));
 					invm.setEmployeeid(String.valueOf(params.get("purchase_employeeid")));
 					invm.setSupplierid(String.valueOf(params.get("purchase_supplierid")));
-					
+
 					List<ProjectpurchaseItemMaster> invitemls = new ArrayList();
 					for (int i = 1; i <= Integer.parseInt(params.get("projectpurchaseitemcount")); i++) {
 
 						ProjectpurchaseItemMaster initem = new ProjectpurchaseItemMaster();
 						int invitemids = 0;
-						if (!nullremover(String.valueOf(params.get("ProjectpurchaseItemid" + i))).equalsIgnoreCase("")) {
+						if (!nullremover(String.valueOf(params.get("ProjectpurchaseItemid" + i)))
+								.equalsIgnoreCase("")) {
 							invitemids = Integer.parseInt(params.get("ProjectpurchaseItemid" + i));
 							final int tempi = i;
-							initem = invm.getProjectpurchaseItemMasterlist().stream().filter(
-									C -> C.getProjectpurchaseitemid() == Integer.parseInt(params.get("ProjectpurchaseItemid" + tempi)))
+							initem = invm.getProjectpurchaseItemMasterlist().stream()
+									.filter(C -> C.getProjectpurchaseitemid() == Integer
+											.parseInt(params.get("ProjectpurchaseItemid" + tempi)))
 									.collect(Collectors.toList()).get(0);
 						}
 
@@ -10080,7 +10115,7 @@ public class HomeController {
 
 			}
 			pm.setProjectpurchaseMasterList(ls);
-			
+
 		} else {
 			ProjectpurchaseMaster newinv = new ProjectpurchaseMaster();
 
@@ -10092,7 +10127,7 @@ public class HomeController {
 			newinv.setProjectpurchaseNo(String.valueOf(params.get("projectpurchaseNo")));
 			newinv.setEmployeeid(String.valueOf(params.get("purchase_employeeid")));
 			newinv.setSupplierid(String.valueOf(params.get("purchase_supplierid")));
-		
+
 			List<ProjectpurchaseItemMaster> invitemls = new ArrayList();
 			for (int i = 1; i <= Integer.parseInt(params.get("projectpurchaseitemcount")); i++) {
 
@@ -10106,8 +10141,8 @@ public class HomeController {
 		return projectMasterService.save(pm);
 	}
 
-	public ProjectpurchaseItemMaster addupdatedProjectpurchaseMaster(Map<String, String> params, ProjectpurchaseItemMaster invitemmaster,
-			int index, int itemid) {
+	public ProjectpurchaseItemMaster addupdatedProjectpurchaseMaster(Map<String, String> params,
+			ProjectpurchaseItemMaster invitemmaster, int index, int itemid) {
 
 		invitemmaster.setProjectpurchaseitemid(itemid);
 
@@ -10154,8 +10189,6 @@ public class HomeController {
 
 		return invitemmaster;
 	}
-	
-	
 
 	@GetMapping("projectexpense")
 	public String projectexpense(Model theModel, @RequestParam("id") int id) {
@@ -10297,9 +10330,10 @@ public class HomeController {
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
-		
-		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream().filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
-		
+
+		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
+				.filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
+
 		return "projectexpense1";
 	}
 
@@ -10310,7 +10344,7 @@ public class HomeController {
 		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
 
 		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
-		
+
 		List<ProjectExpense> invls = new ArrayList();
 
 		String tempreceiptid = nullremover(String.valueOf(params.get("prjExpenseid")));
@@ -10329,17 +10363,18 @@ public class HomeController {
 					invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
 					invm.setQuantity(Double.parseDouble(params.get("Quantity")));
 					invm.setStaff(String.valueOf(params.get("staff")));
-					invm.setTotal(Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));	
+					invm.setTotal(
+							Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));
 					invm.setAmount(Double.parseDouble(params.get("Amount")));
 					invm.setUnit(String.valueOf(params.get("unit")));
-					invm.setVehicle(String.valueOf(params.get("vehicle")));			
-					
+					invm.setVehicle(String.valueOf(params.get("vehicle")));
+
 				}
 				ls.add(invm);
 
 			}
 			pm.setProjectExpenseList(ls);
-			
+
 		} else {
 			ProjectExpense invm = new ProjectExpense();
 
@@ -10351,17 +10386,17 @@ public class HomeController {
 			invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
 			invm.setQuantity(Double.parseDouble(params.get("Quantity")));
 			invm.setStaff(String.valueOf(params.get("staff")));
-			invm.setTotal(Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));	
+			invm.setTotal(Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));
 			invm.setAmount(Double.parseDouble(params.get("Amount")));
 			invm.setUnit(String.valueOf(params.get("unit")));
-			invm.setVehicle(String.valueOf(params.get("vehicle")));	
+			invm.setVehicle(String.valueOf(params.get("vehicle")));
 
 			pm.getProjectExpenseList().add(invm);
 		}
 
 		return projectMasterService.save(pm);
 	}
-	
+
 	@PostMapping("getprojectexpenselist")
 	@ResponseBody
 	public List<ProjectExpense> getprojectexpenselist(@RequestParam Map<String, String> params) {
@@ -10369,16 +10404,223 @@ public class HomeController {
 		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
 		List<ProjectExpense> ls = pm.getProjectExpenseList();
 		List<EmployeeMaster> emplist = employeeMasterService.findAll();
-		
+
 		for (ProjectExpense obj : ls) {
 			try {
-				
+
 				obj.setPrjExpenseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(obj.getPrjExpenseDate())).toString());
-				
-				obj.setStaffname(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(params.get("mastercategoryid"))).collect(Collectors.toList()).get(0).getStaffName());	
-				
-				
+
+				obj.setStaffname(emplist.stream()
+						.filter(C -> C.getEmpMasterid() == Integer.parseInt(params.get("mastercategoryid")))
+						.collect(Collectors.toList()).get(0).getStaffName());
+
+			} catch (ParseException e) {
+
+				// e.printStackTrace();
+			}
+
+		}
+
+		return ls;
+	}
+
+	@PostMapping("getexpenseitem")
+	@ResponseBody
+	public ProjectExpense getexpenseitem(@RequestParam Map<String, String> params) {
+
+		ProjectExpense obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getProjectExpenseList().stream()
+				.filter(C -> C.getPrjExpenseid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
+		return obj;
+
+	}
+
+	
+	@ResponseBody
+	@PostMapping("branchbranchpurchasesave")
+	public BranchMaster branchbranchpurchasesave(@RequestParam Map<String, String> params) {
+
+		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
+
+		BranchMaster pm = branchMasterService.findById(Integer.parseInt(params.get("branchid")));
+		List<BranchpurchaseMaster> invls = new ArrayList();
+
+		String tempbranchpurchaseid = nullremover(String.valueOf(params.get("branchpurchaseid")));
+
+		if (!tempbranchpurchaseid.equalsIgnoreCase("")) {
+			List<BranchpurchaseMaster> ls = new ArrayList();
+
+			for (BranchpurchaseMaster invm : pm.getBranchpurchaseMasterList()) {
+				if (invm.getBranchpurchaseid() == Integer.parseInt(tempbranchpurchaseid)) {
+					invm.setDueDate(String.valueOf(params.get("dueDate")));
+					invm.setBranchpurchaseDate(String.valueOf(params.get("branchpurchaseDate")));
+					invm.setBranchpurchaseType(String.valueOf(params.get("branchpurchaseType")));
+					invm.setNotes(String.valueOf(params.get("note")));
+					invm.setReceivable(String.valueOf(params.get("receivable")));
+					invm.setBranchpurchaseNo(String.valueOf(params.get("branchpurchaseNo")));
+					invm.setEmployeeid(String.valueOf(params.get("purchase_employeeid")));
+					invm.setSupplierid(String.valueOf(params.get("purchase_supplierid")));
+
+					List<BranchpurchaseItemMaster> invitemls = new ArrayList();
+					for (int i = 1; i <= Integer.parseInt(params.get("branchpurchaseitemcount")); i++) {
+
+						BranchpurchaseItemMaster initem = new BranchpurchaseItemMaster();
+						int invitemids = 0;
+						if (!nullremover(String.valueOf(params.get("BranchpurchaseItemid" + i)))
+								.equalsIgnoreCase("")) {
+							invitemids = Integer.parseInt(params.get("BranchpurchaseItemid" + i));
+							final int tempi = i;
+							initem = invm.getBranchpurchaseItemMasterlist().stream()
+									.filter(C -> C.getBranchpurchaseitemid() == Integer
+											.parseInt(params.get("BranchpurchaseItemid" + tempi)))
+									.collect(Collectors.toList()).get(0);
+						}
+
+						invitemls.add(addupdatedBranchpurchaseMaster(params, initem, i, invitemids));
+					}
+					invm.setBranchpurchaseItemMasterlist(invitemls);
+
+				}
+				ls.add(invm);
+
+			}
+			pm.setBranchpurchaseMasterList(ls);
+
+		} else {
+			BranchpurchaseMaster newinv = new BranchpurchaseMaster();
+
+			newinv.setDueDate(String.valueOf(params.get("dueDate")));
+			newinv.setBranchpurchaseDate(String.valueOf(params.get("branchpurchaseDate")));
+			newinv.setBranchpurchaseType(String.valueOf(params.get("branchpurchaseType")));
+			newinv.setNotes(String.valueOf(params.get("note")));
+			newinv.setReceivable(String.valueOf(params.get("receivable")));
+			newinv.setBranchpurchaseNo(String.valueOf(params.get("branchpurchaseNo")));
+			newinv.setEmployeeid(String.valueOf(params.get("purchase_employeeid")));
+			newinv.setSupplierid(String.valueOf(params.get("purchase_supplierid")));
+
+			List<BranchpurchaseItemMaster> invitemls = new ArrayList();
+			for (int i = 1; i <= Integer.parseInt(params.get("branchpurchaseitemcount")); i++) {
+
+				invitemls.add(addupdatedBranchpurchaseMaster(params, new BranchpurchaseItemMaster(), i, 0));
+			}
+			newinv.setBranchpurchaseItemMasterlist(invitemls);
+
+			pm.getBranchpurchaseMasterList().add(newinv);
+		}
+
+		return branchMasterService.save(pm);
+	}
+
+	public BranchpurchaseItemMaster addupdatedBranchpurchaseMaster(Map<String, String> params,
+			BranchpurchaseItemMaster invitemmaster, int index, int itemid) {
+
+		invitemmaster.setBranchpurchaseitemid(itemid);
+
+		double price = Double.parseDouble(String.valueOf(params.get("Price" + index)));
+		double qty = Double.parseDouble(String.valueOf(params.get("Quantity" + index)));
+		double taxableAmount = price * qty;
+
+		double Discountper = Double.parseDouble(String.valueOf(params.get("Discountper" + index)));
+		double CGSTper = Double.parseDouble(String.valueOf(params.get("CGSTper" + index)));
+		double SGSTper = Double.parseDouble(String.valueOf(params.get("SGSTper" + index)));
+		double IGSTper = Double.parseDouble(String.valueOf(params.get("IGSTper" + index)));
+
+		double dt = Discountper / 100;
+		double Discountamt = taxableAmount * dt;
+		double afetdiscountamount = taxableAmount - Discountamt;
+
+		double it = IGSTper / 100;
+		double ct = CGSTper / 100;
+		double st = SGSTper / 100;
+		double IGSTamount = afetdiscountamount * it;
+		double SGSTamount = afetdiscountamount * st;
+		double CGSTamount = afetdiscountamount * ct;
+
+		invitemmaster.setDiscountamt(Discountamt);
+		invitemmaster.setDiscountper(Discountper);
+
+		invitemmaster.setCGSTamount(CGSTamount);
+		invitemmaster.setCGSTper(CGSTper);
+
+		invitemmaster.setIGSTamount(IGSTamount);
+		invitemmaster.setIGSTper(IGSTper);
+
+		invitemmaster.setSGSTamount(SGSTamount);
+		invitemmaster.setSGSTper(SGSTper);
+
+		invitemmaster.setBranchpurchaseItem(String.valueOf(params.get("BranchpurchaseItem" + index)));
+		invitemmaster.setDescription(String.valueOf(params.get("Description" + index)));
+		invitemmaster.setQuantity(qty);
+		invitemmaster.setPrice(price);
+		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
+
+		invitemmaster.setTaxableAmount(afetdiscountamount);
+		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + SGSTamount + IGSTamount);
+
+		return invitemmaster;
+	}
+
+	@ResponseBody
+	@PostMapping("branchpurchasepaymentsave")
+	public BranchMaster branchpurchasepaymentsave(@RequestParam Map<String, String> params) {
+
+		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
+
+		BranchMaster pm = branchMasterService.findById(Integer.parseInt(params.get("branchid")));
+		List<BranchpurchasePaymentMaster> invls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("recepitid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<BranchpurchasePaymentMaster> ls = new ArrayList();
+
+			for (BranchpurchasePaymentMaster invm : pm.getPurchasePaymentMasterList()) {
+				if (invm.getRecepitid() == Integer.parseInt(tempreceiptid)) {
+
+					invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+					invm.setAmount(Double.parseDouble(params.get("amount")));
+					invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+					invm.setNotes(String.valueOf(params.get("notes")));
+					invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
+				}
+				ls.add(invm);
+
+			}
+			pm.setPurchasePaymentMasterList(ls);
+
+		} else {
+			BranchpurchasePaymentMaster invm = new BranchpurchasePaymentMaster();
+
+			invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+			invm.setAmount(Double.parseDouble(params.get("amount")));
+			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+			invm.setNotes(String.valueOf(params.get("notes")));
+			invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
+			invm.setPurchaseid(String.valueOf(params.get("recbranchpurchaseid")));
+
+			pm.getPurchasePaymentMasterList().add(invm);
+		}
+
+		return branchMasterService.save(pm);
+	}
+	@PostMapping("getbranchpurchaselist")
+	@ResponseBody
+	public List<BranchpurchaseMaster> getbranchpurchaselist(@RequestParam Map<String, String> params) {
+
+		List<BranchpurchaseMaster> ls = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getBranchpurchaseMasterList();
+
+		for (BranchpurchaseMaster obj : ls) {
+			try {
+				obj.setBranchpurchaseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getBranchpurchaseDate())).toString());
+				obj.setDueDateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -10389,17 +10631,145 @@ public class HomeController {
 		return ls;
 	}
 	
-	@PostMapping("getexpenseitem")
+	@PostMapping("getbranchpurpaymentlist")
 	@ResponseBody
-	public ProjectExpense getexpenseitem(@RequestParam Map<String, String> params) {
+	public List<BranchpurchasePaymentMaster> getbranchpurpaymentlist(@RequestParam Map<String, String> params) {
 
-		ProjectExpense obj = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getProjectExpenseList().stream().filter(C -> C.getPrjExpenseid() == Integer.parseInt(params.get("projectid")))
+		BranchMaster pm = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
+		List<BranchpurchasePaymentMaster> ls = pm.getPurchasePaymentMasterList();
+		List<BranchpurchaseMaster> invls = pm.getBranchpurchaseMasterList();
+
+		for (BranchpurchasePaymentMaster obj : ls) {
+			try {
+				obj.setRecepitDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
+
+				obj.setPurchaseNo(
+						invls.stream().filter(C -> C.getBranchpurchaseid() == Integer.parseInt(obj.getPurchaseid()))
+								.collect(Collectors.toList()).get(0).getBranchpurchaseNo());
+
+			} catch (ParseException e) {
+
+				// e.printStackTrace();
+			}
+
+		}
+
+		return ls;
+	}
+	@PostMapping("getbranchpurchaseitem")
+	@ResponseBody
+	public BranchpurchaseMaster getbranchpurchaseitem(@RequestParam Map<String, String> params) {
+
+		BranchpurchaseMaster obj = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getBranchpurchaseMasterList().stream()
+				.filter(C -> C.getBranchpurchaseid() == Integer.parseInt(params.get("branchid")))
 				.collect(Collectors.toList()).get(0);
 
-		
+		try {
+			obj.setBranchpurchaseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+					.format(displaydateFormatrev.parse(obj.getBranchpurchaseDate())).toString());
+			obj.setDueDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
 		return obj;
 
 	}
-	
+	@PostMapping("getbranchpurchasepaymentitem")
+	@ResponseBody
+	public Map<String, String> getbranchpurchasepaymentitem(@RequestParam Map<String, String> params) {
+
+		Map<String, String> map = new HashMap<>();
+
+		double totalpaidamount = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getPurchasePaymentMasterList().stream()
+				.filter(C -> C.getPurchaseid().equalsIgnoreCase(params.get("branchpurchaseid")))
+				.mapToDouble(BranchpurchasePaymentMaster::getAmount).sum();
+
+		map.put("totalpaidamount", String.valueOf(totalpaidamount));
+
+		BranchpurchaseMaster inv = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getBranchpurchaseMasterList().stream()
+				.filter(C -> C.getBranchpurchaseid() == Integer.parseInt(params.get("branchpurchaseid")))
+				.collect(Collectors.toList()).get(0);
+
+		try {
+			inv.setDueDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(inv.getDueDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+
+		double totalinvoiceamount = inv.getBranchpurchaseItemMasterlist().stream()
+				.mapToDouble(BranchpurchaseItemMaster::getTotalamountAmount).sum();
+		map.put("purchaseno", inv.getBranchpurchaseNo());
+		map.put("duedate", inv.getDueDateMMMddyyyy());
+		map.put("amount", String.valueOf(totalinvoiceamount));
+		map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
+		map.put("purchaseid", String.valueOf(inv.getBranchpurchaseid()));
+
+		return map;
+
+	}
+	@PostMapping("getbranchpurpaymentreceiptitem")
+	@ResponseBody
+	public BranchpurchasePaymentMaster getbranchpurpaymentreceiptitem(@RequestParam Map<String, String> params) {
+
+		BranchpurchasePaymentMaster obj = branchMasterService
+				.findById(Integer.parseInt(params.get("mastercategoryid"))).getPurchasePaymentMasterList().stream()
+				.filter(C -> C.getRecepitid() == Integer.parseInt(params.get("branchid"))).collect(Collectors.toList())
+				.get(0);
+
+		try {
+			obj.setRecepitDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+		return obj;
+
+	}
+	@PostMapping("getbranchpurchasepaymentMasteritem")
+	@ResponseBody
+	public Map<String, String> getbranchpurchasepaymentMasteritem(@RequestParam Map<String, String> params) {
+
+		Map<String, String> map = new HashMap<>();
+
+		double totalpaidamount = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getPurchasePaymentMasterList().stream()
+				.filter(C -> C.getPurchaseid().equalsIgnoreCase(params.get("branchpurchaseid")))
+				.mapToDouble(BranchpurchasePaymentMaster::getAmount).sum();
+
+		map.put("totalpaidamount", String.valueOf(totalpaidamount));
+
+		BranchpurchaseMaster inv = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getBranchpurchaseMasterList().stream()
+				.filter(C -> C.getBranchpurchaseid() == Integer.parseInt(params.get("branchpurchaseid")))
+				.collect(Collectors.toList()).get(0);
+
+		try {
+			inv.setDueDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(inv.getDueDate())).toString());
+		} catch (ParseException e) {
+
+			// e.printStackTrace();
+		}
+
+		double totalinvoiceamount = inv.getBranchpurchaseItemMasterlist().stream()
+				.mapToDouble(BranchpurchaseItemMaster::getTotalamountAmount).sum();
+		map.put("purchaseno", inv.getBranchpurchaseNo());
+		map.put("duedate", inv.getDueDateMMMddyyyy());
+		map.put("amount", String.valueOf(totalinvoiceamount));
+		map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
+		map.put("purchaseid", String.valueOf(inv.getBranchpurchaseid()));
+
+		return map;
+
+	}
+
 }

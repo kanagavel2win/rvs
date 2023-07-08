@@ -671,14 +671,12 @@
 	    
 	    function filterDuplicateRows() {
 	     collection = collect(dt_basic.rows().data().toArray());
-	     var branchname = collection.pluck('branchname').filter(function(value) {return value != '' && value != null}).unique().all();
-	     $.each(branchname, function(key, value) {
-		    	Branch.append($('<option></option>').val(value).text(value));
-		  });
-	     var custodian = collection.pluck('custodian').filter(function(value) {return value != '' && value != null}).unique().all();
-	     $.each(custodian, function(key, value) {
-		    	Custodian.append($('<option></option>').val(value).text(value));
-		  });
+	     var branchname = collection.pluck('branchname').filter(value => value !== '' && value !== null).unique().all();
+	     var custodian = collection.pluck('custodian').filter(value => value !== '' && value !== null).unique().all();
+	     
+	     Branch.empty().append(branchname.map(value => $('<option></option>').val(value).text(value)));
+	     Custodian.empty().append(custodian.map(value => $('<option></option>').val(value).text(value)));
+	    
 	    }
 	    
 	    
@@ -687,14 +685,10 @@
 	    
  
 	    function cart_count() {
-			var count = 0;
-			$('.removefromcart').each(function(index) {
-				count++;
-			});
-			$('#cartcount').text(count);
-
-			$('#totalcartval').text(count);
-		}
+	        var count = $('.removefromcart').length;
+	        $('#cartcount').text(count);
+	        $('#totalcartval').text(count);
+	    }
 	    
 	    
 	   
@@ -702,7 +696,7 @@
 	    
 	    
 	    function hiderow(id){
-	    	if($('#Status').val() != '' && Branch.val() != '')
+	    	if($('#Status').val() != '' && Branch.val() != '' && Custodian.val() != '')
 	    	{
 	    	var currentRow = $('#row_'+id);
 	    	var col1 = currentRow.find( "td:eq(1)").html();
@@ -721,7 +715,7 @@
 	    	}
 	    	else
 	    	{
-	    		alert("Please Select Status and Branch");
+	    		alert("Please Select Status,Branch and Custodian");
 	    		
 	    	}
 	    }
@@ -759,6 +753,7 @@
 		   
 		   Branch.val('');
 		   
+		   dt_basic.ajax.reload();
 		   dt_basic_table.DataTable().column(4).search(this.value, false, true).draw();
 		   
 
@@ -804,9 +799,9 @@
 	    
 	   
 	    $('#Branch1,#Custodian').change(function (){
+	    	dt_basic_table.search('').columns().search('').draw();
 	    	var column = $(this).data('column');
-	    	console.log(column);
-	    	dt_basic_table.DataTable().column(column).search(this.value, false, true).draw();
+	    	dt_basic_table.columns(column).search(this.value).draw();
 	    })
 	   
 	  /*  $('#exampleModalScrollable').on('hide.bs.modal', function() {

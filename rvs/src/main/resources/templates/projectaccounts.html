@@ -205,7 +205,7 @@
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
 							<span class="text-muted fw-light">Works /<a
 								href="projectlist">Project</a>/
-							</span> View
+							</span> Invoices
 						</h4>
 						<div class="row gy-4">
 							<!-- User Sidebar -->
@@ -374,6 +374,8 @@
 											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
 								</ul>
 								<!--/ User Pills -->
+
+								
 
 								<!-- Project   Card -->
 								<div class="card  mb-4">
@@ -760,16 +762,9 @@
 													<select id="depositedto" name="depositedto"
 														class="form-select" aria-label="Default select example" required>
 														<option value="">-</option>
-														<option value="SBI">SBI</option>
-														<option value="IDBI">IDBI</option>
-														<option value="LVB">LVB</option>
-														<option value="Axis 1">Axis 1</option>
-														<option value="Axis 2">Axis 2</option>
-														<option value="Cash 1">Cash 1</option>
-														<option value="Cash 2">Cash 2</option>
-														<option value="SBI Sukumar">SBI Sukumar</option>
-														<option value="SBI Balakumar">SBI Balakumar</option>
-														<option value="TDS">TDS</option>
+														<th:block  th:each="obj1 : ${accountlist}" >
+															<option th:value="${obj1.accountheadid}" th:text="${obj1.category}"></option>
+														</th:block>
 														
 													</select>
 												</div>
@@ -1197,7 +1192,7 @@
 							
 						</div>
 						<!-- / Content -->
-
+  
 						<!-- Footer -->
 						<footer class="content-footer footer bg-footer-theme">
 							<div
@@ -1292,7 +1287,7 @@
 			$(document)
 					.ready(
 							function() {
-								
+							
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								var ids="[[${projectMaster['id']}]]";
 								$("#mastercategoryid").val(ids);
@@ -1313,8 +1308,8 @@
 									UNITS_temp += "<option value='" +array[i] + "'>"+array[i] + "</option>";
 								}
 								
-								
-								
+   
+							        
 								var projectfollowerids="[[${projectMaster['projectfollowerids']}]]";
 								$("#followers").val(projectfollowerids.split(",")).change();
 								
@@ -2081,7 +2076,7 @@
 									html +='<div class="d-flex border rounded position-relative pe-0 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" value="'+ element.invoiceitemid + '"/> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="'+ element.invoiceItem + '">'+ element.invoiceItem + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" value="'+ element.quantity + '" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="'+ element.discountper + '" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="'+ element.igstper + '" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ invoiceIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
 					           	});
 					           	
-								$('#invoiceitemlist').append(html);
+								$('#invoiceitemlist').html(html);
 								invoiceamountCalculator();
 								$('#invoicemodel').modal('show');
 							},

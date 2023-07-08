@@ -49,6 +49,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.rvs.springboot.thymeleaf.entity.AccountTransfer;
 import com.rvs.springboot.thymeleaf.entity.AccountsIncome;
+import com.rvs.springboot.thymeleaf.entity.Accountsheads;
 import com.rvs.springboot.thymeleaf.entity.ActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterGuest;
@@ -137,6 +138,7 @@ import com.rvs.springboot.thymeleaf.pojo.springtest;
 import com.rvs.springboot.thymeleaf.pojo.tagify;
 import com.rvs.springboot.thymeleaf.service.AccountIncomeService;
 import com.rvs.springboot.thymeleaf.service.AccountTransferService;
+import com.rvs.springboot.thymeleaf.service.AccountheadsService;
 import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetAuditService;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
@@ -242,6 +244,9 @@ public class HomeController {
 
 	@Autowired
 	ProjectTemplateBoardService projectTemplateBoardService;
+
+	@Autowired
+	AccountheadsService accountheadsService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
@@ -492,7 +497,7 @@ public class HomeController {
 		BranchMaster obj_bm = new BranchMaster();
 		theModel.addAttribute("BranchMaster", obj_bm);
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
-		
+
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
@@ -516,8 +521,8 @@ public class HomeController {
 
 		theModel.addAttribute("BranchMaster", bmobj);
 		theModel.addAttribute("save", true);
-theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
-		
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
@@ -1659,7 +1664,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_branchlist"));
-		
+
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
@@ -1667,7 +1672,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		theModel.addAttribute("supplierlist",
 				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
 						.collect(Collectors.toList()));
-
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		return "branchadd";
 	}
 
@@ -1751,7 +1756,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_branchlist"));
-		
+
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
@@ -1759,9 +1764,10 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		theModel.addAttribute("supplierlist",
 				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
 						.collect(Collectors.toList()));
-
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		return "branchexpense";
 	}
+
 	public String getemp_photo(EmployeeMaster obj) {
 		String str = "";
 		List<EmployeeFiles> validProfilephoto = obj.getEmployeeFiles().stream()
@@ -9223,6 +9229,10 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
+		
+		
 		return "projectaccounts";
 	}
 
@@ -10156,6 +10166,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		return "projectpurchase";
 	}
 
@@ -10426,7 +10437,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
 				.filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
-
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		return "projectexpense1";
 	}
 
@@ -10531,7 +10542,6 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 	}
 
-	
 	@ResponseBody
 	@PostMapping("branchbranchpurchasesave")
 	public BranchMaster branchbranchpurchasesave(@RequestParam Map<String, String> params) {
@@ -10562,8 +10572,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 						BranchpurchaseItemMaster initem = new BranchpurchaseItemMaster();
 						int invitemids = 0;
-						if (!nullremover(String.valueOf(params.get("BranchpurchaseItemid" + i)))
-								.equalsIgnoreCase("")) {
+						if (!nullremover(String.valueOf(params.get("BranchpurchaseItemid" + i))).equalsIgnoreCase("")) {
 							invitemids = Integer.parseInt(params.get("BranchpurchaseItemid" + i));
 							final int tempi = i;
 							initem = invm.getBranchpurchaseItemMasterlist().stream()
@@ -10701,6 +10710,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 		return branchMasterService.save(pm);
 	}
+
 	@PostMapping("getbranchpurchaselist")
 	@ResponseBody
 	public List<BranchpurchaseMaster> getbranchpurchaselist(@RequestParam Map<String, String> params) {
@@ -10723,7 +10733,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 		return ls;
 	}
-	
+
 	@PostMapping("getbranchpurpaymentlist")
 	@ResponseBody
 	public List<BranchpurchasePaymentMaster> getbranchpurpaymentlist(@RequestParam Map<String, String> params) {
@@ -10750,6 +10760,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 		return ls;
 	}
+
 	@PostMapping("getbranchpurchaseitem")
 	@ResponseBody
 	public BranchpurchaseMaster getbranchpurchaseitem(@RequestParam Map<String, String> params) {
@@ -10771,6 +10782,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		return obj;
 
 	}
+
 	@PostMapping("getbranchpurchasepaymentitem")
 	@ResponseBody
 	public Map<String, String> getbranchpurchasepaymentitem(@RequestParam Map<String, String> params) {
@@ -10808,12 +10820,13 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		return map;
 
 	}
+
 	@PostMapping("getbranchpurpaymentreceiptitem")
 	@ResponseBody
 	public BranchpurchasePaymentMaster getbranchpurpaymentreceiptitem(@RequestParam Map<String, String> params) {
 
-		BranchpurchasePaymentMaster obj = branchMasterService
-				.findById(Integer.parseInt(params.get("mastercategoryid"))).getPurchasePaymentMasterList().stream()
+		BranchpurchasePaymentMaster obj = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getPurchasePaymentMasterList().stream()
 				.filter(C -> C.getRecepitid() == Integer.parseInt(params.get("branchid"))).collect(Collectors.toList())
 				.get(0);
 
@@ -10827,6 +10840,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		return obj;
 
 	}
+
 	@PostMapping("getbranchpurchasepaymentMasteritem")
 	@ResponseBody
 	public Map<String, String> getbranchpurchasepaymentMasteritem(@RequestParam Map<String, String> params) {
@@ -10865,7 +10879,6 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 	}
 
-	
 	@ResponseBody
 	@PostMapping("branchbranchexpensesave")
 	public BranchMaster branchbranchexpensesave(@RequestParam Map<String, String> params) {
@@ -10895,8 +10908,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 						BranchexpenseItemMaster initem = new BranchexpenseItemMaster();
 						int invitemids = 0;
-						if (!nullremover(String.valueOf(params.get("BranchexpenseItemid" + i)))
-								.equalsIgnoreCase("")) {
+						if (!nullremover(String.valueOf(params.get("BranchexpenseItemid" + i))).equalsIgnoreCase("")) {
 							invitemids = Integer.parseInt(params.get("BranchexpenseItemid" + i));
 							final int tempi = i;
 							initem = invm.getBranchexpenseItemMasterlist().stream()
@@ -10987,6 +10999,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 		return invitemmaster;
 	}
+
 	@PostMapping("getbranchexpenselist")
 	@ResponseBody
 	public List<BranchexpenseMaster> getbranchexpenselist(@RequestParam Map<String, String> params) {
@@ -10994,15 +11007,17 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 		List<BranchexpenseMaster> ls = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
 				.getBranchexpenseMasterList();
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
-		
+
 		for (BranchexpenseMaster obj : ls) {
 			try {
 				obj.setBranchexpenseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(obj.getBranchexpenseDate())).toString());
-				
-				obj.setEmployee_name(employeeMasterService.findById(Integer.parseInt(obj.getEmployeeid())).getStaffName());
-				obj.setSupplier_name(corglis.stream().filter(C -> C.getId() == Integer.parseInt(obj.getSupplierid())).collect(Collectors.toList()).get(0).getOrgname());
-				
+
+				obj.setEmployee_name(
+						employeeMasterService.findById(Integer.parseInt(obj.getEmployeeid())).getStaffName());
+				obj.setSupplier_name(corglis.stream().filter(C -> C.getId() == Integer.parseInt(obj.getSupplierid()))
+						.collect(Collectors.toList()).get(0).getOrgname());
+
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -11012,7 +11027,7 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 
 		return ls;
 	}
-	
+
 	@PostMapping("getbranchexpenseitem")
 	@ResponseBody
 	public BranchexpenseMaster getbranchexpenseitem(@RequestParam Map<String, String> params) {
@@ -11021,8 +11036,63 @@ theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterServi
 				.getBranchexpenseMasterList().stream()
 				.filter(C -> C.getBranchexpenseid() == Integer.parseInt(params.get("branchid")))
 				.collect(Collectors.toList()).get(0);
-
 		return obj;
+	}
+
+	public List<Accountsheads> getaaccountsHeads_AssetBank() {
+		return accountheadsService.findAll().stream().filter(C -> C.getMastergroup().equalsIgnoreCase("Assets / Bank"))
+				.collect(Collectors.toList());
 
 	}
+
+	public List<Accountsheads> getaaccountsHeads_AssetBank_Accounts() {
+		List<String> strls = new ArrayList();
+
+		List<Accountsheads> ls = accountheadsService.findAll().stream()
+				.filter(C -> (C.getAccountheads().equalsIgnoreCase("Cash")
+						|| C.getAccountheads().equalsIgnoreCase("Bank Account")))
+				.collect(Collectors.toList());
+
+		/*
+		 * ls.forEach(obj ->{ strls.add( obj.getAccountheadid() +"|"+
+		 * obj.getCategory()); });
+		 */
+
+		return ls;
+
+	}
+
+	public List<Accountsheads> getaaccountsHeads_Liabilities() {
+		return accountheadsService.findAll().stream().filter(C -> C.getMastergroup().equalsIgnoreCase("Liabilities"))
+				.collect(Collectors.toList());
+
+	}
+
+	public List<Accountsheads> getaaccountsHeads_Equity() {
+		return accountheadsService.findAll().stream().filter(C -> C.getMastergroup().equalsIgnoreCase("Equity"))
+				.collect(Collectors.toList());
+
+	}
+
+	public List<Accountsheads> getaaccountsHeads_Income() {
+		return accountheadsService.findAll().stream().filter(C -> C.getMastergroup().equalsIgnoreCase("Income"))
+				.collect(Collectors.toList());
+
+	}
+
+	public List<String> getaaccountsHeads_Expenses() {
+
+		List<String> strls = new ArrayList();
+
+		List<Accountsheads> ls = accountheadsService.findAll().stream()
+				.filter(C -> C.getMastergroup().equalsIgnoreCase("Expenses")).collect(Collectors.toList());
+
+		ls.forEach(obj -> {
+			strls.add(obj.getAccountheadid() + "|" + obj.getCategory());
+		});
+
+		return strls;
+
+	}
+
 }

@@ -106,7 +106,7 @@ cursor:pointer;
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="py-3 breadcrumb-wrapper mb-4">
-                <span class="text-muted fw-light">Administration/<a href="branchlist">Branches</a>/</span> View
+                <span class="text-muted fw-light">Administration/<a href="branchlist">Branches</a>/</span> Expense
               </h4>
               <div class="row gy-4">
                 <!-- User Sidebar -->
@@ -436,7 +436,7 @@ cursor:pointer;
 								
 						<li class="nav-item"><a class="nav-link " th:href="'editbranch?id='+${BranchMaster.id}">
 							<i
-								class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
+								class="menu-icon tf-icons bx bx-food-menu me-1"></i>Purchase</a></li>
 						<li class="nav-item"><a class="nav-link active" ><i
 								class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
 					</ul>
@@ -570,16 +570,9 @@ cursor:pointer;
 																	<select class="form-select followers form-control "
 																		id="depitedfrom" name="depitedfrom" >
 																		<option value="">-</option>
-																		<option value="SBI">SBI</option>
-																		<option value="IDBI">IDBI</option>
-																		<option value="LVB">LVB</option>
-																		<option value="Axis 1">Axis 1</option>
-																		<option value="Axis 2">Axis 2</option>
-																		<option value="Cash 1">Cash 1</option>
-																		<option value="Cash 2">Cash 2</option>
-																		<option value="SBI Sukumar">SBI Sukumar</option>
-																		<option value="SBI Balakumar">SBI Balakumar</option>
-																		<option value="TDS">TDS</option>
+																		<th:block  th:each="obj1 : ${accountlist}" >
+																			<option th:value="${obj1.accountheadid}" th:text="${obj1.category}"></option>
+																		</th:block>
 																	</select>
 																</div>
 															</dd>
@@ -2433,3 +2426,4 @@ Model_CURRENT_STATUS
     </script>
 		  </body>
 		</html>
+me

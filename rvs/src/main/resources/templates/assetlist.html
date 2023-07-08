@@ -318,11 +318,19 @@
 												<!-- Personal Details -->
 												<div id="assetmaster-details" class="content">
 													<div class="row g-3">
-														<div class="col-sm-6">
-															<label class="form-label">ASSET NAME</label> <input
-																type="text" id="ASSET" name="ASSET" class="form-control"
-																placeholder="ASSET NAME" />
+													
+													<div class="col-sm-6">
+															<label class="form-label">BRANCH</label> <select
+																class="form-select" name="Branch" id="Branch" required>
+																<option value="">-</option>
+																<th:block th:each="obj : ${branchls}">
+																	<option th:value="${obj.id}"
+																		th:text="${obj.BRANCH_NAME}"></option>
+																</th:block>
+															</select>
 														</div>
+														
+														
 														<div class="col-sm-6">
 															<label class="form-label">TYPE <label
 																class="emptitle additem" name="addmodalassettype"><i
@@ -336,18 +344,32 @@
 																</th:block>
 															</select>
 														</div>
+														
+														<div class="col-sm-6">
+															<label class="form-label">ASSET NAME</label> <input
+																type="text" id="ASSET" name="ASSET" class="form-control"
+																placeholder="ASSET NAME" />
+														</div>
+														
+														
+														
+														<div class="col-sm-6">
+															<label class="form-label">PURCHASE TYPE</label> <select
+																class="form-select" name="PurchasedType"
+																id="PurchasedType">
+																<option value="New">New</option>
+																<option value="Refurbished">Refurbished</option>
+															</select>
+														</div>
+														
+														
 														<div class="col-sm-6">
 															<label class="form-label" for="plUserName">BRAND</label>
 															<input type="text" id="BRAND" name="BRAND"
 																class="form-control" placeholder="BRAND" />
 														</div>
 
-														<div class="col-sm-6">
-															<label class="form-label"> MANUFACTURER</label> <input
-																type="text" id="MANUFACTURER" name="MANUFACTURER"
-																class="form-control" placeholder="MANUFACTURER" />
-														</div>
-
+														
 														<div class="col-sm-6">
 															<label class="form-label">MODEL</label> <input
 																type="text" id="MODEL" name="MODEL" class="form-control"
@@ -360,8 +382,15 @@
 																type="text" id="SERIAL_NUMBER" name="SERIAL_NUMBER"
 																class="form-control" placeholder="SERIAL NUMBER" />
 														</div>
+														
+													<!-- 	<div class="col-sm-6">
+															<label class="form-label"> MANUFACTURER</label> <input
+																type="text" id="MANUFACTURER" name="MANUFACTURER"
+																class="form-control" placeholder="MANUFACTURER" />
+														</div> -->
+														
 
-														<div class="col-sm-6">
+													<!-- 	<div class="col-sm-6">
 															<label class="form-label">CONDITION</label> <select
 																class="form-select" id="CONDITION" name="CONDITION">
 																<option value="">-</option>
@@ -370,14 +399,10 @@
 																<option value="New">New</option>
 																<option value="Poor">Poor</option>
 															</select>
-														</div>
+														</div> -->
 
 
-														<div class="col-sm-6">
-															<label class="form-label" for="plUserName">NOTES</label>
-															<input type="text" id="NOTES" name="NOTES"
-																class="form-control" placeholder="NOTES" />
-														</div>
+														
 
 
 
@@ -398,16 +423,7 @@
 												<!-- Property Details -->
 												<div id="assetpurchase-details" class="content">
 													<div class="row g-3">
-														<div class="col-sm-6">
-															<label class="form-label">BRANCH</label> <select
-																class="form-select" name="Branch" id="Branch" required>
-																<option value="">-</option>
-																<th:block th:each="obj : ${branchls}">
-																	<option th:value="${obj.id}"
-																		th:text="${obj.BRANCH_NAME}"></option>
-																</th:block>
-															</select>
-														</div>
+														
 
 														<div class="col-sm-6">
 															<label class="form-label">VENDOR</label> <select
@@ -427,14 +443,6 @@
 																name="PurchasePrice">
 														</div>
 
-														<div class="col-sm-6">
-															<label class="form-label">PURCHASE TYPE</label> <select
-																class="form-select" name="PurchasedType"
-																id="PurchasedType">
-																<option value="New">New</option>
-																<option value="Refurbished">Refurbished</option>
-															</select>
-														</div>
 
 														<div class="col-sm-6">
 															<label class="form-label">PURCHASED</label> <input
@@ -453,6 +461,12 @@
 															<label class="form-label">WARRANTY END</label> <input
 																type="text" name="WARRANTYEND" id="WARRANTYEND"
 																class="form-control flatpickr" placeholder="Apr 3 2022" />
+														</div>
+														
+														<div class="col-sm-6">
+															<label class="form-label" for="plUserName">NOTES</label>
+															<input type="text" id="NOTES" name="NOTES"
+																class="form-control" placeholder="NOTES" />
 														</div>
 
 
@@ -671,14 +685,12 @@
 	    
 	    function filterDuplicateRows() {
 	     collection = collect(dt_basic.rows().data().toArray());
-	     var branchname = collection.pluck('branchname').filter(function(value) {return value != '' && value != null}).unique().all();
-	     $.each(branchname, function(key, value) {
-		    	Branch.append($('<option></option>').val(value).text(value));
-		  });
-	     var custodian = collection.pluck('custodian').filter(function(value) {return value != '' && value != null}).unique().all();
-	     $.each(custodian, function(key, value) {
-		    	Custodian.append($('<option></option>').val(value).text(value));
-		  });
+	     var branchname = collection.pluck('branchname').filter(value => value !== '' && value !== null).unique().all();
+	     var custodian = collection.pluck('custodian').filter(value => value !== '' && value !== null).unique().all();
+	     
+	     Branch.append(branchname.map(value => $('<option></option>').val(value).text(value)));
+	     Custodian.append(custodian.map(value => $('<option></option>').val(value).text(value)));
+	    
 	    }
 	    
 	    
@@ -687,14 +699,10 @@
 	    
  
 	    function cart_count() {
-			var count = 0;
-			$('.removefromcart').each(function(index) {
-				count++;
-			});
-			$('#cartcount').text(count);
-
-			$('#totalcartval').text(count);
-		}
+	        var count = $('.removefromcart').length;
+	        $('#cartcount').text(count);
+	        $('#totalcartval').text(count);
+	    }
 	    
 	    
 	   
@@ -702,7 +710,7 @@
 	    
 	    
 	    function hiderow(id){
-	    	if($('#Status').val() != '' && Branch.val() != '')
+	    	if($('#Status').val() != '' && Branch.val() != '' && $('#Status').val() == 'In Stock')
 	    	{
 	    	var currentRow = $('#row_'+id);
 	    	var col1 = currentRow.find( "td:eq(1)").html();
@@ -719,9 +727,28 @@
 					});
 			cart_count();
 	    	}
+	    	
+	    	else if($('#Status').val() != '' && Branch.val() != '' && Custodian.val() != '')
+	    	{
+	    		var currentRow = $('#row_'+id);
+		    	var col1 = currentRow.find( "td:eq(1)").html();
+				var col2 = currentRow.find( "td:eq(2)").html();
+				var col3 = currentRow.find( "td:eq(3)").html();
+				var col4 = currentRow.find( "td:eq(4)").html();
+				var col5 = currentRow.find( "td:eq(5)").html();
+				var col6 = currentRow.find( "td:eq(6)").html();
+				$('#cart > tbody:last-child') .append(`<tr><td><button type='button' name="${id}" class='btn btn-icon btn-secondary mr-1 mb-1 removefromcart'><i class='bx bx-trash'></i></button></td><td>${col1}</td><td>${col2}</td><td>${col3}</td><td>${col4}</td><td>${col5}</td><td>${col6}</td></tr>`);
+				
+				currentRow.fadeTo("slow", 0.7, function() {
+					        currentRow .fadeOut();
+							currentRow.hide();
+						});
+				cart_count();
+	    	}
+	    	
 	    	else
 	    	{
-	    		alert("Please Select Status and Branch");
+	    		alert("Please fill all mandatory fields");	
 	    		
 	    	}
 	    }
@@ -759,7 +786,10 @@
 		   
 		   Branch.val('');
 		   
-		   dt_basic_table.DataTable().column(4).search(this.value, false, true).draw();
+		  
+		   dt_basic.search('').columns().search('').draw();
+		   
+		   dt_basic.columns(4).search(this.value).draw();
 		   
 
 		   if(this.value=="Checked Out" || this.value=="In office Use")
@@ -776,8 +806,6 @@
 	   
 	   Custodian.change(function(e){
 	   var branchname = collection.where('custodian',this.value).pluck('branchname').unique().all();
-	   var status = collection.where('custodian',this.value).pluck('status').unique().all();
-	   $('#Status').val(status[0]);
 	   Branch.val(branchname[0]);
 	   })
 	   
@@ -787,7 +815,7 @@
 			 cartid = cartid+","+$(this).attr('name');
 			});
 		   cartid = cartid.substring(1,cartid.length);
-		   window.location.href = 'checkout?id='+cartid;
+		   window.location.href = 'checkout?id='+cartid+'&branchname='+Branch.val()+'&Status='+$('#Status').val()+'&Custodian='+$('#Custodian').val();
 	   })
 	   
 	   
@@ -804,9 +832,9 @@
 	    
 	   
 	    $('#Branch1,#Custodian').change(function (){
+	    	
 	    	var column = $(this).data('column');
-	    	console.log(column);
-	    	dt_basic_table.DataTable().column(column).search(this.value, false, true).draw();
+	    	dt_basic.columns(column).search(this.value).draw();
 	    })
 	   
 	  /*  $('#exampleModalScrollable').on('hide.bs.modal', function() {
@@ -904,14 +932,14 @@
         ASSET: {
           validators: {
             notEmpty: {
-              message: 'Please enter your Asset Name'
+              message: 'Please enter  Asset Name'
             }
           }
         },
         AssetType: {
           validators: {
             notEmpty: {
-              message: 'Please enter your Type'
+              message: 'Please enter  Type'
             }
           }
         },
@@ -919,7 +947,7 @@
         CONDITION: {
             validators: {
               notEmpty: {
-                message: 'Please enter your Condition'
+                message: 'Please enter  Condition'
               }
             }
           },

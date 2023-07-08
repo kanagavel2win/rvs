@@ -260,7 +260,7 @@
 		
 		 <div class="col-sm-12 text-center">
             <label class="switch">
-              <input type="checkbox" class="switch-input" name="receipt">
+              <input type="checkbox" class="switch-input" name="receipt" checked>
               <span class="switch-toggle-slider">
                 <span class="switch-on">
                   <i class="bx bx-check"></i>
@@ -603,49 +603,48 @@
 			
 			
 			$("#save").click(function(){
-				
-				
-				var StaffID= $('#StaffID').val();
-				var StaffName= $('#StaffID  option:selected').text();
-				var AssetAuditDate= $('#AssetAuditDate').val();
-				var AssetId= $('#AssetId').val();
-				var AssetName= $('#AssetId  option:selected').text();
-				var Status= $('#Status').val();
-				
-				var aCondition=$('#aCondition').val();
-				var Comments= $('#Comments').val();
-				
-				if( AssetAuditDate !="" && AssetId !="" && AssetName !="" && Status !="" )
-				{
-					tempstr="<input type='hidden' id='StaffID"+ sno +"' name='StaffID' value='"+ StaffID +"'  />";
-					tempstr+="<input type='hidden' id='AssetAuditDate"+ sno +"'  name='AssetAuditDate' value='"+ AssetAuditDate +"'  />";
-					tempstr+="<input type='hidden' id='AssetId"+ sno +"'  name='AssetId' value='"+ AssetId +"'  />";
-					tempstr+="<input type='hidden' id='Status"+ sno +"'  name='Statusx' value='"+ Status +"'  />";
-					tempstr+="<input type='hidden' id='aCondition"+ sno +"'  name='aCondition' value='"+ aCondition +"'  />";
-					tempstr+="<input type='hidden' id='Comments"+ sno +"'  name='Comments' value='"+ Comments +"'  />";
-					
-					filestr="<input type='file' class='form-control fileimage' style='width:220px;'	name='Photo_Attach' accept='image/*' multiple/>";
-					
-					
-					sno=dt_basic_table.rows().count()+1;
-					
-					dt_basic_table.row.add([
-						'',
-						'',
-						StaffName,
-						AssetAuditDate,
-						AssetName,
-						filestr,
-						Status,
-						aCondition,
-						Comments,
-						tempstr+`<span id='${sno}' class='cursor-pointer filedivdelete'>  <i class='bx bx-trash-alt'></i>   </span>`,
-					]).draw();
-				}else
-				{
-					alert("Please fill all mandatory fields");	
-				}
-			});
+				  var StaffID = $('#StaffID').val();
+				  var StaffName = $('#StaffID option:selected').text();
+				  var AssetAuditDate = $('#AssetAuditDate').val();
+				  var AssetId = $('#AssetId').val();
+				  var AssetName = $('#AssetId option:selected').text();
+				  var Status = $('#Status').val();
+				  var aCondition = $('#aCondition').val();
+				  var Comments = $('#Comments').val();
+				  
+				  if (AssetAuditDate && AssetId && AssetName && Status) {
+				    var tempstr = `
+				      <input type='hidden' id='StaffID${sno}' name='StaffID' value='${StaffID}' />
+				      <input type='hidden' id='AssetAuditDate${sno}' name='AssetAuditDate' value='${AssetAuditDate}' />
+				      <input type='hidden' id='AssetId${sno}' name='AssetId' value='${AssetId}' />
+				      <input type='hidden' id='Status${sno}' name='Statusx' value='${Status}' />
+				      <input type='hidden' id='aCondition${sno}' name='aCondition' value='${aCondition}' />
+				      <input type='hidden' id='Comments${sno}' name='Comments' value='${Comments}' />
+				    `;
+				    
+				    var filestr = `<input type='file' class='form-control fileimage' style='width:220px;' name='Photo_Attach' accept='image/*' multiple/>`;
+				    
+				    sno = dt_basic_table.rows().count() + 1;
+				    
+				    dt_basic_table.row.add([
+				      '',
+				      '',
+				      StaffName,
+				      AssetAuditDate,
+				      AssetName,
+				      filestr,
+				      Status,
+				      aCondition,
+				      Comments,
+				      tempstr + `<span id='${sno}' class='cursor-pointer filedivdelete'><i class='bx bx-trash-alt'></i></span>`,
+				    ]).draw();
+				    
+				    $('#StaffID, #AssetAuditDate, #AssetId, #Status, #aCondition, #Comments').val('');
+				  } else {
+				    alert("Please fill all mandatory fields");
+				  }
+				});
+
 		
 			
 			$(document).on("click", ".filedivdelete", function() {

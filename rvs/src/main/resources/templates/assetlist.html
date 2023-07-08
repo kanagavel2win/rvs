@@ -674,8 +674,8 @@
 	     var branchname = collection.pluck('branchname').filter(value => value !== '' && value !== null).unique().all();
 	     var custodian = collection.pluck('custodian').filter(value => value !== '' && value !== null).unique().all();
 	     
-	     Branch.empty().append(branchname.map(value => $('<option></option>').val(value).text(value)));
-	     Custodian.empty().append(custodian.map(value => $('<option></option>').val(value).text(value)));
+	     Branch.append(branchname.map(value => $('<option></option>').val(value).text(value)));
+	     Custodian.append(custodian.map(value => $('<option></option>').val(value).text(value)));
 	    
 	    }
 	    
@@ -696,7 +696,7 @@
 	    
 	    
 	    function hiderow(id){
-	    	if($('#Status').val() != '' && Branch.val() != '' && Custodian.val() != '')
+	    	if($('#Status').val() != '' && Branch.val() != '' && $('#Status').val() == 'In Stock')
 	    	{
 	    	var currentRow = $('#row_'+id);
 	    	var col1 = currentRow.find( "td:eq(1)").html();
@@ -713,9 +713,28 @@
 					});
 			cart_count();
 	    	}
+	    	
+	    	else if($('#Status').val() != '' && Branch.val() != '' && Custodian.val() != '')
+	    	{
+	    		var currentRow = $('#row_'+id);
+		    	var col1 = currentRow.find( "td:eq(1)").html();
+				var col2 = currentRow.find( "td:eq(2)").html();
+				var col3 = currentRow.find( "td:eq(3)").html();
+				var col4 = currentRow.find( "td:eq(4)").html();
+				var col5 = currentRow.find( "td:eq(5)").html();
+				var col6 = currentRow.find( "td:eq(6)").html();
+				$('#cart > tbody:last-child') .append(`<tr><td><button type='button' name="${id}" class='btn btn-icon btn-secondary mr-1 mb-1 removefromcart'><i class='bx bx-trash'></i></button></td><td>${col1}</td><td>${col2}</td><td>${col3}</td><td>${col4}</td><td>${col5}</td><td>${col6}</td></tr>`);
+				
+				currentRow.fadeTo("slow", 0.7, function() {
+					        currentRow .fadeOut();
+							currentRow.hide();
+						});
+				cart_count();
+	    	}
+	    	
 	    	else
 	    	{
-	    		alert("Please Select Status,Branch and Custodian");
+	    		alert("Please fill all mandatory fields");	
 	    		
 	    	}
 	    }
@@ -753,8 +772,10 @@
 		   
 		   Branch.val('');
 		   
-		   dt_basic.ajax.reload();
-		   dt_basic_table.DataTable().column(4).search(this.value, false, true).draw();
+		  
+		   dt_basic.search('').columns().search('').draw();
+		   
+		   dt_basic.columns(4).search(this.value).draw();
 		   
 
 		   if(this.value=="Checked Out" || this.value=="In office Use")
@@ -799,9 +820,9 @@
 	    
 	   
 	    $('#Branch1,#Custodian').change(function (){
-	    	dt_basic_table.search('').columns().search('').draw();
+	    	
 	    	var column = $(this).data('column');
-	    	dt_basic_table.columns(column).search(this.value).draw();
+	    	dt_basic.columns(column).search(this.value).draw();
 	    })
 	   
 	  /*  $('#exampleModalScrollable').on('hide.bs.modal', function() {

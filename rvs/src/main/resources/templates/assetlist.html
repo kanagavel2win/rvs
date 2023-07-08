@@ -318,11 +318,19 @@
 												<!-- Personal Details -->
 												<div id="assetmaster-details" class="content">
 													<div class="row g-3">
-														<div class="col-sm-6">
-															<label class="form-label">ASSET NAME</label> <input
-																type="text" id="ASSET" name="ASSET" class="form-control"
-																placeholder="ASSET NAME" />
+													
+													<div class="col-sm-6">
+															<label class="form-label">BRANCH</label> <select
+																class="form-select" name="Branch" id="Branch" required>
+																<option value="">-</option>
+																<th:block th:each="obj : ${branchls}">
+																	<option th:value="${obj.id}"
+																		th:text="${obj.BRANCH_NAME}"></option>
+																</th:block>
+															</select>
 														</div>
+														
+														
 														<div class="col-sm-6">
 															<label class="form-label">TYPE <label
 																class="emptitle additem" name="addmodalassettype"><i
@@ -336,18 +344,32 @@
 																</th:block>
 															</select>
 														</div>
+														
+														<div class="col-sm-6">
+															<label class="form-label">ASSET NAME</label> <input
+																type="text" id="ASSET" name="ASSET" class="form-control"
+																placeholder="ASSET NAME" />
+														</div>
+														
+														
+														
+														<div class="col-sm-6">
+															<label class="form-label">PURCHASE TYPE</label> <select
+																class="form-select" name="PurchasedType"
+																id="PurchasedType">
+																<option value="New">New</option>
+																<option value="Refurbished">Refurbished</option>
+															</select>
+														</div>
+														
+														
 														<div class="col-sm-6">
 															<label class="form-label" for="plUserName">BRAND</label>
 															<input type="text" id="BRAND" name="BRAND"
 																class="form-control" placeholder="BRAND" />
 														</div>
 
-														<div class="col-sm-6">
-															<label class="form-label"> MANUFACTURER</label> <input
-																type="text" id="MANUFACTURER" name="MANUFACTURER"
-																class="form-control" placeholder="MANUFACTURER" />
-														</div>
-
+														
 														<div class="col-sm-6">
 															<label class="form-label">MODEL</label> <input
 																type="text" id="MODEL" name="MODEL" class="form-control"
@@ -360,8 +382,15 @@
 																type="text" id="SERIAL_NUMBER" name="SERIAL_NUMBER"
 																class="form-control" placeholder="SERIAL NUMBER" />
 														</div>
-
+														
 														<div class="col-sm-6">
+															<label class="form-label"> MANUFACTURER</label> <input
+																type="text" id="MANUFACTURER" name="MANUFACTURER"
+																class="form-control" placeholder="MANUFACTURER" />
+														</div>
+														
+
+													<!-- 	<div class="col-sm-6">
 															<label class="form-label">CONDITION</label> <select
 																class="form-select" id="CONDITION" name="CONDITION">
 																<option value="">-</option>
@@ -370,14 +399,10 @@
 																<option value="New">New</option>
 																<option value="Poor">Poor</option>
 															</select>
-														</div>
+														</div> -->
 
 
-														<div class="col-sm-6">
-															<label class="form-label" for="plUserName">NOTES</label>
-															<input type="text" id="NOTES" name="NOTES"
-																class="form-control" placeholder="NOTES" />
-														</div>
+														
 
 
 
@@ -398,16 +423,7 @@
 												<!-- Property Details -->
 												<div id="assetpurchase-details" class="content">
 													<div class="row g-3">
-														<div class="col-sm-6">
-															<label class="form-label">BRANCH</label> <select
-																class="form-select" name="Branch" id="Branch" required>
-																<option value="">-</option>
-																<th:block th:each="obj : ${branchls}">
-																	<option th:value="${obj.id}"
-																		th:text="${obj.BRANCH_NAME}"></option>
-																</th:block>
-															</select>
-														</div>
+														
 
 														<div class="col-sm-6">
 															<label class="form-label">VENDOR</label> <select
@@ -427,14 +443,6 @@
 																name="PurchasePrice">
 														</div>
 
-														<div class="col-sm-6">
-															<label class="form-label">PURCHASE TYPE</label> <select
-																class="form-select" name="PurchasedType"
-																id="PurchasedType">
-																<option value="New">New</option>
-																<option value="Refurbished">Refurbished</option>
-															</select>
-														</div>
 
 														<div class="col-sm-6">
 															<label class="form-label">PURCHASED</label> <input
@@ -453,6 +461,12 @@
 															<label class="form-label">WARRANTY END</label> <input
 																type="text" name="WARRANTYEND" id="WARRANTYEND"
 																class="form-control flatpickr" placeholder="Apr 3 2022" />
+														</div>
+														
+														<div class="col-sm-6">
+															<label class="form-label" for="plUserName">NOTES</label>
+															<input type="text" id="NOTES" name="NOTES"
+																class="form-control" placeholder="NOTES" />
 														</div>
 
 

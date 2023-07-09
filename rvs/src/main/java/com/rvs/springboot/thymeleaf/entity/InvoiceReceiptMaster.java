@@ -47,5 +47,6 @@ public class InvoiceReceiptMaster {
 	
 	@Transient
 	private String invoiceNo;
-	
+	@Transient
+	private String depositedto_txt;
 }

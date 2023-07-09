@@ -9635,7 +9635,7 @@ public class HomeController {
 
 				obj.setInvoiceNo(invls.stream().filter(C -> C.getInvoiceid() == Integer.parseInt(obj.getInvoiceid()))
 						.collect(Collectors.toList()).get(0).getInvoiceNo());
-
+				obj.setDepositedto_txt( accountheadsService.findById(Integer.parseInt(obj.getDepositedto())).getCategory());				
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -9663,6 +9663,8 @@ public class HomeController {
 						invls.stream().filter(C -> C.getProjectpurchaseid() == Integer.parseInt(obj.getPurchaseid()))
 								.collect(Collectors.toList()).get(0).getProjectpurchaseNo());
 
+				obj.setDepitedfrom_txt(accountheadsService.findById(Integer.parseInt(obj.getDepitedfrom())).getCategory());	
+				
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -10526,8 +10528,11 @@ public class HomeController {
 
 				obj.setStaffname(emplist.stream()
 						.filter(C -> C.getEmpMasterid() == Integer.parseInt(params.get("mastercategoryid")))
+					
 						.collect(Collectors.toList()).get(0).getStaffName());
-
+				obj.setCategory_name(accountheadsService.findById(Integer.parseInt(obj.getCategory())).getCategory());
+				
+				
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -10760,6 +10765,8 @@ public class HomeController {
 						invls.stream().filter(C -> C.getBranchpurchaseid() == Integer.parseInt(obj.getPurchaseid()))
 								.collect(Collectors.toList()).get(0).getBranchpurchaseNo());
 
+				obj.setDepitedfrom_txt( accountheadsService.findById(Integer.parseInt(obj.getDepitedfrom())).getCategory());			
+			
 			} catch (ParseException e) {
 
 				// e.printStackTrace();

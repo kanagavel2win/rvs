@@ -447,15 +447,15 @@
 			      data: { branchname: branchname },
 			      success: function(result) {
 			        $('#StaffID').html(result);
-			        $(".Custodianloding").css("visibility", "hidden");
+			        
 			      },
 			      error: function(e) {
 			        alert("Error: " + e);
-			        $(".Custodianloding").css("visibility", "hidden");
+			        
 			      }
 			    });
 
-			    $('.tblbody').html("<tr class='loadingrow'><td colspan='6' align='center'><br/> <br/></td></tr></tr>");
+			    //$('.tblbody').html("<tr class='loadingrow'><td colspan='6' align='center'><br/> <br/></td></tr></tr>");
 			  }
 			});
 
@@ -467,11 +467,24 @@
 			  if (StaffID != '') {
 			    $.post("getCheckoutlistfromassetMaster", { StaffID: StaffID })
 			      .done(function(result) {
-			        if (result) {
-			          $('.tblbody').html(result);
-			        } else {
-			          // $('.tblbody').html("<tr class='loadingrow'><td colspan='6' align='center'><br/> No Item Found<br/></td></tr></tr>");
+			        dt_basic_table.clear().draw(); 
+			        
+			        if (result && result.length > 0) {
+			          var filestr = `<input type='file' class='form-control fileimage' style='width:220px;' name='Photo_Attach[]' accept='image/*' multiple/>`;
+			          result.forEach(function(item) {
+			            dt_basic_table.row.add([
+			              '',
+			              '',
+			              `<input type='hidden' name='AssetName' value='${item.assetId}'/><span>${item.assetName}</span>`,
+			              `<select required='' id='ACondition' name='ACondition' class='form-select select'><option value='${item.aCondition}'>${item.aCondition}</option><option value='Fair'>Fair</option><option value='Good'>Good</option><option value='New'>New</option><option value='Poor'>Poor</option></select>`,
+			              `<select  required='' id='Status' name='Status' class='form-select selectstatus'><option value='In Stock'>Return</option><option value='Scrap'>Scrap</option></select>`,
+			              filestr,
+			              `<input type='text' name='Comments' class='form-control'/>`,
+			            ]);
+			          });
 			        }
+			        
+			        dt_basic_table.draw();
 			      })
 			      .fail(function(e) {
 			        alert("Error: " + e);
@@ -479,6 +492,7 @@
 			      });
 			  }
 			});
+
 
 	</script>
 </body>

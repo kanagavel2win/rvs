@@ -48,4 +48,6 @@ public class BranchpurchasePaymentMaster {
 	@Transient
 	private String purchaseNo;
 	
+	@Transient
+	private String depitedfrom_txt;
 }

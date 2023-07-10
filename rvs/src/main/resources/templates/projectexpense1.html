@@ -205,7 +205,7 @@
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
 							<span class="text-muted fw-light">Works /<a
 								href="projectlist">Project</a>/
-							</span> View
+							</span> Expense
 						</h4>
 						<div class="row gy-4">
 							<!-- User Sidebar -->
@@ -458,22 +458,10 @@
 														id="category" name="category" class="form-select"
 														aria-label="Default select example" required>
 														<option value="">-</option>
-														<option value='Office Expense'>Office Expense</option>
-														<option value='Other Expense'>Other Expense</option>
-														<option value='Food Expense'>Food Expense</option>
-														<option value='Travel Expense'>Travel Expense</option>
-														<option value='Accomudation Expense'>Accomudation
-															Expense</option>
-														<option value='Bank Charges & Interest Expense'>Bank
-															Charges & Interest Expense</option>
-														<option value='Contractor Expense'>Contractor
-															Expense</option>
-														<option value='Rent Expense'>Rent Expense</option>
-														<option value='Reparis & Maintenance Expense'>Reparis
-															& Maintenance Expense</option>
-														<option value='Internet Expense'>Internet Expense</option>
-														<option value='Late Fee'>Late Fee</option>
-														<option value='Fuel Expense'>Fuel Expense</option>
+														<th:block th:each =" obj : ${expenselist}">
+															<option th:value="${obj.accountheadid}" th:text="${obj.category}"></option>
+														</th:block>
+														
 													</select>
 												</div>
 												<div class="col-12 col-md-6">
@@ -1322,7 +1310,7 @@
 								           	  
 								           		
 									           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editexpenseinfo(this)' id='"+element.prjExpenseid +"'>"+element.staffname+"</td>";
-									           	 htmlop +="<td class='text-nowrap'>"+element.category +"</td><td class='text-nowrap'>"+element.prjExpenseDateMMMddyyyy +"</td><td>"+element.quantity +"</td>";
+									           	 htmlop +="<td class='text-nowrap'>"+element.category_name +"</td><td class='text-nowrap'>"+element.prjExpenseDateMMMddyyyy +"</td><td>"+element.quantity +"</td>";
 									           	 htmlop +="<td>"+element.total.toFixed(2) +"</td></tr>";
 									           	 total +=parseFloat(element.total);
 								            });
@@ -1543,12 +1531,12 @@
 								//--------------------------------------------
 								$('#category').on('change',function(event) {
 									let sval = $(this).val();
-									if(sval =='Fuel Expense'){
+									if(sval =='53'){
 										$("#modelofTravel").val("");
 										$("#modelofTravel").attr('disabled', true);
 										$("#vehicle").attr('disabled', false);
 										
-									}else if(sval =='Travel Expense'){
+									}else if(sval =='38'){
 										$("#vehicle").val("");
 										$("#vehicle").attr('disabled', true);
 										$("#modelofTravel").attr('disabled', false);

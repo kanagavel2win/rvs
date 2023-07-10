@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,34 +19,22 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "ProjectpurchasePaymentMaster")
+@Table(name = "accountsheads")
 
-public class ProjectpurchasePaymentMaster {
+public class Accountsheads {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int recepitid;
-	
+	private int accountheadid;	
 	@Column
-	private String recepitNo;
+	private String refnumber;
 	@Column
-	private String recepitDate;
+	private String category;
 	@Column
-	private String purchaseid;
+	private String accountheads;
 	@Column
-	private String depitedfrom;
+	private String details;
 	@Column
-	private String modeofPayment;
-	@Column
-	private double amount;
-	@Column
-	private String notes;
-	@Transient
-	private String recepitDateMMMddyyyy;
-	
-	@Transient
-	private String purchaseNo;
-	@Transient
-	private String depitedfrom_txt;
-	
+	private String mastergroup;
+
 }

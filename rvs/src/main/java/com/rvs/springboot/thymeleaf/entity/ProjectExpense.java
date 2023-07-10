@@ -59,5 +59,7 @@ public class ProjectExpense {
 	private String staffname;
 	@Transient
 	private String vehilename;
-	
+
+	@Transient
+	private String category_name;
 }

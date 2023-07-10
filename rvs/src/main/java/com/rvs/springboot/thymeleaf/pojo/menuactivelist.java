@@ -177,7 +177,13 @@ public class menuactivelist {
 			activemenus.put("AssetManagement", true);
 			activemenus.put("assetaudit", true);
 			
+		}else if(menutitle.equalsIgnoreCase("Accounts"))
+		{
+			activemenus.put("Accounts", true);
+			
 		}
+		
+		
 		
 		
 		

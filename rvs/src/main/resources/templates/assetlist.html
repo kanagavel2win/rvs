@@ -686,10 +686,15 @@
 	    function filterDuplicateRows() {
 	     collection = collect(dt_basic.rows().data().toArray());
 	     var branchname = collection.pluck('branchname').filter(value => value !== '' && value !== null).unique().all();
-	     var custodian = collection.pluck('custodian').filter(value => value !== '' && value !== null).unique().all();
+	     var custodian = collection.pluck('custodian', 'staffID').filter(value => value !== '' && value !== null).all();
+	     
 	     
 	     Branch.append(branchname.map(value => $('<option></option>').val(value).text(value)));
-	     Custodian.append(custodian.map(value => $('<option></option>').val(value).text(value)));
+	  
+
+	     $.each(custodian,function(i,item){
+	    	 Custodian.append($('<option></option>').val(item).text(`${item} (RVS000${i})`));
+	     })
 	    
 	    }
 	    

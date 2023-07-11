@@ -5064,32 +5064,23 @@ public class HomeController {
 
 	@ResponseBody
 	@PostMapping("getCheckoutlistfromassetMaster")
-	public String getCheckoutlistfromassetMaster(@RequestParam("StaffID") String StaffID) {
-
-		List<AssetMaster> amls = assetMasterService.findbyStaffID(StaffID);
-
-		String res = "";
-		int i = 0;
-		for (AssetMaster am : amls) {
-			i++;
-			res += "<tr><td align='center'><div class='checkbox checkbox-success checkbox-glow'>";
-			res += "<input type='checkbox' id='checkboxGlow" + i + "' name='checkbox' checked=''>";
-			res += "<label for='checkboxGlow" + i + "'></label></div></td>";
-			res += "<td align='left'><input type='hidden' 	value='" + am.getAssetId()
-					+ "' name='AssetName' /> <span>&nbsp; " + am.getAssetName() + "&nbsp;</span></td>";
-			res += "<td><select required='' id='ACondition' name='ACondition' class='form-control select'>";
-			res += "<option value='" + am.getACondition() + "' > " + am.getACondition()
-					+ "</option><option value='Fair'>Fair</option><option value='Good'>Good</option><option value='New'>New</option><option value='Poor'>Poor</option>";
-			res += "</select></td>";
-			res += "<td><select  required='' id='Status' name='Status' class='form-control selectstatus'><option value='In Stock'>Return</option><option value='Scrap'>Scrap</option>";
-			res += "</select></td>";
-			res += "<td class='Photo_Attach'><input type='file' name='Photo_Attach' class='form-control Photo_Attach' /></td>";
-			res += "<td><input type='text' name='Comments' class='form-control'/></td></tr>";
-
-		}
-
-		return res;
+	public List<Map<String, Object>> getCheckoutlistfromassetMaster(@RequestParam("StaffID") String StaffID) {
+	    List<AssetMaster> amls = assetMasterService.findbyStaffID(StaffID);
+	    List<Map<String, Object>> response = new ArrayList<>();
+	    
+	    for (AssetMaster am : amls) {
+	        Map<String, Object> item = new HashMap<>();
+	        item.put("assetId", am.getAssetId());
+	        item.put("assetName", am.getAssetName());
+	        item.put("aCondition", am.getACondition());
+	        item.put("status", "In Stock");
+	        response.add(item);
+	    }
+	    
+	    return response;
 	}
+
+
 
 	@PostMapping("checkinsave")
 	public String checkinsave(Model themodel, @RequestParam(name = "StaffID") String StaffID,

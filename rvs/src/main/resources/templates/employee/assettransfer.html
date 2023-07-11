@@ -123,36 +123,7 @@
 											</form>
 										</div>
 										
-									<form th:action="@{/assettransfersave}" method="POST" class="wizard-horizontal row g-3" enctype="multipart/form-data">
-											<div class="col-lg-3 col-sm-12 form-group">
-											<label for="form-label">To Branch</label>
-											<select class="select2 form-select" id="Branch" name="Branchto">
-																<option value="">--Select--</option>
-																<th:block th:each="emp : ${branchls}">
-																	<option th:value="${emp.id}"
-																		th:text="${emp.BRANCH_NAME}"></option>
-																</th:block>
-															</select>
-											</div>
-											
-											<div class="col-lg-3 col-sm-12 form-group">
-											<label for="form-label">To Custodian </label>
-											<select class="select2 form-select" id="StaffID" name="StaffIDto" required>
-																<th:block th:if="${emp}">
-																	<th:block th:if="${emp.empMasterid} >0 ">
-																		<option th:value="${emp.empMasterid}"
-																			th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
-																	</th:block>
-																</th:block>
-															</select>
-											</div>
-											
-											
-											
-											<div class="col-lg-3 col-sm-12 form-group">
-											<label for="form-label">Transfer Date </label>
-											<input type="text" class="form-control flatpickr" name="CheckInDate" id="CheckInDate" th:value="${today}" placeholder="Apr 3 2022" required>
-											</div> 
+									<form th:action="@{/rvsemp/assettransfersave}" method="POST" class="wizard-horizontal row g-3" enctype="multipart/form-data">
 											
 											
 											
@@ -203,6 +174,34 @@
 														 
                   </table>
                 </div>
+                
+                
+                <div class="col-lg-3 col-sm-12 form-group">
+											<label for="form-label">To Branch</label>
+											<select class="select2 form-select" id="Branchto" name="Branchto" required>
+																<option value="">--Select--</option>
+																<th:block th:each="emp : ${branchls}">
+																	<option th:value="${emp.id}"
+																		th:text="${emp.BRANCH_NAME}"></option>
+																</th:block>
+															</select>
+											</div>
+											
+											<div class="col-lg-3 col-sm-12 form-group">
+											<label for="form-label">To Custodian </label>
+											<select class="select2 form-select" id="StaffIDto" name="StaffIDto" required>
+																
+															</select>
+											</div>
+											
+											
+											
+											<div class="col-lg-3 col-sm-12 form-group">
+											<label for="form-label">Transfer Date </label>
+											<input type="text" class="form-control flatpickr" name="CheckInDate" id="CheckInDate" th:value="${today}" placeholder="Apr 3 2022" required>
+											</div> 
+											
+											
                 
                 <div class="col-sm-12 text-center">
             <label class="switch">
@@ -336,233 +335,155 @@
 							 
 							
 							 var dt_basic = $('.datatables-basic').DataTable({
-						    	
-						      columnDefs: [
-						        {
-						          // For Responsive
-						          className: 'control',
-						          orderable: false,
-						          responsivePriority: 1,
-						          searchable: false,
-						          targets: 0,
-						          render: function(data, type, full, meta) {
-						            return '';
-						          }
-						        },
-						        {
-						          // For Checkboxes
-						          targets: 1,
-						          orderable: false,
-						          searchable: false,
-						          checkboxes: true,
-						          render: function() {
-						            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-						          },
-						          checkboxes: {
-						            selectAllRender: '<input type="checkbox" class="form-check-input">'
-						          }
-						        },
-						        
-						      ],
-						      
-						      displayLength: 10,
-						      lengthMenu: [10, 25, 50, 75, 100],
-						     
-						      responsive: {
-						        details: {
-						          display: $.fn.dataTable.Responsive.display.modal({
-						            header: function(row) {
-						              var data = row.data();
-						              return 'Details of ' + data['branch_NAME'];
-						            }
-						          }),
-						          type: 'column',
-						          renderer: function(api, rowIdx, columns) {
-						            var data = $.map(columns, function(col, i) {
-						              return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
-						                ? '<tr data-dt-row="' +
-						                    col.rowIndex +
-						                    '" data-dt-column="' +
-						                    col.columnIndex +
-						                    '">' +
-						                    '<td>' +
-						                    col.title +
-						                    ':' +
-						                    '</td> ' +
-						                    '<td>' +
-						                    col.data +
-						                    '</td>' +
-						                    '</tr>'
-						                : '';
-						            }).join('');
-						
-						            return data ? $('<table class="table"/><tbody />').append(data) : false;
-						          }
-						        }
-						      }
-						    });
+								  ajax: {
+								    url: "getassetlist",
+								    type: "GET",
+								    dataSrc: ""
+								  },
+								  columns: [
+								    { data: null },
+								    { data: 'assetId' },
+								    { data: 'assetName' },
+								    { data: 'aCondition' },
+								    { data: null },
+								    { data: null },
+								    { data: null }
+								  ],
+								  columnDefs: [
+								    {
+								      // For Responsive
+								      className: 'control',
+								      orderable: false,
+								      responsivePriority: 1,
+								      searchable: false,
+								      targets: 0,
+								      render: function(data, type, full, meta) {
+								        return '';
+								      }
+								    },
+								    {
+								      // For Checkboxes
+								      targets: 1,
+								      orderable: false,
+								      searchable: false,
+								      checkboxes: true,
+								      render: function() {
+								        return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+								      },
+								      checkboxes: {
+								        selectAllRender: '<input type="checkbox" class="form-check-input">'
+								      }
+								    },
+								    {
+								      // For Asset Name
+								      targets: 2,
+								      responsivePriority: 2,
+								      render: function(data, type, full, meta) {
+								        return '<input type="hidden" name="AssetName" value="' + full.assetId + '"/><span>' + full.assetName + '</span>';
+								      }
+								    },
+								    {
+								      // For Asset Condition
+								      targets: 3,
+								      render: function(data, type, full, meta) {
+								        return '<select required="" id="ACondition" name="ACondition" class="form-select select"><option value="' + full.aCondition + '">' + full.aCondition + '</option><option value="Fair">Fair</option><option value="Good">Good</option><option value="New">New</option><option value="Poor">Poor</option></select>';
+								      }
+								    },
+								    {
+								      // For Status
+								      targets: 4,
+								      render: function(data, type, full, meta) {
+								        return '<select required="" id="Status" name="Status" class="form-select selectstatus"><option value="In Stock">Return</option><option value="Scrap">Scrap</option></select>';
+								      }
+								    },
+								    {
+								      // For File Upload
+								      targets: 5,
+								      render: function(data, type, full, meta) {
+								        return '<input type="file" class="form-control fileimage" style="width:220px;" name="Photo_Attach[]" accept="image/*" multiple/>';
+								      }
+								    },
+								    {
+								      // For Comments
+								      targets: 6,
+								      render: function(data, type, full, meta) {
+								        return '<input type="text" name="Comments" class="form-control"/>';
+								      }
+								    }
+								  ],
+								  displayLength: 10,
+								  lengthMenu: [10, 25, 50, 75, 100],
+								  responsive: {
+								    details: {
+								      display: $.fn.dataTable.Responsive.display.modal({
+								        header: function(row) {
+								          var data = row.data();
+								          return 'Details of ' + data['branch_NAME'];
+								        }
+								      }),
+								      type: 'column',
+								      renderer: function(api, rowIdx, columns) {
+								        var data = $.map(columns, function(col, i) {
+								          return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
+								            ? '<tr data-dt-row="' +
+								                col.rowIndex +
+								                '" data-dt-column="' +
+								                col.columnIndex +
+								                '">' +
+								                '<td>' +
+								                col.title +
+								                ':' +
+								                '</td> ' +
+								                '<td>' +
+								                col.data +
+								                '</td>' +
+								                '</tr>'
+								            : '';
+								        }).join('');
+
+								        return data ? $('<table class="table"/><tbody />').append(data) : false;
+								      }
+								    }
+								  }
+								});
+
 							 
-							//--------------------------------------------------------
-							//--------------------------------------------------------
-							$("#Branch")
-									.change(
-											function() {
+							
+							 
+							 
+							 
+							 
+							 $("#Branchto").change(function() {
+								  var branch = $(this).val();
+								  $('#StaffIDto').html("");
 
-												var branch = $("#Branch").val();
-												$('#StaffID').html("");
+								  if (branch) {
+								    var branchname = $("#Branchto option:selected").text();
+								    $(".Custodianlodingto").css("visibility", "visible");
+								    $('#StaffIDto').html("");
 
-												if (branch != "") {
-													//---------------------------------
-													// Branch Details
-													var branchname = $(
-															"#Branch :Selected")
-															.text();
-													$(".Custodianloding").css(
-															"visibility",
-															"visible");
-													$('#StaffID').html("");
-													var formData = {
-														branchname : branchname
-													}
-													$
-															.ajax({
-																type : "POST",
-																url : "getEmployeelistbasedonbranch",
-																data : formData,
-																success : function(
-																		result) {
+								    var formData = {
+								      branchname: branchname
+								    };
 
-																	$(
-																			'#StaffID')
-																			.append(
-																					result);
-																	$(
-																			".Custodianloding")
-																			.css(
-																					"visibility",
-																					"hidden");
-																},
-																error : function(
-																		e) {
-																	alert("Error"
-																			+ e);
-																	$(
-																			".Custodianloding")
-																			.css(
-																					"visibility",
-																					"hidden");
-																}
-															});
-													//---------------------------------
-													$('.tblbody')
-															.html(
-																	"<tr class='loadingrow'><td colspan='6' align='center'><br/> <br/></td></tr></tr>");
-												}
-											});
-							//-------------------------------
+								    $.ajax({
+								      type: "POST",
+								      url: "/rvs/getEmployeelistbasedonbranch",
+								      data: formData,
+								      success: function(result) {
+								        $('#StaffIDto').html(result);
+								        $(".Custodianlodingto").css("visibility", "hidden");
+								      },
+								      error: function(e) {
+								        alert("Error: " + e);
+								        $(".Custodianlodingto").css("visibility", "hidden");
+								      }
+								    });
+								  }
+								});
+							 
+		});
 
-							$("#Search")
-									.click(
-											function() {
-												var StaffID = $("#StaffID")
-														.val();
-
-												if (StaffID != "") {
-													$('.tblbody')
-															.html(
-																	"<tr  class='loadingrow'><td colspan='6' align='center'><br/><br/><div class='Custodianloding spinner-border spinner-border-sm' role='status'><span class='sr-only'>Loading...</span></div><br/><br/>&nbsp;</td></tr>");
-													var formData = {
-														StaffID : StaffID
-													}
-													$
-															.ajax({
-																type : "POST",
-																url : "getCheckoutlistfromassetMaster",
-																data : formData,
-																success : function(
-																		result) {
-
-																	if (result != "") {
-																		$(
-																				'.tblbody')
-																				.html(
-																						result);
-																	} else {
-																		$(
-																				'.tblbody')
-																				.html(
-																						"<tr class='loadingrow'><td colspan='6' align='center'><br/> No Item Found<br/></td></tr></tr>");
-
-																	}
-
-																},
-																error : function(
-																		e) {
-																	alert("Error"
-																			+ e);
-
-																}
-															});
-												}
-												//---------------------------------
-
-											});
-							//--------------------------------------------------------
-							$("#Branchto")
-									.change(
-											function() {
-
-												var branch = $("#Branchto").val();
-												$('#StaffIDto').html("");
-
-												if (branch != "") {
-													//---------------------------------
-													// Branch Details
-													var branchname = $(
-															"#Branchto :Selected")
-															.text();
-													$(".Custodianlodingto").css(
-															"visibility",
-															"visible");
-													$('#StaffIDto').html("");
-													var formData = {
-														branchname : branchname
-													}
-													$
-															.ajax({
-																type : "POST",
-																url : "getEmployeelistbasedonbranch",
-																data : formData,
-																success : function(
-																		result) {
-
-																	$(
-																			'#StaffIDto')
-																			.append(
-																					result);
-																	$(
-																			".Custodianlodingto")
-																			.css(
-																					"visibility",
-																					"hidden");
-																},
-																error : function(
-																		e) {
-																	alert("Error"
-																			+ e);
-																	$(
-																			".Custodianlodingto")
-																			.css(
-																					"visibility",
-																					"hidden");
-																}
-															});
-													//---------------------------------
-													
-												}
-											});
-							//-------------------------------
-						});
 	</script>
 
 </body>

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -241,6 +242,31 @@ public class EmployeeController {
 		themodel.addAttribute("employeemaster", empobj);
 		return "employee/empview";
 	}
+	
+	
+	@ResponseBody
+	@GetMapping("getassetlist")
+	public List<Map<String, Object>> getassetlist(HttpSession session,HttpServletRequest request) {
+		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
+	    List<AssetMaster> amls = assetMasterService.findbyStaffID(String.valueOf(empid));
+
+	    return amls.stream().map(am -> {
+	                Map<String, Object> item = new HashMap<>();
+	                item.put("assetId", am.getAssetId());
+	                item.put("assetName", am.getAssetName());
+	                item.put("aCondition", am.getACondition());
+	                item.put("status", "In Stock");
+	                return item;
+	            }).collect(Collectors.toList());
+	}
+	
+	
+	
+
+
+
+
+	
 
 	@GetMapping("viewjob")
 	public String employeejob(Model theModel, HttpSession session, HttpServletRequest request) {

@@ -81,7 +81,11 @@
 {
 cursor:pointer;
 }
-
+.tbletitle{
+background-color:#ccc;
+color: #000;
+font-weight: bold;
+}
 </style>
 
   </head>
@@ -136,16 +140,19 @@ cursor:pointer;
 									</thead>
 									<tbody>
 										<th:block th:each="obj : ${accountslist}">
+									 	<tr class="tbletitle" th:if="${obj.firstelement}">
+										 	<td colspan="5"  th:text="${obj.mastergroup}"></td>
+										 	
+										 </tr> 
 										 <tr>
 										 		<td th:text="${obj.refnumber}"></td>
 										 		<td th:text="${obj.category}"></td>
 										 		<td th:text="${obj.amount}"></td>
 										 		<td th:text="${obj.accountheads}"></td>
-										 		<td th:text="${obj.details}"></td>
-										 		
+										 		<td></td>										 		
 										 </tr>
-											
 										</th:block>
+										
 									</tbody>
 								</table>
 							</div>
@@ -153,7 +160,6 @@ cursor:pointer;
 					</div>
 					<!-- /Project   Card -->
 
-					
 				</div>
 				<!-- User Content -->
               </div>

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -5065,22 +5066,20 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping("getCheckoutlistfromassetMaster")
 	public List<Map<String, Object>> getCheckoutlistfromassetMaster(@RequestParam("StaffID") String StaffID) {
-	    List<AssetMaster> amls = assetMasterService.findbyStaffID(StaffID);
-	    List<Map<String, Object>> response = new ArrayList<>();
-	    
-	    for (AssetMaster am : amls) {
-	        Map<String, Object> item = new HashMap<>();
-	        item.put("assetId", am.getAssetId());
-	        item.put("assetName", am.getAssetName());
-	        item.put("aCondition", am.getACondition());
-	        item.put("status", "In Stock");
-	        response.add(item);
-	    }
-	    
-	    return response;
+		List<AssetMaster> amls = assetMasterService.findbyStaffID(StaffID);
+		List<Map<String, Object>> response = new ArrayList<>();
+
+		for (AssetMaster am : amls) {
+			Map<String, Object> item = new HashMap<>();
+			item.put("assetId", am.getAssetId());
+			item.put("assetName", am.getAssetName());
+			item.put("aCondition", am.getACondition());
+			item.put("status", "In Stock");
+			response.add(item);
+		}
+
+		return response;
 	}
-
-
 
 	@PostMapping("checkinsave")
 	public String checkinsave(Model themodel, @RequestParam(name = "StaffID") String StaffID,
@@ -9601,12 +9600,12 @@ public class HomeController {
 
 			// e.printStackTrace();
 		}
-		
+
 		for (ProjectpurchaseItemMaster expensechild : obj.getProjectpurchaseItemMasterlist()) {
 			Accountsheads ahobj = accountheadsService.findById(Integer.parseInt(expensechild.getProjectpurchaseItem()));
-			expensechild.setProjectpurchaseItem_name (ahobj.getCategory());
-			}
-		
+			expensechild.setProjectpurchaseItem_name(ahobj.getCategory());
+		}
+
 		return obj;
 
 	}
@@ -9626,7 +9625,8 @@ public class HomeController {
 
 				obj.setInvoiceNo(invls.stream().filter(C -> C.getInvoiceid() == Integer.parseInt(obj.getInvoiceid()))
 						.collect(Collectors.toList()).get(0).getInvoiceNo());
-				obj.setDepositedto_txt( accountheadsService.findById(Integer.parseInt(obj.getDepositedto())).getCategory());				
+				obj.setDepositedto_txt(
+						accountheadsService.findById(Integer.parseInt(obj.getDepositedto())).getCategory());
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -9654,8 +9654,9 @@ public class HomeController {
 						invls.stream().filter(C -> C.getProjectpurchaseid() == Integer.parseInt(obj.getPurchaseid()))
 								.collect(Collectors.toList()).get(0).getProjectpurchaseNo());
 
-				obj.setDepitedfrom_txt(accountheadsService.findById(Integer.parseInt(obj.getDepitedfrom())).getCategory());	
-				
+				obj.setDepitedfrom_txt(
+						accountheadsService.findById(Integer.parseInt(obj.getDepitedfrom())).getCategory());
+
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -10519,11 +10520,10 @@ public class HomeController {
 
 				obj.setStaffname(emplist.stream()
 						.filter(C -> C.getEmpMasterid() == Integer.parseInt(params.get("mastercategoryid")))
-					
+
 						.collect(Collectors.toList()).get(0).getStaffName());
 				obj.setCategory_name(accountheadsService.findById(Integer.parseInt(obj.getCategory())).getCategory());
-				
-				
+
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -10756,13 +10756,13 @@ public class HomeController {
 						invls.stream().filter(C -> C.getBranchpurchaseid() == Integer.parseInt(obj.getPurchaseid()))
 								.collect(Collectors.toList()).get(0).getBranchpurchaseNo());
 
-				obj.setDepitedfrom_txt( accountheadsService.findById(Integer.parseInt(obj.getDepitedfrom())).getCategory());			
-			
+				obj.setDepitedfrom_txt(
+						accountheadsService.findById(Integer.parseInt(obj.getDepitedfrom())).getCategory());
+
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
 			}
-			
 
 		}
 
@@ -10787,12 +10787,12 @@ public class HomeController {
 
 			// e.printStackTrace();
 		}
-		
-		for (BranchpurchaseItemMaster expensechild : obj.getBranchpurchaseItemMasterlist() ) {
+
+		for (BranchpurchaseItemMaster expensechild : obj.getBranchpurchaseItemMasterlist()) {
 			Accountsheads ahobj = accountheadsService.findById(Integer.parseInt(expensechild.getBranchpurchaseItem()));
 			expensechild.setBranchpurchaseItem_name(ahobj.getCategory());
 		}
-		
+
 		return obj;
 
 	}
@@ -11054,7 +11054,7 @@ public class HomeController {
 			Accountsheads ahobj = accountheadsService.findById(Integer.parseInt(expensechild.getBranchexpenseItem()));
 
 			expensechild.setBranchexpenseItem_name(ahobj.getCategory());
-			}
+		}
 		return obj;
 	}
 
@@ -11113,14 +11113,11 @@ public class HomeController {
 		return strls;
 
 	}
-	
+
 	public List<Accountsheads> getaaccountsHeads_Expenses_objectlist() {
 
-		
 		List<Accountsheads> ls = accountheadsService.findAll().stream()
 				.filter(C -> C.getMastergroup().equalsIgnoreCase("Expenses")).collect(Collectors.toList());
-
-		
 
 		return ls;
 
@@ -11128,8 +11125,86 @@ public class HomeController {
 
 	@GetMapping("accounts")
 	public String accountsreport(Model theModel) {
-		
-		List<Accountsheads> ls=  accountheadsService.findAll().stream().sorted(Comparator.comparing(Accountsheads:: getRefnumber)).toList();	
+		List<Accountsheads> ls = accountheadsService.findAll().stream()
+				.sorted(Comparator.comparing(Accountsheads::getRefnumber)).toList();
+
+		// ----------------------------------------------------------------------------
+		double getAccountsReceivableamt;
+		List<Map<String, Object>> getAccountsReceivable = accountheadsService.getAccountsReceivable();
+		getAccountsReceivableamt = (double) getAccountsReceivable.get(0).get("taxable_amount");
+
+		// ----------------------------------------------------------------------------
+		double getSalesIncomeamt;
+		List<Map<String, Object>> getSalesIncome = accountheadsService.getSalesIncome();
+		getSalesIncomeamt = (double) getSalesIncome.get(0).get("totalamount_amount");
+
+		// ----------------------------------------------------------------------------
+		double getAccountsPayableamt;
+		List<Map<String, Object>> getAccountsPayable = accountheadsService.getAccountsPayable();
+		getAccountsPayableamt = (double) getAccountsPayable.get(0).get("totalamount_amount");
+		// ----------------------------------------------------------------------------
+		double getGSTPayableamt;
+		List<Map<String, Object>> getGSTPayable = accountheadsService.getGSTPayable();
+		getGSTPayableamt = (double) getGSTPayable.get(0).get("taxamount");
+		// ----------------------------------------------------------------------------
+		double getGSTReceivableamt;
+		List<Map<String, Object>> getGSTReceivable = accountheadsService.getGSTReceivable();
+		getGSTReceivableamt = (double) getGSTReceivable.get(0).get("taxamount");
+		// ----------------------------------------------------------------------------
+		double getInterestIncomeamt;
+		List<Map<String, Object>> getInterestIncome = accountheadsService.getInterestIncome();
+		getInterestIncomeamt = (double) getInterestIncome.get(0).get("income");
+
+		// ----------------------------------------------------------------------------
+		double getOtherIncomeamt;
+		List<Map<String, Object>> getOtherIncome = accountheadsService.getOtherIncome();
+		getOtherIncomeamt = (double) getOtherIncome.get(0).get("income");
+		// ----------------------------------------------------------------------------
+		double getinvoice_receipt_masteramt;
+		List<Map<String, Object>> getinvoice_receipt_master = accountheadsService.getinvoice_receipt_master();
+		getinvoice_receipt_masteramt = (double) getinvoice_receipt_master.get(0).get("amount");
+		// ----------------------------------------------------------------------------
+		double getbranchpurchase_payment_masteramt;
+		List<Map<String, Object>> getbranchpurchase_payment_master = accountheadsService.getbranchpurchase_payment_master();
+		getbranchpurchase_payment_masteramt = (double) getbranchpurchase_payment_master.get(0).get("amount");
+		// ----------------------------------------------------------------------------
+		double getprojectpurchase_payment_masteramt;
+		List<Map<String, Object>> getprojectpurchase_payment_master = accountheadsService.getprojectpurchase_payment_master();
+		getprojectpurchase_payment_masteramt = (double) getprojectpurchase_payment_master.get(0).get("amount");
+		// ----------------------------------------------------------------------------
+		String oldstr = "";
+		for (Accountsheads obj : ls) {
+			if (!obj.getMastergroup().equalsIgnoreCase(oldstr)) {
+				obj.setFirstelement(true);
+			}
+			
+			switch(obj.getRefnumber()) {
+			case "1100":
+				obj.setAmount(getAccountsReceivableamt-getinvoice_receipt_masteramt);
+				break;
+			case "2100":
+				obj.setAmount(getAccountsPayableamt-getprojectpurchase_payment_masteramt-getbranchpurchase_payment_masteramt);
+				break;
+			case "2201":
+				obj.setAmount(getGSTPayableamt);
+				break;
+			case "2202":
+				obj.setAmount(getGSTReceivableamt);
+				break;
+			case "4000":
+				obj.setAmount(getSalesIncomeamt);
+				break;
+			case "4100":
+				obj.setAmount(getInterestIncomeamt);
+				break;
+			case "4900":
+				obj.setAmount(getOtherIncomeamt);
+				break;
+			}
+			
+			oldstr = obj.getMastergroup();
+		}
+
 		theModel.addAttribute("accountslist", ls);
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Accounts"));
 		return "accountsreport";

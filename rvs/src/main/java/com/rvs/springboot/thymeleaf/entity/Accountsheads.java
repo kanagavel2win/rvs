@@ -39,5 +39,7 @@ public class Accountsheads {
 	private String mastergroup;
 	@Transient
 	private double amount;
+	@Transient
+	private boolean firstelement;
 
 }

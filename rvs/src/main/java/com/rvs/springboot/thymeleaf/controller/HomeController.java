@@ -11135,4 +11135,13 @@ public class HomeController {
 
 	}
 
+	@GetMapping("accounts")
+	public String accountsreport(Model theModel) {
+		
+		List<Accountsheads> ls=  accountheadsService.findAll().stream().sorted(Comparator.comparing(Accountsheads:: getRefnumber)).toList();	
+		theModel.addAttribute("accountslist", ls);
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Accounts"));
+		return "accountsreport";
+	}
+
 }

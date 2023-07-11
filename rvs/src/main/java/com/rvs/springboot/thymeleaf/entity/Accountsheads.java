@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +37,7 @@ public class Accountsheads {
 	private String details;
 	@Column
 	private String mastergroup;
+	@Transient
+	private double amount;
 
 }

@@ -123,6 +123,55 @@ public class AccountheadsImp implements AccountheadsService {
 		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
 		return op;
 	}
+
+	@Override
+	public List<Map<String, Object>> getaccounttransferdeposit(int searchid) {
+		String sql = " SELECT COALESCE(sum(t_amount),0) as t_amount FROM rvsland_cms.account_transfer where t_deposit_to ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getaccounttransferwithdraw(int searchid) {
+		String sql = " SELECT COALESCE(sum(t_amount),0) as t_amount FROM rvsland_cms.account_transfer where twithdrawfrom ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getaccountincomedeposit(int searchid) {
+		String sql = "SELECT COALESCE(sum(iamount),0) as amount FROM rvsland_cms.accounts_income where idepositto='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getaccountincomewithdraw(int searchid) {
+		String sql = "SELECT COALESCE(sum(iamount),0) as amount FROM rvsland_cms.accounts_income where ifrom ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getbranchpurchase_payment_master(int searchid) {
+		String sql = "SELECT COALESCE(sum(amount),0) as amount FROM rvsland_cms.branchpurchase_payment_master where depitedfrom ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getinvoice_receipt_master(int searchid) {
+		String sql = "SELECT COALESCE(sum(amount),0) as amount FROM rvsland_cms.invoice_receipt_master where depositedto ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getprojectpurchase_payment_master(int searchid) {
+		String sql = "SELECT COALESCE(sum(amount),0) as amount FROM rvsland_cms.projectpurchase_payment_master where depitedfrom ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
 	
 	
 

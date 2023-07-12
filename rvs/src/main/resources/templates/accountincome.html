@@ -151,16 +151,9 @@
                         
                         <select class="form-select" id="ifrom" name="ifrom" required>
                            <option value="">Select From Account</option>
-                           <option value="SBI">SBI</option>
-							<option value="IDBI">IDBI</option>
-							<option value="LVB">LVB</option>
-							<option value="Axis 1">Axis 1</option>
-							<option value="Axis 2">Axis 2</option>
-							<option value="Cash 1">Cash 1</option>
-							<option value="Cash 2">Cash 2</option>
-							<option value="SBI Sukumar">SBI Sukumar</option>
-							<option value="SBI Balakumar">SBI Balakumar</option>
-							<option value="TDS">TDS</option>
+                           <th:block  th:each="obj1 : ${accountlist}" >
+								<option th:value="${obj1.accountheadid}" th:text="${obj1.category}"></option>
+							</th:block>
                            
                          </select>
                           
@@ -173,16 +166,9 @@
                         
                        <select class="form-select" id="idepositto" name="idepositto" required>
                            <option value="">Select Deposit To</option>
-                           <option value="SBI">SBI</option>
-							<option value="IDBI">IDBI</option>
-							<option value="LVB">LVB</option>
-							<option value="Axis 1">Axis 1</option>
-							<option value="Axis 2">Axis 2</option>
-							<option value="Cash 1">Cash 1</option>
-							<option value="Cash 2">Cash 2</option>
-							<option value="SBI Sukumar">SBI Sukumar</option>
-							<option value="SBI Balakumar">SBI Balakumar</option>
-							<option value="TDS">TDS</option>
+                           <th:block  th:each="obj1 : ${accountlist}" >
+								<option th:value="${obj1.accountheadid}" th:text="${obj1.category}"></option>
+							</th:block>
                            
                          </select>
                           
@@ -393,8 +379,8 @@
 			        { data: 'refNo' },
 			        { data: 'idateMMMddyyyy' },
 			        { data: 'iamount' },
-			        { data: 'ifrom' },
-			        { data: 'idepositto' },
+			        { data: 'ifrom_name' },
+			        { data: 'idepositto_name' },
 			        { data: 'idescription' },
 			        { data: 'idescription' },
 			        

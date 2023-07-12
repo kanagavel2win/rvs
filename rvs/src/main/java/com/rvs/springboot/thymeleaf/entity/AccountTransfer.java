@@ -43,5 +43,9 @@ public class AccountTransfer {
 	@Column
 	private String Notes;
 
+	@Transient
+	private String twithdrawfrom_name;
+	@Transient
+	private String tDepositTo_name;
 	
 }

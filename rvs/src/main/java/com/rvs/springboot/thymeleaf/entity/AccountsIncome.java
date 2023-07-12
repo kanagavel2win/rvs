@@ -44,5 +44,8 @@ public class AccountsIncome {
 	private String iamount;
 	@Transient
 	private String idateMMMddyyyy;
-	
+	@Transient
+	private String ifrom_name;
+	@Transient
+	private String idepositto_name;	
 }

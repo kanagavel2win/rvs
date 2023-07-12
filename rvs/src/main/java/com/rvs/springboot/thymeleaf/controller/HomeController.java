@@ -9913,7 +9913,8 @@ public class HomeController {
 	public String getaccounttranser(Model themodel) {
 
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("AccountTransfer"));
-
+		themodel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		
 		return "accounttransfer";
 	}
 
@@ -9927,6 +9928,9 @@ public class HomeController {
 			try {
 				am.setTDateMMMddyyyy(
 						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(am.getTDate().toString())));
+				am.setTwithdrawfrom_name(accountheadsService.findById(Integer.parseInt(am.getTwithdrawfrom())).getCategory());
+				am.setTDepositTo_name(accountheadsService.findById(Integer.parseInt(am.getTDepositTo())).getCategory());
+				
 			} catch (ParseException e) {
 				// e.printStackTrace();
 			}
@@ -9971,7 +9975,8 @@ public class HomeController {
 	public String getaccountincome(Model themodel) {
 
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Income"));
-
+		themodel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		
 		return "accountincome";
 	}
 
@@ -9985,6 +9990,10 @@ public class HomeController {
 			try {
 				am.setIdateMMMddyyyy(
 						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(am.getIdate().toString())));
+				am.setIdepositto_name(accountheadsService.findById(Integer.parseInt(am.getIdepositto())).getCategory());
+				am.setIfrom_name(accountheadsService.findById(Integer.parseInt(am.getIfrom())).getCategory());
+				
+			
 			} catch (ParseException e) {
 				// e.printStackTrace();
 			}
@@ -11172,11 +11181,50 @@ public class HomeController {
 		List<Map<String, Object>> getprojectpurchase_payment_master = accountheadsService.getprojectpurchase_payment_master();
 		getprojectpurchase_payment_masteramt = (double) getprojectpurchase_payment_master.get(0).get("amount");
 		// ----------------------------------------------------------------------------
+		
 		String oldstr = "";
 		for (Accountsheads obj : ls) {
 			if (!obj.getMastergroup().equalsIgnoreCase(oldstr)) {
 				obj.setFirstelement(true);
 			}
+			
+			//-----------------------------------------------------------------
+			if(obj.getAccountheads().equalsIgnoreCase("Cash") || obj.getAccountheads().equalsIgnoreCase("Bank Account") )			
+			{
+				
+				double getaccounttransferdepositamt;
+				List<Map<String, Object>> getaccounttransferdeposit = accountheadsService.getaccounttransferdeposit(obj.getAccountheadid());
+				getaccounttransferdepositamt = (double) getaccounttransferdeposit.get(0).get("t_amount");
+				// ----------------------------------------------------------------------------
+				double getaccounttransferwithdrawamt;
+				List<Map<String, Object>> getaccounttransferwithdraw = accountheadsService.getaccounttransferwithdraw(obj.getAccountheadid());
+				getaccounttransferwithdrawamt = (double) getaccounttransferwithdraw.get(0).get("t_amount");
+				// ----------------------------------------------------------------------------
+				double getaccountincomedepositamt;
+				List<Map<String, Object>> getaccountincomedeposit = accountheadsService.getaccountincomedeposit(obj.getAccountheadid());
+				getaccountincomedepositamt = (double) getaccountincomedeposit.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				double getaccountincomewithdrawamt;
+				List<Map<String, Object>> getaccountincomewithdraw = accountheadsService.getaccountincomewithdraw(obj.getAccountheadid());
+				getaccountincomewithdrawamt = (double) getaccountincomewithdraw.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				double getbranchpurchase_payment_masteramt1;
+				List<Map<String, Object>> getbranchpurchase_payment_master1 = accountheadsService.getbranchpurchase_payment_master(obj.getAccountheadid());
+				getbranchpurchase_payment_masteramt1 = (double) getbranchpurchase_payment_master1.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				double getinvoice_receipt_masteramt1;
+				List<Map<String, Object>> getinvoice_receipt_master1 = accountheadsService.getinvoice_receipt_master(obj.getAccountheadid());
+				getinvoice_receipt_masteramt1 = (double) getinvoice_receipt_master1.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				double getprojectpurchase_payment_masteramt1;
+				List<Map<String, Object>> getprojectpurchase_payment_master1 = accountheadsService.getprojectpurchase_payment_master(obj.getAccountheadid());
+				getprojectpurchase_payment_masteramt1 = (double) getprojectpurchase_payment_master1.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				obj.setAmount((getaccounttransferdepositamt + getaccountincomedepositamt+getinvoice_receipt_masteramt1)-(getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt ));
+				
+			}
+			
+			//-----------------------------------------------------------------
 			
 			switch(obj.getRefnumber()) {
 			case "1100":

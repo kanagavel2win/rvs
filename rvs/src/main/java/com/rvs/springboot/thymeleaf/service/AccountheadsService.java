@@ -22,5 +22,14 @@ public interface AccountheadsService {
 	public List<Map<String, Object>> getbranchpurchase_payment_master();
 	public List<Map<String, Object>> getprojectpurchase_payment_master();
 	
+	public List<Map<String, Object>> getaccounttransferdeposit(int searchid);
+	public List<Map<String, Object>> getaccounttransferwithdraw(int searchid);
+	public List<Map<String, Object>> getaccountincomedeposit(int searchid);
+	public List<Map<String, Object>> getaccountincomewithdraw(int searchid);
+	
+	public List<Map<String, Object>> getbranchpurchase_payment_master(int searchid);
+	public List<Map<String, Object>> getinvoice_receipt_master(int searchid);
+	public List<Map<String, Object>> getprojectpurchase_payment_master(int searchid);
+	
 	
 }

@@ -10484,7 +10484,8 @@ public class HomeController {
 					invm.setAmount(Double.parseDouble(params.get("Amount")));
 					invm.setUnit(String.valueOf(params.get("unit")));
 					invm.setVehicle(String.valueOf(params.get("vehicle")));
-
+					invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));				
 				}
 				ls.add(invm);
 
@@ -10506,7 +10507,9 @@ public class HomeController {
 			invm.setAmount(Double.parseDouble(params.get("Amount")));
 			invm.setUnit(String.valueOf(params.get("unit")));
 			invm.setVehicle(String.valueOf(params.get("vehicle")));
-
+			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+			
 			pm.getProjectExpenseList().add(invm);
 		}
 
@@ -11228,7 +11231,13 @@ public class HomeController {
 				List<Map<String, Object>> getprojectpurchase_payment_master1 = accountheadsService.getprojectpurchase_payment_master(obj.getAccountheadid());
 				getprojectpurchase_payment_masteramt1 = (double) getprojectpurchase_payment_master1.get(0).get("amount");
 				// ----------------------------------------------------------------------------
-				obj.setAmount((getaccounttransferdepositamt + getaccountincomedepositamt+getinvoice_receipt_masteramt1)-(getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt+ branchexpense_masteramt1 ));
+				double getproject_expensewithdrawamt;
+				List<Map<String, Object>> getproject_expensewithdraw = accountheadsService.getproject_expensewithdraw(obj.getAccountheadid());
+				getproject_expensewithdrawamt = (double) getproject_expensewithdraw.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				
+				
+				obj.setAmount((getaccounttransferdepositamt + getaccountincomedepositamt+getinvoice_receipt_masteramt1)-(getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt+ branchexpense_masteramt1+ getproject_expensewithdrawamt ));
 				
 			}
 			//-----------------------------------------------------------------
@@ -11242,7 +11251,15 @@ public class HomeController {
 				List<Map<String, Object>> getbranchexpense_item_master_byexpenseItem = accountheadsService.getbranchexpense_item_master_byexpenseItem(obj.getAccountheadid());
 				getbranchexpense_item_master_byexpenseItemamt = (double) getbranchexpense_item_master_byexpenseItem.get(0).get("amount");
 				// ----------------------------------------------------------------------------
-				obj.setAmount(getproject_expense_categoryamt+ getbranchexpense_item_master_byexpenseItemamt);		
+				double getbranchpurchase_item_master_categoryamt;
+				List<Map<String, Object>> getbranchpurchase_item_master_category = accountheadsService.getbranchpurchase_item_master_category(obj.getAccountheadid());
+				getbranchpurchase_item_master_categoryamt = (double) getbranchpurchase_item_master_category.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				double getprojectpurchase_item_master_categoryamt;
+				List<Map<String, Object>> getprojectpurchase_item_master_category = accountheadsService.getprojectpurchase_item_master_category(obj.getAccountheadid());
+				getprojectpurchase_item_master_categoryamt = (double) getprojectpurchase_item_master_category.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				obj.setAmount(getproject_expense_categoryamt+ getbranchexpense_item_master_byexpenseItemamt+ getprojectpurchase_item_master_categoryamt + getbranchpurchase_item_master_categoryamt);		
 			}
 			//-----------------------------------------------------------------
 			

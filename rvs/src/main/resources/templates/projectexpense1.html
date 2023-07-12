@@ -522,6 +522,31 @@
 														type="text" id="Notes" name="Notes"
 														class="form-control modal-edit-tax-id" />
 												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="depitedfrom">Paid From </label> 
+													<select class="form-select followers form-control "
+																		id="depitedfrom" name="depitedfrom" >
+														<option value="">-</option>
+														<th:block  th:each="obj1 : ${accountlist}" >
+															<option th:value="${obj1.accountheadid}" th:text="${obj1.category}"></option>
+														</th:block>
+													</select>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modeofPayment">Mode of Payment </label> 
+													<select id="modeofPayment" name="modeofPayment"
+															class="form-select"
+															aria-label="Default select example" required>
+															<option value="">-</option>
+															<option value="NEFT">NEFT</option>
+															<option value="RTGS">RTGS</option>
+															<option value="Cash">Cash</option>
+															<option value="Paypal">Paypal</option>
+															<option value="Paytm">Paytm</option>
+															<option value="Gpay">Gpay</option>
+															<option value="Other UPI">Other UPI</option>
+														</select>
+												</div>
 
 
 												<div class="col-12 text-center mt-4">
@@ -1530,13 +1555,15 @@
 								
 								//--------------------------------------------
 								$('#category').on('change',function(event) {
-									let sval = $(this).val();
-									if(sval =='53'){
+									var selectElement = document.getElementById("category"); 
+									var sval = selectElement.options[selectElement.selectedIndex].text;
+									
+									if(sval =='Fuel Expenses'){
 										$("#modelofTravel").val("");
 										$("#modelofTravel").attr('disabled', true);
 										$("#vehicle").attr('disabled', false);
 										
-									}else if(sval =='38'){
+									}else if(sval =='Travel Expense'){
 										$("#vehicle").val("");
 										$("#vehicle").attr('disabled', true);
 										$("#modelofTravel").attr('disabled', false);
@@ -1665,6 +1692,8 @@
 								$("#Amount").val(bmobj.amount);
 								$("#Total").val(bmobj.total);
 								$("#Notes").val(bmobj.notes);
+								$("#modeofPayment").val(bmobj.modeofPayment);
+								$("#depitedfrom").val(bmobj.depitedfrom);
 							},
 							error : function(e) {
 								console.log("Error" + e);

@@ -52,6 +52,10 @@ public class ProjectExpense {
 	private double Total;
 	@Column
 	private String Notes;
+	@Column
+	private String modeofPayment;
+	@Column
+	private String depitedfrom;
 	
 	@Transient
 	private String prjExpenseDateMMMddyyyy;

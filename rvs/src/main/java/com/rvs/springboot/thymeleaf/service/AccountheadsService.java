@@ -26,6 +26,7 @@ public interface AccountheadsService {
 	public List<Map<String, Object>> getaccounttransferwithdraw(int searchid);
 	public List<Map<String, Object>> getaccountincomedeposit(int searchid);
 	public List<Map<String, Object>> getaccountincomewithdraw(int searchid);
+	public List<Map<String, Object>> getproject_expensewithdraw(int searchid);
 	
 	public List<Map<String, Object>> getbranchpurchase_payment_master(int searchid);
 	public List<Map<String, Object>> getinvoice_receipt_master(int searchid);
@@ -34,5 +35,7 @@ public interface AccountheadsService {
 	public List<Map<String, Object>> getproject_expense_category(int searchid);
 	public List<Map<String,Object>> getbranchexpense_item_master_byexpenseItem(int searchid);
 	
+	public List<Map<String, Object>> getbranchpurchase_item_master_category(int searchid);
+	public List<Map<String,Object>> getprojectpurchase_item_master_category(int searchid);
 	
 }

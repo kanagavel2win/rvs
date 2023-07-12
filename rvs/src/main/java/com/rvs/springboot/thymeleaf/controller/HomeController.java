@@ -11197,8 +11197,7 @@ public class HomeController {
 				for(BranchMaster bm :branchMasterService.findAll())
 				{
 					List<BranchexpenseMaster> lsbxm = bm.getBranchexpenseMasterList().stream().filter(C-> C.getDepitedfrom().equalsIgnoreCase(String.valueOf(obj.getAccountheadid()))).toList();
-					
-					 branchexpense_masteramt1 =branchexpense_masteramt1 + lsbxm.stream().mapToDouble(x -> x.getBranchexpenseItemMasterlist().stream().mapToDouble(BranchexpenseItemMaster :: getTotalamountAmount).sum()).sum();
+					branchexpense_masteramt1 =branchexpense_masteramt1 + lsbxm.stream().mapToDouble(x -> x.getBranchexpenseItemMasterlist().stream().mapToDouble(BranchexpenseItemMaster :: getTotalamountAmount).sum()).sum();
 				 }
 				// ----------------------------------------------------------------------------
 				double getaccounttransferdepositamt;
@@ -11249,7 +11248,7 @@ public class HomeController {
 			
 			switch(obj.getRefnumber()) {
 			case "1100":
-				obj.setAmount(getAccountsReceivableamt-getinvoice_receipt_masteramt);
+				obj.setAmount(getSalesIncomeamt-getinvoice_receipt_masteramt);
 				break;
 			case "2100":
 				obj.setAmount(getAccountsPayableamt-getprojectpurchase_payment_masteramt-getbranchpurchase_payment_masteramt);
@@ -11261,7 +11260,7 @@ public class HomeController {
 				obj.setAmount(getGSTReceivableamt);
 				break;
 			case "4000":
-				obj.setAmount(getSalesIncomeamt);
+				obj.setAmount(getAccountsReceivableamt);
 				break;
 			case "4100":
 				obj.setAmount(getInterestIncomeamt);

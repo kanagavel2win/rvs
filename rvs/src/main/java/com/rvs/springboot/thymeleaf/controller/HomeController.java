@@ -11192,6 +11192,15 @@ public class HomeController {
 			if(obj.getAccountheads().equalsIgnoreCase("Cash") || obj.getAccountheads().equalsIgnoreCase("Bank Account") )			
 			{
 				
+				double branchexpense_masteramt1=0;
+				
+				for(BranchMaster bm :branchMasterService.findAll())
+				{
+					List<BranchexpenseMaster> lsbxm = bm.getBranchexpenseMasterList().stream().filter(C-> C.getDepitedfrom().equalsIgnoreCase(String.valueOf(obj.getAccountheadid()))).toList();
+					
+					 branchexpense_masteramt1 =branchexpense_masteramt1 + lsbxm.stream().mapToDouble(x -> x.getBranchexpenseItemMasterlist().stream().mapToDouble(BranchexpenseItemMaster :: getTotalamountAmount).sum()).sum();
+				 }
+				// ----------------------------------------------------------------------------
 				double getaccounttransferdepositamt;
 				List<Map<String, Object>> getaccounttransferdeposit = accountheadsService.getaccounttransferdeposit(obj.getAccountheadid());
 				getaccounttransferdepositamt = (double) getaccounttransferdeposit.get(0).get("t_amount");
@@ -11220,10 +11229,22 @@ public class HomeController {
 				List<Map<String, Object>> getprojectpurchase_payment_master1 = accountheadsService.getprojectpurchase_payment_master(obj.getAccountheadid());
 				getprojectpurchase_payment_masteramt1 = (double) getprojectpurchase_payment_master1.get(0).get("amount");
 				// ----------------------------------------------------------------------------
-				obj.setAmount((getaccounttransferdepositamt + getaccountincomedepositamt+getinvoice_receipt_masteramt1)-(getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt ));
+				obj.setAmount((getaccounttransferdepositamt + getaccountincomedepositamt+getinvoice_receipt_masteramt1)-(getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt+ branchexpense_masteramt1 ));
 				
 			}
-			
+			//-----------------------------------------------------------------
+			if(obj.getAccountheads().equalsIgnoreCase("Expense"))			
+			{
+				double getproject_expense_categoryamt;
+				List<Map<String, Object>> getproject_expense_category = accountheadsService.getproject_expense_category(obj.getAccountheadid());
+				getproject_expense_categoryamt = (double) getproject_expense_category.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				double getbranchexpense_item_master_byexpenseItemamt;
+				List<Map<String, Object>> getbranchexpense_item_master_byexpenseItem = accountheadsService.getbranchexpense_item_master_byexpenseItem(obj.getAccountheadid());
+				getbranchexpense_item_master_byexpenseItemamt = (double) getbranchexpense_item_master_byexpenseItem.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				obj.setAmount(getproject_expense_categoryamt+ getbranchexpense_item_master_byexpenseItemamt);		
+			}
 			//-----------------------------------------------------------------
 			
 			switch(obj.getRefnumber()) {

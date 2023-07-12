@@ -172,6 +172,20 @@ public class AccountheadsImp implements AccountheadsService {
 		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
 		return op;
 	}
+
+	@Override
+	public List<Map<String, Object>> getproject_expense_category(int searchid) {
+		String sql = "SELECT COALESCE(sum(total),0) as amount FROM rvsland_cms.project_expense where category ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getbranchexpense_item_master_byexpenseItem(int searchid) {
+		String sql = "SELECT COALESCE(sum(totalamount_amount),0) as amount FROM rvsland_cms.branchexpense_item_master where branchexpense_item ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
 	
 	
 

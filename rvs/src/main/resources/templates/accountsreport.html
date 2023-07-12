@@ -86,6 +86,10 @@ background-color:#ccc;
 color: #000;
 font-weight: bold;
 }
+
+.colamount{
+font-weight: bold;
+}
 </style>
 
   </head>
@@ -147,7 +151,7 @@ font-weight: bold;
 										 <tr>
 										 		<td th:text="${obj.refnumber}"></td>
 										 		<td th:text="${obj.category}"></td>
-										 		<td th:text="${obj.amount}"></td>
+										 		<td  th:classappend="${obj.amount!=0 ? 'colamount' : ''}" th:text="${obj.amount}" ></td>
 										 		<td th:text="${obj.accountheads}"></td>
 										 		<td></td>										 		
 										 </tr>

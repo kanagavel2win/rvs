@@ -31,5 +31,8 @@ public interface AccountheadsService {
 	public List<Map<String, Object>> getinvoice_receipt_master(int searchid);
 	public List<Map<String, Object>> getprojectpurchase_payment_master(int searchid);
 	
+	public List<Map<String, Object>> getproject_expense_category(int searchid);
+	public List<Map<String,Object>> getbranchexpense_item_master_byexpenseItem(int searchid);
+	
 	
 }

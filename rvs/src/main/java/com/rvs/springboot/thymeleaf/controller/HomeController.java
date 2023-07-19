@@ -9381,9 +9381,9 @@ public class HomeController {
 					invm.setBilladdressline1(String.valueOf(params.get("billaddressline1")));
 					invm.setBilladdressline2(String.valueOf(params.get("billaddressline2")));
 					invm.setBillcity(String.valueOf(params.get("billaddresscity")));
-					invm.setBillEmail(String.valueOf(params.get("billEmail")));
+					invm.setBillEmail("");
 					invm.setBillGSTNo(String.valueOf(params.get("billGSTNo")));
-					invm.setBillMobileno(String.valueOf(params.get("billMobileno")));
+					invm.setBillMobileno("");
 					invm.setBillpincode(String.valueOf(params.get("billaddresspincode")));
 					invm.setBillstate(String.valueOf(params.get("billaddressState")));
 					invm.setDueDate(String.valueOf(params.get("dueDate")));
@@ -9394,8 +9394,8 @@ public class HomeController {
 					invm.setInvoiceaddresspincode(String.valueOf(params.get("invoiceaddresspincode")));
 					invm.setInvoiceaddressState(String.valueOf(params.get("invoiceaddressState")));
 					invm.setInvoiceDate(String.valueOf(params.get("invoiceDate")));
-					invm.setInvoiceEmail(String.valueOf(params.get("invoiceEmail")));
-					invm.setInvoiceMobileno(String.valueOf(params.get("invoiceMobileno")));
+					invm.setInvoiceEmail("");
+					invm.setInvoiceMobileno("");
 					invm.setInvoiceType(String.valueOf(params.get("invoiceType")));
 					invm.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 					invm.setNotes(String.valueOf(params.get("note")));
@@ -9432,9 +9432,9 @@ public class HomeController {
 			newinv.setBilladdressline1(String.valueOf(params.get("billaddressline1")));
 			newinv.setBilladdressline2(String.valueOf(params.get("billaddressline2")));
 			newinv.setBillcity(String.valueOf(params.get("billaddresscity")));
-			newinv.setBillEmail(String.valueOf(params.get("billEmail")));
+			newinv.setBillEmail("");
 			newinv.setBillGSTNo(String.valueOf(params.get("billGSTNo")));
-			newinv.setBillMobileno(String.valueOf(params.get("billMobileno")));
+			newinv.setBillMobileno("");
 			newinv.setBillpincode(String.valueOf(params.get("billaddresspincode")));
 			newinv.setBillstate(String.valueOf(params.get("billaddressState")));
 			newinv.setDueDate(String.valueOf(params.get("dueDate")));
@@ -9445,8 +9445,8 @@ public class HomeController {
 			newinv.setInvoiceaddresspincode(String.valueOf(params.get("invoiceaddresspincode")));
 			newinv.setInvoiceaddressState(String.valueOf(params.get("invoiceaddressState")));
 			newinv.setInvoiceDate(String.valueOf(params.get("invoiceDate")));
-			newinv.setInvoiceEmail(String.valueOf(params.get("invoiceEmail")));
-			newinv.setInvoiceMobileno(String.valueOf(params.get("invoiceMobileno")));
+			newinv.setInvoiceEmail("");
+			newinv.setInvoiceMobileno("");
 			newinv.setInvoiceType(String.valueOf(params.get("invoiceType")));
 			newinv.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 			newinv.setNotes(String.valueOf(params.get("note")));

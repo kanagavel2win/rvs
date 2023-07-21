@@ -714,49 +714,36 @@
 	    
 	    
 	    
-	    function hiderow(id){
-	    	if($('#Status').val() != '' && Branch.val() != '' && $('#Status').val() == 'In Stock')
-	    	{
-	    	var currentRow = $('#row_'+id);
-	    	var col1 = currentRow.find( "td:eq(1)").html();
-			var col2 = currentRow.find( "td:eq(2)").html();
-			var col3 = currentRow.find( "td:eq(3)").html();
-			var col4 = currentRow.find( "td:eq(4)").html();
-			var col5 = currentRow.find( "td:eq(5)").html();
-			var col6 = currentRow.find( "td:eq(6)").html();
-			$('#cart > tbody:last-child') .append(`<tr><td><button type='button' name="${id}" class='btn btn-icon btn-secondary mr-1 mb-1 removefromcart'><i class='bx bx-trash'></i></button></td><td>${col1}</td><td>${col2}</td><td>${col3}</td><td>${col4}</td><td>${col5}</td><td>${col6}</td></tr>`);
-			
-			currentRow.fadeTo("slow", 0.7, function() {
-				        currentRow .fadeOut();
-						currentRow.hide();
-					});
-			cart_count();
+	    function hiderow(id) {
+	    	  var status = $('#Status').val();
+	    	  var branch = Branch.val();
+	    	  var custodian = Custodian.val();
+
+	    	  if (status != '' && branch != '' && status == 'In Stock') {
+	    	    var currentRow = $('#row_' + id);
+	    	    var columns = currentRow.find("td").slice(1, 7);
+	    	    $('#cart > tbody:last-child').append('<tr>' + columns.get().map(column => '<td>' + $(column).html() + '</td>').join('') + '</tr>');
+
+	    	    currentRow.fadeTo("slow", 0.7, function() {
+	    	      currentRow.fadeOut();
+	    	      currentRow.hide();
+	    	    });
+	    	    cart_count();
+	    	  } else if (status != '' && branch != '' && custodian != '') {
+	    	    var currentRow = $('#row_' + id);
+	    	    var columns = currentRow.find("td").slice(1, 7);
+	    	    $('#cart > tbody:last-child').append('<tr>' + columns.get().map(column => '<td>' + $(column).html() + '</td>').join('') + '</tr>');
+
+	    	    currentRow.fadeTo("slow", 0.7, function() {
+	    	      currentRow.fadeOut();
+	    	      currentRow.hide();
+	    	    });
+	    	    cart_count();
+	    	  } else {
+	    	    alert("Please fill all mandatory fields");
+	    	  }
 	    	}
-	    	
-	    	else if($('#Status').val() != '' && Branch.val() != '' && Custodian.val() != '')
-	    	{
-	    		var currentRow = $('#row_'+id);
-		    	var col1 = currentRow.find( "td:eq(1)").html();
-				var col2 = currentRow.find( "td:eq(2)").html();
-				var col3 = currentRow.find( "td:eq(3)").html();
-				var col4 = currentRow.find( "td:eq(4)").html();
-				var col5 = currentRow.find( "td:eq(5)").html();
-				var col6 = currentRow.find( "td:eq(6)").html();
-				$('#cart > tbody:last-child') .append(`<tr><td><button type='button' name="${id}" class='btn btn-icon btn-secondary mr-1 mb-1 removefromcart'><i class='bx bx-trash'></i></button></td><td>${col1}</td><td>${col2}</td><td>${col3}</td><td>${col4}</td><td>${col5}</td><td>${col6}</td></tr>`);
-				
-				currentRow.fadeTo("slow", 0.7, function() {
-					        currentRow .fadeOut();
-							currentRow.hide();
-						});
-				cart_count();
-	    	}
-	    	
-	    	else
-	    	{
-	    		alert("Please fill all mandatory fields");	
-	    		
-	    	}
-	    }
+
 	    
 	      
 	    $(document).on("click",".removefromcart",function() {

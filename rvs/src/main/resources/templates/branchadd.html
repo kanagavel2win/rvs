@@ -542,9 +542,24 @@ var Accountsheadsexpenseitems = [];
 												<div class="row p-sm-3 p-0">
 													<div class="col-md-6 mb-md-0 mb-4">
 														<dl class="row mb-2">
+															
+															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																<span class="fw-normal">Supplier:</span>
+															</dt>
+															<dd class="col-sm-6 d-flex justify-content-md-end">
+																<div class="w-px-150">
+																	<select class="form-select followers form-control "
+																		id="purchase_supplierid" name="purchase_supplierid" >
+																		<option value="">-</option>
+																		<th:block th:each="str :${supplierlist}">
+																			<option th:value="${str.id}" th:text="${str.orgname}"></option>
+																		</th:block>
+																	</select>
+																</div>
+															</dd>
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																<span class="text-capitalize mb-0 text-nowrap">
-																	Purchase No#</span>
+																	Supplier Ref#</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
 																<div class="w-px-150">
@@ -554,24 +569,9 @@ var Accountsheadsexpenseitems = [];
 																		name="branchpurchaseid" />
 																</div>
 															</dd>
+															
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Supplier Invoice Type:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select id="branchpurchaseType" name="branchpurchaseType"
-																		class="form-select"
-																		aria-label="Default select example" required>
-																		<option value="">-</option>
-																		<option value="Tax Invoice">Tax Invoice</option>
-																		<option value="Proforma Invoice">Proforma
-																			Invoice</option>
-																		<option value="Bill">Bill</option>
-																	</select>
-																</div>
-															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Staff:</span>
+																<span class="fw-normal">Submitted by:</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
 																<div class="w-px-150">
@@ -587,27 +587,30 @@ var Accountsheadsexpenseitems = [];
 																	</select>
 																</div>
 															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Supplier:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select class="form-select followers form-control "
-																		id="purchase_supplierid" name="purchase_supplierid" >
-																		<option value="">-</option>
-																		<th:block th:each="str :${supplierlist}">
-																			<option th:value="${str.id}" th:text="${str.orgname}"></option>
-																		</th:block>
-																	</select>
-																</div>
-															</dd>
+															
 															
 														</dl>
 													</div>
 													<div class="col-md-6">
 														<dl class="row mb-2">
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class=" text-capitalize mb-0 text-nowrap">Invoice
+																<span class="fw-normal">Bill Type:</span>
+															</dt>
+															<dd class="col-sm-6 d-flex justify-content-md-end">
+																<div class="w-px-150">
+																	<select id="branchpurchaseType" name="branchpurchaseType"
+																		class="form-select"
+																		aria-label="Default select example" required>
+																		<option value="">-</option>
+																		<option value="Tax Invoice">Tax Invoice</option>
+																		<option value="Proforma Invoice">Proforma
+																			Invoice</option>
+																		<option value="Bill">Bill</option>
+																	</select>
+																</div>
+															</dd>
+															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																<span class=" text-capitalize mb-0 text-nowrap">
 																	Date:</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
@@ -616,22 +619,7 @@ var Accountsheadsexpenseitems = [];
 																		id="branchpurchaseDate" name="branchpurchaseDate" required />
 																</div>
 															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Receivable :</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select id="receivable" name="receivable"
-																		class="form-select"
-																		aria-label="Default select example" required>
-																		<option value="">-</option>
-																		<option value="0">On Due</option>
-																		<option value="30">30 Days</option>
-																		<option value="60">60 Days</option>
-																		<option value="90">90 Days</option>
-																	</select>
-																</div>
-															</dd>
+															
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																<span class="fw-normal">Due Date:</span>
 															</dt>
@@ -678,15 +666,19 @@ var Accountsheadsexpenseitems = [];
 																<span class="w-px-100">Total:</span> <span
 																	class="fw-semibold" id="totalamtwithouttax">0.00</span>
 															</div>
-															<div class="d-flex justify-content-between mb-2">
+															<div class="d-flex justify-content-between mb-2 totaldiscountamountdiv">
+																<span class="w-px-100">Discount:</span> <span
+																	class="fw-semibold"  id=totaldiscountamount>0.00</span>
+															</div>
+															<div class="d-flex justify-content-between mb-2 totalCGSTdiv">
 																<span class="w-px-100">CGST:</span> <span
 																	class="fw-semibold"  id="totalCGST">0.00</span>
 															</div>
-															<div class="d-flex justify-content-between mb-2">
+															<div class="d-flex justify-content-between mb-2 totalSGSTdiv">
 																<span class="w-px-100">SGST:</span> <span
 																	class="fw-semibold" id="totalSGST">0.00</span>
 															</div>
-															<div class="d-flex justify-content-between mb-2">
+															<div class="d-flex justify-content-between mb-2 totalIGSTdiv">
 																<span class="w-px-100">IGST:</span> <span
 																	class="fw-semibold" id="totalIGST">0.00</span>
 															</div>
@@ -1865,10 +1857,12 @@ Model_CURRENT_STATUS
 				   }
 			//------------------------------------------------------------------------ 
 			 $('.addNewPurchasebtn').on('click', function(event){
-				$("#branchpurchaseid").val("");
-				
-				
 				validationinvoiceformreset();
+				$("#branchpurchaseid").val("");
+				purchaseIncre = 1;
+				html='<div class="d-flex border rounded position-relative pe-0 incontact'+ purchaseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchpurchaseitemid'+ purchaseIncre +'" name="branchpurchaseitemid'+ purchaseIncre +'" /> <select class="form-select item-details mb-2" id="BranchpurchaseItem'+ purchaseIncre +'" name="BranchpurchaseItem'+ purchaseIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ purchaseIncre +'" name="Description'+ purchaseIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ purchaseIncre +'" name="Quantity'+ purchaseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ purchaseIncre +'" name="Unit'+ purchaseIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ purchaseIncre +'" name="Price'+ purchaseIncre +'" required/> <input type="hidden" id="Discountperip'+ purchaseIncre +'" value="0" name="Discountper'+ purchaseIncre +'" /> <input type="hidden" id="CGSTperip'+ purchaseIncre +'" value="0" name="CGSTper'+ purchaseIncre +'" /> <input type="hidden" id="IGSTperip'+ purchaseIncre +'" value="0" name="IGSTper'+ purchaseIncre +'" /> <input type="hidden" id="SGSTperip'+ purchaseIncre +'" value="0" name="SGSTper'+ purchaseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  purchaseIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  purchaseIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  purchaseIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  purchaseIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  purchaseIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectpurchaseItem('+ purchaseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ purchaseIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ purchaseIncre +'" class="form-select tax-select CGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ purchaseIncre +'" class="form-select tax-select SGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ purchaseIncre +'" class="form-select tax-select IGST" onchange="IGSTchange('+ purchaseIncre +')"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ purchaseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+				$('#purchaseitemlist').html(html);
+				$("#branchpurchaseType").val("Tax Invoice").change();
 			 });	
 		   	// --------------------------------------------------------------------
 		   	 
@@ -1911,7 +1905,7 @@ Model_CURRENT_STATUS
 				$("#addnewpurchaseitem").click(function() {
 					purchaseIncre = purchaseIncre+1;
 					
-					html='<div class="d-flex border rounded position-relative pe-0 incontact'+ purchaseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchpurchaseitemid'+ purchaseIncre +'" name="branchpurchaseitemid'+ purchaseIncre +'" /> <select class="form-select item-details mb-2" id="BranchpurchaseItem'+ purchaseIncre +'" name="BranchpurchaseItem'+ purchaseIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ purchaseIncre +'" name="Description'+ purchaseIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ purchaseIncre +'" name="Quantity'+ purchaseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ purchaseIncre +'" name="Unit'+ purchaseIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ purchaseIncre +'" name="Price'+ purchaseIncre +'" required/> <input type="hidden" id="Discountperip'+ purchaseIncre +'" value="0" name="Discountper'+ purchaseIncre +'" /> <input type="hidden" id="CGSTperip'+ purchaseIncre +'" value="0" name="CGSTper'+ purchaseIncre +'" /> <input type="hidden" id="IGSTperip'+ purchaseIncre +'" value="0" name="IGSTper'+ purchaseIncre +'" /> <input type="hidden" id="SGSTperip'+ purchaseIncre +'" value="0" name="SGSTper'+ purchaseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  purchaseIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  purchaseIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  purchaseIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  purchaseIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  purchaseIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectpurchaseItem('+ purchaseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ purchaseIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ purchaseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ purchaseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ purchaseIncre +'" class="form-select tax-select"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ purchaseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+					html='<div class="d-flex border rounded position-relative pe-0 incontact'+ purchaseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchpurchaseitemid'+ purchaseIncre +'" name="branchpurchaseitemid'+ purchaseIncre +'" /> <select class="form-select item-details mb-2" id="BranchpurchaseItem'+ purchaseIncre +'" name="BranchpurchaseItem'+ purchaseIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ purchaseIncre +'" name="Description'+ purchaseIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ purchaseIncre +'" name="Quantity'+ purchaseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ purchaseIncre +'" name="Unit'+ purchaseIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ purchaseIncre +'" name="Price'+ purchaseIncre +'" required/> <input type="hidden" id="Discountperip'+ purchaseIncre +'" value="0" name="Discountper'+ purchaseIncre +'" /> <input type="hidden" id="CGSTperip'+ purchaseIncre +'" value="0" name="CGSTper'+ purchaseIncre +'" /> <input type="hidden" id="IGSTperip'+ purchaseIncre +'" value="0" name="IGSTper'+ purchaseIncre +'" /> <input type="hidden" id="SGSTperip'+ purchaseIncre +'" value="0" name="SGSTper'+ purchaseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  purchaseIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  purchaseIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  purchaseIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  purchaseIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  purchaseIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectpurchaseItem('+ purchaseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ purchaseIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ purchaseIncre +'" class="form-select tax-select CGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ purchaseIncre +'" class="form-select tax-select SGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ purchaseIncre +'" class="form-select tax-select IGST" onchange="IGSTchange('+ purchaseIncre +')"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ purchaseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
 					$('#purchaseitemlist').append(html);
 				});
 				
@@ -2540,7 +2534,7 @@ Model_CURRENT_STATUS
 							bmobj.branchpurchaseItemMasterlist.forEach((element, index, array) =>
 				           	{
 				           	 	purchaseIncre= purchaseIncre+1;
-								html +='<div class="d-flex border rounded position-relative pe-0 incontact'+ purchaseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchpurchaseitemid'+ purchaseIncre +'" name="branchpurchaseitemid'+ purchaseIncre +'" value="'+ element.branchpurchaseitemid + '"/> <select class="form-select item-details mb-2" id="BranchpurchaseItem'+ purchaseIncre +'" name="BranchpurchaseItem'+ purchaseIncre +'" required> <option value="'+ element.branchpurchaseItem + '">'+ element.branchpurchaseItem_name + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ purchaseIncre +'" name="Description'+ purchaseIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ purchaseIncre +'" value="'+ element.quantity + '" name="Quantity'+ purchaseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ purchaseIncre +'" name="Unit'+ purchaseIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ purchaseIncre +'" name="Price'+ purchaseIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ purchaseIncre +'" value="'+ element.discountper + '" name="Discountper'+ purchaseIncre +'" /> <input type="hidden" id="CGSTperip'+ purchaseIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ purchaseIncre +'" /> <input type="hidden" id="IGSTperip'+ purchaseIncre +'" value="'+ element.igstper + '" name="IGSTper'+ purchaseIncre +'" /> <input type="hidden" id="SGSTperip'+ purchaseIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ purchaseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  purchaseIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  purchaseIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  purchaseIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  purchaseIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  purchaseIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectpurchaseItem('+ purchaseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ purchaseIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ purchaseIncre +'" class="form-select tax-select"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ purchaseIncre +'" class="form-select tax-select"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ purchaseIncre +'" class="form-select tax-select"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ purchaseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+								html +='<div class="d-flex border rounded position-relative pe-0 incontact'+ purchaseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchpurchaseitemid'+ purchaseIncre +'" name="branchpurchaseitemid'+ purchaseIncre +'" value="'+ element.branchpurchaseitemid + '"/> <select class="form-select item-details mb-2" id="BranchpurchaseItem'+ purchaseIncre +'" name="BranchpurchaseItem'+ purchaseIncre +'" required> <option value="'+ element.branchpurchaseItem + '">'+ element.branchpurchaseItem_name + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ purchaseIncre +'" name="Description'+ purchaseIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ purchaseIncre +'" value="'+ element.quantity + '" name="Quantity'+ purchaseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ purchaseIncre +'" name="Unit'+ purchaseIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ purchaseIncre +'" name="Price'+ purchaseIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ purchaseIncre +'" value="'+ element.discountper + '" name="Discountper'+ purchaseIncre +'" /> <input type="hidden" id="CGSTperip'+ purchaseIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ purchaseIncre +'" /> <input type="hidden" id="IGSTperip'+ purchaseIncre +'" value="'+ element.igstper + '" name="IGSTper'+ purchaseIncre +'" /> <input type="hidden" id="SGSTperip'+ purchaseIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ purchaseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  purchaseIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  purchaseIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  purchaseIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  purchaseIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  purchaseIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectpurchaseItem('+ purchaseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ purchaseIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ purchaseIncre +'" class="form-select tax-select CGST"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ purchaseIncre +'" class="form-select tax-select SGST"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ purchaseIncre +'" class="form-select tax-select IGST" onchange="IGSTchange('+ purchaseIncre +')"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ purchaseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
 				           	});
 				           	
 							$('#purchaseitemlist').html(html);
@@ -2564,6 +2558,51 @@ Model_CURRENT_STATUS
 			invoiceamountCalculator();
 			
 		});
+		//------------------------------------------------------------------------------------
+		$('#branchpurchaseType').on('change',function(event) {
+			if($(this).val() == "Bill"){
+				$(".CGST").val("0").change();
+				$(".SGST").val("0").change();
+				$(".IGST").val("0").change();
+				$('.CGST').prop("disabled", true);
+				$('.SGST').prop("disabled", true);
+				$('.IGST').prop("disabled", true);
+				
+			}else
+			{
+				
+				 const elementsWithClass = document.querySelectorAll(".CGST");
+				 const elementsArray = Array.from(elementsWithClass);
+				  elementsArray.forEach((element) => {
+				     let tempid = element.id.replace("CGSTper","");
+				     
+				    	 if($("#CGSTper"+tempid).val() == 0 && $("#IGSTper"+tempid).val()== 0)
+						{
+							$("#CGSTper"+tempid).val("9").change();
+						}
+						if($("#SGSTper"+tempid).val() == 0 && $("#IGSTper"+tempid).val()== 0)
+						{
+							$("#SGSTper"+tempid).val("9").change();
+						}
+						if($("#SGSTper"+tempid).val() != 0 && $("#CGSTper"+tempid).val()!= 0)
+						{
+							$("#IGSTper"+tempid).val("0").change();
+						}
+				     
+				  });
+				 
+				
+				
+				$('.CGST').prop("disabled", false);
+				$('.SGST').prop("disabled", false);
+				$('.IGST').prop("disabled", false);
+			}
+			
+			$(".btn-apply-changes").click();
+			
+		});
+		//------------------------------------------------------------------------------------
+		
 		//------------------------------------------------------------------------------------
 		function applydiscountandtax(e){
 			var rowid= e.getAttribute("name");
@@ -2623,49 +2662,84 @@ Model_CURRENT_STATUS
 		}
 		//------------------------------------------------------------------------------------
 		function invoiceamountCalculator(){
-			totalamtwithouttax =0.00;
-			totalCGST =0.00;
-			totalSGST =0.00;
-			totalIGST =0.00;
-			totalamount =0.00;
+				totalamtwithouttax =0.00;
+				totalCGST =0.00;
+				totalSGST =0.00;
+				totalIGST =0.00;
+				totalamount =0.00;
+				totaldiscountamount =0.00;
+				for( i =1; i<=purchaseIncre;i++)
+				{
+					 price = $("#Price"+i).val();
+					 qty = $("#Quantity"+i).val();
+					 taxableAmount =price *  qty ;
+					 
+					 CGSTper = $("#CGSTperip"+i).val();
+					 IGSTper = $("#IGSTperip"+i).val();
+					 SGSTper = $("#SGSTperip"+i).val();
+					 Discountper = $("#Discountperip"+i).val();
+					 
+					 Discountamt =taxableAmount * (Discountper/100);
+					 afetdiscountamount =  taxableAmount -Discountamt;
+					$('#taxableamount'+i).text(afetdiscountamount.toFixed(2));
+					
+					IGSTamount =afetdiscountamount * (IGSTper/100);
+					SGSTamount =afetdiscountamount * (SGSTper/100);
+					CGSTamount=afetdiscountamount * (CGSTper/100);
+					
+					
+					totalamtwithouttax = totalamtwithouttax+afetdiscountamount;
+					totalCGST =totalCGST+CGSTamount;
+					totalSGST = totalSGST+SGSTamount;
+					totalIGST = totalIGST+IGSTamount;
+					totaldiscountamount = totaldiscountamount+Discountamt;
+					
+				}
+				//-------------------------------------------------
+				if(totaldiscountamount.toFixed(2)>0)
+				{
+					$('.totaldiscountamountdiv').css("visibility","visible");
+					$('#totaldiscountamount').text(totaldiscountamount.toFixed(2));
+				}else
+				{
+					$('.totaldiscountamountdiv').css("visibility","hidden");
+				}
+				//-------------------------------------------------
+				if(totalCGST.toFixed(2)>0)
+				{
+					$('.totalCGSTdiv').css("visibility","visible");
+					$('#totalCGST').text(totalCGST.toFixed(2));
+				}else
+				{
+					$('.totalCGSTdiv').css("visibility","hidden");
+				}
+				//-------------------------------------------------
+				if(totalSGST.toFixed(2)>0)
+				{
+					$('.totalSGSTdiv').css("visibility","visible");
+					$('#totalSGST').text(totalSGST.toFixed(2));
+				}else
+				{
+					$('.totalSGSTdiv').css("visibility","hidden");
+				}
+				//-------------------------------------------------
+				if(totalIGST.toFixed(2)>0)
+				{
+					$('.totalIGSTdiv').css("visibility","visible");
+					$('#totalIGST').text(totalIGST.toFixed(2));
+				}else
+				{
+					$('.totalIGSTdiv').css("visibility","hidden");
+				}
+				//-------------------------------------------------
+				
 			
-			for( i =1; i<=purchaseIncre;i++)
-			{
-				 price = $("#Price"+i).val();
-				 qty = $("#Quantity"+i).val();
-				 taxableAmount =price *  qty ;
-				 
-				 CGSTper = $("#CGSTperip"+i).val();
-				 IGSTper = $("#IGSTperip"+i).val();
-				 SGSTper = $("#SGSTperip"+i).val();
-				 Discountper = $("#Discountperip"+i).val();
-				 
-				 Discountamt =taxableAmount * (Discountper/100);
-				 afetdiscountamount =  taxableAmount -Discountamt;
-				$('#taxableamount'+i).text(afetdiscountamount.toFixed(2));
-				
-				IGSTamount =afetdiscountamount * (IGSTper/100);
-				SGSTamount =afetdiscountamount * (SGSTper/100);
-				CGSTamount=afetdiscountamount * (CGSTper/100);
+				$('#totalamount').text((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(2));
+				$('#totalamtwithouttax').text(totalamtwithouttax.toFixed(2));
 				
 				
-				totalamtwithouttax = totalamtwithouttax+afetdiscountamount;
-				totalCGST =totalCGST+CGSTamount;
-				totalSGST = totalSGST+SGSTamount;
-				totalIGST = totalIGST+IGSTamount;
-				
-				
+									
 			}
-			
-			$('#totalCGST').text(totalCGST.toFixed(2));
-			$('#totalSGST').text(totalSGST.toFixed(2));
-			$('#totalIGST').text(totalIGST.toFixed(2));
-			$('#totalamount').text((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(2));
-			$('#totalamtwithouttax').text(totalamtwithouttax.toFixed(2));
-			
-			
-								
-		}
 		//------------------------------------------------------------------------------------
 		function deleteprojectpurchaseItem(id){
 			
@@ -2752,6 +2826,15 @@ Model_CURRENT_STATUS
 						}
 					});
 				
+			}
+		//------------------------------------------------------------------------------------
+			function IGSTchange(id){
+				if($("#IGSTper"+ id).val()>0)
+				{
+					$("#CGSTper"+ id).val("0").change();
+					$("#SGSTper"+ id).val("0").change();		
+				}
+		
 			}
 		//------------------------------------------------------
     </script>

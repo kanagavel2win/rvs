@@ -9399,8 +9399,8 @@ public class HomeController {
 					invm.setInvoiceType(String.valueOf(params.get("invoiceType")));
 					invm.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 					invm.setNotes(String.valueOf(params.get("note")));
-					invm.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout,Ramanathapuram, Tamil Nadu 641045");
-					invm.setReceivable(String.valueOf(params.get("receivable")));
+					invm.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
+					invm.setReceivable("");
 					invm.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
 
 					List<InvoiceItemMaster> invitemls = new ArrayList();
@@ -9450,8 +9450,8 @@ public class HomeController {
 			newinv.setInvoiceType(String.valueOf(params.get("invoiceType")));
 			newinv.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 			newinv.setNotes(String.valueOf(params.get("note")));
-			newinv.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout,Ramanathapuram, Tamil Nadu 641045");
-			newinv.setReceivable(String.valueOf(params.get("receivable")));
+			newinv.setRvsaddress("29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
+			newinv.setReceivable("");
 			newinv.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
 
 			List<InvoiceItemMaster> invitemls = new ArrayList();
@@ -10201,7 +10201,7 @@ public class HomeController {
 					invm.setProjectpurchaseDate(String.valueOf(params.get("projectpurchaseDate")));
 					invm.setProjectpurchaseType(String.valueOf(params.get("projectpurchaseType")));
 					invm.setNotes(String.valueOf(params.get("note")));
-					invm.setReceivable(String.valueOf(params.get("receivable")));
+					invm.setReceivable("");
 					invm.setProjectpurchaseNo(String.valueOf(params.get("projectpurchaseNo")));
 					invm.setEmployeeid(String.valueOf(params.get("purchase_employeeid")));
 					invm.setSupplierid(String.valueOf(params.get("purchase_supplierid")));
@@ -10238,7 +10238,7 @@ public class HomeController {
 			newinv.setProjectpurchaseDate(String.valueOf(params.get("projectpurchaseDate")));
 			newinv.setProjectpurchaseType(String.valueOf(params.get("projectpurchaseType")));
 			newinv.setNotes(String.valueOf(params.get("note")));
-			newinv.setReceivable(String.valueOf(params.get("receivable")));
+			newinv.setReceivable("");
 			newinv.setProjectpurchaseNo(String.valueOf(params.get("projectpurchaseNo")));
 			newinv.setEmployeeid(String.valueOf(params.get("purchase_employeeid")));
 			newinv.setSupplierid(String.valueOf(params.get("purchase_supplierid")));
@@ -10472,7 +10472,6 @@ public class HomeController {
 				if (invm.getPrjExpenseid() == Integer.parseInt(tempreceiptid)) {
 
 					invm.setCategory(String.valueOf(params.get("category")));
-					invm.setDescription(String.valueOf(params.get("Description")));
 					invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
 					invm.setNotes(String.valueOf(params.get("Notes")));
 					invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
@@ -10496,7 +10495,6 @@ public class HomeController {
 			ProjectExpense invm = new ProjectExpense();
 
 			invm.setCategory(String.valueOf(params.get("category")));
-			invm.setDescription(String.valueOf(params.get("Description")));
 			invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
 			invm.setNotes(String.valueOf(params.get("Notes")));
 			invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
@@ -10579,7 +10577,7 @@ public class HomeController {
 					invm.setBranchpurchaseDate(String.valueOf(params.get("branchpurchaseDate")));
 					invm.setBranchpurchaseType(String.valueOf(params.get("branchpurchaseType")));
 					invm.setNotes(String.valueOf(params.get("note")));
-					invm.setReceivable(String.valueOf(params.get("receivable")));
+					invm.setReceivable("");
 					invm.setBranchpurchaseNo(String.valueOf(params.get("branchpurchaseNo")));
 					invm.setEmployeeid(String.valueOf(params.get("purchase_employeeid")));
 					invm.setSupplierid(String.valueOf(params.get("purchase_supplierid")));
@@ -10615,7 +10613,7 @@ public class HomeController {
 			newinv.setBranchpurchaseDate(String.valueOf(params.get("branchpurchaseDate")));
 			newinv.setBranchpurchaseType(String.valueOf(params.get("branchpurchaseType")));
 			newinv.setNotes(String.valueOf(params.get("note")));
-			newinv.setReceivable(String.valueOf(params.get("receivable")));
+			newinv.setReceivable("");
 			newinv.setBranchpurchaseNo(String.valueOf(params.get("branchpurchaseNo")));
 			newinv.setEmployeeid(String.valueOf(params.get("purchase_employeeid")));
 			newinv.setSupplierid(String.valueOf(params.get("purchase_supplierid")));
@@ -11081,7 +11079,9 @@ public class HomeController {
 
 		List<Accountsheads> ls = accountheadsService.findAll().stream()
 				.filter(C -> (C.getAccountheads().equalsIgnoreCase("Cash")
-						|| C.getAccountheads().equalsIgnoreCase("Bank Account")))
+						|| C.getAccountheads().equalsIgnoreCase("Bank Account")
+						|| C.getAccountheads().equalsIgnoreCase("TDS Accounts Receivable")
+						))
 				.collect(Collectors.toList());
 
 		/*

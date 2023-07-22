@@ -516,7 +516,7 @@ var Accountsheadsexpenseitems = [];
 														<dl class="row mb-2">
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																<span class="text-capitalize mb-0 text-nowrap">
-																	Expense No#</span>
+																	Tally Ref No#</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
 																<div class="w-px-150">
@@ -524,52 +524,6 @@ var Accountsheadsexpenseitems = [];
 																		id="branchexpenseNo" name="branchexpenseNo" required /> <input
 																		type="hidden" class="form-control" id="branchexpenseid"
 																		name="branchexpenseid" />
-																</div>
-															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Staff:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select
-																		class="form-select  form-control "
-																		id="expense_employeeid" name="expense_employeeid" 
-																		required>
-																		<option value="">-</option>
-																		<th:block th:each="str :${EffectiveEmployee}">
-																			<option th:value="${str.empMasterid}"
-																				th:text="${str.StaffName}"></option>
-																		</th:block>
-																	</select>
-																</div>
-															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Supplier:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select class="form-select followers form-control "
-																		id="expense_supplierid" name="expense_supplierid" >
-																		<option value="">-</option>
-																		<th:block th:each="str :${supplierlist}">
-																			<option th:value="${str.id}" th:text="${str.orgname}"></option>
-																		</th:block>
-																	</select>
-																</div>
-															</dd>
-															
-														</dl>
-													</div>
-													<div class="col-md-6">
-														<dl class="row mb-2">
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class=" text-capitalize mb-0 text-nowrap">Invoice
-																	Date:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<input type="date" class="form-control"
-																		id="branchexpenseDate" name="branchexpenseDate" required />
 																</div>
 															</dd>
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
@@ -586,6 +540,53 @@ var Accountsheadsexpenseitems = [];
 																	</select>
 																</div>
 															</dd>
+															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																<span class="fw-normal">Paid To:</span>
+															</dt>
+															<dd class="col-sm-6 d-flex justify-content-md-end">
+																<div class="w-px-150">
+																	<select class="form-select followers form-control "
+																		id="expense_supplierid" name="expense_supplierid" >
+																		<option value="">-</option>
+																		<th:block th:each="str :${supplierlist}">
+																			<option th:value="${str.id}" th:text="${str.orgname}"></option>
+																		</th:block>
+																	</select>
+																</div>
+															</dd>
+															
+															
+														</dl>
+													</div>
+													<div class="col-md-6">
+														<dl class="row mb-2">
+															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																<span class=" text-capitalize mb-0 text-nowrap">Date:</span>
+															</dt>
+															<dd class="col-sm-6 d-flex justify-content-md-end">
+																<div class="w-px-150">
+																	<input type="date" class="form-control"
+																		id="branchexpenseDate" name="branchexpenseDate" required />
+																</div>
+															</dd>
+															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																<span class="fw-normal">Submitted by:</span>
+															</dt>
+															<dd class="col-sm-6 d-flex justify-content-md-end">
+																<div class="w-px-150">
+																	<select
+																		class="form-select  form-control "
+																		id="expense_employeeid" name="expense_employeeid" 
+																		required>
+																		<option value="">-</option>
+																		<th:block th:each="str :${EffectiveEmployee}">
+																			<option th:value="${str.empMasterid}"
+																				th:text="${str.StaffName}"></option>
+																		</th:block>
+																	</select>
+																</div>
+															</dd>
+															
 															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																<span class="fw-normal">Mode of Payment :</span>
 															</dt>
@@ -606,8 +607,6 @@ var Accountsheadsexpenseitems = [];
 																	</select>
 																</div>
 															</dd>
-															
-															
 														</dl>
 													</div>
 												</div>

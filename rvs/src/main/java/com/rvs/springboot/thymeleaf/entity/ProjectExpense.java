@@ -41,8 +41,6 @@ public class ProjectExpense {
 	@Column
 	private String vehicle;
 	@Column
-	private String Description;
-	@Column
 	private String unit;
 	@Column
 	private double Quantity;

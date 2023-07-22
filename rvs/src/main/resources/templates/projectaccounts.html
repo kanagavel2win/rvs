@@ -712,16 +712,16 @@
 																<p class="mb-0"></p>
 															</div>
 															<div class="col-md-6">
-																<p class="mb-1"><b>Amount :</b>     <span id="invoiceamounttxt"></span></p>
-																<p class="mb-1"><b>Total paid :</b>     <span id="invoicetotalpaidNotxt"></span></p>
-																<p class="mb-0"><b>Balance Due :</b>     <span id="invoiceBalancetxt"></span></p>
+																<p class="mb-1" align="right"><b>Amount :</b>     <span id="invoiceamounttxt"></span></p>
+																<p class="mb-1" align="right"><b>Total paid :</b>     <span id="invoicetotalpaidNotxt"></span></p>
+																<p class="mb-0" align="right"><b>Balance Due :</b>     <span id="invoiceBalancetxt"></span></p>
 															</div>
 															
 														</div>
 											
 											
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitNo">Ref #</label> <input type="text" id="recepitNo"
+													<label class="form-label" for="recepitNo">Tally Receipt #</label> <input type="text" id="recepitNo"
 														name="recepitNo" class="form-control" required/>
 												</div>
 											
@@ -753,6 +753,7 @@
 														<option value="Paytm">Paytm</option>
 														<option value="Gpay">Gpay</option>
 														<option value="Other UPI">Other UPI</option>
+														<option value="TDS">TDS</option>
 													</select>
 												</div>
 												<div class="col-12 col-md-6">
@@ -782,7 +783,7 @@
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
 																	class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
-																	The Receipt</button>
+																	</button>
 
 													<button type="reset"
 														class="btn btn-label-secondary editReceiptclose"
@@ -1258,6 +1259,7 @@
  
 		<script>
 		var invoiceIncre=1;
+		
 			$(document)
 					.ready(
 							function() {
@@ -1929,6 +1931,7 @@
 							        }
 								});
 								//--------------------------------------------
+								
 								//$("#invoicemodel").modal('toggle');
 							}); // Jquery
 
@@ -2078,52 +2081,15 @@
 				invoiceamountCalculator();
 				
 			});
-			$('#invoiceType').on('change',function(event) {
-				if($(this).val() == "Bill"){
-					$(".CGST").val("0").change();
-					$(".SGST").val("0").change();
-					$(".IGST").val("0").change();
-					$('.CGST').prop("disabled", true);
-					$('.SGST').prop("disabled", true);
-					$('.IGST').prop("disabled", true);
-					
-				}else
-				{
-					
-					 const elementsWithClass = document.querySelectorAll(".CGST");
-					 const elementsArray = Array.from(elementsWithClass);
-					  elementsArray.forEach((element) => {
-					     let tempid = element.id.replace("CGSTper","");
-					     
-					    	 if($("#CGSTper"+tempid).val() == 0 && $("#IGSTper"+tempid).val()== 0)
-							{
-								$("#CGSTper"+tempid).val("9").change();
-							}
-							if($("#SGSTper"+tempid).val() == 0 && $("#IGSTper"+tempid).val()== 0)
-							{
-								$("#SGSTper"+tempid).val("9").change();
-							}
-							if($("#SGSTper"+tempid).val() != 0 && $("#CGSTper"+tempid).val()!= 0)
-							{
-								$("#IGSTper"+tempid).val("0").change();
-							}
-					     
-					  });
-					 
-					
-					
-					$('.CGST').prop("disabled", false);
-					$('.SGST').prop("disabled", false);
-					$('.IGST').prop("disabled", false);
-				}
-				
-				$(".btn-apply-changes").click();
-				
-			});
+			
 			//------------------------------------------------------------------------------------
 			function IGSTchange(id){
-				$("#CGSTper"+ id).val("0").change();
-				$("#SGSTper"+ id).val("0").change();
+				if($("#IGSTper"+ id).val()>0)
+				{
+					$("#CGSTper"+ id).val("0").change();
+					$("#SGSTper"+ id).val("0").change();		
+				}
+		
 			}
 			//------------------------------------------------------------------------------------
 			function applydiscountandtax(e){
@@ -2217,19 +2183,45 @@
 					totaldiscountamount = totaldiscountamount+Discountamt;
 					
 				}
-				
+				//-------------------------------------------------
 				if(totaldiscountamount.toFixed(2)>0)
 				{
-					$('.totaldiscountamountdiv').show();
+					$('.totaldiscountamountdiv').css("visibility","visible");
 					$('#totaldiscountamount').text(totaldiscountamount.toFixed(2));
 				}else
 				{
-					$('.totaldiscountamountdiv').hide();
+					$('.totaldiscountamountdiv').css("visibility","hidden");
 				}
+				//-------------------------------------------------
+				if(totalCGST.toFixed(2)>0)
+				{
+					$('.totalCGSTdiv').css("visibility","visible");
+					$('#totalCGST').text(totalCGST.toFixed(2));
+				}else
+				{
+					$('.totalCGSTdiv').css("visibility","hidden");
+				}
+				//-------------------------------------------------
+				if(totalSGST.toFixed(2)>0)
+				{
+					$('.totalSGSTdiv').css("visibility","visible");
+					$('#totalSGST').text(totalSGST.toFixed(2));
+				}else
+				{
+					$('.totalSGSTdiv').css("visibility","hidden");
+				}
+				//-------------------------------------------------
+				if(totalIGST.toFixed(2)>0)
+				{
+					$('.totalIGSTdiv').css("visibility","visible");
+					$('#totalIGST').text(totalIGST.toFixed(2));
+				}else
+				{
+					$('.totalIGSTdiv').css("visibility","hidden");
+				}
+				//-------------------------------------------------
 				
-				$('#totalCGST').text(totalCGST.toFixed(2));
-				$('#totalSGST').text(totalSGST.toFixed(2));
-				$('#totalIGST').text(totalIGST.toFixed(2));
+			
 				$('#totalamount').text((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(2));
 				$('#totalamtwithouttax').text(totalamtwithouttax.toFixed(2));
 				
@@ -2324,6 +2316,48 @@
 					
 				}
 			//------------------------------------------------------
+			$('#invoiceType').on('change',function(event) {
+				
+				
+				if($(this).val() == "Bill"){
+					$(".CGST").val("0").change();
+					$(".SGST").val("0").change();
+					$(".IGST").val("0").change();
+					$('.CGST').prop("disabled", true);
+					$('.SGST').prop("disabled", true);
+					$('.IGST').prop("disabled", true);
+					
+				}else
+				{
+					
+					const elementsWithClassInv = document.querySelectorAll(".CGST");
+					 const elementsArrayInv = Array.from(elementsWithClassInv);
+					  elementsArrayInv.forEach((element) => {
+					     let tempid = element.id.replace("CGSTper","");
+					   
+					     	if($("#CGSTper"+tempid).val() == 0 && $("#IGSTper"+tempid).val()== 0)
+							{
+					     		$("#CGSTper"+tempid).val("9").change();
+					    	}
+							if($("#SGSTper"+tempid).val() == 0 && $("#IGSTper"+tempid).val()== 0)
+							{
+								$("#SGSTper"+tempid).val("9").change();
+							}
+							if($("#SGSTper"+tempid).val() != 0 && $("#CGSTper"+tempid).val()!= 0)
+							{
+								$("#IGSTper"+tempid).val("0").change();
+							}
+					     
+					  });
+					$('.CGST').prop("disabled", false);
+					$('.SGST').prop("disabled", false);
+					$('.IGST').prop("disabled", false);
+				}
+				
+				$(".btn-apply-changes").click();
+				
+			});
+		//------------------------------------------------------
 		</script>
 </body>
 </html>

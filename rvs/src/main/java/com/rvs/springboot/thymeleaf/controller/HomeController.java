@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -65,7 +64,6 @@ import com.rvs.springboot.thymeleaf.entity.BranchContact;
 import com.rvs.springboot.thymeleaf.entity.BranchEffective;
 import com.rvs.springboot.thymeleaf.entity.BranchFiles;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
-import com.rvs.springboot.thymeleaf.entity.BranchexpenseItemMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchexpenseMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchaseItemMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchaseMaster;
@@ -1767,7 +1765,10 @@ public class HomeController {
 				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
 						.collect(Collectors.toList()));
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
-		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses_objectlist());
+		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
+				.filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
+		
 		return "branchexpense";
 	}
 
@@ -10544,6 +10545,19 @@ public class HomeController {
 		return ls;
 	}
 
+	@PostMapping("getbranchexpenseitem")
+	@ResponseBody
+	public BranchexpenseMaster getbranchexpenseitem(@RequestParam Map<String, String> params) {
+
+		BranchexpenseMaster obj = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getBranchexpenseMasterList().stream()
+				.filter(C -> C.getBranchexpenseid()  == Integer.parseInt(params.get("branchid")))
+				.collect(Collectors.toList()).get(0);
+
+		return obj;
+
+	}
+	
 	@PostMapping("getexpenseitem")
 	@ResponseBody
 	public ProjectExpense getexpenseitem(@RequestParam Map<String, String> params) {
@@ -10904,47 +10918,37 @@ public class HomeController {
 	}
 
 	@ResponseBody
-	@PostMapping("branchbranchexpensesave")
-	public BranchMaster branchbranchexpensesave(@RequestParam Map<String, String> params) {
+	@PostMapping("branchexpensesave")
+	public BranchMaster branchexpensesave(@RequestParam Map<String, String> params) {
 
 		// params.forEach((a,b) -> System.out.println(a + " - "+ b));
 
 		BranchMaster pm = branchMasterService.findById(Integer.parseInt(params.get("branchid")));
+
 		List<BranchexpenseMaster> invls = new ArrayList();
 
-		String tempbranchexpenseid = nullremover(String.valueOf(params.get("branchexpenseid")));
+		String tempreceiptid = nullremover(String.valueOf(params.get("branchexpenseid")));
 
-		if (!tempbranchexpenseid.equalsIgnoreCase("")) {
+		if (!tempreceiptid.equalsIgnoreCase("")) {
 			List<BranchexpenseMaster> ls = new ArrayList();
 
 			for (BranchexpenseMaster invm : pm.getBranchexpenseMasterList()) {
-				if (invm.getBranchexpenseid() == Integer.parseInt(tempbranchexpenseid)) {
+				if (invm.getBranchexpenseid() == Integer.parseInt(tempreceiptid)) {
+
+					invm.setCategory(String.valueOf(params.get("category")));
+					invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
+					invm.setNotes(String.valueOf(params.get("Notes")));
+					invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
+					invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
+					invm.setQuantity(Double.parseDouble(params.get("Quantity")));
+					invm.setStaff(String.valueOf(params.get("staff")));
+					invm.setTotal(
+							Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));
+					invm.setAmount(Double.parseDouble(params.get("Amount")));
+					invm.setUnit(String.valueOf(params.get("unit")));
+					invm.setVehicle(String.valueOf(params.get("vehicle")));
 					invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
-					invm.setBranchexpenseDate(String.valueOf(params.get("branchexpenseDate")));
-					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
-					invm.setNotes(String.valueOf(params.get("note")));
-					invm.setBranchexpenseNo(String.valueOf(params.get("branchexpenseNo")));
-					invm.setEmployeeid(String.valueOf(params.get("expense_employeeid")));
-					invm.setSupplierid(String.valueOf(params.get("expense_supplierid")));
-
-					List<BranchexpenseItemMaster> invitemls = new ArrayList();
-					for (int i = 1; i <= Integer.parseInt(params.get("branchexpenseitemcount")); i++) {
-
-						BranchexpenseItemMaster initem = new BranchexpenseItemMaster();
-						int invitemids = 0;
-						if (!nullremover(String.valueOf(params.get("BranchexpenseItemid" + i))).equalsIgnoreCase("")) {
-							invitemids = Integer.parseInt(params.get("BranchexpenseItemid" + i));
-							final int tempi = i;
-							initem = invm.getBranchexpenseItemMasterlist().stream()
-									.filter(C -> C.getBranchexpenseitemid() == Integer
-											.parseInt(params.get("BranchexpenseItemid" + tempi)))
-									.collect(Collectors.toList()).get(0);
-						}
-
-						invitemls.add(addupdatedBranchexpenseMaster(params, initem, i, invitemids));
-					}
-					invm.setBranchexpenseItemMasterlist(invitemls);
-
+					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));				
 				}
 				ls.add(invm);
 
@@ -10952,95 +10956,47 @@ public class HomeController {
 			pm.setBranchexpenseMasterList(ls);
 
 		} else {
-			BranchexpenseMaster newinv = new BranchexpenseMaster();
+			BranchexpenseMaster invm = new BranchexpenseMaster();
 
-			newinv.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
-			newinv.setBranchexpenseDate(String.valueOf(params.get("branchexpenseDate")));
-			newinv.setModeofPayment(String.valueOf(params.get("modeofPayment")));
-			newinv.setNotes(String.valueOf(params.get("note")));
-			newinv.setBranchexpenseNo(String.valueOf(params.get("branchexpenseNo")));
-			newinv.setEmployeeid(String.valueOf(params.get("expense_employeeid")));
-			newinv.setSupplierid(String.valueOf(params.get("expense_supplierid")));
-
-			List<BranchexpenseItemMaster> invitemls = new ArrayList();
-			for (int i = 1; i <= Integer.parseInt(params.get("branchexpenseitemcount")); i++) {
-
-				invitemls.add(addupdatedBranchexpenseMaster(params, new BranchexpenseItemMaster(), i, 0));
-			}
-			newinv.setBranchexpenseItemMasterlist(invitemls);
-
-			pm.getBranchexpenseMasterList().add(newinv);
+			invm.setCategory(String.valueOf(params.get("category")));
+			invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
+			invm.setNotes(String.valueOf(params.get("Notes")));
+			invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
+			invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
+			invm.setQuantity(Double.parseDouble(params.get("Quantity")));
+			invm.setStaff(String.valueOf(params.get("staff")));
+			invm.setTotal(Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));
+			invm.setAmount(Double.parseDouble(params.get("Amount")));
+			invm.setUnit(String.valueOf(params.get("unit")));
+			invm.setVehicle(String.valueOf(params.get("vehicle")));
+			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+			
+			pm.getBranchexpenseMasterList().add(invm);
 		}
 
 		return branchMasterService.save(pm);
-	}
-
-	public BranchexpenseItemMaster addupdatedBranchexpenseMaster(Map<String, String> params,
-			BranchexpenseItemMaster invitemmaster, int index, int itemid) {
-
-		invitemmaster.setBranchexpenseitemid(itemid);
-
-		double price = Double.parseDouble(String.valueOf(params.get("Price" + index)));
-		double qty = Double.parseDouble(String.valueOf(params.get("Quantity" + index)));
-		double taxableAmount = price * qty;
-
-		double Discountper = Double.parseDouble(String.valueOf(params.get("Discountper" + index)));
-		double CGSTper = Double.parseDouble(String.valueOf(params.get("CGSTper" + index)));
-		double SGSTper = Double.parseDouble(String.valueOf(params.get("SGSTper" + index)));
-		double IGSTper = Double.parseDouble(String.valueOf(params.get("IGSTper" + index)));
-
-		double dt = Discountper / 100;
-		double Discountamt = taxableAmount * dt;
-		double afetdiscountamount = taxableAmount - Discountamt;
-
-		double it = IGSTper / 100;
-		double ct = CGSTper / 100;
-		double st = SGSTper / 100;
-		double IGSTamount = afetdiscountamount * it;
-		double SGSTamount = afetdiscountamount * st;
-		double CGSTamount = afetdiscountamount * ct;
-
-		invitemmaster.setDiscountamt(Discountamt);
-		invitemmaster.setDiscountper(Discountper);
-
-		invitemmaster.setCGSTamount(CGSTamount);
-		invitemmaster.setCGSTper(CGSTper);
-
-		invitemmaster.setIGSTamount(IGSTamount);
-		invitemmaster.setIGSTper(IGSTper);
-
-		invitemmaster.setSGSTamount(SGSTamount);
-		invitemmaster.setSGSTper(SGSTper);
-
-		invitemmaster.setBranchexpenseItem(String.valueOf(params.get("BranchexpenseItem" + index)));
-		invitemmaster.setDescription(String.valueOf(params.get("Description" + index)));
-		invitemmaster.setQuantity(qty);
-		invitemmaster.setPrice(price);
-		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
-
-		invitemmaster.setTaxableAmount(afetdiscountamount);
-		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + SGSTamount + IGSTamount);
-
-		return invitemmaster;
 	}
 
 	@PostMapping("getbranchexpenselist")
 	@ResponseBody
 	public List<BranchexpenseMaster> getbranchexpenselist(@RequestParam Map<String, String> params) {
 
-		List<BranchexpenseMaster> ls = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getBranchexpenseMasterList();
-		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		BranchMaster pm = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
+		List<BranchexpenseMaster> ls = pm.getBranchexpenseMasterList();
+		List<EmployeeMaster> emplist = employeeMasterService.findAll();
 
 		for (BranchexpenseMaster obj : ls) {
 			try {
-				obj.setBranchexpenseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
-						.format(displaydateFormatrev.parse(obj.getBranchexpenseDate())).toString());
 
-				obj.setEmployee_name(
-						employeeMasterService.findById(Integer.parseInt(obj.getEmployeeid())).getStaffName());
-				obj.setSupplier_name(corglis.stream().filter(C -> C.getId() == Integer.parseInt(obj.getSupplierid()))
-						.collect(Collectors.toList()).get(0).getOrgname());
+				obj.setPrjExpenseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getPrjExpenseDate())).toString());
+
+				obj.setStaffname(emplist.stream()
+						.filter(C -> C.getEmpMasterid() == Integer.parseInt(params.get("mastercategoryid")))
+
+						.collect(Collectors.toList()).get(0).getStaffName());
+				obj.setCategory_name(accountheadsService.findById(Integer.parseInt(obj.getCategory())).getCategory());
 
 			} catch (ParseException e) {
 
@@ -11052,21 +11008,6 @@ public class HomeController {
 		return ls;
 	}
 
-	@PostMapping("getbranchexpenseitem")
-	@ResponseBody
-	public BranchexpenseMaster getbranchexpenseitem(@RequestParam Map<String, String> params) {
-
-		BranchexpenseMaster obj = branchMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getBranchexpenseMasterList().stream()
-				.filter(C -> C.getBranchexpenseid() == Integer.parseInt(params.get("branchid")))
-				.collect(Collectors.toList()).get(0);
-		for (BranchexpenseItemMaster expensechild : obj.getBranchexpenseItemMasterlist()) {
-			Accountsheads ahobj = accountheadsService.findById(Integer.parseInt(expensechild.getBranchexpenseItem()));
-
-			expensechild.setBranchexpenseItem_name(ahobj.getCategory());
-		}
-		return obj;
-	}
 
 	public List<Accountsheads> getaaccountsHeads_AssetBank() {
 		return accountheadsService.findAll().stream().filter(C -> C.getMastergroup().equalsIgnoreCase("Assets / Bank"))
@@ -11200,7 +11141,7 @@ public class HomeController {
 				for(BranchMaster bm :branchMasterService.findAll())
 				{
 					List<BranchexpenseMaster> lsbxm = bm.getBranchexpenseMasterList().stream().filter(C-> C.getDepitedfrom().equalsIgnoreCase(String.valueOf(obj.getAccountheadid()))).toList();
-					branchexpense_masteramt1 =branchexpense_masteramt1 + lsbxm.stream().mapToDouble(x -> x.getBranchexpenseItemMasterlist().stream().mapToDouble(BranchexpenseItemMaster :: getTotalamountAmount).sum()).sum();
+					branchexpense_masteramt1 =branchexpense_masteramt1 + lsbxm.stream().mapToDouble(BranchexpenseMaster :: getTotal).sum();
 				 }
 				// ----------------------------------------------------------------------------
 				double getaccounttransferdepositamt;

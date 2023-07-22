@@ -1,16 +1,10 @@
 package com.rvs.springboot.thymeleaf.entity;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -35,34 +29,39 @@ public class BranchexpenseMaster {
 	private int branchexpenseid;
 
 	@Column
-	private String branchexpenseNo;
+	private String prjExpenseDate;
 	@Column
-	private String branchexpenseDate;
+	private String prjreceiptno;	
 	@Column
-	private String employeeid;
+	private String staff;
 	@Column
-	private String supplierid;
+	private String category;
 	@Column
-	private String depitedfrom;
+	private String modelofTravel;
+	@Column
+	private String vehicle;
+	@Column
+	private String unit;
+	@Column
+	private double Quantity;
+	@Column
+	private double Amount;
+	@Column
+	private double Total;
+	@Column
+	private String Notes;
 	@Column
 	private String modeofPayment;
 	@Column
-	private String notes;
-
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "branchexpenseid")
-	@OrderBy("branchexpenseitemid ASC")
-	private List<BranchexpenseItemMaster> branchexpenseItemMasterlist;
-
-	@Transient
-	private String branchexpenseDateMMMddyyyy;
+	private String depitedfrom;
 	
 	@Transient
-	private String employee_name;
-	
+	private String prjExpenseDateMMMddyyyy;
 	@Transient
-	private String supplier_name;
-	
+	private String staffname;
+	@Transient
+	private String vehilename;
 
-
+	@Transient
+	private String category_name;
 }

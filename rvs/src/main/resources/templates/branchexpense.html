@@ -77,7 +77,7 @@
 
 <style type="text/css">
 
-.contacteditbtn
+.contacteditbtn, .editprojectprj
 {
 cursor:pointer;
 }
@@ -447,45 +447,41 @@ var Accountsheadsexpenseitems = [];
 					</ul>
 					<!--/ User Pills -->
 
-					<!-- Project   Card -->
-					<div class="card  mb-4">
-						<div class="card-body1">
-							<div class="card-header align-items-center">
-								<h5 class="card-action-title mb-0">
-									Expense List
-									<div class="card-action-element" style="float: right">
-										<button class="btn btn-primary btn-sm addNewExpensebtn"
-											type="button" data-bs-toggle="modal"
-											data-bs-target="#Expensemodel">
-											<i class="bx bx-plus bx-xs me-1"></i>
-										</button>
-									</div>
-								</h5>
-								<th:block th:each="obj : ${expenselist}">
-									<script type="text/javascript" th:inline="javascript">
-									Accountsheadsexpenseitems.push("[(${obj})]");
-									</script>
-								</th:block>
-							</div>
-							<div class="table-responsive">
-								<table class="table border-top m-0">
-									<thead>
-										<tr>
-											<th>Staff #</th>
-											<th>Supplier</th>
-											<th>Date</th>
-											<th>Notes</th>
-											<th>Amount</th>
-										</tr>
-									</thead>
-									<tbody id="branchExpenselist">
+					<!-- Receipts   Card -->
+						<div class="card  mb-4">
+							<div class="card-body1">
+								<div class="card-header align-items-center">
+									<h5 class="card-action-title mb-0">
+										Expense List
+										<div class="card-action-element" style="float: right">
+											<button class="btn btn-primary btn-sm addNewExpensebtn"
+												type="button" data-bs-toggle="modal"
+												data-bs-target="#receiptmodel">
+												<i class="bx bx-plus bx-xs me-1"></i>
+											</button>
+										</div>
 
-									</tbody>
-								</table>
+									</h5>
+								</div>
+								<div class="table-responsive">
+									<table class="table border-top m-0">
+										<thead>
+											<tr>
+												<th>Staff</th>
+												<th>Category</th>
+												<th>Date</th>
+												<th>Quantity</th>
+												<th>Total Amount</th>
+											</tr>
+										</thead>
+										<tbody id="expenselist">
+
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
-					</div>
-					<!-- /Project   Card -->
+						<!-- /Receipts   Card -->
 
 					
 				</div>
@@ -493,201 +489,158 @@ var Accountsheadsexpenseitems = [];
               </div>
 
               <!-- Modal -->
-              <!-- Add Expense -->
-				<div class="modal fade" id="Expensemodel" tabindex="-1"
-					aria-hidden="true">
-	
-					
-						<div
-							class="modal-dialog modal-xl modal-simple modal-add-new-cc">
-							<div class="modal-content p-3 p-md-5">
-								<div class="modal-bodyx">
-									<button type="button" class="btn-close"
-										data-bs-dismiss="modal" aria-label="Close"></button>
-									<form  class="row g-3 needs-validation"  id="editExpenseformx"
-							onsubmit="return false">
-									<!-- -------- -->
-									<!-- Expense Add-->
-									<div class="col-lg-12 col-12 mb-lg-0 mb-4">
-										<div class="card invoice-preview-card">
-											<div class="card-body">
-												<div class="row p-sm-3 p-0">
-													<div class="col-md-6 mb-md-0 mb-4">
-														<dl class="row mb-2">
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="text-capitalize mb-0 text-nowrap">
-																	Tally Ref No#</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<input type="text" class="form-control"
-																		id="branchexpenseNo" name="branchexpenseNo" required /> <input
-																		type="hidden" class="form-control" id="branchexpenseid"
-																		name="branchexpenseid" />
-																</div>
-															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Paid From:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select class="form-select followers form-control "
-																		id="depitedfrom" name="depitedfrom" >
-																		<option value="">-</option>
-																		<th:block  th:each="obj1 : ${accountlist}" >
-																			<option th:value="${obj1.accountheadid}" th:text="${obj1.category}"></option>
-																		</th:block>
-																	</select>
-																</div>
-															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Paid To:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select class="form-select followers form-control "
-																		id="expense_supplierid" name="expense_supplierid" >
-																		<option value="">-</option>
-																		<th:block th:each="str :${supplierlist}">
-																			<option th:value="${str.id}" th:text="${str.orgname}"></option>
-																		</th:block>
-																	</select>
-																</div>
-															</dd>
-															
-															
-														</dl>
-													</div>
-													<div class="col-md-6">
-														<dl class="row mb-2">
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class=" text-capitalize mb-0 text-nowrap">Date:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<input type="date" class="form-control"
-																		id="branchexpenseDate" name="branchexpenseDate" required />
-																</div>
-															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Submitted by:</span>
-															</dt>
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select
-																		class="form-select  form-control "
-																		id="expense_employeeid" name="expense_employeeid" 
-																		required>
-																		<option value="">-</option>
-																		<th:block th:each="str :${EffectiveEmployee}">
-																			<option th:value="${str.empMasterid}"
-																				th:text="${str.StaffName}"></option>
-																		</th:block>
-																	</select>
-																</div>
-															</dd>
-															
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																<span class="fw-normal">Mode of Payment :</span>
-															</dt>
-															
-															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
-																	<select id="modeofPayment" name="modeofPayment"
-																		class="form-select"
-																		aria-label="Default select example" required>
-																		<option value="">-</option>
-																		<option value="NEFT">NEFT</option>
-																		<option value="RTGS">RTGS</option>
-																		<option value="Cash">Cash</option>
-																		<option value="Paypal">Paypal</option>
-																		<option value="Paytm">Paytm</option>
-																		<option value="Gpay">Gpay</option>
-																		<option value="Other UPI">Other UPI</option>
-																	</select>
-																</div>
-															</dd>
-														</dl>
-													</div>
-												</div>
-	
-												<hr />
-	
-											
-												<div class="mb-3" data-repeater-list="group-a">
-													<div class="repeater-wrapper pt-0 pt-md-4"
-														id="expenseitemlist">
-												 </div>
-												</div>
-												<div class="row">
-													<div class="col-12">
-														<button type="button" class="btn btn-primary" id="addnewexpenseitem"
-															>Add Item</button>
-													</div>
-												</div>
-	
-	
-												<hr class="my-4 mx-n4" />
-	
-												<div class="row py-sm-3">
-													<div class="col-6">
-														<div class="mb-3">
-															<label for="note" class="form-label fw-semibold">Note:</label>
-															<textarea class="form-control" rows="2" id="note" name="note"
-																placeholder="Expense note"></textarea>
-														</div>
-													</div>
-													<div class="col-md-6 d-flex justify-content-end">
-														<div class="invoice-calculations">
-															<div class="d-flex justify-content-between mb-2">
-																<span class="w-px-100">Total:</span> <span
-																	class="fw-semibold" id="totalamtwithouttax">0.00</span>
-															</div>
-															<div class="d-flex justify-content-between mb-2">
-																<span class="w-px-100">CGST:</span> <span
-																	class="fw-semibold"  id="totalCGST">0.00</span>
-															</div>
-															<div class="d-flex justify-content-between mb-2">
-																<span class="w-px-100">SGST:</span> <span
-																	class="fw-semibold" id="totalSGST">0.00</span>
-															</div>
-															<div class="d-flex justify-content-between mb-2">
-																<span class="w-px-100">IGST:</span> <span
-																	class="fw-semibold" id="totalIGST">0.00</span>
-															</div>
-															<hr />
-															<div class="d-flex justify-content-between">
-																<span class="w-px-100">Total Amount:</span> <span
-																	class="fw-semibold" id="totalamount">0.00</span>
-															</div>
-	
-														</div>
-													</div>
-												</div>
-												<div align="center">
-													<button type="submit"
-														class="btn btn-primary editExpensesubmit me-sm-3 me-1">Save
-														The Expense</button>
-	
-													<button type="reset"
-														class="btn btn-label-secondary editExpenseclose"
-														data-bs-dismiss="modal" aria-label="Close">
-														Cancel</button>
-	
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- /Invoice Add-->
-									<!-- -------- -->
-								</form>
-								</div>
+              
+			<!-- Edit Receipt Modal -->
+			<div class="modal fade" id="receiptmodel" tabindex="-1"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+					<div class="modal-content p-3 p-md-5">
+						<div class="modal-body">
+							<button type="button" class="btn-close"
+								data-bs-dismiss="modal" aria-label="Close"></button>
+							<div class="text-center mb-4">
+								<h5>Expense Details</h5>
 							</div>
+							<form class="row g-3 needs-validation" id="editexpenseformx"
+								onsubmit="return false">
+
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="recepitNo">Tally Ref #</label> <input
+										type="text" id="recepitNo" name="recepitNo"
+										class="form-control" required /> <input type="hidden"
+										id="branchexpenseid" name="branchexpenseid" />
+
+								</div>
+
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="prjExpenseDate">Date</label>
+									<input type="date" id="prjExpenseDate"
+										name="prjExpenseDate" class="form-control" required />
+								</div>
+
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="staff">Staff</label> <select
+										class="form-select  form-control " id="staff" name="staff"
+										required>
+										<option value="">-</option>
+										<th:block th:each="str :${EffectiveEmployee}">
+											<option th:value="${str.empMasterid}"
+												th:text="${str.StaffName}"></option>
+										</th:block>
+									</select>
+								</div>
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="category">Category</label> <select
+										id="category" name="category" class="form-select"
+										aria-label="Default select example" required>
+										<option value="">-</option>
+										<th:block th:each =" obj : ${expenselist}">
+											<option th:value="${obj.accountheadid}" th:text="${obj.category}"></option>
+										</th:block>
+										
+									</select>
+								</div>
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="vehicle">Vehicle</label> <select
+										id="vehicle" name="vehicle" class="form-select"
+										aria-label="Default select example" required>
+										<option value="">-</option>
+										<th:block th:each="obj : ${vechiclels}">
+											<option th:value="${obj.AssetId}" th:text="${obj.AssetName}"></option>
+										</th:block>
+									</select>
+								</div>
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="modelofTravel">Mode
+										of Travel</label> <select id="modelofTravel" name="modelofTravel"
+										class="form-select" aria-label="Default select example"
+										required>
+										<option value="">-</option>
+										<option value="Bus">Bus</option>
+										<option value="Taxi/Auto">Taxi/Auto</option>
+										<option value="Train">Train</option>
+										<option value="Flight">Flight</option>
+									</select>
+								</div>
+								
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="Quantity">Quantity </label>
+									<input type="number" id="Quantity" name="Quantity"
+										class="form-control modal-edit-tax-id" required />
+								</div>
+
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="unit">Units</label> <select
+										class="form-select  form-control " id="unit" name="unit"
+										required>
+										<option value="">-</option>
+										<th:block th:each="str :${UNITS}">
+											<option th:value="${str}" th:text="${str}"></option>
+										</th:block>
+									</select>
+								</div>
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="Amount">Amount </label> <input
+										type="number" id="Amount" name="Amount"
+										class="form-control modal-edit-tax-id" required />
+								</div>
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="Total">Total </label> <input
+										type="number" id="Total" name="Total"
+										class="form-control modal-edit-tax-id" disabled required />
+								</div>
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="Notes">Notes </label> <input
+										type="text" id="Notes" name="Notes"
+										class="form-control modal-edit-tax-id" />
+								</div>
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="depitedfrom">Paid From </label> 
+									<select class="form-select followers form-control "
+														id="depitedfrom" name="depitedfrom" >
+										<option value="">-</option>
+										<th:block  th:each="obj1 : ${accountlist}" >
+											<option th:value="${obj1.accountheadid}" th:text="${obj1.category}"></option>
+										</th:block>
+									</select>
+								</div>
+								<div class="col-12 col-md-6">
+									<label class="form-label" for="modeofPayment">Mode of Payment </label> 
+									<select id="modeofPayment" name="modeofPayment"
+											class="form-select"
+											aria-label="Default select example" required>
+											<option value="">-</option>
+											<option value="NEFT">NEFT</option>
+											<option value="RTGS">RTGS</option>
+											<option value="Cash">Cash</option>
+											<option value="Paypal">Paypal</option>
+											<option value="Paytm">Paytm</option>
+											<option value="Gpay">Gpay</option>
+											<option value="Other UPI">Other UPI</option>
+										</select>
+								</div>
+
+
+								<div class="col-12 text-center mt-4">
+									<button type="submit"
+										class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
+										The Expense</button>
+
+									<button type="reset"
+										class="btn btn-label-secondary editReceiptclose"
+										data-bs-dismiss="modal" aria-label="Close">
+										Cancel</button>
+								</div>
+							</form>
 						</div>
-					
+					</div>
 				</div>
-				<!--/ Add Invoice -->
-				
+			</div>
+
+
+
+
+			<!--/ Edit User Modal -->
 							
               <!-- Edit User Modal -->
               <div class="modal fade" id="editBranchdetails" tabindex="-1" aria-hidden="true">
@@ -1700,18 +1653,7 @@ Model_CURRENT_STATUS
 		   			$('.BankDetailssave').html("Submit");
 		   		}
 
-				function validationinvoiceformreset()
-				   {
-			   				$('.editExpenseclose').click();
-			   				$('.editExpensesubmit').prop("disabled",false);
-			   				$('#expenseitemlist').html("");
-			   				expenseIncre=0;
-			   				invoiceamountCalculator();
-				   			$('.editExpensesubmit').html("Save The Invoice");
-				   			
-				   }
-				
-				function validationreceiptformreset()
+		   		function validationreceiptformreset()
 				   {
 					$('.editReceiptclose').click();
 	   				$('.editReceiptsubmit').prop("disabled",false);
@@ -1723,7 +1665,7 @@ Model_CURRENT_STATUS
 				$("#branchexpenseid").val("");
 				
 				
-				validationinvoiceformreset();
+				validationreceiptformreset();
 			 });	
 		   	// --------------------------------------------------------------------
 		   	 
@@ -1731,37 +1673,36 @@ Model_CURRENT_STATUS
   				$('#modalcontactid').val("-");
   			  });
   			//--------------------------------------------------------------------------------------------------------------------------------------
-				$('#editExpenseformx').on('submit',function(event) {
-					if (event.target.checkValidity()) {
-						$('.editExpensesubmit').prop("disabled",true);
-						$('.editExpensesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-						const formData = new FormData(document.querySelector("#editExpenseformx"));
-						formData.append("branchid","[[${BranchMaster['id']}]]");
-						formData.append("branchexpenseitemcount", expenseIncre);
-						
-						$.ajax({
-							type : "POST",
-							url : "branchbranchexpensesave",
-							processData : false,
-							contentType : false,
-							data : formData,
-							success : function(
-									result) {
-								
-								validationinvoiceformreset();
-								
-								getexpenselist();
+			$('#editexpenseformx').on('submit',function(event) {
+				if (event.target.checkValidity()) {
+					$('.editReceiptsubmit').prop("disabled",true);
+					$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+					const formData = new FormData(document.querySelector("#editexpenseformx"));
+					formData.append("branchid","[[${BranchMaster['id']}]]");
+					
+					$.ajax({
+						type : "POST",
+						url : "branchexpensesave",
+						processData : false,
+						contentType : false,
+						data : formData,
+						success : function(
+								result) {
+							
+							validationreceiptformreset();
+							
+							getexpenselist();
 
-							},
-							error : function(e) {
-								console.log("Error"+ e);
-							}
-						});
-					} else {
-						$('.editExpensesubmit').prop("disabled",false);
-					}
-				});
-				// --------------------------------------------------------------------
+						},
+						error : function(e) {
+							console.log("Error"+ e);
+						}
+					});
+				} else {
+					$('.editReceiptsubmit').prop("disabled",false);
+				}
+			});	
+			// --------------------------------------------------------------------
 				
 				$("#addnewexpenseitem").click(function() {
 					expenseIncre = expenseIncre+1;
@@ -1771,49 +1712,45 @@ Model_CURRENT_STATUS
 				});
 				
 				// ----------------------------------------------------------------------------------------------------------------------------------------
-								function getexpenselist() {
-									
-									var formData = {
-										mastercategoryid : "[[${BranchMaster['id']}]]"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "getbranchexpenselist",
-										data : formData,
-										success : function(result) {
-											var htmlop="";
-											var bmobj = JSON.parse(JSON.stringify(result));
-											var total=0;
-											console.log(bmobj);
-											
-											bmobj.forEach((element, index, array) =>
-								           	{
-								           		var sub_total=0;
-								           	  
-								           		element.branchexpenseItemMasterlist.forEach((elementx, indexx, arrayx) =>
-									           	  {
-									           		sub_total +=elementx.taxableAmount + elementx.cgstamount + elementx.sgstamount+ elementx.igstamount; 
-									           	  });
-									           	  
-									           	 htmlop +="<tr><td class='text-nowrap editbranchprj' onclick='editexpenseinfo(this)' id='"+element.branchexpenseid +"'>"+element.employee_name+"</td>";
-									           	 htmlop +="<td class='text-nowrap'>"+element.supplier_name +"</td><td class='text-nowrap'>"+element.branchexpenseDateMMMddyyyy +"</td><td>"+element.notes +"</td>";
-									           	 htmlop +="<td>"+sub_total.toFixed(2) +"</td></tr>";
-									           	 total +=parseFloat(sub_total);
-								            });
-											
-											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
-											$('#branchExpenselist').html(htmlop);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
+				function getexpenselist() {
+					
+					var formData = {
+						mastercategoryid : "[[${BranchMaster['id']}]]"
+					}
+
+					$.ajax({
+						type : "POST",
+						url : "getbranchexpenselist",
+						data : formData,
+						success : function(result) {
+							var htmlop="";
+							var bmobj = JSON.parse(JSON.stringify(result));
+							var total=0;
+							//console.log(bmobj);
+							
+							bmobj.forEach((element, index, array) =>
+				           	{
+				           		var sub_total=0;
+				           	  
+				           		
+					           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editexpenseinfo(this)' id='"+element.branchexpenseid +"'>"+element.staffname+"</td>";
+					           	 htmlop +="<td class='text-nowrap'>"+element.category_name +"</td><td class='text-nowrap'>"+element.prjExpenseDateMMMddyyyy +"</td><td>"+element.quantity +"</td>";
+					           	 htmlop +="<td>"+element.total.toFixed(2) +"</td></tr>";
+					           	 total +=parseFloat(element.total);
+				            });
+							
+							 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
 								
+							$('#expenselist').html(htmlop);
+						},
+						error : function(e) {
+							console.log("Error" + e);
+
+						}
+
+					});
+
+				}
 								
 								
   			// --------------------------------------------------------------------
@@ -2144,8 +2081,38 @@ Model_CURRENT_STATUS
 			    	
 			     },500); // milliseconds
 			});
+			
+			//--------------------------------------------
+			$('#category').on('change',function(event) {
+				var selectElement = document.getElementById("category"); 
+				var sval = selectElement.options[selectElement.selectedIndex].text;
+				
+				if(sval =='Fuel Expenses'){
+					$("#modelofTravel").val("");
+					$("#modelofTravel").attr('disabled', true);
+					$("#vehicle").attr('disabled', false);
+					
+				}else if(sval =='Travel Expense'){
+					$("#vehicle").val("");
+					$("#vehicle").attr('disabled', true);
+					$("#modelofTravel").attr('disabled', false);
+				}else
+				{
+					$("#vehicle").val("");
+					$("#modelofTravel").val("");
+					$("#modelofTravel").attr('disabled', true);
+					$("#vehicle").attr('disabled', true);
+				}
+				
+			});
+			//------------------------------------------------------
+			$('#Amount').on('change',function(event) {
+				$("#Total").val($('#Amount').val() * $('#Quantity').val());
+			});
+			$('#Quantity').on('change',function(event) {
+				$("#Total").val($('#Amount').val() * $('#Quantity').val());
+			});
 			//-------------------------------------------
-			  
 		    }); // Jquery
     
     function reply_click(id,contacttype,phonenumber,email,primarycontact)
@@ -2293,7 +2260,6 @@ Model_CURRENT_STATUS
 		 
 		 function editexpenseinfo(e){
 				var branchid= e.getAttribute("id");
-				
 					var formData = {
 							branchid : branchid,
 						mastercategoryid: "[[${BranchMaster['id']}]]"
@@ -2305,34 +2271,30 @@ Model_CURRENT_STATUS
 						data : formData,
 						success : function(result) {
 							var bmobj = JSON.parse(JSON.stringify(result));
-							console.log(bmobj);
+							//console.log(bmobj);
 							
 							$("#branchexpenseid").val(bmobj.branchexpenseid);
-							$("#branchexpenseNo").val(bmobj.branchexpenseNo);
-							$("#branchexpenseDate").val(bmobj.branchexpenseDate);
-							$("#depitedfrom").val(bmobj.depitedfrom).change();
-							$("#modeofPayment").val(bmobj.modeofPayment).change();
-							$("#expense_supplierid").val(bmobj.supplierid).change();
-							$("#expense_employeeid").val(bmobj.employeeid).change();
-							$("#note").val(bmobj.notes);
-
-							expenseIncre = 0 ;
-							html="";
-							bmobj.branchexpenseItemMasterlist.forEach((element, index, array) =>
-				           	{
-				           	 	expenseIncre= expenseIncre+1;
-								html +='<div class="d-flex border rounded position-relative pe-0 incontact'+ expenseIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="branchexpenseitemid'+ expenseIncre +'" name="branchexpenseitemid'+ expenseIncre +'" value="'+ element.branchexpenseitemid + '"/> <select class="form-select item-details mb-2" id="BranchexpenseItem'+ expenseIncre +'" name="BranchexpenseItem'+ expenseIncre +'" required> <option value="'+ element.branchexpenseItem + '">'+ element.branchexpenseItem_name + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ expenseIncre +'" name="Description'+ expenseIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ expenseIncre +'" value="'+ element.quantity + '" name="Quantity'+ expenseIncre +'" onchange="invoiceamountCalculator()" required /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ expenseIncre +'" name="Unit'+ expenseIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ expenseIncre +'" name="Price'+ expenseIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ expenseIncre +'" value="'+ element.discountper + '" name="Discountper'+ expenseIncre +'" /> <input type="hidden" id="CGSTperip'+ expenseIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ expenseIncre +'" /> <input type="hidden" id="IGSTperip'+ expenseIncre +'" value="'+ element.igstper + '" name="IGSTper'+ expenseIncre +'" /> <input type="hidden" id="SGSTperip'+ expenseIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ expenseIncre +'" /> 	 <div> <span>Discount Per Unit:</span> <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  expenseIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  expenseIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  expenseIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  expenseIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  expenseIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteprojectexpenseItem('+ expenseIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ expenseIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ expenseIncre +'" class="form-select tax-select"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ expenseIncre +'" class="form-select tax-select"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ expenseIncre +'" class="form-select tax-select"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ expenseIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
-				           	});
-						
-							$('#expenseitemlist').html(html);
-							invoiceamountCalculator();
-							$('#Expensemodel').modal('show');
+							$("#recepitNo").val(bmobj.prjreceiptno);
+							$("#prjExpenseDate").val(bmobj.prjExpenseDate);
+							$("#staff").val(bmobj.staff).change();
+							$("#category").val(bmobj.category).change();
+							$("#modelofTravel").val(bmobj.modelofTravel);
+							$("#vehicle").val(bmobj.vehicle);
+							//$("#Description").val(bmobj.description);
+							$("#unit").val(bmobj.unit);
+							$("#Quantity").val(bmobj.quantity);
+							$("#Amount").val(bmobj.amount);
+							$("#Total").val(bmobj.total);
+							$("#Notes").val(bmobj.notes);
+							$("#modeofPayment").val(bmobj.modeofPayment);
+							$("#depitedfrom").val(bmobj.depitedfrom);
 						},
 						error : function(e) {
 							console.log("Error" + e);
 						}
+						
 					});
-				
+					$("#receiptmodel").modal('toggle');
 			}
 		//------------------------------------------------------
 		//

@@ -192,9 +192,9 @@
 											<th></th>
 											<th>id</th>
 											<th>Title</th>
-											<th>Next Activity</th>
-											<th>Relational Manager</th>
-											<th>Pipeline</th>
+											<th>Activity</th>
+											<th>Followers</th>
+											<th>Phase</th>
 											<th>Source</th>
 											<th>Purpose</th>
 											<th>Branch</th>
@@ -250,6 +250,16 @@
 
 									</div>
 									<div class="col-sm-12">
+										<label class="form-label" for="phonenumber">WORK PHONE</label>
+										<div>
+											<input type="text" id="phonenumber"
+												class="form-control phone-number-otp-mask"
+												name="phonenumber" required />
+
+
+										</div>
+									</div>
+									<div class="col-sm-12">
 										<label class="form-label" for="Title">TITLE</label>
 										<div>
 											<input type="text" id="Title" name="Title"
@@ -257,6 +267,25 @@
 
 										</div>
 
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="startDate">Start Date</label>
+										<div>
+											<input type="text" id="startDate" name="startDate"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="pipeline">Phase </label>
+										<div>
+											<select class="form-control " id="pipeline" name="pipeline">
+												<th:block th:each="str :${Phase}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+										</div>
 									</div>
 									
 									<div class="col-sm-12">
@@ -275,15 +304,7 @@
 										</div>
 
 									</div>
-									<div class="col-sm-12">
-										<label class="form-label" for="startDate">Start Date</label>
-										<div>
-											<input type="text" id="startDate" name="startDate"
-												class="form-control "  required="required">
-
-										</div>
-
-									</div>
+									
 									<div class="col-sm-12">
 										<label class="form-label" for="projectValue">Project Value</label>
 										<div>
@@ -321,30 +342,6 @@
 										</div>
 
 									</div>
-
-									<div class="col-sm-12">
-										<label class="form-label" for="pipeline">Pipeline </label>
-										<div>
-											<select class="form-control " id="pipeline" name="pipeline">
-												<option value="Project In">Project In</option>
-												<option value="Contact made">Contact made</option>
-												<option value="Site Visit Scheduled">Site Visit Scheduled</option>
-												<option value="Project Evaluvated">Project Evoluvated</option>
-												<option value="Proposal made">Proposal made</option>
-												<option value="Negotiations started">Negotiations started</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-sm-12">
-										<label class="form-label" for="phonenumber">WORK PHONE</label>
-										<div>
-											<input type="text" id="phonenumber"
-												class="form-control phone-number-otp-mask"
-												name="phonenumber" required />
-
-
-										</div>
-									</div>
 									<div class="col-sm-12">
 										<label class="form-label" for="phonenumber">BRANCH</label>
 										<div>
@@ -359,7 +356,7 @@
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="followers">Relational Manager</label>
+										<label class="form-label" for="followers">Follower</label>
 										<div>
 											<select class="form-select followers form-control "
 												id="followers" name="followers" required>
@@ -730,7 +727,7 @@
 				           targets:3,
 				           render: function(data, type, full, meta) {
 				           	 
-				           	 return '<a href="projectview?id='+ full['id'] +'">'+ full['title'] +'</a>';
+				           	 return '<a href="projectview?id='+ full['id'] +'">'+ full['title'] +'</a><br/><small class="emp_post text-truncate text-muted">'+ full['id'] +'</small>';
 				           }
 				     },
 			         
@@ -767,19 +764,23 @@
 				           	 $projectFollowerslist = full['projectFollowers'];
 				           	 
 				           	 var $row_output='<table class="innertablefollowers"><tr>';
-				           
+				          		$row_output += '<td> <ul class="list-unstyled m-0 d-flex align-items-center avatar-group my-3">';
+				          		
+				          		
+				          		
+				          		var $output ="";
+				          		var $empMasterid="";
+				          		var   $name ="";
 				           	 $projectFollowerslist.forEach((element, index, array) =>
 				           	 {
 				           		
-				           		$row_output += '<td>';
-				           	
 				           		 var $user_img = element.followerimg ,
-				                $name = element.followername;
-				                $empMasterid=element.empid;
+				              	  $name = element.followername;
+				              	  $empMasterid=element.empid;
 				               
 				              if ($user_img != "" && $user_img != null) {
 				               // For Avatar image
-				                var $output =
+				                 $output =
 				                  '<img src="' + $user_img + '" alt="Avatar" class="rounded-circle">';
 				              } else {
 				                // For Avatar badge
@@ -792,18 +793,14 @@
 				                $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
 				              }
 				              // Creates full output for row
-				               $row_output +=
-				                '<a href="emp?id='+ $empMasterid +'"><div class="d-flex justify-content-start align-items-center">' +
-				                '<div class="avatar-wrapper">' +
-				                '<div class="avatar me-2 tooltipx">' +
-				                $output + "<span class='tooltiptextx'>" + $name + "</span>"+
-				                '</div>' +
-				                '</div>' +
-				                
-				                '</div></a></td>';
-				           	
+				              
+				              $row_output +=
+					                '<li data-bs-toggle="tooltip"  data-popup="tooltip-custom"  data-bs-placement="top" title="' + $name + '"  class="avatar pull-up" >'+
+					                '<a href="emp?id='+ $empMasterid +'">'+ $output + '</a></li>';
 				           	 });
+				           	 
 				           	
+				           	$row_output += '</td>';
 				           	 return $row_output+ "</tr></table>";
 				           }
 				         },{

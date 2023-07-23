@@ -255,7 +255,7 @@
 										<div class="info-container">
 											<ul class="list-unstyled">
 
-												<li class="mb-3"><span class="fw-bold me-2">Pipeline:</span>
+												<li class="mb-3"><span class="fw-bold me-2">Phase:</span>
 													<span th:text="${projectMaster.pipeline}" id="Lbl_pipeline"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
 													<span th:text="${projectMaster.label}" id="Lbl_label"></span></li>
@@ -548,22 +548,7 @@
 																					id="projectpurchaseDate" name="projectpurchaseDate" required />
 																			</div>
 																		</dd>
-																		<!-- <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																			<span class="fw-normal">Receivable :</span>
-																		</dt>
-																		<dd class="col-sm-6 d-flex justify-content-md-end">
-																			<div class="w-px-150">
-																				<select id="receivable" name="receivable"
-																					class="form-select"
-																					aria-label="Default select example" required>
-																					<option value="">-</option>
-																					<option value="0">On Due</option>
-																					<option value="30">30 Days</option>
-																					<option value="60">60 Days</option>
-																					<option value="90">90 Days</option>
-																				</select>
-																			</div>
-																		</dd>-->
+																		
 																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																			<span class="fw-normal">Due Date:</span>
 																		</dt>
@@ -716,14 +701,9 @@
 													<select id="modeofPayment" name="modeofPayment"
 														class="form-select" aria-label="Default select example" required>
 														<option value="">-</option>
-														<option value="NEFT">NEFT</option>
-														<option value="RTGS">RTGS</option>
-														<option value="Cash">Cash</option>
-														<option value="Paypal">Paypal</option>
-														<option value="Paytm">Paytm</option>
-														<option value="Gpay">Gpay</option>
-														<option value="Other UPI">Other UPI</option>
-														<option value="TDS">TDS</option>
+															<th:block th:each="str :${ModeofPayment}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
 													</select>
 												</div>
 												<div class="col-12 col-md-6">
@@ -885,20 +865,14 @@
 												</div>
 
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="pipeline">PIPELINE </label>
+													<label class="form-label" for="pipeline">Phase </label>
 													<div>
 														<select class="form-control" id="pipeline"
 															th:field="*{pipeline}"
 															th:value="${projectMaster['pipeline']}">
-															<option value="Project In">Project In</option>
-															<option value="Contact made">Contact made</option>
-															<option value="Site Visit Scheduled">Site Visit
-																Scheduled</option>
-															<option value="Project Evaluvated">Project
-																Evoluvated</option>
-															<option value="Proposal made">Proposal made</option>
-															<option value="Negotiations started">Negotiations
-																started</option>
+															<th:block th:each="str :${Phase}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
 														</select>
 													</div>
 												</div>
@@ -908,9 +882,9 @@
 													<div>
 														<select class="form-control" id="label"
 															th:field="*{label}" th:value="${projectMaster['label']}">
-															<option value="To Do">To Do</option>
-															<option value="In Progress">In Progress</option>
-															<option value="On Hold">On Hold</option>
+															<th:block th:each="str :${Label}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
 
 														</select>
 													</div>

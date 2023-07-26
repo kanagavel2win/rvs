@@ -237,7 +237,18 @@
 												<li class="mb-3"><span class="fw-bold me-2">Phase:
 												</span> <span th:text="${projectMaster.pipeline}" id="Lbl_pipeline"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
-													<span th:text="${projectMaster.label}" id="Lbl_label"></span></li>
+													<span id="Lbl_label">
+													
+													 <span
+														th:if="${projectMaster.Label} =='Hot'"
+														class="badge bg-danger" th:text="${projectMaster.Label}"></span>
+														<span th:if="${projectMaster.Label} =='Warm'"
+														class="badge bg-warning" th:text="${projectMaster.Label}"></span>
+														<span th:if="${projectMaster.Label} =='Cold'"
+														class="badge bg-primary" th:text="${projectMaster.Label}"></span>
+													
+													
+													</span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${projectMaster.OrganizationName}"
 													id="Lbl_organization"></span>
@@ -1461,8 +1472,15 @@
 																			$("#Lbl_branchname").text(bmobj.branchname);
 																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
 																			$("#Lbl_expectedstartdate").text(bmobj.expectedstartdateMMddYYY);
-																			$("#Lbl_label").text(bmobj.label);	
 																			$("#Lbl_board").text(bmobj.boardName);	
+																			
+																			if (bmobj.label == "Hot") {
+																				$('#Lbl_label').html("<span class='badge bg-danger'>Hot</span>");
+																			} else if (bmobj.label == "Warm") {
+																				$('#Lbl_label').html("<span class='badge bg-warning'>Warm</span>");
+																			} else {
+																				$('#Lbl_label').html("<span class='badge bg-primary'>Cold</span>");
+																			}
 																			
 																			$("#Lbl_Status").text(bmobj.status);	
 																			$("#Lbl_NatureofWork").text(bmobj.natureofWork);	

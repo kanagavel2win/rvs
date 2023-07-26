@@ -1943,36 +1943,16 @@ float:right;
 												'submit',
 												function(event) {
 
-													if (event.target
-															.checkValidity()) {
-														$(
-																'.editpeopledatasubmit')
-																.prop(
-																		"disabled",
-																		true);
-														$(
-																'.editpeopledatasubmit')
-																.html(
-																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+													if (event.target.checkValidity()) {
+														$('.editpeopledatasubmit').prop("disabled",true);
+														$('.editpeopledatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 
-														var projectMasterID = $(
-																'#projectMasterID')
-																.val();
-														var peoplename = $(
-																'#Model_peoplename')
-																.val();
-														var phonenumber = $(
-																'#Model_peoplecontact')
-																.val();
-														var branch = $(
-																"#branch")
-																.val();
-														var followers = $(
-																"followers")
-																.val();
-														var organization = $(
-																"organization")
-																.val();
+														var projectMasterID = $('#projectMasterID').val();
+														var peoplename = $('#Model_peoplename').val();
+														var phonenumber = $('#Model_peoplecontact').val();
+														var branch = $("#branch").val();
+														var followers = $("#followers").val();
+														var organization = $("#organization").val();
 														var formData = {
 															id : projectMasterID,
 															category : 'Project',

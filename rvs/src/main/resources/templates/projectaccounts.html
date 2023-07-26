@@ -350,8 +350,8 @@
 									</h5>
 									<div class="card-body">
 										<div class="d-flex mb-3" th:each="obj : ${cplist}">
-											<div class="flex-grow-1 row">
-												<div class="col-9 mb-sm-0 mb-2">
+											<div th:class="'flex-grow-1 row dcon'+ ${obj.id} ">
+												<div class="col-6 mb-sm-0 mb-2">
 													<a th:href="'contactpersonview?id='+ ${obj.id}"
 														target="_blank">
 														<h6 class="mb-0" th:text="${obj.peoplename}"></h6>
@@ -368,7 +368,28 @@
 														</span>
 													</span> <span class="switch-label"></span>
 													</label>
+													
+													
 												</div>
+												<div class="col-3">
+													<div class="dropdown">
+									                        <button
+									                          class="btn p-0"
+									                          type="button"
+									                          id="salesReport"
+									                          data-bs-toggle="dropdown"
+									                          aria-haspopup="true"
+									                          aria-expanded="false"
+									                        >
+									                          <i class="bx bx-dots-vertical-rounded"></i>
+									                        </button>
+									                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">
+									                          <a class="dropdown-item" th:name="${obj.id}"
+														th:onclick="'removecontactperson(this)'">Unlink</a>
+									                          
+									                        </div>
+									                   </div>
+												 </div>
 											</div>
 										</div>
 
@@ -1824,10 +1845,10 @@
 																"#branch")
 																.val();
 														var followers = $(
-																"followers")
+																"#followers")
 																.val();
 														var organization = $(
-																"organization")
+																"#organization")
 																.val();
 														var formData = {
 															id : projectMasterID,
@@ -1851,15 +1872,17 @@
 																				.parse(JSON
 																						.stringify(result));
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
-																				+ bmobj
-																				+ '" target="_blank"> <h6 class="mb-0">'
-																				+ peoplename
-																				+ '</h6></a> <small class="text-muted">'
-																				+ phonenumber
-																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
-																				+ result
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+result+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		+ bmobj
+																		+ '" target="_blank"> <h6 class="mb-0">'
+																		+ peoplename
+																		+ '</h6></a> <small class="text-muted">'
+																		+ phonenumber
+																		+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
+																		+ result
+																		+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
+																		+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + result +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div>  </div> </div>';
+																
 																		$(
 																				'#contactpeopprojectdidv')
 																				.before(
@@ -1931,15 +1954,16 @@
 																			primarymob = bmobj.primarymob;
 																		}
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
-																				+ bmobj.id
-																				+ '" target="_blank"> <h6 class="mb-0">'
-																				+ bmobj.peoplename
-																				+ '</h6></a> <small class="text-muted">'
-																				+ primarymob
-																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
-																				+ bmobj.id
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+bmobj.id+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		+ bmobj.id
+																		+ '" target="_blank"> <h6 class="mb-0">'
+																		+ bmobj.peoplename
+																		+ '</h6></a> <small class="text-muted">'
+																		+ primarymob
+																		+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
+																		+ bmobj.id
+																		+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
+																		+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + bmobj.id +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div> </div> </div>';
 																		$(
 																				'#contactpeopprojectdidv')
 																				.before(
@@ -2055,7 +2079,42 @@
 					}
 				});
 			}
+			//------------------------------------------------------
+			function removecontactperson(elem) {
 
+				Swal.fire({
+		             title: 'Are you sure?',
+		             text: "You won't be able to revert this!",
+		             icon: 'warning',
+		             showCancelButton: true,
+		             confirmButtonText: 'Yes, delete it!',
+		             customClass: {
+		               confirmButton: 'btn btn-primary me-3',
+		               cancelButton: 'btn btn-label-secondary'
+		             },
+		             buttonsStyling: false
+		           }).then(function (result) {
+		             if (result.value) {
+								var formData = {
+									personid : elem.getAttribute("name"),
+									projectMasterID: $("#projectMasterID").val(),
+									module : "Project"
+								}
+								$.ajax({
+									type : "POST",
+									url : "unlinkcontactperson",
+									data : formData,
+									success : function(result) {
+									 $(".dcon"+elem.getAttribute("name")).remove();
+									},
+									error : function(e) {
+										console.log("Error" + e);
+									}
+								});
+								
+		             }
+					});
+			}
 			//------------------------------------------------------    
 			 // Date Format
 			   const flatpickrFriendly = document.querySelector('#expectedclosingdate');

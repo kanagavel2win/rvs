@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -5877,6 +5878,22 @@ public class HomeController {
 	}
 
 	@ResponseBody
+	@PostMapping("unlinkcontactperson")
+	public int  unlinkcontactperson(@RequestParam Map<String, String> params) {
+		//System.out.println(params);
+		if(params.get("module").equalsIgnoreCase("Project"))
+		{
+			 return projectMasterService.deleteContact(Integer.parseInt(params.get("personid")),Integer.parseInt(params.get("projectMasterID")));
+					
+		}else
+		{
+			return 0;
+		}
+		
+	}
+	
+	
+	@ResponseBody
 	@PostMapping("organizationupdatejson")
 	public OrganizationContacts organizationupdatejson(@RequestParam Map<String, String> params) {
 		int corgid = Integer.parseInt(params.get("OrganizationContactsID"));
@@ -6360,8 +6377,9 @@ public class HomeController {
 			}
 
 			try {
-				tmp1obj.setCreateddateMMddYYY(displaydateFormatFirstMMMddYYY
-						.format(displaydatetimeFormat.parse(tmp1obj.getCreateddate())).toString());
+				tmp1obj.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
+				
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -7511,7 +7529,6 @@ public class HomeController {
 	public ProjectMaster projectsavestage2(@RequestParam Map<String, String> params) {
 
 		ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(params.get("projectMasterID")));
-
 		projectMaster.setTitle(params.get("Title"));
 		projectMaster.setOrganization(params.get("Organization"));
 		projectMaster.setSource(params.get("Source"));
@@ -7526,6 +7543,15 @@ public class HomeController {
 		projectMaster.setLabel(params.get("label"));
 		projectMaster.setBoard(params.get("board"));
 
+	
+		projectMaster.setStatus( params.get("Status"));
+		projectMaster.setLabel(params.get("label"));
+		projectMaster.setTdate(params.get("tdate"));
+		projectMaster.setLocation( params.get("Location"));
+		projectMaster.setUNITS( params.get("UNITS"));
+		projectMaster.setNatureofWork( params.get("NatureofWork"));
+		projectMaster.setArea( params.get("Area"));
+		
 		List<ProjectFollowers> lfls = new ArrayList<>();
 
 		for (String str : params.get("followers").split(",")) {
@@ -7579,6 +7605,16 @@ public class HomeController {
 			try {
 				projectMaster.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(projectMaster.getStartdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		
+		if (!nullremover(String.valueOf(projectMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				projectMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(projectMaster.getTdate())).toString());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
@@ -7875,13 +7911,22 @@ public class HomeController {
 		String Source = params.get("Source");
 		String Reference = params.get("Reference");
 		String Pipeline = params.get("Pipeline");
-		String notes = params.get("notes");
+		String notes = "";
 		String followers = params.get("followers");
 		String phonenumber = params.get("phonenumber");
 		String Purpose = params.get("Purpose");
 		String startDate = params.get("startDate");
-		String board = params.get("board");
-
+		String board = "";
+		
+		String Status = params.get("Status");
+		String label = params.get("label");
+		String tdate = params.get("tdate");
+		String Location = params.get("Location");
+		String UNITS = params.get("UNITS");
+		String Area = params.get("Area");
+		String NatureofWork = params.get("NatureofWork");
+		
+		
 		int projectValue = 0;
 		if (!params.get("projectValue").equalsIgnoreCase("")) {
 			projectValue = Integer.parseInt(params.get("projectValue"));
@@ -8032,12 +8077,22 @@ public class HomeController {
 		projectMaster.setSource(Source);
 		projectMaster.setReference(Reference);
 		projectMaster.setPipeline(Pipeline);
-		projectMaster.setNotes(notes);
+		//projectMaster.setNotes(notes);
 		projectMaster.setPurpose(Purpose);
 		projectMaster.setBranch(branch);
 		projectMaster.setProjectvalue(projectValue);
 		projectMaster.setStartdate(startDate);
-		projectMaster.setBoard(board);
+		//projectMaster.setBoard(board);
+		
+		projectMaster.setStatus(Status);
+		projectMaster.setLabel(label);
+		projectMaster.setTdate(tdate);
+		projectMaster.setLocation(Location);
+		projectMaster.setUNITS(UNITS);
+		projectMaster.setNatureofWork(NatureofWork);
+		projectMaster.setArea(Area);
+		
+		
 		List<ProjectFollowers> lmlis = new ArrayList();
 		ProjectFollowers lfobj = new ProjectFollowers();
 		lmlis.add(new ProjectFollowers(0, Integer.parseInt(followers), "", ""));
@@ -8661,6 +8716,19 @@ public class HomeController {
 
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
+		
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		themodel.addAttribute("UNITS", UNITS);
+		
+		List<String> Label = itemlistService.findByFieldName("Label");
+		themodel.addAttribute("Label", Label);
+		
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		themodel.addAttribute("ProjectStatus", ProjectStatus);
+		
+		
 
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		themodel.addAttribute("PURPOSE", PURPOSE);
@@ -8906,6 +8974,17 @@ public class HomeController {
 			}
 		}
 		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				projectMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(projectMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		
+		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
 			projectMaster.setBoardName(
 					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
@@ -8948,6 +9027,15 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
+		
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+		
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+		
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("contactPeopleList",
@@ -9086,6 +9174,17 @@ public class HomeController {
 
 		List<String> Phase = itemlistService.findByFieldName("Phase");
 		theModel.addAttribute("Phase", Phase);
+		
+		
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+		
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+		
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+		
 
 		// theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("contactPeopleList",
@@ -9239,6 +9338,11 @@ public class HomeController {
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
 
+
+		
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+		
 		theModel.addAttribute("contactPeopleList",
 				contactPersonService.contactpersonlistbyorgname(projectMaster.getOrganization()));
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
@@ -9380,6 +9484,10 @@ public class HomeController {
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
+
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+		
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
 
@@ -10221,6 +10329,9 @@ public class HomeController {
 
 		List<String> Phase = itemlistService.findByFieldName("Phase");
 		theModel.addAttribute("Phase", Phase);
+		
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		return "projectpurchase";
 	}
@@ -10489,7 +10600,9 @@ public class HomeController {
 		theModel.addAttribute("Label", Label);
 		List<String> Phase = itemlistService.findByFieldName("Phase");
 		theModel.addAttribute("Phase", Phase);
-
+		
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
 		theModel.addAttribute("contactPeopleList",
 				contactPersonService.contactpersonlistbyorgname(projectMaster.getOrganization()));
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());

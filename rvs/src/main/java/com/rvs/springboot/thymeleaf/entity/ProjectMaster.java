@@ -60,6 +60,19 @@ public class ProjectMaster {
 	private String notes;
 	
 	@Column
+	private String status;	
+	@Column
+	private String tdate;
+	@Column
+	private String Location;
+	@Column
+	private String UNITS;
+	@Column
+	private String Area;
+	@Column
+	private String NatureofWork;
+	
+	@Column
 	int branch;
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -107,6 +120,12 @@ public class ProjectMaster {
 	@OrderBy("prjExpenseid ASC")
 	private List<ProjectExpense> projectExpenseList;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "projectId")
+	@OrderBy("projectitemid ASC")
+	private List<ProjectItemMaster> projectItemMaster;
+	
+	
 	@Column
 	private String addressline1;
 	@Column 
@@ -133,10 +152,6 @@ public class ProjectMaster {
 	@Column
 	private int projectvalue;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "projectId")
-	@OrderBy("projectitemid ASC")
-	private List<ProjectItemMaster> projectItemMaster;
 	
 	
 	
@@ -161,6 +176,12 @@ public class ProjectMaster {
 	
 	@Transient
 	private String expectedstartdateMMddYYY;
+	
+	@Transient
+	private String tdateMMddYYY;
+	
+	@Transient
+	private String projecttotalvaluefromItem;
 	
 	@Transient
 	private String branchname;

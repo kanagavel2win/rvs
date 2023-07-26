@@ -18,4 +18,5 @@ public interface ProjectMasterService {
 	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id, String createddate);
 	public int deleteFiles(int id);
 	public int insertContact(int contactpersonid, int projectid);
+	public int deleteContact(int contactpersonid, int projectid);
 }

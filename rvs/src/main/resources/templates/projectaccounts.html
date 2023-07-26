@@ -217,61 +217,89 @@
 									<div class="card-body">
 										<div class="user-avatar-section">
 											<div class="d-flex align-items-center flex-column">
-												<img class="img-fluid rounded my-4"
-													th:src="@{/assets/img/logo/rvslogo1.png}" height="110"
-													width="110" alt="User avatar" />
+												<img class="img-fluid rounded my-1"
+													th:src="@{/assets/img/bg_rvs/Project.jpg}" alt="User avatar" />
 												<div class="user-info text-center">
 													<h5 class="mb-2" th:text="${projectMaster.Title}"
 														id="Lbl_Title"></h5>
-
+													<span class="badge bg-label-secondary" th:text="'Project ID : '+ ${projectMaster.id}"></span>
 												</div>
 											</div>
 										</div>
-										<div class="d-flex justify-content-around flex-wrap my-4 py-3">
+										<div class="d-flex justify-content-around flex-wrap my-4">
 											<div class="d-flex align-items-start me-4 mt-3 gap-3">
-												<span class="badge bg-label-primary p-2 rounded"><i
-													class="bx bx-check bx-sm"></i></span>
-												<div>
-													<h5 class="mb-0">
-														Rs.<span th:text="${projectMaster.projectvalue}"
-															id="Lbl_projectvalue"></span>
-													</h5>
-													<span>Project Value</span>
-												</div>
-											</div>
+					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-rupee bx-sm"></i></span>
+					                          <div>
+					                           <h6 class="mb-0">
+													Rs.<span th:text="${projectMaster.projectvalue}"
+														id="Lbl_projectvaluetotal"></span>
+												</h6>
+					                           <span>Project Value</span>
+					                          </div>
+					                        </div>
+					                        <div class="d-flex align-items-start mt-3 gap-3">
+					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-stats bx-sm"></i></span>
+					                          <div>
+					                           		<h6 class="mb-0">
+														<span th:text="${projectMaster.status}"
+															id="Lbl_Status"></span>
+													</h6>
+													<span>Project Status</span>
+					                          </div>
+					                        </div>
+											
+											
 
 										</div>
-										<h5 class="pb-2 border-bottom mb-4">
-											Details <input type="hidden" name="mastercategoryid"
-												id="mastercategoryid" />
-										</h5>
+										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
-
-												<li class="mb-3"><span class="fw-bold me-2">Phase:</span>
-													<span th:text="${projectMaster.pipeline}" id="Lbl_pipeline"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Phase:
+												</span> <span th:text="${projectMaster.pipeline}" id="Lbl_pipeline"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
 													<span th:text="${projectMaster.label}" id="Lbl_label"></span></li>
-
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${projectMaster.OrganizationName}"
-													id="Lbl_organization"></span></li>
+													id="Lbl_organization"></span>
+													<hr/>
+													</li>
+												
+												<li class="mb-3"><span class="fw-bold me-2">Nature Of Work:</span>
+													<span th:text="${projectMaster.NatureofWork}" id="Lbl_NatureofWork"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Area:</span>
+													<span th:text="${projectMaster.Area}" id="Lbl_Area"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Unit:</span>
+													<span th:text="${projectMaster.UNITS}" id="Lbl_UNITS"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Location:</span>
+													<span th:text="${projectMaster.Location}" id="Lbl_Location"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">T.Date:</span>
+													<span th:text="${projectMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">T.Estimate:</span>
+													<span th:text="${projectMaster.purpose}" id="Lbl_projectvalue"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${projectMaster.purpose}" id="Lbl_purpose"></span>
 												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Board:</span>
-													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
-												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
-													<span th:text="${projectMaster.branchname}"
-													id="Lbl_branchname"></span></li>
+												
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${projectMaster.Source}" id="Lbl_Source"></span>
 												</li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
 													<span th:text="${projectMaster.ReferenceName}"
-													id="Lbl_Reference"></span></li>
+													id="Lbl_Reference"></span><hr/></li>
+													
+												<li class="mb-3"><span class="fw-bold me-2">Board:</span>
+													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
+													<span th:text="${projectMaster.branchname}"
+													id="Lbl_branchname"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
 													<span th:text="${projectMaster.notes}" id="Lbl_notes"></span>
 												</li>
@@ -795,6 +823,7 @@
 							
 							
 							<!--/ Edit User Modal -->
+							
 							<!-- Edit User Modal -->
 							<div class="modal fade" id="editprojectMasterdetails"
 								tabindex="-1" aria-hidden="true">
@@ -841,11 +870,12 @@
 															follower.</div>
 													</div>
 												</div>
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="board">Board</label>
 													<div>
 														<select class="form-control" id="board"
-															th:field="*{board}" required>
+															th:field="*{board}">
 															<option value="">-</option>
 															<th:block th:each="str :${board}">
 																<option th:value="${str.id}" th:text="${str.boardName}"></option>
@@ -853,20 +883,87 @@
 														</select>
 													</div>
 												</div>
+												<hr/>
+												
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="Source">SOURCE <label
-														class="emptitle additem" name="addsourcedata"><i
-															class="bx bxs-plus-circle ownstyle1"></i></label></label>
+													<label class="form-label" for="NatureofWork">Nature Of Work</label>
 													<div>
-														<select class="form-control  addsourcedata" id="Source"
-															th:field="*{Source}"
-															th:value="${projectMaster['Source']}">
-															<th:block th:each="str :${SOURCE}">
+														<select class="form-control" id="NatureofWork"
+															th:field="*{NatureofWork}"
+															th:value="${projectMaster['NatureofWork']}">
+															<th:block th:each="str :${NATUREOFWORK}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
 														</select>
 													</div>
 
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Area">Area</label>
+													<div>
+														<input type="number" id="Area"
+															th:field="*{Area}"
+															class="form-control  capitalize"
+															th:value="${projectMaster['Area']}">
+													</div>
+
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="NatureofWork">Unit</label>
+													<div>
+														<select class="form-control" id="UNITS"
+															th:field="*{UNITS}"
+															th:value="${projectMaster['UNITS']}">
+															<th:block th:each="str :${UNITS}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Location">Location</label>
+													<div>
+														<input type="text" id="Location"
+															th:field="*{Location}"
+															class="form-control  capitalize"
+															th:value="${projectMaster['Location']}">
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="tdate">T.Date</label>
+													<div>
+														<input type="text" id="tdate"
+															th:field="*{tdate}"
+															th:value="${projectMaster['tdate']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Source">T.Estimate</label>
+													<div>
+														<input type="number" id="projectvalue"
+															th:field="*{projectvalue}"
+															class="form-control  capitalize"
+															th:value="${projectMaster['projectvalue']}">
+													</div>
+
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="pipeline">Phase </label>
+													<div>
+														<select class="form-control" id="pipeline"
+															th:field="*{pipeline}"
+															th:value="${projectMaster['pipeline']}">
+															<th:block th:each="str :${Phase}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="purpose">PURPOSE <label
@@ -884,15 +981,21 @@
 
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="Source">VALUE</label>
+													<label class="form-label" for="Source">SOURCE <label
+														class="emptitle additem" name="addsourcedata"><i
+															class="bx bxs-plus-circle ownstyle1"></i></label></label>
 													<div>
-														<input type="number" id="projectvalue"
-															th:field="*{projectvalue}"
-															class="form-control  capitalize"
-															th:value="${projectMaster['projectvalue']}">
+														<select class="form-control  addsourcedata" id="Source"
+															th:field="*{Source}"
+															th:value="${projectMaster['Source']}">
+															<th:block th:each="str :${SOURCE}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
 													</div>
 
 												</div>
+												
 												<div class="col-12 col-md-6 Referencediv">
 													<label class="form-label" for="Reference">REFERENCE</label>
 													<div>
@@ -908,20 +1011,8 @@
 													</div>
 
 												</div>
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="pipeline">Phase </label>
-													<div>
-														<select class="form-control" id="pipeline"
-															th:field="*{pipeline}"
-															th:value="${projectMaster['pipeline']}">
-															<th:block th:each="str :${Phase}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-														</select>
-													</div>
-												</div>
-
+												<hr/>
+												
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="label">LABEL </label>
 													<div>
@@ -934,7 +1025,6 @@
 														</select>
 													</div>
 												</div>
-
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="phonenumber">BRANCH</label>
 													<div>
@@ -967,6 +1057,19 @@
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
+													<label class="form-label" for="Status">Status</label>
+													<div>
+														<select class="form-control" id="Status"
+															th:field="*{Status}"
+															th:value="${projectMaster['Status']}">
+															<th:block th:each="str :${ProjectStatus}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
 													<label class="form-label" for="notes">NOTES</label>
 													<div>
 
@@ -976,11 +1079,12 @@
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="startdate">Expected
+													<label class="form-label" for="startdateX1">Expected
 														Start Date</label>
 													<div>
 
-														<input type="text" id="startdate" th:field="*{startdate}"
+														<input type="text" id="startdateX1"
+															th:field="*{startdate}"
 															th:value="${projectMaster['startdate']}"
 															class="form-control  capitalize">
 													</div>
@@ -1481,7 +1585,7 @@
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
-																		//console.log(bmobj);
+																		console.log(bmobj);
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
@@ -1495,6 +1599,14 @@
 																			$("#Lbl_expectedstartdate").text(bmobj.expectedstartdateMMddYYY);
 																			$("#Lbl_label").text(bmobj.label);	
 																			$("#Lbl_board").text(bmobj.boardName);	
+																			
+																			$("#Lbl_Status").text(bmobj.status);	
+																			$("#Lbl_NatureofWork").text(bmobj.natureofWork);	
+																			$("#Lbl_Area").text(bmobj.area);	
+																			$("#Lbl_UNITS").text(bmobj.units);	
+																			$("#Lbl_Location").text(bmobj.location);	
+																			$("#Lbl_tdate").text(bmobj.tdateMMddYYY);	
+																			
 																			
 																			$name ="";
 																			

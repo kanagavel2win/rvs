@@ -5,6 +5,8 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,6 +17,7 @@ import com.rvs.springboot.thymeleaf.dao.ProjectMasterRepository;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
 
 @Service
+@Transactional
 public class ProjectMasterImp implements ProjectMasterService {
 
 	@Autowired
@@ -138,6 +141,13 @@ public class ProjectMasterImp implements ProjectMasterService {
 		}, keyHolder);
 
 		return keyHolder.getKey().intValue();
+	}
+
+	@Override
+	public int deleteContact(int contactpersonid, int projectid) {
+		String sql ="DELETE FROM `project_contact` WHERE  contact_person=" +contactpersonid + " and id="+ projectid ;
+		//System.out.println(sql);
+		return JdbcTemplate.update(sql);
 	}
 	
 	

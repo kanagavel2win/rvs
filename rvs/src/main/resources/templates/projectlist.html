@@ -199,7 +199,7 @@
 											<th>Purpose</th>
 											<th>Branch</th>
 											<th>Value</th>
-											<th>Created on</th>
+											<th>Start on</th>
 
 										</tr>
 									</thead>
@@ -287,6 +287,71 @@
 											</select>
 										</div>
 									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Purpose">Nature of Work</label>
+										<div>
+											
+											<select class="form-control" id="NatureofWork"
+												name="NatureofWork">
+												<option value="">-</option>
+												<th:block th:each="str :${NATUREOFWORK}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Area">Area</label>
+										<div>
+											<input type="number" id="Area" name="Area"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Purpose">Unit</label>
+										<div>
+											
+											<select class="form-control" id="UNITS"
+												name="UNITS">
+												<th:block th:each="str :${UNITS}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Location">Location</label>
+										<div>
+											<input type="text" id="Location" name="Location"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="tdate">T Date</label>
+										<div>
+											<input type="text" id="tdate" name="tdate"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="projectValue">T. Estimate</label>
+										<div>
+											<input type="number" id="projectValue" name="projectValue"
+												class="form-control  capitalize" >
+
+										</div>
+
+									</div>
 									
 									<div class="col-sm-12">
 										<label class="form-label" for="Purpose">PURPOSE<label
@@ -305,15 +370,7 @@
 
 									</div>
 									
-									<div class="col-sm-12">
-										<label class="form-label" for="projectValue">Project Value</label>
-										<div>
-											<input type="number" id="projectValue" name="projectValue"
-												class="form-control  capitalize" >
-
-										</div>
-
-									</div>
+									 	
 									<div class="col-sm-12">
 										<label class="form-label" for="Source">SOURCE <label
 											class="emptitle additem" name="addsourcedata"><i
@@ -343,7 +400,19 @@
 
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="phonenumber">BRANCH</label>
+										<label class="form-label" for="label">Label</label>
+										<div>
+											<select class="form-select  form-control "
+												id="label" name="label" required>
+												<th:block th:each="str :${Label}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="branch">BRANCH</label>
 										<div>
 											<select class="form-select  form-control "
 												id="branch" name="branch" required>
@@ -370,26 +439,16 @@
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="notes">NOTES</label>
+										<label class="form-label" for="Status">Status</label>
 										<div>
-
-											<input type="text" id="notes" name="notes"
-												class="form-control  capitalize">
-										</div>
-									</div>
-									<div class="col-sm-12">
-										<label class="form-label" for="board">Board</label>
-										<div>
-											
-											<select class="form-control  addboarddata" id="board"
-												name="board" >
+											<select class="form-control " id="Status"
+												name="Status" >
 												<option value="">-</option>
 												</th:block>
-												<th:block th:each="str :${board}">
-													<option th:value="${str.id}" th:text="${str.boardName}"></option>
+												<th:block th:each="str :${ProjectStatus}">
+													<option th:value="${str}" th:text="${str}"></option>
 												</th:block>
 											</select>
-
 										</div>
 
 									</div>
@@ -689,7 +748,7 @@
 			        { data: 'purpose' },	
 			        { data: 'branchname' },
 			        { data: 'projectvalue' },			        
-			        { data: 'createddateMMddYYY' },
+			        { data: 'expectedstartdateMMddYYY' },
 			      
 			      ],
 			      columnDefs: [
@@ -763,8 +822,8 @@
 				           render: function(data, type, full, meta) {
 				           	 $projectFollowerslist = full['projectFollowers'];
 				           	 
-				           	 var $row_output='<table class="innertablefollowers"><tr>';
-				          		$row_output += '<td> <ul class="list-unstyled m-0 d-flex align-items-center avatar-group my-3">';
+				           	 var $row_output='';
+				          		$row_output += ' <ul class="list-unstyled m-0 d-flex align-items-center avatar-group ">';
 				          		
 				          		
 				          		
@@ -799,9 +858,7 @@
 					                '<a href="emp?id='+ $empMasterid +'">'+ $output + '</a></li>';
 				           	 });
 				           	 
-				           	
-				           	$row_output += '</td>';
-				           	 return $row_output+ "</tr></table>";
+				           	 return $row_output;
 				           }
 				         },{
 					           targets:9,
@@ -924,12 +981,20 @@
 			   var Reference= $("#Reference").val();
 			   var Purpose= $("#Purpose").val();
 			   var pipeline= $("#pipeline").val();
-			   var notes= $("#notes").val();
+			   //var notes= $("#notes").val();
 			   var followers= $("#followers").val();
 			   var phonenumber= $("#phonenumber").val(); 
 			   var branch=$("#branch").val(); 
 			   var projectValue=$("#projectValue").val();
-			   var board=$("#board").val();
+			  // var board=$("#board").val();
+			   
+			   var Status=$('#Status').val();
+			   var label=$('#label').val();
+			   var tdate=$('#tdate').val();
+			   var Location=$('#Location').val();
+			   var UNITS=$('#UNITS').val();
+			   var Area=$('#Area').val();
+			   var NatureofWork=$('#NatureofWork').val();
 			   
 			   var formData = {
 					   ContactPerson: String(ContactPersonTagify),
@@ -938,14 +1003,19 @@
 					   Source : Source,
 					   Reference:Reference,
 					   Pipeline : pipeline,
-					   notes : notes,
 					   followers : followers,
 					   phonenumber : phonenumber,
 					   branch:branch,
 					   Purpose:Purpose,
 					   projectValue: projectValue,
 					   startDate: startDate,
-					   board: board
+					   Status:Status,
+					   label:label,
+					   tdate:tdate,
+					   Location:Location,
+					   UNITS:UNITS,
+					   Area:Area,
+					   NatureofWork:NatureofWork
 				 }
 			   
 			   
@@ -955,8 +1025,8 @@
 					validationformreset();
 					 Swal.fire({
 				        title: 'Congratulations!',
-				        text: 'New Project is Added Successfully',
-				        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+				        text: 'Now Write A New Success Story',
+				        imageUrl: assetsPath + 'img/bg_rvs/New Project Added.jpg',
 				        imageWidth: 400,
 				        imageAlt: 'Custom image',
 				        confirmButtonText: 'Ok',
@@ -1065,6 +1135,16 @@
 			      dateFormat: 'Y-m-d'
 			    });
 			  }
+			 
+			  const flatpickrFriendlyx = document.querySelector('#tdate');
+				 // Human Friendly
+				  if (flatpickrFriendlyx) {
+				    flatpickrFriendlyx.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
 			//------------------------------------------------------ 
 	    
     </script>

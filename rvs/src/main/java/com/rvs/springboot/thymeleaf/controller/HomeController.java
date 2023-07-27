@@ -6279,18 +6279,21 @@ public class HomeController {
 				}
 			}
 
-			try {
-				tmp1obj.setCreateddateMMddYYY(displaydateFormatFirstMMMddYYY
-						.format(displaydatetimeFormat.parse(tmp1obj.getCreateddate())).toString());
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if (!nullremover(String.valueOf(tmp1obj.getLeadDate())).equalsIgnoreCase("")) {
+				
+				try {
+					tmp1obj.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(tmp1obj.getLeadDate())).toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 			}
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			leadmasterls.add(tmp1obj);
 
 		}
-		return leadmasterls;
+		return leadmasterls.stream().sorted(Comparator.comparing(LeadMaster :: getId).reversed()).toList();
 	}
 
 	@ResponseBody
@@ -6327,18 +6330,21 @@ public class HomeController {
 				}
 			}
 
-			try {
-				tmp1obj.setCreateddateMMddYYY(displaydateFormatFirstMMMddYYY
-						.format(displaydatetimeFormat.parse(tmp1obj.getCreateddate())).toString());
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if (!nullremover(String.valueOf(tmp1obj.getDealDate())).equalsIgnoreCase("")) {
+				
+				try {
+					tmp1obj.setDealdateMMddYYY(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(tmp1obj.getDealDate())).toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 			}
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			dealmasterls.add(tmp1obj);
 
 		}
-		return dealmasterls;
+		return dealmasterls.stream().sorted(Comparator.comparing(DealMaster :: getId).reversed()).toList();
 	}
 
 	@ResponseBody
@@ -6451,6 +6457,14 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", bmlist);
+		
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		themodel.addAttribute("UNITS", UNITS);
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		themodel.addAttribute("ProjectStatus", ProjectStatus);
+		
 
 		return "leadlist";
 	}
@@ -6485,6 +6499,8 @@ public class HomeController {
 
 			leadfolloersls.add(lf);
 		}
+		
+		
 		followerids = followerids.substring(0, followerids.length() - 1);
 		leadMaster.setLeadfollowerids(followerids);
 
@@ -6500,7 +6516,29 @@ public class HomeController {
 			leadMaster.setBranchname(bm.getBRANCH_NAME());
 		}
 
+
 		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(leadMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				leadMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(leadMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+				if (!nullremover(String.valueOf(leadMaster.getLeadDate())).equalsIgnoreCase("")) {
+					try {
+						leadMaster.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
+								.format(displaydateFormatrev.parse(leadMaster.getLeadDate())).toString());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						// e.printStackTrace();
+					}
+				}
+		// ----------------------------------------------------------
+		
 		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
 
 		for (LeadContact lc : leadMaster.getLeadContact()) {
@@ -6549,6 +6587,12 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
+		
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("contactPeopleList",
@@ -6621,6 +6665,27 @@ public class HomeController {
 			cplist.add(cp);
 
 		}
+
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getDealDate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setDealdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getDealDate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(dealMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
 			try {
@@ -6663,6 +6728,12 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
+		
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("contactPeopleList",
@@ -7649,6 +7720,15 @@ public class HomeController {
 			leadValue = Integer.parseInt(params.get("leadValue"));
 		}
 
+		String Status = params.get("Status");
+		String leadDate = params.get("leadDate");
+		String tdate = params.get("tdate");
+		String Location = params.get("Location");
+		String UNITS = params.get("UNITS");
+		String Area = params.get("Area");
+		String NatureofWork = params.get("NatureofWork");
+		
+		
 		int branch = Integer.parseInt(params.get("branch"));
 		// ---------------------------------------
 		ContactPerson cp = new ContactPerson();
@@ -7748,6 +7828,16 @@ public class HomeController {
 		leadMaster.setPurpose(Purpose);
 		leadMaster.setBranch(branch);
 		leadMaster.setLeadvalue(leadValue);
+		
+		leadMaster.setStatus(Status);
+		leadMaster.setLeadDate(leadDate);
+		leadMaster.setTdate(tdate);
+		leadMaster.setLocation(Location);
+		leadMaster.setUNITS(UNITS);
+		leadMaster.setNatureofWork(NatureofWork);
+		leadMaster.setArea(Area);
+		
+		
 		List<LeadFollowers> lmlis = new ArrayList();
 		LeadFollowers lfobj = new LeadFollowers();
 		lmlis.add(new LeadFollowers(0, Integer.parseInt(followers), "", ""));
@@ -7778,6 +7868,19 @@ public class HomeController {
 		String followers = params.get("followers");
 		String phonenumber = params.get("phonenumber");
 		String Purpose = params.get("Purpose");
+		
+		String Status = params.get("Status");
+		String dealDate = params.get("dealDate");
+		String label = params.get("label");
+		String tdate = params.get("tdate");
+		String Location = params.get("Location");
+		String UNITS = params.get("UNITS");
+		String Area = params.get("Area");
+		String NatureofWork = params.get("NatureofWork");
+		
+		
+		
+		
 		int dealValue = 0;
 		if (!params.get("dealValue").equalsIgnoreCase("")) {
 			dealValue = Integer.parseInt(params.get("dealValue"));
@@ -7885,6 +7988,17 @@ public class HomeController {
 		dealMaster.setPurpose(Purpose);
 		dealMaster.setBranch(branch);
 		dealMaster.setDealvalue(dealValue);
+		
+		dealMaster.setDealDate(dealDate);
+		dealMaster.setStatus(Status);
+		dealMaster.setLabel(label);
+		dealMaster.setTdate(tdate);
+		dealMaster.setLocation(Location);
+		dealMaster.setUNITS(UNITS);
+		dealMaster.setNatureofWork(NatureofWork);
+		dealMaster.setArea(Area);
+		
+		
 		List<DealFollowers> lmlis = new ArrayList();
 		DealFollowers lfobj = new DealFollowers();
 		lmlis.add(new DealFollowers(0, Integer.parseInt(followers), "", ""));
@@ -8693,6 +8807,14 @@ public class HomeController {
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", bmlist);
 
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		themodel.addAttribute("UNITS", UNITS);
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		themodel.addAttribute("ProjectStatus", ProjectStatus);
+		
+		
 		return "deallist";
 	}
 
@@ -8721,12 +8843,13 @@ public class HomeController {
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		themodel.addAttribute("ProjectStatus", ProjectStatus);
 		
 		List<String> Label = itemlistService.findByFieldName("Label");
 		themodel.addAttribute("Label", Label);
 		
-		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
-		themodel.addAttribute("ProjectStatus", ProjectStatus);
+		
 		
 		
 

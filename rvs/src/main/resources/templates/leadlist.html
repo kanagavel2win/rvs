@@ -192,14 +192,14 @@
 											<th></th>
 											<th>id</th>
 											<th>Title</th>
-											<th>Next Activity</th>
-											<th>Relational Manager</th>
+											<th>Activity</th>
+											<th>RM</th>
 											<th>Label</th>
 											<th>Source</th>
 											<th>Purpose</th>
 											<th>Branch</th>
 											<th>Value</th>
-											<th>Created on</th>
+											<th>Lead In</th>
 
 										</tr>
 									</thead>
@@ -250,10 +250,93 @@
 
 									</div>
 									<div class="col-sm-12">
+										<label class="form-label" for="phonenumber">WORK PHONE</label>
+										<div>
+											<input type="text" id="phonenumber"
+												class="form-control phone-number-otp-mask"
+												name="phonenumber" required />
+
+
+										</div>
+									</div>
+									<div class="col-sm-12">
 										<label class="form-label" for="Title">TITLE</label>
 										<div>
 											<input type="text" id="Title" name="Title"
 												class="form-control  capitalize" required>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="startDate">Lead Date</label>
+										<div>
+											<input type="text" id="leadDate" name="leadDate"
+												class="form-control "  required="required">
+
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Purpose">Nature of Work</label>
+										<div>
+											
+											<select class="form-control" id="NatureofWork"
+												name="NatureofWork">
+												<option value="">-</option>
+												<th:block th:each="str :${NATUREOFWORK}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Area">Area</label>
+										<div>
+											<input type="number" id="Area" name="Area"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Purpose">Unit</label>
+										<div>
+											
+											<select class="form-control" id="UNITS"
+												name="UNITS">
+												<th:block th:each="str :${UNITS}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Location">Location</label>
+										<div>
+											<input type="text" id="Location" name="Location"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="tdate">T Date</label>
+										<div>
+											<input type="text" id="tdate" name="tdate"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="leadValue">T. Estimate</label>
+										<div>
+											<input type="number" id="leadValue" name="leadValue"
+												class="form-control  capitalize" >
 
 										</div>
 
@@ -274,15 +357,7 @@
 										</div>
 
 									</div>
-									<div class="col-sm-12">
-										<label class="form-label" for="leadValue">Lead Value</label>
-										<div>
-											<input type="number" id="leadValue" name="leadValue"
-												class="form-control  capitalize" >
-
-										</div>
-
-									</div>
+									
 									<div class="col-sm-12">
 										<label class="form-label" for="Source">SOURCE <label
 											class="emptitle additem" name="addsourcedata"><i
@@ -322,16 +397,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-12">
-										<label class="form-label" for="phonenumber">WORK PHONE</label>
-										<div>
-											<input type="text" id="phonenumber"
-												class="form-control phone-number-otp-mask"
-												name="phonenumber" required />
-
-
-										</div>
-									</div>
+									
 									<div class="col-sm-12">
 										<label class="form-label" for="phonenumber">BRANCH</label>
 										<div>
@@ -346,7 +412,7 @@
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="followers">Relational Manager</label>
+										<label class="form-label" for="followers">Followers</label>
 										<div>
 											<select class="form-select followers form-control "
 												id="followers" name="followers" required>
@@ -360,14 +426,19 @@
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="notes">NOTES</label>
+										<label class="form-label" for="Status">Status</label>
 										<div>
-
-											<input type="text" id="notes" name="notes"
-												class="form-control  capitalize">
+											<select class="form-control " id="Status"
+												name="Status" >
+												<option value="">-</option>
+												</th:block>
+												<th:block th:each="str :${ProjectStatus}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
 										</div>
-									</div>
 
+									</div>
 
 
 
@@ -666,7 +737,7 @@
 			        { data: 'purpose' },	
 			        { data: 'branchname' },
 			        { data: 'leadvalue' },			        
-			        { data: 'createddateMMddYYY' },
+			        { data: 'leaddateMMddYYY' },
 			      
 			      ],
 			      columnDefs: [
@@ -739,14 +810,13 @@
 				           targets:5,
 				           render: function(data, type, full, meta) {
 				           	 $leadFollowerslist = full['leadFollowers'];
-				           	 
-				           	 var $row_output='<table class="innertablefollowers"><tr>';
 				           
+				           	 var $row_output = ' <ul class="list-unstyled m-0 d-flex align-items-center avatar-group ">';
+			          		
 				           	 $leadFollowerslist.forEach((element, index, array) =>
 				           	 {
 				           		
-				           		$row_output += '<td>';
-				           	
+				           		
 				           		 var $user_img = element.followerimg ,
 				                $name = element.followername;
 				                $empMasterid=element.empid;
@@ -766,19 +836,14 @@
 				                $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
 				              }
 				              // Creates full output for row
+				              
 				               $row_output +=
-				                '<a href="emp?id='+ $empMasterid +'"><div class="d-flex justify-content-start align-items-center">' +
-				                '<div class="avatar-wrapper">' +
-				                '<div class="avatar me-2 tooltipx">' +
-				                $output + "<span class='tooltiptextx'>" + $name + "</span>"+
-				                '</div>' +
-				                '</div>' +
-				                
-				                '</div></a></td>';
+					                '<li data-bs-toggle="tooltip"  data-popup="tooltip-custom"  data-bs-placement="top" title="' + $name + '"  class="avatar pull-up" >'+
+					                '<div class="avatar me-2 tooltipx"><a href="emp?id='+ $empMasterid +'">'+ $output + '</a><span class="tooltiptextx">' + $name + '</span></div></li>';
 				           	
 				           	 });
 				           	
-				           	 return $row_output+ "</tr></table>";
+				           	 return $row_output;
 				           }
 				         },{
 					           targets:9,
@@ -906,6 +971,14 @@
 			   var branch=$("#branch").val(); 
 			   var leadValue=$("#leadValue").val();
 			   
+			   var Status=$('#Status').val();
+			   var leadDate=$('#leadDate').val();
+			   var tdate=$('#tdate').val();
+			   var Location=$('#Location').val();
+			   var UNITS=$('#UNITS').val();
+			   var Area=$('#Area').val();
+			   var NatureofWork=$('#NatureofWork').val();
+			   
 			   var formData = {
 					   ContactPerson: String(ContactPersonTagify),
 					   Organization : String(Organization),
@@ -918,7 +991,14 @@
 					   phonenumber : phonenumber,
 					   branch:branch,
 					   Purpose:Purpose,
-					   leadValue: leadValue
+					   leadValue: leadValue,
+					   Status:Status,
+					   leadDate:leadDate,
+					   tdate:tdate,
+					   Location:Location,
+					   UNITS:UNITS,
+					   Area:Area,
+					   NatureofWork:NatureofWork
 				 }
 			   
 			   
@@ -1014,5 +1094,26 @@
 	      });
 	    }
 	     
-	    
+	    // Date Format
+		   const flatpickrFriendlyleadDate = document.querySelector('#leadDate');
+			 // Human Friendly
+			  if (flatpickrFriendlyleadDate) {
+			    flatpickrFriendlyleadDate.flatpickr({
+			      altInput: true,
+			      altFormat: 'F j, Y',
+			      dateFormat: 'Y-m-d'
+			    });
+			  }
+			 
+			  const flatpickrFriendlyx = document.querySelector('#tdate');
+				 // Human Friendly
+				  if (flatpickrFriendlyx) {
+				    flatpickrFriendlyx.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+			//------------------------------------------------------ 
+	       
     </script>

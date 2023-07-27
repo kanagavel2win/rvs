@@ -53,6 +53,23 @@ public class DealMaster {
 	
 	@Column
 	int branch;
+
+	@Column
+	private String Label;
+	@Column
+	private String dealDate;
+	@Column
+	private String status;	
+	@Column
+	private String tdate;
+	@Column
+	private String Location;
+	@Column
+	private String UNITS;
+	@Column
+	private String Area;
+	@Column
+	private String NatureofWork;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")
@@ -85,6 +102,7 @@ public class DealMaster {
 	@Column
 	private String lanlong;
 	
+	
 	@Column
 	private String createddate;
 	@Column
@@ -116,5 +134,8 @@ public class DealMaster {
 	private String branchname;
 	@Transient
 	private String dealfollowerids;
-	
+	@Transient
+	private String dealdateMMddYYY;
+	@Transient
+	private String tdateMMddYYY;
 }

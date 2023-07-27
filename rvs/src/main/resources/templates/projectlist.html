@@ -855,7 +855,7 @@
 				              
 				              $row_output +=
 					                '<li data-bs-toggle="tooltip"  data-popup="tooltip-custom"  data-bs-placement="top" title="' + $name + '"  class="avatar pull-up" >'+
-					                '<a href="emp?id='+ $empMasterid +'">'+ $output + '</a></li>';
+					                '<div class="avatar me-2 tooltipx"><a href="emp?id='+ $empMasterid +'">'+ $output + '</a><span class="tooltiptextx">' + $name + '</span></div></li>';
 				           	 });
 				           	 
 				           	 return $row_output;

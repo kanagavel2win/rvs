@@ -60,6 +60,22 @@ public class LeadMaster {
 	@Column
 	int branch;
 	
+	@Column
+	private String leadDate;	
+	@Column
+	private String status;	
+	@Column
+	private String tdate;
+	@Column
+	private String Location;
+	@Column
+	private String UNITS;
+	@Column
+	private String Area;
+	@Column
+	private String NatureofWork;
+	
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")
 	private List<LeadContact> leadContact;
@@ -77,6 +93,8 @@ public class LeadMaster {
 	private String nextactivity;
 	
 	
+	
+	
 	@Transient
 	private String OrganizationName;
 
@@ -87,10 +105,14 @@ public class LeadMaster {
 	private String ReferenceName;
 	@Transient
 	private String createddateMMddYYY;
-	
+	@Transient
+	private String leaddateMMddYYY;
 	@Transient
 	private String branchname;
 	
 	@Transient
 	private String leadfollowerids;
+	@Transient
+	private String tdateMMddYYY;
+	
 }

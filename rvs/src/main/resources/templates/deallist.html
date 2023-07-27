@@ -192,14 +192,14 @@
 											<th></th>
 											<th>id</th>
 											<th>Title</th>
-											<th>Next Activity</th>
-											<th>Relational Manager</th>
+											<th>Activity</th>
+											<th>RM</th>
 											<th>Pipeline</th>
 											<th>Source</th>
 											<th>Purpose</th>
 											<th>Branch</th>
 											<th>Value</th>
-											<th>Created on</th>
+											<th>Deal In</th>
 
 										</tr>
 									</thead>
@@ -250,10 +250,94 @@
 
 									</div>
 									<div class="col-sm-12">
+										<label class="form-label" for="phonenumber">WORK PHONE</label>
+										<div>
+											<input type="text" id="phonenumber"
+												class="form-control phone-number-otp-mask"
+												name="phonenumber" required />
+
+
+										</div>
+									</div>
+									<div class="col-sm-12">
 										<label class="form-label" for="Title">TITLE</label>
 										<div>
 											<input type="text" id="Title" name="Title"
 												class="form-control  capitalize" required>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="dealDate">Deal Date</label>
+										<div>
+											<input type="text" id="dealDate" name="dealDate"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Purpose">Nature of Work</label>
+										<div>
+											
+											<select class="form-control" id="NatureofWork"
+												name="NatureofWork">
+												<option value="">-</option>
+												<th:block th:each="str :${NATUREOFWORK}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Area">Area</label>
+										<div>
+											<input type="number" id="Area" name="Area"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Purpose">Unit</label>
+										<div>
+											
+											<select class="form-control" id="UNITS"
+												name="UNITS">
+												<th:block th:each="str :${UNITS}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="Location">Location</label>
+										<div>
+											<input type="text" id="Location" name="Location"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="tdate">T Date</label>
+										<div>
+											<input type="text" id="tdate" name="tdate"
+												class="form-control "  required="required">
+
+										</div>
+
+									</div>
+									<div class="col-sm-12">
+										<label class="form-label" for="dealValue">T. Estimate</label>
+										<div>
+											<input type="number" id="dealValue" name="dealValue"
+												class="form-control  capitalize" >
 
 										</div>
 
@@ -274,15 +358,7 @@
 										</div>
 
 									</div>
-									<div class="col-sm-12">
-										<label class="form-label" for="dealValue">Deal Value</label>
-										<div>
-											<input type="number" id="dealValue" name="dealValue"
-												class="form-control  capitalize" >
-
-										</div>
-
-									</div>
+									
 									<div class="col-sm-12">
 										<label class="form-label" for="Source">SOURCE <label
 											class="emptitle additem" name="addsourcedata"><i
@@ -326,13 +402,13 @@
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="phonenumber">WORK PHONE</label>
+										<label class="form-label" for="Label">LABEL </label>
 										<div>
-											<input type="text" id="phonenumber"
-												class="form-control phone-number-otp-mask"
-												name="phonenumber" required />
-
-
+											<select class="form-control " id="Label" name="Label">
+												<option value="Hot">Hot</option>
+												<option value="Cold">Cold</option>
+												<option value="Warm">Warm</option>
+											</select>
 										</div>
 									</div>
 									<div class="col-sm-12">
@@ -349,7 +425,7 @@
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="followers">Relational Manager</label>
+										<label class="form-label" for="followers">Followers</label>
 										<div>
 											<select class="form-select followers form-control "
 												id="followers" name="followers" required>
@@ -362,13 +438,20 @@
 											<div class="invalid-feedback">Please select follower.</div>
 										</div>
 									</div>
+									
 									<div class="col-sm-12">
-										<label class="form-label" for="notes">NOTES</label>
+										<label class="form-label" for="Status">Status</label>
 										<div>
-
-											<input type="text" id="notes" name="notes"
-												class="form-control  capitalize">
+											<select class="form-control " id="Status"
+												name="Status" >
+												<option value="">-</option>
+												</th:block>
+												<th:block th:each="str :${ProjectStatus}">
+													<option th:value="${str}" th:text="${str}"></option>
+												</th:block>
+											</select>
 										</div>
+
 									</div>
 
 
@@ -667,7 +750,7 @@
 			        { data: 'purpose' },	
 			        { data: 'branchname' },
 			        { data: 'dealvalue' },			        
-			        { data: 'createddateMMddYYY' },
+			        { data: 'dealdateMMddYYY' },
 			      
 			      ],
 			      columnDefs: [
@@ -741,13 +824,12 @@
 				           render: function(data, type, full, meta) {
 				           	 $dealFollowerslist = full['dealFollowers'];
 				           	 
-				           	 var $row_output='<table class="innertablefollowers"><tr>';
+				        	 var $row_output = ' <ul class="list-unstyled m-0 d-flex align-items-center avatar-group ">';
 				           
 				           	 $dealFollowerslist.forEach((element, index, array) =>
 				           	 {
 				           		
-				           		$row_output += '<td>';
-				           	
+				           		
 				           		 var $user_img = element.followerimg ,
 				                $name = element.followername;
 				                $empMasterid=element.empid;
@@ -767,19 +849,13 @@
 				                $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
 				              }
 				              // Creates full output for row
-				               $row_output +=
-				                '<a href="emp?id='+ $empMasterid +'"><div class="d-flex justify-content-start align-items-center">' +
-				                '<div class="avatar-wrapper">' +
-				                '<div class="avatar me-2 tooltipx">' +
-				                $output + "<span class='tooltiptextx'>" + $name + "</span>"+
-				                '</div>' +
-				                '</div>' +
-				                
-				                '</div></a></td>';
+				              $row_output +=
+					                '<li data-bs-toggle="tooltip"  data-popup="tooltip-custom"  data-bs-placement="top" title="' + $name + '"  class="avatar pull-up" >'+
+					                '<div class="avatar me-2 tooltipx"><a href="emp?id='+ $empMasterid +'">'+ $output + '</a><span class="tooltiptextx">' + $name + '</span></div></li>';
 				           	
 				           	 });
 				           	
-				           	 return $row_output+ "</tr></table>";
+				           	 return $row_output;
 				           }
 				         },{
 					           targets:9,
@@ -907,6 +983,14 @@
 			   var branch=$("#branch").val(); 
 			   var dealValue=$("#dealValue").val();
 			   
+			   var Status=$('#Status').val();
+			   var dealDate=$('#dealDate').val();
+			   var Label= $("#Label").val();
+			   var tdate=$('#tdate').val();
+			   var Location=$('#Location').val();
+			   var UNITS=$('#UNITS').val();
+			   var Area=$('#Area').val();
+			   var NatureofWork=$('#NatureofWork').val();
 			   
 			   var formData = {
 					   ContactPerson: String(ContactPersonTagify),
@@ -920,7 +1004,16 @@
 					   phonenumber : phonenumber,
 					   branch:branch,
 					   Purpose:Purpose,
-					   dealValue: dealValue
+					   dealValue: dealValue,
+					   
+					   Status:Status,
+					   dealDate:dealDate,
+					   tdate:tdate,
+					   Location:Location,
+					   UNITS:UNITS,
+					   Area:Area,
+					   NatureofWork:NatureofWork,
+					   Label:Label
 				 }
 			   
 			   
@@ -1016,6 +1109,27 @@
 	      });
 	    }
 	     
+	 // Date Format
+		   const flatpickrFriendlydealDate = document.querySelector('#dealDate');
+			 // Human Friendly
+			  if (flatpickrFriendlydealDate) {
+			    flatpickrFriendlydealDate.flatpickr({
+			      altInput: true,
+			      altFormat: 'F j, Y',
+			      dateFormat: 'Y-m-d'
+			    });
+			  }
+			 
+			  const flatpickrFriendlyx = document.querySelector('#tdate');
+				 // Human Friendly
+				  if (flatpickrFriendlyx) {
+				    flatpickrFriendlyx.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+			//------------------------------------------------------ 
 	    
     </script>
 		

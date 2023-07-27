@@ -196,8 +196,8 @@ cursor: pointer;
 										<div class="user-avatar-section">
 											<div class="d-flex align-items-center flex-column">
 												<img class="img-fluid rounded my-4"
-													th:src="@{/assets/img/logo/rvslogo1.png}" height="110"
-													width="110" alt="User avatar" />
+													th:src="@{/assets/img/bg_rvs/Deal.jpg}" height="210"
+													width="210" alt="User avatar" />
 												<div class="user-info text-center">
 													<h5 class="mb-2" th:text="${dealMaster.Title}"
 														id="Lbl_Title"></h5>
@@ -205,18 +205,30 @@ cursor: pointer;
 												</div>
 											</div>
 										</div>
-										<div class="d-flex justify-content-around flex-wrap my-4 py-3">
+									
+										<div class="d-flex justify-content-around flex-wrap my-4">
 											<div class="d-flex align-items-start me-4 mt-3 gap-3">
-												<span class="badge bg-label-primary p-2 rounded"><i
-													class="bx bx-check bx-sm"></i></span>
-												<div>
-													<h5 class="mb-0">
-														Rs.<span th:text="${dealMaster.dealvalue}"
+					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-rupee bx-sm"></i></span>
+					                          <div>
+					                           <h6 class="mb-0">
+													Rs.<span th:text="${dealMaster.dealvalue}"
 															id="Lbl_dealvalue"></span>
-													</h5>
-													<span>Deal Value</span>
-												</div>
-											</div>
+												</h6>
+					                           <span>Deal Value</span>
+					                          </div>
+					                        </div>
+					                        <div class="d-flex align-items-start mt-3 gap-3">
+					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-stats bx-sm"></i></span>
+					                          <div>
+					                           		<h6 class="mb-0">
+														<span th:text="${dealMaster.status}"
+															id="Lbl_Status"></span>
+													</h6>
+													<span>Status</span>
+					                          </div>
+					                        </div>
+											
+											
 
 										</div>
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
@@ -229,6 +241,27 @@ cursor: pointer;
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${dealMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Deal Date:</span>
+													<span th:text="${dealMaster.dealdateMMddYYY}" id="Lbl_dealdateMMddYYY"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Nature Of Work:</span>
+													<span th:text="${dealMaster.NatureofWork}" id="Lbl_NatureofWork"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Area:</span>
+													<span th:text="${dealMaster.Area}" id="Lbl_Area"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Unit:</span>
+													<span th:text="${dealMaster.UNITS}" id="Lbl_UNITS"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Location:</span>
+													<span th:text="${dealMaster.Location}" id="Lbl_Location"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">T.Date:</span>
+													<span th:text="${dealMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">T.Estimate:</span>
+													<span th:text="${dealMaster.purpose}" id="Lbl_projectvalue"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${dealMaster.purpose}" id="Lbl_purpose"></span>
 												</li>
@@ -654,6 +687,85 @@ cursor: pointer;
 														<div class="invalid-feedback">Please select
 															follower.</div>
 													</div>
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="dealDate">Deal Date</label>
+													<div>
+														<input type="text" id="dealDate"
+															th:field="*{dealDate}"
+															th:value="${dealMaster['dealDate']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												<hr/>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="NatureofWork">Nature Of Work</label>
+													<div>
+														<select class="form-control" id="NatureofWork"
+															th:field="*{NatureofWork}"
+															th:value="${dealMaster['NatureofWork']}">
+															<th:block th:each="str :${NATUREOFWORK}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Area">Area</label>
+													<div>
+														<input type="number" id="Area"
+															th:field="*{Area}"
+															class="form-control  capitalize"
+															th:value="${dealMaster['Area']}">
+													</div>
+
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="NatureofWork">Unit</label>
+													<div>
+														<select class="form-control" id="UNITS"
+															th:field="*{UNITS}"
+															th:value="${dealMaster['UNITS']}">
+															<th:block th:each="str :${UNITS}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Location">Location</label>
+													<div>
+														<input type="text" id="Location"
+															th:field="*{Location}"
+															class="form-control  capitalize"
+															th:value="${dealMaster['Location']}">
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="tdate">T.Date</label>
+													<div>
+														<input type="text" id="tdate"
+															th:field="*{tdate}"
+															th:value="${dealMaster['tdate']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Source">T.Estimate</label>
+													<div>
+														<input type="number" id="dealvalue"
+															th:field="*{dealvalue}"
+															class="form-control  capitalize"
+															th:value="${dealMaster['dealvalue']}">
+													</div>
+
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">SOURCE <label

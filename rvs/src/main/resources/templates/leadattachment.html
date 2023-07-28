@@ -87,6 +87,9 @@
 <script th:src="@{/assets/js/config.js}"></script>
 
 <style type="text/css">
+.dropdown{
+float:right;
+}
 .filecreateddate {
 	float: right;
 }
@@ -199,8 +202,8 @@
 										<div class="user-avatar-section">
 											<div class="d-flex align-items-center flex-column">
 												<img class="img-fluid rounded my-4"
-													th:src="@{/assets/img/logo/rvslogo1.png}" height="110"
-													width="110" alt="User avatar" />
+													th:src="@{/assets/img/bg_rvs/Lead.jpg}" height="210"
+													width="210" alt="User avatar" />
 												<div class="user-info text-center">
 													<h5 class="mb-2" th:text="${leadMaster.Title}"
 														id="Lbl_Title"></h5>
@@ -208,18 +211,30 @@
 												</div>
 											</div>
 										</div>
-										<div class="d-flex justify-content-around flex-wrap my-4 py-3">
+										
+										<div class="d-flex justify-content-around flex-wrap my-4">
 											<div class="d-flex align-items-start me-4 mt-3 gap-3">
-												<span class="badge bg-label-primary p-2 rounded"><i
-													class="bx bx-check bx-sm"></i></span>
-												<div>
-													<h5 class="mb-0">
-														Rs.<span th:text="${leadMaster.leadvalue}"
+					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-rupee bx-sm"></i></span>
+					                          <div>
+					                           <h6 class="mb-0">
+													Rs.<span th:text="${leadMaster.leadvalue}"
 															id="Lbl_leadvalue"></span>
-													</h5>
-													<span>Lead Value</span>
-												</div>
-											</div>
+												</h6>
+					                           <span>Lead Value</span>
+					                          </div>
+					                        </div>
+					                        <div class="d-flex align-items-start mt-3 gap-3">
+					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-stats bx-sm"></i></span>
+					                          <div>
+					                           		<h6 class="mb-0">
+														<span th:text="${leadMaster.status}"
+															id="Lbl_Status"></span>
+													</h6>
+													<span>Status</span>
+					                          </div>
+					                        </div>
+											
+											
 
 										</div>
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
@@ -238,6 +253,27 @@
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${leadMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Lead Date:</span>
+													<span th:text="${leadMaster.leaddateMMddYYY}" id="Lbl_leaddateMMddYYY"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Nature Of Work:</span>
+													<span th:text="${leadMaster.NatureofWork}" id="Lbl_NatureofWork"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Area:</span>
+													<span th:text="${leadMaster.Area}" id="Lbl_Area"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Unit:</span>
+													<span th:text="${leadMaster.UNITS}" id="Lbl_UNITS"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Location:</span>
+													<span th:text="${leadMaster.Location}" id="Lbl_Location"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">T.Date:</span>
+													<span th:text="${leadMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">T.Estimate:</span>
+													<span th:text="${leadMaster.purpose}" id="Lbl_projectvalue"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${leadMaster.purpose}" id="Lbl_purpose"></span>
 												</li>
@@ -254,6 +290,7 @@
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
 													<span th:text="${leadMaster.notes}" id="Lbl_notes"></span>
 												</li>
+												
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
 
 													<span id="Lbl_follower"> <span
@@ -293,8 +330,8 @@
 									</h5>
 									<div class="card-body">
 										<div class="d-flex mb-3" th:each="obj : ${cplist}">
-											<div class="flex-grow-1 row">
-												<div class="col-9 mb-sm-0 mb-2">
+											<div th:class="'flex-grow-1 row  dcon'+ ${obj.id} ">
+												<div class="col-6 mb-sm-0 mb-2">
 													<a th:href="'contactpersonview?id='+ ${obj.id}"
 														target="_blank">
 														<h6 class="mb-0" th:text="${obj.peoplename}"></h6>
@@ -312,6 +349,25 @@
 													</span> <span class="switch-label"></span>
 													</label>
 												</div>
+												<div class="col-3">
+													<div class="dropdown">
+									                        <button
+									                          class="btn p-0"
+									                          type="button"
+									                          id="salesReport"
+									                          data-bs-toggle="dropdown"
+									                          aria-haspopup="true"
+									                          aria-expanded="false"
+									                        >
+									                          <i class="bx bx-dots-vertical-rounded"></i>
+									                        </button>
+									                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">
+									                          <a class="dropdown-item" th:name="${obj.id}"
+														th:onclick="'removecontactperson(this)'">Unlink</a>
+									                          
+									                        </div>
+									                   </div>
+												 </div>
 											</div>
 										</div>
 
@@ -320,7 +376,7 @@
 									</div>
 								</div>
 								<!-- /Connected Accounts -->
-
+								
 							</div>
 							<!--/ User Sidebar -->
 
@@ -483,7 +539,7 @@
 								</div>
 							</div>
 							<!--/ Add Document -->
-							<!-- Edit User Modal -->
+								<!-- Edit User Modal -->
 							<div class="modal fade" id="editleadMasterdetails" tabindex="-1"
 								aria-hidden="true">
 								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
@@ -528,6 +584,84 @@
 														<div class="invalid-feedback">Please select
 															follower.</div>
 													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="leadDate">Lead Date</label>
+													<div>
+														<input type="text" id="leadDate"
+															th:field="*{leadDate}"
+															th:value="${leadMaster['leadDate']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												<hr/>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="NatureofWork">Nature Of Work</label>
+													<div>
+														<select class="form-control" id="NatureofWork"
+															th:field="*{NatureofWork}"
+															th:value="${leadMaster['NatureofWork']}">
+															<th:block th:each="str :${NATUREOFWORK}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Area">Area</label>
+													<div>
+														<input type="number" id="Area"
+															th:field="*{Area}"
+															class="form-control  capitalize"
+															th:value="${leadMaster['Area']}">
+													</div>
+
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="NatureofWork">Unit</label>
+													<div>
+														<select class="form-control" id="UNITS"
+															th:field="*{UNITS}"
+															th:value="${leadMaster['UNITS']}">
+															<th:block th:each="str :${UNITS}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Location">Location</label>
+													<div>
+														<input type="text" id="Location"
+															th:field="*{Location}"
+															class="form-control  capitalize"
+															th:value="${leadMaster['Location']}">
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="tdate">T.Date</label>
+													<div>
+														<input type="text" id="tdate"
+															th:field="*{tdate}"
+															th:value="${leadMaster['tdate']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Source">T.Estimate</label>
+													<div>
+														<input type="number" id="leadvalue"
+															th:field="*{leadvalue}"
+															class="form-control  capitalize"
+															th:value="${leadMaster['leadvalue']}">
+													</div>
+
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">SOURCE <label
@@ -626,6 +760,19 @@
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
+													<label class="form-label" for="Status">Status</label>
+													<div>
+														<select class="form-control" id="Status"
+															th:field="*{status}"
+															th:value="${leadMaster['status']}">
+															<th:block th:each="str :${ProjectStatus}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
 													<label class="form-label" for="notes">NOTES</label>
 													<div>
 
@@ -649,6 +796,7 @@
 								</div>
 							</div>
 							<!--/ Edit User Modal -->
+							
 							<!-- Edit People Modal -->
 							<div class="modal fade" id="addNewperson" tabindex="-1"
 								aria-hidden="true">
@@ -1025,6 +1173,13 @@
 																			$("#Lbl_purpose").text(bmobj.purpose);
 																			$("#Lbl_branchname").text(bmobj.branchname);
 																			
+																			$("#Lbl_Status").text(bmobj.status);	
+																			$("#Lbl_NatureofWork").text(bmobj.natureofWork);	
+																			$("#Lbl_Area").text(bmobj.area);	
+																			$("#Lbl_UNITS").text(bmobj.units);	
+																			$("#Lbl_Location").text(bmobj.location);	
+																			$("#Lbl_tdate").text(bmobj.tdateMMddYYY);	
+																			$("#Lbl_leaddateMMddYYY").text(bmobj.leaddateMMddYYY);	
 																			
 																			$name ="";
 																			
@@ -1258,7 +1413,8 @@
 																				.parse(JSON
 																						.stringify(result));
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+result+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
 																				+ bmobj
 																				+ '" target="_blank"> <h6 class="mb-0">'
 																				+ peoplename
@@ -1266,8 +1422,10 @@
 																				+ phonenumber
 																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
 																				+ result
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
-																		$(
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div>' 
+																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + result +'" 	onclick="removecontactperson(this)">Unlink</a>       </div> ';
+																			
+																				$(
 																				'#contactpeopleaddidv')
 																				.before(
 																						temphtml);
@@ -1338,16 +1496,17 @@
 																			primarymob = bmobj.primarymob;
 																		}
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
-																				+ bmobj.id
-																				+ '" target="_blank"> <h6 class="mb-0">'
-																				+ bmobj.peoplename
-																				+ '</h6></a> <small class="text-muted">'
-																				+ primarymob
-																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
-																				+ bmobj.id
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
-																		$(
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+bmobj.id+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		+ bmobj.id
+																		+ '" target="_blank"> <h6 class="mb-0">'
+																		+ bmobj.peoplename
+																		+ '</h6></a> <small class="text-muted">'
+																		+ primarymob
+																		+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
+																		+ bmobj.id
+																		+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
+																		+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + bmobj.id +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div> </div> </div>';
+																$(
 																				'#contactpeopleaddidv')
 																				.before(
 																						temphtml);
@@ -1395,6 +1554,42 @@
 						console.log("Error" + e);
 					}
 				});
+			}
+			//------------------------------------------------------
+			function removecontactperson(elem) {
+
+				Swal.fire({
+		             title: 'Are you sure?',
+		             text: "You won't be able to revert this!",
+		             icon: 'warning',
+		             showCancelButton: true,
+		             confirmButtonText: 'Yes, delete it!',
+		             customClass: {
+		               confirmButton: 'btn btn-primary me-3',
+		               cancelButton: 'btn btn-label-secondary'
+		             },
+		             buttonsStyling: false
+		           }).then(function (result) {
+		             if (result.value) {
+								var formData = {
+									personid : elem.getAttribute("name"),
+									leadMasterID: $("#leadMasterID").val(),
+									module : "Lead"
+								}
+								$.ajax({
+									type : "POST",
+									url : "unlinkcontactperson",
+									data : formData,
+									success : function(result) {
+									 $(".dcon"+elem.getAttribute("name")).remove();
+									},
+									error : function(e) {
+										console.log("Error" + e);
+									}
+								});
+								
+		             }
+					});
 			}
 
 			//------------------------------------------------------
@@ -1457,6 +1652,26 @@
 		      });
 		//------------------------------------------------------
 			
+			// Date Format
+			   const flatpickrFriendlyleadDate = document.querySelector('#leadDate');
+				 // Human Friendly
+				  if (flatpickrFriendlyleadDate) {
+				    flatpickrFriendlyleadDate.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+				 
+				  const flatpickrFriendlyx = document.querySelector('#tdate');
+					 // Human Friendly
+					  if (flatpickrFriendlyx) {
+					    flatpickrFriendlyx.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }
 		</script>
 </body>
 </html>

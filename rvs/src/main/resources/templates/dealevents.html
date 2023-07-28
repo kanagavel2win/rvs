@@ -87,6 +87,9 @@
 <script th:src="@{/assets/js/config.js}"></script>
 
 <style type="text/css">
+.dropdown{
+float:right;
+}
 .contacteditbtn {
 	cursor: pointer;
 }
@@ -234,6 +237,15 @@ cursor: pointer;
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
+											<li class="mb-3"><span class="fw-bold me-2">Label:</span>
+													<span id="Lbl_Label"> <span
+														th:if="${dealMaster.Label} =='Hot'"
+														class="badge bg-danger" th:text="${dealMaster.Label}"></span>
+														<span th:if="${dealMaster.Label} =='Warm'"
+														class="badge bg-warning" th:text="${dealMaster.Label}"></span>
+														<span th:if="${dealMaster.Label} =='Cold'"
+														class="badge bg-primary" th:text="${dealMaster.Label}"></span>
+												</span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Pipeline:</span>
 													<span th:text="${dealMaster.pipeline}"
 													id="Lbl_pipeline"></span></li>
@@ -320,8 +332,8 @@ cursor: pointer;
 									</h5>
 									<div class="card-body">
 										<div class="d-flex mb-3" th:each="obj : ${cplist}">
-											<div class="flex-grow-1 row">
-												<div class="col-9 mb-sm-0 mb-2">
+											<div th:class="'flex-grow-1 row dcon'+ ${obj.id} ">
+												<div class="col-6 mb-sm-0 mb-2">
 													<a th:href="'contactpersonview?id='+ ${obj.id}"
 														target="_blank">
 														<h6 class="mb-0" th:text="${obj.peoplename}"></h6>
@@ -339,6 +351,25 @@ cursor: pointer;
 													</span> <span class="switch-label"></span>
 													</label>
 												</div>
+												<div class="col-3">
+													<div class="dropdown">
+									                        <button
+									                          class="btn p-0"
+									                          type="button"
+									                          id="salesReport"
+									                          data-bs-toggle="dropdown"
+									                          aria-haspopup="true"
+									                          aria-expanded="false"
+									                        >
+									                          <i class="bx bx-dots-vertical-rounded"></i>
+									                        </button>
+									                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">
+									                          <a class="dropdown-item" th:name="${obj.id}"
+														th:onclick="'removecontactperson(this)'">Unlink</a>
+									                          
+									                        </div>
+									                   </div>
+												 </div>
 											</div>
 										</div>
 
@@ -819,7 +850,17 @@ cursor: pointer;
 													</div>
 
 												</div>
-
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Label">LABEL </label>
+													<div>
+														<select class="form-control " id="Label"
+															th:field="*{Label}" th:value="${dealMaster['Label']}">
+															<option value="Hot">Hot</option>
+															<option value="Cold">Cold</option>
+															<option value="Warm">Warm</option>
+														</select>
+													</div>
+												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="pipeline">PIPELINE </label>
 													<div>
@@ -864,6 +905,19 @@ cursor: pointer;
 														<div class="invalid-feedback">Please select
 															follower.</div>
 													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Status">Status</label>
+													<div>
+														<select class="form-control" id="Status"
+															th:field="*{status}"
+															th:value="${dealMaster['status']}">
+															<th:block th:each="str :${ProjectStatus}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="notes">NOTES</label>
@@ -1500,7 +1554,15 @@ cursor: pointer;
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
-																		//console.log(bmobj);
+																		console.log(bmobj);
+																			if (bmobj.label == "Hot") {
+																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
+																			} else if (bmobj.label == "Warm") {
+																				$('#Lbl_Label').html("<span class='badge bg-warning'>Warm</span>");
+																			} else {
+																				$('#Lbl_Label').html("<span class='badge bg-primary'>Cold</span>");
+																			}
+																		
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
@@ -1512,6 +1574,20 @@ cursor: pointer;
 																			$("#Lbl_branchname").text(bmobj.branchname);
 																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
 																			
+																			$('#Lbl_notes').text(bmobj.notes);
+																			$('#Lbl_Reference').text(bmobj.referencename);
+																			$("#Lbl_organization").text(bmobj.organizationName);
+																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
+																			$("#Lbl_purpose").text(bmobj.purpose);
+																			$("#Lbl_branchname").text(bmobj.branchname);
+																			
+																			$("#Lbl_Status").text(bmobj.status);	
+																			$("#Lbl_NatureofWork").text(bmobj.natureofWork);	
+																			$("#Lbl_Area").text(bmobj.area);	
+																			$("#Lbl_UNITS").text(bmobj.units);	
+																			$("#Lbl_Location").text(bmobj.location);	
+																			$("#Lbl_tdate").text(bmobj.tdateMMddYYY);	
+																			$("#Lbl_dealdateMMddYYY").text(bmobj.dealdateMMddYYY);	
 																			
 																			
 																			$name ="";
@@ -1645,10 +1721,10 @@ cursor: pointer;
 																"#branch")
 																.val();
 														var followers = $(
-																"followers")
+																"#followers")
 																.val();
 														var organization = $(
-																"organization")
+																"#organization")
 																.val();
 														var formData = {
 															id : dealMasterID,
@@ -1672,7 +1748,7 @@ cursor: pointer;
 																				.parse(JSON
 																						.stringify(result));
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+result+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
 																				+ bmobj
 																				+ '" target="_blank"> <h6 class="mb-0">'
 																				+ peoplename
@@ -1680,8 +1756,12 @@ cursor: pointer;
 																				+ phonenumber
 																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
 																				+ result
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
-																		$(
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
+																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + result +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div>  </div> </div>';
+																				
+																	
+																				
+																				$(
 																				'#contactpeopdealdidv')
 																				.before(
 																						temphtml);
@@ -1752,7 +1832,7 @@ cursor: pointer;
 																			primarymob = bmobj.primarymob;
 																		}
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+bmobj.id+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
 																				+ bmobj.id
 																				+ '" target="_blank"> <h6 class="mb-0">'
 																				+ bmobj.peoplename
@@ -1760,7 +1840,8 @@ cursor: pointer;
 																				+ primarymob
 																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
 																				+ bmobj.id
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
+																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + bmobj.id +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div> </div> </div>';
 																		$(
 																				'#contactpeopdealdidv')
 																				.before(
@@ -1816,7 +1897,45 @@ cursor: pointer;
 				});
 			}
 
+			//------------------------------------------------------
+			function removecontactperson(elem) {
+
+				Swal.fire({
+		             title: 'Are you sure?',
+		             text: "You won't be able to revert this!",
+		             icon: 'warning',
+		             showCancelButton: true,
+		             confirmButtonText: 'Yes, delete it!',
+		             customClass: {
+		               confirmButton: 'btn btn-primary me-3',
+		               cancelButton: 'btn btn-label-secondary'
+		             },
+		             buttonsStyling: false
+		           }).then(function (result) {
+		             if (result.value) {
+								var formData = {
+									personid : elem.getAttribute("name"),
+									dealMasterID: $("#dealMasterID").val(),
+									module : "Deal"
+								}
+								$.ajax({
+									type : "POST",
+									url : "unlinkcontactperson",
+									data : formData,
+									success : function(result) {
+									 $(".dcon"+elem.getAttribute("name")).remove();
+									},
+									error : function(e) {
+										console.log("Error" + e);
+									}
+								});
+								
+		             }
+					});
+			}
+
 			//------------------------------------------------------    
+    
 			 // Date Format
 			   const flatpickrFriendly = document.querySelector('#expectedclosingdate');
 				 // Human Friendly
@@ -1900,6 +2019,26 @@ cursor: pointer;
 					});
 			};
 			
+			// Date Format
+			   const flatpickrFriendlyleadDate = document.querySelector('#dealDate');
+				 // Human Friendly
+				  if (flatpickrFriendlyleadDate) {
+				    flatpickrFriendlyleadDate.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+				 
+				  const flatpickrFriendlyx = document.querySelector('#tdate');
+					 // Human Friendly
+					  if (flatpickrFriendlyx) {
+					    flatpickrFriendlyx.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }
 		</script>
 </body>
 </html>

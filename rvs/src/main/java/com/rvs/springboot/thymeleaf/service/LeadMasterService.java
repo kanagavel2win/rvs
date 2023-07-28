@@ -14,4 +14,6 @@ public interface LeadMasterService {
 	
 	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id, String createddate);
 	public int deleteFiles(int id);
+	
+	public int deleteContact(int contactpersonid, int leadid);
 }

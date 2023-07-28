@@ -17,5 +17,6 @@ public interface DealMasterService {
 	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id, String createddate);
 	public int deleteFiles(int id);
 	public int insertContact(int contactpersonid, int dealid);
+	public int deleteContact(int contactpersonid, int dealid);
 	
 }

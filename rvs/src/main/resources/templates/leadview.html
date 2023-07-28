@@ -87,6 +87,9 @@
 <script th:src="@{/assets/js/config.js}"></script>
 
 <style type="text/css">
+.dropdown{
+float:right;
+}
 .contacteditbtn {
 	cursor: pointer;
 }
@@ -324,8 +327,8 @@ cursor: pointer;
 									</h5>
 									<div class="card-body">
 										<div class="d-flex mb-3" th:each="obj : ${cplist}">
-											<div class="flex-grow-1 row">
-												<div class="col-9 mb-sm-0 mb-2">
+											<div th:class="'flex-grow-1 row  dcon'+ ${obj.id} ">
+												<div class="col-6 mb-sm-0 mb-2">
 													<a th:href="'contactpersonview?id='+ ${obj.id}"
 														target="_blank">
 														<h6 class="mb-0" th:text="${obj.peoplename}"></h6>
@@ -343,6 +346,25 @@ cursor: pointer;
 													</span> <span class="switch-label"></span>
 													</label>
 												</div>
+												<div class="col-3">
+													<div class="dropdown">
+									                        <button
+									                          class="btn p-0"
+									                          type="button"
+									                          id="salesReport"
+									                          data-bs-toggle="dropdown"
+									                          aria-haspopup="true"
+									                          aria-expanded="false"
+									                        >
+									                          <i class="bx bx-dots-vertical-rounded"></i>
+									                        </button>
+									                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">
+									                          <a class="dropdown-item" th:name="${obj.id}"
+														th:onclick="'removecontactperson(this)'">Unlink</a>
+									                          
+									                        </div>
+									                   </div>
+												 </div>
 											</div>
 										</div>
 
@@ -862,6 +884,19 @@ cursor: pointer;
 														<div class="invalid-feedback">Please select
 															follower.</div>
 													</div>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Status">Status</label>
+													<div>
+														<select class="form-control" id="Status"
+															th:field="*{status}"
+															th:value="${leadMaster['status']}">
+															<th:block th:each="str :${ProjectStatus}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="notes">NOTES</label>
@@ -1489,7 +1524,7 @@ cursor: pointer;
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
-																		//console.log(bmobj);
+																		console.log(bmobj);
 
 																			if (bmobj.label == "Hot") {
 																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
@@ -1507,6 +1542,15 @@ cursor: pointer;
 																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
 																			$("#Lbl_purpose").text(bmobj.purpose);
 																			$("#Lbl_branchname").text(bmobj.branchname);
+																			
+																			
+																			$("#Lbl_Status").text(bmobj.status);	
+																			$("#Lbl_NatureofWork").text(bmobj.natureofWork);	
+																			$("#Lbl_Area").text(bmobj.area);	
+																			$("#Lbl_UNITS").text(bmobj.units);	
+																			$("#Lbl_Location").text(bmobj.location);	
+																			$("#Lbl_tdate").text(bmobj.tdateMMddYYY);	
+																			$("#Lbl_leaddateMMddYYY").text(bmobj.leaddateMMddYYY);	
 																			
 																			$name ="";
 																			
@@ -1639,10 +1683,10 @@ cursor: pointer;
 																"#branch")
 																.val();
 														var followers = $(
-																"followers")
+																"#followers")
 																.val();
 														var organization = $(
-																"organization")
+																"#organization")
 																.val();
 														var formData = {
 															id : leadMasterID,
@@ -1666,7 +1710,7 @@ cursor: pointer;
 																				.parse(JSON
 																						.stringify(result));
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+result+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
 																				+ bmobj
 																				+ '" target="_blank"> <h6 class="mb-0">'
 																				+ peoplename
@@ -1674,7 +1718,10 @@ cursor: pointer;
 																				+ phonenumber
 																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
 																				+ result
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div>' 
+																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + result +'" 	onclick="removecontactperson(this)">Unlink</a>       </div> ';
+																				
+																				
 																		$(
 																				'#contactpeopleaddidv')
 																				.before(
@@ -1746,7 +1793,7 @@ cursor: pointer;
 																			primarymob = bmobj.primarymob;
 																		}
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+bmobj.id+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
 																				+ bmobj.id
 																				+ '" target="_blank"> <h6 class="mb-0">'
 																				+ bmobj.peoplename
@@ -1754,7 +1801,8 @@ cursor: pointer;
 																				+ primarymob
 																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
 																				+ bmobj.id
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
+																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + bmobj.id +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div> </div> </div>';
 																		$(
 																				'#contactpeopleaddidv')
 																				.before(
@@ -1810,7 +1858,45 @@ cursor: pointer;
 				});
 			}
 
+			//------------------------------------------------------
+			function removecontactperson(elem) {
+
+				Swal.fire({
+		             title: 'Are you sure?',
+		             text: "You won't be able to revert this!",
+		             icon: 'warning',
+		             showCancelButton: true,
+		             confirmButtonText: 'Yes, delete it!',
+		             customClass: {
+		               confirmButton: 'btn btn-primary me-3',
+		               cancelButton: 'btn btn-label-secondary'
+		             },
+		             buttonsStyling: false
+		           }).then(function (result) {
+		             if (result.value) {
+								var formData = {
+									personid : elem.getAttribute("name"),
+									leadMasterID: $("#leadMasterID").val(),
+									module : "Lead"
+								}
+								$.ajax({
+									type : "POST",
+									url : "unlinkcontactperson",
+									data : formData,
+									success : function(result) {
+									 $(".dcon"+elem.getAttribute("name")).remove();
+									},
+									error : function(e) {
+										console.log("Error" + e);
+									}
+								});
+								
+		             }
+					});
+			}
+
 			//------------------------------------------------------    
+    
 
 			// Phone
 			const phoneMask = document.querySelector('.phone-number-otp-mask');
@@ -1885,6 +1971,26 @@ cursor: pointer;
 					});
 			};
 			
+			// Date Format
+			   const flatpickrFriendlyleadDate = document.querySelector('#leadDate');
+				 // Human Friendly
+				  if (flatpickrFriendlyleadDate) {
+				    flatpickrFriendlyleadDate.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+				 
+				  const flatpickrFriendlyx = document.querySelector('#tdate');
+					 // Human Friendly
+					  if (flatpickrFriendlyx) {
+					    flatpickrFriendlyx.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }
 		</script>
 </body>
 </html>

@@ -146,7 +146,6 @@ public class ProjectMasterImp implements ProjectMasterService {
 	@Override
 	public int deleteContact(int contactpersonid, int projectid) {
 		String sql ="DELETE FROM `project_contact` WHERE  contact_person=" +contactpersonid + " and id="+ projectid ;
-		//System.out.println(sql);
 		return JdbcTemplate.update(sql);
 	}
 	

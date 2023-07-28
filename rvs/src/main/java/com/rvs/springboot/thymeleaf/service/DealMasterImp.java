@@ -123,5 +123,11 @@ public class DealMasterImp implements DealMasterService {
 
 		return keyHolder.getKey().intValue();
 	}
+
+	@Override
+	public int deleteContact(int contactpersonid, int dealid) {
+		String sql ="DELETE FROM `deal_contact` WHERE  contact_person=" +contactpersonid + " and id="+ dealid ;
+		return JdbcTemplate.update(sql);
+	}
 	
 }

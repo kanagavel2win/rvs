@@ -87,6 +87,9 @@
 <script th:src="@{/assets/js/config.js}"></script>
 
 <style type="text/css">
+.dropdown{
+float:right;
+}
 .contacteditbtn {
 	cursor: pointer;
 }
@@ -199,8 +202,8 @@
 										<div class="user-avatar-section">
 											<div class="d-flex align-items-center flex-column">
 												<img class="img-fluid rounded my-4"
-													th:src="@{/assets/img/logo/rvslogo1.png}" height="110"
-													width="110" alt="User avatar" />
+													th:src="@{/assets/img/bg_rvs/Deal.jpg}" height="210"
+													width="210" alt="User avatar" />
 												<div class="user-info text-center">
 													<h5 class="mb-2" th:text="${dealMaster.Title}"
 														id="Lbl_Title"></h5>
@@ -208,39 +211,78 @@
 												</div>
 											</div>
 										</div>
-										<div class="d-flex justify-content-around flex-wrap my-4 py-3">
+									
+										<div class="d-flex justify-content-around flex-wrap my-4">
 											<div class="d-flex align-items-start me-4 mt-3 gap-3">
-												<span class="badge bg-label-primary p-2 rounded"><i
-													class="bx bx-check bx-sm"></i></span>
-												<div>
-													<h5 class="mb-0">
-														Rs.<span th:text="${dealMaster.dealvalue}"
+					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-rupee bx-sm"></i></span>
+					                          <div>
+					                           <h6 class="mb-0">
+													Rs.<span th:text="${dealMaster.dealvalue}"
 															id="Lbl_dealvalue"></span>
-													</h5>
-													<span>Deal Value</span>
-												</div>
-											</div>
+												</h6>
+					                           <span>Deal Value</span>
+					                          </div>
+					                        </div>
+					                        <div class="d-flex align-items-start mt-3 gap-3">
+					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-stats bx-sm"></i></span>
+					                          <div>
+					                           		<h6 class="mb-0">
+														<span th:text="${dealMaster.status}"
+															id="Lbl_Status"></span>
+													</h6>
+													<span>Status</span>
+					                          </div>
+					                        </div>
+											
+											
 
 										</div>
-										<h5 class="pb-2 border-bottom mb-4">
-											Details <input type="hidden" name="mastercategoryid"
-												id="mastercategoryid" />
-										</h5>
+										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
-
+											<li class="mb-3"><span class="fw-bold me-2">Label:</span>
+													<span id="Lbl_Label"> <span
+														th:if="${dealMaster.Label} =='Hot'"
+														class="badge bg-danger" th:text="${dealMaster.Label}"></span>
+														<span th:if="${dealMaster.Label} =='Warm'"
+														class="badge bg-warning" th:text="${dealMaster.Label}"></span>
+														<span th:if="${dealMaster.Label} =='Cold'"
+														class="badge bg-primary" th:text="${dealMaster.Label}"></span>
+												</span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Pipeline:</span>
-													<span th:text="${dealMaster.pipeline}" id="Lbl_pipeline"></span></li>
+													<span th:text="${dealMaster.pipeline}"
+													id="Lbl_pipeline"></span></li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${dealMaster.OrganizationName}"
 													id="Lbl_organization"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Deal Date:</span>
+													<span th:text="${dealMaster.dealdateMMddYYY}" id="Lbl_dealdateMMddYYY"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Nature Of Work:</span>
+													<span th:text="${dealMaster.NatureofWork}" id="Lbl_NatureofWork"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Area:</span>
+													<span th:text="${dealMaster.Area}" id="Lbl_Area"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Unit:</span>
+													<span th:text="${dealMaster.UNITS}" id="Lbl_UNITS"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">Location:</span>
+													<span th:text="${dealMaster.Location}" id="Lbl_Location"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">T.Date:</span>
+													<span th:text="${dealMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
+												</li>
+												<li class="mb-3"><span class="fw-bold me-2">T.Estimate:</span>
+													<span th:text="${dealMaster.purpose}" id="Lbl_projectvalue"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${dealMaster.purpose}" id="Lbl_purpose"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
-													<span th:text="${dealMaster.branchname}"
-													id="Lbl_branchname"></span></li>
+													<span th:text="${dealMaster.branchname}" id="Lbl_branchname"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${dealMaster.Source}" id="Lbl_Source"></span>
 												</li>
@@ -251,10 +293,9 @@
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
 													<span th:text="${dealMaster.notes}" id="Lbl_notes"></span>
 												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Closing
-														Date:</span> <span
-													th:text="${dealMaster.expectedclosingdateMMddYYY}"
-													id="Lbl_expectedclosingdate"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Closing Date:</span>
+													<span th:text="${dealMaster.expectedclosingdateMMddYYY}" id="Lbl_expectedclosingdate"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
 
 													<span id="Lbl_follower"> <span
@@ -294,8 +335,8 @@
 									</h5>
 									<div class="card-body">
 										<div class="d-flex mb-3" th:each="obj : ${cplist}">
-											<div class="flex-grow-1 row">
-												<div class="col-9 mb-sm-0 mb-2">
+											<div th:class="'flex-grow-1 row dcon'+ ${obj.id} ">
+												<div class="col-6 mb-sm-0 mb-2">
 													<a th:href="'contactpersonview?id='+ ${obj.id}"
 														target="_blank">
 														<h6 class="mb-0" th:text="${obj.peoplename}"></h6>
@@ -313,6 +354,25 @@
 													</span> <span class="switch-label"></span>
 													</label>
 												</div>
+												<div class="col-3">
+													<div class="dropdown">
+									                        <button
+									                          class="btn p-0"
+									                          type="button"
+									                          id="salesReport"
+									                          data-bs-toggle="dropdown"
+									                          aria-haspopup="true"
+									                          aria-expanded="false"
+									                        >
+									                          <i class="bx bx-dots-vertical-rounded"></i>
+									                        </button>
+									                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">
+									                          <a class="dropdown-item" th:name="${obj.id}"
+														th:onclick="'removecontactperson(this)'">Unlink</a>
+									                          
+									                        </div>
+									                   </div>
+												 </div>
 											</div>
 										</div>
 
@@ -321,7 +381,7 @@
 									</div>
 								</div>
 								<!-- /Connected Accounts -->
-
+								
 							</div>
 							<!--/ User Sidebar -->
 
@@ -582,6 +642,85 @@
 															follower.</div>
 													</div>
 												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="dealDate">Deal Date</label>
+													<div>
+														<input type="text" id="dealDate"
+															th:field="*{dealDate}"
+															th:value="${dealMaster['dealDate']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												<hr/>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="NatureofWork">Nature Of Work</label>
+													<div>
+														<select class="form-control" id="NatureofWork"
+															th:field="*{NatureofWork}"
+															th:value="${dealMaster['NatureofWork']}">
+															<th:block th:each="str :${NATUREOFWORK}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Area">Area</label>
+													<div>
+														<input type="number" id="Area"
+															th:field="*{Area}"
+															class="form-control  capitalize"
+															th:value="${dealMaster['Area']}">
+													</div>
+
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="NatureofWork">Unit</label>
+													<div>
+														<select class="form-control" id="UNITS"
+															th:field="*{UNITS}"
+															th:value="${dealMaster['UNITS']}">
+															<th:block th:each="str :${UNITS}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Location">Location</label>
+													<div>
+														<input type="text" id="Location"
+															th:field="*{Location}"
+															class="form-control  capitalize"
+															th:value="${dealMaster['Location']}">
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="tdate">T.Date</label>
+													<div>
+														<input type="text" id="tdate"
+															th:field="*{tdate}"
+															th:value="${dealMaster['tdate']}"
+															class="form-control  capitalize">
+													</div>
+												</div>
+												
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Source">T.Estimate</label>
+													<div>
+														<input type="number" id="dealvalue"
+															th:field="*{dealvalue}"
+															class="form-control  capitalize"
+															th:value="${dealMaster['dealvalue']}">
+													</div>
+
+												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">SOURCE <label
 														class="emptitle additem" name="addsourcedata"><i
@@ -634,22 +773,27 @@
 													</div>
 
 												</div>
-
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Label">LABEL </label>
+													<div>
+														<select class="form-control " id="Label"
+															th:field="*{Label}" th:value="${dealMaster['Label']}">
+															<option value="Hot">Hot</option>
+															<option value="Cold">Cold</option>
+															<option value="Warm">Warm</option>
+														</select>
+													</div>
+												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="pipeline">PIPELINE </label>
 													<div>
-														<select class="form-control" id="pipeline"
-															th:field="*{pipeline}"
-															th:value="${dealMaster['pipeline']}">
+														<select class="form-control" id="pipeline" th:field="*{pipeline}" th:value="${dealMaster['pipeline']}">
 															<option value="Deal In">Deal In</option>
 															<option value="Contact made">Contact made</option>
-															<option value="Site Visit Scheduled">Site Visit
-																Scheduled</option>
-															<option value="Project Evaluvated">Project
-																Evoluvated</option>
+															<option value="Site Visit Scheduled">Site Visit Scheduled</option>
+															<option value="Project Evaluvated">Project Evoluvated</option>
 															<option value="Proposal made">Proposal made</option>
-															<option value="Negotiations started">Negotiations
-																started</option>
+															<option value="Negotiations started">Negotiations started</option>
 														</select>
 													</div>
 												</div>
@@ -686,6 +830,19 @@
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
+													<label class="form-label" for="Status">Status</label>
+													<div>
+														<select class="form-control" id="Status"
+															th:field="*{status}"
+															th:value="${dealMaster['status']}">
+															<th:block th:each="str :${ProjectStatus}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+														</select>
+													</div>
+
+												</div>
+												<div class="col-12 col-md-6">
 													<label class="form-label" for="notes">NOTES</label>
 													<div>
 
@@ -695,12 +852,10 @@
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="expectedclosingdate">Expected
-														Closing Date</label>
+													<label class="form-label" for="expectedclosingdate">Expected Closing Date</label>
 													<div>
 
-														<input type="text" id="expectedclosingdate"
-															th:field="*{expectedclosingdate}"
+														<input type="text" id="expectedclosingdate" th:field="*{expectedclosingdate}"
 															th:value="${dealMaster['expectedclosingdate']}"
 															class="form-control  capitalize">
 													</div>
@@ -1282,6 +1437,14 @@
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
 																		//console.log(bmobj);
+																		if (bmobj.label == "Hot") {
+																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
+																			} else if (bmobj.label == "Warm") {
+																				$('#Lbl_Label').html("<span class='badge bg-warning'>Warm</span>");
+																			} else {
+																				$('#Lbl_Label').html("<span class='badge bg-primary'>Cold</span>");
+																			}
+																		
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
@@ -1292,6 +1455,14 @@
 																			$("#Lbl_purpose").text(bmobj.purpose);
 																			$("#Lbl_branchname").text(bmobj.branchname);
 																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
+																			
+																			$("#Lbl_Status").text(bmobj.status);	
+																			$("#Lbl_NatureofWork").text(bmobj.natureofWork);	
+																			$("#Lbl_Area").text(bmobj.area);	
+																			$("#Lbl_UNITS").text(bmobj.units);	
+																			$("#Lbl_Location").text(bmobj.location);	
+																			$("#Lbl_tdate").text(bmobj.tdateMMddYYY);	
+																			$("#Lbl_dealdateMMddYYY").text(bmobj.dealdateMMddYYY);	
 																			
 																			
 																			
@@ -1498,7 +1669,7 @@
 																				.parse(JSON
 																						.stringify(result));
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+result+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
 																				+ bmobj
 																				+ '" target="_blank"> <h6 class="mb-0">'
 																				+ peoplename
@@ -1506,8 +1677,10 @@
 																				+ phonenumber
 																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
 																				+ result
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
-																		$(
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
+																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + result +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div>  </div> </div>';
+																				
+																				$(
 																				'#contactpeopdealdidv')
 																				.before(
 																						temphtml);
@@ -1578,7 +1751,7 @@
 																			primarymob = bmobj.primarymob;
 																		}
 
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row"> <div class="col-9 mb-sm-0 mb-2"> <a href="contactpersonview?id='
+																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+bmobj.id+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
 																				+ bmobj.id
 																				+ '" target="_blank"> <h6 class="mb-0">'
 																				+ bmobj.peoplename
@@ -1586,7 +1759,8 @@
 																				+ primarymob
 																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
 																				+ bmobj.id
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> </div> </div>';
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
+																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + bmobj.id +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div> </div> </div>';
 																		$(
 																				'#contactpeopdealdidv')
 																				.before(
@@ -1664,6 +1838,42 @@
 					}
 				});
 			}
+			//------------------------------------------------------
+			function removecontactperson(elem) {
+
+				Swal.fire({
+		             title: 'Are you sure?',
+		             text: "You won't be able to revert this!",
+		             icon: 'warning',
+		             showCancelButton: true,
+		             confirmButtonText: 'Yes, delete it!',
+		             customClass: {
+		               confirmButton: 'btn btn-primary me-3',
+		               cancelButton: 'btn btn-label-secondary'
+		             },
+		             buttonsStyling: false
+		           }).then(function (result) {
+		             if (result.value) {
+								var formData = {
+									personid : elem.getAttribute("name"),
+									dealMasterID: $("#dealMasterID").val(),
+									module : "Deal"
+								}
+								$.ajax({
+									type : "POST",
+									url : "unlinkcontactperson",
+									data : formData,
+									success : function(result) {
+									 $(".dcon"+elem.getAttribute("name")).remove();
+									},
+									error : function(e) {
+										console.log("Error" + e);
+									}
+								});
+								
+		             }
+					});
+			}
 
 			//------------------------------------------------------    
 			 // Date Format
@@ -1721,7 +1931,26 @@
 					
 				};
 			//------------------------------------------------------
-			
+	// Date Format
+			   const flatpickrFriendlyleadDate = document.querySelector('#dealDate');
+				 // Human Friendly
+				  if (flatpickrFriendlyleadDate) {
+				    flatpickrFriendlyleadDate.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+				 
+				  const flatpickrFriendlyx = document.querySelector('#tdate');
+					 // Human Friendly
+					  if (flatpickrFriendlyx) {
+					    flatpickrFriendlyx.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }		
 		
 			
 		</script>

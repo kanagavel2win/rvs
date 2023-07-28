@@ -5879,20 +5879,26 @@ public class HomeController {
 
 	@ResponseBody
 	@PostMapping("unlinkcontactperson")
-	public int  unlinkcontactperson(@RequestParam Map<String, String> params) {
-		//System.out.println(params);
-		if(params.get("module").equalsIgnoreCase("Project"))
-		{
-			 return projectMasterService.deleteContact(Integer.parseInt(params.get("personid")),Integer.parseInt(params.get("projectMasterID")));
-					
-		}else
-		{
+	public int unlinkcontactperson(@RequestParam Map<String, String> params) {
+		// System.out.println(params);
+		if (params.get("module").equalsIgnoreCase("Lead")) {
+			return leadMasterService.deleteContact(Integer.parseInt(params.get("personid")),
+					Integer.parseInt(params.get("leadMasterID")));
+
+		} else if (params.get("module").equalsIgnoreCase("Deal")) {
+			return dealMasterService.deleteContact(Integer.parseInt(params.get("personid")),
+					Integer.parseInt(params.get("dealMasterID")));
+
+		} else if (params.get("module").equalsIgnoreCase("Project")) {
+			return projectMasterService.deleteContact(Integer.parseInt(params.get("personid")),
+					Integer.parseInt(params.get("projectMasterID")));
+
+		} else {
 			return 0;
 		}
-		
+
 	}
-	
-	
+
 	@ResponseBody
 	@PostMapping("organizationupdatejson")
 	public OrganizationContacts organizationupdatejson(@RequestParam Map<String, String> params) {
@@ -5998,6 +6004,7 @@ public class HomeController {
 	@PostMapping("workcontactpersonsavejson")
 	public int workcontactpersonsavejson(@RequestParam Map<String, String> params) {
 
+	//System.out.println(params);
 		int insertedkey = 0;
 		if (params.get("category").equalsIgnoreCase("Lead")) {
 			ContactPerson cp = new ContactPerson();
@@ -6280,7 +6287,7 @@ public class HomeController {
 			}
 
 			if (!nullremover(String.valueOf(tmp1obj.getLeadDate())).equalsIgnoreCase("")) {
-				
+
 				try {
 					tmp1obj.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
 							.format(displaydateFormatrev.parse(tmp1obj.getLeadDate())).toString());
@@ -6293,7 +6300,7 @@ public class HomeController {
 			leadmasterls.add(tmp1obj);
 
 		}
-		return leadmasterls.stream().sorted(Comparator.comparing(LeadMaster :: getId).reversed()).toList();
+		return leadmasterls.stream().sorted(Comparator.comparing(LeadMaster::getId).reversed()).toList();
 	}
 
 	@ResponseBody
@@ -6331,7 +6338,7 @@ public class HomeController {
 			}
 
 			if (!nullremover(String.valueOf(tmp1obj.getDealDate())).equalsIgnoreCase("")) {
-				
+
 				try {
 					tmp1obj.setDealdateMMddYYY(displaydateFormatFirstMMMddYYY
 							.format(displaydateFormatrev.parse(tmp1obj.getDealDate())).toString());
@@ -6344,7 +6351,7 @@ public class HomeController {
 			dealmasterls.add(tmp1obj);
 
 		}
-		return dealmasterls.stream().sorted(Comparator.comparing(DealMaster :: getId).reversed()).toList();
+		return dealmasterls.stream().sorted(Comparator.comparing(DealMaster::getId).reversed()).toList();
 	}
 
 	@ResponseBody
@@ -6385,7 +6392,7 @@ public class HomeController {
 			try {
 				tmp1obj.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
-				
+
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -6394,9 +6401,8 @@ public class HomeController {
 			projectmasterls.add(tmp1obj);
 
 		}
-		
-		
-		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster :: getId).reversed()).toList();
+
+		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed()).toList();
 	}
 
 	@ResponseBody
@@ -6457,14 +6463,13 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", bmlist);
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		themodel.addAttribute("ProjectStatus", ProjectStatus);
-		
 
 		return "leadlist";
 	}
@@ -6499,8 +6504,7 @@ public class HomeController {
 
 			leadfolloersls.add(lf);
 		}
-		
-		
+
 		followerids = followerids.substring(0, followerids.length() - 1);
 		leadMaster.setLeadfollowerids(followerids);
 
@@ -6516,7 +6520,6 @@ public class HomeController {
 			leadMaster.setBranchname(bm.getBRANCH_NAME());
 		}
 
-
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(leadMaster.getTdate())).equalsIgnoreCase("")) {
 			try {
@@ -6528,17 +6531,17 @@ public class HomeController {
 			}
 		}
 		// ----------------------------------------------------------
-				if (!nullremover(String.valueOf(leadMaster.getLeadDate())).equalsIgnoreCase("")) {
-					try {
-						leadMaster.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
-								.format(displaydateFormatrev.parse(leadMaster.getLeadDate())).toString());
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						// e.printStackTrace();
-					}
-				}
+		if (!nullremover(String.valueOf(leadMaster.getLeadDate())).equalsIgnoreCase("")) {
+			try {
+				leadMaster.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(leadMaster.getLeadDate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
 		// ----------------------------------------------------------
-		
+
 		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
 
 		for (LeadContact lc : leadMaster.getLeadContact()) {
@@ -6587,7 +6590,7 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 
@@ -6602,6 +6605,9 @@ public class HomeController {
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("lead"));
 		theModel.addAttribute("activityMaster", new ActivityMaster());
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+
 		return "leadview";
 	}
 
@@ -6728,12 +6734,14 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("contactPeopleList",
@@ -6743,6 +6751,7 @@ public class HomeController {
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("deal"));
 		theModel.addAttribute("activityMaster", new ActivityMaster());
+
 		return "dealevents";
 	}
 
@@ -6817,6 +6826,37 @@ public class HomeController {
 			}
 		}
 		// ----------------------------------------------------------
+
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getDealDate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setDealdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getDealDate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("dealMaster", dealMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -6931,6 +6971,37 @@ public class HomeController {
 			}
 		}
 		// ----------------------------------------------------------
+
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getDealDate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setDealdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getDealDate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("dealMaster", dealMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -6960,12 +7031,7 @@ public class HomeController {
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		theModel.addAttribute("PURPOSE", PURPOSE);
 
-		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
-		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
-
-		List<String> UNITS = itemlistService.findByFieldName("UNITS");
-		theModel.addAttribute("UNITS", UNITS);
-
+		
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
 
@@ -7244,6 +7310,26 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(leadMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				leadMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(leadMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(leadMaster.getLeadDate())).equalsIgnoreCase("")) {
+			try {
+				leadMaster.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(leadMaster.getLeadDate())).toString());
+			} catch (Exception e) {
+
+			}
+		}
+		// ----------------------------------------------------------
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("leadMaster", leadMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -7270,6 +7356,15 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("contactPeopleList",
@@ -7469,6 +7564,7 @@ public class HomeController {
 	@ResponseBody
 	public LeadMaster leadsavestage2(@RequestParam Map<String, String> params) {
 
+		// System.out.println(params);
 		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(params.get("leadMasterID")));
 
 		leadMaster.setTitle(params.get("Title"));
@@ -7480,6 +7576,14 @@ public class HomeController {
 		leadMaster.setLabel(params.get("Label"));
 		leadMaster.setBranch(Integer.parseInt(params.get("branch")));
 		leadMaster.setNotes(params.get("notes"));
+
+		leadMaster.setLeadDate(params.get("leadDate"));
+		leadMaster.setStatus(params.get("status"));
+		leadMaster.setTdate(params.get("tdate"));
+		leadMaster.setLocation(params.get("Location"));
+		leadMaster.setUNITS(params.get("UNITS"));
+		leadMaster.setNatureofWork(params.get("NatureofWork"));
+		leadMaster.setArea(params.get("Area"));
 
 		List<LeadFollowers> lfls = new ArrayList<>();
 
@@ -7521,6 +7625,26 @@ public class HomeController {
 			BranchMaster bm = branchMasterService.findById(branchid);
 			leadMaster.setBranchname(bm.getBRANCH_NAME());
 		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(leadMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				leadMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(leadMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(leadMaster.getLeadDate())).equalsIgnoreCase("")) {
+			try {
+				leadMaster.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(leadMaster.getLeadDate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
 
 		return leadMaster;
 	}
@@ -7541,6 +7665,15 @@ public class HomeController {
 		dealMaster.setBranch(Integer.parseInt(params.get("branch")));
 		dealMaster.setNotes(params.get("notes"));
 		dealMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
+
+		dealMaster.setDealDate(params.get("dealDate"));
+		dealMaster.setStatus(params.get("status"));
+		dealMaster.setLabel(params.get("Label"));
+		dealMaster.setTdate(params.get("tdate"));
+		dealMaster.setLocation(params.get("Location"));
+		dealMaster.setUNITS(params.get("UNITS"));
+		dealMaster.setNatureofWork(params.get("NatureofWork"));
+		dealMaster.setArea(params.get("Area"));
 
 		List<DealFollowers> lfls = new ArrayList<>();
 
@@ -7591,6 +7724,26 @@ public class HomeController {
 				// e.printStackTrace();
 			}
 		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getDealDate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setDealdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getDealDate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
 
 		return dealMaster;
 	}
@@ -7614,15 +7767,14 @@ public class HomeController {
 		projectMaster.setLabel(params.get("label"));
 		projectMaster.setBoard(params.get("board"));
 
-	
-		projectMaster.setStatus( params.get("Status"));
+		projectMaster.setStatus(params.get("Status"));
 		projectMaster.setLabel(params.get("label"));
 		projectMaster.setTdate(params.get("tdate"));
-		projectMaster.setLocation( params.get("Location"));
-		projectMaster.setUNITS( params.get("UNITS"));
-		projectMaster.setNatureofWork( params.get("NatureofWork"));
-		projectMaster.setArea( params.get("Area"));
-		
+		projectMaster.setLocation(params.get("Location"));
+		projectMaster.setUNITS(params.get("UNITS"));
+		projectMaster.setNatureofWork(params.get("NatureofWork"));
+		projectMaster.setArea(params.get("Area"));
+
 		List<ProjectFollowers> lfls = new ArrayList<>();
 
 		for (String str : params.get("followers").split(",")) {
@@ -7681,7 +7833,7 @@ public class HomeController {
 				// e.printStackTrace();
 			}
 		}
-		
+
 		if (!nullremover(String.valueOf(projectMaster.getTdate())).equalsIgnoreCase("")) {
 			try {
 				projectMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
@@ -7727,8 +7879,7 @@ public class HomeController {
 		String UNITS = params.get("UNITS");
 		String Area = params.get("Area");
 		String NatureofWork = params.get("NatureofWork");
-		
-		
+
 		int branch = Integer.parseInt(params.get("branch"));
 		// ---------------------------------------
 		ContactPerson cp = new ContactPerson();
@@ -7828,7 +7979,7 @@ public class HomeController {
 		leadMaster.setPurpose(Purpose);
 		leadMaster.setBranch(branch);
 		leadMaster.setLeadvalue(leadValue);
-		
+
 		leadMaster.setStatus(Status);
 		leadMaster.setLeadDate(leadDate);
 		leadMaster.setTdate(tdate);
@@ -7836,8 +7987,7 @@ public class HomeController {
 		leadMaster.setUNITS(UNITS);
 		leadMaster.setNatureofWork(NatureofWork);
 		leadMaster.setArea(Area);
-		
-		
+
 		List<LeadFollowers> lmlis = new ArrayList();
 		LeadFollowers lfobj = new LeadFollowers();
 		lmlis.add(new LeadFollowers(0, Integer.parseInt(followers), "", ""));
@@ -7868,7 +8018,7 @@ public class HomeController {
 		String followers = params.get("followers");
 		String phonenumber = params.get("phonenumber");
 		String Purpose = params.get("Purpose");
-		
+
 		String Status = params.get("Status");
 		String dealDate = params.get("dealDate");
 		String label = params.get("label");
@@ -7877,10 +8027,7 @@ public class HomeController {
 		String UNITS = params.get("UNITS");
 		String Area = params.get("Area");
 		String NatureofWork = params.get("NatureofWork");
-		
-		
-		
-		
+
 		int dealValue = 0;
 		if (!params.get("dealValue").equalsIgnoreCase("")) {
 			dealValue = Integer.parseInt(params.get("dealValue"));
@@ -7988,7 +8135,7 @@ public class HomeController {
 		dealMaster.setPurpose(Purpose);
 		dealMaster.setBranch(branch);
 		dealMaster.setDealvalue(dealValue);
-		
+
 		dealMaster.setDealDate(dealDate);
 		dealMaster.setStatus(Status);
 		dealMaster.setLabel(label);
@@ -7997,8 +8144,7 @@ public class HomeController {
 		dealMaster.setUNITS(UNITS);
 		dealMaster.setNatureofWork(NatureofWork);
 		dealMaster.setArea(Area);
-		
-		
+
 		List<DealFollowers> lmlis = new ArrayList();
 		DealFollowers lfobj = new DealFollowers();
 		lmlis.add(new DealFollowers(0, Integer.parseInt(followers), "", ""));
@@ -8031,7 +8177,7 @@ public class HomeController {
 		String Purpose = params.get("Purpose");
 		String startDate = params.get("startDate");
 		String board = "";
-		
+
 		String Status = params.get("Status");
 		String label = params.get("label");
 		String tdate = params.get("tdate");
@@ -8039,8 +8185,7 @@ public class HomeController {
 		String UNITS = params.get("UNITS");
 		String Area = params.get("Area");
 		String NatureofWork = params.get("NatureofWork");
-		
-		
+
 		int projectValue = 0;
 		if (!params.get("projectValue").equalsIgnoreCase("")) {
 			projectValue = Integer.parseInt(params.get("projectValue"));
@@ -8191,13 +8336,13 @@ public class HomeController {
 		projectMaster.setSource(Source);
 		projectMaster.setReference(Reference);
 		projectMaster.setPipeline(Pipeline);
-		//projectMaster.setNotes(notes);
+		// projectMaster.setNotes(notes);
 		projectMaster.setPurpose(Purpose);
 		projectMaster.setBranch(branch);
 		projectMaster.setProjectvalue(projectValue);
 		projectMaster.setStartdate(startDate);
-		//projectMaster.setBoard(board);
-		
+		// projectMaster.setBoard(board);
+
 		projectMaster.setStatus(Status);
 		projectMaster.setLabel(label);
 		projectMaster.setTdate(tdate);
@@ -8205,8 +8350,7 @@ public class HomeController {
 		projectMaster.setUNITS(UNITS);
 		projectMaster.setNatureofWork(NatureofWork);
 		projectMaster.setArea(Area);
-		
-		
+
 		List<ProjectFollowers> lmlis = new ArrayList();
 		ProjectFollowers lfobj = new ProjectFollowers();
 		lmlis.add(new ProjectFollowers(0, Integer.parseInt(followers), "", ""));
@@ -8813,8 +8957,7 @@ public class HomeController {
 		themodel.addAttribute("UNITS", UNITS);
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		themodel.addAttribute("ProjectStatus", ProjectStatus);
-		
-		
+
 		return "deallist";
 	}
 
@@ -8838,20 +8981,16 @@ public class HomeController {
 
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		themodel.addAttribute("SOURCE", MEMBERIN);
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		themodel.addAttribute("ProjectStatus", ProjectStatus);
-		
+
 		List<String> Label = itemlistService.findByFieldName("Label");
 		themodel.addAttribute("Label", Label);
-		
-		
-		
-		
 
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		themodel.addAttribute("PURPOSE", PURPOSE);
@@ -9106,7 +9245,7 @@ public class HomeController {
 				// e.printStackTrace();
 			}
 		}
-		
+
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
 			projectMaster.setBoardName(
@@ -9150,13 +9289,13 @@ public class HomeController {
 
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
-		
+
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
-		
+
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
@@ -9297,17 +9436,15 @@ public class HomeController {
 
 		List<String> Phase = itemlistService.findByFieldName("Phase");
 		theModel.addAttribute("Phase", Phase);
-		
-		
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
-		
+
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
-		
+
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
-		
 
 		// theModel.addAttribute("OrganizationContacts", corg);
 		theModel.addAttribute("contactPeopleList",
@@ -9461,11 +9598,9 @@ public class HomeController {
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
 
-
-		
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
-		
+
 		theModel.addAttribute("contactPeopleList",
 				contactPersonService.contactpersonlistbyorgname(projectMaster.getOrganization()));
 		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
@@ -9607,10 +9742,9 @@ public class HomeController {
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
-
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
-		
+
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
 
@@ -10452,7 +10586,7 @@ public class HomeController {
 
 		List<String> Phase = itemlistService.findByFieldName("Phase");
 		theModel.addAttribute("Phase", Phase);
-		
+
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
@@ -10723,7 +10857,7 @@ public class HomeController {
 		theModel.addAttribute("Label", Label);
 		List<String> Phase = itemlistService.findByFieldName("Phase");
 		theModel.addAttribute("Phase", Phase);
-		
+
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
 		theModel.addAttribute("contactPeopleList",

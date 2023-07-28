@@ -90,4 +90,10 @@ public class LeadMasterImp implements LeadMasterService {
 		return jdbcTemplate.update(sql);
 	}
 
+	@Override
+	public int deleteContact(int contactpersonid, int leadid) {
+		String sql ="DELETE FROM `lead_contact` WHERE  contact_person=" +contactpersonid + " and id="+ leadid ;
+		return jdbcTemplate.update(sql);
+	}
+
 }

@@ -6468,7 +6468,7 @@ public class HomeController {
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
-		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
 		themodel.addAttribute("ProjectStatus", ProjectStatus);
 
 		return "leadlist";
@@ -6605,7 +6605,7 @@ public class HomeController {
 		// ---------------------------
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("lead"));
 		theModel.addAttribute("activityMaster", new ActivityMaster());
-		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		return "leadview";
@@ -6740,7 +6740,7 @@ public class HomeController {
 
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
-		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
@@ -6854,7 +6854,7 @@ public class HomeController {
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
-		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		theModel.addAttribute("cplist", cplist);
@@ -6999,7 +6999,7 @@ public class HomeController {
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
-		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		theModel.addAttribute("cplist", cplist);
@@ -7363,7 +7363,7 @@ public class HomeController {
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		theModel.addAttribute("UNITS", UNITS);
 
-		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
 
 		// theModel.addAttribute("OrganizationContacts", corg);
@@ -8955,7 +8955,7 @@ public class HomeController {
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
-		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
 		themodel.addAttribute("ProjectStatus", ProjectStatus);
 
 		return "deallist";

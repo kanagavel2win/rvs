@@ -309,11 +309,11 @@ float:right;
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
 													<span th:text="${projectMaster.notes}" id="Lbl_notes"></span>
 												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Start
+												<li class="mb-3"><span class="fw-bold me-2">Project In
 														Date:</span> <span
 													th:text="${projectMaster.expectedstartdateMMddYYY}"
 													id="Lbl_expectedstartdate"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Closing
+												<li class="mb-3"><span class="fw-bold me-2">Due
 														Date:</span> <span
 													th:text="${projectMaster.expectedclosingdateMMddYYY}"
 													id="Lbl_expectedclosingdate"></span></li>
@@ -887,9 +887,7 @@ float:right;
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="purpose">PURPOSE <label
-														class="emptitle additem" name="addpurposedata"><i
-															class="bx bxs-plus-circle ownstyle1"></i></label></label>
+													<label class="form-label" for="purpose">PURPOSE</label>
 													<div>
 														<select class="form-control  addpurposedata" id="purpose"
 															th:field="*{purpose}"
@@ -902,9 +900,7 @@ float:right;
 
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="Source">SOURCE <label
-														class="emptitle additem" name="addsourcedata"><i
-															class="bx bxs-plus-circle ownstyle1"></i></label></label>
+													<label class="form-label" for="Source">SOURCE </label>
 													<div>
 														<select class="form-control  addsourcedata" id="Source"
 															th:field="*{Source}"
@@ -1000,8 +996,7 @@ float:right;
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="startdateX1">Expected
-														Start Date</label>
+													<label class="form-label" for="startdateX1">Project In Date</label>
 													<div>
 
 														<input type="text" id="startdateX1"
@@ -1011,8 +1006,8 @@ float:right;
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="expectedclosingdate">Expected
-														Closing Date</label>
+													<label class="form-label" for="expectedclosingdate">
+														Due Date</label>
 													<div>
 
 														<input type="text" id="expectedclosingdate"

@@ -125,26 +125,11 @@ cursor:pointer;
                           />
                           <div class="user-info text-center">
                             <h5 class="mb-2" th:text="${OrganizationContacts.orgname}"></h5>
-                            <span class="badge bg-label-secondary" th:text="${OrganizationContacts.customer_supplier}" ></span>
+                            <span class="badge bg-label-secondary"  id="Lbl_customer_supplier" th:text="${OrganizationContacts.customer_supplier}" ></span>
                           </div>
                         </div>
                       </div>
-                     <!--  <div class="d-flex justify-content-around flex-wrap my-4 py-3">
-                        <div class="d-flex align-items-start me-4 mt-3 gap-3">
-                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-user bx-sm"></i></span>
-                          <div>
-                            <h5 class="mb-0">0</h5>
-                            <span>Deals</span>
-                          </div>
-                        </div>
-                        <div class="d-flex align-items-start mt-3 gap-3">
-                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-detail bx-sm"></i></span>
-                          <div>
-                            <h5 class="mb-0">0</h5>
-                            <span>Projects</span>
-                          </div>
-                        </div>
-                      </div> -->
+                     
                       <h5 class="pb-2 border-bottom mb-4">Details</h5>
                       <div class="info-container">
                         <ul class="list-unstyled">
@@ -152,10 +137,7 @@ cursor:pointer;
                             <span class="fw-bold me-2">Branch:</span>
                             <span th:text="${OrganizationContacts.branchName}" id="Lbl_Branch"></span>
                           </li>
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">Type:</span>
-                            <span  th:text="${OrganizationContacts.customer_supplier}" id="Lbl_customer_supplier"></span>
-                          </li>
+                        
                           <li class="mb-3">
                             <span class="fw-bold me-2">Name:</span>
                             <span  th:text="${OrganizationContacts.orgname}" id="Lbl_orgname"></span>

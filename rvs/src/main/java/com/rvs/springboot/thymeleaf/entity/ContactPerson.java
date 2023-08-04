@@ -94,4 +94,7 @@ public class ContactPerson {
 	private String primaryemail;
 	@Transient
 	private String organizationname;	
+	@Transient
+	private String organization_type;	
+	
 }

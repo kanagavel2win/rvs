@@ -707,7 +707,7 @@ public class HomeController {
 		bm.setCURRENT_STATUS(params.get("branchstatus"));
 		bm.setBranchCode(params.get("branchCode"));
 		bm = branchMasterService.save(bm);
-		
+
 		// Branch Effective
 		List<BranchEffective> branchEffective = bm.getBranchEffective();
 
@@ -1505,8 +1505,11 @@ public class HomeController {
 			cp.setBranchCode(bm.getBranchCode());
 			// Organization Name
 			if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase("")) {
-				cp.setOrganizationname(
-						contactOrganizationService.findById(Integer.parseInt(cp.getOrganization())).getOrgname());
+				OrganizationContacts oc = contactOrganizationService.findById(Integer.parseInt(cp.getOrganization()));
+				
+				cp.setOrganizationname(oc.getOrgname());
+				cp.setOrganization_type(oc.getIndustry_type());
+				
 			}
 
 			// Set primary contact
@@ -1516,7 +1519,7 @@ public class HomeController {
 				cp.setPrimarymob(bcls.get(0).getPhonenumber());
 				cp.setPrimaryemail(bcls.get(0).getEmail());
 			}
-			// -------------------
+			// ---------------------------------------------------------
 			// Set primary contact
 			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
 
@@ -1528,8 +1531,14 @@ public class HomeController {
 
 				}
 			}
-			// -------------------
-
+			// ---------------------------------------------------------
+			cp.setOrganizationname(nullremover(String.valueOf(cp.getOrganizationname())));
+			cp.setFollowername(nullremover(String.valueOf(cp.getFollowername())));
+			cp.setFollowerimg(nullremover(String.valueOf(cp.getFollowerimg())));
+			cp.setFollowerprimarymob(nullremover(String.valueOf(cp.getFollowerprimarymob())));
+			cp.setOrganization_type(nullremover(String.valueOf(cp.getOrganization_type())));	
+			// ---------------------------------------------------------
+			
 		}
 
 		return cpList;
@@ -1849,8 +1858,11 @@ public class HomeController {
 				infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 				if (infoobjjobgreen.size() > 0) {
 					em.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
-					em.setT_branch_id( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());	
-					em.setT_branch_name(branchMasterService.findById(Integer.parseInt( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation())).getBRANCH_NAME());
+					em.setT_branch_id(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());
+					em.setT_branch_name(branchMasterService
+							.findById(
+									Integer.parseInt(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation()))
+							.getBRANCH_NAME());
 				}
 			}
 			// -------------------------------------------
@@ -2141,9 +2153,19 @@ public class HomeController {
 		langu.setLanguage(params.get("langu[Language]"));
 
 		int empMasterid = Integer.parseInt(params.get("langu[empMasterid]"));
+		EmployeeMaster empobj = employeeMasterService.findById(empMasterid);
 
 		if (params.get("langu[lanid]").equalsIgnoreCase("")) {
+			
+		List<EmployeeLanguage> emplangls=	empobj.getEmployeeLanguage().stream().filter(C -> C.getLanguage().equalsIgnoreCase(params.get("langu[Language]"))).collect(Collectors.toList())	;
+		if(emplangls.size() >0)
+		{
+			return 0;
+		}else
+		{
 			return employeeMasterService.insertemployeeLanguag(empMasterid, langu);
+		}
+			
 		} else {
 			langu.setEmpLanguid(Integer.parseInt(params.get("langu[lanid]")));
 			return employeeMasterService.updateemployeeLanguag(langu);
@@ -2639,9 +2661,11 @@ public class HomeController {
 			infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 			if (infoobjjobgreen.size() > 0) {
 				employeemasternew.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
-				employeemasternew.setT_branch_id( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());	
-				employeemasternew.setT_branch_name(branchMasterService.findById(Integer.parseInt( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation())).getBRANCH_NAME());
-							
+				employeemasternew.setT_branch_id(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());
+				employeemasternew.setT_branch_name(branchMasterService
+						.findById(Integer.parseInt(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation()))
+						.getBRANCH_NAME());
+
 			}
 		}
 		// -------------------------------------------
@@ -2659,7 +2683,22 @@ public class HomeController {
 			}
 		}
 		// -------------------------------------------
-
+		employeemasternew.getEmployeeFiles().forEach(C ->{
+			
+			String filetempname=C.getFilePath().split("/")[1].substring(15);	
+			
+			if(filetempname.length()> 20) {
+				C.setFilePath_trim(filetempname.substring(0, 19) + "...");
+			}else
+			{
+				C.setFilePath_trim(filetempname);
+			}
+			
+			
+			
+			
+		});
+		// -------------------------------------------
 		List<String> MARITALSTATUS = itemlistService.findByFieldName("MARITAL STATUS");
 		themodel.addAttribute("MARITALSTATUS", MARITALSTATUS);
 		List<String> DEGREE = itemlistService.findByFieldName("DEGREE");
@@ -2779,10 +2818,12 @@ public class HomeController {
 			infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 			if (infoobjjobgreen.size() > 0) {
 				employeemasternew.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
-				employeemasternew.setT_branch_id( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());	
-				
-				employeemasternew.setT_branch_name(branchMasterService.findById(Integer.parseInt( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation())).getBRANCH_NAME());
-							
+				employeemasternew.setT_branch_id(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());
+
+				employeemasternew.setT_branch_name(branchMasterService
+						.findById(Integer.parseInt(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation()))
+						.getBRANCH_NAME());
+
 			}
 		}
 		// -------------------------------------------
@@ -2834,6 +2875,9 @@ public class HomeController {
 				stmojb.setReportstoname(
 						employeeMasterService.findById(Integer.parseInt(stmojb.getJobreportsto())).getStaffName());
 			}
+			stmojb.setJoblocation_str(
+					branchMasterService.findById(Integer.parseInt(stmojb.getJoblocation())).getBRANCH_NAME());
+
 			infoobj.add(stmojb);
 		}
 
@@ -2972,6 +3016,8 @@ public class HomeController {
 			obj.setReportstoname(
 					employeeMasterService.findById(Integer.parseInt(params.get("jobreportsto"))).getStaffName());
 		}
+
+		obj.setJoblocation_str(branchMasterService.findById(Integer.parseInt(obj.getJoblocation())).getBRANCH_NAME());
 
 		return obj;
 	}
@@ -6026,7 +6072,7 @@ public class HomeController {
 	@PostMapping("workcontactpersonsavejson")
 	public int workcontactpersonsavejson(@RequestParam Map<String, String> params) {
 
-	//System.out.println(params);
+		// System.out.println(params);
 		int insertedkey = 0;
 		if (params.get("category").equalsIgnoreCase("Lead")) {
 			ContactPerson cp = new ContactPerson();
@@ -7053,7 +7099,6 @@ public class HomeController {
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		theModel.addAttribute("PURPOSE", PURPOSE);
 
-		
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmlist);
 
@@ -11640,7 +11685,8 @@ public class HomeController {
 						(getaccounttransferdepositamt + getaccountincomedepositamt + getinvoice_receipt_masteramt1)
 								- (getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1
 										+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt
-										+ branchexpense_masteramt1 + getproject_expensewithdrawamt+ getbranch_expensewithdrawamt));
+										+ branchexpense_masteramt1 + getproject_expensewithdrawamt
+										+ getbranch_expensewithdrawamt));
 
 			}
 			// -----------------------------------------------------------------
@@ -11707,8 +11753,7 @@ public class HomeController {
 	}
 
 	@GetMapping("underMaintenance")
-	public String  underMaintenance()
-	{
+	public String underMaintenance() {
 		return "error/underMaintainace";
 	}
 }

@@ -182,11 +182,9 @@
 										th:href="'empjob?id=' + ${employeemaster['empMasterid']}"><i
 											class="bx bx-group"></i> Job Title</a></li>
 									<li class="nav-item"><a class="nav-link"
-										href="pages-profile-projects.html"><i
+										href="underMaintenance"><i
 											class="bx bx-grid-alt"></i> Projects</a></li>
-									<li class="nav-item"><a class="nav-link"
-										href="pages-profile-connections.html"><i
-											class="bx bx-link-alt"></i> Connections</a></li>
+									
 								</ul>
 							</div>
 						</div>
@@ -402,7 +400,7 @@
 																			<img th:src="@{/assets/img/icons/misc/jpg.png}"
 																				alt="PDF image" width="20" class="me-2">
 																		</th:block> <small class="text-body"
-																		th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
+																		th:text="${fileObj.FilePath_trim}">
 																	</small>
 																	</a>
 																</th:block>
@@ -2288,7 +2286,10 @@
 	                    },
 	                    error: function(e) {
 	                        console.log("Error" + e);
-	                    }
+	                    }, complete: function(e) {
+	    	            	
+	    	            }
+
 	                });
 
 	            }
@@ -2331,7 +2332,9 @@
 	                    },
 	                    error: function(e) {
 	                        console.log("Error" + e);
-	                    }
+	                    }, complete: function(e) {
+	    	            	
+	    	            }
 	                });
 
 	            }
@@ -2390,9 +2393,12 @@
 	                newid = result;
 	                
 	                //--------------------------------------------------------
-	    	        
+	                  
+	    	     if(newid >0)
+	    	     {
 	    	        if (lanid != '') {
 	    	            $('#language' + lanid).text(Language);
+	    	        
 	    	            if ($('#Read').is(':checked')) {
 	    	                $('#lan_read' + lanid).html('<i class="bx bx-check-circle"></i>');
 	    	            } else {
@@ -2438,17 +2444,22 @@
 	    	            data += `</tr>`;
 	    	            $(`#Languagetable tbody`).append(data);
 	    	        }
-	                
+	    	     } 
 	            },
 	            error: function(e) {
 	                console.log("Error" + e);
+	            },
+	            complete: function(e) {
+	            	langclose();
+	    	        $(e.target)[0].reset();
+	    	        $('#lanid').val(''); 
+	    	       
 	            }
+
 	        });
 	       
-	        langclose();
-	        $(e.target)[0].reset();
-	        $('#lanid').val('');
 	        $('#AddLanguages').modal('hide');
+	        
 	    }
 
 	    function addQualificationitem(e) {
@@ -2493,14 +2504,16 @@
 	            },
 	            error: function(e) {
 	                console.log("Error" + e);
+	            }, complete: function(e) {
+	            	 $(e.target)[0].reset();
+	     	        $('#Qualid').val('');
+	     	     
 	            }
 	        });
 	        //--------------------------------------------------------
 	       
-
-	        $(e.target)[0].reset();
-	        $('#Qualid').val('');
 	        $('#AddQualification').modal('hide');
+	       
 
 	    }
 
@@ -2698,14 +2711,17 @@
 	            },
 	            error: function(e) {
 	                console.log("Error" + e);
-	            }
+	            }, complete: function(e) {
+
+	    	        $(e.target)[0].reset();
+	    	        $('#empEmgContactid').val('');
+	    	      	
+	            	
+		         }
 	        });
 	        //--------------------------------------------------------
 	       // console.log(obj);
 	      
-	       
-	        $(e.target)[0].reset();
-	        $('#empEmgContactid').val('');
 	        $('#addNewEmgAddress').modal('hide');
 
 	    }

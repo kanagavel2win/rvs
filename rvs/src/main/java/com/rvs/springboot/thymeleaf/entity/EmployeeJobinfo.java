@@ -41,4 +41,7 @@ public class EmployeeJobinfo {
 	
 	@Transient
 	private String  reportstoname;
+	
+	@Transient
+	private String  joblocation_str;
 }

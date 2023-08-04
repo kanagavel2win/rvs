@@ -445,7 +445,7 @@
 			            	 
 			            	 $contactpersonCode="";
 		            		 
-			            	 $row_output ='<a href="editbranch?id='+ full['branchid'] +'"> '+ $name +" </a><br/><small class='emp_post text-truncate text-muted'>"+  full['branchCode'] + "</span>";
+			            	 $row_output ='<a href="editbranch?id='+ full['branchid'] +'"> '+ $name +" </a><br/><small class='emp_post text-truncate text-muted'>"+  full['branchCode'] + " - " + full['branchid']  + "</span>";
 			            	 return $row_output;
 			            }
 			          },
@@ -490,7 +490,9 @@
 					          targets: 6,
 					          render: function(data, type, full, meta) {
 					        	  $name = full['organizationname'];
-					              $row_output ='<a href="contactorganizationview?id='+ full['organization'] +'">'+ $name +"</a>";
+					              $row_output ='<a href="contactorganizationview?id='+ full['organization'] +'">'+ $name +"</a><br/><small class='emp_post text-truncate text-muted'>"+  full['organization_type'] + "</span>";
+					              
+					              
 					              return $row_output;
 					            }
 					        },

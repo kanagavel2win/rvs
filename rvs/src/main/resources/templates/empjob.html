@@ -182,11 +182,9 @@ var tblemployeecompensationid=0;
 									<li class="nav-item"><a class="nav-link active"><i
 											class="bx bx-group"></i> Job Title</a></li>
 									<li class="nav-item"><a class="nav-link"
-										href="pages-profile-projects.html"><i
+										href="underMaintenance"><i
 											class="bx bx-grid-alt"></i> Projects</a></li>
-									<li class="nav-item"><a class="nav-link"
-										href="pages-profile-connections.html"><i
-											class="bx bx-link-alt"></i> Connections</a></li>
+									
 								</ul>
 							</div>
 						</div>
@@ -318,8 +316,11 @@ var tblemployeecompensationid=0;
 																<span class="bx bxs-check-circle"></span>
 															</th:block>
 															</td>
-														<td><span th:id="'tbljoblocation' + ${stat.index}"
-															th:text="${emp.joblocation}"></span></td>
+														<td><span th:id="'tbljoblocation_str' + ${stat.index}"
+															th:text="${emp.joblocation_str}"></span>
+															<input type="hidden" th:id="'tbljoblocation' + ${stat.index}"
+															th:value="${emp.joblocation}" />
+															</td>
 														<td><span th:id="'tbljobdeparment' + ${stat.index}"
 															th:text="${emp.jobdeparment}"></span></td>
 														<td><span th:id="'tbljobtitle' + ${stat.index}"
@@ -656,7 +657,7 @@ var tblemployeecompensationid=0;
 										</div>
 										<div class="col-12">
 											<label for="compayratetype">Pay Rate</label><br /> <input
-												type="text" class="form-control"
+												type="number" class="form-control"
 												style="width: 50%; float: left;" id="compayrate"> <select
 												class="form-select addpayratedata"
 												style="width: 50%; float: right" id="compayratetype">
@@ -1225,9 +1226,9 @@ var tblemployeecompensationid=0;
 																html += '<span>'
 																		+ jobeffectivedate_new
 																		+ '</span>                                    </td>                                    <td>';
-																html += '<span id="tbljoblocation' + tblemployeeJobinfoid  + '" >'
-																		+ joblocation
-																		+ '</span>                                    </td>                                    <td>';
+																html += '<span id="tbljoblocation_str' + tblemployeeJobinfoid  + '" >'
+																		+ bmobj.joblocation_str
+																		+ '</span>   <input type="hidden" id="tbljoblocation' + tblemployeeJobinfoid +'" value="'+ joblocation +'" />																		                                 </td>                                    <td>';
 																html += '	<span id="tbljobdeparment' + tblemployeeJobinfoid  + '" >'
 																		+ jobdeparment
 																		+ '</span>                                    </td>                                    <td>';
@@ -1256,10 +1257,16 @@ var tblemployeecompensationid=0;
 																		.text(
 																				jobeffectivedate);
 																$(
-																		'#tbljoblocation'
+																		'#tbljoblocation_str'
 																				+ employeejobinfoidrow)
 																		.text(
+																				bmobj.joblocation_str);
+																$(
+																		'#tbljoblocation'
+																				+ employeejobinfoidrow)
+																		.val(
 																				joblocation);
+																
 																$(
 																		'#tbljobdeparment'
 																				+ employeejobinfoidrow)
@@ -1314,7 +1321,7 @@ var tblemployeecompensationid=0;
 									
 									
 									$('#joblocation').val(
-											$('#tbljoblocation' + id).text())
+											$('#tbljoblocation' + id).val())
 											.change();
 									$('#jobdeparment').val(
 											$('#tbljobdeparment' + id).text())

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +33,8 @@ public class EmployeeFiles {
 	@Column
 	private String DocumentNo;
 	@Column
-	private String FilePath;
-	
-	
-	
+	private String FilePath;	
+	@Transient
+	private String FilePath_trim;
 
 }

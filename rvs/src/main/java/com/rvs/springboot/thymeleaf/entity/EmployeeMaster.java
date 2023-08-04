@@ -138,6 +138,8 @@ public class EmployeeMaster {
 	@Transient
 	private String t_branch_name;
 	@Transient
+	private String t_branch_id;
+	@Transient
 	private String t_position;
 	@Transient
 	private String t_salary;

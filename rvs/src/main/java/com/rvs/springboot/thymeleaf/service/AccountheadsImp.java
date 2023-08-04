@@ -182,7 +182,7 @@ public class AccountheadsImp implements AccountheadsService {
 
 	@Override
 	public List<Map<String, Object>> getbranchexpense_item_master_byexpenseItem(int searchid) {
-		String sql = "SELECT COALESCE(sum(totalamount_amount),0) as amount FROM rvsland_cms.branchexpense_item_master where branchexpense_item ='"+ searchid +"'";
+		String sql = "SELECT COALESCE(sum(total),0) as amount FROM rvsland_cms.branchexpense_master where category ='"+ searchid +"'";
 		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
 		return op;
 	}
@@ -204,6 +204,13 @@ public class AccountheadsImp implements AccountheadsService {
 	@Override
 	public List<Map<String, Object>> getproject_expensewithdraw(int searchid) {
 		String sql = "SELECT COALESCE(sum(total),0) as amount FROM rvsland_cms.project_expense where depitedfrom ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getbranch_expensewithdraw(int searchid) {
+		String sql = "SELECT COALESCE(sum(total),0) as amount FROM rvsland_cms.branchexpense_master where depitedfrom ='"+ searchid +"'";
 		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
 		return op;
 	}

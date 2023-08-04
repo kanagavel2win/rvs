@@ -129,8 +129,7 @@
                         <th>Id</th>
                         <th>Branch</th>
                         <th>In-Charge</th>
-                        <th>Prim-Contact</th>
-                        <th>Prim-Email</th>
+                        <th>Contact</th>
                         <th>Started On</th>
                         <th>Hierarchy</th>
                         <th>Status</th>
@@ -234,7 +233,7 @@
                         
                         <select class="form-select" id="branchHierarchy" required>
                            <option value="">Select Hierarchy</option>
-                           <option value="Self">Self</option>
+                           <option value="Root">Root</option>
                            <option th:each="branch :${branchlist}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option>
                            
                          </select>
@@ -371,8 +370,7 @@
 			        { data: 'id' },
 			        { data: 'branch_NAME' },
 			        { data: '' },
-			        { data: 'office_PHONE_NUMBER' },
-			        { data: 'branch_OFFICE_EMAIL_ID' },
+			        { data: '' },
 			        { data: 'startdatatimeline' },
 			        { data: 'comes_UNDER_name' },
 			        { data: 'current_STATUS' },
@@ -475,10 +473,18 @@
 			          },
 			        {
 			          
-			          targets: 5
+			          targets: 5,
+			          
+			          render: function(data, type, full, meta) {
+				           	 $office_PHONE_NUMBER = full['office_PHONE_NUMBER'];
+				           	 $branch_OFFICE_EMAIL_ID = full['branch_OFFICE_EMAIL_ID'];
+				           	 
+				           	 $row_output = $office_PHONE_NUMBER +'<br/>' + $branch_OFFICE_EMAIL_ID ;
+				           	 return $row_output;
+				           }
 			        },
 			        {
-			           targets: 7,
+			           targets: 6,
 			           render: function(data, type, full, meta) {
 			           	 $startdateMMformat = full['startdateMMformat'];
 			           	 $startdatatimeline = full['startdatatimeline'];
@@ -488,7 +494,7 @@
 			           }
 			         },
 			         {
-			             targets: 9,
+			             targets: 8,
 			             render: function(data, type, full, meta) {
 			             	 $current_STATUS = full['current_STATUS'];
 			             	$row_output ="";
@@ -681,8 +687,8 @@
 							validationformreset();
 							Swal.fire({
 						        title: 'Congratulations!',
-						        text: 'Your New Branch is Added Successfully',
-						        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+						        text: 'Go Ahead &  Write A New Success Story',
+						        imageUrl: assetsPath + 'img/backgrounds/Welcome New Branch.jpeg',
 						        imageWidth: 400,
 						        imageAlt: 'Custom image',
 						        confirmButtonText: 'Welcome',
@@ -736,8 +742,8 @@
 										$('#branch_type').val('').change();
 									}else
 									{
-										$('#branchHierarchy').append('<option value="Self">Self</option>');
-										$('#branchHierarchy').val('Self').change();
+										$('#branchHierarchy').append('<option value="Root">Root</option>');
+										$('#branchHierarchy').val('Root').change();
 										$('#branchHierarchy').attr('disabled',true);
 									}
 						 }
@@ -745,7 +751,7 @@
 				 
 			}else
 				{
-				    $('#branchHierarchy option[value="Self"]').remove();
+				    $('#branchHierarchy option[value="Root"]').remove();
 					$('#branchHierarchy').attr('disabled',false);
 				}
 		});

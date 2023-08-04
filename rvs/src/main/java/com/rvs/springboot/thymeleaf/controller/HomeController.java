@@ -706,8 +706,24 @@ public class HomeController {
 		bm.setCOMES_UNDER(params.get("branchHierarchy"));
 		bm.setCURRENT_STATUS(params.get("branchstatus"));
 		bm.setBranchCode(params.get("branchCode"));
-
 		bm = branchMasterService.save(bm);
+		
+		// Branch Effective
+		List<BranchEffective> branchEffective = bm.getBranchEffective();
+
+		if (branchEffective.size() > 0) {
+			branchEffective.sort(Comparator.comparing(BranchEffective::getEffectivedate));
+			bm.setEffectiveon(branchEffective.get(branchEffective.size() - 1).getEffectivedate());
+			try {
+				bm.setEffectiveonMMformat(
+						displaydateFormatFirstMMMddYYY
+								.format(displaydateFormatrev
+										.parse(branchEffective.get(branchEffective.size() - 1).getEffectivedate()))
+								.toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 		return branchListresponsebody(bm);
 
 	}
@@ -1324,14 +1340,14 @@ public class HomeController {
 		Date todaydate = new Date();
 		List<BranchMaster> bmList = branchMasterService.findAll();
 
-		if (!bm.getCOMES_UNDER().equalsIgnoreCase("Self")) {
+		if (!bm.getCOMES_UNDER().equalsIgnoreCase("Root")) {
 			List<BranchMaster> templist = bmList.stream()
 					.filter(C -> C.getId() == Integer.parseInt(bm.getCOMES_UNDER())).collect(Collectors.toList());
 			if (templist.size() > 0) {
 				bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
 			}
 		} else {
-			bm.setCOMES_UNDER_name("Self");
+			bm.setCOMES_UNDER_name("Root");
 		}
 		if (!bm.getB_TYPE().equalsIgnoreCase("")) {
 			bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
@@ -1414,14 +1430,14 @@ public class HomeController {
 
 		for (BranchMaster bm : bmList) {
 
-			if (!bm.getCOMES_UNDER().equalsIgnoreCase("Self")) {
+			if (!bm.getCOMES_UNDER().equalsIgnoreCase("Root")) {
 				List<BranchMaster> templist = bmList.stream()
 						.filter(C -> C.getId() == Integer.parseInt(bm.getCOMES_UNDER())).collect(Collectors.toList());
 				if (templist.size() > 0) {
 					bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
 				}
 			} else {
-				bm.setCOMES_UNDER_name("Self");
+				bm.setCOMES_UNDER_name("Root");
 			}
 			if (!bm.getB_TYPE().equalsIgnoreCase("")) {
 				bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
@@ -1605,7 +1621,7 @@ public class HomeController {
 			theModel.addAttribute("primaryContact", true);
 		}
 		// ---------------------------------------
-		if (!bm.getCOMES_UNDER().equalsIgnoreCase("Self")) {
+		if (!bm.getCOMES_UNDER().equalsIgnoreCase("Root")) {
 			int comes_underint = Integer.parseInt(bm.getCOMES_UNDER());
 			List<BranchMaster> templist = bmlist.stream().filter(C -> C.getId() == comes_underint)
 					.collect(Collectors.toList());
@@ -1613,7 +1629,7 @@ public class HomeController {
 				bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
 			}
 		} else {
-			bm.setCOMES_UNDER_name("Self");
+			bm.setCOMES_UNDER_name("Root");
 		}
 		if (!bm.getB_TYPE().equalsIgnoreCase("")) {
 			bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
@@ -1698,7 +1714,7 @@ public class HomeController {
 			theModel.addAttribute("primaryContact", true);
 		}
 		// ---------------------------------------
-		if (!bm.getCOMES_UNDER().equalsIgnoreCase("Self")) {
+		if (!bm.getCOMES_UNDER().equalsIgnoreCase("Root")) {
 			int comes_underint = Integer.parseInt(bm.getCOMES_UNDER());
 			List<BranchMaster> templist = bmlist.stream().filter(C -> C.getId() == comes_underint)
 					.collect(Collectors.toList());
@@ -1706,7 +1722,7 @@ public class HomeController {
 				bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
 			}
 		} else {
-			bm.setCOMES_UNDER_name("Self");
+			bm.setCOMES_UNDER_name("Root");
 		}
 		if (!bm.getB_TYPE().equalsIgnoreCase("")) {
 			bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
@@ -1833,7 +1849,8 @@ public class HomeController {
 				infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 				if (infoobjjobgreen.size() > 0) {
 					em.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
-					em.setT_branch_name(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());
+					em.setT_branch_id( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());	
+					em.setT_branch_name(branchMasterService.findById(Integer.parseInt( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation())).getBRANCH_NAME());
 				}
 			}
 			// -------------------------------------------
@@ -2622,7 +2639,9 @@ public class HomeController {
 			infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 			if (infoobjjobgreen.size() > 0) {
 				employeemasternew.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
-				employeemasternew.setT_branch_name(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());
+				employeemasternew.setT_branch_id( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());	
+				employeemasternew.setT_branch_name(branchMasterService.findById(Integer.parseInt( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation())).getBRANCH_NAME());
+							
 			}
 		}
 		// -------------------------------------------
@@ -2760,7 +2779,10 @@ public class HomeController {
 			infoobjjobgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 			if (infoobjjobgreen.size() > 0) {
 				employeemasternew.setT_position(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJobtitle());
-				employeemasternew.setT_branch_name(infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());
+				employeemasternew.setT_branch_id( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation());	
+				
+				employeemasternew.setT_branch_name(branchMasterService.findById(Integer.parseInt( infoobjjobgreen.get(infoobjjobgreen.size() - 1).getJoblocation())).getBRANCH_NAME());
+							
 			}
 		}
 		// -------------------------------------------
@@ -11608,12 +11630,17 @@ public class HomeController {
 						.getproject_expensewithdraw(obj.getAccountheadid());
 				getproject_expensewithdrawamt = (double) getproject_expensewithdraw.get(0).get("amount");
 				// ----------------------------------------------------------------------------
+				double getbranch_expensewithdrawamt;
+				List<Map<String, Object>> getbranch_expensewithdraw = accountheadsService
+						.getbranch_expensewithdraw(obj.getAccountheadid());
+				getbranch_expensewithdrawamt = (double) getbranch_expensewithdraw.get(0).get("amount");
+				// ----------------------------------------------------------------------------
 
 				obj.setAmount(
 						(getaccounttransferdepositamt + getaccountincomedepositamt + getinvoice_receipt_masteramt1)
 								- (getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1
 										+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt
-										+ branchexpense_masteramt1 + getproject_expensewithdrawamt));
+										+ branchexpense_masteramt1 + getproject_expensewithdrawamt+ getbranch_expensewithdrawamt));
 
 			}
 			// -----------------------------------------------------------------
@@ -11679,4 +11706,9 @@ public class HomeController {
 		return "accountsreport";
 	}
 
+	@GetMapping("underMaintenance")
+	public String  underMaintenance()
+	{
+		return "error/underMaintainace";
+	}
 }

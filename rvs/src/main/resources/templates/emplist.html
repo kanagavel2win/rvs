@@ -160,7 +160,7 @@
                         <input
                           type="text"
                           id="firstName"
-                          class="form-control "
+                          class="form-control " onkeydown="return /[a-z]/i.test(event.key)" 
                            required
                         />
                           
@@ -173,7 +173,7 @@
                          <input
                           type="text"
                           id="lastName"
-                          class="form-control "
+                          class="form-control " onkeydown="return /[a-z]/i.test(event.key)" 
                            required
                         />
                        <div class="invalid-feedback">Please enter the Last Name.</div>
@@ -465,8 +465,8 @@
 			                '</div>' +
 			                '<div class="d-flex flex-column">' +
 			                '<span class="emp_name text-truncate">' +
-			                $name +
-			                '</span>' +
+			                '<a href="emp?id='+ full['empMasterid'] +'">'+ $name +
+			                '</a></span>' +
 			                '<small class="emp_post text-truncate text-muted">RVS000' +
 			                $empMasterid +
 			                '</small>' +
@@ -485,6 +485,16 @@
 			           	 return $row_output;
 			           }
 			         },
+			         
+			         {
+				           targets: 5,
+				           render: function(data, type, full, meta) {
+				           	 $t_branch_name = full['t_branch_name'];
+				           	 
+				           	 $row_output = '<a href="editbranch?id='+ full['t_branch_id'] +'">'+ $t_branch_name+'</a>';
+				           	 return $row_output;
+				           }
+				         },
 			        {
 			           targets: 8,
 			           render: function(data, type, full, meta) {

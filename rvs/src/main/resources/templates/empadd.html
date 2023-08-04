@@ -767,7 +767,7 @@
 												<label class="form-label" for="Model_StaffName">First
 													Name</label> <input type="text" class="form-control"
 													id="Model_StaffName" th:field="*{StaffName}"
-													th:value="${employeemaster['StaffName']}" required />
+													th:value="${employeemaster['StaffName']}"  onkeydown="return /[a-z]/i.test(event.key)"  required />
 												<div class="invalid-feedback">Please enter First Name.</div>
 											</div>
 											<div class="col-12 col-md-6">
@@ -775,7 +775,7 @@
 													Name</label> <input type="text" class="form-control"
 													id="Model_Father_HusbandName"
 													th:value="${employeemaster['Father_HusbandName']}"
-													th:field="*{Father_HusbandName}" required />
+													th:field="*{Father_HusbandName}"  onkeydown="return /[a-z]/i.test(event.key)"  required />
 												<div class="invalid-feedback">Please enter Last Name.</div>
 											</div>
 											<div class="col-12">
@@ -1133,7 +1133,6 @@
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="modalEmg_RelationEmg">Relation
-												<label class="emptitle additem" name="addmodalrelation"><i class="bx bxs-plus-circle ownstyle1"></i></label>
 												</label>
 												<select id="modalEmg_RelationEmg"
 													class="select2 form-select modalrelation" data-allow-clear="true"
@@ -1377,7 +1376,6 @@
 											<div class="col-lg-12 col-md-12">
 												<input type="hidden" id="lanid" name="lanid" /> <label
 													class="form-label" for="Language">Language
-													<label class="emptitle additem" name="addmodallanguage"><i class="bx bxs-plus-circle ownstyle1"></i></label>
 													 </label> 													
 													<select id="Language" name="Language" 
 														class="form-select modallanguage" required>
@@ -1475,7 +1473,6 @@
 											<div class="mb-3 col-lg-6 col-md-12">
 												<input type="hidden" id="empEduid"> <label
 													class="form-label" for="Degree">Degree
-													<label class="emptitle additem" name="addmodaldegree"><i class="bx bxs-plus-circle ownstyle1"></i></label>
 													</label> <select
 													class="form-control modaldegree" id="Degree" name="Degree">
 													<option value="">-</option>
@@ -1642,29 +1639,6 @@
 					<!-- / Content -->
 
 					<!-- Footer -->
-					<footer class="content-footer footer bg-footer-theme">
-						<div
-							class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-							<div class="mb-2 mb-md-0">
-								©
-								<script>
-                    document.write(new Date().getFullYear());
-                  </script>
-								, made with ❤️ by <a href="https://pixinvent.com"
-									target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
-							</div>
-							<div>
-								<a href="https://themeforest.net/licenses/standard"
-									class="footer-link me-4" target="_blank">License</a> <a
-									href="https://1.envato.market/pixinvent_portfolio"
-									target="_blank" class="footer-link me-4">More Themes</a> <a
-									href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
-									target="_blank" class="footer-link me-4">Documentation</a> <a
-									href="https://pixinvent.ticksy.com/" target="_blank"
-									class="footer-link d-none d-sm-inline-block">Support</a>
-							</div>
-						</div>
-					</footer>
 					<!-- / Footer -->
 
 					<div class="content-backdrop fade"></div>

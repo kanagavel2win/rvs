@@ -133,9 +133,9 @@ var Accountsheadsexpenseitems = [];
                             width="110"
                             alt="User avatar"
                           />
-                          <div class="user-info text-center">
-                            <h5 class="mb-2" th:text="${BranchMaster.BRANCH_NAME}"></h5>
-                            <span class="badge bg-label-secondary"  th:text="${BranchMaster.BranchCode} +'-'+ ${BranchMaster.id}"></span>
+                           <div class="user-info text-center">
+                            <h5 class="mb-2" id="Lbl_BRANCH_NAME" th:text="${BranchMaster.BRANCH_NAME}"></h5>
+                            <span class="badge bg-label-secondary"   id="Lbl_BranchCode" th:text="${BranchMaster.BranchCode} +'-'+ ${BranchMaster.id}"></span>
                           </div>
                         </div>
                       </div>
@@ -219,10 +219,7 @@ var Accountsheadsexpenseitems = [];
                       <h5 class="pb-2 border-bottom mb-4">Address</h5>
                       <div class="info-container">
                         <ul class="list-unstyled">
-                          <li class="mb-3">
-                            <span class="fw-bold me-2">Country:</span>
-                            <span th:text="${BranchMaster.COUNTRY}" id="Lbl_AddressCountry"></span>
-                          </li>
+                         
                           <li class="mb-3">
                             <span class="fw-bold me-2">Address Line 1:</span>
                             <span  th:text="${BranchMaster.BRANCH_ADDRESSLINE1}"  id="Lbl_AddressAddress1"></span>
@@ -246,6 +243,10 @@ var Accountsheadsexpenseitems = [];
                           <li class="mb-3">
                             <span class="fw-bold me-2">State:</span>
                             <span th:text="${BranchMaster.STATE}" id="Lbl_AddressState"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">Country:</span>
+                            <span th:text="${BranchMaster.COUNTRY}" id="Lbl_AddressCountry"></span>
                           </li>
                         <li class="mb-3">
                             <span class="fw-bold me-2">Pin code:</span>
@@ -1002,7 +1003,7 @@ var Accountsheadsexpenseitems = [];
                           th:value="${BranchMaster['COMES_UNDER']}"
                           required>
                            <option value="">Select Hierarchy</option>
-                           <option value="Self">Self</option>
+                           <option value="Root">Root</option>
                            <option th:each="branch :${BranchList}" th:value="${branch.id}"  th:text="${branch.BRANCH_NAME}"></option> 
                            
                          </select>
@@ -1069,8 +1070,6 @@ var Accountsheadsexpenseitems = [];
                       <form id="addContactform" class="row g-3" onsubmit="return false">
                         <div class="col-12">
                           <label class="form-label w-100" for="modalAddCard">Contact Type 
-                          <label class="emptitle additem" name="addmodalcontacttype"><i
-																class="bx bxs-plus-circle ownstyle1"></i></label>
                           </label>
                           <div class="input-group input-group-merge">
                             <select id="modalcontacttype" class="form-select modalcontacttype" required>
@@ -1161,43 +1160,7 @@ var Accountsheadsexpenseitems = [];
                         <p class="address-subtitle">Add/Update Address Details</p>
                       </div>
                       <form id="addNewAddressForm" class="row g-3" onsubmit="return false">
-                        <div class="col-12">
-                          <label class="form-label" for="modalAddressCountry">Country</label>
-                          <select
-                            id="modalAddressCountry"
-                            name="modalAddressCountry"
-                            class="select2 form-select"
-                            data-allow-clear="true"
-                            th:value="${BranchMaster.COUNTRY}"
-                            required
-                          >
-                            <option value="">Select</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Bangladesh">Bangladesh</option>
-                            <option value="Belarus">Belarus</option>
-                            <option value="Brazil">Brazil</option>
-                            <option value="Canada">Canada</option>
-                            <option value="China">China</option>
-                            <option value="France">France</option>
-                            <option value="Germany">Germany</option>
-                            <option value="India">India</option>
-                            <option value="Indonesia">Indonesia</option>
-                            <option value="Israel">Israel</option>
-                            <option value="Italy">Italy</option>
-                            <option value="Japan">Japan</option>
-                            <option value="Korea">Korea, Republic of</option>
-                            <option value="Mexico">Mexico</option>
-                            <option value="Philippines">Philippines</option>
-                            <option value="Russia">Russian Federation</option>
-                            <option value="South Africa">South Africa</option>
-                            <option value="Thailand">Thailand</option>
-                            <option value="Turkey">Turkey</option>
-                            <option value="Ukraine">Ukraine</option>
-                            <option value="United Arab Emirates">United Arab Emirates</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="United States">United States</option>
-                          </select>
-                        </div>
+                        
                         <div class="col-12">
                           <label class="form-label" for="modalAddressAddress1">Address Line 1</label>
                           <input
@@ -1221,7 +1184,7 @@ var Accountsheadsexpenseitems = [];
                             th:value="${BranchMaster.BRANCH_ADDRESSLINE2}"
                           />
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 col-md-6">
                           <label class="form-label" for="modalAddressLandmark">Landmark</label>
                           <input
                             type="text"
@@ -1263,6 +1226,43 @@ var Accountsheadsexpenseitems = [];
                             th:value="${BranchMaster.STATE}"
                             required
                           />
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="modalAddressCountry">Country</label>
+                          <select
+                            id="modalAddressCountry"
+                            name="modalAddressCountry"
+                            class="select2 form-select"
+                            data-allow-clear="true"
+                            th:value="${BranchMaster.COUNTRY}"
+                            required
+                          >
+                            <option value="">Select</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Belarus">Belarus</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Canada">Canada</option>
+                            <option value="China">China</option>
+                            <option value="France">France</option>
+                            <option value="Germany">Germany</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Korea">Korea, Republic of</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Russia">Russian Federation</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States">United States</option>
+                          </select>
                         </div>
                         <div class="col-12 col-md-6">
                           <label class="form-label" for="modalAddressZipCode">Zip Code</label>
@@ -1307,8 +1307,6 @@ var Accountsheadsexpenseitems = [];
                       <form id="addNewdocument" class="row g-3" onsubmit="return false">
                         <div class="col-12">
                           <label class="form-label w-100" for="modalAddCard">Document Type
-                          	<label class="emptitle additem" name="addmodaldocumenttype">
-                          		<i class="bx bxs-plus-circle ownstyle1"></i></label>
                           		
                            </label>
                           <div class="input-group input-group-merge">
@@ -1735,8 +1733,8 @@ Model_CURRENT_STATUS
 										}else
 										{
 											
-											$('#Model_COMES_UNDER').append('<option value="Self">Self</option>');
-											$('#Model_COMES_UNDER').val('Self').change();
+											$('#Model_COMES_UNDER').append('<option value="Root">Root</option>');
+											$('#Model_COMES_UNDER').val('Root').change();
 											$('#Model_COMES_UNDER').attr('disabled',true);
 										}
 							 }
@@ -1744,7 +1742,7 @@ Model_CURRENT_STATUS
 					 
 				}else
 					{
-					    $('#Model_COMES_UNDER option[value="Self"]').remove();
+					    $('#Model_COMES_UNDER option[value="Root"]').remove();
 						$('#Model_COMES_UNDER').attr('disabled',false);
 					}
 			});
@@ -1782,8 +1780,8 @@ Model_CURRENT_STATUS
 		  						type : "POST",url : "Addressupdatejson",
 		  						data : formData, success : function(result) {
 		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							//console.log(bmobj);
-		  							$('#Lbl_AddressCountry').text(bmobj.Lbl_AddressCountry);
+		  							console.log(bmobj);
+		  							$('#Lbl_AddressCountry').text(bmobj.country);
 		  							$('#Lbl_AddressAddress1').text(bmobj.branch_ADDRESSLINE1);
 		  							$('#Lbl_AddressAddress2').text(bmobj.branch_ADDRESSLINE2);
 		  							$('#Lbl_AddressLandmark').text(bmobj.branch_ADDRESSLandMark);

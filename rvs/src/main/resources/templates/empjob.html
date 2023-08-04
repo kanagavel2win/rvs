@@ -570,14 +570,12 @@ var tblemployeecompensationid=0;
 
 											</label> <select class="form-select" id="joblocation">
 												<th:block th:each="obj : ${branchls}">
-													<option th:text="${obj.BRANCH_NAME}"></option>
+													<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
 												</th:block>
 											</select>
 										</div>
 										<div class="col-12 ">
-											<label for="email-id-icon">Department <label
-												class="emptitle additem" name="adddepartmentdata"><i
-													class="bx bxs-plus-circle ownstyle1"></i></label>
+											<label for="email-id-icon">Department 
 											</label> <select class="form-select adddepartmentdata" id="jobdeparment">
 												<option>-</option>
 												<th:block th:each="str :${Department}">
@@ -586,9 +584,7 @@ var tblemployeecompensationid=0;
 											</select>
 										</div>
 										<div class="col-12 ">
-											<label for="email-id-icon">Job Title <label
-												class="emptitle additem" name="addjobtitledata"><i
-													class="bx bxs-plus-circle ownstyle1"></i></label>
+											<label for="email-id-icon">Job Title 
 											</label> <select class="form-select addjobtitledata" id="jobtitle">
 												<option>-</option>
 												<th:block th:each="str :${JobTitle}">
@@ -652,9 +648,7 @@ var tblemployeecompensationid=0;
 											</select>
 										</div>
 										<div class="col-12 ">
-											<label for="compaytype">Pay Type <label
-												class="emptitle additem" name="addjobtitledata"><i
-													class="bx bxs-plus-circle ownstyle1"></i></label>
+											<label for="compaytype">Pay Type 
 											</label> <select class="form-select" id="compaytype">
 												<option>-</option>
 												<option>Salary</option>
@@ -673,10 +667,7 @@ var tblemployeecompensationid=0;
 											</select>
 										</div>
 										<div class="col-12">
-											<label for="comchangereason">Change Reason <label
-												class="emptitle additem" name="addchangereasondata"><i
-													class="bx bxs-plus-circle ownstyle1"></i></label>
-											</label> <select class="form-select addchangereasondata"
+											<label for="comchangereason">Change Reason </label> <select class="form-select addchangereasondata"
 												id="comchangereason">
 												<option>-</option>
 												<th:block th:each="str :${PAYCHANGEREASON}">
@@ -703,29 +694,6 @@ var tblemployeecompensationid=0;
 					<!-- / Content -->
 
 					<!-- Footer -->
-					<footer class="content-footer footer bg-footer-theme">
-						<div
-							class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-							<div class="mb-2 mb-md-0">
-								©
-								<script>
-                    document.write(new Date().getFullYear());
-                  </script>
-								, made with ❤️ by <a href="https://pixinvent.com"
-									target="_blank" class="footer-link fw-semibold">PIXINVENT</a>
-							</div>
-							<div>
-								<a href="https://themeforest.net/licenses/standard"
-									class="footer-link me-4" target="_blank">License</a> <a
-									href="https://1.envato.market/pixinvent_portfolio"
-									target="_blank" class="footer-link me-4">More Themes</a> <a
-									href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation-bs5/"
-									target="_blank" class="footer-link me-4">Documentation</a> <a
-									href="https://pixinvent.ticksy.com/" target="_blank"
-									class="footer-link d-none d-sm-inline-block">Support</a>
-							</div>
-						</div>
-					</footer>
 					<!-- / Footer -->
 
 					<div class="content-backdrop fade"></div>

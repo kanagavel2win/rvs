@@ -103,7 +103,7 @@
 	border: 1px #ccc solid;
 	vertical-align: top;
 	text-align: right;
-	color: #000;
+	
 	text-align: center;
 	vertical-align: middle;
 	width: 80px;
@@ -126,7 +126,7 @@
 
 .caltoptxtcontainer i {
 	font-size: 38px;
-	background: #F7F7F7;
+	
 	cursor: pointer;
 }
 
@@ -140,7 +140,7 @@
 
 .btnmasternote {
 	border: 0px #ccc solid;
-	background: #fff;
+
 	cursor: pointer;
 }
 
@@ -150,7 +150,7 @@
 	padding-left: 10px;
 	border: 0px #ccc solid;
 	font-size: 28px;
-	background: #fff;
+
 }
 
 .attendancelisttable {
@@ -790,24 +790,28 @@
 			    var attendid=$('#attid'+ rowindex).val();
 			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|HL|" + attendid +"~";
 			});
-			//console.info(attendancestr);
-			
-			 var formData = {
-					attendancestr : attendancestr					
-			}
-			$.ajax({
-				type : "POST",url : "employeeattendancesave",
-				data : formData,success : function(result) {
+			if(attendancestr !="")
+			{
+					 var formData = {
+							attendancestr : attendancestr					
+					}
+					$.ajax({
+						type : "POST",url : "employeeattendancesave",
+						data : formData,success : function(result) {
+							
+							$('#modeljqueryresult').text( "Attendance updated successfully");
+							$("#btnmodelclose").toggleClass("refresh");
+						},
+						error : function(e) {
+							$('#modeljqueryresult').text("Error" + e);
+						}
+					});
 					
-					$('#modeljqueryresult').text( "Attendance updated successfully");
-					$("#btnmodelclose").toggleClass("refresh");
-				},
-				error : function(e) {
-					$('#modeljqueryresult').text("Error" + e);
-				}
-			});
-			
-			$('#jqueryInformationScrollable').modal('toggle'); 
+					$('#jqueryInformationScrollable').modal('toggle'); 
+			}else
+			{
+				$(this).show();
+			}
 			//------------------------------------------------------------------------------
 		});
 		

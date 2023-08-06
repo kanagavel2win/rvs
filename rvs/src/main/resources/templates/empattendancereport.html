@@ -107,7 +107,6 @@
 .sticky-col {
 	position: -webkit-sticky;
 	position: sticky;
-	background-color: white !important;
 	border-right: 1px solid #ccc;
 }
 
@@ -161,7 +160,7 @@
 }
 
 td.sunday {
-	background: #FFE4E1;
+	
 }
 
 .holiday {
@@ -182,7 +181,6 @@ td.holiday {
 }
 
 .card-datatable  button {
-	background: #EEEEE0;
 	border: none;
 	padding: 5px;
 	color: #9C9C9C;
@@ -278,8 +276,8 @@ td.holiday {
 													</form>
 													<hr />
 													<th:block>
-														<p class="reortmonth"
-															th:text="'Report Month ' +${monthstr}"></p>
+														
+														<span class="badge bg-label-success me-1" th:text="'Report Month ' +${monthstr}"></span>
 													</th:block>
 
 													<div class="card-datatable table-responsive pt-0">

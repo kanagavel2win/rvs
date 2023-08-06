@@ -114,7 +114,7 @@
 
 .policyedit
 {
-	color: #527a00;
+	
 	cursor: pointer
 }
 </style>
@@ -718,7 +718,7 @@
 			           		if(element.status != 'Move to Archive')
 			           		{
 			           			
-				           		htmlop += '<div class="row editemg"><hr /><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit" onClick="policyeditfunction('+ element.insuranceDetailsid +')">'+ element.vendorNamestr + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">From :</dt>		<dd class="col-sm-8">'+ element.pfrom_str + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">To:</dt>		<dd class="col-sm-8">'+ element.pto_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Cover:</dt>		<dd class="col-sm-8">'+ element.cover + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Coverage Amount:</dt>		<dd class="col-sm-8">'+ element.coverageAmount + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
+				           		htmlop += '<div class="row editemg"><hr /><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit " onClick="policyeditfunction('+ element.insuranceDetailsid +')"><span class="badge bg-label-primary me-1">'+ element.vendorNamestr + '</span></dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">From :</dt>		<dd class="col-sm-8">'+ element.pfrom_str + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">To:</dt>		<dd class="col-sm-8">'+ element.pto_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Cover:</dt>		<dd class="col-sm-8">'+ element.cover + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Coverage Amount:</dt>		<dd class="col-sm-8">'+ element.coverageAmount + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
 				         	 	htmlop += '<a href="'+ element.doc_Attach +'" target="_blank">';
 				         	 	if(element.doc_Attach != '')
 				         	 	{
@@ -767,7 +767,7 @@
 						
 						bmobj.forEach((element, index, array) =>
 			           	{
-			           		htmlop +='<tr><td class="policyedit" onClick="policyclaimeditfunction('+ element.insuranceClaimid +')">'+element.policyNo +'</td><td>'+element.claimDateMMMddYYYFormate +'</td><td>'+element.claimAmount +'</td><td>'+element.reason +'</td></tr>';
+			           		htmlop +='<tr><td class="policyedit" onClick="policyclaimeditfunction('+ element.insuranceClaimid +')"><span class="badge bg-label-primary me-1">'+element.policyNo +'</span></td><td>'+element.claimDateMMMddYYYFormate +'</td><td>'+element.claimAmount +'</td><td>'+element.reason +'</td></tr>';
 			         	 	
 			            });
 						

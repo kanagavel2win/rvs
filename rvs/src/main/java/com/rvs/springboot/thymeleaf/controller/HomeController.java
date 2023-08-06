@@ -3231,7 +3231,7 @@ public class HomeController {
 
 				if (infoobjgreen.size() > 0) {
 					if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation()
-							.equalsIgnoreCase(targetedbranchName)) {
+							.equalsIgnoreCase(branchid)) {
 
 						if (!calculateTerminatedstatus(obj.getEmpMasterid(), date)) {
 							employeeMasterlswitheffectivelocation.add(obj);

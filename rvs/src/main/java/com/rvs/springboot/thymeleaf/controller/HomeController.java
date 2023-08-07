@@ -5479,6 +5479,7 @@ public class HomeController {
 		return ls;
 
 	}
+	
 
 	@GetMapping("insurance")
 	public String insurancedetails(Model themodel, @RequestParam("id") int id) {

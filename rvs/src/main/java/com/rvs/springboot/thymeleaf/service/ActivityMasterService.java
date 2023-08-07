@@ -11,7 +11,7 @@ public interface ActivityMasterService {
 	public List<ActivityMaster> saveall(List<ActivityMaster> obj);
 	public ActivityMaster findById(Integer id);
 	public List<ActivityMaster> findAll();
-	public  List<Map<String, Object>> gettimelinelist(String mastercategory,String mastercategoryid,String status) ;
+	public  List<Map<String, Object>> gettimelinelist(String mastercategory,String mastercategoryid,String status,String subcategory) ;
 	public  List<Map<String, Object>> nextactivity(String mastercategory,String mastercategoryid) ;
 	public  List<Map<String, Object>> historypendingactivity(String mastercategory,String mastercategoryid) ;
 	public void deletebyid(int id);

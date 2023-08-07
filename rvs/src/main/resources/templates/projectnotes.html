@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Project View</title>
+<title>Project Notes</title>
 
 <meta name="description" content="" />
 
@@ -72,7 +72,7 @@
 	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
-<!-- <link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" /> -->
+<link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" /> 
 <!-- Page CSS -->
 
 <link rel="stylesheet"
@@ -411,8 +411,8 @@ float:right;
 							<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
 								<!-- User Pills -->
 								<ul class="nav nav-pills flex-column flex-md-row mb-3">
-									<li class="nav-item"><a class="nav-link active"
-										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Plan</a>
+									<li class="nav-item"><a class="nav-link"
+										th:href="'projectview?id='+${projectMaster.id}"><i class="bx bx-user me-1"></i>Plan</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'projectiteminfo?id='+${projectMaster.id}"><i
@@ -428,38 +428,50 @@ float:right;
 											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Purchase</a></li>
 									<li class="nav-item"><a class="nav-link" th:href="'projectexpense?id='+${projectMaster.id}"><i
 											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
-									<li class="nav-item"><a class="nav-link"
-										th:href="'projectnotes?id='+${projectMaster.id}"><i
+									<li class="nav-item"><a class="nav-link active"
+										href="javascript:void(0);"><i
 											class='bx bx-notepad'></i>Notes</a></li>
 								</ul>
 								<!--/ User Pills -->
 
 
-
 								<!-- Activity Timeline -->
-								<div class="cardx mb-4">
+								<div class="card mb-4">
 									<h5 class="card-header">
-										Project Plan
-
-
-
-										<div class="card-action-element" style="float: right">
-
-											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-target="#addNewBoard" data-bs-toggle="modal"
-												id="addNewBoardbtn">
-												<i class="bx bx-plus bx-xs me-1"></i> Phase
-											</button>
-
-										</div>
+										Notes
 									</h5>
 									<div class="card-body">
-										<!-- Accordion Header Color -->
-										<div class="col-md">
-											<div class="accordion mt-3 accordion-header-primary"
-												id="accordionStyle1"></div>
+										<!-- ------------------------------------------------- -->
+										<form id="NotesMasterform" class="" onsubmit="return false">
+												<input type="hidden" name="mastercategoryidnote" id="mastercategoryidnote" />
+												<input type="hidden" name="noteactivityId" id="noteactivityId"
+																	 /> 
+												<!-- Full Editor -->
+												<div class="col-12">
+															<div id="full-editor"></div>
+												</div>
+												<!-- /Full Editor -->
+
+
+
+												<div class="col-12 text-right mt-4">
+													<button type="submit"
+														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
+														
+														
+													<button type="reset"
+														class="btn btn-label-secondary NotesMasterformclose"
+														aria-label="Close">
+														Reset</button>
+												</div>
+											</form>
+										<!-- ------------------------------------------------- -->
+										<div class="divider divider-dashed">
+											<div class="divider-text">Notes History</div>
 										</div>
-										<!--/ Accordion Header Color -->
+										<ul class="timeline widget-timeline widget-timelineCompleted">
+
+										</ul>
 									</div>
 
 
@@ -469,283 +481,6 @@ float:right;
 							<!-- User Content -->
 
 
-
-							<!-- Modal -->
-
-							<!-- Edit Phases Modal -->
-							<div class="modal fade" id="addNewBoard" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h5>Phase Details</h5>
-
-											</div>
-											<form id="editPhasedetailsForm"
-												class="row g-3 needs-validation" onsubmit="return false">
-
-												<div class="col-12 ">
-													<label class="form-label" for="Model_Phasename">Name</label>
-													<input type="text" class="form-control"
-														id="Model_Phasename" name="Model_Phasename" required /> <input
-														type="hidden" id="Model_phase_id" name="Model_phase_id" />
-													<input type="hidden" name="projectid"
-														th:value="${projectMaster.id}" />
-												</div>
-												<div class="col-12 ">
-													<label class="form-label" for="Model_orderID">Order
-														No</label> <input type="number" class="form-control"
-														id="Model_orderID" name="Model_orderID" required />
-												</div>
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary editPhasedatasubmit me-sm-3 me-1">ADD</button>
-													<button type="reset"
-														class="btn btn-label-secondary editPhasedataclose"
-														data-bs-dismiss="modal" aria-label="Close">
-														Cancel</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit Phase Modal -->
-
-
-							<!-- Edit Notes Modal -->
-							<div class="modal fade" id="addnotes" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Activity Notes Information</h3>
-												<p>Update Notes Basic Information</p>
-											</div>
-											<form id="NotesMasterform" class="" onsubmit="return false">
-												<input type="hidden" name="mastercategoryidnote"
-													id="mastercategoryidnote" /> <input type="hidden"
-													name="noteactivityId" id="noteactivityId" />
-												<!-- Full Editor -->
-												<div class="col-12">
-													<div class="card">
-														<h5 class="card-header"></h5>
-														<div class="card-body">
-															<div id="full-editor"></div>
-														</div>
-													</div>
-												</div>
-												<!-- /Full Editor -->
-
-
-
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
-
-
-													<button type="reset"
-														class="btn btn-label-secondary NotesMasterformclose"
-														aria-label="Close">Reset</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit Notes Modal -->
-
-							<!-- Edit Activity Modal -->
-							<div class="modal fade" id="addevent" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button"
-												class="btn-close activityMasterformclose"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Activity Information</h3>
-												<p>Update Activity Basic Information</p>
-											</div>
-											<form id="activityMasterform" th:object="${activityMaster}"
-												class="wizard-horizontal" onsubmit="return false"
-												enctype="multipart/form-data">
-												<!-- ------------------------------------------ -->
-												<div class="row">
-													<div class="col-md-12">
-														<label for="addmodel">Activity Title</label>
-														<div class="form-group">
-															<div class="position-relative">
-																<input type="hidden" id="phaseid" name="phaseid" /> <input
-																	type="hidden" th:field="*{activityId}" id="activityId"
-																	th:value="${activityMaster['activityId']}" /> <input
-																	type="hidden" th:field="*{createdtime}"
-																	id="createdtime"
-																	th:value="${activityMaster['createdtime']}" /> <input
-																	type="text"
-																	class="form-control   capitalize ActivityTitle"
-																	placeholder="Task details..."
-																	th:field="*{activitytitle}" id="activitytitle"
-																	th:value="${activityMaster['activitytitle']}" required />
-
-															</div>
-														</div>
-													</div>
-													<div class="col-12">
-														<div class="form-group">
-															<div class="btn-group btn-group-toggle mb-1"
-																data-toggle="buttons">
-																<label
-																	th:class="'btn btn-outline-primary activitytypedefault activitytype activitytypeTask '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Task"> <input
-																	type="radio" name="options"
-																	onclick="optionshandle(this);"
-																	th:field="*{activitytype}" value="Task" id="radio1"
-																	style="visibility: hidden" required><i
-																	class="bx bx-alarm-add activitytypeicon"></i>
-																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Call"> <input
-																	type="radio" name="options"
-																	onclick="optionshandle(this);"
-																	th:field="*{activitytype}" value="Call" id="radio2"
-																	style="visibility: hidden" required><i
-																	class="bx bx-phone-call activitytypeicon"></i>
-																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Meetings">
-																	<input type="radio" onclick="optionshandle(this);"
-																	name="options" th:field="*{activitytype}"
-																	value="Meetings" id="radio3" style="visibility: hidden"
-																	required><i
-																	class="bx bx-group activitytypeicon"></i>
-																</label>
-															</div>
-														</div>
-
-
-													</div>
-
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">Start Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{startdate}" id="startdate"
-																	th:value="${activityMaster['startdate']}" required />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">Start Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{starttime}" id="starttime"
-																	th:value="${activityMaster['starttime']}" required />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{enddate}" id="enddate"
-																	th:value="${activityMaster['enddate']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{endtime}" id="endtime"
-																	th:value="${activityMaster['endtime']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="form-group">
-															<label for="addmodel">Note </label><span class="notes-sm">(Note
-																visible only For You)</span>
-															<div class="position-relative  has-icon-left">
-																<fieldset class="form-group">
-																	<textarea class="form-control " rows="4"
-																		th:field="*{notes}" id="notes"
-																		th:value="${activityMaster['notes']}" required>
-																							</textarea>
-
-																</fieldset>
-															</div>
-														</div>
-
-													</div>
-
-
-												</div>
-
-												<div class="col-md-12">
-													<div class="form-group">
-														<label for="addmodel">Followers</label>
-														<div class="position-relative  has-icon-left">
-															<fieldset class="form-group">
-																<select class="select2 form-control "
-																	id="activityfollowers" name="activityfollowers"
-																	required>
-																	<th:block th:each="str :${employeelist}">
-																		<option th:value="${str.empMasterid}"
-																			th:text="${str.StaffName}"></option>
-																	</th:block>
-																</select>
-
-															</fieldset>
-														</div>
-													</div>
-												</div>
-
-
-												<div class="col-md-12">
-													<br />
-													<button type="reset"
-														class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
-														style="padding-right: 20px;">Reset</button>
-													<button type="submit"
-														class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
-														style="float: right">Save</button>
-
-
-												</div>
-												<!-- ------------------------------------------ -->
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<!--/ Edit Activity Modal -->
 
 							<!-- Edit User Modal -->
 							<div class="modal fade" id="editprojectMasterdetails"
@@ -1245,8 +980,8 @@ float:right;
 		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
 
 
-		<!-- <script th:src="@{/assets/vendor/libs/	/quill.js}"></script>
- -->
+		<script th:src="@{/assets/vendor/libs/quill/quill.js}"></script>
+ 
 		<!-- Main JS -->
 		<script th:src="@{/assets/js/main.js}"></script>
 
@@ -1305,7 +1040,7 @@ float:right;
 										mastercategoryid : "[[${projectMaster['id']}]]",
 										categoryType : "Project",
 										status : "Completed",
-										subcategoryType: "Activity"
+										subcategoryType: "Note"
 									}
 	
 									$.ajax({
@@ -1324,31 +1059,7 @@ float:right;
 									});
 	
 								}
-								function gettimelinelistNotCompleted() {
-									
-									var formData = {
-										mastercategoryid : "[[${projectMaster['id']}]]",
-										categoryType : "Project",
-										status : "NotCompleted",
-										subcategoryType: "Activity"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "gettimelinelist",
-										data : formData,
-										success : function(result) {
-	
-											$('.widget-timelinePlanned').html(result);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
+							
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								// Custom list & inline suggestion
@@ -1424,16 +1135,17 @@ float:right;
 								}
 								function validationactivitynotesformreset() {
 									$(".ql-editor").html("");
-									$('.btn-close').click();									
+									$("#noteactivityId").val(0);
 									$('.NotesMasterformsubmit').prop("disabled",false);
 									$('.NotesMasterformsubmit').html("Save");
+									
 								}
-								function validationphaseformreset() {
-									$('.editPhasedataclose').click();
-									$("#Model_phase_id").val(0);
-									$('.editPhasedatasubmit').prop("disabled",false);
-									$('.editPhasedatasubmit').html("Save");
-								}
+								$(document).on("click",".NotesMasterformclose",	function() {	
+									$(".ql-editor").html("");
+									$('#noteactivityId').val(0);	
+									$('.NotesMasterformsubmit').prop("disabled",false);
+									$('.NotesMasterformsubmit').html("Save");
+								});
 								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
 								$(document).on("click",".markitascompleted",	function() {	
@@ -1461,8 +1173,7 @@ float:right;
 											        buttonsStyling: false
 											      });
 												
-												getphaseandactivitydetails_part(phaseid);
-												
+												gettimelinelistCompleted();
 											},
 											error : function(e) {
 												console.log("Error" + e);
@@ -1472,182 +1183,12 @@ float:right;
 										});
 									
 								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#editPhasedetailsForm').on('submit',function(event) {
-											if (event.target.checkValidity()) {
-												$('.editPhasedatasubmit').prop("disabled",true);
-												$('.editPhasedatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-												const formData = new FormData(document.querySelector("#editPhasedetailsForm"));
-												
-												$.ajax({
-													type : "POST",
-													url : "projectphasessave",
-													processData : false,
-													contentType : false,
-													data : formData,
-													success : function(
-															result) {
-														
-														validationphaseformreset();
-														
-														Swal.fire({
-													        title: '',
-													        text: 'Your Phase event Updated',
-													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-													        imageWidth: 400,
-													        imageAlt: 'Custom image',
-													        confirmButtonText: 'Ok',
-													        customClass: {
-													          confirmButton: 'btn btn-primary'
-													        },
-													        buttonsStyling: false
-													      });
-														
-														getphaseandactivitydetails();
-
-													},
-													error : function(e) {
-														console.log("Error"+ e);
-													}
-												});
-											} else {
-												$('.editPhasedatasubmit').prop("disabled",false);
-											}
-
-										});
-								// --------------------------------------------------------------------
-								//--------------------------------------------------------------------------------
-								function getphaseandactivitydetails_part(phaseid) {
-									
-									var formData = {
-											projectid : "[[${projectMaster.id}]]",
-											
-										}
-		
-										$.ajax({
-											type : "GET",
-											url : "getprojectobj",
-											data : formData,
-											success : function(result) {
-												//console.log(result);
-												html = "";
-												let i=0;
-												result.projectPhases.forEach(function (obj) {
-												  
-													if(obj.id == phaseid)
-													{
-														obj.activityMaster.forEach(function (actobj) {
-		   													let tempicon="";
-															if(actobj.activitytype =='Task'){
-																tempicon ='<i class="bx bx-alarm-add activitytypeicon acticon "></i>';
-															}else if(actobj.activitytype =='Call'){
-																tempicon ='<i class="bx bx-phone-call activitytypeicon acticon"></i>';
-															}else if(actobj.activitytype =='Meetings'){
-																tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
-															}
-															
-															cmpclass= "";
-															if(actobj.status =="Completed")
-															{
-																status ="<i class='bx bxs-check-circle'></i>";
-																cmpclass="strikeout";
-															}else
-															{
-																status = "<button type='button' id='" + actobj.activityId + "' name='"+ obj.id +"' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
-															}
-															
-															html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td  class="editactivity '+ cmpclass +'" id="actid'+ actobj.activityId+'" name="'+ phaseid +'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
-		   													
-	   													});
-	   																							
-													}												
-												});
-													
-											
-											$(".activitycontainer"+ phaseid).html(html);
-											
-											},
-											error : function(e) {
-												console.log("Error" + e);
-		
-											}
-		
-										});
-									
-								}
-								
-								//--------------------------------------------------------------------------------
-								//function load the history events
-								function getphaseandactivitydetails() {
-									
-									var formData = {
-										projectid : "[[${projectMaster.id}]]",
-										
-									}
-	
-									$.ajax({
-										type : "GET",
-										url : "getprojectobj",
-										data : formData,
-										success : function(result) {
-											//console.log(result);
-											html = "";
-											let i=0;
-											result.projectPhases.forEach(function (obj) {
-											   i++;
-
-											   html +='<div class="accordion-item card" style="border-color: red;""><h2 class="accordion-header"><button type="button" class="accordion-button collapsed" ';
-   												html +=` data-bs-toggle="collapse" data-bs-target="#accordionStyle-${obj.id}" id="accordionStyle${obj.id}" aria-expanded="false"> ${obj.phaseName}</button> </h2>`;
-   												html +=`<div id="accordionStyle-${obj.id}" class="accordion-collapse collapse" data-bs-parent="#accordionStyle${obj.id}">`;
-   												html +=' <div class="table-responsive text-nowrap"><table class="table"><thead><tr><th></th><th>Done</th><th>Activity</th><th></th><th>Date</th><th>Notes</th></tr></thead><tbody class="table-border-bottom-0 activitycontainer'+ obj.id +'">';
-   												obj.activityMaster.forEach(function (actobj) {
-   													
-   													let tempicon="";
-													if(actobj.activitytype =='Task'){
-														tempicon ='<i class="bx bx-alarm-add activitytypeicon acticon "></i>';
-													}else if(actobj.activitytype =='Call'){
-														tempicon ='<i class="bx bx-phone-call activitytypeicon acticon"></i>';
-													}else if(actobj.activitytype =='Meetings'){
-														tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
-													}
-													
-													cmpclass= "";
-													if(actobj.status =="Completed")
-													{
-														status ="<i class='bx bxs-check-circle'></i>";
-														cmpclass="strikeout";
-													}else
-													{
-													status = "<button type='button' id='" + actobj.activityId + "'   name='"+ obj.id +"' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
-														
-													}
-													
-													
-   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td class="editactivity '+ cmpclass +'" name="'+ obj.id +'"  id="actid'+ actobj.activityId+'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
-   												});
-   												
-   												html += `</tbody></table></div> <br /><span class="addactivity col-12" name="${obj.id}">+ Add Activity</span></div></div></div>`;
-											   												
-											   												
-											});
-												
-										
-										$("#accordionStyle1").html(html);
-										
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
+							
 								// --------------------------------------------------------------------
 								$(document).ready(function(){
 								    setTimeout(function(){
-								    	getphaseandactivitydetails();
 								    	
+								    	gettimelinelistCompleted();
 								     },500); // milliseconds
 								});
 								// --------------------------------------------------------------------
@@ -1663,29 +1204,7 @@ float:right;
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								
-								$(document).on("click",".addactivity", function() {
-									$('.activityMasterformreset').click();
-									$('.activityMasterformsubmit').prop("disabled",
-											false);
-									$('.activityMasterformsubmit').html("Save");
-									$("#activityId").val(0);
-									
-									$("input[name=activitytype][value=Task]").attr('checked', true);
-									$(".activitytype").removeClass("active");
-									$(".activitytypeTask").addClass("active");
-									
-									$("#createdtime").val("");
-									$("#phaseid").val($(this).attr("name"));
-									$("#addevent").modal('show');
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#btnAddnotes").click(function() {
-									$(".ql-editor").html("");
-									$('.NotesMasterformclose').click();
-									$("#noteactivityId").val(0);
-									$('.NotesMasterformsubmit').prop("disabled",false);
-									$('.NotesMasterformsubmit').html("Save");
-								});
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$(".NotesMasterformsubmit").click(function() {
 									var htmlnotes = $(".ql-editor").html().trim();
@@ -1710,8 +1229,16 @@ float:right;
 										formData.append("htmlnotes",htmlnotes);													
 										formData.append("mastercategory","Project");
 										formData.append("status","Completed");
-										formData.append("activityId",$("#noteactivityId").val());
+										
 										formData.append("mastercategoryid",$("#mastercategoryidnote").val());
+										
+										if($("#noteactivityId").val() =="")
+										{
+											formData.append("activityId",0);
+										}else
+										{
+											formData.append("activityId",$("#noteactivityId").val());
+										}
 										
 										 $.ajax({
 											type : "POST",
@@ -1736,9 +1263,8 @@ float:right;
 											        buttonsStyling: false
 											      });
 												
-											//	gettimelinelistCompleted();
-											//	gettimelinelistNotCompleted();
-
+												gettimelinelistCompleted();
+												
 											},
 											error : function(e) {
 												console.log("Error"+ e);
@@ -1746,64 +1272,7 @@ float:right;
 										});
 									}
 								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#activityMasterform').on('submit',function(event) {
-											const modalFile =document.getElementById("activityfiles");
-											if (event.target.checkValidity()) {
-												$('.activityMasterformsubmit').prop("disabled",true);
-												$('.activityMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-												const formData = new FormData(
-														document
-																.querySelector("#activityMasterform"));
-												
-												formData.append("File_Attach",null);
-												formData.append("guestid","");
-												formData.append("activityfollowers",$("#activityfollowers").val());
-												formData.append("Activitycategory","Activity");
-												formData.append("duedate","");
-												formData.append("htmlnotes","");													
-												formData.append("mastercategory","Project");
-												formData.append("mastercategoryid",$("#phaseid").val());
-												
-												 $.ajax({
-													type : "POST",
-													url : "activitysave",
-													processData : false,
-													contentType : false,
-													data : formData,
-													success : function(
-															result) {
-														
-														
-														
-														Swal.fire({
-													        title: '',
-													        text: 'Your Activity event added',
-													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-													        imageWidth: 400,
-													        imageAlt: 'Custom image',
-													        confirmButtonText: 'Ok',
-													        customClass: {
-													          confirmButton: 'btn btn-primary'
-													        },
-													        buttonsStyling: false
-													      });
-														
-														getphaseandactivitydetails_part($("#phaseid").val());
-														validationactivityeventformreset();
-														//gettimelinelistCompleted();
-														//gettimelinelistNotCompleted();
-
-													},
-													error : function(e) {
-														console.log("Error"+ e);
-													}
-												});
-											} else {
-												$('.activityMasterformsubmit').prop("disabled",false);
-											}
-
-										});
+							
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$('#editprojectMasterdetailsForm').on('submit',function(event) {
 
@@ -2116,7 +1585,7 @@ float:right;
 								$(document).ready(function(){
 								    setTimeout(function(){
 								    	gettimelinelistCompleted();
-								    	gettimelinelistNotCompleted();
+								    
 								     },500); // milliseconds
 								});
 							}); // Jquery
@@ -2279,7 +1748,8 @@ float:right;
 							$("#mastercategoryidnote").val(bmobj.mastercategoryid);
 							$("#noteactivityId").val(bmobj.activityId);
 							$(".ql-editor").html(bmobj.htmlnotes);
-							$('#addnotes').modal('show');
+							document.body.scrollTop=0;
+							document.documentElement.scrollTop=0;
 						},
 						error : function(e) {
 							console.log("Error" + e);

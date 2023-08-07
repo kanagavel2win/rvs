@@ -284,10 +284,7 @@ cursor: pointer;
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
 													<span th:text="${leadMaster.ReferenceName}"
 													id="Lbl_Reference"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
-													<span th:text="${leadMaster.notes}" id="Lbl_notes"></span>
-												</li>
-												
+											
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
 
 													<span id="Lbl_follower"> <span
@@ -387,7 +384,9 @@ cursor: pointer;
 									<li class="nav-item"><a class="nav-link"
 										th:href="'leadattachment?id='+${leadMaster.id}"><i
 											class="bx bx-link me-1"></i>Files</a></li>
-
+									<li class="nav-item"><a class="nav-link"
+										th:href="'leadnotes?id='+${leadMaster.id}"><i
+											class="bx bx-notepad me-1"></i>Notes</a></li>
 								</ul>
 								<!--/ User Pills -->
 
@@ -406,11 +405,7 @@ cursor: pointer;
 												alt="Add New Event" id="btnAddevent">
 												<i class="bx bx-plus bx-xs me-1"></i> Event
 											</button>
-											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-toggle="modal" data-bs-target="#addnotes" id="btnAddnotes"
-												alt="Add New Notes">
-												<i class="bx bx-plus bx-xs me-1"></i> Notes
-											</button>
+											
 										</div>
 									</h5>
 									<div class="card-body">
@@ -437,53 +432,7 @@ cursor: pointer;
 
 
 							<!-- Modal -->
-							<!-- Edit Notes Modal -->
-							<div class="modal fade" id="addnotes" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Activity Notes Information</h3>
-												<p>Update Notes Basic Information</p>
-											</div>
-											<form id="NotesMasterform" class="" onsubmit="return false">
-												<input type="hidden" name="mastercategoryidnote" id="mastercategoryidnote" />
-												<input type="hidden" name="noteactivityId" id="noteactivityId"
-																	 /> 
-												<!-- Full Editor -->
-												<div class="col-12">
-													<div class="card">
-														<h5 class="card-header"></h5>
-														<div class="card-body">
-															<div id="full-editor"></div>
-														</div>
-													</div>
-												</div>
-												<!-- /Full Editor -->
-
-
-
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
-														
-														
-													<button type="reset"
-														class="btn btn-label-secondary NotesMasterformclose"
-														aria-label="Close">
-														Reset</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit Notes Modal -->
+							
 
 							<!-- Edit Activity Modal -->
 							<div class="modal fade" id="addevent" tabindex="-1"
@@ -894,16 +843,7 @@ cursor: pointer;
 													</div>
 
 												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="notes">NOTES</label>
-													<div>
-
-														<input type="text" id="notes" th:field="*{notes}"
-															th:value="${leadMaster['notes']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
-
+												
 
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
@@ -1189,7 +1129,8 @@ cursor: pointer;
 									var formData = {
 										mastercategoryid : "[[${leadMaster['id']}]]",
 										categoryType : "Lead",
-										status : "Completed"
+										status : "Completed",
+										subcategoryType: "Activity"
 									}
 	
 									$.ajax({
@@ -1213,7 +1154,8 @@ cursor: pointer;
 									var formData = {
 										mastercategoryid : "[[${leadMaster['id']}]]",
 										categoryType : "Lead",
-										status : "NotCompleted"
+										status : "NotCompleted",
+										subcategoryType: "Activity"
 									}
 	
 									$.ajax({
@@ -1305,12 +1247,7 @@ cursor: pointer;
 											false);
 									$('.activityMasterformsubmit').html("Save");
 								}
-								function validationactivitynotesformreset() {
-									$(".ql-editor").html("");
-									$('.btn-close').click();									
-									$('.NotesMasterformsubmit').prop("disabled",false);
-									$('.NotesMasterformsubmit').html("Save");
-								}
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
 								$(document).on("click",".markitascompleted",	function() {	
@@ -1374,73 +1311,7 @@ cursor: pointer;
 									$("#createdtime").val("");
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#btnAddnotes").click(function() {
-									$(".ql-editor").html("");
-									$('.NotesMasterformclose').click();
-									$("#noteactivityId").val(0);
-									$('.NotesMasterformsubmit').prop("disabled",false);
-									$('.NotesMasterformsubmit').html("Save");
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$(".NotesMasterformsubmit").click(function() {
-									var htmlnotes = $(".ql-editor").html().trim();
-									if (htmlnotes != '') {
-										$('.NotesMasterformsubmit').prop("disabled",true);
-										$('.NotesMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-										const formData = new FormData();
-										
-										formData.append("File_Attach",null);
-										formData.append("activityfollowers","");
-										formData.append("activitytitle","");
-										formData.append("activitytype","");
-										formData.append("description","");
-										formData.append("enddate","");
-										formData.append("endtime","");
-										formData.append("guestid","");
-										formData.append("notes","");
-										formData.append("startdate","");
-										formData.append("starttime","");
-										formData.append("Activitycategory","Note");
-										formData.append("duedate","");
-										formData.append("htmlnotes",htmlnotes);													
-										formData.append("mastercategory","Lead");
-										formData.append("status","Completed");
-										formData.append("activityId",$("#noteactivityId").val());
-										formData.append("mastercategoryid",$("#mastercategoryidnote").val());
-										
-										 $.ajax({
-											type : "POST",
-											url : "activitysave",
-											processData : false,
-											contentType : false,
-											data : formData,
-											success : function(
-													result) {
-												
-												validationactivitynotesformreset();
-												Swal.fire({
-											        title: '',
-											        text: 'Your notes added',
-											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-											        imageWidth: 400,
-											        imageAlt: 'Custom image',
-											        confirmButtonText: 'Ok',
-											        customClass: {
-											          confirmButton: 'btn btn-primary'
-											        },
-											        buttonsStyling: false
-											      });
-												
-												gettimelinelistCompleted();
-												gettimelinelistNotCompleted();
-
-											},
-											error : function(e) {
-												console.log("Error"+ e);
-											}
-										});
-									}
-								});
+							
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$('#activityMasterform').on('submit',function(event) {
 											const modalFile =document.getElementById("activityfiles");
@@ -1532,7 +1403,6 @@ cursor: pointer;
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			
-																			$('#Lbl_notes').text(bmobj.notes);
 																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_leadvalue").text(bmobj.leadvalue);

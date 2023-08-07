@@ -49,7 +49,7 @@ public class ActivityMasterImp implements ActivityMasterService {
 	}
 
 	@Override
-	public List<Map<String, Object>> gettimelinelist(String mastercategory, String mastercategoryid,String status) {
+	public List<Map<String, Object>> gettimelinelist(String mastercategory, String mastercategoryid,String status,String subcategory) {
 
 		if(status.equalsIgnoreCase("Completed")) {
 			status=" and status ='Completed'";
@@ -57,7 +57,7 @@ public class ActivityMasterImp implements ActivityMasterService {
 			status=" and status !='Completed'";
 		}
 	String sql = "select DATEDIFF(now() , t1.sorteddates)as differdays, TIME_FORMAT(TIMEDIFF(now() , t1.sorteddates), '%H:%i') as differtime, MINUTE(TIMEDIFF(now() , t1.sorteddates)) as differmins,HOUR(TIMEDIFF(now() , t1.sorteddates)) differhr,DATE_FORMAT(t1.sorteddates,'%d-%m-%Y') as newsorteddates,t1.* from (SELECT (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(concat(startdate,' ',starttime),'%Y-%m-%d %T') end) sorteddates,actmaster.* FROM activitymaster as actmaster where mastercategory='"
-				+ mastercategory + "' and mastercategoryid=" + mastercategoryid + status
+				+ mastercategory + "' and mastercategoryid=" + mastercategoryid +" and activitycategory='"+ subcategory +"' "+ status
 				+ " order by (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else  STR_TO_DATE(concat(startdate,' ',starttime),'%Y-%m-%d %T') end ) desc)t1  order by t1.sorteddates DESC";
 		
 		//String sql=" SELECT concat(now(),'') as currentdatetime,concat((case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(concat(startdate,' ',starttime),'%Y-%m-%d %T') end),'') sorteddates,actmaster.* FROM activitymaster as actmaster where mastercategory='"+ mastercategory + "' and mastercategoryid=" + mastercategoryid + status +" order by (case when (startdate IS NULL or startdate ='')  then  STR_TO_DATE(createdtime,'%d-%m-%Y %T') else STR_TO_DATE(concat(startdate,' ',starttime),'%Y-%m-%d %T') end ) desc";

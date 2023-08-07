@@ -6679,6 +6679,144 @@ public class HomeController {
 		return "leadview";
 	}
 
+	@GetMapping("leadnotes")
+	public String leadnotes(Model theModel, @RequestParam("id") int id) {
+
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+
+		LeadMaster leadMaster = new LeadMaster();
+		leadMaster = leadMasterService.findById(id);
+
+		if (!nullremover(String.valueOf(leadMaster.getOrganization())).equalsIgnoreCase("")) {
+			leadMaster.setOrganizationName(
+					contactOrganizationService.findById(Integer.parseInt(leadMaster.getOrganization())).getOrgname());
+		}
+		List<LeadFollowers> leadfolloersls = new ArrayList();
+		String followerids = "";
+		for (LeadFollowers lf : leadMaster.getLeadFollowers()) {
+
+			followerids += lf.getEmpid() + ",";
+			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
+
+			lf.setFollowername(empobj.getStaffName());
+
+			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+					.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+			if (validProfilephoto.size() > 0) {
+
+				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
+			}
+
+			leadfolloersls.add(lf);
+		}
+
+		followerids = followerids.substring(0, followerids.length() - 1);
+		leadMaster.setLeadfollowerids(followerids);
+
+		if (!nullremover(String.valueOf(leadMaster.getReference())).equalsIgnoreCase("")) {
+			final String leadreference = leadMaster.getReference().toString();
+			ContactPerson cp = contactPersonService.findById(Integer.parseInt(leadreference));
+			leadMaster.setReferenceName(cp.getPeoplename());
+		}
+
+		if (!nullremover(String.valueOf(leadMaster.getBranch())).equalsIgnoreCase("")) {
+			int branchid = leadMaster.getBranch();
+			BranchMaster bm = branchMasterService.findById(branchid);
+			leadMaster.setBranchname(bm.getBRANCH_NAME());
+		}
+
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(leadMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				leadMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(leadMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(leadMaster.getLeadDate())).equalsIgnoreCase("")) {
+			try {
+				leadMaster.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(leadMaster.getLeadDate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+
+		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
+
+		for (LeadContact lc : leadMaster.getLeadContact()) {
+			ContactPerson cp = contactPersonService.findById(lc.getContactPerson());
+
+			// Set primary contact
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplist.add(cp);
+
+		}
+
+		// ----------------------------------------------------------
+		theModel.addAttribute("cplist", cplist);
+		theModel.addAttribute("leadMaster", leadMaster);
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+
+		List<String> industry_type = itemlistService.findByFieldName("industry_type");
+		theModel.addAttribute("industry_type", industry_type);
+
+		theModel.addAttribute("employeelist", emplist);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		// Next Activity & Followers Details
+		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> followersmap = new HashMap();
+		String followerstr = "";
+
+		theModel.addAttribute("personlist", cplis);
+		theModel.addAttribute("organizationlist", corglis);
+
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		theModel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		theModel.addAttribute("PURPOSE", PURPOSE);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmlist);
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		// theModel.addAttribute("OrganizationContacts", corg);
+		theModel.addAttribute("contactPeopleList",
+				contactPersonService.contactpersonlistbyorgname(leadMaster.getOrganization()));
+		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("lead"));
+		theModel.addAttribute("activityMaster", new ActivityMaster());
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+
+		return "leadnotes";
+	}
+
+	
 	@GetMapping("dealview")
 	public String dealview(Model theModel, @RequestParam("id") int id) {
 
@@ -6823,6 +6961,151 @@ public class HomeController {
 		return "dealevents";
 	}
 
+	@GetMapping("dealnotes")
+	public String dealnotes(Model theModel, @RequestParam("id") int id) {
+
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+
+		DealMaster dealMaster = new DealMaster();
+		dealMaster = dealMasterService.findById(id);
+
+		if (!nullremover(String.valueOf(dealMaster.getOrganization())).equalsIgnoreCase("")) {
+			dealMaster.setOrganizationName(
+					contactOrganizationService.findById(Integer.parseInt(dealMaster.getOrganization())).getOrgname());
+		}
+		List<DealFollowers> dealfolloersls = new ArrayList();
+		String followerids = "";
+		for (DealFollowers lf : dealMaster.getDealFollowers()) {
+
+			followerids += lf.getEmpid() + ",";
+			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
+
+			lf.setFollowername(empobj.getStaffName());
+
+			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+					.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+			if (validProfilephoto.size() > 0) {
+
+				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
+			}
+
+			dealfolloersls.add(lf);
+		}
+		followerids = followerids.substring(0, followerids.length() - 1);
+		dealMaster.setDealfollowerids(followerids);
+
+		if (!nullremover(String.valueOf(dealMaster.getReference())).equalsIgnoreCase("")) {
+			final String dealreference = dealMaster.getReference().toString();
+			ContactPerson cp = contactPersonService.findById(Integer.parseInt(dealreference));
+			dealMaster.setReferenceName(cp.getPeoplename());
+		}
+
+		if (!nullremover(String.valueOf(dealMaster.getBranch())).equalsIgnoreCase("")) {
+			int branchid = dealMaster.getBranch();
+			BranchMaster bm = branchMasterService.findById(branchid);
+			dealMaster.setBranchname(bm.getBRANCH_NAME());
+		}
+		// ----------------------------------------------------------
+		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
+
+		for (DealContact lc : dealMaster.getDealContact()) {
+			ContactPerson cp = contactPersonService.findById(lc.getContactPerson());
+
+			// Set primary contact
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplist.add(cp);
+
+		}
+
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getDealDate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setDealdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getDealDate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+			try {
+				dealMaster.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(dealMaster.getExpectedclosingdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		theModel.addAttribute("cplist", cplist);
+		theModel.addAttribute("dealMaster", dealMaster);
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+
+		List<String> industry_type = itemlistService.findByFieldName("industry_type");
+		theModel.addAttribute("industry_type", industry_type);
+
+		theModel.addAttribute("employeelist", emplist);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		// Next Activity & Followers Details
+		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> followersmap = new HashMap();
+		String followerstr = "";
+
+		theModel.addAttribute("personlist", cplis);
+		theModel.addAttribute("organizationlist", corglis);
+
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		theModel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		theModel.addAttribute("PURPOSE", PURPOSE);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmlist);
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+		List<String> ProjectStatus = itemlistService.findByFieldName("LeadStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+
+		// theModel.addAttribute("OrganizationContacts", corg);
+		theModel.addAttribute("contactPeopleList",
+				contactPersonService.contactpersonlistbyorgname(dealMaster.getOrganization()));
+		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("deal"));
+		theModel.addAttribute("activityMaster", new ActivityMaster());
+
+		return "dealnotes";
+	}
+
+	
 	@GetMapping("dealattachment")
 	public String dealattachment(Model theModel, @RequestParam("id") int id) {
 
@@ -7511,7 +7794,9 @@ public class HomeController {
 	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid,
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
-
+		
+		//System.out.println(param);
+		
 		int activityId = Integer.parseInt(param.get("activityId"));
 		ActivityMaster activityMaster = new ActivityMaster();
 		if (activityId > 0) {
@@ -7642,8 +7927,7 @@ public class HomeController {
 		leadMaster.setReference(params.get("Reference"));
 		leadMaster.setLabel(params.get("Label"));
 		leadMaster.setBranch(Integer.parseInt(params.get("branch")));
-		leadMaster.setNotes(params.get("notes"));
-
+		
 		leadMaster.setLeadDate(params.get("leadDate"));
 		leadMaster.setStatus(params.get("status"));
 		leadMaster.setTdate(params.get("tdate"));
@@ -7730,7 +8014,6 @@ public class HomeController {
 		dealMaster.setReference(params.get("Reference"));
 		dealMaster.setPipeline(params.get("pipeline"));
 		dealMaster.setBranch(Integer.parseInt(params.get("branch")));
-		dealMaster.setNotes(params.get("notes"));
 		dealMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
 
 		dealMaster.setDealDate(params.get("dealDate"));
@@ -7828,7 +8111,6 @@ public class HomeController {
 		projectMaster.setReference(params.get("Reference"));
 		projectMaster.setPipeline(params.get("pipeline"));
 		projectMaster.setBranch(Integer.parseInt(params.get("branch")));
-		projectMaster.setNotes(params.get("notes"));
 		projectMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
 		projectMaster.setStartdate(params.get("startdate"));
 		projectMaster.setLabel(params.get("label"));
@@ -8676,8 +8958,9 @@ public class HomeController {
 
 		String mastercategoryid = params.get("mastercategoryid");
 		String categoryType = params.get("categoryType");
+		String subcategoryType = params.get("subcategoryType");
 		String statusweb = params.get("status");
-		List<Map<String, Object>> ls = activityMasterService.gettimelinelist(categoryType, mastercategoryid, statusweb);
+		List<Map<String, Object>> ls = activityMasterService.gettimelinelist(categoryType, mastercategoryid, statusweb,subcategoryType);
 
 		String[] result = { "" };
 
@@ -9377,6 +9660,166 @@ public class HomeController {
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 
 		return "projectevents";
+	}
+
+	@GetMapping("projectnotes")
+	public String projectnotes(Model theModel, @RequestParam("id") int id) {
+
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+
+		ProjectMaster projectMaster = new ProjectMaster();
+		projectMaster = projectMasterService.findById(id);
+
+		if (!nullremover(String.valueOf(projectMaster.getOrganization())).equalsIgnoreCase("")) {
+			projectMaster.setOrganizationName(contactOrganizationService
+					.findById(Integer.parseInt(projectMaster.getOrganization())).getOrgname());
+		}
+		List<ProjectFollowers> projectfolloersls = new ArrayList();
+		String followerids = "";
+		for (ProjectFollowers lf : projectMaster.getProjectFollowers()) {
+
+			followerids += lf.getEmpid() + ",";
+			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
+
+			lf.setFollowername(empobj.getStaffName());
+
+			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+					.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+			if (validProfilephoto.size() > 0) {
+
+				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
+			}
+
+			projectfolloersls.add(lf);
+		}
+
+		if (!followerids.equalsIgnoreCase("")) {
+			followerids = followerids.substring(0, followerids.length() - 1);
+		}
+
+		projectMaster.setProjectfollowerids(followerids);
+
+		if (!nullremover(String.valueOf(projectMaster.getReference())).equalsIgnoreCase("")) {
+			final String projectreference = projectMaster.getReference().toString();
+			ContactPerson cp = contactPersonService.findById(Integer.parseInt(projectreference));
+			projectMaster.setReferenceName(cp.getPeoplename());
+		}
+
+		if (!nullremover(String.valueOf(projectMaster.getBranch())).equalsIgnoreCase("")) {
+			int branchid = projectMaster.getBranch();
+			BranchMaster bm = branchMasterService.findById(branchid);
+			projectMaster.setBranchname(bm.getBRANCH_NAME());
+		}
+		// ----------------------------------------------------------
+		List<ContactPerson> cplist = new ArrayList<ContactPerson>();
+
+		for (ProjectContact lc : projectMaster.getProjectContact()) {
+			ContactPerson cp = contactPersonService.findById(lc.getContactPerson());
+
+			// Set primary contact
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplist.add(cp);
+
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+			try {
+				projectMaster.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(projectMaster.getExpectedclosingdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		if (!nullremover(String.valueOf(projectMaster.getStartdate())).equalsIgnoreCase("")) {
+			try {
+				projectMaster.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(projectMaster.getStartdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getTdate())).equalsIgnoreCase("")) {
+			try {
+				projectMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(projectMaster.getTdate())).toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+		}
+
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
+			projectMaster.setBoardName(
+					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
+		}
+		// ----------------------------------------------------------
+		theModel.addAttribute("cplist", cplist);
+		theModel.addAttribute("projectMaster", projectMaster);
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+
+		List<String> industry_type = itemlistService.findByFieldName("industry_type");
+		theModel.addAttribute("industry_type", industry_type);
+
+		theModel.addAttribute("employeelist", emplist);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		// Next Activity & Followers Details
+		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> followersmap = new HashMap();
+		String followerstr = "";
+
+		theModel.addAttribute("personlist", cplis);
+		theModel.addAttribute("organizationlist", corglis);
+
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		theModel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		theModel.addAttribute("PURPOSE", PURPOSE);
+
+		List<String> Label = itemlistService.findByFieldName("Label");
+		theModel.addAttribute("Label", Label);
+
+		List<String> Phase = itemlistService.findByFieldName("Phase");
+		theModel.addAttribute("Phase", Phase);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmlist);
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+
+		// theModel.addAttribute("OrganizationContacts", corg);
+		theModel.addAttribute("contactPeopleList",
+				contactPersonService.contactpersonlistbyorgname(projectMaster.getOrganization()));
+		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
+		theModel.addAttribute("activityMaster", new ActivityMaster());
+		theModel.addAttribute("board", projectTemplateBoardService.findAll());
+
+		return "projectnotes";
 	}
 
 	@GetMapping("projectattachment")

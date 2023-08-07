@@ -290,9 +290,7 @@ float:right;
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
 													<span th:text="${dealMaster.ReferenceName}"
 													id="Lbl_Reference"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
-													<span th:text="${dealMaster.notes}" id="Lbl_notes"></span>
-												</li>
+												
 												<li class="mb-3"><span class="fw-bold me-2">Closing Date:</span>
 													<span th:text="${dealMaster.expectedclosingdateMMddYYY}" id="Lbl_expectedclosingdate"></span>
 												</li>
@@ -398,7 +396,9 @@ float:right;
 									<li class="nav-item"><a class="nav-link "
 										th:href="'dealattachment?id='+${dealMaster.id}"><i
 											class="bx bx-link me-1"></i>Files</a></li>
-
+									<li class="nav-item"><a class="nav-link"
+										th:href="'dealnotes?id='+${dealMaster.id}"><i
+											class='bx bx-notepad'></i>Notes</a></li>
 								</ul>
 								<!--/ User Pills -->
 
@@ -834,15 +834,7 @@ float:right;
 													</div>
 
 												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="notes">NOTES</label>
-													<div>
-
-														<input type="text" id="notes" th:field="*{notes}"
-															th:value="${dealMaster['notes']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
+												
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="expectedclosingdate">Expected Closing Date</label>
 													<div>
@@ -1440,7 +1432,6 @@ float:right;
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
-																			$('#Lbl_notes').text(bmobj.notes);
 																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_dealvalue").text(bmobj.dealvalue);

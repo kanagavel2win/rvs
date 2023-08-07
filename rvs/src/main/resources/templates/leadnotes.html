@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Project View</title>
+<title>Lead Notes</title>
 
 <meta name="description" content="" />
 
@@ -72,7 +72,7 @@
 	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
-<!-- <link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" /> -->
+<link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" />
 <!-- Page CSS -->
 
 <link rel="stylesheet"
@@ -138,27 +138,13 @@ float:right;
 	height: 15px;
 }
 
-.editactivity {
-	cursor: pointer;
+.editactivity 
+{
+cursor: pointer;
 }
-
-.editnoteactivity {
-	cursor: pointer;
-}
-
-.addactivity {
-	cursor: pointer;
-	color: #0000FF;
-	font-weight: bold;
-	padding-left: 10px;
-}
-
-.bxs-check-circle {
-	color: #39da8a;
-}
-
-.strikeout {
-	text-decoration: line-through;
+.editnoteactivity
+{
+cursor: pointer;
 }
 </style>
 <script th:inline="javascript">
@@ -201,7 +187,7 @@ float:right;
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
 							<span class="text-muted fw-light">Works /<a
-								href="projectlist">Project</a>/
+								href="leadlist">Lead</a>/
 							</span> View
 						</h4>
 						<div class="row gy-4">
@@ -212,31 +198,33 @@ float:right;
 									<div class="card-body">
 										<div class="user-avatar-section">
 											<div class="d-flex align-items-center flex-column">
-												<img class="img-fluid rounded my-1"
-													th:src="@{/assets/img/bg_rvs/Project.jpg}" alt="User avatar" />
+												<img class="img-fluid rounded my-4"
+													th:src="@{/assets/img/bg_rvs/Lead.jpg}" height="210"
+													width="210" alt="User avatar" />
 												<div class="user-info text-center">
-													<h5 class="mb-2" th:text="${projectMaster.Title}"
+													<h5 class="mb-2" th:text="${leadMaster.Title}"
 														id="Lbl_Title"></h5>
-													<span class="badge bg-label-secondary" th:text="'Project ID : '+ ${projectMaster.id}"></span>
+
 												</div>
 											</div>
 										</div>
+										
 										<div class="d-flex justify-content-around flex-wrap my-4">
 											<div class="d-flex align-items-start me-4 mt-3 gap-3">
 					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-rupee bx-sm"></i></span>
 					                          <div>
 					                           <h6 class="mb-0">
-													Rs.<span th:text="${projectMaster.projectvalue}"
-														id="Lbl_projectvaluetotal"></span>
+													Rs.<span th:text="${leadMaster.leadvalue}"
+															id="Lbl_leadvalue"></span>
 												</h6>
-					                           <span>Project Value</span>
+					                           <span>Lead Value</span>
 					                          </div>
 					                        </div>
 					                        <div class="d-flex align-items-start mt-3 gap-3">
 					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-stats bx-sm"></i></span>
 					                          <div>
 					                           		<h6 class="mb-0">
-														<span th:text="${projectMaster.status}"
+														<span th:text="${leadMaster.status}"
 															id="Lbl_Status"></span>
 													</h6>
 													<span>Status</span>
@@ -249,77 +237,59 @@ float:right;
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
-												<li class="mb-3"><span class="fw-bold me-2">Phase:
-												</span> <span th:text="${projectMaster.pipeline}" id="Lbl_pipeline"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
-													<span id="Lbl_label">
-													
-													 <span
-														th:if="${projectMaster.Label} =='Hot'"
-														class="badge bg-danger" th:text="${projectMaster.Label}"></span>
-														<span th:if="${projectMaster.Label} =='Warm'"
-														class="badge bg-warning" th:text="${projectMaster.Label}"></span>
-														<span th:if="${projectMaster.Label} =='Cold'"
-														class="badge bg-primary" th:text="${projectMaster.Label}"></span>
-													
-													
-													</span></li>
+													<span id="Lbl_Label"> <span
+														th:if="${leadMaster.Label} =='Hot'"
+														class="badge bg-danger" th:text="${leadMaster.Label}"></span>
+														<span th:if="${leadMaster.Label} =='Warm'"
+														class="badge bg-warning" th:text="${leadMaster.Label}"></span>
+														<span th:if="${leadMaster.Label} =='Cold'"
+														class="badge bg-primary" th:text="${leadMaster.Label}"></span>
+												</span></li>
+
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
-													<span th:text="${projectMaster.OrganizationName}"
-													id="Lbl_organization"></span>
-													<hr/>
-													</li>
-												
+													<span th:text="${leadMaster.OrganizationName}"
+													id="Lbl_organization"></span></li>
+												<li class="mb-3"><span class="fw-bold me-2">Lead Date:</span>
+													<span th:text="${leadMaster.leaddateMMddYYY}" id="Lbl_leaddateMMddYYY"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Nature Of Work:</span>
-													<span th:text="${projectMaster.NatureofWork}" id="Lbl_NatureofWork"></span>
+													<span th:text="${leadMaster.NatureofWork}" id="Lbl_NatureofWork"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Area:</span>
-													<span th:text="${projectMaster.Area}" id="Lbl_Area"></span>
-													<span th:text="${projectMaster.UNITS}" id="Lbl_UNITS"></span>
+													<span th:text="${leadMaster.Area}" id="Lbl_Area"></span>
 												</li>
-												
+												<li class="mb-3"><span class="fw-bold me-2">Unit:</span>
+													<span th:text="${leadMaster.UNITS}" id="Lbl_UNITS"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Location:</span>
-													<span th:text="${projectMaster.Location}" id="Lbl_Location"></span>
+													<span th:text="${leadMaster.Location}" id="Lbl_Location"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">T.Date:</span>
-													<span th:text="${projectMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
+													<span th:text="${leadMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">T.Estimate:</span>
-													<span th:text="${projectMaster.purpose}" id="Lbl_projectvalue"></span>
+													<span th:text="${leadMaster.purpose}" id="Lbl_projectvalue"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
-													<span th:text="${projectMaster.purpose}" id="Lbl_purpose"></span>
+													<span th:text="${leadMaster.purpose}" id="Lbl_purpose"></span>
 												</li>
-												
+												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
+													<span th:text="${leadMaster.branchname}" id="Lbl_branchname"></span>
+												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
-													<span th:text="${projectMaster.Source}" id="Lbl_Source"></span>
+													<span th:text="${leadMaster.Source}" id="Lbl_Source"></span>
 												</li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
-													<span th:text="${projectMaster.ReferenceName}"
-													id="Lbl_Reference"></span><hr/></li>
-													
-												<li class="mb-3"><span class="fw-bold me-2">Board:</span>
-													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
-												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
-													<span th:text="${projectMaster.branchname}"
-													id="Lbl_branchname"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
-													<span th:text="${projectMaster.notes}" id="Lbl_notes"></span>
-												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Project In
-														Date:</span> <span
-													th:text="${projectMaster.expectedstartdateMMddYYY}"
-													id="Lbl_expectedstartdate"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Due
-														Date:</span> <span
-													th:text="${projectMaster.expectedclosingdateMMddYYY}"
-													id="Lbl_expectedclosingdate"></span></li>
+													<span th:text="${leadMaster.ReferenceName}"
+													id="Lbl_Reference"></span></li>
+												
+												
 												<li class="mb-3"><span class="fw-bold me-2">Follower:</span>
 
 													<span id="Lbl_follower"> <span
-														th:each="obj : ${projectMaster.projectFollowers}"
+														th:each="obj : ${leadMaster.leadFollowers}"
 														th:utext="${obj.Followername} + '<br/>'"> </span>
 												</span></li>
 
@@ -327,7 +297,7 @@ float:right;
 											</ul>
 											<div class="d-flex justify-content-center pt-3">
 												<a href="javascript:;" class="btn btn-primary me-3"
-													data-bs-target="#editprojectMasterdetails"
+													data-bs-target="#editleadMasterdetails"
 													data-bs-toggle="modal"
 													id="editOrganizationContactsdetailsbtn">Edit</a>
 
@@ -355,7 +325,7 @@ float:right;
 									</h5>
 									<div class="card-body">
 										<div class="d-flex mb-3" th:each="obj : ${cplist}">
-											<div th:class="'flex-grow-1 row dcon'+ ${obj.id} ">
+											<div th:class="'flex-grow-1 row  dcon'+ ${obj.id} ">
 												<div class="col-6 mb-sm-0 mb-2">
 													<a th:href="'contactpersonview?id='+ ${obj.id}"
 														target="_blank">
@@ -373,8 +343,6 @@ float:right;
 														</span>
 													</span> <span class="switch-label"></span>
 													</label>
-													
-													
 												</div>
 												<div class="col-3">
 													<div class="dropdown">
@@ -398,7 +366,7 @@ float:right;
 											</div>
 										</div>
 
-										<div id="contactpeopprojectdidv"></div>
+										<div id="contactpeopleaddidv"></div>
 
 									</div>
 								</div>
@@ -411,55 +379,58 @@ float:right;
 							<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
 								<!-- User Pills -->
 								<ul class="nav nav-pills flex-column flex-md-row mb-3">
-									<li class="nav-item"><a class="nav-link active"
-										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Plan</a>
+									<li class="nav-item"><a class="nav-link"
+										th:href="'leadview?id='+${leadMaster.id}"><i class="bx bx-user me-1"></i>Activity</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
-										th:href="'projectiteminfo?id='+${projectMaster.id}"><i
-											class='bx bxl-ok-ru'></i>Projects</a></li>
-									<li class="nav-item"><a class="nav-link"
-										th:href="'projectattachment?id='+${projectMaster.id}"><i
+										th:href="'leadattachment?id='+${leadMaster.id}"><i
 											class="bx bx-link me-1"></i>Files</a></li>
-									<li class="nav-item"><a class="nav-link "
-										th:href="'projectaccounts?id='+${projectMaster.id}"><i
-											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Invoices</a></li>
-									<li class="nav-item"><a class="nav-link" th:href="'projectpurchase?id='+${projectMaster.id}">
-										<i
-											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Purchase</a></li>
-									<li class="nav-item"><a class="nav-link" th:href="'projectexpense?id='+${projectMaster.id}"><i
-											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
-									<li class="nav-item"><a class="nav-link"
-										th:href="'projectnotes?id='+${projectMaster.id}"><i
-											class='bx bx-notepad'></i>Notes</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="javascript:void(0);"><i
+											class="bx bx-notepad me-1"></i>Notes</a></li>
 								</ul>
 								<!--/ User Pills -->
 
 
 
 								<!-- Activity Timeline -->
-								<div class="cardx mb-4">
+								<div class="card mb-4">
 									<h5 class="card-header">
-										Project Plan
-
-
-
-										<div class="card-action-element" style="float: right">
-
-											<button class="btn btn-primary btn-sm" type="button"
-												data-bs-target="#addNewBoard" data-bs-toggle="modal"
-												id="addNewBoardbtn">
-												<i class="bx bx-plus bx-xs me-1"></i> Phase
-											</button>
-
-										</div>
+										Notes
 									</h5>
 									<div class="card-body">
-										<!-- Accordion Header Color -->
-										<div class="col-md">
-											<div class="accordion mt-3 accordion-header-primary"
-												id="accordionStyle1"></div>
+										<!-- ------------------------------------------------- -->
+											<form id="NotesMasterform" class="" onsubmit="return false">
+												<input type="hidden" name="mastercategoryidnote" id="mastercategoryidnote" />
+												<input type="hidden" name="noteactivityId" id="noteactivityId" /> 
+												<!-- Full Editor -->
+												<div class="col-12">
+															<div id="full-editor"></div>
+													
+												</div>
+												<!-- /Full Editor -->
+
+
+
+												<div class="col-12 text-right mt-4">
+													<button type="submit"
+														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
+														
+														
+													<button type="reset"
+														class="btn btn-label-secondary NotesMasterformclose"
+														aria-label="Close">
+														Reset</button>
+												</div>
+											</form>
+										<!-- ------------------------------------------------- -->	
+										
+										<div class="divider divider-dashed">
+											<div class="divider-text">Notes History</div>
 										</div>
-										<!--/ Accordion Header Color -->
+										<ul class="timeline widget-timeline widget-timelineCompleted">
+
+										</ul>
 									</div>
 
 
@@ -471,285 +442,10 @@ float:right;
 
 
 							<!-- Modal -->
-
-							<!-- Edit Phases Modal -->
-							<div class="modal fade" id="addNewBoard" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h5>Phase Details</h5>
-
-											</div>
-											<form id="editPhasedetailsForm"
-												class="row g-3 needs-validation" onsubmit="return false">
-
-												<div class="col-12 ">
-													<label class="form-label" for="Model_Phasename">Name</label>
-													<input type="text" class="form-control"
-														id="Model_Phasename" name="Model_Phasename" required /> <input
-														type="hidden" id="Model_phase_id" name="Model_phase_id" />
-													<input type="hidden" name="projectid"
-														th:value="${projectMaster.id}" />
-												</div>
-												<div class="col-12 ">
-													<label class="form-label" for="Model_orderID">Order
-														No</label> <input type="number" class="form-control"
-														id="Model_orderID" name="Model_orderID" required />
-												</div>
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary editPhasedatasubmit me-sm-3 me-1">ADD</button>
-													<button type="reset"
-														class="btn btn-label-secondary editPhasedataclose"
-														data-bs-dismiss="modal" aria-label="Close">
-														Cancel</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit Phase Modal -->
-
-
-							<!-- Edit Notes Modal -->
-							<div class="modal fade" id="addnotes" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Activity Notes Information</h3>
-												<p>Update Notes Basic Information</p>
-											</div>
-											<form id="NotesMasterform" class="" onsubmit="return false">
-												<input type="hidden" name="mastercategoryidnote"
-													id="mastercategoryidnote" /> <input type="hidden"
-													name="noteactivityId" id="noteactivityId" />
-												<!-- Full Editor -->
-												<div class="col-12">
-													<div class="card">
-														<h5 class="card-header"></h5>
-														<div class="card-body">
-															<div id="full-editor"></div>
-														</div>
-													</div>
-												</div>
-												<!-- /Full Editor -->
-
-
-
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary NotesMasterformsubmit me-sm-3 me-1">Save</button>
-
-
-													<button type="reset"
-														class="btn btn-label-secondary NotesMasterformclose"
-														aria-label="Close">Reset</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit Notes Modal -->
-
-							<!-- Edit Activity Modal -->
-							<div class="modal fade" id="addevent" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-lg modal-dialog-centered modal-simple">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button"
-												class="btn-close activityMasterformclose"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Activity Information</h3>
-												<p>Update Activity Basic Information</p>
-											</div>
-											<form id="activityMasterform" th:object="${activityMaster}"
-												class="wizard-horizontal" onsubmit="return false"
-												enctype="multipart/form-data">
-												<!-- ------------------------------------------ -->
-												<div class="row">
-													<div class="col-md-12">
-														<label for="addmodel">Activity Title</label>
-														<div class="form-group">
-															<div class="position-relative">
-																<input type="hidden" id="phaseid" name="phaseid" /> <input
-																	type="hidden" th:field="*{activityId}" id="activityId"
-																	th:value="${activityMaster['activityId']}" /> <input
-																	type="hidden" th:field="*{createdtime}"
-																	id="createdtime"
-																	th:value="${activityMaster['createdtime']}" /> <input
-																	type="text"
-																	class="form-control   capitalize ActivityTitle"
-																	placeholder="Task details..."
-																	th:field="*{activitytitle}" id="activitytitle"
-																	th:value="${activityMaster['activitytitle']}" required />
-
-															</div>
-														</div>
-													</div>
-													<div class="col-12">
-														<div class="form-group">
-															<div class="btn-group btn-group-toggle mb-1"
-																data-toggle="buttons">
-																<label
-																	th:class="'btn btn-outline-primary activitytypedefault activitytype activitytypeTask '+ ${activityMaster['activitytype']=='Task' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Task"> <input
-																	type="radio" name="options"
-																	onclick="optionshandle(this);"
-																	th:field="*{activitytype}" value="Task" id="radio1"
-																	style="visibility: hidden" required><i
-																	class="bx bx-alarm-add activitytypeicon"></i>
-																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeCall '+ ${activityMaster['activitytype']=='Call' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Call"> <input
-																	type="radio" name="options"
-																	onclick="optionshandle(this);"
-																	th:field="*{activitytype}" value="Call" id="radio2"
-																	style="visibility: hidden" required><i
-																	class="bx bx-phone-call activitytypeicon"></i>
-																</label> <label
-																	th:class="'btn btn-outline-primary activitytype activitytypeMeetings '+ ${activityMaster['activitytype']=='Meetings' ? 'active' :''} "
-																	onclick="optionshandle(this);" title="Meetings">
-																	<input type="radio" onclick="optionshandle(this);"
-																	name="options" th:field="*{activitytype}"
-																	value="Meetings" id="radio3" style="visibility: hidden"
-																	required><i
-																	class="bx bx-group activitytypeicon"></i>
-																</label>
-															</div>
-														</div>
-
-
-													</div>
-
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">Start Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{startdate}" id="startdate"
-																	th:value="${activityMaster['startdate']}" required />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">Start Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{starttime}" id="starttime"
-																	th:value="${activityMaster['starttime']}" required />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Date</label>
-															<div class="position-relative has-icon-left">
-																<input type="date" class="form-control  "
-																	th:field="*{enddate}" id="enddate"
-																	th:value="${activityMaster['enddate']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="addmodel">End Time</label>
-															<div class="position-relative has-icon-left">
-																<input type="time" class="form-control  "
-																	th:field="*{endtime}" id="endtime"
-																	th:value="${activityMaster['endtime']}" />
-
-
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="form-group">
-															<label for="addmodel">Note </label><span class="notes-sm">(Note
-																visible only For You)</span>
-															<div class="position-relative  has-icon-left">
-																<fieldset class="form-group">
-																	<textarea class="form-control " rows="4"
-																		th:field="*{notes}" id="notes"
-																		th:value="${activityMaster['notes']}" required>
-																							</textarea>
-
-																</fieldset>
-															</div>
-														</div>
-
-													</div>
-
-
-												</div>
-
-												<div class="col-md-12">
-													<div class="form-group">
-														<label for="addmodel">Followers</label>
-														<div class="position-relative  has-icon-left">
-															<fieldset class="form-group">
-																<select class="select2 form-control "
-																	id="activityfollowers" name="activityfollowers"
-																	required>
-																	<th:block th:each="str :${employeelist}">
-																		<option th:value="${str.empMasterid}"
-																			th:text="${str.StaffName}"></option>
-																	</th:block>
-																</select>
-
-															</fieldset>
-														</div>
-													</div>
-												</div>
-
-
-												<div class="col-md-12">
-													<br />
-													<button type="reset"
-														class="btn btn-secondary mr-1 mb-1 activityMasterformreset"
-														style="padding-right: 20px;">Reset</button>
-													<button type="submit"
-														class="btn btn-primary mr-1 mb-1 activityMasterformsubmit"
-														style="float: right">Save</button>
-
-
-												</div>
-												<!-- ------------------------------------------ -->
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<!--/ Edit Activity Modal -->
-
+							
 							<!-- Edit User Modal -->
-							<div class="modal fade" id="editprojectMasterdetails"
-								tabindex="-1" aria-hidden="true">
+							<div class="modal fade" id="editleadMasterdetails" tabindex="-1"
+								aria-hidden="true">
 								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
 									<div class="modal-content p-3 p-md-5">
 
@@ -757,14 +453,14 @@ float:right;
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
-												<h3>Edit Project Information</h3>
-												<p>Update Project Basic Information</p>
+												<h3>Edit Lead Information</h3>
+												<p>Update Lead Basic Information</p>
 											</div>
-											<form id="editprojectMasterdetailsForm"
-												th:object="${projectMaster}"
-												class="row g-3 needs-validation" onsubmit="return false">
-												<input type="hidden" th:value="${projectMaster['id']}"
-													id="projectMasterID" name="projectMasterID" />
+											<form id="editleadMasterdetailsForm"
+												th:object="${leadMaster}" class="row g-3 needs-validation"
+												onsubmit="return false">
+												<input type="hidden" th:value="${leadMaster['id']}"
+													id="leadMasterID" name="leadMasterID" />
 
 
 												<div class="col-12 col-md-6">
@@ -772,7 +468,7 @@ float:right;
 													<div>
 														<input type="text" id="Title" th:field="*{Title}"
 															class="form-control  capitalize"
-															th:value="${projectMaster['Title']}" required>
+															th:value="${leadMaster['Title']}" required>
 
 													</div>
 
@@ -782,7 +478,7 @@ float:right;
 													<div>
 														<select class="form-select followers form-control "
 															id="organization" th:field="*{Organization}"
-															th:value="${projectMaster['Organization']}">
+															th:value="${leadMaster['Organization']}">
 															<option value="">-</option>
 															<th:block th:each="str :${organizationlist}">
 																<option th:value="${str.id}" th:text="${str.orgname}"></option>
@@ -793,17 +489,13 @@ float:right;
 															follower.</div>
 													</div>
 												</div>
-
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="board">Board</label>
+													<label class="form-label" for="leadDate">Lead Date</label>
 													<div>
-														<select class="form-control" id="board"
-															th:field="*{board}">
-															<option value="">-</option>
-															<th:block th:each="str :${board}">
-																<option th:value="${str.id}" th:text="${str.boardName}"></option>
-															</th:block>
-														</select>
+														<input type="text" id="leadDate"
+															th:field="*{leadDate}"
+															th:value="${leadMaster['leadDate']}"
+															class="form-control  capitalize">
 													</div>
 												</div>
 												<hr/>
@@ -813,7 +505,7 @@ float:right;
 													<div>
 														<select class="form-control" id="NatureofWork"
 															th:field="*{NatureofWork}"
-															th:value="${projectMaster['NatureofWork']}">
+															th:value="${leadMaster['NatureofWork']}">
 															<th:block th:each="str :${NATUREOFWORK}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -827,7 +519,7 @@ float:right;
 														<input type="number" id="Area"
 															th:field="*{Area}"
 															class="form-control  capitalize"
-															th:value="${projectMaster['Area']}">
+															th:value="${leadMaster['Area']}">
 													</div>
 
 												</div>
@@ -837,7 +529,7 @@ float:right;
 													<div>
 														<select class="form-control" id="UNITS"
 															th:field="*{UNITS}"
-															th:value="${projectMaster['UNITS']}">
+															th:value="${leadMaster['UNITS']}">
 															<th:block th:each="str :${UNITS}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -851,7 +543,7 @@ float:right;
 														<input type="text" id="Location"
 															th:field="*{Location}"
 															class="form-control  capitalize"
-															th:value="${projectMaster['Location']}">
+															th:value="${leadMaster['Location']}">
 													</div>
 
 												</div>
@@ -860,7 +552,7 @@ float:right;
 													<div>
 														<input type="text" id="tdate"
 															th:field="*{tdate}"
-															th:value="${projectMaster['tdate']}"
+															th:value="${leadMaster['tdate']}"
 															class="form-control  capitalize">
 													</div>
 												</div>
@@ -868,32 +560,30 @@ float:right;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">T.Estimate</label>
 													<div>
-														<input type="number" id="projectvalue"
-															th:field="*{projectvalue}"
+														<input type="number" id="leadvalue"
+															th:field="*{leadvalue}"
 															class="form-control  capitalize"
-															th:value="${projectMaster['projectvalue']}">
+															th:value="${leadMaster['leadvalue']}">
 													</div>
 
 												</div>
-												
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="pipeline">Phase </label>
+													<label class="form-label" for="Source">SOURCE </label>
 													<div>
-														<select class="form-control" id="pipeline"
-															th:field="*{pipeline}"
-															th:value="${projectMaster['pipeline']}">
-															<th:block th:each="str :${Phase}">
+														<select class="form-control  addsourcedata" id="Source"
+															th:field="*{Source}" th:value="${leadMaster['Source']}">
+															<th:block th:each="str :${SOURCE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
 														</select>
 													</div>
+
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="purpose">PURPOSE</label>
+													<label class="form-label" for="purpose">PURPOSE </label>
 													<div>
 														<select class="form-control  addpurposedata" id="purpose"
-															th:field="*{purpose}"
-															th:value="${projectMaster['purpose']}">
+															th:field="*{purpose}" th:value="${leadMaster['purpose']}">
 															<th:block th:each="str :${PURPOSE}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -902,26 +592,21 @@ float:right;
 
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="Source">SOURCE </label>
+													<label class="form-label" for="Source">VALUE</label>
 													<div>
-														<select class="form-control  addsourcedata" id="Source"
-															th:field="*{Source}"
-															th:value="${projectMaster['Source']}">
-															<th:block th:each="str :${SOURCE}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-														</select>
+														<input type="number" id="leadvalue"
+															th:field="*{leadvalue}" class="form-control  capitalize"
+															th:value="${leadMaster['leadvalue']}">
 													</div>
 
 												</div>
-												
 												<div class="col-12 col-md-6 Referencediv">
 													<label class="form-label" for="Reference">REFERENCE</label>
 													<div>
 
 														<select class="form-control " id="Reference"
 															th:field="*{Reference}"
-															th:value="${projectMaster['Reference']}">
+															th:value="${leadMaster['Reference']}">
 															<option value="">-</option>
 															<th:block th:each="str :${personlist}">
 																<option th:value="${str.id}" th:text="${str.peoplename}"></option>
@@ -930,26 +615,25 @@ float:right;
 													</div>
 
 												</div>
-												<hr/>
-												
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="label">LABEL </label>
-													<div>
-														<select class="form-control" id="label"
-															th:field="*{label}" th:value="${projectMaster['label']}">
-															<th:block th:each="str :${Label}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
 
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Label">LABEL </label>
+													<div>
+														<select class="form-control " id="Label"
+															th:field="*{Label}" th:value="${leadMaster['Label']}">
+															<option value="Hot">Hot</option>
+															<option value="Cold">Cold</option>
+															<option value="Warm">Warm</option>
 														</select>
 													</div>
 												</div>
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="phonenumber">BRANCH</label>
 													<div>
 														<select class="form-select  form-control " id="branch"
-															th:field="*{branch}"
-															th:value="${projectMaster['branch']}" required>
+															th:field="*{branch}" th:value="${leadMaster['branch']}"
+															required>
 															<th:block th:each="str :${branchlist}">
 																<option th:value="${str.id}"
 																	th:text="${str.BRANCH_NAME}"></option>
@@ -979,8 +663,8 @@ float:right;
 													<label class="form-label" for="Status">Status</label>
 													<div>
 														<select class="form-control" id="Status"
-															th:field="*{Status}"
-															th:value="${projectMaster['Status']}">
+															th:field="*{status}"
+															th:value="${leadMaster['status']}">
 															<th:block th:each="str :${ProjectStatus}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -988,37 +672,7 @@ float:right;
 													</div>
 
 												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="notes">NOTES</label>
-													<div>
-
-														<input type="text" id="notes" th:field="*{notes}"
-															th:value="${projectMaster['notes']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="startdateX1">Project In Date</label>
-													<div>
-
-														<input type="text" id="startdateX1"
-															th:field="*{startdate}"
-															th:value="${projectMaster['startdate']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="expectedclosingdate">
-														Due Date</label>
-													<div>
-
-														<input type="text" id="expectedclosingdate"
-															th:field="*{expectedclosingdate}"
-															th:value="${projectMaster['expectedclosingdate']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
-
+											
 
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
@@ -1245,8 +899,8 @@ float:right;
 		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
 
 
-		<!-- <script th:src="@{/assets/vendor/libs/	/quill.js}"></script>
- -->
+		<script th:src="@{/assets/vendor/libs/quill/quill.js}"></script>
+
 		<!-- Main JS -->
 		<script th:src="@{/assets/js/main.js}"></script>
 
@@ -1274,12 +928,12 @@ float:right;
 					.ready(
 							function() {
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								var ids="[[${projectMaster['id']}]]";
+								var ids="[[${leadMaster['id']}]]";
 								$("#mastercategoryid").val(ids);
 								$("#mastercategoryidnote").val(ids);
 								
-								var projectfollowerids="[[${projectMaster['projectfollowerids']}]]";
-								$("#followers").val(projectfollowerids.split(",")).change();
+								var leadfollowerids="[[${leadMaster['leadfollowerids']}]]";
+								$("#followers").val(leadfollowerids.split(",")).change();
 								
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------		 		
@@ -1302,10 +956,10 @@ float:right;
 								function gettimelinelistCompleted() {
 									
 									var formData = {
-										mastercategoryid : "[[${projectMaster['id']}]]",
-										categoryType : "Project",
+										mastercategoryid : "[[${leadMaster['id']}]]",
+										categoryType : "Lead",
 										status : "Completed",
-										subcategoryType: "Activity"
+										subcategoryType: "Note"
 									}
 	
 									$.ajax({
@@ -1324,31 +978,7 @@ float:right;
 									});
 	
 								}
-								function gettimelinelistNotCompleted() {
-									
-									var formData = {
-										mastercategoryid : "[[${projectMaster['id']}]]",
-										categoryType : "Project",
-										status : "NotCompleted",
-										subcategoryType: "Activity"
-									}
-	
-									$.ajax({
-										type : "POST",
-										url : "gettimelinelist",
-										data : formData,
-										success : function(result) {
-	
-											$('.widget-timelinePlanned').html(result);
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
+								
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								// Custom list & inline suggestion
@@ -1415,32 +1045,25 @@ float:right;
 											false);
 									$('.linkpeopledatasubmit').html("Submit");
 								}
-								function validationactivityeventformreset() {
-									$('.activityMasterformreset').click();
-									$('.activityMasterformclose').click();									
-									$('.activityMasterformsubmit').prop("disabled",
-											false);
-									$('.activityMasterformsubmit').html("Save");
-								}
+								
 								function validationactivitynotesformreset() {
 									$(".ql-editor").html("");
-									$('.btn-close').click();									
+									$('#noteactivityId').val(0);									
 									$('.NotesMasterformsubmit').prop("disabled",false);
 									$('.NotesMasterformsubmit').html("Save");
 								}
-								function validationphaseformreset() {
-									$('.editPhasedataclose').click();
-									$("#Model_phase_id").val(0);
-									$('.editPhasedatasubmit').prop("disabled",false);
-									$('.editPhasedatasubmit').html("Save");
-								}
 								//--------------------------------------------------------------------------------------------------------------------------------------		 
 								
+								$(document).on("click",".NotesMasterformclose",	function() {	
+									$(".ql-editor").html("");
+									$('#noteactivityId').val(0);	
+									$('.NotesMasterformsubmit').prop("disabled",false);
+									$('.NotesMasterformsubmit').html("Save");
+								});
 								$(document).on("click",".markitascompleted",	function() {	
 										
 									
 									let activityid = $(this).attr("id");
-									let phaseid = $(this).attr("name");
 									var formData = { activityid : activityid }
 		
 										$.ajax({
@@ -1461,8 +1084,8 @@ float:right;
 											        buttonsStyling: false
 											      });
 												
-												getphaseandactivitydetails_part(phaseid);
-												
+												gettimelinelistCompleted();
+												gettimelinelistNotCompleted();
 											},
 											error : function(e) {
 												console.log("Error" + e);
@@ -1473,184 +1096,6 @@ float:right;
 									
 								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#editPhasedetailsForm').on('submit',function(event) {
-											if (event.target.checkValidity()) {
-												$('.editPhasedatasubmit').prop("disabled",true);
-												$('.editPhasedatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-												const formData = new FormData(document.querySelector("#editPhasedetailsForm"));
-												
-												$.ajax({
-													type : "POST",
-													url : "projectphasessave",
-													processData : false,
-													contentType : false,
-													data : formData,
-													success : function(
-															result) {
-														
-														validationphaseformreset();
-														
-														Swal.fire({
-													        title: '',
-													        text: 'Your Phase event Updated',
-													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-													        imageWidth: 400,
-													        imageAlt: 'Custom image',
-													        confirmButtonText: 'Ok',
-													        customClass: {
-													          confirmButton: 'btn btn-primary'
-													        },
-													        buttonsStyling: false
-													      });
-														
-														getphaseandactivitydetails();
-
-													},
-													error : function(e) {
-														console.log("Error"+ e);
-													}
-												});
-											} else {
-												$('.editPhasedatasubmit').prop("disabled",false);
-											}
-
-										});
-								// --------------------------------------------------------------------
-								//--------------------------------------------------------------------------------
-								function getphaseandactivitydetails_part(phaseid) {
-									
-									var formData = {
-											projectid : "[[${projectMaster.id}]]",
-											
-										}
-		
-										$.ajax({
-											type : "GET",
-											url : "getprojectobj",
-											data : formData,
-											success : function(result) {
-												//console.log(result);
-												html = "";
-												let i=0;
-												result.projectPhases.forEach(function (obj) {
-												  
-													if(obj.id == phaseid)
-													{
-														obj.activityMaster.forEach(function (actobj) {
-		   													let tempicon="";
-															if(actobj.activitytype =='Task'){
-																tempicon ='<i class="bx bx-alarm-add activitytypeicon acticon "></i>';
-															}else if(actobj.activitytype =='Call'){
-																tempicon ='<i class="bx bx-phone-call activitytypeicon acticon"></i>';
-															}else if(actobj.activitytype =='Meetings'){
-																tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
-															}
-															
-															cmpclass= "";
-															if(actobj.status =="Completed")
-															{
-																status ="<i class='bx bxs-check-circle'></i>";
-																cmpclass="strikeout";
-															}else
-															{
-																status = "<button type='button' id='" + actobj.activityId + "' name='"+ obj.id +"' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
-															}
-															
-															html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td  class="editactivity '+ cmpclass +'" id="actid'+ actobj.activityId+'" name="'+ phaseid +'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
-		   													
-	   													});
-	   																							
-													}												
-												});
-													
-											
-											$(".activitycontainer"+ phaseid).html(html);
-											
-											},
-											error : function(e) {
-												console.log("Error" + e);
-		
-											}
-		
-										});
-									
-								}
-								
-								//--------------------------------------------------------------------------------
-								//function load the history events
-								function getphaseandactivitydetails() {
-									
-									var formData = {
-										projectid : "[[${projectMaster.id}]]",
-										
-									}
-	
-									$.ajax({
-										type : "GET",
-										url : "getprojectobj",
-										data : formData,
-										success : function(result) {
-											//console.log(result);
-											html = "";
-											let i=0;
-											result.projectPhases.forEach(function (obj) {
-											   i++;
-
-											   html +='<div class="accordion-item card" style="border-color: red;""><h2 class="accordion-header"><button type="button" class="accordion-button collapsed" ';
-   												html +=` data-bs-toggle="collapse" data-bs-target="#accordionStyle-${obj.id}" id="accordionStyle${obj.id}" aria-expanded="false"> ${obj.phaseName}</button> </h2>`;
-   												html +=`<div id="accordionStyle-${obj.id}" class="accordion-collapse collapse" data-bs-parent="#accordionStyle${obj.id}">`;
-   												html +=' <div class="table-responsive text-nowrap"><table class="table"><thead><tr><th></th><th>Done</th><th>Activity</th><th></th><th>Date</th><th>Notes</th></tr></thead><tbody class="table-border-bottom-0 activitycontainer'+ obj.id +'">';
-   												obj.activityMaster.forEach(function (actobj) {
-   													
-   													let tempicon="";
-													if(actobj.activitytype =='Task'){
-														tempicon ='<i class="bx bx-alarm-add activitytypeicon acticon "></i>';
-													}else if(actobj.activitytype =='Call'){
-														tempicon ='<i class="bx bx-phone-call activitytypeicon acticon"></i>';
-													}else if(actobj.activitytype =='Meetings'){
-														tempicon ='<i class="bx bx-group activitytypeicon acticon"></i>';
-													}
-													
-													cmpclass= "";
-													if(actobj.status =="Completed")
-													{
-														status ="<i class='bx bxs-check-circle'></i>";
-														cmpclass="strikeout";
-													}else
-													{
-													status = "<button type='button' id='" + actobj.activityId + "'   name='"+ obj.id +"' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
-														
-													}
-													
-													
-   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td class="editactivity '+ cmpclass +'" name="'+ obj.id +'"  id="actid'+ actobj.activityId+'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
-   												});
-   												
-   												html += `</tbody></table></div> <br /><span class="addactivity col-12" name="${obj.id}">+ Add Activity</span></div></div></div>`;
-											   												
-											   												
-											});
-												
-										
-										$("#accordionStyle1").html(html);
-										
-										},
-										error : function(e) {
-											console.log("Error" + e);
-	
-										}
-	
-									});
-	
-								}
-								// --------------------------------------------------------------------
-								$(document).ready(function(){
-								    setTimeout(function(){
-								    	getphaseandactivitydetails();
-								    	
-								     },500); // milliseconds
-								});
-								// --------------------------------------------------------------------
 								$("#startdate").change(function() {
 									if($('#enddate').val() ==''){
 										$('#enddate').val($(this).val());
@@ -1661,31 +1106,7 @@ float:right;
 										$('#endtime').val($(this).val());
 									}
 								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
 								
-								$(document).on("click",".addactivity", function() {
-									$('.activityMasterformreset').click();
-									$('.activityMasterformsubmit').prop("disabled",
-											false);
-									$('.activityMasterformsubmit').html("Save");
-									$("#activityId").val(0);
-									
-									$("input[name=activitytype][value=Task]").attr('checked', true);
-									$(".activitytype").removeClass("active");
-									$(".activitytypeTask").addClass("active");
-									
-									$("#createdtime").val("");
-									$("#phaseid").val($(this).attr("name"));
-									$("#addevent").modal('show');
-								});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#btnAddnotes").click(function() {
-									$(".ql-editor").html("");
-									$('.NotesMasterformclose').click();
-									$("#noteactivityId").val(0);
-									$('.NotesMasterformsubmit').prop("disabled",false);
-									$('.NotesMasterformsubmit').html("Save");
-								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$(".NotesMasterformsubmit").click(function() {
 									var htmlnotes = $(".ql-editor").html().trim();
@@ -1708,10 +1129,18 @@ float:right;
 										formData.append("Activitycategory","Note");
 										formData.append("duedate","");
 										formData.append("htmlnotes",htmlnotes);													
-										formData.append("mastercategory","Project");
+										formData.append("mastercategory","Lead");
 										formData.append("status","Completed");
-										formData.append("activityId",$("#noteactivityId").val());
+										
 										formData.append("mastercategoryid",$("#mastercategoryidnote").val());
+										
+										if($("#noteactivityId").val() =="")
+										{
+											formData.append("activityId",0);
+										}else
+										{
+											formData.append("activityId",$("#noteactivityId").val());
+										}
 										
 										 $.ajax({
 											type : "POST",
@@ -1736,9 +1165,9 @@ float:right;
 											        buttonsStyling: false
 											      });
 												
-											//	gettimelinelistCompleted();
-											//	gettimelinelistNotCompleted();
-
+												gettimelinelistCompleted();
+												
+											
 											},
 											error : function(e) {
 												console.log("Error"+ e);
@@ -1746,71 +1175,14 @@ float:right;
 										});
 									}
 								});
+								
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#activityMasterform').on('submit',function(event) {
-											const modalFile =document.getElementById("activityfiles");
-											if (event.target.checkValidity()) {
-												$('.activityMasterformsubmit').prop("disabled",true);
-												$('.activityMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-												const formData = new FormData(
-														document
-																.querySelector("#activityMasterform"));
-												
-												formData.append("File_Attach",null);
-												formData.append("guestid","");
-												formData.append("activityfollowers",$("#activityfollowers").val());
-												formData.append("Activitycategory","Activity");
-												formData.append("duedate","");
-												formData.append("htmlnotes","");													
-												formData.append("mastercategory","Project");
-												formData.append("mastercategoryid",$("#phaseid").val());
-												
-												 $.ajax({
-													type : "POST",
-													url : "activitysave",
-													processData : false,
-													contentType : false,
-													data : formData,
-													success : function(
-															result) {
-														
-														
-														
-														Swal.fire({
-													        title: '',
-													        text: 'Your Activity event added',
-													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-													        imageWidth: 400,
-													        imageAlt: 'Custom image',
-													        confirmButtonText: 'Ok',
-													        customClass: {
-													          confirmButton: 'btn btn-primary'
-													        },
-													        buttonsStyling: false
-													      });
-														
-														getphaseandactivitydetails_part($("#phaseid").val());
-														validationactivityeventformreset();
-														//gettimelinelistCompleted();
-														//gettimelinelistNotCompleted();
-
-													},
-													error : function(e) {
-														console.log("Error"+ e);
-													}
-												});
-											} else {
-												$('.activityMasterformsubmit').prop("disabled",false);
-											}
-
-										});
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#editprojectMasterdetailsForm').on('submit',function(event) {
+								$('#editleadMasterdetailsForm').on('submit',function(event) {
 
 													if (event.target.checkValidity()) {
 														$('.editorganizationdatasubmit').prop("disabled",true);
 														$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														const formData = new FormData(document.querySelector("#editprojectMasterdetailsForm"));
+														const formData = new FormData(document.querySelector("#editleadMasterdetailsForm"));
 														
 														formData.append("followers",$("#followers").val());
 														/* for (var pair of formData.entries()) {
@@ -1818,34 +1190,30 @@ float:right;
 														} */
 														$.ajax({
 																	type : "POST",
-																	url : "projectsavestage2",
+																	url : "leadsavestage2",
 																	processData : false,
 																	contentType : false,
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
-																		//console.log(bmobj);
-																		
+																		console.log(bmobj);
+
 																			if (bmobj.label == "Hot") {
-																				$('#Lbl_label').html("<span class='badge bg-danger'>Hot</span>");
+																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
 																			} else if (bmobj.label == "Warm") {
-																				$('#Lbl_label').html("<span class='badge bg-warning'>Warm</span>");
+																				$('#Lbl_Label').html("<span class='badge bg-warning'>Warm</span>");
 																			} else {
-																				$('#Lbl_label').html("<span class='badge bg-primary'>Cold</span>");
+																				$('#Lbl_Label').html("<span class='badge bg-primary'>Cold</span>");
 																			}
-																			
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
-																			$('#Lbl_pipeline').text(bmobj.pipeline);
-																			$('#Lbl_notes').text(bmobj.notes);
+																			
 																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
-																			$("#Lbl_projectvalue").text(bmobj.projectvalue);
+																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
 																			$("#Lbl_purpose").text(bmobj.purpose);
 																			$("#Lbl_branchname").text(bmobj.branchname);
-																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
-																			$("#Lbl_expectedstartdate").text(bmobj.expectedstartdateMMddYYY);
-																			$("#Lbl_board").text(bmobj.boardName);	
+																			
 																			
 																			$("#Lbl_Status").text(bmobj.status);	
 																			$("#Lbl_NatureofWork").text(bmobj.natureofWork);	
@@ -1853,11 +1221,11 @@ float:right;
 																			$("#Lbl_UNITS").text(bmobj.units);	
 																			$("#Lbl_Location").text(bmobj.location);	
 																			$("#Lbl_tdate").text(bmobj.tdateMMddYYY);	
-																			
+																			$("#Lbl_leaddateMMddYYY").text(bmobj.leaddateMMddYYY);	
 																			
 																			$name ="";
 																			
-																			bmobj.projectFollowers.forEach((element, index, array) =>
+																			bmobj.leadFollowers.forEach((element, index, array) =>
 																           	{
 																           	    $name += element.followername+ "<br>";
 																            });
@@ -1961,19 +1329,39 @@ float:right;
 												'submit',
 												function(event) {
 
-													if (event.target.checkValidity()) {
-														$('.editpeopledatasubmit').prop("disabled",true);
-														$('.editpeopledatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+													if (event.target
+															.checkValidity()) {
+														$(
+																'.editpeopledatasubmit')
+																.prop(
+																		"disabled",
+																		true);
+														$(
+																'.editpeopledatasubmit')
+																.html(
+																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 
-														var projectMasterID = $('#projectMasterID').val();
-														var peoplename = $('#Model_peoplename').val();
-														var phonenumber = $('#Model_peoplecontact').val();
-														var branch = $("#branch").val();
-														var followers = $("#followers").val();
-														var organization = $("#organization").val();
+														var leadMasterID = $(
+																'#leadMasterID')
+																.val();
+														var peoplename = $(
+																'#Model_peoplename')
+																.val();
+														var phonenumber = $(
+																'#Model_peoplecontact')
+																.val();
+														var branch = $(
+																"#branch")
+																.val();
+														var followers = $(
+																"#followers")
+																.val();
+														var organization = $(
+																"#organization")
+																.val();
 														var formData = {
-															id : projectMasterID,
-															category : 'Project',
+															id : leadMasterID,
+															category : 'Lead',
 															organization : organization,
 															branch : branch,
 															peoplename : peoplename,
@@ -2001,11 +1389,12 @@ float:right;
 																				+ phonenumber
 																				+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
 																				+ result
-																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
-																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + result +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div>  </div> </div>';
+																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div>' 
+																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + result +'" 	onclick="removecontactperson(this)">Unlink</a>       </div> ';
+																				
 																				
 																		$(
-																				'#contactpeopprojectdidv')
+																				'#contactpeopleaddidv')
 																				.before(
 																						temphtml);
 
@@ -2046,16 +1435,16 @@ float:right;
 																'.linkpeopledatasubmit')
 																.html(
 																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														var projectMasterID = $(
-																'#projectMasterID')
+														var leadMasterID = $(
+																'#leadMasterID')
 																.val();
 														var linkpeoplename = $(
 																'#Model_linkpeoplename')
 																.val();
 
 														var formData = {
-															id : projectMasterID,
-															category : 'Project',
+															id : leadMasterID,
+															category : 'Lead',
 															linkpeoplename : linkpeoplename,
 
 														}
@@ -2085,9 +1474,8 @@ float:right;
 																				+ bmobj.id
 																				+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
 																				+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + bmobj.id +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div> </div> </div>';
-																				
 																		$(
-																				'#contactpeopprojectdidv')
+																				'#contactpeopleaddidv')
 																				.before(
 																						temphtml);
 																		validationlinkformreset();
@@ -2116,7 +1504,7 @@ float:right;
 								$(document).ready(function(){
 								    setTimeout(function(){
 								    	gettimelinelistCompleted();
-								    	gettimelinelistNotCompleted();
+								    	
 								     },500); // milliseconds
 								});
 							}); // Jquery
@@ -2140,6 +1528,7 @@ float:right;
 					}
 				});
 			}
+
 			//------------------------------------------------------
 			function removecontactperson(elem) {
 
@@ -2158,8 +1547,8 @@ float:right;
 		             if (result.value) {
 								var formData = {
 									personid : elem.getAttribute("name"),
-									projectMasterID: $("#projectMasterID").val(),
-									module : "Project"
+									leadMasterID: $("#leadMasterID").val(),
+									module : "Lead"
 								}
 								$.ajax({
 									type : "POST",
@@ -2178,38 +1567,8 @@ float:right;
 			}
 
 			//------------------------------------------------------    
-			 // Date Format
-			   const flatpickrFriendly = document.querySelector('#expectedclosingdate');
-				 // Human Friendly
-				  if (flatpickrFriendly) {
-				    flatpickrFriendly.flatpickr({
-				      altInput: true,
-				      altFormat: 'F j, Y',
-				      dateFormat: 'Y-m-d'
-				    });
-				  }
-				 
-				  const expectedstartdateX1 = document.querySelector('#startdateX1');
-					 // Human Friendly
-					  if (expectedstartdateX1) {
-						  expectedstartdateX1.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
-					 
-					 //
-					 
-					 const tdate = document.querySelector('#tdate');
-					 // Human Friendly
-					  if (tdate) {
-						  tdate.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
+    
+
 			// Phone
 			const phoneMask = document.querySelector('.phone-number-otp-mask');
 
@@ -2226,7 +1585,6 @@ float:right;
 			//--------------------------
 			function editactivity(e){
 				var activityid= e.getAttribute("id").replace("actid","");
-				var phaseid= e.getAttribute("name");
 				var formData = {
 						id : activityid
 					}
@@ -2238,14 +1596,11 @@ float:right;
 						success : function(result) {
 							var bmobj = JSON.parse(JSON.stringify(result));
 							console.log(bmobj);
-							
-							$("#phaseid").val(phaseid);
-							
 							$("#mastercategoryid").val(bmobj.mastercategoryid);
 							$("#activityId").val(bmobj.activityId);
 							$("#createdtime").val(bmobj.createdtime);
 							$("#activitytitle").val(bmobj.activitytitle);
-							
+							//$("#activitytype").val(bmobj.activitytype);
 							$("#startdate").val(bmobj.startdate);
 							$("#starttime").val(bmobj.starttime);
 							$("#enddate").val(bmobj.enddate);
@@ -2279,7 +1634,9 @@ float:right;
 							$("#mastercategoryidnote").val(bmobj.mastercategoryid);
 							$("#noteactivityId").val(bmobj.activityId);
 							$(".ql-editor").html(bmobj.htmlnotes);
-							$('#addnotes').modal('show');
+							document.body.scrollTop=0;
+							document.documentElement.scrollTop=0;
+							
 						},
 						error : function(e) {
 							console.log("Error" + e);
@@ -2287,6 +1644,26 @@ float:right;
 					});
 			};
 			
+			// Date Format
+			   const flatpickrFriendlyleadDate = document.querySelector('#leadDate');
+				 // Human Friendly
+				  if (flatpickrFriendlyleadDate) {
+				    flatpickrFriendlyleadDate.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+				 
+				  const flatpickrFriendlyx = document.querySelector('#tdate');
+					 // Human Friendly
+					  if (flatpickrFriendlyx) {
+					    flatpickrFriendlyx.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }
 		</script>
 </body>
 </html>

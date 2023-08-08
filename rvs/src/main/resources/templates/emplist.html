@@ -214,7 +214,7 @@
                         
                         <select class="form-select" id="branch_name" required>
                            <option value="">Select Branch</option>
-                           <option th:each="obj :${BranchList}" th:value="${obj.BRANCH_NAME}"  th:text="${obj.BRANCH_NAME}"></option>
+                           <option th:each="obj :${BranchList}" th:value="${obj.id}"  th:text="${obj.BRANCH_NAME}"></option>
                            
                          </select>
                           

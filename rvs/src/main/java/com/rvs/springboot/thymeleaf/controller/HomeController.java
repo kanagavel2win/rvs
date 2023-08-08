@@ -9788,7 +9788,6 @@ public class HomeController {
 
 		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
 		theModel.addAttribute("SOURCE", MEMBERIN);
-
 		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
 		theModel.addAttribute("PURPOSE", PURPOSE);
 

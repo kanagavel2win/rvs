@@ -2872,7 +2872,7 @@ public class HomeController {
 
 		for (EmployeeJobinfo stmojb : employeeJobinfoService.findByEmployeeid(empid)) {
 
-			if (!stmojb.getJobreportsto().equalsIgnoreCase("")) {
+			if (!nullremover(String.valueOf(stmojb.getJobreportsto())).equalsIgnoreCase("")) {
 				stmojb.setReportstoname(
 						employeeMasterService.findById(Integer.parseInt(stmojb.getJobreportsto())).getStaffName());
 			}
@@ -3013,7 +3013,7 @@ public class HomeController {
 		itemlistService.savesingletxt(obj.getJobtitle(), "JobTitle");
 		employeeJobinfoService.save(obj);
 
-		if (!params.get("jobreportsto").equalsIgnoreCase("")) {
+		if (!nullremover(String.valueOf(params.get("jobreportsto"))).equalsIgnoreCase("")) {
 			obj.setReportstoname(
 					employeeMasterService.findById(Integer.parseInt(params.get("jobreportsto"))).getStaffName());
 		}

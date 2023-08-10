@@ -1927,6 +1927,7 @@ public class HomeController {
 		contact.setDepartment("Personal");
 		contact.setEmail(params.get("email"));
 		contact.setPhonenumber(params.get("phonenumber"));
+		contact.setPrimarycontact(true);
 		List<EmployeeContact> scontact = new ArrayList<>();
 		scontact.add(contact);
 		emp.setEmployeeContact(scontact);

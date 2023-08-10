@@ -1841,7 +1841,7 @@ public class HomeController {
 			em.setT_primary_email("");
 			if (conlist.size() > 0) {
 				List<EmployeeContact> contactobjjobgreen = conlist.stream()
-						.filter(c -> c.getDepartment().equalsIgnoreCase("Personal")).collect(Collectors.toList());
+						.filter(c -> c.getPrimarycontact() == true ).collect(Collectors.toList());
 				if (contactobjjobgreen.size() > 0) {
 					em.setT_primary_contactno(contactobjjobgreen.get(0).getPhonenumber());
 					em.setT_primary_email(contactobjjobgreen.get(0).getEmail());

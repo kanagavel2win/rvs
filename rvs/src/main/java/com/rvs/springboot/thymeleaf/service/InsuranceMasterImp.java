@@ -41,6 +41,16 @@ public class InsuranceMasterImp implements InsuranceMasterService {
 		
 		return insuranceRepo.findAll();
 	}
+
+	@Override
+	public List<InsuranceMaster> findByStaffID(String id) {
+		return insuranceRepo.findBystaffID(id);
+	}
+
+	@Override
+	public List<InsuranceMaster> findByAssetNameID(String id) {
+		return insuranceRepo.findByassetNameID(id);
+	}
 		
 	
 }

@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -128,9 +127,6 @@ import com.rvs.springboot.thymeleaf.entity.ProjectTemplatePhase;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchaseItemMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchaseMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchasePaymentMaster;
-import com.rvs.springboot.thymeleaf.entity.VendorEmgContact;
-import com.rvs.springboot.thymeleaf.entity.VendorFiles;
-import com.rvs.springboot.thymeleaf.entity.VendorMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
@@ -166,7 +162,7 @@ import com.rvs.springboot.thymeleaf.service.PaySlipService;
 import com.rvs.springboot.thymeleaf.service.ProjectMasterService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateBoardService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateMasterService;
-import com.rvs.springboot.thymeleaf.service.VendorMasterService;
+
 
 @Controller
 
@@ -201,8 +197,6 @@ public class HomeController {
 	@Autowired
 	private PaySlipService payslipserive;
 
-	@Autowired
-	VendorMasterService vendorMasterService;
 	@Autowired
 	AssetMasterService assetMasterService;
 	@Autowired
@@ -1506,10 +1500,10 @@ public class HomeController {
 			// Organization Name
 			if (!nullremover(String.valueOf(cp.getOrganization())).equalsIgnoreCase("")) {
 				OrganizationContacts oc = contactOrganizationService.findById(Integer.parseInt(cp.getOrganization()));
-				
+
 				cp.setOrganizationname(oc.getOrgname());
 				cp.setOrganization_type(oc.getIndustry_type());
-				
+
 			}
 
 			// Set primary contact
@@ -1536,9 +1530,9 @@ public class HomeController {
 			cp.setFollowername(nullremover(String.valueOf(cp.getFollowername())));
 			cp.setFollowerimg(nullremover(String.valueOf(cp.getFollowerimg())));
 			cp.setFollowerprimarymob(nullremover(String.valueOf(cp.getFollowerprimarymob())));
-			cp.setOrganization_type(nullremover(String.valueOf(cp.getOrganization_type())));	
+			cp.setOrganization_type(nullremover(String.valueOf(cp.getOrganization_type())));
 			// ---------------------------------------------------------
-			
+
 		}
 
 		return cpList;
@@ -1840,8 +1834,8 @@ public class HomeController {
 			em.setT_primary_contactno("");
 			em.setT_primary_email("");
 			if (conlist.size() > 0) {
-				List<EmployeeContact> contactobjjobgreen = conlist.stream()
-						.filter(c -> c.getPrimarycontact() == true ).collect(Collectors.toList());
+				List<EmployeeContact> contactobjjobgreen = conlist.stream().filter(c -> c.getPrimarycontact() == true)
+						.collect(Collectors.toList());
 				if (contactobjjobgreen.size() > 0) {
 					em.setT_primary_contactno(contactobjjobgreen.get(0).getPhonenumber());
 					em.setT_primary_email(contactobjjobgreen.get(0).getEmail());
@@ -2157,16 +2151,16 @@ public class HomeController {
 		EmployeeMaster empobj = employeeMasterService.findById(empMasterid);
 
 		if (params.get("langu[lanid]").equalsIgnoreCase("")) {
-			
-		List<EmployeeLanguage> emplangls=	empobj.getEmployeeLanguage().stream().filter(C -> C.getLanguage().equalsIgnoreCase(params.get("langu[Language]"))).collect(Collectors.toList())	;
-		if(emplangls.size() >0)
-		{
-			return 0;
-		}else
-		{
-			return employeeMasterService.insertemployeeLanguag(empMasterid, langu);
-		}
-			
+
+			List<EmployeeLanguage> emplangls = empobj.getEmployeeLanguage().stream()
+					.filter(C -> C.getLanguage().equalsIgnoreCase(params.get("langu[Language]")))
+					.collect(Collectors.toList());
+			if (emplangls.size() > 0) {
+				return 0;
+			} else {
+				return employeeMasterService.insertemployeeLanguag(empMasterid, langu);
+			}
+
 		} else {
 			langu.setEmpLanguid(Integer.parseInt(params.get("langu[lanid]")));
 			return employeeMasterService.updateemployeeLanguag(langu);
@@ -2684,20 +2678,16 @@ public class HomeController {
 			}
 		}
 		// -------------------------------------------
-		employeemasternew.getEmployeeFiles().forEach(C ->{
-			
-			String filetempname=C.getFilePath().split("/")[1].substring(15);	
-			
-			if(filetempname.length()> 20) {
+		employeemasternew.getEmployeeFiles().forEach(C -> {
+
+			String filetempname = C.getFilePath().split("/")[1].substring(15);
+
+			if (filetempname.length() > 20) {
 				C.setFilePath_trim(filetempname.substring(0, 19) + "...");
-			}else
-			{
+			} else {
 				C.setFilePath_trim(filetempname);
 			}
-			
-			
-			
-			
+
 		});
 		// -------------------------------------------
 		List<String> MARITALSTATUS = itemlistService.findByFieldName("MARITAL STATUS");
@@ -3231,8 +3221,7 @@ public class HomeController {
 				infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 
 				if (infoobjgreen.size() > 0) {
-					if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation()
-							.equalsIgnoreCase(branchid)) {
+					if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation().equalsIgnoreCase(branchid)) {
 
 						if (!calculateTerminatedstatus(obj.getEmpMasterid(), date)) {
 							employeeMasterlswitheffectivelocation.add(obj);
@@ -4110,242 +4099,17 @@ public class HomeController {
 		return monthNames[month];
 	}
 
-	@GetMapping("vendorlist")
-	public String vendorlist(Model theModel) {
-		List<String> data = new ArrayList<String>();
-
-		List<VendorMaster> ls = new ArrayList<VendorMaster>();
-		ls = vendorMasterService.findAll();
-
-		for (VendorMaster obj : ls) {
-			String str = "";
-
-			str += obj.getName() + " |";
-
-			str += " |";
-
-			str += obj.getVendormasterid() + "|";
-			str += obj.getAssetType() + " |";
-
-			if (obj.getVendorEmgContact().size() > 0) {
-				List<VendorEmgContact> venec = obj.getVendorEmgContact().stream()
-						.filter(C -> !String.valueOf(C.getEmg_PersonalPhone()).equalsIgnoreCase(""))
-						.collect(Collectors.toList());
-
-				if (venec.size() > 0) {
-					str += venec.get(0).getEmg_PersonalPhone() + " |";
-				} else {
-					str += "- |";
-				}
-
-			} else {
-				str += "- |";
-			}
-			str += obj.getAddress_City() + " |";
-
-			data.add(str);
-		}
-
-		theModel.addAttribute("venlist", data);
-		return "vendorlist";
-
-	}
-
-	@GetMapping("vendor")
-	public String vendornew(Model themodel) {
-
-		VendorMaster venobj = new VendorMaster();
-
-		VendorEmgContact vencont = new VendorEmgContact();
-		ArrayList<VendorEmgContact> emgls = new ArrayList<VendorEmgContact>();
-		emgls.add(vencont);
-
-		VendorFiles venfiles = new VendorFiles();
-		ArrayList<VendorFiles> filels = new ArrayList<VendorFiles>();
-		filels.add(venfiles);
-
-		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
-		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
-
-		themodel.addAttribute("vendorEmgContact", emgls);
-		themodel.addAttribute("vendorFiles", venfiles);
-		themodel.addAttribute("vendormaster", venobj);
-		return "vendoradd";
-	}
-
-	@GetMapping("ven")
-	public String vendordetails(Model themodel, @RequestParam("id") int id) {
-
-		VendorMaster vendormasternew = new VendorMaster();
-		vendormasternew = vendorMasterService.findById(id);
-
-		List<VendorEmgContact> emglsnew = new ArrayList<VendorEmgContact>();
-		List<VendorFiles> filelsnew = new ArrayList<VendorFiles>();
-
-		if (vendormasternew.getVendorEmgContact().size() > 0) {
-			emglsnew.addAll(vendormasternew.getVendorEmgContact());
-		} else {
-			VendorEmgContact empcont = new VendorEmgContact();
-			emglsnew.add(empcont);
-
-		}
-
-		if (vendormasternew.getVendorFiles().size() > 0) {
-			filelsnew.addAll(vendormasternew.getVendorFiles());
-		} else {
-			VendorFiles empfiles1 = new VendorFiles();
-			filelsnew.add(empfiles1);
-		}
-
-		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
-		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
-
-		themodel.addAttribute("vendorEmgContact", emglsnew);
-		themodel.addAttribute("vendorFiles", filelsnew);
-		themodel.addAttribute("vendormaster", vendormasternew);
-		return "vendoradd";
-	}
-
-	@PostMapping("Vendorsave")
-	public String Vendorsave(HttpServletRequest req, Model themodel,
-			@ModelAttribute("vendormaster") VendorMaster vendormaster,
-			@RequestParam(name = "filesempFileid", required = false) String[] filesempFileid,
-			@RequestParam(name = "filesempFileidstr", required = false) String[] filesempFileidstr,
-			@RequestParam(name = "Files_Attach", required = false) MultipartFile Files_Attach,
-			@RequestParam(name = "venEmgContactid", required = false) String[] venEmgContactid,
-			@RequestParam(name = "emgid", required = false) String[] emgid,
-			@RequestParam(name = "Emg_Name", required = false) String[] Emg_Name,
-			@RequestParam(name = "Designation", required = false) String[] Designation,
-			@RequestParam(name = "Emg_PersonalPhone", required = false) String[] Emg_PersonalPhone,
-			@RequestParam(name = "Emg_OtherPhone", required = false) String[] Emg_OtherPhone,
-			@RequestParam(name = "Emg_EmailID", required = false) String[] Emg_EmailID,
-			@RequestParam(name = "Landlineno", required = false) String[] Landlineno,
-			@RequestParam Map<String, String> params, HttpServletRequest request) {
-
-		// Systven.out.println("--------------Step 1 end----------------------");
-
-		List<VendorEmgContact> vengls = new ArrayList<VendorEmgContact>();
-		for (int farr = 0; farr < Emg_Name.length; farr++) {
-			VendorEmgContact venpcont = new VendorEmgContact();
-
-			String tvenplangurow = emgid[farr];
-			if (params.get("Emg_primarycontact" + tvenplangurow) != null) {
-				venpcont.setEmg_primarycontact(true);
-			} else {
-				venpcont.setEmg_primarycontact(false);
-			}
-
-			if (!venEmgContactid[farr].isEmpty()) {
-				venpcont.setVenEmgContactid(Integer.parseInt(venEmgContactid[farr]));
-			}
-			if (Emg_Name.length > 0)
-				venpcont.setEmg_Name(Emg_Name[farr]);
-			if (Designation.length > 0)
-				venpcont.setDesignation(Designation[farr]);
-			if (Emg_PersonalPhone.length > 0)
-				venpcont.setEmg_PersonalPhone(Emg_PersonalPhone[farr]);
-			if (Emg_OtherPhone.length > 0)
-				venpcont.setEmg_OtherPhone(Emg_OtherPhone[farr]);
-			if (Emg_EmailID.length > 0)
-				venpcont.setEmg_EmailID(Emg_EmailID[farr]);
-
-			if (Landlineno.length > 0)
-				venpcont.setLandlineno(Landlineno[farr]);
-
-			vengls.add(venpcont);
-		}
-		vendormaster.setVendorEmgContact(vengls);
-		// Systven.out.println("--------------Step 2 End------v----------------");
-
-		List<VendorFiles> filels = new ArrayList<VendorFiles>();
-
-		if (filesempFileid != null)
-			for (int farr = 0; farr < filesempFileid.length; farr++) {
-				VendorFiles obj = new VendorFiles();
-
-				if (filesempFileid[farr] != null) {
-					obj.setVenFileid(Integer.parseInt(filesempFileid[farr]));
-				}
-				obj.setFiles_Attach(filesempFileidstr[farr]);
-				filels.add(obj);
-			}
-
-		// File Uploading
-		String profilephotouploadRootPath = request.getServletContext().getRealPath("vendorprofilephoto");
-
-		File uploadRootDir = new File(profilephotouploadRootPath);
-		// Create directory if it not exists.
-		if (!uploadRootDir.exists()) {
-			uploadRootDir.mkdirs();
-		}
-
-		String certificateuploadRootPath = request.getServletContext().getRealPath("vendorfiles");
-		// Systven.out.println("uploadRootPath=" + certificateuploadRootPath);
-
-		File uploadRootDircertificate = new File(certificateuploadRootPath);
-		if (!uploadRootDircertificate.exists()) {
-			uploadRootDircertificate.mkdirs();
-		}
-
-		if (Files_Attach.getOriginalFilename().toString().length() > 0) {
-			VendorFiles venpfiles = new VendorFiles();
-			StringBuilder filename = new StringBuilder();
-			String tvenpfilename = stringdatetime() + Files_Attach.getOriginalFilename();
-			Path fileNameandPath = Paths.get(certificateuploadRootPath, tvenpfilename);
-			filename.append(tvenpfilename);
-			venpfiles.setFiles_Attach("vendorfiles/" + filename);
-			try {
-				Files.write(fileNameandPath, Files_Attach.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			filels.add(venpfiles);
-		}
-		vendormaster.setVendorFiles(filels);
-		// Systven.out.println("--------------Step 5 end----------------------");
-		VendorMaster vendormasternew = new VendorMaster();
-		itemlistService.savesingletxt(vendormaster.getAssetType(), "ASSETTYPE");
-		vendormasternew = vendorMasterService.save(vendormaster);
-
-		List<VendorEmgContact> venglsnew = new ArrayList<VendorEmgContact>();
-		List<VendorFiles> filelsnew = new ArrayList<VendorFiles>();
-
-		// Systven.out.println(vendormasternew.getVendorEmgContact().size());
-		if (vendormasternew.getVendorEmgContact().size() > 0) {
-			venglsnew.addAll(vendormasternew.getVendorEmgContact());
-		} else {
-			VendorEmgContact venpcont = new VendorEmgContact();
-			venglsnew.add(venpcont);
-
-		}
-
-		if (vendormasternew.getVendorFiles().size() > 0) {
-			filelsnew.addAll(vendormasternew.getVendorFiles());
-		} else {
-			VendorFiles venpfiles1 = new VendorFiles();
-			filelsnew.add(venpfiles1);
-		}
-
-		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
-		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
-
-		themodel.addAttribute("vendorEmgContact", venglsnew);
-		themodel.addAttribute("vendorFiles", filelsnew);
-		themodel.addAttribute("vendormaster", vendormaster);
-		return "vendoradd";
-	}
-
 	@GetMapping("assetlist")
 	public String assetlist(Model theModel) {
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
 
 		theModel.addAttribute("branchls", branchMasterService.findAll());
-
-		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
-		vendorls = vendorMasterService.findAll();
-		theModel.addAttribute("vendorls", vendorls);
-
+		// Change Ven to Org
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+								.collect(Collectors.toList());
+		theModel.addAttribute("vendorls", corglis);
+		
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		theModel.addAttribute("ASSETTYPE", ASSETTYPE);
 
@@ -4407,10 +4171,12 @@ public class HomeController {
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchls", branchls);
+		// Change Ven to Org
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+								.collect(Collectors.toList());
 
-		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
-		vendorls = vendorMasterService.findAll();
-		themodel.addAttribute("vendorls", vendorls);
+		themodel.addAttribute("vendorls", corglis);
 
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
@@ -4450,10 +4216,12 @@ public class HomeController {
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchls", branchls);
+		// Change Ven to Org
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+								.collect(Collectors.toList());
 
-		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
-		vendorls = vendorMasterService.findAll();
-		themodel.addAttribute("vendorls", vendorls);
+		themodel.addAttribute("vendorls", corglis);
 
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
@@ -4554,10 +4322,12 @@ public class HomeController {
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchls", branchls);
+		// Change Ven to Org
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+								.collect(Collectors.toList());
 
-		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
-		vendorls = vendorMasterService.findAll();
-		themodel.addAttribute("vendorls", vendorls);
+		themodel.addAttribute("vendorls", corglis);
 
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
@@ -4614,10 +4384,12 @@ public class HomeController {
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
 
 		theModel.addAttribute("branchls", branchMasterService.findAll());
+		// Change Ven to Org
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+								.collect(Collectors.toList());
 
-		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
-		vendorls = vendorMasterService.findAll();
-		theModel.addAttribute("vendorls", vendorls);
+		theModel.addAttribute("vendorls", corglis);
 
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		theModel.addAttribute("ASSETTYPE", ASSETTYPE);
@@ -4625,9 +4397,10 @@ public class HomeController {
 		AssetMaster assetmasternew = assetMasterService.findById(assetid);
 
 		try {
-			assetmasternew.setVendorName(vendorMasterService.findAll().stream()
-					.filter(C -> C.getVendormasterid() == Integer.parseInt(assetmasternew.getVendor()))
-					.collect(Collectors.toList()).get(0).getName());
+			// Change Ven to Org
+			assetmasternew.setVendorName(contactOrganizationService.findAll().stream()
+					.filter(C -> C.getId() == Integer.parseInt(assetmasternew.getVendor()))
+					.collect(Collectors.toList()).get(0).getOrgname());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -4695,9 +4468,11 @@ public class HomeController {
 		}
 
 		try {
-			assetmasternew.setVendorName(vendorMasterService.findAll().stream()
-					.filter(C -> C.getVendormasterid() == Integer.parseInt(assetmasternew.getVendor()))
-					.collect(Collectors.toList()).get(0).getName());
+			// Change Ven to Org
+			assetmasternew.setVendorName(contactOrganizationService.findAll().stream()
+					.filter(C -> C.getId() == Integer.parseInt(assetmasternew.getVendor()))
+					.collect(Collectors.toList()).get(0).getOrgname());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -4806,10 +4581,12 @@ public class HomeController {
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchls", branchls);
+		// Change Ven to Org
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+								.collect(Collectors.toList());
 
-		List<VendorMaster> vendorls = new ArrayList<VendorMaster>();
-		vendorls = vendorMasterService.findAll();
-		themodel.addAttribute("vendorls", vendorls);
+		themodel.addAttribute("vendorls", corglis);
 
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		themodel.addAttribute("ASSETTYPE", ASSETTYPE);
@@ -5417,9 +5194,11 @@ public class HomeController {
 			}
 
 			for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
-
-				VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(objindetail.getVendorName()));
-				objindetail.setVendorNamestr(vendor.getName());
+				// Change Ven to Org
+				objindetail.setVendorNamestr(contactOrganizationService.findAll().stream()
+						.filter(C -> C.getId() == Integer.parseInt(objindetail.getVendorName()))
+						.collect(Collectors.toList()).get(0).getOrgname());
+				
 
 				if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
 					try {
@@ -5465,6 +5244,8 @@ public class HomeController {
 	@PostMapping("insuranceclaimdetails")
 	public List<InsuranceClaimHistory> insuranceclaimdetails(Model themodel, @RequestParam("id") int id) {
 
+		if(id > 0)
+		{
 		List<InsuranceClaimHistory> ls = insuranceMasterService.findById(id).getInsuranceClaimHistory();
 
 		for (InsuranceClaimHistory obj : ls) {
@@ -5478,17 +5259,23 @@ public class HomeController {
 		}
 
 		return ls;
-
+		}else
+		{
+			return null;
+		}
 	}
-	
 
 	@GetMapping("insurance")
 	public String insurancedetails(Model themodel, @RequestParam("id") int id) {
 
 		InsuranceMaster insurancemasternew = new InsuranceMaster();
 		insurancemasternew = insuranceMasterService.findById(id);
+		// Change Ven to Org
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+								.collect(Collectors.toList());
 
-		List<VendorMaster> vm = vendorMasterService.findAll();
+		
 
 		if (!insurancemasternew.getStaffID().equalsIgnoreCase("")) {
 			EmployeeMaster em = employeeMasterService.findById(Integer.parseInt(insurancemasternew.getStaffID()));
@@ -5502,7 +5289,7 @@ public class HomeController {
 		}
 
 		themodel.addAttribute("insurancemaster", insurancemasternew);
-		themodel.addAttribute("vm", vm);
+		themodel.addAttribute("vm", corglis);
 
 		List<BranchMaster> branchls = new ArrayList<BranchMaster>();
 		branchls = branchMasterService.findAll();
@@ -5516,36 +5303,64 @@ public class HomeController {
 		return "insurance";
 	}
 
+	@GetMapping("empbenefits")
+	public String empbenefits(Model themodel, @RequestParam("id") int id) {
+
+		InsuranceMaster insurancemasternew = new InsuranceMaster();
+		int insuranceid =0;
+		List<InsuranceMaster> checkInsuLs = insuranceMasterService.findByStaffID(String.valueOf(id));
+		if(checkInsuLs.size() ==0 ) {
+			insurancemasternew.setInsuranceTo("Staff");
+			insurancemasternew.setAssetNameID("");
+			insurancemasternew.setStaffID(String.valueOf(id));
+			insurancemasternew = insuranceMasterService.save(insurancemasternew);
+			insuranceid = insurancemasternew.getInsuranceid();
+		}else
+		{
+			insurancemasternew =checkInsuLs.get(0);
+			insuranceid = insurancemasternew.getInsuranceid();
+		}
+		
+			
+		return "redirect:/insurance?id="+ insuranceid;
+	}
+
 	@ResponseBody
 	@PostMapping("getpolicydetailslist")
 	public List<InsuranceDetails> getpolicydetailslist(@RequestParam("id") int id) {
 
-		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
+		if (id > 0) {
+			InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
 
-		for (InsuranceDetails objindetail : insurancemasternew.getInsuranceDetails()) {
+			for (InsuranceDetails objindetail : insurancemasternew.getInsuranceDetails()) {
+				// Change Ven to Org
+				OrganizationContacts vendor = contactOrganizationService.findById(Integer.parseInt(objindetail.getVendorName()));
+				
+				
+				objindetail.setVendorNamestr(vendor.getOrgname());
 
-			VendorMaster vendor = vendorMasterService.findById(Integer.parseInt(objindetail.getVendorName()));
-			objindetail.setVendorNamestr(vendor.getName());
+				if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
+					EmployeeMaster employee = employeeMasterService
+							.findById(Integer.parseInt(objindetail.getNominee()));
+					objindetail.setNominee_name_str(employee.getStaffName().toString());
+				} else {
+					objindetail.setNominee_name_str("");
+				}
+				try {
+					objindetail.setPFrom_str(displaydateFormatFirstMMMddYYY
+							.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPFrom())));
+					objindetail.setPTo_str(displaydateFormatFirstMMMddYYY
+							.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())));
 
-			if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
-				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(objindetail.getNominee()));
-				objindetail.setNominee_name_str(employee.getStaffName().toString());
-			} else {
-				objindetail.setNominee_name_str("");
+				} catch (ParseException e) {
+
+				}
+
 			}
-			try {
-				objindetail.setPFrom_str(displaydateFormatFirstMMMddYYY
-						.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPFrom())));
-				objindetail.setPTo_str(displaydateFormatFirstMMMddYYY
-						.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())));
-
-			} catch (ParseException e) {
-
-			}
-
+			return insurancemasternew.getInsuranceDetails();
+		} else {
+			return null;
 		}
-		return insurancemasternew.getInsuranceDetails();
-
 	}
 
 	@ResponseBody
@@ -5576,8 +5391,9 @@ public class HomeController {
 		// System.out.println(Files_Attach.getOriginalFilename().toString());
 		// System.out.println(params);
 		InsuranceMaster insurancemasternew = insuranceMasterService
-				.findById(Integer.parseInt(params.get("Insuranceid")));
+			.findById(Integer.parseInt(params.get("Insuranceid")));
 
+			
 		StringBuilder filename = new StringBuilder();
 		if (Files_Attach != null) {
 			// File Uploading
@@ -5606,6 +5422,7 @@ public class HomeController {
 
 		if (nullremover(String.valueOf(params.get("InsuranceDetailsid"))).equalsIgnoreCase("")) {
 
+			List<InsuranceDetails> objInsls = new ArrayList();
 			InsuranceDetails insuDetails = new InsuranceDetails();
 
 			insuDetails.setCover(params.get("Cover"));
@@ -5620,7 +5437,16 @@ public class HomeController {
 			insuDetails.setPolicyName(params.get("PolicyName"));
 			insuDetails.setPolicyNo(params.get("PolicyNo"));
 			insuDetails.setPremium(params.get("Premium"));
-			insurancemasternew.getInsuranceDetails().add(insuDetails);
+			
+			objInsls.add(insuDetails);
+			
+			if(insurancemasternew.getInsuranceDetails() != null)
+			{
+				insurancemasternew.getInsuranceDetails().add(insuDetails);
+			}else
+			{
+				insurancemasternew.setInsuranceDetails(objInsls);
+			}
 		} else {
 			for (InsuranceDetails insuDetails : insurancemasternew.getInsuranceDetails()) {
 				if (insuDetails.getInsuranceDetailsid() == Integer.parseInt(params.get("InsuranceDetailsid"))) {
@@ -5727,7 +5553,8 @@ public class HomeController {
 		insurancemaster.setInsuranceDetails(Insrls);
 		InsuranceMaster insurancemasternew = new InsuranceMaster();
 		insurancemasternew = insuranceMasterService.save(insurancemaster);
-		List<VendorMaster> vm = vendorMasterService.findAll();
+		// Change Ven to Org
+		List<OrganizationContacts> vm = contactOrganizationService.findAll();
 
 		if (!insurancemaster.getStaffID().equalsIgnoreCase("")) {
 			EmployeeMaster em = employeeMasterService.findById(Integer.parseInt(insurancemaster.getStaffID()));
@@ -6818,7 +6645,6 @@ public class HomeController {
 		return "leadnotes";
 	}
 
-	
 	@GetMapping("dealview")
 	public String dealview(Model theModel, @RequestParam("id") int id) {
 
@@ -7107,7 +6933,6 @@ public class HomeController {
 		return "dealnotes";
 	}
 
-	
 	@GetMapping("dealattachment")
 	public String dealattachment(Model theModel, @RequestParam("id") int id) {
 
@@ -7796,9 +7621,9 @@ public class HomeController {
 	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid,
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
-		
-		//System.out.println(param);
-		
+
+		// System.out.println(param);
+
 		int activityId = Integer.parseInt(param.get("activityId"));
 		ActivityMaster activityMaster = new ActivityMaster();
 		if (activityId > 0) {
@@ -7929,7 +7754,7 @@ public class HomeController {
 		leadMaster.setReference(params.get("Reference"));
 		leadMaster.setLabel(params.get("Label"));
 		leadMaster.setBranch(Integer.parseInt(params.get("branch")));
-		
+
 		leadMaster.setLeadDate(params.get("leadDate"));
 		leadMaster.setStatus(params.get("status"));
 		leadMaster.setTdate(params.get("tdate"));
@@ -8962,7 +8787,8 @@ public class HomeController {
 		String categoryType = params.get("categoryType");
 		String subcategoryType = params.get("subcategoryType");
 		String statusweb = params.get("status");
-		List<Map<String, Object>> ls = activityMasterService.gettimelinelist(categoryType, mastercategoryid, statusweb,subcategoryType);
+		List<Map<String, Object>> ls = activityMasterService.gettimelinelist(categoryType, mastercategoryid, statusweb,
+				subcategoryType);
 
 		String[] result = { "" };
 

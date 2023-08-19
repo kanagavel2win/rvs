@@ -428,8 +428,8 @@
 																class="form-select" name="Vendor" id="Vendor" required>
 																<option value="">-</option>
 																<th:block th:each="obj :${vendorls}">
-																	<option th:value="${obj.vendormasterid}"
-																		th:text="${obj.Name +' - '+ obj.AssetType}"></option>
+																	<option th:value="${obj.id}"
+																		th:text="${obj.orgname}"></option>
 																</th:block>
 															</select>
 														</div>

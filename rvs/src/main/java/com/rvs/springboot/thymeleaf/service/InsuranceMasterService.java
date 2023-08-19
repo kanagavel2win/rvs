@@ -8,6 +8,8 @@ public interface InsuranceMasterService {
 	
 	public InsuranceMaster save(InsuranceMaster obj);
 	public InsuranceMaster findById(Integer id);
+	public List<InsuranceMaster> findByStaffID(String id);
+	public List<InsuranceMaster> findByAssetNameID(String id);
 	public List<InsuranceMaster> findAll();
 	
 }

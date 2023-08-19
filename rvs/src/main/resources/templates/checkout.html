@@ -174,8 +174,8 @@
 												class="form-select" name="vendor" id="vendorls">
 												<option value="">-</option>
 												<th:block th:each="ven : ${vendorls}">
-													<option th:value="${ven.vendormasterid}"
-														th:text="${ven.Name} + ' - '+${ven.AssetType}"></option>
+													<option th:value="${ven.id}"
+														th:text="${ven.orgname}"></option>
 												</th:block>
 											</select>
 										</div>

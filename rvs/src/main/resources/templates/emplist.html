@@ -160,7 +160,7 @@
                         <input
                           type="text"
                           id="firstName"
-                          class="form-control " onkeydown="return /[a-z]/i.test(event.key)" 
+                          class="form-control " onkeydown="return /[a-z\s]/i.test(event.key)" 
                            required
                         />
                           
@@ -173,7 +173,7 @@
                          <input
                           type="text"
                           id="lastName"
-                          class="form-control " onkeydown="return /[a-z]/i.test(event.key)" 
+                          class="form-control " onkeydown="return /[a-z\s]/i.test(event.key)" 
                            required
                         />
                        <div class="invalid-feedback">Please enter the Last Name.</div>

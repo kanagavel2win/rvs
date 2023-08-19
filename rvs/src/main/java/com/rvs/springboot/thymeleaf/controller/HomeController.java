@@ -5324,6 +5324,29 @@ public class HomeController {
 			
 		return "redirect:/insurance?id="+ insuranceid;
 	}
+	
+
+	@GetMapping("assetInsurance")
+	public String assetInsurance(Model themodel, @RequestParam("id") int id) {
+
+		InsuranceMaster insurancemasternew = new InsuranceMaster();
+		int insuranceid =0;
+		List<InsuranceMaster> checkInsuLs = insuranceMasterService.findByAssetNameID(String.valueOf(id));
+		if(checkInsuLs.size() ==0 ) {
+			insurancemasternew.setInsuranceTo("Asset");
+			insurancemasternew.setAssetNameID(String.valueOf(id));
+			insurancemasternew.setStaffID("");
+			insurancemasternew = insuranceMasterService.save(insurancemasternew);
+			insuranceid = insurancemasternew.getInsuranceid();
+		}else
+		{
+			insurancemasternew =checkInsuLs.get(0);
+			insuranceid = insurancemasternew.getInsuranceid();
+		}
+		
+			
+		return "redirect:/insurance?id="+ insuranceid;
+	}
 
 	@ResponseBody
 	@PostMapping("getpolicydetailslist")

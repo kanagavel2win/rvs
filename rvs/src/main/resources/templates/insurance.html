@@ -117,6 +117,21 @@
 	
 	cursor: pointer
 }
+
+.coverdetailsRow tr{
+
+border-bottom: 1px dashed #ccc;
+
+}
+
+tr:nth-child(even) {background: #EAEDED}
+tr:nth-child(odd) {background: #FFF}
+
+.table2{
+
+width: 100%;
+}
+
 </style>
 </head>
 
@@ -143,6 +158,7 @@
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
 							<span class="text-muted fw-light">Insurance</span>
+							
 						</h4>
 
 						<!-- Header -->
@@ -278,6 +294,10 @@
 
 												</select> <input type="hidden" id="InsuranceDetailsid"
 													name="InsuranceDetailsid" />
+													<input type="hidden" id="coverdetailsRowi"
+													name="coverdetailsRowi" />
+													
+													
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="PolicyName">Policy
@@ -291,36 +311,22 @@
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="Premium">Premium</label> <input
-													type="text" id="Premium" class="form-control"
-													name="Premium" />
+													type="text" id="PremiumTotal" class="form-control"
+													name="PremiumTotal" />
 											</div>
 											<div class="col-12 col-md-6">
-												<label class="form-label" for="Cover">Cover 
-												</label> <select class="form-control addCoverdata" id="Cover"
-													name="Cover">
-													<option value="">-</option>
-													<th:block th:each="str :${PolicyCover}">
-														<option th:value="${str}" th:text="${str}"></option>
-
-													</th:block>
-												</select>
+												<label class="form-label" for="companyPays">Company Pays %</label> <input
+													type="text" id="companyPays" class="form-control"
+													name="companyPays" />
 											</div>
 											<div class="col-12 col-md-6">
-												<label class="form-label" for="PFrom">Start Date</label> <input
-													type="date" id="PFrom" class="form-control" name="PFrom" />
-											</div>
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="PTo">End Date</label> <input
-													type="date" id="PTo" class="form-control" name="PTo" />
-											</div>
-											<div class="col-12 col-md-6">
-												<label class="form-label" for="CoverageAmount">Coverage
-													Amount </label> <input type="text" id="CoverageAmount"
-													class="form-control" name="CoverageAmount" />
+												<label class="form-label" for="employeePays">Employee Pays %</label> <input
+													type="number" id="employeePays" class="form-control"
+													name="employeePays" />
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="Notes">Notes </label> <input
-													type="text" id="Notes" class="form-control" name="Notes" />
+													type="number" id="Notes" class="form-control" name="Notes" />
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="status">status</label> <select
@@ -348,7 +354,52 @@
 														id="modalFile" class="form-control"
 														accept="image/jpeg,image/png,image/jpg,application/pdf" />
 											</div>
-
+											
+											<div class="col-12">
+											<hr/>
+												<div class="table-responsive text-nowrap">
+									                  <table class="table1">
+									                    <thead>
+									                      <tr>
+									                        <th width="40%">Cover</th>
+									                        <th width="30%">POI</th>
+									                        <th width="15%">Total Premium</th>
+									                        <th width="15%">Sum Insured
+									                        
+									                     
+									                        </th>
+									                        
+									                      </tr>
+									                    </thead>
+									                    <tbody class="table-border-bottom-0 coverdetailsRow">
+									                    	<tr>
+									                    		<td> 
+									                    		<input type="hidden" name="InsurancePolicyCoverid1" />
+									                    			<select class="form-control addCoverdata" id="Cover1" name="Cover1">
+																		<option value="">-</option>
+																		<th:block th:each="str :${PolicyCover}">
+																			<option th:value="${str}" th:text="${str}"></option>
+					
+																		</th:block>
+																	</select>
+																</td>
+									                    		<td>
+									                    			<input type="date" class="form-control PFrom" name="PFrom1" /> To
+									                    			<input type="date" class="form-control PTo" name="PTo1" />
+									                    		</td>
+									                    		<td>
+									                    			 <input type="number" class="form-control" name="Premium1" />
+									                    		</td>
+									                    		<td>
+									                    			 <input type="number" class="form-control" name="CoverageAmount1" />
+									                    		</td>
+									                    	</tr>
+									                    	
+									                    </tbody>
+									                  </table>
+									                </div>
+												   <button class="btn btn-primary btn-sm coverdetailsRowAddbtn" onclick="coverdetailsRowfunction()" type="button"><i class="bx bx-plus bx-xs me-1"></i></button>
+											</div>
 
 											<div class="col-12 text-center mt-4">
 												<button type="submit"
@@ -560,6 +611,9 @@
 	
 	<script>
 	
+	var coverdetailsRowi=1;
+	$("#coverdetailsRowi").val(1);
+	var coverdetailsRowoption="";
 	const Experiencefrom = flatpickr("#PFrom1", {
 		  altInput: true,
 	      altFormat: 'F j, Y',
@@ -653,7 +707,11 @@
     	//--------------------------------------------------------------------------------------------------------------------------------------
    		$(document).on("click", ".addNewpolicyDetails", function() {
    			document.getElementById("addpolicydetailsForm").reset();
-   		
+
+   			coverdetailsRowi=0;
+   			$('.coverdetailsRow').html("");
+   			$("#coverdetailsRowi").val(coverdetailsRowi);
+   			
    		});
     	
    		$(document).on("click", ".addNewpolicyHistoryDetails", function() {
@@ -718,7 +776,7 @@
 			           		if(element.status != 'Move to Archive')
 			           		{
 			           			
-				           		htmlop += '<div class="row editemg"><hr /><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit " onClick="policyeditfunction('+ element.insuranceDetailsid +')"><span class="badge bg-label-primary me-1">'+ element.vendorNamestr + '</span></dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">From :</dt>		<dd class="col-sm-8">'+ element.pfrom_str + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">To:</dt>		<dd class="col-sm-8">'+ element.pto_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Cover:</dt>		<dd class="col-sm-8">'+ element.cover + '</dd>				<dt class="col-sm-4 mb-3 text-nowrap">Coverage Amount:</dt>		<dd class="col-sm-8">'+ element.coverageAmount + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
+				           		htmlop += '<div class="row editemg"><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit " onClick="policyeditfunction('+ element.insuranceDetailsid +')"><span class="badge bg-label-primary me-1">'+ element.vendorNamestr + '</span></dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd><dt class="col-sm-4 mb-3 text-nowrap">Company Pays %:</dt>		<dd class="col-sm-8">'+ element.companyPaysPerc + '%</dd>					<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>					<dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd> <dt class="col-sm-4 mb-3 text-nowrap">Employee Pays %:</dt>		<dd class="col-sm-8">'+ element.employeePaysPerc + '%</dd>			<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
 				         	 	htmlop += '<a href="'+ element.doc_Attach +'" target="_blank">';
 				         	 	if(element.doc_Attach != '')
 				         	 	{
@@ -730,7 +788,16 @@
 										htmlop += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
 									}
 				         	 	}
-				         	 	htmlop += '</a></dd>	</dl></div> </div>';
+				         	 	htmlop += '</a></dd>	</dl></div> ';     
+				         	 	
+				         	 	htmlop += '<div class="table-responsive text-nowrap">   <table class="table">     <thead>       <tr>         <th width="40%">Cover</th>         <th width="30%">POI</th>         <th width="15%">Total Premium</th>         <th width="15%">Sum Insured         </th>               </tr>     </thead>  <tbody class="table-border-bottom-0">'; 												  											
+				         	 	
+				         	 	element.insurancePolicyCover.forEach((elementx, indexx, arrayx) =>
+					           	{
+					           		htmlop += '<tr> <td>'+elementx.cover +'</td><td>'+elementx.pfrom_str + ' To '+elementx.pto_str  +'</td><td>'+elementx.premiumAmount +'</td><td>'+elementx.coverageAmount +'</td>    		     	</tr>  ';  		
+					           	});
+				         	 
+				         	 	htmlop += ' </tbody>   </table>  </div></div><hr /><br/><br/>';
 			           		}
 			         	 	
 			            });
@@ -788,6 +855,10 @@
 		    setTimeout(function(){
 		    	getpolicydetaillist();
 		    	getinsuranceclaimdetailslist();
+		    	
+		    	coverdetailsRowoption=$("#Cover1").html();;
+		    	
+		    	
 		     },500); // milliseconds
 		});
 		//--------------------------------------------------------------------------------------------------------------------------------------		 		
@@ -828,14 +899,27 @@
 				$("#VendorName").val(bmobj.vendorName).change();
 				$("#PolicyName").val(bmobj.policyName);
 				$("#PolicyNo").val(bmobj.policyNo);
-				$("#Premium").val(bmobj.premium);
+				$("#PremiumTotal").val(bmobj.premium);
 				$("#Cover").val(bmobj.cover).change();
 				
 				$("#CoverageAmount").val(bmobj.coverageAmount);
 				$("#Notes").val(bmobj.notes);
 				$("#status").val(bmobj.status);
+				$("#companyPays").val(bmobj.companyPays);
+				$("#employeePays").val(bmobj.employeePays);
 				$("#Nominee").val(bmobj.nominee).change();
 				
+				
+				htmlop = ''; 												  											
+				coverdetailsRowi=0;
+				bmobj.insurancePolicyCover.forEach((elementx, indexx, arrayx) =>
+	           	{
+	           		coverdetailsRowi=coverdetailsRowi+1;
+	           		htmlop +="<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' value='"+ elementx.insurancePolicyCoverid +"' />	<select class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "'><option value='"+  elementx.cover +"'>"+  elementx.cover + "</option>"+ coverdetailsRowoption +" </select> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' value='"+ elementx.pfrom +"' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "'  value='"+ elementx.pto +"' /></td><td>	 <input type='number' class='form-control' name='Premium"+coverdetailsRowi + "' value='"+ elementx.premiumAmount +"' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' value='"+ elementx.coverageAmount +"' /></td> </tr>";
+	        	});
+				$('.coverdetailsRow').html(htmlop);
+         	 	$("#coverdetailsRowi").val(coverdetailsRowi);
+         	 	
 				$('#addNewpolicyDetails').modal('toggle');
 			},
 			error : function(e) {
@@ -849,7 +933,39 @@
 	}
   
 	//--------------------------------------------------------------------------------------------------------------------------------------
+	function coverdetailsRowfunction() {
+		coverdetailsRowi=coverdetailsRowi+1;
 	
+		$('.coverdetailsRow').append("<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' />	<select class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "'>"+ coverdetailsRowoption +" </select> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "' /></td><td>	 <input type='number' class='form-control' name='Premium"+coverdetailsRowi + "' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' /></td> </tr>");
+		
+		$("#coverdetailsRowi").val(coverdetailsRowi);
+	}
+	//-------------------------------------------------------------------------------------------------------------------------------------
+	 // Date Format
+			   const flatpickrFriendly = document.querySelector('.PTo');
+				 // Human Friendly
+				  if (flatpickrFriendly) {
+				    flatpickrFriendly.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
+				  const flatpickrFriendlyx = document.querySelector('.PFrom');
+					 // Human Friendly
+					  if (flatpickrFriendlyx) {
+					    flatpickrFriendlyx.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }
+				 
+	//-------------------------------------------------------------------------------------------------------------------------------------
+					 			  
+					 
+					 
+									                    	
 	function policyclaimeditfunction(id) {
 		var claimid = id;
 		

@@ -135,6 +135,7 @@
                         <th>Name/Asset</th>
                         <th>Vendor Name</th>
                         <th>Expire Date</th>
+                         <th>Total Premium</th>
                       </tr>
                     </thead>
                   </table>
@@ -460,26 +461,38 @@
 					           render: function(data, type, full, meta) {
 					        	   let str="";
 					        	   for (i = 0; i < full["insuranceDetails"].length; i++) {
-					        		   
+					        		
+					        		   for (j = 0; j < full["insuranceDetails"][i].insurancePolicyCover.length; j++) {
+					        			
 					        		   let localstyle="";
-					        		   if(full["insuranceDetails"][i].dueindicatorcolor=="G")
+					        		   if(full["insuranceDetails"][i].insurancePolicyCover[j].dueindicatorcolor=="G")
 				        			   {
 					        			   localstyle='style="color: #228B22"';
-				        			   }else if(full["insuranceDetails"][i].dueindicatorcolor=="R")
+				        			   }else if(full["insuranceDetails"][i].insurancePolicyCover[j].dueindicatorcolor=="R")
 				        			   {
 				        				   localstyle='style="color: red"';
-				        			   }else if(full["insuranceDetails"][i].dueindicatorcolor=="Y")
+				        			   }else if(full["insuranceDetails"][i].insurancePolicyCover[j].dueindicatorcolor=="Y")
 				        			   {
 				        				   localstyle='style="color: #DAA520"';
 				        			   }
 					        		   
-					        		   str +="<span "+ localstyle +">"+ full["insuranceDetails"][i].duedateformate + " </span><br/>";
-					        		   
+					        		   str +="<span "+ localstyle +">"+ full["insuranceDetails"][i].insurancePolicyCover[j].duedateformate + " </span> "+ full["insuranceDetails"][i].insurancePolicyCover[j].cover + "<br/>";
+					        	   		}
 					        		 }
 					        	   return str;
 					           }
+				         		
 					         },
-			          
+					         {
+						           targets: 7,
+						           render: function(data, type, full, meta) {
+						        	   let str="";
+						        	   for (i = 0; i < full["insuranceDetails"].length; i++) {
+						        		   str = str + full["insuranceDetails"][i].premium;
+						        	   }
+						        	   return  str;
+						           }
+						         },
 			          
 			        {
 			          // Label

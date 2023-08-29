@@ -100,6 +100,7 @@ import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
 import com.rvs.springboot.thymeleaf.entity.InsuranceClaimHistory;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
+import com.rvs.springboot.thymeleaf.entity.InsurancePolicyCover;
 import com.rvs.springboot.thymeleaf.entity.InvoiceItemMaster;
 import com.rvs.springboot.thymeleaf.entity.InvoiceMaster;
 import com.rvs.springboot.thymeleaf.entity.InvoiceReceiptMaster;
@@ -162,7 +163,6 @@ import com.rvs.springboot.thymeleaf.service.PaySlipService;
 import com.rvs.springboot.thymeleaf.service.ProjectMasterService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateBoardService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateMasterService;
-
 
 @Controller
 
@@ -4107,9 +4107,9 @@ public class HomeController {
 		// Change Ven to Org
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
-								.collect(Collectors.toList());
+				.collect(Collectors.toList());
 		theModel.addAttribute("vendorls", corglis);
-		
+
 		List<String> ASSETTYPE = itemlistService.findByFieldName("ASSETTYPE");
 		theModel.addAttribute("ASSETTYPE", ASSETTYPE);
 
@@ -4174,7 +4174,7 @@ public class HomeController {
 		// Change Ven to Org
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
-								.collect(Collectors.toList());
+				.collect(Collectors.toList());
 
 		themodel.addAttribute("vendorls", corglis);
 
@@ -4219,7 +4219,7 @@ public class HomeController {
 		// Change Ven to Org
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
-								.collect(Collectors.toList());
+				.collect(Collectors.toList());
 
 		themodel.addAttribute("vendorls", corglis);
 
@@ -4325,7 +4325,7 @@ public class HomeController {
 		// Change Ven to Org
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
-								.collect(Collectors.toList());
+				.collect(Collectors.toList());
 
 		themodel.addAttribute("vendorls", corglis);
 
@@ -4387,7 +4387,7 @@ public class HomeController {
 		// Change Ven to Org
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
-								.collect(Collectors.toList());
+				.collect(Collectors.toList());
 
 		theModel.addAttribute("vendorls", corglis);
 
@@ -4399,8 +4399,8 @@ public class HomeController {
 		try {
 			// Change Ven to Org
 			assetmasternew.setVendorName(contactOrganizationService.findAll().stream()
-					.filter(C -> C.getId() == Integer.parseInt(assetmasternew.getVendor()))
-					.collect(Collectors.toList()).get(0).getOrgname());
+					.filter(C -> C.getId() == Integer.parseInt(assetmasternew.getVendor())).collect(Collectors.toList())
+					.get(0).getOrgname());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -4470,9 +4470,9 @@ public class HomeController {
 		try {
 			// Change Ven to Org
 			assetmasternew.setVendorName(contactOrganizationService.findAll().stream()
-					.filter(C -> C.getId() == Integer.parseInt(assetmasternew.getVendor()))
-					.collect(Collectors.toList()).get(0).getOrgname());
-			
+					.filter(C -> C.getId() == Integer.parseInt(assetmasternew.getVendor())).collect(Collectors.toList())
+					.get(0).getOrgname());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -4584,7 +4584,7 @@ public class HomeController {
 		// Change Ven to Org
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
-								.collect(Collectors.toList());
+				.collect(Collectors.toList());
 
 		themodel.addAttribute("vendorls", corglis);
 
@@ -5198,24 +5198,26 @@ public class HomeController {
 				objindetail.setVendorNamestr(contactOrganizationService.findAll().stream()
 						.filter(C -> C.getId() == Integer.parseInt(objindetail.getVendorName()))
 						.collect(Collectors.toList()).get(0).getOrgname());
-				
 
-				if (!String.valueOf(objindetail.getPTo()).equalsIgnoreCase("")) {
+				for (InsurancePolicyCover inpcobj : objindetail.getInsurancePolicyCover())
+				{
+				if (!String.valueOf(inpcobj.getPTo()).equalsIgnoreCase("")) {
 					try {
-						objindetail.setDuedateformate(displaydateFormatFirstMMMddYYY
-								.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())));
+						inpcobj.setDuedateformate(displaydateFormatFirstMMMddYYY
+								.format(new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo())));
 
 						long differ_in_time = new Date().getTime()
-								- new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo()).getTime();
+								- new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo()).getTime();
 
-						objindetail.setDueindicatorcolor(insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)));
+						inpcobj.setDueindicatorcolor(insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)));
 
 					} catch (ParseException e) {
 					}
 				} else {
-					objindetail.setDuedateformate("");
-					objindetail.setDueindicatorcolor("");
+					inpcobj.setDuedateformate("");
+					inpcobj.setDueindicatorcolor("");
 
+				}
 				}
 
 			}
@@ -5244,23 +5246,21 @@ public class HomeController {
 	@PostMapping("insuranceclaimdetails")
 	public List<InsuranceClaimHistory> insuranceclaimdetails(Model themodel, @RequestParam("id") int id) {
 
-		if(id > 0)
-		{
-		List<InsuranceClaimHistory> ls = insuranceMasterService.findById(id).getInsuranceClaimHistory();
+		if (id > 0) {
+			List<InsuranceClaimHistory> ls = insuranceMasterService.findById(id).getInsuranceClaimHistory();
 
-		for (InsuranceClaimHistory obj : ls) {
-			try {
-				obj.setClaimDateMMMddYYYFormate(displaydateFormatFirstMMMddYYY
-						.format(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getClaimDate())));
+			for (InsuranceClaimHistory obj : ls) {
+				try {
+					obj.setClaimDateMMMddYYYFormate(displaydateFormatFirstMMMddYYY
+							.format(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getClaimDate())));
 
-			} catch (ParseException e) {
+				} catch (ParseException e) {
 
+				}
 			}
-		}
 
-		return ls;
-		}else
-		{
+			return ls;
+		} else {
 			return null;
 		}
 	}
@@ -5273,9 +5273,7 @@ public class HomeController {
 		// Change Ven to Org
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 		corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
-								.collect(Collectors.toList());
-
-		
+				.collect(Collectors.toList());
 
 		if (!insurancemasternew.getStaffID().equalsIgnoreCase("")) {
 			EmployeeMaster em = employeeMasterService.findById(Integer.parseInt(insurancemasternew.getStaffID()));
@@ -5307,45 +5305,40 @@ public class HomeController {
 	public String empbenefits(Model themodel, @RequestParam("id") int id) {
 
 		InsuranceMaster insurancemasternew = new InsuranceMaster();
-		int insuranceid =0;
+		int insuranceid = 0;
 		List<InsuranceMaster> checkInsuLs = insuranceMasterService.findByStaffID(String.valueOf(id));
-		if(checkInsuLs.size() ==0 ) {
+		if (checkInsuLs.size() == 0) {
 			insurancemasternew.setInsuranceTo("Staff");
 			insurancemasternew.setAssetNameID("");
 			insurancemasternew.setStaffID(String.valueOf(id));
 			insurancemasternew = insuranceMasterService.save(insurancemasternew);
 			insuranceid = insurancemasternew.getInsuranceid();
-		}else
-		{
-			insurancemasternew =checkInsuLs.get(0);
+		} else {
+			insurancemasternew = checkInsuLs.get(0);
 			insuranceid = insurancemasternew.getInsuranceid();
 		}
-		
-			
-		return "redirect:/insurance?id="+ insuranceid;
+
+		return "redirect:/insurance?id=" + insuranceid;
 	}
-	
 
 	@GetMapping("assetInsurance")
 	public String assetInsurance(Model themodel, @RequestParam("id") int id) {
 
 		InsuranceMaster insurancemasternew = new InsuranceMaster();
-		int insuranceid =0;
+		int insuranceid = 0;
 		List<InsuranceMaster> checkInsuLs = insuranceMasterService.findByAssetNameID(String.valueOf(id));
-		if(checkInsuLs.size() ==0 ) {
+		if (checkInsuLs.size() == 0) {
 			insurancemasternew.setInsuranceTo("Asset");
 			insurancemasternew.setAssetNameID(String.valueOf(id));
 			insurancemasternew.setStaffID("");
 			insurancemasternew = insuranceMasterService.save(insurancemasternew);
 			insuranceid = insurancemasternew.getInsuranceid();
-		}else
-		{
-			insurancemasternew =checkInsuLs.get(0);
+		} else {
+			insurancemasternew = checkInsuLs.get(0);
 			insuranceid = insurancemasternew.getInsuranceid();
 		}
-		
-			
-		return "redirect:/insurance?id="+ insuranceid;
+
+		return "redirect:/insurance?id=" + insuranceid;
 	}
 
 	@ResponseBody
@@ -5357,9 +5350,9 @@ public class HomeController {
 
 			for (InsuranceDetails objindetail : insurancemasternew.getInsuranceDetails()) {
 				// Change Ven to Org
-				OrganizationContacts vendor = contactOrganizationService.findById(Integer.parseInt(objindetail.getVendorName()));
-				
-				
+				OrganizationContacts vendor = contactOrganizationService
+						.findById(Integer.parseInt(objindetail.getVendorName()));
+
 				objindetail.setVendorNamestr(vendor.getOrgname());
 
 				if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
@@ -5369,16 +5362,20 @@ public class HomeController {
 				} else {
 					objindetail.setNominee_name_str("");
 				}
-				try {
-					objindetail.setPFrom_str(displaydateFormatFirstMMMddYYY
-							.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPFrom())));
-					objindetail.setPTo_str(displaydateFormatFirstMMMddYYY
-							.format(new SimpleDateFormat("yyyy-MM-dd").parse(objindetail.getPTo())));
+				// ------------------------------------------------------------------------------------------------
+				for (InsurancePolicyCover pcobj : objindetail.getInsurancePolicyCover()) {
+					try {
+						pcobj.setPFrom_str(displaydateFormatFirstMMMddYYY
+								.format(new SimpleDateFormat("yyyy-MM-dd").parse(pcobj.getPFrom())));
 
-				} catch (ParseException e) {
+						pcobj.setPTo_str(displaydateFormatFirstMMMddYYY
+								.format(new SimpleDateFormat("yyyy-MM-dd").parse(pcobj.getPTo())));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 
 				}
-
+				// ------------------------------------------------------------------------------------------------
 			}
 			return insurancemasternew.getInsuranceDetails();
 		} else {
@@ -5412,11 +5409,30 @@ public class HomeController {
 			HttpServletRequest request) {
 
 		// System.out.println(Files_Attach.getOriginalFilename().toString());
-		// System.out.println(params);
+		System.out.println(params);
 		InsuranceMaster insurancemasternew = insuranceMasterService
-			.findById(Integer.parseInt(params.get("Insuranceid")));
+				.findById(Integer.parseInt(params.get("Insuranceid")));
 
-			
+		List<InsurancePolicyCover> InsurancePolicyCoverls = new ArrayList<>();
+
+		for (int i = 1; i <= Integer.parseInt(params.get("coverdetailsRowi")); i++) {
+			if (!nullremover(String.valueOf(params.get("Cover" + i))).equalsIgnoreCase("")) {
+				InsurancePolicyCover tempobj = new InsurancePolicyCover();
+
+				if (!nullremover(String.valueOf(params.get("InsurancePolicyCoverid" + i))).equalsIgnoreCase("")) {
+					tempobj.setInsurancePolicyCoverid(Integer.parseInt(params.get("InsurancePolicyCoverid" + i)));
+				}
+
+				tempobj.setCover(params.get("Cover" + i));
+				tempobj.setCoverageAmount(params.get("CoverageAmount" + i));
+				tempobj.setPFrom(params.get("PFrom" + i));
+				tempobj.setPTo(params.get("PTo" + i));
+				tempobj.setPremiumAmount(params.get("Premium" + i));
+
+				InsurancePolicyCoverls.add(tempobj);
+			}
+		}
+
 		StringBuilder filename = new StringBuilder();
 		if (Files_Attach != null) {
 			// File Uploading
@@ -5448,47 +5464,44 @@ public class HomeController {
 			List<InsuranceDetails> objInsls = new ArrayList();
 			InsuranceDetails insuDetails = new InsuranceDetails();
 
-			insuDetails.setCover(params.get("Cover"));
-			insuDetails.setCoverageAmount(params.get("CoverageAmount"));
 			insuDetails.setDoc_Attach(filename.toString());
 			insuDetails.setNominee(params.get("Nominee"));
 			insuDetails.setNotes(params.get("Notes"));
-			insuDetails.setPFrom(params.get("PFrom"));
-			insuDetails.setPTo(params.get("PTo"));
 			insuDetails.setStatus(params.get("status"));
 			insuDetails.setVendorName(params.get("VendorName"));
 			insuDetails.setPolicyName(params.get("PolicyName"));
 			insuDetails.setPolicyNo(params.get("PolicyNo"));
-			insuDetails.setPremium(params.get("Premium"));
-			
+			insuDetails.setPremium(params.get("PremiumTotal"));
+			insuDetails.setCompanyPaysPerc(params.get("companyPays"));
+			insuDetails.setEmployeePaysPerc(params.get("employeePays"));	
+			insuDetails.setInsurancePolicyCover(InsurancePolicyCoverls);
+
 			objInsls.add(insuDetails);
-			
-			if(insurancemasternew.getInsuranceDetails() != null)
-			{
+
+			if (insurancemasternew.getInsuranceDetails() != null) {
 				insurancemasternew.getInsuranceDetails().add(insuDetails);
-			}else
-			{
+			} else {
 				insurancemasternew.setInsuranceDetails(objInsls);
 			}
 		} else {
 			for (InsuranceDetails insuDetails : insurancemasternew.getInsuranceDetails()) {
 				if (insuDetails.getInsuranceDetailsid() == Integer.parseInt(params.get("InsuranceDetailsid"))) {
 
-					insuDetails.setCover(params.get("Cover"));
-					insuDetails.setCoverageAmount(params.get("CoverageAmount"));
 					if (!nullremover(String.valueOf(filename.toString())).equalsIgnoreCase("")) {
 						insuDetails.setDoc_Attach(filename.toString());
 					}
 
 					insuDetails.setNominee(params.get("Nominee"));
 					insuDetails.setNotes(params.get("Notes"));
-					insuDetails.setPFrom(params.get("PFrom"));
-					insuDetails.setPTo(params.get("PTo"));
 					insuDetails.setStatus(params.get("status"));
 					insuDetails.setVendorName(params.get("VendorName"));
 					insuDetails.setPolicyName(params.get("PolicyName"));
 					insuDetails.setPolicyNo(params.get("PolicyNo"));
-					insuDetails.setPremium(params.get("Premium"));
+					insuDetails.setPremium(params.get("PremiumTotal"));
+					insuDetails.setCompanyPaysPerc(params.get("companyPays"));
+					insuDetails.setEmployeePaysPerc(params.get("employeePays"));	
+					insuDetails.setInsurancePolicyCover(InsurancePolicyCoverls);
+
 				}
 			}
 		}
@@ -5541,9 +5554,6 @@ public class HomeController {
 		List<InsuranceDetails> Insrls = insurancemaster.getInsuranceDetails().stream()
 				.filter(C -> !String.valueOf(C.getPolicyName()).equalsIgnoreCase("null")).collect(Collectors.toList());
 
-		for (InsuranceDetails o : Insrls) {
-			itemlistService.savesingletxt(o.getCover(), "PolicyCover");
-		}
 		// -----------------------------------------
 		// File Uploading
 		String profilephotouploadRootPath = request.getServletContext().getRealPath("insurancephoto");

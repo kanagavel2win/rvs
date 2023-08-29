@@ -1,10 +1,15 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,14 +41,18 @@ public class InsuranceDetails {
 	private String PolicyNo;
 	@Column
 	private String Premium;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "InsuranceDetailsid")
+	private List<InsurancePolicyCover> insurancePolicyCover;
+	
 	@Column
-	private String Cover;
+	private String NameofInsured;
 	@Column
-	private String PFrom;
+	private String companyPaysPerc;
 	@Column
-	private String PTo;
-	@Column
-	private String CoverageAmount;
+	private String employeePaysPerc;
+	
 	@Column
 	private String Notes;
 	@Column
@@ -55,19 +64,9 @@ public class InsuranceDetails {
 	
 	@Transient
 	private String VendorNamestr;
-	
 	@Transient
 	private String timestr;
-	
-	@Transient
-	private String dueindicatorcolor;
-	@Transient
-	private String duedateformate;
-	
-	@Transient
-	private String PFrom_str;
-	@Transient
-	private String PTo_str;
+		
 	@Transient
 	private String Nominee_name_str;
 	

@@ -48,6 +48,10 @@ public class InsuranceDetails {
 	
 	@Column
 	private String NameofInsured;
+	
+	@Column
+	private String dependentdetails;
+	
 	@Column
 	private String companyPaysPerc;
 	@Column
@@ -69,6 +73,9 @@ public class InsuranceDetails {
 		
 	@Transient
 	private String Nominee_name_str;
+	
+	@Transient
+	private String dependentdetails_str;
 	
 	
 

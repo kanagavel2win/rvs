@@ -65,7 +65,13 @@
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css}" />
 <link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/pickr/pickr-themes.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
+<link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/select2/select2.css}" />
+
+
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
 
@@ -124,9 +130,9 @@ border-bottom: 1px dashed #ccc;
 
 }
 
-tr:nth-child(even) {background: #EAEDED}
+/**tr:nth-child(even) {background: #EAEDED}
 tr:nth-child(odd) {background: #FFF}
-
+**/
 .table2{
 
 width: 100%;
@@ -209,6 +215,37 @@ width: 100%;
 							<!-- <div class="col-xl-4 col-lg-5 col-md-5"> -->
 							<div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
 
+					 		 <!-- DataTable with Buttons -->
+					               <div class="card card-action mb-4" th:if="${insurancemaster.InsuranceTo} =='Staff'">
+						               <div class="card-header align-items-center">
+											<h5 class="card-action-title mb-0">Dependent</h5>
+											<div class="card-action-element" style="float: right">
+												<button class="btn btn-primary btn-sm addNewDependentDetails"
+													type="button" data-bs-toggle="modal"
+													data-bs-target="#addNewDependentDetails">
+													<i class="bx bx-plus bx-xs me-1"></i>
+												</button>
+											</div>
+										</div>
+									
+					                <div class="card-datatable table-responsive pt-0">
+					                  <table class="datatables-basic table table-bordered">
+					                    <thead>
+					                      <tr>
+					                        <th></th>
+					                        <th>id</th>
+					                        <th>Name</th>
+					                        <th>DOB</th>
+					                        <th>Gender</th>
+					                        <th>Relationship</th>
+					                        <th>Phone#</th>
+					                        <th>ID Card</th>
+					                        <th>Attachment</th>
+					                      </tr>
+					                    </thead>
+					                  </table>
+					                </div>
+					              </div>
 								<!-- Billing Address -->
 								<div class="card card-action mb-4">
 									<div class="card-header align-items-center">
@@ -267,7 +304,91 @@ width: 100%;
 
 
 						<!-- Modal -->
+						<!-- Add New Dependent Address Modal -->
+						<div class="modal fade" id="addNewDependentDetails" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-lg modal-simple modal-add-new-address">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3 class="address-title">Dependent</h3>
+											<p class="address-subtitle">Dependent details</p>
+										</div>
+										<form id="addDependentdetailsForm" class="row g-3"
+											onsubmit="return false">
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="DependentName">
+													Name</label> 
+													
+													<input type="text" id="dependent_name"
+													class="form-control" name="dependent_name" required/>
+													
+													 <input type="hidden" id="InsuranceDependentsid"
+													name="InsuranceDependentsid" />
+											</div>
+											
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="dob">Date of Birth</label> <input
+													type="text" id="dob" class="form-control dob"
+													name="dob" required/>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="gender">Gender</label> 
+												<select class="form-control" id="gender" name="gender" required>
+													<option value="">-</option>
+													<option value="Male">Male</option>
+													<option value="Female">Female</option>
+												</select>
+												
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="relationship">Relationship</label> 
+												
+												<select class="form-control addCoverdata" id="relationship" name="relationship" required>
+													<option value="">-</option>
+													<th:block th:each="str :${RELATION}">
+														<option th:value="${str}" th:text="${str}"></option>
 
+													</th:block>
+												</select>
+												
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="IDNumber">ID Proof Number</label> <input
+													type="text" id="IDNumber" class="form-control"
+													name="IDNumber"  required/>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="phonenumber">Phone # </label> 
+												<input type="text"   id="phonenumber"  name="phonenumber"  class="form-control phone-number-otp-mask" pattern=".{12}"  />
+												
+											</div>
+											
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="IDfiles">Dependent File
+													Copy</label> <input type="file"
+														id="IDfiles" class="form-control"
+														accept="image/jpeg,image/png,image/jpg,application/pdf" />
+											</div>
+											
+											
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary me-sm-3 me-1 editDependentDetailsdatasubmit"
+													onclick="">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary editDependentDetailsdataclose"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Add New Dependent Address Modal -->
 						<!-- Add New Policy Address Modal -->
 						<div class="modal fade" id="addNewpolicyDetails" tabindex="-1"
 							aria-hidden="true">
@@ -285,7 +406,7 @@ width: 100%;
 											onsubmit="return false">
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="modalEmg_Name">Vendor
-													Name</label> <select class="form-control" id="VendorName" name="VendorName">
+													Name</label> <select class="form-control" id="VendorName" name="VendorName" required>
 													<option value="">-</option>
 													<th:block th:each="vmobj :${vm}">
 														<option th:value="${vmobj.id}"
@@ -302,27 +423,27 @@ width: 100%;
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="PolicyName">Policy
 													Name</label> <input type="text" id="PolicyName"
-													class="form-control" name="PolicyName" />
+													class="form-control" name="PolicyName" required/>
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="PolicyNo">Policy No</label> <input
 													type="text" id="PolicyNo" class="form-control"
-													name="PolicyNo" />
+													name="PolicyNo" required/>
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="Premium">Premium</label> <input
 													type="text" id="PremiumTotal" class="form-control"
-													name="PremiumTotal" />
+													name="PremiumTotal" required/>
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="companyPays">Company Pays %</label> <input
 													type="text" id="companyPays" class="form-control"
-													name="companyPays" />
+													name="companyPays" required/>
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="employeePays">Employee Pays %</label> <input
 													type="number" id="employeePays" class="form-control"
-													name="employeePays" />
+													name="employeePays" required />
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="Notes">Notes </label> <input
@@ -336,6 +457,14 @@ width: 100%;
 
 												</select>
 											</div>
+											<div class="col-12">
+
+												<label class="form-label" for="Dependents">Dependents</label> 
+											<select id="Dependents"    class="select2 form-select" multiple>
+                          
+                          					</select>
+											</div>
+											
 											<div class="col-12 col-md-6">
 
 												<label class="form-label" for="Nominee">Nominee</label> <select
@@ -576,7 +705,10 @@ width: 100%;
 		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
 	<script
 		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+		<script
+			th:src="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js}"></script>
 	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
 	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
 	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
 	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
@@ -606,8 +738,7 @@ width: 100%;
 	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
 	<script th:src="@{/assets/js/app-user-view.js}"></script>
 	<script th:src="@{/assets/js/app-user-view-account.js}"></script>
-
-	
+	<script th:src="@{assets/js/forms-selects.js}"></script>
 	
 	<script>
 	
@@ -628,6 +759,8 @@ width: 100%;
 	
     $(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------
+    	  
+    		//--------------------------------------------------------------------------------------------------------------------------------------
     	 	$('#addpolicydetailsForm').on('submit', function(event){
     	 		
     	 	   if(event.target.checkValidity()){
@@ -640,7 +773,7 @@ width: 100%;
     	 		  const modalFile =document.getElementById("modalFile");
     	 		  formdata.append("File_Attach",modalFile.files[0]);
     	 		  formdata.append("Insuranceid","[[${insurancemaster['Insuranceid']}]]");
-    	 		 
+    	 		  formdata.append("Dependents",$("#Dependents").val());
     	 		 
     	 		  $.ajax({
 	   					type : "POST",url : "policydetailsavejson",
@@ -661,6 +794,162 @@ width: 100%;
     	 	   }
     	 	});   
     	 	//--------------------------------------------------------------------------------------------------------------------------------------
+    	 	$('#addDependentdetailsForm').on('submit', function(event){
+    	 		
+    	 	   if(event.target.checkValidity()){
+    	 		   
+    	 		  $('.editDependentDetailsdatasubmit').prop("disabled",true);
+				  $('.editDependentDetailsdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+					
+					
+    	 		  let formdata= new FormData(document.querySelector("#addDependentdetailsForm"));
+    	 		  const modalFile =document.getElementById("IDfiles");
+    	 		  formdata.append("File_Attach",modalFile.files[0]);
+    	 		  formdata.append("Insuranceid","[[${insurancemaster['Insuranceid']}]]");
+    	 		 
+    	 		 
+    	 		  $.ajax({
+	   					type : "POST",url : "insurancedependentsavejson",
+	   					data : formdata,
+	   					contentType: false,
+	   	                processData: false,
+	   					success : function(result) {
+	   						
+	   					//	getpolicydetaillist();
+	   						$('.datatables-basic').DataTable().ajax.reload();
+							validationdependentformfilereset();
+							dependents_TagifyCustomListSuggestionEl();
+	   					},
+    	 			 error : function(e) {
+						console.log("Error" + e);
+
+					}
+    	 		  });
+    	 		  
+    	 	   }
+    	 	});   
+    	 	//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+    	 	
+    		$(function() {
+    			var token = $("meta[name='_csrf']").attr("content");
+    			var header = $("meta[name='_csrf_header']").attr("content");
+    			$(document).ajaxSend(function(e, xhr, options) {
+    				xhr.setRequestHeader(header, token);
+    			});
+    		});
+    		//--------------------------------------------------------------------------------------------------------------------------------------		 
+    		
+
+        	  var dt_basic_table = $('.datatables-basic');
+
+        	  	// DataTable with buttons
+        	  	// --------------------------------------------------------------------
+
+        	  	// --------------------------------------------------------------------
+
+    			  if (dt_basic_table.length) {
+    			    var dt_basic = dt_basic_table.DataTable({
+    			    	 ajax: {
+    			             "url": "insurancedependentlistjson?id=[[${insurancemaster['Insuranceid']}]]",
+    			             "type": "GET",
+    			             "dataSrc": "",
+    			         },
+    			      columns: [
+    			        { data: '' },
+    			        { data: 'insuranceDependentsid' },
+    			        { data: 'dependent_name' },
+    			        { data: 'dob_MMMddyyyy' },
+    			        { data: 'gender' },
+    			        { data: 'relationship' },
+    			        { data: 'phonenumber' },
+    			        { data: 'idnumber' },
+    			        { data: 'idfiles' },
+    			      ],
+    			      columnDefs: [
+    			        {
+    			          // For Responsive
+    			          className: 'control',
+    			          orderable: false,
+    			          responsivePriority: 2,
+    			          searchable: false,
+    			          targets: 0,
+    			          render: function(data, type, full, meta) {
+    			            return '';
+    			          }
+    			        },
+    			        
+    			        {
+    			          targets: 1,
+    			          searchable: false,
+    			          visible: false
+    			        },
+    			        {
+      			          
+    			            targets: 2,
+    			            responsivePriority: 1,
+    			            render: function(data, type, full, meta) {
+    		            	 let str="";
+    			        	   str +=   "<a class='pop_cursor' onClick='dependenteditfunction("+ full["insuranceDependentsid"] +")'>"+full["dependent_name"]+ "</a>" ;
+    			        	   return str ;
+    			             
+    			            }
+    			          },
+    			        {
+    			          
+    			            targets: 8,
+    			            
+    			            render: function(data, type, full, meta) {
+    		            	 let str="";
+    			        	 if( full["idfiles"] != "") {
+    			        		   str +=   "<a href ='"+full["idfiles"]+ "'><i class='bx bx-link-alt'></i></a>" ;
+    			        		   
+    			        		 }
+    			        	   
+    			        	   return str ;
+    			             
+    			            }
+    			          },
+    			      ],
+    			      
+    			     
+    			      responsive: {
+    			        details: {
+    			          display: $.fn.dataTable.Responsive.display.modal({
+    			            header: function(row) {
+    			              var data = row.data();
+    			              return 'Details of ' + data['staffassetname'];
+    			            }
+    			          }),
+    			          type: 'column',
+    			          renderer: function(api, rowIdx, columns) {
+    			            var data = $.map(columns, function(col, i) {
+    			              return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
+    			                ? '<tr data-dt-row="' +
+    			                    col.rowIndex +
+    			                    '" data-dt-column="' +
+    			                    col.columnIndex +
+    			                    '">' +
+    			                    '<td>' +
+    			                    col.title +
+    			                    ':' +
+    			                    '</td> ' +
+    			                    '<td>' +
+    			                    col.data +
+    			                    '</td>' +
+    			                    '</tr>'
+    			                : '';
+    			            }).join('');
+    			
+    			            return data ? $('<table class="table"/><tbody />').append(data) : false;
+    			          }
+    			        }
+    			      }
+    			    });
+    			 
+      		}
+      		 // --------------------------------------------------------------------
+       	
     	 	$('#addpolicyClaimdetailsForm').on('submit', function(event){
     	 		
     	 	   if(event.target.checkValidity()){
@@ -697,6 +986,13 @@ width: 100%;
 		   				$('.editpolicyDetailsdatasubmit').prop("disabled",false);
 			   			$('.editpolicyDetailsdatasubmit').html("Submit");
 			   }
+    	
+   		function validationdependentformfilereset()
+		   {
+	   				$('.editDependentDetailsdataclose').click();
+	   				$('.editDependentDetailsdatasubmit').prop("disabled",false);
+		   			$('.editDependentDetailsdatasubmit').html("Submit");
+		   }
     	
    		function validationformclaimreset()
 		   {
@@ -776,7 +1072,7 @@ width: 100%;
 			           		if(element.status != 'Move to Archive')
 			           		{
 			           			
-				           		htmlop += '<div class="row editemg"><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit " onClick="policyeditfunction('+ element.insuranceDetailsid +')"><span class="badge bg-label-primary me-1">'+ element.vendorNamestr + '</span></dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd><dt class="col-sm-4 mb-3 text-nowrap">Company Pays %:</dt>		<dd class="col-sm-8">'+ element.companyPaysPerc + '%</dd>					<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>					<dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd> <dt class="col-sm-4 mb-3 text-nowrap">Employee Pays %:</dt>		<dd class="col-sm-8">'+ element.employeePaysPerc + '%</dd>			<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
+				           		htmlop += '<div class="row editemg"><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit " onClick="policyeditfunction('+ element.insuranceDetailsid +')"><span class="badge bg-label-primary me-1">'+ element.vendorNamestr + '</span></dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd><dt class="col-sm-4 mb-3 text-nowrap">Company Pays %:</dt>		<dd class="col-sm-8">'+ element.companyPaysPerc + '%</dd>					<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>					<dt class="col-sm-4 mb-3 text-nowrap">Dependents:</dt>		<dd class="col-sm-8">'+ element.dependentdetails_str + '</dd> <dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd> <dt class="col-sm-4 mb-3 text-nowrap">Employee Pays %:</dt>		<dd class="col-sm-8">'+ element.employeePaysPerc + '%</dd>			<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
 				         	 	htmlop += '<a href="'+ element.doc_Attach +'" target="_blank">';
 				         	 	if(element.doc_Attach != '')
 				         	 	{
@@ -850,12 +1146,29 @@ width: 100%;
 
 			}
 			
-		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+		//--------------------------------------------------------------------------------------------------------------------------------------
+	   function dependents_TagifyCustomListSuggestionEl() {
+		   $('#Dependents').html("");
+		   
+		   
+		   $.ajax({
+				type : "GET",url : "insuranceDependentls?id=[[${insurancemaster['Insuranceid']}]]",
+				data : '', success : function(result) {
+					 result.forEach((element, index, array) =>
+		           	 {
+		           		$('#Dependents').append("<option value='"+ element.code+"'>"+ element.value+ "</option>"); 
+		           	 });
+				}
+	  		});
+		   
+	   }
+		//--------------------------------------------------------------------------------------------------------------------------------------		
+		
 		$(document).ready(function(){
 		    setTimeout(function(){
 		    	getpolicydetaillist();
 		    	getinsuranceclaimdetailslist();
-		    	
+		    	dependents_TagifyCustomListSuggestionEl();
 		    	coverdetailsRowoption=$("#Cover1").html();;
 		    	
 		    	
@@ -905,10 +1218,13 @@ width: 100%;
 				$("#CoverageAmount").val(bmobj.coverageAmount);
 				$("#Notes").val(bmobj.notes);
 				$("#status").val(bmobj.status);
-				$("#companyPays").val(bmobj.companyPays);
-				$("#employeePays").val(bmobj.employeePays);
+				$("#companyPays").val(bmobj.companyPaysPerc);
+				$("#employeePays").val(bmobj.employeePaysPerc);
 				$("#Nominee").val(bmobj.nominee).change();
-				
+				if(bmobj.dependentdetails != null){
+					$("#Dependents").val(bmobj.dependentdetails.split(",")).change();			
+				}
+		
 				
 				htmlop = ''; 												  											
 				coverdetailsRowi=0;
@@ -951,21 +1267,26 @@ width: 100%;
 				      dateFormat: 'Y-m-d'
 				    });
 				  }
-				  const flatpickrFriendlyx = document.querySelector('.PFrom');
-					 // Human Friendly
-					  if (flatpickrFriendlyx) {
-					    flatpickrFriendlyx.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
+				  const dobflatpickrFriendlyx = flatpickr("#dob", {
+					  altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				     });
+					
+					 
+					 
+				  // Phone
+					 const phoneMask1 = document.querySelector('.phone-number-otp-mask');
+
+				    // Phone Number Input Mask
+				    if (phoneMask1) {
+				      new Cleave(phoneMask1, {
+				        phone: true,
+				        phoneRegionCode: 'US'
+				      });
+				    }
 				 
 	//-------------------------------------------------------------------------------------------------------------------------------------
-					 			  
-					 
-					 
-									                    	
 	function policyclaimeditfunction(id) {
 		var claimid = id;
 		
@@ -1002,6 +1323,44 @@ width: 100%;
 		
 	}
 	//--------------------------------------------------------------------------------------------------------------------------------------
+	function dependenteditfunction(id) {
+		var claimid = id;
+		
+		var formData = {
+				id : "[[${insurancemaster['Insuranceid']}]]",
+				claimid: claimid
+			}
+
+		$.ajax({
+			type : "POST",
+			url : "getdependentpolicydetails",
+			data : formData,
+			success : function(result) {
+				var htmlop="";
+				var bmobj = JSON.parse(JSON.stringify(result));
+				console.log(bmobj);
+				$("#InsuranceDependentsid").val(bmobj.insuranceDependentsid);
+				$("#dependent_name").val(bmobj.dependent_name);
+				dobflatpickrFriendlyx.setDate(bmobj.dob);
+				$("#gender").val(bmobj.gender).change();
+				$("#relationship").val(bmobj.relationship).change();
+				$("#IDNumber").val(bmobj.idnumber).change();
+				$("#phonenumber").val(bmobj.phonenumber);
+				
+				
+				$('#addNewDependentDetails').modal('toggle');
+			},
+			error : function(e) {
+				console.log("Error" + e);
+
+			}
+
+		});
+
+		
+	}
+	 
+	//------------------------------------------------------------------------------------------------------------------------
 	
 </script>
 </body>

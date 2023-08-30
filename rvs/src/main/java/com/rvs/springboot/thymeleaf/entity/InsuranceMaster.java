@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,10 +43,14 @@ public class InsuranceMaster {
 	@JoinColumn(name = "Insuranceid")
 	private List<InsuranceDetails> InsuranceDetails;
 
-	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Insuranceid")
 	private List<InsuranceClaimHistory> insuranceClaimHistory;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "Insuranceid")
+	private List<InsuranceDependents> insuranceDependents;
+	
 	
 	@Transient
 	private String staffassetname;

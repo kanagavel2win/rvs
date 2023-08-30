@@ -98,6 +98,7 @@ import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
 import com.rvs.springboot.thymeleaf.entity.HolidayextendedProps;
 import com.rvs.springboot.thymeleaf.entity.InsuranceClaimHistory;
+import com.rvs.springboot.thymeleaf.entity.InsuranceDependents;
 import com.rvs.springboot.thymeleaf.entity.InsuranceDetails;
 import com.rvs.springboot.thymeleaf.entity.InsuranceMaster;
 import com.rvs.springboot.thymeleaf.entity.InsurancePolicyCover;
@@ -3352,7 +3353,7 @@ public class HomeController {
 	@PostMapping("holidaysave")
 	public String holidaysave(@RequestParam Map<String, String> param) {
 
-		// System.out.println(param);
+		
 		Holiday obj = new Holiday();
 		if (param.get("calid") != null && (!param.get("calid").equalsIgnoreCase(""))) {
 			obj.setId(Integer.parseInt(param.get("calid").toString()));
@@ -5173,6 +5174,24 @@ public class HomeController {
 	}
 
 	@ResponseBody
+	@GetMapping("insurancedependentlistjson")
+	public List<InsuranceDependents> insurancedependentlistjson(@RequestParam("id") int id) {
+		InsuranceMaster insurls = insuranceMasterService.findById(id);
+
+		for (InsuranceDependents indep : insurls.getInsuranceDependents()) {
+
+			try {
+				indep.setDob_MMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(indep.getDob())).toString());
+			} catch (ParseException e) {
+				// e.printStackTrace();
+			}
+		}
+
+		return insurls.getInsuranceDependents();
+	}
+
+	@ResponseBody
 	@GetMapping("insurancelistjson")
 	public List<InsuranceMaster> insurancelistjson() {
 
@@ -5199,25 +5218,24 @@ public class HomeController {
 						.filter(C -> C.getId() == Integer.parseInt(objindetail.getVendorName()))
 						.collect(Collectors.toList()).get(0).getOrgname());
 
-				for (InsurancePolicyCover inpcobj : objindetail.getInsurancePolicyCover())
-				{
-				if (!String.valueOf(inpcobj.getPTo()).equalsIgnoreCase("")) {
-					try {
-						inpcobj.setDuedateformate(displaydateFormatFirstMMMddYYY
-								.format(new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo())));
+				for (InsurancePolicyCover inpcobj : objindetail.getInsurancePolicyCover()) {
+					if (!String.valueOf(inpcobj.getPTo()).equalsIgnoreCase("")) {
+						try {
+							inpcobj.setDuedateformate(displaydateFormatFirstMMMddYYY
+									.format(new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo())));
 
-						long differ_in_time = new Date().getTime()
-								- new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo()).getTime();
+							long differ_in_time = new Date().getTime()
+									- new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo()).getTime();
 
-						inpcobj.setDueindicatorcolor(insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)));
+							inpcobj.setDueindicatorcolor(insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)));
 
-					} catch (ParseException e) {
+						} catch (ParseException e) {
+						}
+					} else {
+						inpcobj.setDuedateformate("");
+						inpcobj.setDueindicatorcolor("");
+
 					}
-				} else {
-					inpcobj.setDuedateformate("");
-					inpcobj.setDueindicatorcolor("");
-
-				}
 				}
 
 			}
@@ -5298,6 +5316,9 @@ public class HomeController {
 
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Insurance"));
 
+		List<String> RELATION = itemlistService.findByFieldName("RELATION");
+		themodel.addAttribute("RELATION", RELATION);
+
 		return "insurance";
 	}
 
@@ -5354,11 +5375,25 @@ public class HomeController {
 						.findById(Integer.parseInt(objindetail.getVendorName()));
 
 				objindetail.setVendorNamestr(vendor.getOrgname());
-
+				// ------------------------------------------------------------------------------------------------
 				if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
 					EmployeeMaster employee = employeeMasterService
 							.findById(Integer.parseInt(objindetail.getNominee()));
 					objindetail.setNominee_name_str(employee.getStaffName().toString());
+				} else {
+					objindetail.setNominee_name_str("");
+				}
+				
+				// ------------------------------------------------------------------------------------------------
+				if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff") && insurancemasternew.getInsuranceDependents().size()>0 && !nullremover(String.valueOf(objindetail.getDependentdetails())).equalsIgnoreCase("")) {
+					
+					String name_str="";
+					for (String xobj: objindetail.getDependentdetails().split(","))
+					{
+						name_str += insurancemasternew.getInsuranceDependents().stream().filter(C -> C.getInsuranceDependentsid() == Integer.parseInt(xobj)).collect(Collectors.toList()).get(0).getDependent_name() +"<br/>";
+					}	
+						objindetail.setDependentdetails_str(name_str);
+						
 				} else {
 					objindetail.setNominee_name_str("");
 				}
@@ -5400,6 +5435,32 @@ public class HomeController {
 		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
 		return insurancemasternew.getInsuranceClaimHistory().stream().filter(C -> C.getInsuranceClaimid() == claimid)
 				.collect(Collectors.toList()).get(0);
+	}
+	
+	@ResponseBody
+	@PostMapping("getdependentpolicydetails")
+	public InsuranceDependents getdependentpolicydetails(@RequestParam("id") int id,
+			@RequestParam("claimid") int claimid) {
+
+		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
+		return insurancemasternew.getInsuranceDependents().stream().filter(C -> C.getInsuranceDependentsid() == claimid)
+				.collect(Collectors.toList()).get(0);
+	}
+
+
+	@ResponseBody
+	@GetMapping("insuranceDependentls")
+	public List<tagify> insuranceDependentls(@RequestParam("id") int id) {
+		List<tagify> taglist = new ArrayList<tagify>();
+		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
+				
+		for (InsuranceDependents o : insurancemasternew.getInsuranceDependents()) {
+			tagify tagobj = new tagify();
+			tagobj.setValue(o.getDependent_name());
+			tagobj.setCode(String.valueOf(o.getInsuranceDependentsid()));
+			taglist.add(tagobj);
+		}
+		return taglist;
 	}
 
 	@ResponseBody
@@ -5473,7 +5534,9 @@ public class HomeController {
 			insuDetails.setPolicyNo(params.get("PolicyNo"));
 			insuDetails.setPremium(params.get("PremiumTotal"));
 			insuDetails.setCompanyPaysPerc(params.get("companyPays"));
-			insuDetails.setEmployeePaysPerc(params.get("employeePays"));	
+			insuDetails.setEmployeePaysPerc(params.get("employeePays"));
+			insuDetails.setDependentdetails(params.get("Dependents"));
+			
 			insuDetails.setInsurancePolicyCover(InsurancePolicyCoverls);
 
 			objInsls.add(insuDetails);
@@ -5499,7 +5562,9 @@ public class HomeController {
 					insuDetails.setPolicyNo(params.get("PolicyNo"));
 					insuDetails.setPremium(params.get("PremiumTotal"));
 					insuDetails.setCompanyPaysPerc(params.get("companyPays"));
-					insuDetails.setEmployeePaysPerc(params.get("employeePays"));	
+					insuDetails.setEmployeePaysPerc(params.get("employeePays"));
+					insuDetails.setDependentdetails(params.get("Dependents"));
+					
 					insuDetails.setInsurancePolicyCover(InsurancePolicyCoverls);
 
 				}
@@ -5509,7 +5574,90 @@ public class HomeController {
 		return insuranceMasterService.save(insurancemasternew);
 
 	}
+	
+	@ResponseBody
+	@PostMapping("insurancedependentsavejson")
+	public InsuranceMaster insurancedependentsavejson(@RequestParam Map<String, String> params,
+			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
+			HttpServletRequest request) {
 
+		// System.out.println(Files_Attach.getOriginalFilename().toString());
+		//System.out.println(params);
+		InsuranceMaster insurancemasternew = insuranceMasterService
+				.findById(Integer.parseInt(params.get("Insuranceid")));
+
+		List<InsurancePolicyCover> InsurancePolicyCoverls = new ArrayList<>();
+
+		StringBuilder filename = new StringBuilder();
+		if (Files_Attach != null) {
+			// File Uploading
+			String profilephotouploadRootPath = request.getServletContext().getRealPath("insurancedependentproofid");
+			// System.out.println("uploadRootPath=" + profilephotouploadRootPath);
+
+			File uploadRootDir = new File(profilephotouploadRootPath);
+			// Create directory if it not exists.
+			if (!uploadRootDir.exists()) {
+				uploadRootDir.mkdirs();
+			}
+
+			if (Files_Attach.getOriginalFilename().toString().length() > 0) {
+
+				String tempfilename = stringdatetime() + Files_Attach.getOriginalFilename();
+				Path fileNameandPath = Paths.get(profilephotouploadRootPath, tempfilename);
+				filename.append("insurancedependentproofid/" + tempfilename);
+
+				try {
+					Files.write(fileNameandPath, Files_Attach.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		if (nullremover(String.valueOf(params.get("InsuranceDependentsid"))).equalsIgnoreCase("")) {
+
+			List<InsuranceDependents> objInsls = new ArrayList();
+			InsuranceDependents insuDetails = new InsuranceDependents();
+
+			insuDetails.setDependent_name(params.get("dependent_name"));
+			insuDetails.setDob(params.get("dob"));
+			insuDetails.setGender(params.get("gender"));
+			insuDetails.setIDfiles(filename.toString());
+			insuDetails.setIDNumber(params.get("IDNumber"));
+			insuDetails.setPhonenumber(params.get("phonenumber"));
+			insuDetails.setRelationship(params.get("relationship"));
+			
+			objInsls.add(insuDetails);
+
+			if (insurancemasternew.getInsuranceDependents() != null) {
+				insurancemasternew.getInsuranceDependents().add(insuDetails);
+			} else {
+				insurancemasternew.setInsuranceDependents(objInsls);
+			}
+		} else {
+			for (InsuranceDependents insuDetails : insurancemasternew.getInsuranceDependents()) {
+				if (insuDetails.getInsuranceDependentsid() == Integer.parseInt(params.get("InsuranceDependentsid"))) {
+
+					if (!nullremover(String.valueOf(filename.toString())).equalsIgnoreCase("")) {
+						insuDetails.setIDfiles(filename.toString());
+					}
+
+					insuDetails.setDependent_name(params.get("dependent_name"));
+					insuDetails.setDob(params.get("dob"));
+					insuDetails.setGender(params.get("gender"));
+					insuDetails.setIDNumber(params.get("IDNumber"));
+					insuDetails.setPhonenumber(params.get("phonenumber"));
+					insuDetails.setRelationship(params.get("relationship"));
+
+				}
+			}
+		}
+
+		return insuranceMasterService.save(insurancemasternew);
+
+	}
+
+	
 	@ResponseBody
 	@PostMapping("policyClaimdetailsavejson")
 	public InsuranceMaster policyClaimdetailsavejson(@RequestParam Map<String, String> params) {
@@ -7655,7 +7803,7 @@ public class HomeController {
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
 
-		// System.out.println(param);
+		
 
 		int activityId = Integer.parseInt(param.get("activityId"));
 		ActivityMaster activityMaster = new ActivityMaster();
@@ -8786,7 +8934,7 @@ public class HomeController {
 
 			HttpServletRequest request) {
 
-		System.out.println(params);
+		//System.out.println(params);
 
 		return "leadevents";
 

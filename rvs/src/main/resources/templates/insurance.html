@@ -435,12 +435,12 @@ width: 100%;
 													type="text" id="PremiumTotal" class="form-control"
 													name="PremiumTotal" required/>
 											</div>
-											<div class="col-12 col-md-6">
+											<div class="col-12 col-md-6"  th:if="${insurancemaster.InsuranceTo} =='Staff'">
 												<label class="form-label" for="companyPays">Company Pays %</label> <input
 													type="text" id="companyPays" class="form-control"
 													name="companyPays" required/>
 											</div>
-											<div class="col-12 col-md-6">
+											<div class="col-12 col-md-6"  th:if="${insurancemaster.InsuranceTo} =='Staff'">
 												<label class="form-label" for="employeePays">Employee Pays %</label> <input
 													type="number" id="employeePays" class="form-control"
 													name="employeePays" required />
@@ -457,7 +457,7 @@ width: 100%;
 
 												</select>
 											</div>
-											<div class="col-12">
+											<div class="col-12"  th:if="${insurancemaster.InsuranceTo} =='Staff'">
 
 												<label class="form-label" for="Dependents">Dependents</label> 
 											<select id="Dependents"    class="select2 form-select" multiple>
@@ -465,7 +465,7 @@ width: 100%;
                           					</select>
 											</div>
 											
-											<div class="col-12 col-md-6">
+											<div class="col-12 col-md-6"  th:if="${insurancemaster.InsuranceTo} =='Staff'">
 
 												<label class="form-label" for="Nominee">Nominee</label> <select
 													class="form-control employeenomineedetails" name="Nominee" id="Nominee">
@@ -490,13 +490,9 @@ width: 100%;
 									                  <table class="table1">
 									                    <thead>
 									                      <tr>
-									                        <th width="40%">Cover</th>
+									                        <th width="30%">Cover</th>
 									                        <th width="30%">POI</th>
-									                        <th width="15%">Total Premium</th>
-									                        <th width="15%">Sum Insured
-									                        
-									                     
-									                        </th>
+									                        <th width="30%">Sum Insured</th>
 									                        
 									                      </tr>
 									                    </thead>
@@ -516,9 +512,7 @@ width: 100%;
 									                    			<input type="date" class="form-control PFrom" name="PFrom1" /> To
 									                    			<input type="date" class="form-control PTo" name="PTo1" />
 									                    		</td>
-									                    		<td>
-									                    			 <input type="number" class="form-control" name="Premium1" />
-									                    		</td>
+									                    		
 									                    		<td>
 									                    			 <input type="number" class="form-control" name="CoverageAmount1" />
 									                    		</td>
@@ -742,6 +736,7 @@ width: 100%;
 	
 	<script>
 	
+	var srcType= "[[${insurancemaster['InsuranceTo']}]]";
 	var coverdetailsRowi=1;
 	$("#coverdetailsRowi").val(1);
 	var coverdetailsRowoption="";
@@ -1006,10 +1001,23 @@ width: 100%;
 
    			coverdetailsRowi=0;
    			$('.coverdetailsRow').html("");
+   			$("#InsuranceDetailsid").val("");
    			$("#coverdetailsRowi").val(coverdetailsRowi);
    			
    		});
-    	
+   		//--------------------------------------------------------------------------------------------------------------------------------------
+   		
+   		$(document).on("click", ".addNewDependentDetails", function() {
+   			document.getElementById("addDependentdetailsForm").reset();
+
+   			$("#InsuranceDependentsid").val("");
+   			
+   		});
+   		//--------------------------------------------------------------------------------------------------------------------------------------
+   		$(document).on("change", "#companyPays", function() {
+   			$("#employeePays").val(100 -$("#companyPays").val());
+   		});
+   		//--------------------------------------------------------------------------------------------------------------------------------------
    		$(document).on("click", ".addNewpolicyHistoryDetails", function() {
    			document.getElementById("addpolicyClaimdetailsForm").reset();
    		
@@ -1072,8 +1080,23 @@ width: 100%;
 			           		if(element.status != 'Move to Archive')
 			           		{
 			           			
-				           		htmlop += '<div class="row editemg"><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit " onClick="policyeditfunction('+ element.insuranceDetailsid +')"><span class="badge bg-label-primary me-1">'+ element.vendorNamestr + '</span></dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd><dt class="col-sm-4 mb-3 text-nowrap">Company Pays %:</dt>		<dd class="col-sm-8">'+ element.companyPaysPerc + '%</dd>					<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>					<dt class="col-sm-4 mb-3 text-nowrap">Dependents:</dt>		<dd class="col-sm-8">'+ element.dependentdetails_str + '</dd> <dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd> <dt class="col-sm-4 mb-3 text-nowrap">Employee Pays %:</dt>		<dd class="col-sm-8">'+ element.employeePaysPerc + '%</dd>			<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';
-				         	 	htmlop += '<a href="'+ element.doc_Attach +'" target="_blank">';
+				           		htmlop += '<div class="row editemg"><div class="col-xl-7 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Vendor Name:</dt>		<dd class="col-sm-8 policyedit " onClick="policyeditfunction('+ element.insuranceDetailsid +')"><span class="badge bg-label-primary me-1">'+ element.vendorNamestr + '</span></dd>				<dt class="col-sm-4 mb-3 text-nowrap">Policy Name:</dt>		<dd class="col-sm-8">'+ element.policyName + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Premium:</dt>		<dd class="col-sm-8">'+ element.premium + '</dd>';
+				         	 
+				           		if(srcType =="Staff")
+			           			{
+				           			
+				           			htmlop += '<dt class="col-sm-4 mb-3 text-nowrap">Company Pays %:</dt>		<dd class="col-sm-8">'+ element.companyPaysPerc + '%</dd>					';
+			           			}
+				           		htmlop += '<dt class="col-sm-4 mb-3 text-nowrap">Status:</dt>		<dd class="col-sm-8">'+ element.status + '</dd>	</dl></div><div class="col-xl-5 col-12">	<dl class="row mb-0">		<dt class="col-sm-4 mb-3 text-nowrap">Policy No:</dt>		<dd class="col-sm-8">'+ element.policyNo + '</dd>				';
+				           		
+				           		if(srcType =="Staff")
+			           			{
+				           			htmlop += '	<dt class="col-sm-4 mb-3 text-nowrap">Dependents:</dt>		<dd class="col-sm-8">'+ element.dependentdetails_str + '</dd> <dt class="col-sm-4 mb-3 text-nowrap">Nominee:</dt>		<dd class="col-sm-8">'+ element.nominee_name_str + '</dd> <dt class="col-sm-4 mb-3 text-nowrap">Employee Pays %:</dt>		<dd class="col-sm-8">'+ element.employeePaysPerc + '%</dd>			';
+			           			}
+				           		
+				           		htmlop += '<dt class="col-sm-4 mb-3 text-nowrap">Notes:</dt>		<dd class="col-sm-8">'+ element.notes + '</dd>		<dt class="col-sm-4 mb-3 text-nowrap">Files:</dt>		<dd class="col-sm-8">';	
+				           		
+				           		htmlop += '<a href="'+ element.doc_Attach +'" target="_blank">';
 				         	 	if(element.doc_Attach != '')
 				         	 	{
 					         	 	if(element.doc_Attach.split(".")[1] == 'pdf')
@@ -1086,11 +1109,11 @@ width: 100%;
 				         	 	}
 				         	 	htmlop += '</a></dd>	</dl></div> ';     
 				         	 	
-				         	 	htmlop += '<div class="table-responsive text-nowrap">   <table class="table">     <thead>       <tr>         <th width="40%">Cover</th>         <th width="30%">POI</th>         <th width="15%">Total Premium</th>         <th width="15%">Sum Insured         </th>               </tr>     </thead>  <tbody class="table-border-bottom-0">'; 												  											
+				         	 	htmlop += '<div class="table-responsive text-nowrap">   <table class="table">     <thead>       <tr>         <th width="30%">Cover</th>         <th width="30%">POI</th>                  <th width="30%">Sum Insured         </th>               </tr>     </thead>  <tbody class="table-border-bottom-0">'; 												  											
 				         	 	
 				         	 	element.insurancePolicyCover.forEach((elementx, indexx, arrayx) =>
 					           	{
-					           		htmlop += '<tr> <td>'+elementx.cover +'</td><td>'+elementx.pfrom_str + ' To '+elementx.pto_str  +'</td><td>'+elementx.premiumAmount +'</td><td>'+elementx.coverageAmount +'</td>    		     	</tr>  ';  		
+					           		htmlop += '<tr> <td>'+elementx.cover +'</td><td>'+elementx.pfrom_str + ' To '+elementx.pto_str  +'</td><td>'+elementx.coverageAmount +'</td>    		     	</tr>  ';  		
 					           	});
 				         	 
 				         	 	htmlop += ' </tbody>   </table>  </div></div><hr /><br/><br/>';
@@ -1231,7 +1254,7 @@ width: 100%;
 				bmobj.insurancePolicyCover.forEach((elementx, indexx, arrayx) =>
 	           	{
 	           		coverdetailsRowi=coverdetailsRowi+1;
-	           		htmlop +="<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' value='"+ elementx.insurancePolicyCoverid +"' />	<select class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "'><option value='"+  elementx.cover +"'>"+  elementx.cover + "</option>"+ coverdetailsRowoption +" </select> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' value='"+ elementx.pfrom +"' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "'  value='"+ elementx.pto +"' /></td><td>	 <input type='number' class='form-control' name='Premium"+coverdetailsRowi + "' value='"+ elementx.premiumAmount +"' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' value='"+ elementx.coverageAmount +"' /></td> </tr>";
+	           		htmlop +="<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' value='"+ elementx.insurancePolicyCoverid +"' />	<select class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "'><option value='"+  elementx.cover +"'>"+  elementx.cover + "</option>"+ coverdetailsRowoption +" </select> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' value='"+ elementx.pfrom +"' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "'  value='"+ elementx.pto +"' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' value='"+ elementx.coverageAmount +"' /></td> </tr>";
 	        	});
 				$('.coverdetailsRow').html(htmlop);
          	 	$("#coverdetailsRowi").val(coverdetailsRowi);
@@ -1252,7 +1275,7 @@ width: 100%;
 	function coverdetailsRowfunction() {
 		coverdetailsRowi=coverdetailsRowi+1;
 	
-		$('.coverdetailsRow').append("<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' />	<select class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "'>"+ coverdetailsRowoption +" </select> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "' /></td><td>	 <input type='number' class='form-control' name='Premium"+coverdetailsRowi + "' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' /></td> </tr>");
+		$('.coverdetailsRow').append("<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' />	<select class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "'>"+ coverdetailsRowoption +" </select> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' /></td> </tr>");
 		
 		$("#coverdetailsRowi").val(coverdetailsRowi);
 	}

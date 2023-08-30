@@ -5395,7 +5395,7 @@ public class HomeController {
 						objindetail.setDependentdetails_str(name_str);
 						
 				} else {
-					objindetail.setNominee_name_str("");
+					objindetail.setDependentdetails_str("");
 				}
 				// ------------------------------------------------------------------------------------------------
 				for (InsurancePolicyCover pcobj : objindetail.getInsurancePolicyCover()) {
@@ -5470,7 +5470,7 @@ public class HomeController {
 			HttpServletRequest request) {
 
 		// System.out.println(Files_Attach.getOriginalFilename().toString());
-		System.out.println(params);
+		//System.out.println(params);
 		InsuranceMaster insurancemasternew = insuranceMasterService
 				.findById(Integer.parseInt(params.get("Insuranceid")));
 
@@ -5488,7 +5488,7 @@ public class HomeController {
 				tempobj.setCoverageAmount(params.get("CoverageAmount" + i));
 				tempobj.setPFrom(params.get("PFrom" + i));
 				tempobj.setPTo(params.get("PTo" + i));
-				tempobj.setPremiumAmount(params.get("Premium" + i));
+				//tempobj.setPremiumAmount(params.get("Premium" + i));
 
 				InsurancePolicyCoverls.add(tempobj);
 			}
@@ -5526,17 +5526,27 @@ public class HomeController {
 			InsuranceDetails insuDetails = new InsuranceDetails();
 
 			insuDetails.setDoc_Attach(filename.toString());
-			insuDetails.setNominee(params.get("Nominee"));
 			insuDetails.setNotes(params.get("Notes"));
 			insuDetails.setStatus(params.get("status"));
 			insuDetails.setVendorName(params.get("VendorName"));
 			insuDetails.setPolicyName(params.get("PolicyName"));
 			insuDetails.setPolicyNo(params.get("PolicyNo"));
 			insuDetails.setPremium(params.get("PremiumTotal"));
-			insuDetails.setCompanyPaysPerc(params.get("companyPays"));
-			insuDetails.setEmployeePaysPerc(params.get("employeePays"));
-			insuDetails.setDependentdetails(params.get("Dependents"));
 			
+			if(insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff"))
+			{
+				insuDetails.setCompanyPaysPerc(params.get("companyPays"));
+				insuDetails.setEmployeePaysPerc(params.get("employeePays"));
+				insuDetails.setDependentdetails(params.get("Dependents"));
+				insuDetails.setNominee(params.get("Nominee"));
+				
+			}else
+			{
+				insuDetails.setCompanyPaysPerc("100");
+				insuDetails.setEmployeePaysPerc("0");
+				insuDetails.setDependentdetails("");
+				insuDetails.setNominee("");
+			}
 			insuDetails.setInsurancePolicyCover(InsurancePolicyCoverls);
 
 			objInsls.add(insuDetails);
@@ -5554,16 +5564,27 @@ public class HomeController {
 						insuDetails.setDoc_Attach(filename.toString());
 					}
 
-					insuDetails.setNominee(params.get("Nominee"));
 					insuDetails.setNotes(params.get("Notes"));
 					insuDetails.setStatus(params.get("status"));
 					insuDetails.setVendorName(params.get("VendorName"));
 					insuDetails.setPolicyName(params.get("PolicyName"));
 					insuDetails.setPolicyNo(params.get("PolicyNo"));
 					insuDetails.setPremium(params.get("PremiumTotal"));
-					insuDetails.setCompanyPaysPerc(params.get("companyPays"));
-					insuDetails.setEmployeePaysPerc(params.get("employeePays"));
-					insuDetails.setDependentdetails(params.get("Dependents"));
+					
+					if(insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff"))
+					{
+						insuDetails.setCompanyPaysPerc(params.get("companyPays"));
+						insuDetails.setEmployeePaysPerc(params.get("employeePays"));
+						insuDetails.setDependentdetails(params.get("Dependents"));
+						insuDetails.setNominee(params.get("Nominee"));
+						
+					}else
+					{
+						insuDetails.setCompanyPaysPerc("100");
+						insuDetails.setEmployeePaysPerc("0");
+						insuDetails.setDependentdetails("");
+						insuDetails.setNominee("");
+					}
 					
 					insuDetails.setInsurancePolicyCover(InsurancePolicyCoverls);
 

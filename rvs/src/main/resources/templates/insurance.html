@@ -359,7 +359,7 @@ width: 100%;
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="IDNumber">ID Proof Number</label> <input
 													type="text" id="IDNumber" class="form-control"
-													name="IDNumber"  required/>
+													name="IDNumber" />
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="phonenumber">Phone # </label> 
@@ -437,7 +437,7 @@ width: 100%;
 											</div>
 											<div class="col-12 col-md-6"  th:if="${insurancemaster.InsuranceTo} =='Staff'">
 												<label class="form-label" for="companyPays">Company Pays %</label> <input
-													type="text" id="companyPays" class="form-control"
+													type="number" id="companyPays" class="form-control"
 													name="companyPays" required/>
 											</div>
 											<div class="col-12 col-md-6"  th:if="${insurancemaster.InsuranceTo} =='Staff'">
@@ -500,13 +500,8 @@ width: 100%;
 									                    	<tr>
 									                    		<td> 
 									                    		<input type="hidden" name="InsurancePolicyCoverid1" />
-									                    			<select class="form-control addCoverdata" id="Cover1" name="Cover1">
-																		<option value="">-</option>
-																		<th:block th:each="str :${PolicyCover}">
-																			<option th:value="${str}" th:text="${str}"></option>
-					
-																		</th:block>
-																	</select>
+									                    			<input type="text" class="form-control addCoverdata" id="Cover1" name="Cover1" />
+																		
 																</td>
 									                    		<td>
 									                    			<input type="date" class="form-control PFrom" name="PFrom1" /> To
@@ -1236,7 +1231,7 @@ width: 100%;
 				$("#PolicyName").val(bmobj.policyName);
 				$("#PolicyNo").val(bmobj.policyNo);
 				$("#PremiumTotal").val(bmobj.premium);
-				$("#Cover").val(bmobj.cover).change();
+				$("#Cover").val(bmobj.cover);
 				
 				$("#CoverageAmount").val(bmobj.coverageAmount);
 				$("#Notes").val(bmobj.notes);
@@ -1254,7 +1249,7 @@ width: 100%;
 				bmobj.insurancePolicyCover.forEach((elementx, indexx, arrayx) =>
 	           	{
 	           		coverdetailsRowi=coverdetailsRowi+1;
-	           		htmlop +="<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' value='"+ elementx.insurancePolicyCoverid +"' />	<select class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "'><option value='"+  elementx.cover +"'>"+  elementx.cover + "</option>"+ coverdetailsRowoption +" </select> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' value='"+ elementx.pfrom +"' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "'  value='"+ elementx.pto +"' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' value='"+ elementx.coverageAmount +"' /></td> </tr>";
+	           		htmlop +="<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' value='"+ elementx.insurancePolicyCoverid +"' />	<input type='text' class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "' value='"+ elementx.cover+ "'/> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' value='"+ elementx.pfrom +"' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "'  value='"+ elementx.pto +"' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' value='"+ elementx.coverageAmount +"' /></td> </tr>";
 	        	});
 				$('.coverdetailsRow').html(htmlop);
          	 	$("#coverdetailsRowi").val(coverdetailsRowi);
@@ -1275,7 +1270,7 @@ width: 100%;
 	function coverdetailsRowfunction() {
 		coverdetailsRowi=coverdetailsRowi+1;
 	
-		$('.coverdetailsRow').append("<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' />	<select class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "'>"+ coverdetailsRowoption +" </select> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' /></td> </tr>");
+		$('.coverdetailsRow').append("<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' />	<input type='text' class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "' /> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' /></td> </tr>");
 		
 		$("#coverdetailsRowi").val(coverdetailsRowi);
 	}

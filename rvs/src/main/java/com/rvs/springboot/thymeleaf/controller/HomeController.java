@@ -5470,7 +5470,7 @@ public class HomeController {
 			HttpServletRequest request) {
 
 		// System.out.println(Files_Attach.getOriginalFilename().toString());
-		//System.out.println(params);
+		System.out.println(params);
 		InsuranceMaster insurancemasternew = insuranceMasterService
 				.findById(Integer.parseInt(params.get("Insuranceid")));
 
@@ -5486,8 +5486,9 @@ public class HomeController {
 
 				tempobj.setCover(params.get("Cover" + i));
 				tempobj.setCoverageAmount(params.get("CoverageAmount" + i));
-				tempobj.setPFrom(params.get("PFrom" + i));
-				tempobj.setPTo(params.get("PTo" + i));
+				String[] strefromdate =params.get("PFromTo" + i).split(" to ");
+				tempobj.setPFrom(strefromdate[0]);
+				tempobj.setPTo(strefromdate[1]);
 				//tempobj.setPremiumAmount(params.get("Premium" + i));
 
 				InsurancePolicyCoverls.add(tempobj);

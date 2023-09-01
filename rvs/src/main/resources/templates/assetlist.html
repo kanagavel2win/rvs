@@ -720,23 +720,28 @@
 	    	  if (status != '' && branch != '' && status == 'In Stock') {
 	    	    var currentRow = $('#row_' + id);
 	    	    var columns = currentRow.find("td").slice(1, 7);
-	    	    $('#cart > tbody:last-child').append('<tr>' + columns.get().map(column => '<td>' + $(column).html() + '</td>').join('') + '</tr>');
+	    	    $('#cart > tbody:last-child').append('<tr><td><button type="submit" class="btn btn-danger  removefromcart" name="'+id+'"><i class="fas fa-trash-alt" ></i></button></td>' + columns.get().map(column => '<td>' + $(column).html() + '</td>').join('') + '</tr>');
 
 	    	    currentRow.fadeTo("slow", 0.7, function() {
 	    	      currentRow.fadeOut();
 	    	      currentRow.hide();
 	    	    });
 	    	    cart_count();
-	    	  } else if (status != '' && branch != '' && custodian != '') {
+	    	   $('#checkout').show();
+			   $('#checkin').hide();
+	    	  } 
+	    	  else if (status != '' && branch != '' && custodian != '') {
 	    	    var currentRow = $('#row_' + id);
 	    	    var columns = currentRow.find("td").slice(1, 7);
-	    	    $('#cart > tbody:last-child').append('<tr>' + columns.get().map(column => '<td>' + $(column).html() + '</td>').join('') + '</tr>');
+	    	    $('#cart > tbody:last-child').append('<tr><td><button type="submit" class="btn btn-danger  removefromcart" name="'+id+'"><i class="fas fa-trash-alt" ></i></button></td>' + columns.get().map(column => '<td>' + $(column).html() + '</td>').join('') + '</tr>');
 
 	    	    currentRow.fadeTo("slow", 0.7, function() {
 	    	      currentRow.fadeOut();
 	    	      currentRow.hide();
 	    	    });
 	    	    cart_count();
+	    	   $('#checkout').hide();
+			   $('#checkin').show();
 	    	  } else {
 	    	    alert("Please fill all mandatory fields");
 	    	  }
@@ -752,6 +757,7 @@
 					$('#row_'+id).show();
 				});
   			cart_count();
+  			$('#exampleModalScrollable').modal('hide');
 	    })
 	    
 	   $('#Status').change(function(e){
@@ -782,16 +788,7 @@
 		   dt_basic.columns(4).search(this.value).draw();
 		   
 
-		   if(this.value=="Checked Out" || this.value=="In office Use")
-		   {
-			   $('#checkout').hide();
-			   $('#checkin').show();
-		   }
-		   else
-		   {
-			   $('#checkout').show();
-			   $('#checkin').hide();
-		   }
+		 
 	   })
 	   
 	   Custodian.change(function(e){

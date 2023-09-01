@@ -4562,7 +4562,7 @@ public class HomeController {
 	}
 
 	@GetMapping("checkout")
-	public String checkout(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids) {
+	public String checkout(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids,@RequestParam(name ="branchname",required = false, defaultValue = "") String branchname) {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
 		List<AssetMaster> assetMaster = assetMasterService.findAll();
 
@@ -4598,6 +4598,9 @@ public class HomeController {
 		themodel.addAttribute("selectedasset", selectedasset);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
 		themodel.addAttribute("today", displaydateFormatrev.format(new Date()));
+		
+		themodel.addAttribute("branchname", branchname);
+		
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Check Out"));
 		return "checkout";
 	}

@@ -149,7 +149,7 @@
 												class="form-select" id="Branch" name="Branch" required>
 												<option value="">--Select--</option>
 												<th:block th:each="emp : ${branchls}">
-													<option th:value="${emp.id}" th:text="${emp.BRANCH_NAME}"></option>
+													<option th:value="${emp.id}" th:text="${emp.BRANCH_NAME}" th:selected="${emp.BRANCH_NAME} == ${branchname}"></option>
 												</th:block>
 											</select>
 										</div>
@@ -201,7 +201,7 @@
 												class="form-select" id="Status" name="Status" required>
 												<option value="">--Select--</option>
 
-												<option value="Checked Out">Checked Out</option>
+												<option value="Checked Out" selected>Checked Out</option>
 
 												<option value="Out for repair">Out for repair</option>
 
@@ -596,6 +596,7 @@
 		$(document).on("click", ".filedivdelete", function() {
 			$(this).closest("tr").remove();
 		});
+		$("#Branch").trigger("change");
 	</script>
 </body>
 </html>

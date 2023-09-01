@@ -491,8 +491,8 @@ width: 100%;
 									                    <thead>
 									                      <tr>
 									                        <th width="30%">Cover</th>
-									                        <th width="30%">POI</th>
-									                        <th width="30%">Sum Insured</th>
+									                        <th width="50%">POI</th>
+									                        <th width="20%">Sum Insured</th>
 									                        
 									                      </tr>
 									                    </thead>
@@ -504,8 +504,7 @@ width: 100%;
 																		
 																</td>
 									                    		<td>
-									                    			<input type="date" class="form-control PFrom" name="PFrom1" /> To
-									                    			<input type="date" class="form-control PTo" name="PTo1" />
+									                    			<input type="text" class="form-control POI" name="PFrom1" /> 
 									                    		</td>
 									                    		
 									                    		<td>
@@ -747,7 +746,41 @@ width: 100%;
 	      dateFormat: 'Y-m-d'
 	     });
 	
+	     
+	     function  flatpickrinit(n){
+  const dateRangePicker = flatpickr("#pdate"+n, {
+    mode: "range",
+    dateFormat: "Y-m-d",
+    });
+  }
+	     
+	     
+	      // Date Format
+			 
+			 	
+				  const dobflatpickrFriendlyx = flatpickr("#dob", {
+					  altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				     });
+					
+					 
+					 
+				  // Phone
+					 const phoneMask1 = document.querySelector('.phone-number-otp-mask');
+
+				    // Phone Number Input Mask
+				    if (phoneMask1) {
+				      new Cleave(phoneMask1, {
+				        phone: true,
+				        phoneRegionCode: 'US'
+				      });
+				    }
+				    
+	
     $(document).ready(function() {  
+		
+
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	  
     		//--------------------------------------------------------------------------------------------------------------------------------------
@@ -1244,17 +1277,29 @@ width: 100%;
 				}
 		
 				
-				htmlop = ''; 												  											
+				htmlop = ''; 
+				$('.coverdetailsRow').html('');				  											
 				coverdetailsRowi=0;
 				bmobj.insurancePolicyCover.forEach((elementx, indexx, arrayx) =>
 	           	{
 	           		coverdetailsRowi=coverdetailsRowi+1;
-	           		htmlop +="<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' value='"+ elementx.insurancePolicyCoverid +"' />	<input type='text' class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "' value='"+ elementx.cover+ "'/> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' value='"+ elementx.pfrom +"' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "'  value='"+ elementx.pto +"' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' value='"+ elementx.coverageAmount +"' /></td> </tr>";
+	           		htmlop ="<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' value='"+ elementx.insurancePolicyCoverid +"' />	<input type='text' class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "' value='"+ elementx.cover+ "' /> </td><td>		<input type='text' class='form-control POI' name='PTo"+coverdetailsRowi + "'   id='pdate"+coverdetailsRowi + "'/></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' value='"+ elementx.coverageAmount +"' /></td> </tr>";
+	         
+$('.coverdetailsRow').append(htmlop);   	          
+flatpickr("#pdate" +coverdetailsRowi, {
+    mode: "range",
+    dateFormat: "Y-m-d",
+    defaultDate: [moment(elementx.pfrom).toDate(), moment(elementx.pto).toDate()]
+});
+	
+
 	        	});
-				$('.coverdetailsRow').html(htmlop);
+	        	
+				//$('.coverdetailsRow').html(htmlop);
          	 	$("#coverdetailsRowi").val(coverdetailsRowi);
          	 	
 				$('#addNewpolicyDetails').modal('toggle');
+				
 			},
 			error : function(e) {
 				console.log("Error" + e);
@@ -1270,39 +1315,14 @@ width: 100%;
 	function coverdetailsRowfunction() {
 		coverdetailsRowi=coverdetailsRowi+1;
 	
-		$('.coverdetailsRow').append("<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' />	<input type='text' class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "' /> </td><td>	<input type='date' class='form-control PFrom' name='PFrom"+coverdetailsRowi + "' /> To	<input type='date' class='form-control PTo' name='PTo"+coverdetailsRowi + "' /></td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' /></td> </tr>");
+		$('.coverdetailsRow').append("<tr><td><input type='hidden' name='InsurancePolicyCoverid"+coverdetailsRowi + "' />	<input type='text' class='form-control addCoverdata' name='Cover"+coverdetailsRowi + "' /> </td><td>	<input type='text' class='form-control POI' name='PFrom"+coverdetailsRowi + "' placeholder='YYYY-MM-DD to YYYY-MM-DD'  id='pdate"+coverdetailsRowi + "' readonly/> </td><td>	 <input type='number' class='form-control' name='CoverageAmount"+coverdetailsRowi + "' /></td> </tr>");
 		
+		flatpickrinit(coverdetailsRowi);
 		$("#coverdetailsRowi").val(coverdetailsRowi);
+		
 	}
 	//-------------------------------------------------------------------------------------------------------------------------------------
-	 // Date Format
-			   const flatpickrFriendly = document.querySelector('.PTo');
-				 // Human Friendly
-				  if (flatpickrFriendly) {
-				    flatpickrFriendly.flatpickr({
-				      altInput: true,
-				      altFormat: 'F j, Y',
-				      dateFormat: 'Y-m-d'
-				    });
-				  }
-				  const dobflatpickrFriendlyx = flatpickr("#dob", {
-					  altInput: true,
-				      altFormat: 'F j, Y',
-				      dateFormat: 'Y-m-d'
-				     });
-					
-					 
-					 
-				  // Phone
-					 const phoneMask1 = document.querySelector('.phone-number-otp-mask');
-
-				    // Phone Number Input Mask
-				    if (phoneMask1) {
-				      new Cleave(phoneMask1, {
-				        phone: true,
-				        phoneRegionCode: 'US'
-				      });
-				    }
+	
 				 
 	//-------------------------------------------------------------------------------------------------------------------------------------
 	function policyclaimeditfunction(id) {

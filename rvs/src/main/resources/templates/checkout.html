@@ -158,12 +158,14 @@
 											<label class="form-label">Custodian</label> <select
 												class="form-select" id="StaffID" name="StaffID" required>
 												<option value="">--Select--</option>
-
+												<th:block th:each="emp : ${EmployeeMasterobj}">
+													<option th:value="${emp.empMasterid}" th:text="${emp.StaffName}" ></option>
+												</th:block>
 											</select>
 										</div>
 
 										<div class="col-sm-3">
-											<label class="form-label">Check In Date</label> <input
+											<label class="form-label">Check Out Date</label> <input
 												type="text" class="form-control flatpickr"
 												name="CheckOutDate" id="CheckOutDate" th:value="${today}"
 												placeholder="Apr 3 2022" required>
@@ -559,6 +561,7 @@
 				var formData = {
 					branchname : branchname
 				}
+				alert(branchname);
 				$.ajax({
 					type : "POST",
 					url : "getEmployeelistbasedonbranch",

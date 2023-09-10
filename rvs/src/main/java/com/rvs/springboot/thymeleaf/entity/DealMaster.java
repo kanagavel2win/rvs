@@ -108,7 +108,10 @@ public class DealMaster {
 	@Column
 	private String lossbacktoleadreason;
 	@Column
-	private int leadid;
+	private int sourceid;
+	@Column
+	private String sourcefrom;
+	
 	@Column
 	private int dealvalue;
 	

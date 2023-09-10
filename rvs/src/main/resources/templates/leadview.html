@@ -370,7 +370,7 @@ cursor: pointer;
 									</div>
 								</div>
 								<!-- /Connected Accounts -->
-
+							
 							</div>
 							<!--/ User Sidebar -->
 
@@ -839,6 +839,8 @@ cursor: pointer;
 															<th:block th:each="str :${ProjectStatus}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
+															<option value="Move to Deal">Convert to Deal</option>
+															<option value="Move to Project">Convert to Project</option>
 														</select>
 													</div>
 
@@ -1383,15 +1385,37 @@ cursor: pointer;
 														/* for (var pair of formData.entries()) {
 														   console.log(pair); 
 														} */
+														
+														var urldirection="leadsavestage2";
+														
+														var Status = $("#Status").val();
+														if(Status =="Move to Deal")
+														{
+															urldirection="leadtodeal";
+														}else if (Status =="Move to Project"){
+															urldirection="leadtoproject";
+														}
+														
+														
 														$.ajax({
 																	type : "POST",
-																	url : "leadsavestage2",
+																	url : urldirection,
 																	processData : false,
 																	contentType : false,
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
 																		console.log(bmobj);
+																		if(Status =="Move to Deal")
+																		{
+																			window.location.href = 'dealview?id='+bmobj;
+																			
+																		}else if (Status =="Move to Project"){
+																			window.location.href = 'projectview?id='+bmobj;
+																			
+																		}else
+																		{
+																		
 
 																			if (bmobj.label == "Hot") {
 																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
@@ -1425,11 +1449,11 @@ cursor: pointer;
 																           	    $name += element.followername+ "<br>";
 																            });
 																           	$('#Lbl_follower').html($name);
-																           	
+																		}   	
 																			$('.editorganizationdataclose').click();
 																			$('.editorganizationdatasubmit').prop("disabled",false);
 																			$('.editorganizationdatasubmit').html("Submit");
-																		
+																	
 
 																	},
 																	error : function(

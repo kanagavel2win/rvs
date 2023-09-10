@@ -3353,7 +3353,6 @@ public class HomeController {
 	@PostMapping("holidaysave")
 	public String holidaysave(@RequestParam Map<String, String> param) {
 
-		
 		Holiday obj = new Holiday();
 		if (param.get("calid") != null && (!param.get("calid").equalsIgnoreCase(""))) {
 			obj.setId(Integer.parseInt(param.get("calid").toString()));
@@ -4562,7 +4561,8 @@ public class HomeController {
 	}
 
 	@GetMapping("checkout")
-	public String checkout(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids,@RequestParam(name ="branchname",required = false, defaultValue = "") String branchname) {
+	public String checkout(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids,
+			@RequestParam(name = "branchname", required = false, defaultValue = "") String branchname) {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
 		List<AssetMaster> assetMaster = assetMasterService.findAll();
 
@@ -4598,9 +4598,9 @@ public class HomeController {
 		themodel.addAttribute("selectedasset", selectedasset);
 		themodel.addAttribute("EmployeeMasterobj", EmployeeMasterobj);
 		themodel.addAttribute("today", displaydateFormatrev.format(new Date()));
-		
+
 		themodel.addAttribute("branchname", branchname);
-		
+
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Check Out"));
 		return "checkout";
 	}
@@ -5386,17 +5386,20 @@ public class HomeController {
 				} else {
 					objindetail.setNominee_name_str("");
 				}
-				
+
 				// ------------------------------------------------------------------------------------------------
-				if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff") && insurancemasternew.getInsuranceDependents().size()>0 && !nullremover(String.valueOf(objindetail.getDependentdetails())).equalsIgnoreCase("")) {
-					
-					String name_str="";
-					for (String xobj: objindetail.getDependentdetails().split(","))
-					{
-						name_str += insurancemasternew.getInsuranceDependents().stream().filter(C -> C.getInsuranceDependentsid() == Integer.parseInt(xobj)).collect(Collectors.toList()).get(0).getDependent_name() +"<br/>";
-					}	
-						objindetail.setDependentdetails_str(name_str);
-						
+				if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")
+						&& insurancemasternew.getInsuranceDependents().size() > 0
+						&& !nullremover(String.valueOf(objindetail.getDependentdetails())).equalsIgnoreCase("")) {
+
+					String name_str = "";
+					for (String xobj : objindetail.getDependentdetails().split(",")) {
+						name_str += insurancemasternew.getInsuranceDependents().stream()
+								.filter(C -> C.getInsuranceDependentsid() == Integer.parseInt(xobj))
+								.collect(Collectors.toList()).get(0).getDependent_name() + "<br/>";
+					}
+					objindetail.setDependentdetails_str(name_str);
+
 				} else {
 					objindetail.setDependentdetails_str("");
 				}
@@ -5439,7 +5442,7 @@ public class HomeController {
 		return insurancemasternew.getInsuranceClaimHistory().stream().filter(C -> C.getInsuranceClaimid() == claimid)
 				.collect(Collectors.toList()).get(0);
 	}
-	
+
 	@ResponseBody
 	@PostMapping("getdependentpolicydetails")
 	public InsuranceDependents getdependentpolicydetails(@RequestParam("id") int id,
@@ -5450,13 +5453,12 @@ public class HomeController {
 				.collect(Collectors.toList()).get(0);
 	}
 
-
 	@ResponseBody
 	@GetMapping("insuranceDependentls")
 	public List<tagify> insuranceDependentls(@RequestParam("id") int id) {
 		List<tagify> taglist = new ArrayList<tagify>();
 		InsuranceMaster insurancemasternew = insuranceMasterService.findById(id);
-				
+
 		for (InsuranceDependents o : insurancemasternew.getInsuranceDependents()) {
 			tagify tagobj = new tagify();
 			tagobj.setValue(o.getDependent_name());
@@ -5489,10 +5491,10 @@ public class HomeController {
 
 				tempobj.setCover(params.get("Cover" + i));
 				tempobj.setCoverageAmount(params.get("CoverageAmount" + i));
-				String[] strefromdate =params.get("PFromTo" + i).split(" to ");
+				String[] strefromdate = params.get("PFromTo" + i).split(" to ");
 				tempobj.setPFrom(strefromdate[0]);
 				tempobj.setPTo(strefromdate[1]);
-				//tempobj.setPremiumAmount(params.get("Premium" + i));
+				// tempobj.setPremiumAmount(params.get("Premium" + i));
 
 				InsurancePolicyCoverls.add(tempobj);
 			}
@@ -5536,16 +5538,14 @@ public class HomeController {
 			insuDetails.setPolicyName(params.get("PolicyName"));
 			insuDetails.setPolicyNo(params.get("PolicyNo"));
 			insuDetails.setPremium(params.get("PremiumTotal"));
-			
-			if(insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff"))
-			{
+
+			if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
 				insuDetails.setCompanyPaysPerc(params.get("companyPays"));
 				insuDetails.setEmployeePaysPerc(params.get("employeePays"));
 				insuDetails.setDependentdetails(params.get("Dependents"));
 				insuDetails.setNominee(params.get("Nominee"));
-				
-			}else
-			{
+
+			} else {
 				insuDetails.setCompanyPaysPerc("100");
 				insuDetails.setEmployeePaysPerc("0");
 				insuDetails.setDependentdetails("");
@@ -5574,22 +5574,20 @@ public class HomeController {
 					insuDetails.setPolicyName(params.get("PolicyName"));
 					insuDetails.setPolicyNo(params.get("PolicyNo"));
 					insuDetails.setPremium(params.get("PremiumTotal"));
-					
-					if(insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff"))
-					{
+
+					if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
 						insuDetails.setCompanyPaysPerc(params.get("companyPays"));
 						insuDetails.setEmployeePaysPerc(params.get("employeePays"));
 						insuDetails.setDependentdetails(params.get("Dependents"));
 						insuDetails.setNominee(params.get("Nominee"));
-						
-					}else
-					{
+
+					} else {
 						insuDetails.setCompanyPaysPerc("100");
 						insuDetails.setEmployeePaysPerc("0");
 						insuDetails.setDependentdetails("");
 						insuDetails.setNominee("");
 					}
-					
+
 					insuDetails.setInsurancePolicyCover(InsurancePolicyCoverls);
 
 				}
@@ -5599,7 +5597,7 @@ public class HomeController {
 		return insuranceMasterService.save(insurancemasternew);
 
 	}
-	
+
 	@ResponseBody
 	@PostMapping("insurancedependentsavejson")
 	public InsuranceMaster insurancedependentsavejson(@RequestParam Map<String, String> params,
@@ -5607,7 +5605,7 @@ public class HomeController {
 			HttpServletRequest request) {
 
 		// System.out.println(Files_Attach.getOriginalFilename().toString());
-		//System.out.println(params);
+		// System.out.println(params);
 		InsuranceMaster insurancemasternew = insuranceMasterService
 				.findById(Integer.parseInt(params.get("Insuranceid")));
 
@@ -5651,7 +5649,7 @@ public class HomeController {
 			insuDetails.setIDNumber(params.get("IDNumber"));
 			insuDetails.setPhonenumber(params.get("phonenumber"));
 			insuDetails.setRelationship(params.get("relationship"));
-			
+
 			objInsls.add(insuDetails);
 
 			if (insurancemasternew.getInsuranceDependents() != null) {
@@ -5682,7 +5680,6 @@ public class HomeController {
 
 	}
 
-	
 	@ResponseBody
 	@PostMapping("policyClaimdetailsavejson")
 	public InsuranceMaster policyClaimdetailsavejson(@RequestParam Map<String, String> params) {
@@ -6493,9 +6490,9 @@ public class HomeController {
 			}
 
 			try {
-				tmp1obj.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY
-						.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
-
+				if(!nullremover(String.valueOf(tmp1obj.getStartdate())).equalsIgnoreCase("")){
+					tmp1obj.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
+				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -7828,8 +7825,6 @@ public class HomeController {
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
 
-		
-
 		int activityId = Integer.parseInt(param.get("activityId"));
 		ActivityMaster activityMaster = new ActivityMaster();
 		if (activityId > 0) {
@@ -8031,6 +8026,200 @@ public class HomeController {
 		}
 
 		return leadMaster;
+	}
+
+	@PostMapping("leadtodeal")
+	@ResponseBody
+	public int leadtodeal(@RequestParam Map<String, String> params) {
+
+		// System.out.println(params);
+		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(params.get("leadMasterID")));
+		DealMaster dealMaster = new DealMaster();
+		dealMaster.setTitle(leadMaster.getTitle());
+		dealMaster.setOrganization(leadMaster.getOrganization());
+		dealMaster.setSource(leadMaster.getSource());
+		dealMaster.setPurpose(leadMaster.getPurpose());
+		dealMaster.setDealvalue(leadMaster.getLeadvalue());
+		dealMaster.setReference(leadMaster.getReference());
+		dealMaster.setPipeline("Deal In");
+		dealMaster.setBranch(leadMaster.getBranch());
+		// dealMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
+		// dealMaster.setDealDate(params.get("dealDate"));
+		dealMaster.setStatus("Open");
+		dealMaster.setLabel(leadMaster.getLabel());
+		// dealMaster.setTdate(params.get("tdate"));
+		dealMaster.setLocation(leadMaster.getLocation());
+		dealMaster.setUNITS(leadMaster.getUNITS());
+		dealMaster.setNatureofWork(leadMaster.getNatureofWork());
+		dealMaster.setArea(leadMaster.getArea());
+		//------------------------------------------
+		List<DealFollowers> dfls = new ArrayList<>();
+		for (LeadFollowers lfobj : leadMaster.getLeadFollowers()) {
+			dfls.add(new DealFollowers(0, lfobj.getEmpid(), "", ""));
+		}
+		if(dfls.size()>0)
+		{
+		dealMaster.setDealFollowers(dfls);
+		}
+		
+		//------------------------------------------
+		List<DealContact> dealContactls= new ArrayList();
+		for(LeadContact lc : leadMaster.getLeadContact()) {
+			dealContactls.add(new DealContact(0, lc.getContactPerson()));
+		}
+		if(dealContactls.size()>0)
+		{
+			dealMaster.setDealContact(dealContactls);
+		}
+		//------------------------------------------
+		List<DealFiles> dealfilels= new ArrayList();
+		for(LeadFiles lc : leadMaster.getLeadFiles()) {
+			dealfilels.add(new DealFiles(0,lc.getDocumentType() ,lc.getDocumentNo() , lc.getFilePath(), lc.getCreateddate()));
+		}
+		if(dealfilels.size()>0)
+		{
+			dealMaster.setDealFiles(dealfilels);
+		}
+		//------------------------------------------
+		
+		
+		
+		dealMaster = dealMasterService.save(dealMaster);
+
+		leadMaster.setStatus("Move to Deal");
+		leadMasterService.save(leadMaster);
+
+		return dealMaster.getId();
+
+	}
+
+	@PostMapping("leadtoproject")
+	@ResponseBody
+	public int leadtoproject(@RequestParam Map<String, String> params) {
+
+		// System.out.println(params);
+		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(params.get("leadMasterID")));
+		ProjectMaster projectMaster = new ProjectMaster();
+		projectMaster.setTitle(leadMaster.getTitle());
+		projectMaster.setOrganization(leadMaster.getOrganization());
+		projectMaster.setSource(leadMaster.getSource());
+		projectMaster.setPurpose(leadMaster.getPurpose());
+		projectMaster.setProjectvalue(leadMaster.getLeadvalue());
+		projectMaster.setReference(leadMaster.getReference());
+		projectMaster.setPipeline("Deal In");
+		projectMaster.setBranch(leadMaster.getBranch());
+		// projectMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
+		// projectMaster.setDealDate(params.get("dealDate"));
+		projectMaster.setStatus("Open");
+		projectMaster.setLabel(leadMaster.getLabel());
+		// projectMaster.setTdate(params.get("tdate"));
+		projectMaster.setLocation(leadMaster.getLocation());
+		projectMaster.setUNITS(leadMaster.getUNITS());
+		projectMaster.setNatureofWork(leadMaster.getNatureofWork());
+		projectMaster.setArea(leadMaster.getArea());
+		List<ProjectFollowers> dfls = new ArrayList<>();
+		for (LeadFollowers lfobj : leadMaster.getLeadFollowers()) {
+			dfls.add(new ProjectFollowers(0, lfobj.getEmpid(), "", ""));
+		}
+		projectMaster.setProjectFollowers(dfls);
+		//------------------------------------------
+		List<ProjectContact> projectContactls= new ArrayList();
+		for(LeadContact lc : leadMaster.getLeadContact()) {
+			projectContactls.add(new ProjectContact(0, lc.getContactPerson()));
+		}
+		if(projectContactls.size()>0)
+		{
+			projectMaster.setProjectContact(projectContactls);
+		}
+		//------------------------------------------
+		List<ProjectFiles> projectfilels= new ArrayList();
+		for(LeadFiles lc : leadMaster.getLeadFiles()) {
+			projectfilels.add(new ProjectFiles(0,lc.getDocumentType() ,lc.getDocumentNo() , lc.getFilePath(), lc.getCreateddate()));
+		}
+		if(projectfilels.size()>0)
+		{
+			projectMaster.setProjectFiles(projectfilels);
+		}
+		//------------------------------------------
+		
+		
+		projectMaster = projectMasterService.save(projectMaster);
+
+		leadMaster.setStatus("Move to Project");
+		leadMasterService.save(leadMaster);
+
+		return projectMaster.getId();
+
+	}
+	
+	@PostMapping("dealtolead")
+	@ResponseBody
+	public int dealtolead(@RequestParam Map<String, String> params) {
+
+		// System.out.println(params);
+		DealMaster dealMaster = dealMasterService.findById(Integer.parseInt(params.get("dealMasterID")));
+		
+		LeadMaster leadMaster = new LeadMaster();
+		
+		if(dealMaster.getSourcefrom().equalsIgnoreCase("Lead"))
+		{
+			
+		
+		leadMaster.setTitle(dealMaster.getTitle());
+		leadMaster.setOrganization(dealMaster.getOrganization());
+		leadMaster.setSource(dealMaster.getSource());
+		leadMaster.setPurpose(dealMaster.getPurpose());
+		leadMaster.setLeadvalue(dealMaster.getDealvalue());
+		leadMaster.setReference(dealMaster.getReference());
+		leadMaster.setBranch(dealMaster.getBranch());
+		// leadMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
+		// leadMaster.setDealDate(params.get("dealDate"));
+		leadMaster.setStatus("Open");
+		leadMaster.setLabel(dealMaster.getLabel());
+		// leadMaster.setTdate(params.get("tdate"));
+		leadMaster.setLocation(dealMaster.getLocation());
+		leadMaster.setUNITS(dealMaster.getUNITS());
+		leadMaster.setNatureofWork(dealMaster.getNatureofWork());
+		leadMaster.setArea(dealMaster.getArea());
+		//------------------------------------------
+		List<LeadFollowers> dfls = new ArrayList<>();
+		for (DealFollowers lfobj : dealMaster.getDealFollowers()) {
+			dfls.add(new LeadFollowers(0, lfobj.getEmpid(), "", ""));
+		}
+		if(dfls.size()>0)
+		{
+		leadMaster.setLeadFollowers(dfls);
+		}
+		
+		//------------------------------------------
+		List<LeadContact> leadContactls= new ArrayList();
+		for(DealContact lc : dealMaster.getDealContact()) {
+			leadContactls.add(new LeadContact(0, lc.getContactPerson()));
+		}
+		if(leadContactls.size()>0)
+		{
+			leadMaster.setLeadContact(leadContactls);
+		}
+		//------------------------------------------
+		List<LeadFiles> leadfilels= new ArrayList();
+		for(DealFiles lc : dealMaster.getDealFiles()) {
+			leadfilels.add(new LeadFiles(0,lc.getDocumentType() ,lc.getDocumentNo() , lc.getFilePath(), lc.getCreateddate()));
+		}
+		if(leadfilels.size()>0)
+		{
+			leadMaster.setLeadFiles(leadfilels);
+		}
+		//------------------------------------------
+		}
+		
+		
+		leadMaster = leadMasterService.save(leadMaster);
+
+		dealMaster.setStatus("Move to Lead");
+		dealMasterService.save(dealMaster);
+
+		return leadMaster.getId();
+
 	}
 
 	@PostMapping("dealsavestage2")
@@ -8959,7 +9148,7 @@ public class HomeController {
 
 			HttpServletRequest request) {
 
-		//System.out.println(params);
+		// System.out.println(params);
 
 		return "leadevents";
 
@@ -9252,61 +9441,52 @@ public class HomeController {
 		return str.toLowerCase().replace("null", "");
 	}
 
-	@PostMapping("convertodeal")
-	public String convertodeal(@RequestParam Map<String, String> params) {
-		int leadmasterid = Integer.parseInt(params.get("leadmasterid"));
-		LeadMaster leadobj = leadMasterService.findById(leadmasterid);
-		leadobj.setMovedtolead(true);
-		leadMasterService.save(leadobj);
-
-		DealMaster dealobj = new DealMaster();
-		// dealobj.setContactPerson(leadobj.getContactPerson());
-		dealobj.setOrganization(leadobj.getOrganization());
-		dealobj.setTitle(leadobj.getTitle());
-		dealobj.setSource(leadobj.getSource());
-		dealobj.setReference(leadobj.getReference());
-		dealobj.setNotes(leadobj.getNotes());
-		// dealobj.setFollower(leadobj.getFollower());
-		dealobj.setLeadid(leadobj.getId());
-		dealobj.setPipeline("Deal In");
-		dealobj.setCreateddate(displaydatetimeFormat.format(new Date()));
-		dealMasterService.save(dealobj);
-
-		return "redirect:/deal?new";
-	}
-
-	@ResponseBody
-	@PostMapping("convertolead")
-	public String convertolead(@RequestParam Map<String, String> params) {
-		int dealmasterid = Integer.parseInt(params.get("ids"));
-
-		DealMaster dealobj = dealMasterService.findById(dealmasterid);
-
-		if (dealobj.getLeadid() == 0) {
-			LeadMaster leadobj = new LeadMaster();
-			// leadobj.setContactPerson(dealobj.getContactPerson());
-			leadobj.setOrganization(dealobj.getOrganization());
-			leadobj.setTitle(dealobj.getTitle());
-			leadobj.setSource(dealobj.getSource());
-			leadobj.setReference(dealobj.getReference());
-			leadobj.setNotes(dealobj.getNotes());
-			// leadobj.setFollower(dealobj.getFollower());
-			leadobj.setCreateddate(displaydatetimeFormat.format(new Date()));
-			leadobj.setMovedtolead(false);
-			leadobj.setBackfromdeal(true);
-			leadobj = leadMasterService.save(leadobj);
-
-			dealobj.setLeadid(leadobj.getId());
-			dealMasterService.save(dealobj);
-		} else {
-			LeadMaster leadobj = leadMasterService.findById(dealobj.getLeadid());
-			leadobj.setMovedtolead(false);
-			leadobj.setBackfromdeal(true);
-			leadobj = leadMasterService.save(leadobj);
-		}
-
-		return "";
-	}
+	/*
+	 * @PostMapping("convertodeal") public String convertodeal(@RequestParam
+	 * Map<String, String> params) { int leadmasterid =
+	 * Integer.parseInt(params.get("leadmasterid")); LeadMaster leadobj =
+	 * leadMasterService.findById(leadmasterid); leadobj.setMovedtolead(true);
+	 * leadMasterService.save(leadobj);
+	 * 
+	 * DealMaster dealobj = new DealMaster(); //
+	 * dealobj.setContactPerson(leadobj.getContactPerson());
+	 * dealobj.setOrganization(leadobj.getOrganization());
+	 * dealobj.setTitle(leadobj.getTitle()); dealobj.setSource(leadobj.getSource());
+	 * dealobj.setReference(leadobj.getReference());
+	 * dealobj.setNotes(leadobj.getNotes()); //
+	 * dealobj.setFollower(leadobj.getFollower());
+	 * dealobj.setLeadid(leadobj.getId()); dealobj.setPipeline("Deal In");
+	 * dealobj.setCreateddate(displaydatetimeFormat.format(new Date()));
+	 * dealMasterService.save(dealobj);
+	 * 
+	 * return "redirect:/deal?new"; }
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("convertolead") public String convertolead(@RequestParam
+	 * Map<String, String> params) { int dealmasterid =
+	 * Integer.parseInt(params.get("ids"));
+	 * 
+	 * DealMaster dealobj = dealMasterService.findById(dealmasterid);
+	 * 
+	 * if (dealobj.getLeadid() == 0) { LeadMaster leadobj = new LeadMaster(); //
+	 * leadobj.setContactPerson(dealobj.getContactPerson());
+	 * leadobj.setOrganization(dealobj.getOrganization());
+	 * leadobj.setTitle(dealobj.getTitle()); leadobj.setSource(dealobj.getSource());
+	 * leadobj.setReference(dealobj.getReference());
+	 * leadobj.setNotes(dealobj.getNotes()); //
+	 * leadobj.setFollower(dealobj.getFollower());
+	 * leadobj.setCreateddate(displaydatetimeFormat.format(new Date()));
+	 * leadobj.setMovedtolead(false); leadobj.setBackfromdeal(true); leadobj =
+	 * leadMasterService.save(leadobj);
+	 * 
+	 * dealobj.setLeadid(leadobj.getId()); dealMasterService.save(dealobj); } else {
+	 * LeadMaster leadobj = leadMasterService.findById(dealobj.getLeadid());
+	 * leadobj.setMovedtolead(false); leadobj.setBackfromdeal(true); leadobj =
+	 * leadMasterService.save(leadobj); }
+	 * 
+	 * return ""; }
+	 */
 
 	@GetMapping("deallist")
 	public String deal(Model themodel) {

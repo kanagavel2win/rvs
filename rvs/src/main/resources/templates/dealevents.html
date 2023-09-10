@@ -860,6 +860,8 @@ cursor: pointer;
 															<th:block th:each="str :${ProjectStatus}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
+															<option value="Move to Lead">Convert to Lead</option>
+															<option value="Move to Project">Convert to Project</option>
 														</select>
 													</div>
 
@@ -1415,18 +1417,37 @@ cursor: pointer;
 														const formData = new FormData(document.querySelector("#editdealMasterdetailsForm"));
 														
 														formData.append("followers",$("#followers").val());
-														/* for (var pair of formData.entries()) {
-														   console.log(pair); 
-														} */
+														
+														var urldirection="dealsavestage2";
+														var Status = $("#Status").val();
+														
+														if(Status =="Move to Lead")
+														{
+															urldirection="dealtolead";
+														}else if (Status =="Move to Project"){
+															urldirection="dealtoproject";
+														}
+														
+														
 														$.ajax({
 																	type : "POST",
-																	url : "dealsavestage2",
+																	url : urldirection,
 																	processData : false,
 																	contentType : false,
 																	data : formData,
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
 																		console.log(bmobj);
+																		
+																		if(Status =="Move to Lead")
+																		{
+																			window.location.href = 'dealview?id='+bmobj;
+																			
+																		}else if (Status =="Move to Project"){
+																			window.location.href = 'projectview?id='+bmobj;
+																			
+																		}else
+																		{
 																			if (bmobj.label == "Hot") {
 																				$('#Lbl_Label').html("<span class='badge bg-danger'>Hot</span>");
 																			} else if (bmobj.label == "Warm") {
@@ -1468,7 +1489,7 @@ cursor: pointer;
 																           	    $name += element.followername+ "<br>";
 																            });
 																           	$('#Lbl_follower').html($name);
-																           	
+																		} 	
 																			$('.editorganizationdataclose').click();
 																			$('.editorganizationdatasubmit').prop("disabled",false);
 																			$('.editorganizationdatasubmit').html("Submit");

@@ -6490,8 +6490,9 @@ public class HomeController {
 			}
 
 			try {
-				if(!nullremover(String.valueOf(tmp1obj.getStartdate())).equalsIgnoreCase("")){
-					tmp1obj.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
+				if (!nullremover(String.valueOf(tmp1obj.getStartdate())).equalsIgnoreCase("")) {
+					tmp1obj.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -8052,38 +8053,34 @@ public class HomeController {
 		dealMaster.setUNITS(leadMaster.getUNITS());
 		dealMaster.setNatureofWork(leadMaster.getNatureofWork());
 		dealMaster.setArea(leadMaster.getArea());
-		//------------------------------------------
+		// ------------------------------------------
 		List<DealFollowers> dfls = new ArrayList<>();
 		for (LeadFollowers lfobj : leadMaster.getLeadFollowers()) {
 			dfls.add(new DealFollowers(0, lfobj.getEmpid(), "", ""));
 		}
-		if(dfls.size()>0)
-		{
-		dealMaster.setDealFollowers(dfls);
+		if (dfls.size() > 0) {
+			dealMaster.setDealFollowers(dfls);
 		}
-		
-		//------------------------------------------
-		List<DealContact> dealContactls= new ArrayList();
-		for(LeadContact lc : leadMaster.getLeadContact()) {
+
+		// ------------------------------------------
+		List<DealContact> dealContactls = new ArrayList();
+		for (LeadContact lc : leadMaster.getLeadContact()) {
 			dealContactls.add(new DealContact(0, lc.getContactPerson()));
 		}
-		if(dealContactls.size()>0)
-		{
+		if (dealContactls.size() > 0) {
 			dealMaster.setDealContact(dealContactls);
 		}
-		//------------------------------------------
-		List<DealFiles> dealfilels= new ArrayList();
-		for(LeadFiles lc : leadMaster.getLeadFiles()) {
-			dealfilels.add(new DealFiles(0,lc.getDocumentType() ,lc.getDocumentNo() , lc.getFilePath(), lc.getCreateddate()));
+		// ------------------------------------------
+		List<DealFiles> dealfilels = new ArrayList();
+		for (LeadFiles lc : leadMaster.getLeadFiles()) {
+			dealfilels.add(
+					new DealFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(), lc.getCreateddate()));
 		}
-		if(dealfilels.size()>0)
-		{
+		if (dealfilels.size() > 0) {
 			dealMaster.setDealFiles(dealfilels);
 		}
-		//------------------------------------------
-		
-		
-		
+		// ------------------------------------------
+
 		dealMaster = dealMasterService.save(dealMaster);
 
 		leadMaster.setStatus("Move to Deal");
@@ -8122,27 +8119,25 @@ public class HomeController {
 			dfls.add(new ProjectFollowers(0, lfobj.getEmpid(), "", ""));
 		}
 		projectMaster.setProjectFollowers(dfls);
-		//------------------------------------------
-		List<ProjectContact> projectContactls= new ArrayList();
-		for(LeadContact lc : leadMaster.getLeadContact()) {
+		// ------------------------------------------
+		List<ProjectContact> projectContactls = new ArrayList();
+		for (LeadContact lc : leadMaster.getLeadContact()) {
 			projectContactls.add(new ProjectContact(0, lc.getContactPerson()));
 		}
-		if(projectContactls.size()>0)
-		{
+		if (projectContactls.size() > 0) {
 			projectMaster.setProjectContact(projectContactls);
 		}
-		//------------------------------------------
-		List<ProjectFiles> projectfilels= new ArrayList();
-		for(LeadFiles lc : leadMaster.getLeadFiles()) {
-			projectfilels.add(new ProjectFiles(0,lc.getDocumentType() ,lc.getDocumentNo() , lc.getFilePath(), lc.getCreateddate()));
+		// ------------------------------------------
+		List<ProjectFiles> projectfilels = new ArrayList();
+		for (LeadFiles lc : leadMaster.getLeadFiles()) {
+			projectfilels.add(new ProjectFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
+					lc.getCreateddate()));
 		}
-		if(projectfilels.size()>0)
-		{
+		if (projectfilels.size() > 0) {
 			projectMaster.setProjectFiles(projectfilels);
 		}
-		//------------------------------------------
-		
-		
+		// ------------------------------------------
+
 		projectMaster = projectMasterService.save(projectMaster);
 
 		leadMaster.setStatus("Move to Project");
@@ -8151,77 +8146,274 @@ public class HomeController {
 		return projectMaster.getId();
 
 	}
-	
+
 	@PostMapping("dealtolead")
 	@ResponseBody
 	public int dealtolead(@RequestParam Map<String, String> params) {
 
 		// System.out.println(params);
 		DealMaster dealMaster = dealMasterService.findById(Integer.parseInt(params.get("dealMasterID")));
-		
+
 		LeadMaster leadMaster = new LeadMaster();
-		
-		if(dealMaster.getSourcefrom().equalsIgnoreCase("Lead"))
-		{
+
+		if (nullremover(String.valueOf(dealMaster.getSourcefrom())).equalsIgnoreCase("Lead")) {
 			
-		
-		leadMaster.setTitle(dealMaster.getTitle());
-		leadMaster.setOrganization(dealMaster.getOrganization());
-		leadMaster.setSource(dealMaster.getSource());
-		leadMaster.setPurpose(dealMaster.getPurpose());
-		leadMaster.setLeadvalue(dealMaster.getDealvalue());
-		leadMaster.setReference(dealMaster.getReference());
-		leadMaster.setBranch(dealMaster.getBranch());
-		// leadMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
-		// leadMaster.setDealDate(params.get("dealDate"));
-		leadMaster.setStatus("Open");
-		leadMaster.setLabel(dealMaster.getLabel());
-		// leadMaster.setTdate(params.get("tdate"));
-		leadMaster.setLocation(dealMaster.getLocation());
-		leadMaster.setUNITS(dealMaster.getUNITS());
-		leadMaster.setNatureofWork(dealMaster.getNatureofWork());
-		leadMaster.setArea(dealMaster.getArea());
-		//------------------------------------------
-		List<LeadFollowers> dfls = new ArrayList<>();
-		for (DealFollowers lfobj : dealMaster.getDealFollowers()) {
-			dfls.add(new LeadFollowers(0, lfobj.getEmpid(), "", ""));
+			leadMaster = leadMasterService.findById(dealMaster.getSourceid());
+			leadMaster.setStatus("Open");
 		}
-		if(dfls.size()>0)
+		else
 		{
-		leadMaster.setLeadFollowers(dfls);
+			leadMaster.setTitle(dealMaster.getTitle());
+			leadMaster.setOrganization(dealMaster.getOrganization());
+			leadMaster.setSource(dealMaster.getSource());
+			leadMaster.setPurpose(dealMaster.getPurpose());
+			leadMaster.setLeadvalue(dealMaster.getDealvalue());
+			leadMaster.setReference(dealMaster.getReference());
+			leadMaster.setBranch(dealMaster.getBranch());
+			// leadMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
+			// leadMaster.setDealDate(params.get("dealDate"));
+			leadMaster.setStatus("Open");
+			leadMaster.setLabel(dealMaster.getLabel());
+			// leadMaster.setTdate(params.get("tdate"));
+			leadMaster.setLocation(dealMaster.getLocation());
+			leadMaster.setUNITS(dealMaster.getUNITS());
+			leadMaster.setNatureofWork(dealMaster.getNatureofWork());
+			leadMaster.setArea(dealMaster.getArea());
+			// ------------------------------------------
+			List<LeadFollowers> dfls = new ArrayList<>();
+			for (DealFollowers lfobj : dealMaster.getDealFollowers()) {
+				dfls.add(new LeadFollowers(0, lfobj.getEmpid(), "", ""));
+			}
+			if (dfls.size() > 0) {
+				leadMaster.setLeadFollowers(dfls);
+			}
+
+			// ------------------------------------------
+			List<LeadContact> leadContactls = new ArrayList();
+			for (DealContact lc : dealMaster.getDealContact()) {
+				leadContactls.add(new LeadContact(0, lc.getContactPerson()));
+			}
+			if (leadContactls.size() > 0) {
+				leadMaster.setLeadContact(leadContactls);
+			}
+			// ------------------------------------------
+			List<LeadFiles> leadfilels = new ArrayList();
+			for (DealFiles lc : dealMaster.getDealFiles()) {
+				leadfilels.add(new LeadFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
+						lc.getCreateddate()));
+			}
+			if (leadfilels.size() > 0) {
+				leadMaster.setLeadFiles(leadfilels);
+			}
+			// ------------------------------------------
 		}
-		
-		//------------------------------------------
-		List<LeadContact> leadContactls= new ArrayList();
-		for(DealContact lc : dealMaster.getDealContact()) {
-			leadContactls.add(new LeadContact(0, lc.getContactPerson()));
-		}
-		if(leadContactls.size()>0)
-		{
-			leadMaster.setLeadContact(leadContactls);
-		}
-		//------------------------------------------
-		List<LeadFiles> leadfilels= new ArrayList();
-		for(DealFiles lc : dealMaster.getDealFiles()) {
-			leadfilels.add(new LeadFiles(0,lc.getDocumentType() ,lc.getDocumentNo() , lc.getFilePath(), lc.getCreateddate()));
-		}
-		if(leadfilels.size()>0)
-		{
-			leadMaster.setLeadFiles(leadfilels);
-		}
-		//------------------------------------------
-		}
-		
-		
+
 		leadMaster = leadMasterService.save(leadMaster);
 
-		dealMaster.setStatus("Move to Lead");
+		dealMaster.setStatus("Back to Lead");
 		dealMasterService.save(dealMaster);
 
 		return leadMaster.getId();
 
 	}
+	
+	@PostMapping("dealtoproject")
+	@ResponseBody
+	public int dealtoproject(@RequestParam Map<String, String> params) {
 
+		// System.out.println(params);
+		DealMaster dealMaster = dealMasterService.findById(Integer.parseInt(params.get("dealMasterID")));
+		ProjectMaster projectMaster = new ProjectMaster();
+		projectMaster.setTitle(dealMaster.getTitle());
+		projectMaster.setOrganization(dealMaster.getOrganization());
+		projectMaster.setSource(dealMaster.getSource());
+		projectMaster.setPurpose(dealMaster.getPurpose());
+		projectMaster.setProjectvalue(dealMaster.getDealvalue());
+		projectMaster.setReference(dealMaster.getReference());
+		projectMaster.setPipeline("Deal In");
+		projectMaster.setBranch(dealMaster.getBranch());
+		// projectMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
+		// projectMaster.setDealDate(params.get("dealDate"));
+		projectMaster.setStatus("Open");
+		projectMaster.setLabel(dealMaster.getLabel());
+		// projectMaster.setTdate(params.get("tdate"));
+		projectMaster.setLocation(dealMaster.getLocation());
+		projectMaster.setUNITS(dealMaster.getUNITS());
+		projectMaster.setNatureofWork(dealMaster.getNatureofWork());
+		projectMaster.setArea(dealMaster.getArea());
+		List<ProjectFollowers> dfls = new ArrayList<>();
+		for (DealFollowers lfobj : dealMaster.getDealFollowers()) {
+			dfls.add(new ProjectFollowers(0, lfobj.getEmpid(), "", ""));
+		}
+		projectMaster.setProjectFollowers(dfls);
+		// ------------------------------------------
+		List<ProjectContact> projectContactls = new ArrayList();
+		for (DealContact lc : dealMaster.getDealContact()) {
+			projectContactls.add(new ProjectContact(0, lc.getContactPerson()));
+		}
+		if (projectContactls.size() > 0) {
+			projectMaster.setProjectContact(projectContactls);
+		}
+		// ------------------------------------------
+		List<ProjectFiles> projectfilels = new ArrayList();
+		for (DealFiles lc : dealMaster.getDealFiles()) {
+			projectfilels.add(new ProjectFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
+					lc.getCreateddate()));
+		}
+		if (projectfilels.size() > 0) {
+			projectMaster.setProjectFiles(projectfilels);
+		}
+		// ------------------------------------------
+
+		projectMaster = projectMasterService.save(projectMaster);
+
+		dealMaster.setStatus("Move to Project");
+		dealMasterService.save(dealMaster);
+
+		return projectMaster.getId();
+
+	}
+
+	@PostMapping("projecttolead")
+	@ResponseBody
+	public int projecttolead(@RequestParam Map<String, String> params) {
+
+		// System.out.println(params);
+		ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(params.get("projectMasterID")));
+
+		LeadMaster leadMaster = new LeadMaster();
+
+		if (nullremover(String.valueOf(projectMaster.getSourcefrom())).equalsIgnoreCase("Lead")) {
+			
+			leadMaster = leadMasterService.findById(projectMaster.getSourceid());
+			leadMaster.setStatus("Open");
+		}
+		else
+		{
+			leadMaster.setTitle(projectMaster.getTitle());
+			leadMaster.setOrganization(projectMaster.getOrganization());
+			leadMaster.setSource(projectMaster.getSource());
+			leadMaster.setPurpose(projectMaster.getPurpose());
+			leadMaster.setLeadvalue(projectMaster.getProjectvalue());
+			leadMaster.setReference(projectMaster.getReference());
+			leadMaster.setBranch(projectMaster.getBranch());
+			// leadMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
+			// leadMaster.setProjectDate(params.get("projectDate"));
+			leadMaster.setStatus("Open");
+			leadMaster.setLabel(projectMaster.getLabel());
+			// leadMaster.setTdate(params.get("tdate"));
+			leadMaster.setLocation(projectMaster.getLocation());
+			leadMaster.setUNITS(projectMaster.getUNITS());
+			leadMaster.setNatureofWork(projectMaster.getNatureofWork());
+			leadMaster.setArea(projectMaster.getArea());
+			// ------------------------------------------
+			List<LeadFollowers> dfls = new ArrayList<>();
+			for (ProjectFollowers lfobj : projectMaster.getProjectFollowers()) {
+				dfls.add(new LeadFollowers(0, lfobj.getEmpid(), "", ""));
+			}
+			if (dfls.size() > 0) {
+				leadMaster.setLeadFollowers(dfls);
+			}
+
+			// ------------------------------------------
+			List<LeadContact> leadContactls = new ArrayList();
+			for (ProjectContact lc : projectMaster.getProjectContact()) {
+				leadContactls.add(new LeadContact(0, lc.getContactPerson()));
+			}
+			if (leadContactls.size() > 0) {
+				leadMaster.setLeadContact(leadContactls);
+			}
+			// ------------------------------------------
+			List<LeadFiles> leadfilels = new ArrayList();
+			for (ProjectFiles lc : projectMaster.getProjectFiles()) {
+				leadfilels.add(new LeadFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
+						lc.getCreateddate()));
+			}
+			if (leadfilels.size() > 0) {
+				leadMaster.setLeadFiles(leadfilels);
+			}
+			// ------------------------------------------
+		}
+
+		leadMaster = leadMasterService.save(leadMaster);
+
+		projectMaster.setStatus("Back to Lead");
+		projectMasterService.save(projectMaster);
+
+		return leadMaster.getId();
+
+	}
+	
+	@PostMapping("projecttodeal")
+	@ResponseBody
+	public int projecttodeal(@RequestParam Map<String, String> params) {
+
+		// System.out.println(params);
+		ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(params.get("projectMasterID")));
+
+		DealMaster dealMaster = new DealMaster();
+
+		if (nullremover(String.valueOf(projectMaster.getSourcefrom())).equalsIgnoreCase("Deal")) {
+			
+			dealMaster = dealMasterService.findById(projectMaster.getSourceid());
+			dealMaster.setStatus("Open");
+		}
+		else
+		{
+			dealMaster.setTitle(projectMaster.getTitle());
+			dealMaster.setOrganization(projectMaster.getOrganization());
+			dealMaster.setSource(projectMaster.getSource());
+			dealMaster.setPurpose(projectMaster.getPurpose());
+			dealMaster.setDealvalue(projectMaster.getProjectvalue());
+			dealMaster.setReference(projectMaster.getReference());
+			dealMaster.setBranch(projectMaster.getBranch());
+			// dealMaster.setExpectedclosingdate(params.get("expectedclosingdate"));
+			// dealMaster.setProjectDate(params.get("projectDate"));
+			dealMaster.setStatus("Open");
+			dealMaster.setLabel(projectMaster.getLabel());
+			// dealMaster.setTdate(params.get("tdate"));
+			dealMaster.setLocation(projectMaster.getLocation());
+			dealMaster.setUNITS(projectMaster.getUNITS());
+			dealMaster.setNatureofWork(projectMaster.getNatureofWork());
+			dealMaster.setArea(projectMaster.getArea());
+			// ------------------------------------------
+			List<DealFollowers> dfls = new ArrayList<>();
+			for (ProjectFollowers lfobj : projectMaster.getProjectFollowers()) {
+				dfls.add(new DealFollowers(0, lfobj.getEmpid(), "", ""));
+			}
+			if (dfls.size() > 0) {
+				dealMaster.setDealFollowers(dfls);
+			}
+
+			// ------------------------------------------
+			List<DealContact> dealContactls = new ArrayList();
+			for (ProjectContact lc : projectMaster.getProjectContact()) {
+				dealContactls.add(new DealContact(0, lc.getContactPerson()));
+			}
+			if (dealContactls.size() > 0) {
+				dealMaster.setDealContact(dealContactls);
+			}
+			// ------------------------------------------
+			List<DealFiles> dealfilels = new ArrayList();
+			for (ProjectFiles lc : projectMaster.getProjectFiles()) {
+				dealfilels.add(new DealFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
+						lc.getCreateddate()));
+			}
+			if (dealfilels.size() > 0) {
+				dealMaster.setDealFiles(dealfilels);
+			}
+			// ------------------------------------------
+		}
+
+		dealMaster = dealMasterService.save(dealMaster);
+
+		projectMaster.setStatus("Back to Deal");
+		projectMasterService.save(projectMaster);
+
+		return dealMaster.getId();
+
+	}
+	
 	@PostMapping("dealsavestage2")
 	@ResponseBody
 	public DealMaster dealsavestage2(@RequestParam Map<String, String> params) {

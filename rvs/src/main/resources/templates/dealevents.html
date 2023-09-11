@@ -860,7 +860,7 @@ cursor: pointer;
 															<th:block th:each="str :${ProjectStatus}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
-															<option value="Move to Lead">Convert to Lead</option>
+															<option value="Back to Lead">Back to Lead</option>
 															<option value="Move to Project">Convert to Project</option>
 														</select>
 													</div>
@@ -1421,7 +1421,7 @@ cursor: pointer;
 														var urldirection="dealsavestage2";
 														var Status = $("#Status").val();
 														
-														if(Status =="Move to Lead")
+														if(Status =="Back to Lead")
 														{
 															urldirection="dealtolead";
 														}else if (Status =="Move to Project"){
@@ -1439,9 +1439,9 @@ cursor: pointer;
 																		var bmobj = JSON.parse(JSON.stringify(result));
 																		console.log(bmobj);
 																		
-																		if(Status =="Move to Lead")
+																		if(Status =="Back to Lead")
 																		{
-																			window.location.href = 'dealview?id='+bmobj;
+																			window.location.href = 'leadview?id='+bmobj;
 																			
 																		}else if (Status =="Move to Project"){
 																			window.location.href = 'projectview?id='+bmobj;

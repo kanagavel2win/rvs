@@ -127,7 +127,7 @@
 
 							<div class="card-body">
 
-								<div th:if="${printstr}" class="form-group col-12">
+								<div th:if="${printstr}" class="form-group col-12" align="center">
 									<button type="button"
 										class="btn mb-1 btn-success btn-lg btn-block">Check
 										In details are saved successfully</button>
@@ -208,7 +208,7 @@
 																<td></td>
 																<td><input type="checkbox" class="form-check-input"
 																	th:id="'checkboxGlow'+ ${stat.index+1} "
-																	name="checkbox" checked=""> <label
+																	name="checkbox" checked required> <label
 																	th:for="'checkboxGlow'+ ${stat.index+1}"></label></td>
 																
 																<td><input type="hidden"
@@ -390,7 +390,7 @@
 										searchable : false,
 										checkboxes : true,
 										render : function() {
-											return '<input type="checkbox" class="dt-checkboxes form-check-input" name="checkbox">';
+											return '<input type="checkbox" class="dt-checkboxes form-check-input" name="checkbox" required>';
 										},
 										checkboxes : {
 											selectAllRender : '<input type="checkbox" class="form-check-input">'
@@ -437,7 +437,7 @@
 			  $('#StaffID').html("");
 
 			  if (branch != "") {
-			    var branchname = $("#Branch option:selected").text();
+			    var branchname = $("#Branch option:selected").val();
 			    $(".Custodianloding").css("visibility", "visible");
 			    $('#StaffID').html("");
 

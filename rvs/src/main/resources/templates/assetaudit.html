@@ -114,7 +114,7 @@
 	                            <div class="card">
 	                                <div class="card-content">
 	                                    <div class="card-body">
-	                                    <div th:if="${printstr}" class="form-group col-12">
+	                                    <div th:if="${printstr}" class="form-group col-12" align="center">
 												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Asset Audit details are saved successfully</button>
 											
 											</div>
@@ -142,11 +142,11 @@
                                                            <label class="form-label d-block my-1"> Type</label>
                                                            
                                                            <div class="form-check form-check-inline mt-3">
-            <input class="form-check-input" type="radio" name="Status" id="radio1" value="InStock" checked="" required>
+            <input class="form-check-input" type="radio" name="Status" id="radio1" value="InStock" checked="">
             <label class="form-check-label" for="radio1">InStock </label>
           </div>
            <div class="form-check form-check-inline mt-3">
-           <input class="form-check-input" type="radio" name="Status" id="radio2" value="Custodian" required>
+           <input class="form-check-input" type="radio" name="Status" id="radio2" value="Custodian">
             <label class="form-check-label" for="radio2">Custodian </label>
             </div>
                                                            
@@ -197,11 +197,13 @@
 												<label for="form-label">Status</label>
 												 <select class="form-select Statusv1" id="Status">
 												  <option value="">-</option>
-			                                                       
+			                                                        <option value="In Stock">In Stock</option>
+			                                                        <option value="Checked Out">Checked Out</option>
+			                                                        <option value="Out for repair">Out for repair</option>
+			                                                        <option value="In office Use">In office Use</option>
 			                                                        <option value="Damaged">Damaged</option>
 			                                                        <option value="Missing">Missing</option>
 			                                                        <option value="Repair">Repair</option>			                                                        
-			                                                  
 			                                                        <option value="Scrap">Scrap</option>
 																	
 			                                  </select>
@@ -523,7 +525,7 @@
 						$('.Custodiandiv').show();
 						//---------------------------------
 						// BranchID Details
-						var BranchIDname = $("#BranchID :Selected").text();
+						var BranchIDname = $("#BranchID :Selected").val();
 						$(".Custodianloding").css("visibility","visible");
 						$('#StaffID').html("");
 						var formData = {

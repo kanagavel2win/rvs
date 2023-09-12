@@ -124,7 +124,7 @@
 						<div class="card">
 
 							<div class="card-body">
-								<div th:if="${printstr}" class="form-group col-12">
+								<div th:if="${printstr}" class="form-group col-12" align="center">
 									<button type="button"
 										class="btn mb-1 btn-success btn-lg btn-block">Check
 										Out details are saved successfully</button>
@@ -139,7 +139,7 @@
 									</form>
 								</div>
 
-								<form id="form1" th:action="@{/checkoutsave}" method="POST"
+								<form th:unless="${printstr}"  id="form1" th:action="@{/checkoutsave}" method="POST"
 									enctype="multipart/form-data">
 
 									<div class="row g-4">

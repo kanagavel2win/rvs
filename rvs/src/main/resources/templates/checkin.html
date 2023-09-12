@@ -141,7 +141,7 @@
 									</form>
 								</div>
 
-								<form class="g-3" id="form1" th:action="@{/checkinsave}"
+								<form  th:unless="${printstr}"  class="g-3" id="form1" th:action="@{/checkinsave}"
 									method="POST" enctype="multipart/form-data">
 									<div class="row">
 										<div class="col-sm-3">

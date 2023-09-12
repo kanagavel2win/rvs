@@ -984,8 +984,7 @@ float:right;
 															<th:block th:each="str :${ProjectStatus}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
-															<option value="Back to Lead">Back to Lead</option>
-															<option value="Back to Deal">Back to Deal</option>
+															
 														</select>
 													</div>
 
@@ -1836,15 +1835,7 @@ float:right;
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
 																		//console.log(bmobj);
-																		if(Status =="Back to Lead")
-																		{
-																			window.location.href = 'leadview?id='+bmobj;
-																			
-																		}else if (Status =="Move to Deal"){
-																			window.location.href = 'dealview?id='+bmobj;
-																			
-																		}else
-																		{
+																		
 																			if (bmobj.label == "Hot") {
 																				$('#Lbl_label').html("<span class='badge bg-danger'>Hot</span>");
 																			} else if (bmobj.label == "Warm") {
@@ -1881,7 +1872,7 @@ float:right;
 																           	    $name += element.followername+ "<br>";
 																            });
 																           	$('#Lbl_follower').html($name);
-																		}	
+																			
 																			$('.editorganizationdataclose').click();
 																			$('.editorganizationdatasubmit').prop("disabled",false);
 																			$('.editorganizationdatasubmit').html("Submit");

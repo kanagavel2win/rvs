@@ -148,6 +148,9 @@
 									<label class="form-label">Branch:</label>
 									<select class="form-select" id="Branch1" data-column="3">
 									 <option value="">-</option>
+									 <th:block th:each="obj : ${branchls}">
+										<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+									</th:block>
 									 
 									 </select>
 									</div>
@@ -683,12 +686,7 @@
 	    
 	    function filterDuplicateRows() {
 	     collection = collect(dt_basic.rows().data().toArray());
-	     var branchname = collection.pluck('branchname').filter(value => value !== '' && value !== null).unique().all();
 	     var custodian = collection.pluck('custodian', 'staffID').filter(value => value !== '' && value !== null).all();
-	     
-	     
-	     Branch.append(branchname.map(value => $('<option></option>').val(value).text(value)));
-	  
 
 	     $.each(custodian,function(i,item){
 	    	 Custodian.append($('<option></option>').val(item).text(`${item} (RVS000${i})`));
@@ -802,7 +800,7 @@
 			 cartid = cartid+","+$(this).attr('name');
 			});
 		   cartid = cartid.substring(1,cartid.length);
-		   window.location.href = 'checkout?id='+cartid+'&branchname='+Branch.val()+'&Status='+$('#Status').val()+'&Custodian='+$('#Custodian').val();
+		   window.location.href = 'checkout?id='+cartid+'&branch='+Branch.val()+'&Status='+$('#Status').val()+'&Custodian='+$('#Custodian').val();
 	   })
 	   
 	   
@@ -818,10 +816,16 @@
 	   
 	    
 	   
-	    $('#Branch1,#Custodian').change(function (){
+	    $('#Custodian').change(function (){
 	    	
 	    	var column = $(this).data('column');
 	    	dt_basic.columns(column).search(this.value).draw();
+	    })
+	    
+	    $('#Branch1').change(function (){
+	
+	    	var column = $(this).data('column');
+	    	dt_basic.columns(column).search($("#Branch1 option:selected").text()).draw();
 	    })
 	   
 	  /*  $('#exampleModalScrollable').on('hide.bs.modal', function() {

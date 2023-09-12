@@ -149,7 +149,7 @@
 												class="form-select" id="Branch" name="Branch" required>
 												<option value="">--Select--</option>
 												<th:block th:each="emp : ${branchls}">
-													<option th:value="${emp.id}" th:text="${emp.BRANCH_NAME}" th:selected="${emp.BRANCH_NAME} == ${branchname}"></option>
+													<option th:value="${emp.id}" th:text="${emp.BRANCH_NAME}" th:selected="${emp.id} == ${branch}"></option>
 												</th:block>
 											</select>
 										</div>
@@ -555,13 +555,13 @@
 			if (branch != "") {
 				//---------------------------------
 				// Branch Details
-				var branchname = $("#Branch :Selected").text();
+				var branchname = $("#Branch").val();
 				$(".Custodianloding").css("visibility", "visible");
 				$('#StaffID').html("");
 				var formData = {
 					branchname : branchname
 				}
-				alert(branchname);
+		
 				$.ajax({
 					type : "POST",
 					url : "getEmployeelistbasedonbranch",
@@ -578,7 +578,7 @@
 				//---------------------------------
 				// Asset Details
 				$('.assetdetails').html("");
-				var branchid = $("#Branch :Selected").val();
+				var branchid = $("#Branch").val();
 				var formData = {
 					branchid : branchid
 				}

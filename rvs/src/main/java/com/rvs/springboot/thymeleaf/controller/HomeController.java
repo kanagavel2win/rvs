@@ -6358,8 +6358,9 @@ public class HomeController {
 		List<LeadMaster> leadmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
-		for (LeadMaster tmp1obj : leadMasterService.findAll()) {
-			// --------------------------------------------------
+		for (LeadMaster tmp1obj : leadMasterService.findAll().stream().filter(C-> (!C.getStatus().equalsIgnoreCase("Move to Deal")) && (!C.getStatus().equalsIgnoreCase("Move to Project"))).collect(Collectors.toList()))	
+		{
+				// --------------------------------------------------
 			List<Map<String, Object>> ls = activityMasterService.nextactivity("Lead", String.valueOf(tmp1obj.getId()));
 			if (ls.size() > 0) {
 				ls.forEach(rowMap -> {
@@ -6409,7 +6410,7 @@ public class HomeController {
 		List<DealMaster> dealmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
-		for (DealMaster tmp1obj : dealMasterService.findAll()) {
+		for (DealMaster tmp1obj : dealMasterService.findAll().stream().filter(C-> (!C.getStatus().equalsIgnoreCase("Back to Lead")) && (!C.getStatus().equalsIgnoreCase("Move to Project"))).collect(Collectors.toList())) {
 			// --------------------------------------------------
 			List<Map<String, Object>> ls = activityMasterService.nextactivity("Deal", String.valueOf(tmp1obj.getId()));
 			if (ls.size() > 0) {

@@ -275,7 +275,7 @@
 												</div>
 												<div class="col-12 ">
 													<label class="form-label" for="Model_orderID">Order
-														No</label> <input type="number" class="form-control"
+														No</label> <input type="number" class="form-control" step="any"
 														id="Model_orderID" name="Model_orderID" required />
 												</div>
 												<div class="col-12 text-center mt-4">
@@ -418,7 +418,7 @@
 															<label for="addmodel">days from project start
 																date</label>
 															<div class="position-relative has-icon-left">
-																<input type="number" class="form-control  "
+																<input type="number"  step="any" class="form-control  "
 																	th:field="*{daysfromprojectstartdate}"
 																	id="daysfromprojectstartdate"
 																	th:value="${projectTemplateactivityMaster['daysfromprojectstartdate']}"
@@ -433,7 +433,7 @@
 															<label for="addmodel">Activity Order
 																</label>
 															<div class="position-relative has-icon-left">
-																<input type="number" class="form-control  "
+																<input type="number" class="form-control  " step="any"
 																	th:field="*{activityorder}"
 																	id="activityorder"
 																	th:value="${projectTemplateactivityMaster['activityorder']}"

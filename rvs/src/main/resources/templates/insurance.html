@@ -437,17 +437,17 @@ width: 100%;
 											</div>
 											<div class="col-12 col-md-6"  th:if="${insurancemaster.InsuranceTo} =='Staff'">
 												<label class="form-label" for="companyPays">Company Pays %</label> <input
-													type="number" id="companyPays" class="form-control"
+													type="number" step="any" id="companyPays" class="form-control"
 													name="companyPays" required/>
 											</div>
 											<div class="col-12 col-md-6"  th:if="${insurancemaster.InsuranceTo} =='Staff'">
 												<label class="form-label" for="employeePays">Employee Pays %</label> <input
-													type="number" id="employeePays" class="form-control"
+													type="number" step="any" id="employeePays" class="form-control"
 													name="employeePays" required />
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="Notes">Notes </label> <input
-													type="number" id="Notes" class="form-control" name="Notes" />
+													type="text" id="Notes" class="form-control" name="Notes" />
 											</div>
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="status">status</label> <select
@@ -508,7 +508,7 @@ width: 100%;
 									                    		</td>
 									                    		
 									                    		<td>
-									                    			 <input type="number" class="form-control" name="CoverageAmount1" />
+									                    			 <input type="number" step="any" class="form-control" name="CoverageAmount1" />
 									                    		</td>
 									                    	</tr>
 									                    	

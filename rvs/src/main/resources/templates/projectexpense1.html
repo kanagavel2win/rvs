@@ -551,7 +551,7 @@
 												
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Quantity">Quantity </label>
-													<input type="number" id="Quantity" name="Quantity"
+													<input type="number" id="Quantity" name="Quantity" step="any"
 														class="form-control modal-edit-tax-id" required />
 												</div>
 
@@ -567,12 +567,12 @@
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Amount">Amount </label> <input
-														type="number" id="Amount" name="Amount"
+														type="number" id="Amount" name="Amount" step="any"
 														class="form-control modal-edit-tax-id" required />
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Total">Total </label> <input
-														type="number" id="Total" name="Total"
+														type="number" id="Total" name="Total" step="any"
 														class="form-control modal-edit-tax-id" disabled required />
 												</div>
 												<div class="col-12 col-md-6">
@@ -700,7 +700,7 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Area">Area</label>
 													<div>
-														<input type="number" id="Area"
+														<input type="number" id="Area" step="any"
 															th:field="*{Area}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['Area']}">
@@ -744,7 +744,7 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">T.Estimate</label>
 													<div>
-														<input type="number" id="projectvalue"
+														<input type="number" id="projectvalue" step="any"
 															th:field="*{projectvalue}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['projectvalue']}">

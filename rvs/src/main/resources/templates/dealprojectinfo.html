@@ -545,7 +545,7 @@ float:right;
 												</div>
 												<div class="col-12">
 													<label class="form-label" for="modalAddCardName">QUANTITY
-													</label> <input type="number" id="modalQuantity"
+													</label> <input type="number" step="any" id="modalQuantity"
 														name="modalQuantity" class="form-control"
 														required="required" /> <input type="hidden"
 														id="projectid" name="projectid" class="form-control" />
@@ -567,13 +567,13 @@ float:right;
 												</div>
 												<div class="col-12">
 													<label class="form-label" for="modalPrice">Price per Unit</label> <input
-														type="number" id="modalPrice" name="modalPrice"
+														type="number" id="modalPrice" name="modalPrice" step="any"
 														class="form-control" required="required" />
 												</div>
 
 												<div class="col-12">
 													<label class="form-label" for="modalTotalamount">Total
-														Amount </label> <input type="number" id="modalTotalamount"
+														Amount </label> <input type="number" id="modalTotalamount" step="any"
 														name="modalTotalamount" class="form-control" disabled />
 												</div>
 
@@ -666,7 +666,7 @@ float:right;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Area">Area</label>
 													<div>
-														<input type="number" id="Area"
+														<input type="number" id="Area" step="any"
 															th:field="*{Area}"
 															class="form-control  capitalize"
 															th:value="${dealMaster['Area']}">
@@ -710,7 +710,7 @@ float:right;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">T.Estimate</label>
 													<div>
-														<input type="number" id="dealvalue"
+														<input type="number" id="dealvalue" step="any"
 															th:field="*{dealvalue}"
 															class="form-control  capitalize"
 															th:value="${dealMaster['dealvalue']}">
@@ -744,7 +744,7 @@ float:right;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">VALUE</label>
 													<div>
-														<input type="number" id="dealvalue"
+														<input type="number" id="dealvalue" step="any"
 															th:field="*{dealvalue}" class="form-control  capitalize"
 															th:value="${dealMaster['dealvalue']}">
 													</div>
@@ -1014,13 +1014,13 @@ float:right;
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="modalAddresspincode">PinCode</label> 
-													<input type="number" id="modalAddresspincode"
+													<input type="number" step="any" id="modalAddresspincode"
 														name="modalAddresspincode" class="form-control"
 														th:value="${dealMaster.pincode}" />
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="modalAddresslanlong">Lat, Long</label> 
-													<input type="number" id="modalAddresslanlong"
+													<input type="number" id="modalAddresslanlong" step="any"
 														name="modalAddresslanlong" class="form-control"
 														th:value="${dealMaster.lanlong}" />
 												</div>

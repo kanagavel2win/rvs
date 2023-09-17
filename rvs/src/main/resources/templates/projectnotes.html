@@ -558,8 +558,8 @@ float:right;
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Area">Area</label>
-													<div>
-														<input type="number" id="Area"
+													<div> 
+														<input type="number" id="Area" step="any"
 															th:field="*{Area}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['Area']}">
@@ -603,7 +603,7 @@ float:right;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">T.Estimate</label>
 													<div>
-														<input type="number" id="projectvalue"
+														<input type="number" id="projectvalue" step="any"
 															th:field="*{projectvalue}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['projectvalue']}">

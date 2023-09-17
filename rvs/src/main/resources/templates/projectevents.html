@@ -499,7 +499,7 @@ float:right;
 												</div>
 												<div class="col-12 ">
 													<label class="form-label" for="Model_orderID">Order
-														No</label> <input type="number" class="form-control"
+														No</label> <input type="number" class="form-control" step="any"
 														id="Model_orderID" name="Model_orderID" required />
 												</div>
 												<div class="col-12 text-center mt-4">
@@ -824,7 +824,7 @@ float:right;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Area">Area</label>
 													<div>
-														<input type="number" id="Area"
+														<input type="number" id="Area" step="any"
 															th:field="*{Area}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['Area']}">
@@ -868,7 +868,7 @@ float:right;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">T.Estimate</label>
 													<div>
-														<input type="number" id="projectvalue"
+														<input type="number" id="projectvalue" step="any"
 															th:field="*{projectvalue}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['projectvalue']}">

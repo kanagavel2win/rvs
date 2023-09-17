@@ -274,7 +274,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Repeat Every</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="number"  class="form-control capitalize aleft" th:value="${AssetServiceobj['RepeatEveryno']}" th:field="*{RepeatEveryno}"     >
+	                                                                <input type="number" step="any" class="form-control capitalize aleft" th:value="${AssetServiceobj['RepeatEveryno']}" th:field="*{RepeatEveryno}"     >
 	                                                                <select class="form-control aright" th:field="*{RepeatEverytype}" >
 					                                                        <option value="Days">Days</option>
 					                                                        <option value="Week">Week</option>
@@ -302,7 +302,7 @@
 	                                                        <div class="form-group">
 	                                                            <label for="contact-info-icon">Show Reminder (Before Due Date)</label>
 	                                                            <div class="position-relative has-icon-left">
-	                                                                <input type="number"  class="form-control capitalize aleft" th:value="${AssetServiceobj['ShowReminderno']}" th:field="*{ShowReminderno}"     >
+	                                                                <input type="number" step="any" class="form-control capitalize aleft" th:value="${AssetServiceobj['ShowReminderno']}" th:field="*{ShowReminderno}"     >
 	                                                                <select class="form-control aright" th:field="*{ShowRemindertype}" >
 					                                                        <option value="Days">Days</option>
 					                                                        <option value="Week">Week</option>

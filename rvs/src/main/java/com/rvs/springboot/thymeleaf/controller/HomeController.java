@@ -24,8 +24,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -164,6 +167,8 @@ import com.rvs.springboot.thymeleaf.service.PaySlipService;
 import com.rvs.springboot.thymeleaf.service.ProjectMasterService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateBoardService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateMasterService;
+
+import io.micrometer.core.instrument.Counter;
 
 @Controller
 
@@ -4562,7 +4567,7 @@ public class HomeController {
 
 	@GetMapping("checkout")
 	public String checkout(Model themodel, @RequestParam(name = "id", required = false, defaultValue = "") String ids,
-			@RequestParam(name = "branch",required = false, defaultValue = "") String branch) {
+			@RequestParam(name = "branch", required = false, defaultValue = "") String branch) {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_AssetManagement"));
 		List<AssetMaster> assetMaster = assetMasterService.findAll();
 
@@ -5381,8 +5386,16 @@ public class HomeController {
 				// ------------------------------------------------------------------------------------------------
 				if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
 					EmployeeMaster employee = employeeMasterService
-							.findById(Integer.parseInt(objindetail.getNominee()));
-					objindetail.setNominee_name_str(employee.getStaffName().toString());
+							.findById(Integer.parseInt(insurancemasternew.getStaffID()));
+					
+
+					List<EmployeeEmgContact> emgls = employee.getEmployeeEmgContact().stream().filter(C -> C.getEmpEmgContactid() ==Integer.parseInt(objindetail.getNominee())).collect(Collectors.toList());			
+					
+					if(emgls.size() > 0)
+					{
+						objindetail.setNominee_name_str(emgls.get(0).getEmg_Name());
+					}
+					
 				} else {
 					objindetail.setNominee_name_str("");
 				}
@@ -6358,9 +6371,11 @@ public class HomeController {
 		List<LeadMaster> leadmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
-		for (LeadMaster tmp1obj : leadMasterService.findAll().stream().filter(C-> (!C.getStatus().equalsIgnoreCase("Move to Deal")) && (!C.getStatus().equalsIgnoreCase("Move to Project"))).collect(Collectors.toList()))	
-		{
-				// --------------------------------------------------
+		for (LeadMaster tmp1obj : leadMasterService.findAll().stream()
+				.filter(C -> (!C.getStatus().equalsIgnoreCase("Move to Deal"))
+						&& (!C.getStatus().equalsIgnoreCase("Move to Project")))
+				.collect(Collectors.toList())) {
+			// --------------------------------------------------
 			List<Map<String, Object>> ls = activityMasterService.nextactivity("Lead", String.valueOf(tmp1obj.getId()));
 			if (ls.size() > 0) {
 				ls.forEach(rowMap -> {
@@ -6410,7 +6425,10 @@ public class HomeController {
 		List<DealMaster> dealmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
-		for (DealMaster tmp1obj : dealMasterService.findAll().stream().filter(C-> (!C.getStatus().equalsIgnoreCase("Back to Lead")) && (!C.getStatus().equalsIgnoreCase("Move to Project"))).collect(Collectors.toList())) {
+		for (DealMaster tmp1obj : dealMasterService.findAll().stream()
+				.filter(C -> (!C.getStatus().equalsIgnoreCase("Back to Lead"))
+						&& (!C.getStatus().equalsIgnoreCase("Move to Project")))
+				.collect(Collectors.toList())) {
 			// --------------------------------------------------
 			List<Map<String, Object>> ls = activityMasterService.nextactivity("Deal", String.valueOf(tmp1obj.getId()));
 			if (ls.size() > 0) {
@@ -8158,12 +8176,10 @@ public class HomeController {
 		LeadMaster leadMaster = new LeadMaster();
 
 		if (nullremover(String.valueOf(dealMaster.getSourcefrom())).equalsIgnoreCase("Lead")) {
-			
+
 			leadMaster = leadMasterService.findById(dealMaster.getSourceid());
 			leadMaster.setStatus("Open");
-		}
-		else
-		{
+		} else {
 			leadMaster.setTitle(dealMaster.getTitle());
 			leadMaster.setOrganization(dealMaster.getOrganization());
 			leadMaster.setSource(dealMaster.getSource());
@@ -8217,7 +8233,7 @@ public class HomeController {
 		return leadMaster.getId();
 
 	}
-	
+
 	@PostMapping("dealtoproject")
 	@ResponseBody
 	public int dealtoproject(@RequestParam Map<String, String> params) {
@@ -9491,7 +9507,7 @@ public class HomeController {
 
 	public String nullremover(String str) {
 
-		return str.toLowerCase().replace("null", "");
+		return str.replace("null", "").replace("Null", "").replace("NULL", "");
 	}
 
 	/*
@@ -12464,5 +12480,50 @@ public class HomeController {
 	@GetMapping("underMaintenance")
 	public String underMaintenance() {
 		return "error/underMaintainace";
+	}
+
+	@GetMapping("/getsortedUnique")
+	@ResponseBody
+	public List<String> sampleMethod1() {
+
+		List<String> stringsArr = Arrays.asList("1", "4", "2", "3", "5", "3");
+		List<String> arr1 = stringsArr.stream().filter(C -> Integer.parseInt(C) > 2).collect(Collectors.toList());
+		arr1.stream().distinct().toList();
+	
+		List<String> arr3 = arr1.stream().distinct().sorted().toList();
+
+		return arr3;
+
+	}
+	
+
+	@GetMapping("/test1")
+	@ResponseBody
+	public Map<String, Long>  test1() {
+		String s1 = "aabbbdc";
+		
+		char[] arr1 =s1.toCharArray();
+		List<String> arr2 = new ArrayList<>();
+		
+		for(char x : arr1)
+		{
+			arr2.add(String.valueOf(x));
+		
+		}
+		
+		 Map<String, Long> op = arr2.stream().collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		 
+		
+		 
+		 for(Entry x: op.entrySet())
+		 {
+			 if(x.getValue().toString().equalsIgnoreCase("1"))
+			 {
+				 System.out.println(x.getKey() + " - "+ x.getValue());
+			 	 System.exit(0);
+			 }
+		 }
+		 return op;	 
+	
 	}
 }

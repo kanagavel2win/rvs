@@ -562,7 +562,7 @@
 												</div>
 												<div class="col-12">
 													<label class="form-label" for="modalAddCardName">QUANTITY
-													</label> <input type="number" id="modalQuantity"
+													</label> <input type="number" id="modalQuantity" step="any"
 														name="modalQuantity" class="form-control"
 														required="required" /> <input type="hidden"
 														id="projectitemid" name="projectitemid"
@@ -586,14 +586,14 @@
 												</div>
 												<div class="col-12">
 													<label class="form-label" for="modalPrice">Price
-														Per Unit </label> <input type="number" id="modalPrice"
+														Per Unit </label> <input type="number" id="modalPrice" step="any"
 														name="modalPrice" class="form-control" required="required" />
 												</div>
 
 
 												<div class="col-12">
 													<label class="form-label" for="modalTotalamount">Total
-														Amount </label> <input type="number" id="modalTotalamount"
+														Amount </label> <input type="number" id="modalTotalamount" step="any"
 														name="modalTotalamount" class="form-control" disabled />
 												</div>
 
@@ -689,7 +689,7 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Area">Area</label>
 													<div>
-														<input type="number" id="Area"
+														<input type="number" id="Area" step="any"
 															th:field="*{Area}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['Area']}">
@@ -733,7 +733,7 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">T.Estimate</label>
 													<div>
-														<input type="number" id="projectvalue"
+														<input type="number" id="projectvalue" step="any"
 															th:field="*{projectvalue}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['projectvalue']}">
@@ -1057,7 +1057,7 @@
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="modalAddresslanlong">Lat,
-														Long</label> <input type="number" id="modalAddresslanlong"
+														Long</label> <input type="number" step="any" id="modalAddresslanlong"
 														name="modalAddresslanlong" class="form-control"
 														th:value="${projectMaster.lanlong}" />
 												</div>

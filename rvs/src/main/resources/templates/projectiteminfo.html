@@ -270,7 +270,7 @@
 													<span th:text="${projectMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">T.Estimate:</span>
-													<span th:text="${projectMaster.purpose}" id="Lbl_projectvalue"></span>
+													<span th:text="${projectMaster.projectvalue}" id="Lbl_projectvalue"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${projectMaster.purpose}" id="Lbl_purpose"></span>
@@ -1901,10 +1901,22 @@
 				    });
 				  }
 				 
-				  const expectedstatingdate = document.querySelector('#startdate');
+				  const expectedstartdateX1 = document.querySelector('#startdateX1');
 					 // Human Friendly
-					  if (expectedstatingdate) {
-						  expectedstatingdate.flatpickr({
+					  if (expectedstartdateX1) {
+						  expectedstartdateX1.flatpickr({
+					      altInput: true,
+					      altFormat: 'F j, Y',
+					      dateFormat: 'Y-m-d'
+					    });
+					  }
+					 
+					 //
+					 
+					 const tdate = document.querySelector('#tdate');
+					 // Human Friendly
+					  if (tdate) {
+						  tdate.flatpickr({
 					      altInput: true,
 					      altFormat: 'F j, Y',
 					      dateFormat: 'Y-m-d'

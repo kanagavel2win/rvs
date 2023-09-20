@@ -7532,6 +7532,18 @@ public class HomeController {
 				.collect(Collectors.toList()).get(0);
 
 	}
+	
+	@PostMapping("getprojectitem")
+	@ResponseBody
+	public ProjectItemMaster getprojectitem1(@RequestParam Map<String, String> params) {
+
+		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
+
+		return dm.getProjectItemMaster().stream()
+				.filter(C -> C.getProjectitemid() == Integer.parseInt(params.get("projectid")))
+				.collect(Collectors.toList()).get(0);
+
+	}
 
 	@PostMapping("dealprojectsave")
 	@ResponseBody
@@ -8258,6 +8270,17 @@ public class HomeController {
 		projectMaster.setUNITS(dealMaster.getUNITS());
 		projectMaster.setNatureofWork(dealMaster.getNatureofWork());
 		projectMaster.setArea(dealMaster.getArea());
+		
+		projectMaster.setAddressline1(dealMaster.getAddressline1());
+		projectMaster.setAddressline2(dealMaster.getAddressline2());
+		projectMaster.setLankmark(dealMaster.getLankmark());
+		projectMaster.setTaluk(dealMaster.getTaluk());
+		projectMaster.setDistrict(dealMaster.getDistrict());
+		projectMaster.setState(dealMaster.getState());
+		projectMaster.setPincode(dealMaster.getPincode());
+		projectMaster.setLanlong(dealMaster.getLanlong());
+		
+		
 		List<ProjectFollowers> dfls = new ArrayList<>();
 		for (DealFollowers lfobj : dealMaster.getDealFollowers()) {
 			dfls.add(new ProjectFollowers(0, lfobj.getEmpid(), "", ""));
@@ -8281,7 +8304,16 @@ public class HomeController {
 			projectMaster.setProjectFiles(projectfilels);
 		}
 		// ------------------------------------------
-
+		
+		List<ProjectItemMaster> PrjItemls= new ArrayList<ProjectItemMaster>();
+		for(DealProjectMaster dproObj : dealMaster.getDealProjectMaster())
+		{
+			PrjItemls.add(new ProjectItemMaster(0, dproObj.getProjecttype(),dproObj.getQuantity(), dproObj.getUnit() , 0, 0, 0, 0, dproObj.getPrice(),dproObj.getAmount()));		
+		}
+			
+			// ------------------------------------------
+		projectMaster.setProjectItemMaster(PrjItemls);
+		
 		projectMaster = projectMasterService.save(projectMaster);
 
 		dealMaster.setStatus("Move to Project");

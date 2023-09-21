@@ -5388,13 +5388,16 @@ public class HomeController {
 					EmployeeMaster employee = employeeMasterService
 							.findById(Integer.parseInt(insurancemasternew.getStaffID()));
 					
-
-					List<EmployeeEmgContact> emgls = employee.getEmployeeEmgContact().stream().filter(C -> C.getEmpEmgContactid() ==Integer.parseInt(objindetail.getNominee())).collect(Collectors.toList());			
-					
-					if(emgls.size() > 0)
+					if(!nullremover(String.valueOf(objindetail.getNominee())).equalsIgnoreCase("")) 
 					{
-						objindetail.setNominee_name_str(emgls.get(0).getEmg_Name());
+						List<EmployeeEmgContact> emgls = employee.getEmployeeEmgContact().stream().filter(C -> C.getEmpEmgContactid() ==Integer.parseInt(objindetail.getNominee())).collect(Collectors.toList());			
+						if(emgls.size() > 0)
+						{
+							objindetail.setNominee_name_str(emgls.get(0).getEmg_Name());
+						}
 					}
+					
+					
 					
 				} else {
 					objindetail.setNominee_name_str("");

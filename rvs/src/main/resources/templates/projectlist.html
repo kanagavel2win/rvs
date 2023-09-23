@@ -99,60 +99,56 @@
 }
 
 .tooltipx .tooltiptextx {
-  visibility: hidden;
-  font-size:12px;
-  min-width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
+	visibility: hidden;
+	font-size: 12px;
+	min-width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
 }
 
 .tooltipx:hover .tooltiptextx {
-  visibility: visible;
+	visibility: visible;
 }
-.innertablefollowers td{
+
+.innertablefollowers td {
 	border: none;
-	padding-left:0.1rem;
-	padding-right:0.1rem;
+	padding-left: 0.1rem;
+	padding-right: 0.1rem;
 	margin: none;
 }
 
 .tooltipx {
-  position: relative;
-  display: inline-block;
- 
+	position: relative;
+	display: inline-block;
 }
 
 .tooltipx .tooltiptextx {
-  visibility: hidden;
-  font-size:12px;
-  min-width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
+	visibility: hidden;
+	font-size: 12px;
+	min-width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
 }
 
 .tooltipx:hover .tooltiptextx {
-  visibility: visible;
+	visibility: visible;
 }
 
- td
-{
+td {
 	line-height: 20px;
 }
-
 </style>
 </head>
 
@@ -214,7 +210,8 @@
 						<div class="offcanvas offcanvas-end" tabindex="-1"
 							id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
 							<div class="offcanvas-header">
-								<h5 id="offcanvasEndLabel" class="offcanvas-title">New Project</h5>
+								<h5 id="offcanvasEndLabel" class="offcanvas-title">New
+									Project</h5>
 								<button type="button" class="btn-close text-reset"
 									data-bs-dismiss="offcanvas" aria-label="Close"></button>
 							</div>
@@ -234,7 +231,7 @@
 											<!-- Custom Suggestions: Inline -->
 											<div class="col-sm-12">
 												<input id="ContactPersonTagify" name="ContactPersonTagify"
-													 class="form-control" required />
+													class="form-control" required />
 											</div>
 											<!-- Custom Suggestions: List -->
 
@@ -269,10 +266,11 @@
 
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="startDate">Project In Date</label>
+										<label class="form-label" for="startDate">Project In
+											Date</label>
 										<div>
 											<input type="text" id="startDate" name="startDate"
-												class="form-control "  required="required">
+												class="form-control " required="required">
 
 										</div>
 
@@ -290,7 +288,7 @@
 									<div class="col-sm-12">
 										<label class="form-label" for="Purpose">Nature of Work</label>
 										<div>
-											
+
 											<select class="form-control" id="NatureofWork"
 												name="NatureofWork">
 												<option value="">-</option>
@@ -306,7 +304,7 @@
 										<label class="form-label" for="Area">Area</label>
 										<div>
 											<input type="number" id="Area" name="Area" step="any"
-												class="form-control "  required="required">
+												class="form-control " required="required">
 
 										</div>
 
@@ -314,9 +312,8 @@
 									<div class="col-sm-12">
 										<label class="form-label" for="">Unit</label>
 										<div>
-											
-											<select class="form-control" id="UNITS"
-												name="UNITS">
+
+											<select class="form-control" id="UNITS" name="UNITS">
 												<th:block th:each="str :${UNITS}">
 													<option th:value="${str}" th:text="${str}"></option>
 												</th:block>
@@ -329,7 +326,7 @@
 										<label class="form-label" for="Location">Location</label>
 										<div>
 											<input type="text" id="Location" name="Location"
-												class="form-control "  required="required">
+												class="form-control " required="required">
 
 										</div>
 
@@ -338,25 +335,26 @@
 										<label class="form-label" for="tdate">T Date</label>
 										<div>
 											<input type="text" id="tdate" name="tdate"
-												class="form-control "  required="required">
+												class="form-control " required="required">
 
 										</div>
 
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="projectValue">T. Estimate</label>
+										<label class="form-label" for="projectValue">T.
+											Estimate</label>
 										<div>
-											<input type="number" id="projectValue" name="projectValue" step="any"
-												class="form-control  capitalize" >
+											<input type="number" id="projectValue" name="projectValue"
+												step="any" class="form-control  capitalize">
 
 										</div>
 
 									</div>
-									
+
 									<div class="col-sm-12">
 										<label class="form-label" for="Purpose">PURPOSE</label>
 										<div>
-											
+
 											<select class="form-control  addPurposedata" id="Purpose"
 												name="Purpose">
 												<th:block th:each="str :${PURPOSE}">
@@ -367,8 +365,8 @@
 										</div>
 
 									</div>
-									
-									 	
+
+
 									<div class="col-sm-12">
 										<label class="form-label" for="Source">SOURCE</label>
 										<div>
@@ -381,7 +379,7 @@
 										</div>
 
 									</div>
-									
+
 									<div class="col-sm-12 Referencediv">
 										<label class="form-label" for="Reference">REFERENCE</label>
 										<div>
@@ -398,8 +396,8 @@
 									<div class="col-sm-12">
 										<label class="form-label" for="label">Label</label>
 										<div>
-											<select class="form-select  form-control "
-												id="label" name="label" required>
+											<select class="form-select  form-control " id="label"
+												name="label" required>
 												<th:block th:each="str :${Label}">
 													<option th:value="${str}" th:text="${str}"></option>
 												</th:block>
@@ -410,11 +408,10 @@
 									<div class="col-sm-12">
 										<label class="form-label" for="branch">BRANCH</label>
 										<div>
-											<select class="form-select  form-control "
-												id="branch" name="branch" required>
+											<select class="form-select  form-control " id="branch"
+												name="branch" required>
 												<th:block th:each="str :${branchlist}">
-													<option th:value="${str.id}"
-														th:text="${str.BRANCH_NAME}"></option>
+													<option th:value="${str.id}" th:text="${str.BRANCH_NAME}"></option>
 												</th:block>
 											</select>
 
@@ -437,8 +434,7 @@
 									<div class="col-sm-12">
 										<label class="form-label" for="Status">Status</label>
 										<div>
-											<select class="form-control " id="Status"
-												name="Status" >
+											<select class="form-control " id="Status" name="Status">
 												<option value="">-</option>
 												</th:block>
 												<th:block th:each="str :${ProjectStatus}">
@@ -781,8 +777,11 @@
 			        {
 				           targets:3,
 				           render: function(data, type, full, meta) {
-				           	 
-				           	 return '<a href="projectview?id='+ full['id'] +'">'+ full['title'] +'</a><br/><small class="emp_post text-truncate text-muted">'+ full['id'] +'</small>';
+				           	 if(full['projectID'] ==null)
+				           		 {
+				           		full['projectID']="";
+				           		 }
+				           	 return '<a href="projectview?id='+ full['id'] +'">'+ full['title'] +'</a><br/><small class="emp_post text-truncate text-muted">'+ full['projectID'] +'</small>';
 				           }
 				     },
 			         
@@ -1144,6 +1143,5 @@
 			//------------------------------------------------------ 
 	    
     </script>
-		
 </body>
 </html>

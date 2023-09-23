@@ -138,30 +138,30 @@
 	cursor: pointer;
 }
 
-.editnoteactivity{
+.editnoteactivity {
 	cursor: pointer;
 }
 
- .generatenewreceipt 
- {
- cursor: pointer;
- }
+.generatenewreceipt {
+	cursor: pointer;
+}
+
 .editprojectprj {
 	cursor: pointer;
 }
 
-.editprojectprj1{
-	padding-left:10px;
+.editprojectprj1 {
+	padding-left: 10px;
 	vertical-align: middle;
-	margin-top:-5px;
+	margin-top: -5px;
 	cursor: pointer;
 }
-.sameasInvoiceto
-{
+
+.sameasInvoiceto {
 	float: right;
 	padding-left: 10px;
 	font-weight: normal;
-	font-size:13px;
+	font-size: 13px;
 }
 </style>
 <script th:inline="javascript">
@@ -207,15 +207,15 @@
 								href="projectlist">Project</a>/
 							</span> Purchanse
 						</h4>
-						
-						
-							<th:block th:each="obj : ${expenselist}">
-									<script type="text/javascript" th:inline="javascript">
+
+
+						<th:block th:each="obj : ${expenselist}">
+							<script type="text/javascript" th:inline="javascript">
 									Accountsheadsexpenseitems.push("[(${obj})]");
 									</script>
-								</th:block>
-								
-								
+						</th:block>
+
+
 						<div class="row gy-4">
 							<!-- User Sidebar -->
 							<div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
@@ -225,37 +225,40 @@
 										<div class="user-avatar-section">
 											<div class="d-flex align-items-center flex-column">
 												<img class="img-fluid rounded my-1"
-													th:src="@{/assets/img/bg_rvs/Project.jpg}" alt="User avatar" />
+													th:src="@{/assets/img/bg_rvs/Project.jpg}"
+													alt="User avatar" />
 												<div class="user-info text-center">
 													<h5 class="mb-2" th:text="${projectMaster.Title}"
 														id="Lbl_Title"></h5>
-													<span class="badge bg-label-secondary" th:text="'Project ID : '+ ${projectMaster.id}"></span>
+													<span class="badge bg-label-secondary" id="Lbl_ProjectID"
+														th:text="'Project ID : '+ ${projectMaster.projectID}"></span>
 												</div>
 											</div>
 										</div>
 										<div class="d-flex justify-content-around flex-wrap my-4">
 											<div class="d-flex align-items-start me-4 mt-3 gap-3">
-					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-rupee bx-sm"></i></span>
-					                          <div>
-					                           <h6 class="mb-0">
-													Rs.<span th:text="${projectMaster.projectvalue}"
-														id="Lbl_projectvaluetotal"></span>
-												</h6>
-					                           <span>Project Value</span>
-					                          </div>
-					                        </div>
-					                        <div class="d-flex align-items-start mt-3 gap-3">
-					                          <span class="badge bg-label-primary p-2 rounded"><i class="bx bx-stats bx-sm"></i></span>
-					                          <div>
-					                           		<h6 class="mb-0">
-														<span th:text="${projectMaster.status}"
-															id="Lbl_Status"></span>
+												<span class="badge bg-label-primary p-2 rounded"><i
+													class="bx bx-rupee bx-sm"></i></span>
+												<div>
+													<h6 class="mb-0">
+														Rs.<span th:text="${projectMaster.projectvalue}"
+															id="Lbl_projectvaluetotal"></span>
+													</h6>
+													<span>Project Value</span>
+												</div>
+											</div>
+											<div class="d-flex align-items-start mt-3 gap-3">
+												<span class="badge bg-label-primary p-2 rounded"><i
+													class="bx bx-stats bx-sm"></i></span>
+												<div>
+													<h6 class="mb-0">
+														<span th:text="${projectMaster.status}" id="Lbl_Status"></span>
 													</h6>
 													<span>Project Status</span>
-					                          </div>
-					                        </div>
-											
-											
+												</div>
+											</div>
+
+
 
 										</div>
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
@@ -264,53 +267,51 @@
 												<li class="mb-3"><span class="fw-bold me-2">Phase:
 												</span> <span th:text="${projectMaster.pipeline}" id="Lbl_pipeline"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Label:</span>
-													<span id="Lbl_label">
-													
-													 <span
+													<span id="Lbl_label"> <span
 														th:if="${projectMaster.Label} =='Hot'"
 														class="badge bg-danger" th:text="${projectMaster.Label}"></span>
 														<span th:if="${projectMaster.Label} =='Warm'"
 														class="badge bg-warning" th:text="${projectMaster.Label}"></span>
 														<span th:if="${projectMaster.Label} =='Cold'"
 														class="badge bg-primary" th:text="${projectMaster.Label}"></span>
-													
-													
-													</span></li>
+
+
+												</span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${projectMaster.OrganizationName}"
 													id="Lbl_organization"></span>
-													<hr/>
-													</li>
-												
-												<li class="mb-3"><span class="fw-bold me-2">Nature Of Work:</span>
-													<span th:text="${projectMaster.NatureofWork}" id="Lbl_NatureofWork"></span>
-												</li>
+													<hr /></li>
+
+												<li class="mb-3"><span class="fw-bold me-2">Nature
+														Of Work:</span> <span th:text="${projectMaster.NatureofWork}"
+													id="Lbl_NatureofWork"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Area:</span>
 													<span th:text="${projectMaster.Area}" id="Lbl_Area"></span>
 													<span th:text="${projectMaster.UNITS}" id="Lbl_UNITS"></span>
 												</li>
-												
+
 												<li class="mb-3"><span class="fw-bold me-2">Location:</span>
 													<span th:text="${projectMaster.Location}" id="Lbl_Location"></span>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">T.Date:</span>
-													<span th:text="${projectMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
-												</li>
+													<span th:text="${projectMaster.tdateMMddYYY}"
+													id="Lbl_tdate"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">T.Estimate:</span>
-													<span th:text="${projectMaster.projectvalue}" id="Lbl_projectvalue"></span>
-												</li>
+													<span th:text="${projectMaster.projectvalue}"
+													id="Lbl_projectvalue"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${projectMaster.purpose}" id="Lbl_purpose"></span>
 												</li>
-												
+
 												<li class="mb-3"><span class="fw-bold me-2">Source:</span>
 													<span th:text="${projectMaster.Source}" id="Lbl_Source"></span>
 												</li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
 													<span th:text="${projectMaster.ReferenceName}"
-													id="Lbl_Reference"></span><hr/></li>
-													
+													id="Lbl_Reference"></span>
+												<hr /></li>
+
 												<li class="mb-3"><span class="fw-bold me-2">Board:</span>
 													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
 												</li>
@@ -320,8 +321,8 @@
 												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
 													<span th:text="${projectMaster.notes}" id="Lbl_notes"></span>
 												</li>
-												<li class="mb-3"><span class="fw-bold me-2">Project In
-														Date:</span> <span
+												<li class="mb-3"><span class="fw-bold me-2">Project
+														In Date:</span> <span
 													th:text="${projectMaster.expectedstartdateMMddYYY}"
 													id="Lbl_expectedstartdate"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Due
@@ -385,28 +386,24 @@
 														</span>
 													</span> <span class="switch-label"></span>
 													</label>
-													
-													
+
+
 												</div>
 												<div class="col-3">
 													<div class="dropdown">
-									                        <button
-									                          class="btn p-0"
-									                          type="button"
-									                          id="salesReport"
-									                          data-bs-toggle="dropdown"
-									                          aria-haspopup="true"
-									                          aria-expanded="false"
-									                        >
-									                          <i class="bx bx-dots-vertical-rounded"></i>
-									                        </button>
-									                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">
-									                          <a class="dropdown-item" th:name="${obj.id}"
-														th:onclick="'removecontactperson(this)'">Unlink</a>
-									                          
-									                        </div>
-									                   </div>
-												 </div>
+														<button class="btn p-0" type="button" id="salesReport"
+															data-bs-toggle="dropdown" aria-haspopup="true"
+															aria-expanded="false">
+															<i class="bx bx-dots-vertical-rounded"></i>
+														</button>
+														<div class="dropdown-menu dropdown-menu-end"
+															aria-labelledby="salesReport">
+															<a class="dropdown-item" th:name="${obj.id}"
+																th:onclick="'removecontactperson(this)'">Unlink</a>
+
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 
@@ -427,19 +424,21 @@
 										th:href="'projectview?id='+${projectMaster.id}"><i
 											class="bx bx-user me-1"></i>Plan</a></li>
 									<li class="nav-item"><a class="nav-link "
-										th:href="'projectiteminfo?id='+${projectMaster.id}"><i class='bx bxl-ok-ru'></i>Projects</a>
-									</li>
+										th:href="'projectiteminfo?id='+${projectMaster.id}"><i
+											class='bx bxl-ok-ru'></i>Projects</a></li>
 									<li class="nav-item"><a class="nav-link "
 										th:href="'projectattachment?id='+${projectMaster.id}"><i
 											class="bx bx-link me-1"></i>Files</a></li>
 									<li class="nav-item"><a class="nav-link "
 										th:href="'projectaccounts?id='+${projectMaster.id}"><i
 											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Invoices</a></li>
-											
-									<li class="nav-item"><a class="nav-link active" th:href="'projectpurchase?id='+${projectMaster.id}">
-										<i
-											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Purchase</a></li>
-									<li class="nav-item"><a class="nav-link" th:href="'projectexpense?id='+${projectMaster.id}"><i
+
+									<li class="nav-item"><a class="nav-link active"
+										th:href="'projectpurchase?id='+${projectMaster.id}"> <i
+											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Purchase
+									</a></li>
+									<li class="nav-item"><a class="nav-link"
+										th:href="'projectexpense?id='+${projectMaster.id}"><i
 											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'projectnotes?id='+${projectMaster.id}"><i
@@ -486,9 +485,8 @@
 								<div class="card  mb-4">
 									<div class="card-body1">
 										<div class="card-header align-items-center">
-											<h5 class="card-action-title mb-0">
-												Payment Receipts List
-												
+											<h5 class="card-action-title mb-0">Payment Receipts List
+
 											</h5>
 										</div>
 										<div class="table-responsive">
@@ -499,7 +497,7 @@
 														<th>Purchase #</th>
 														<th>Date</th>
 														<th>Account</th>
-														
+
 														<th>Amount Paid</th>
 													</tr>
 												</thead>
@@ -517,15 +515,14 @@
 							<div class="modal fade" id="Purchasemodel" tabindex="-1"
 								aria-hidden="true">
 
-								
-									<div
-										class="modal-dialog modal-xl modal-simple modal-add-new-cc">
-										<div class="modal-content p-3 p-md-5">
-											<div class="modal-bodyx">
-												<button type="button" class="btn-close"
-													data-bs-dismiss="modal" aria-label="Close"></button>
-												<form  class="row g-3 needs-validation"  id="editPurchaseformx"
-										onsubmit="return false">
+
+								<div class="modal-dialog modal-xl modal-simple modal-add-new-cc">
+									<div class="modal-content p-3 p-md-5">
+										<div class="modal-bodyx">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<form class="row g-3 needs-validation" id="editPurchaseformx"
+												onsubmit="return false">
 												<!-- -------- -->
 												<!-- Purchase Add-->
 												<div class="col-lg-12 col-12 mb-lg-0 mb-4">
@@ -540,10 +537,11 @@
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
 																				<select class="form-select followers form-control "
-																					id="purchase_supplierid" name="purchase_supplierid" >
+																					id="purchase_supplierid" name="purchase_supplierid">
 																					<option value="">-</option>
 																					<th:block th:each="str :${supplierlist}">
-																						<option th:value="${str.id}" th:text="${str.orgname}"></option>
+																						<option th:value="${str.id}"
+																							th:text="${str.orgname}"></option>
 																					</th:block>
 																				</select>
 																			</div>
@@ -555,20 +553,20 @@
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
 																				<input type="text" class="form-control"
-																					id="projectpurchaseNo" name="projectpurchaseNo" required /> <input
-																					type="hidden" class="form-control" id="projectpurchaseid"
+																					id="projectpurchaseNo" name="projectpurchaseNo"
+																					required /> <input type="hidden"
+																					class="form-control" id="projectpurchaseid"
 																					name="projectpurchaseid" />
 																			</div>
 																		</dd>
-																		
+
 																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																			<span class="fw-normal">Submitted by:</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
-																				<select
-																					class="form-select  form-control "
-																					id="purchase_employeeid" name="purchase_employeeid" 
+																				<select class="form-select  form-control "
+																					id="purchase_employeeid" name="purchase_employeeid"
 																					required>
 																					<option value="">-</option>
 																					<th:block th:each="str :${employeelist}">
@@ -578,8 +576,8 @@
 																				</select>
 																			</div>
 																		</dd>
-																		
-																		
+
+
 																	</dl>
 																</div>
 																<div class="col-md-6">
@@ -589,8 +587,8 @@
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
-																				<select id="projectpurchaseType" name="projectpurchaseType"
-																					class="form-select"
+																				<select id="projectpurchaseType"
+																					name="projectpurchaseType" class="form-select"
 																					aria-label="Default select example" required>
 																					<option value="">-</option>
 																					<option value="Tax Invoice">Tax Invoice</option>
@@ -607,36 +605,37 @@
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
 																				<input type="date" class="form-control"
-																					id="projectpurchaseDate" name="projectpurchaseDate" required />
+																					id="projectpurchaseDate" name="projectpurchaseDate"
+																					required />
 																			</div>
 																		</dd>
-																		
+
 																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																			<span class="fw-normal">Due Date:</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
 																				<input type="date" class="form-control date-picker"
-																					id="dueDate" name="dueDate" required/>
+																					id="dueDate" name="dueDate" required />
 																			</div>
 																		</dd>
-																		
+
 																	</dl>
 																</div>
 															</div>
 
 															<hr />
 
-														
+
 															<div class="mb-3" data-repeater-list="group-a">
 																<div class="repeater-wrapper pt-0 pt-md-4"
-																	id="purchaseitemlist">
-															 </div>
+																	id="purchaseitemlist"></div>
 															</div>
 															<div class="row">
 																<div class="col-12">
-																	<button type="button" class="btn btn-primary" id="addnewpurchaseitem"
-																		>Add Item</button>
+																	<button type="button" class="btn btn-primary"
+																		id="addnewpurchaseitem">Add
+																		Item</button>
 																</div>
 															</div>
 
@@ -647,8 +646,8 @@
 																<div class="col-6">
 																	<div class="mb-3">
 																		<label for="note" class="form-label fw-semibold">Note:</label>
-																		<textarea class="form-control" rows="2" id="note" name="note"
-																			placeholder="Purchase note"></textarea>
+																		<textarea class="form-control" rows="2" id="note"
+																			name="note" placeholder="Purchase note"></textarea>
 																	</div>
 																</div>
 																<div class="col-md-6 d-flex justify-content-end">
@@ -657,19 +656,23 @@
 																			<span class="w-px-100">Total:</span> <span
 																				class="fw-semibold" id="totalamtwithouttax">0.00</span>
 																		</div>
-																		<div class="d-flex justify-content-between mb-2 totaldiscountamountdiv">
+																		<div
+																			class="d-flex justify-content-between mb-2 totaldiscountamountdiv">
 																			<span class="w-px-100">Discount:</span> <span
-																				class="fw-semibold"  id=totaldiscountamount>0.00</span>
+																				class="fw-semibold" id=totaldiscountamount>0.00</span>
 																		</div>
-																		<div class="d-flex justify-content-between mb-2 totalCGSTdiv">
+																		<div
+																			class="d-flex justify-content-between mb-2 totalCGSTdiv">
 																			<span class="w-px-100">CGST:</span> <span
-																				class="fw-semibold"  id="totalCGST">0.00</span>
+																				class="fw-semibold" id="totalCGST">0.00</span>
 																		</div>
-																		<div class="d-flex justify-content-between mb-2 totalSGSTdiv">
+																		<div
+																			class="d-flex justify-content-between mb-2 totalSGSTdiv">
 																			<span class="w-px-100">SGST:</span> <span
 																				class="fw-semibold" id="totalSGST">0.00</span>
 																		</div>
-																		<div class="d-flex justify-content-between mb-2 totalIGSTdiv">
+																		<div
+																			class="d-flex justify-content-between mb-2 totalIGSTdiv">
 																			<span class="w-px-100">IGST:</span> <span
 																				class="fw-semibold" id="totalIGST">0.00</span>
 																		</div>
@@ -685,7 +688,7 @@
 															<div align="center">
 																<button type="submit"
 																	class="btn btn-primary editPurchasesubmit me-sm-3 me-1">Save
-																	</button>
+																</button>
 
 																<button type="reset"
 																	class="btn btn-label-secondary editPurchaseclose"
@@ -699,10 +702,10 @@
 												<!-- /Invoice Add-->
 												<!-- -------- -->
 											</form>
-											</div>
 										</div>
 									</div>
-								
+								</div>
+
 							</div>
 							<!--/ Add Invoice -->
 							<!-- Edit Receipt Modal -->
@@ -716,86 +719,96 @@
 											<div class="text-center mb-4">
 												<h5>Payment Receipt</h5>
 											</div>
-											<form  class="row g-3 needs-validation"  id="editreceiptformx"
-										onsubmit="return false">
+											<form class="row g-3 needs-validation" id="editreceiptformx"
+												onsubmit="return false">
 												<div class="row p-sm-3 p-0">
-															<div class="col-md-6 mb-md-0 mb-4">
-																
-																<p class="mb-1"><b>Invoice No# :</b>     <span id="projectpurchaseNotxt"></span>
-																<input type="hidden" id="recepitid" name="recepitid" />
-																<input type="hidden" id="recprojectpurchaseid" name="recprojectpurchaseid" required/>
-																</p>
-																<p class="mb-1"><b>Due Date :</b>     <span id="duedatetxt"></span></p>
-																<p class="mb-0"></p>
-															</div>
-															<div class="col-md-6">
-																<p class="mb-1" align="right"><b>Amount :</b>     <span id="purpaymentamounttxt"></span></p>
-																<p class="mb-1" align="right"><b>Total paid :</b>     <span id="purpaymenttotalpaidNotxt"></span></p>
-																<p class="mb-0" align="right"><b>Balance Due :</b>     <span id="purpaymentBalancetxt"></span></p>
-															</div>
-															
-														</div>
-											
-											
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitNo">Tally Receipt #</label> <input type="text" id="recepitNo"
-														name="recepitNo" class="form-control" required/>
+													<div class="col-md-6 mb-md-0 mb-4">
+
+														<p class="mb-1">
+															<b>Invoice No# :</b> <span id="projectpurchaseNotxt"></span>
+															<input type="hidden" id="recepitid" name="recepitid" />
+															<input type="hidden" id="recprojectpurchaseid"
+																name="recprojectpurchaseid" required />
+														</p>
+														<p class="mb-1">
+															<b>Due Date :</b> <span id="duedatetxt"></span>
+														</p>
+														<p class="mb-0"></p>
+													</div>
+													<div class="col-md-6">
+														<p class="mb-1" align="right">
+															<b>Amount :</b> <span id="purpaymentamounttxt"></span>
+														</p>
+														<p class="mb-1" align="right">
+															<b>Total paid :</b> <span id="purpaymenttotalpaidNotxt"></span>
+														</p>
+														<p class="mb-0" align="right">
+															<b>Balance Due :</b> <span id="purpaymentBalancetxt"></span>
+														</p>
+													</div>
+
 												</div>
-											
+
+
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitDate">Date</label> <input type="date" id="recepitDate"
-														name="recepitDate" class="form-control" required/>
+													<label class="form-label" for="recepitNo">Tally
+														Receipt #</label> <input type="text" id="recepitNo"
+														name="recepitNo" class="form-control" required />
 												</div>
-												
+
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="depitedfrom">Paid From</label>
-													<select id="depitedfrom" name="depitedfrom"
-														class="form-select" aria-label="Default select example" required>
+													<label class="form-label" for="recepitDate">Date</label> <input
+														type="date" id="recepitDate" name="recepitDate"
+														class="form-control" required />
+												</div>
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="depitedfrom">Paid
+														From</label> <select id="depitedfrom" name="depitedfrom"
+														class="form-select" aria-label="Default select example"
+														required>
 														<option value="">-</option>
-														<th:block  th:each="obj1 : ${accountlist}" >
-															<option th:value="${obj1.accountheadid}" th:text="${obj1.category}"></option>
+														<th:block th:each="obj1 : ${accountlist}">
+															<option th:value="${obj1.accountheadid}"
+																th:text="${obj1.category}"></option>
 														</th:block>
-														
+
 													</select>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="modeofPayment">Mode of Payment</label>
-													<select id="modeofPayment" name="modeofPayment"
-														class="form-select" aria-label="Default select example" required>
+													<label class="form-label" for="modeofPayment">Mode
+														of Payment</label> <select id="modeofPayment" name="modeofPayment"
+														class="form-select" aria-label="Default select example"
+														required>
 														<option value="">-</option>
-															<th:block th:each="str :${ModeofPayment}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
+														<th:block th:each="str :${ModeofPayment}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
 													</select>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="amount">Amount
-														</label> <input type="text" id="amount"
-														name="amount"
-														class="form-control modal-edit-tax-id" required
-														 />
+													<label class="form-label" for="amount">Amount </label> <input
+														type="text" id="amount" name="amount"
+														class="form-control modal-edit-tax-id" required />
 												</div>
 												<div class="col-12 col-md-6">
-												<br/>
-													<label class="switch"> <input type="checkbox"
-														class="switch-input"  id="payfull"/> <span
+													<br /> <label class="switch"> <input
+														type="checkbox" class="switch-input" id="payfull" /> <span
 														class="switch-toggle-slider"> <span
 															class="switch-on"></span> <span class="switch-off"></span>
 													</span> <span class="switch-label">Pay in Full</span>
 													</label>
 												</div>
 												<div class="col-12">
-													<label class="form-label" for="notes">Notes
-														</label> <input type="text" id="notes" 
-														name="notes"
-														class="form-control modal-edit-tax-id"
-														/>
+													<label class="form-label" for="notes">Notes </label> <input
+														type="text" id="notes" name="notes"
+														class="form-control modal-edit-tax-id" />
 												</div>
-												
+
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
-																	class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
-																	</button>
+														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
+													</button>
 
 													<button type="reset"
 														class="btn btn-label-secondary editReceiptclose"
@@ -807,10 +820,10 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<!-- /Edit Receipt Modal -->
-							
-							
+
+
 							<!-- Edit User Modal -->
 							<div class="modal fade" id="editprojectMasterdetails"
 								tabindex="-1" aria-hidden="true">
@@ -830,7 +843,15 @@
 												<input type="hidden" th:value="${projectMaster['id']}"
 													id="projectMasterID" name="projectMasterID" />
 
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="Title">Project ID</label>
+													<div>
+														<input type="text" id="ProjectID" th:field="*{projectID}"
+															class="form-control  capitalize"
+															th:value="${projectMaster['projectID']}" required>
 
+													</div>
+												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Title">TITLE</label>
 													<div>
@@ -870,10 +891,11 @@
 														</select>
 													</div>
 												</div>
-												<hr/>
-												
+												<hr />
+
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="NatureofWork">Nature Of Work</label>
+													<label class="form-label" for="NatureofWork">Nature
+														Of Work</label>
 													<div>
 														<select class="form-control" id="NatureofWork"
 															th:field="*{NatureofWork}"
@@ -889,19 +911,17 @@
 													<label class="form-label" for="Area">Area</label>
 													<div>
 														<input type="number" id="Area" step="any"
-															th:field="*{Area}"
-															class="form-control  capitalize"
+															th:field="*{Area}" class="form-control  capitalize"
 															th:value="${projectMaster['Area']}">
 													</div>
 
 												</div>
-												
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="NatureofWork">Unit</label>
 													<div>
 														<select class="form-control" id="UNITS"
-															th:field="*{UNITS}"
-															th:value="${projectMaster['UNITS']}">
+															th:field="*{UNITS}" th:value="${projectMaster['UNITS']}">
 															<th:block th:each="str :${UNITS}">
 																<option th:value="${str}" th:text="${str}"></option>
 															</th:block>
@@ -912,8 +932,7 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Location">Location</label>
 													<div>
-														<input type="text" id="Location"
-															th:field="*{Location}"
+														<input type="text" id="Location" th:field="*{Location}"
 															class="form-control  capitalize"
 															th:value="${projectMaster['Location']}">
 													</div>
@@ -922,13 +941,12 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="tdate">T.Date</label>
 													<div>
-														<input type="text" id="tdate"
-															th:field="*{tdate}"
+														<input type="text" id="tdate" th:field="*{tdate}"
 															th:value="${projectMaster['tdate']}"
 															class="form-control  capitalize">
 													</div>
 												</div>
-												
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="Source">T.Estimate</label>
 													<div>
@@ -939,7 +957,7 @@
 													</div>
 
 												</div>
-												
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="pipeline">Phase </label>
 													<div>
@@ -978,7 +996,7 @@
 													</div>
 
 												</div>
-												
+
 												<div class="col-12 col-md-6 Referencediv">
 													<label class="form-label" for="Reference">REFERENCE</label>
 													<div>
@@ -994,8 +1012,8 @@
 													</div>
 
 												</div>
-												<hr/>
-												
+												<hr />
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="label">LABEL </label>
 													<div>
@@ -1062,7 +1080,8 @@
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="startdateX1">Project In Date</label>
+													<label class="form-label" for="startdateX1">Project
+														In Date</label>
 													<div>
 
 														<input type="text" id="startdateX1"
@@ -1072,7 +1091,8 @@
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="expectedclosingdate">Due Date</label>
+													<label class="form-label" for="expectedclosingdate">Due
+														Date</label>
 													<div>
 
 														<input type="text" id="expectedclosingdate"
@@ -1237,7 +1257,7 @@
 							<!--scrolling content Modal -->
 
 							<!-- /Modal -->
-							
+
 						</div>
 						<!-- / Content -->
 
@@ -1248,7 +1268,7 @@
 								<div class="mb-2 mb-md-0"></div>
 								<div></div>
 							</div>
-							
+
 						</footer>
 						<!-- / Footer -->
 
@@ -1576,6 +1596,7 @@
 																	success : function(result) {
 																		var bmobj = JSON.parse(JSON.stringify(result));
 																		console.log(bmobj);
+																			$('#Lbl_ProjectID').text("PROJECT ID :"+bmobj.projectID);
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);

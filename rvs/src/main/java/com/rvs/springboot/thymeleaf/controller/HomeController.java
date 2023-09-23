@@ -13,6 +13,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
@@ -28,7 +29,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -167,8 +167,6 @@ import com.rvs.springboot.thymeleaf.service.PaySlipService;
 import com.rvs.springboot.thymeleaf.service.ProjectMasterService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateBoardService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateMasterService;
-
-import io.micrometer.core.instrument.Counter;
 
 @Controller
 
@@ -7663,6 +7661,39 @@ public class HomeController {
 
 		return "";
 	}
+	
+	@PostMapping("projectitemdelete")
+	@ResponseBody
+	public String projectitemdelete(@RequestParam Map<String, String> params) {
+
+		//System.out.println(params);
+		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+
+		List<ProjectItemMaster> projectprojectList = new ArrayList();
+		
+			for (ProjectItemMaster tempdpmobj : dm.getProjectItemMaster()) {
+				if (tempdpmobj.getProjectitemid() != Integer.parseInt(params.get("projectitemid"))) {
+					projectprojectList.add(tempdpmobj);	
+				}
+				
+			}
+
+		try {
+
+			int projectvalue = projectprojectList.stream().mapToInt(o -> Integer.parseInt(o.getAmount())).sum();
+			if (projectvalue > 0) {
+				dm.setProjectvalue(projectvalue);
+			}
+
+		} catch (Exception e) {
+
+		}
+		dm.setProjectItemMaster(projectprojectList);
+
+		projectMasterService.save(dm);
+
+		return "";
+	}
 
 	@GetMapping("leadattachment")
 	public String leadattachment(Model theModel, @RequestParam("id") int id) {
@@ -8148,6 +8179,7 @@ public class HomeController {
 		projectMaster.setUNITS(leadMaster.getUNITS());
 		projectMaster.setNatureofWork(leadMaster.getNatureofWork());
 		projectMaster.setArea(leadMaster.getArea());
+		projectMaster.setProjectID(getProjectid_starting());
 		List<ProjectFollowers> dfls = new ArrayList<>();
 		for (LeadFollowers lfobj : leadMaster.getLeadFollowers()) {
 			dfls.add(new ProjectFollowers(0, lfobj.getEmpid(), "", ""));
@@ -8282,7 +8314,7 @@ public class HomeController {
 		projectMaster.setState(dealMaster.getState());
 		projectMaster.setPincode(dealMaster.getPincode());
 		projectMaster.setLanlong(dealMaster.getLanlong());
-		
+		projectMaster.setProjectID(getProjectid_starting());
 		
 		List<ProjectFollowers> dfls = new ArrayList<>();
 		for (DealFollowers lfobj : dealMaster.getDealFollowers()) {
@@ -8429,6 +8461,7 @@ public class HomeController {
 	public ProjectMaster projectsavestage2(@RequestParam Map<String, String> params) {
 
 		ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(params.get("projectMasterID")));
+		projectMaster.setProjectID(params.get("projectID"));
 		projectMaster.setTitle(params.get("Title"));
 		projectMaster.setOrganization(params.get("Organization"));
 		projectMaster.setSource(params.get("Source"));
@@ -9033,6 +9066,7 @@ public class HomeController {
 		projectMaster.setProjectFollowers(lmlis);
 		projectMaster.setCreateddate(displaydatetimeFormat.format(new Date()));
 		projectMaster.setProjectPhases(prjphasels);
+		projectMaster.setProjectID(getProjectid_starting());
 		projectMaster = projectMasterService.save(projectMaster);
 		// System.out.println(projectMaster);
 
@@ -12561,4 +12595,27 @@ public class HomeController {
 		 return op;	 
 	
 	}
+	
+	public String getProjectid_starting() {
+		String formate1="";
+
+		   LocalDate currentDate = LocalDate.now();
+
+	        
+		   if (currentDate.getMonthValue() >4) {
+	            Year financialYearStart = Year.from(currentDate);
+	            Year financialYearEnd = financialYearStart.plusYears(1);
+
+	            formate1 = financialYearStart.toString().substring(2, 4) + "" + financialYearEnd.toString().substring(2, 4) + "-" +financialYearStart.toString().substring(2, 4) + "-" + String.format("%02d", currentDate.getMonthValue())+"-" ;
+	        } else {
+	            Year financialYearStart = Year.from(currentDate.minusMonths(currentDate.getMonthValue()));
+	            Year financialYearEnd = financialYearStart.plusYears(1);
+
+	            formate1 = financialYearStart.toString().substring(2, 4) + "" + financialYearEnd.toString().substring(2, 4) + "-" +financialYearEnd.toString().substring(2, 4)+ "-"  + String.format("%02d", currentDate.getMonthValue())+"-";
+	        }
+     
+        
+		return "RVSLS "+formate1;
+	}
+	
 }

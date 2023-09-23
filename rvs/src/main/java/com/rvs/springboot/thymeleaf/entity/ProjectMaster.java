@@ -34,6 +34,10 @@ public class ProjectMaster {
 	private int id;
 	//@Column
 	//private String ContactPerson;
+	
+	@Column
+	private String projectID;
+	
 	@Column
 	private String board;
 	

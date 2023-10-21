@@ -292,9 +292,7 @@
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
 													<span th:text="${projectMaster.branchname}"
 													id="Lbl_branchname"></span></li>
-												<li class="mb-3"><span class="fw-bold me-2">Notes:</span>
-													<span th:text="${projectMaster.notes}" id="Lbl_notes"></span>
-												</li>
+												
 												<li class="mb-3"><span class="fw-bold me-2">Project
 														In Date:</span> <span
 													th:text="${projectMaster.expectedstartdateMMddYYY}"
@@ -396,22 +394,22 @@
 								<ul class="nav nav-pills flex-column flex-md-row mb-3">
 									<li class="nav-item"><a class="nav-link "
 										th:href="'projectview?id='+${projectMaster.id}"><i
-											class="bx bx-user me-1"></i>Plan</a></li>
+											class="bx bx-spreadsheet me-1"></i>Plan</a></li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'projectiteminfo?id='+${projectMaster.id}"><i
-											class='bx bxl-ok-ru'></i>Projects</a></li>
+											class='bx bx-hard-hat'></i>Projects</a></li>
 									<li class="nav-item"><a class="nav-link active"
-										href="javascript:void(0);"><i class="bx bx-link me-1"></i>Files</a></li>
+										href="javascript:void(0);"><i class="bx bx-folder me-1"></i>Files</a></li>
 									<li class="nav-item"><a class="nav-link "
 										th:href="'projectaccounts?id='+${projectMaster.id}"><i
-											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Invoices</a></li>
+											class="menu-icon tf-icons bx bx-detail me-1"></i>Invoices</a></li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'projectpurchase?id='+${projectMaster.id}"> <i
-											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Purchase
+											class="menu-icon tf-icons bx bx-purchase-tag me-1"></i>Purchase
 									</a></li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'projectexpense?id='+${projectMaster.id}"><i
-											class="menu-icon tf-icons bx bx-food-menu me-1"></i>Expense</a></li>
+											class="menu-icon tf-icons bx bxs-coupon me-1"></i>Expense</a></li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'projectnotes?id='+${projectMaster.id}"><i
 											class='bx bx-notepad'></i>Notes</a></li>
@@ -801,15 +799,7 @@
 													</div>
 
 												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="notes">NOTES</label>
-													<div>
-
-														<input type="text" id="notes" th:field="*{notes}"
-															th:value="${projectMaster['notes']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
+											
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="startdateX1">Project
 														In Date</label>
@@ -1223,7 +1213,7 @@
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
-																			$('#Lbl_notes').text(bmobj.notes);
+																			
 																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_projectvalue").text(bmobj.projectvalue);

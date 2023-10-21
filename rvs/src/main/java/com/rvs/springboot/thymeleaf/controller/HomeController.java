@@ -6517,6 +6517,15 @@ public class HomeController {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+			if (!nullremover(String.valueOf(tmp1obj.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					tmp1obj.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(tmp1obj.getExpectedclosingdate())).toString());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					// e.printStackTrace();
+				}
+			}
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			projectmasterls.add(tmp1obj);
@@ -7558,7 +7567,7 @@ public class HomeController {
 
 			dealprojectList = dm.getDealProjectMaster();
 			DealProjectMaster dpmobj = new DealProjectMaster();
-			int amount = Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"));
+			double amount = Integer.parseInt(params.get("modalPrice")) * Double.parseDouble(params.get("modalQuantity"));
 
 			dpmobj.setAmount(String.valueOf(amount));
 			dpmobj.setPrice(params.get("modalPrice"));
@@ -7572,8 +7581,8 @@ public class HomeController {
 			for (DealProjectMaster tempdpmobj : dm.getDealProjectMaster()) {
 				if (tempdpmobj.getDealprojectid() == Integer.parseInt(params.get("projectid"))) {
 
-					int amount = Integer.parseInt(params.get("modalPrice"))
-							* Integer.parseInt(params.get("modalQuantity"));
+					double amount = Integer.parseInt(params.get("modalPrice"))
+							*Double.parseDouble(params.get("modalQuantity"));
 
 					tempdpmobj.setAmount(String.valueOf(amount));
 					tempdpmobj.setPrice(params.get("modalPrice"));
@@ -7616,7 +7625,7 @@ public class HomeController {
 
 			projectprojectList = dm.getProjectItemMaster();
 			ProjectItemMaster dpmobj = new ProjectItemMaster();
-			int amount = Integer.parseInt(params.get("modalPrice")) * Integer.parseInt(params.get("modalQuantity"));
+			double amount = Integer.parseInt(params.get("modalPrice")) * Double.parseDouble(params.get("modalQuantity"));
 
 			dpmobj.setAmount(String.valueOf(amount));
 			dpmobj.setPrice(params.get("modalPrice"));
@@ -7630,8 +7639,8 @@ public class HomeController {
 			for (ProjectItemMaster tempdpmobj : dm.getProjectItemMaster()) {
 				if (tempdpmobj.getProjectitemid() == Integer.parseInt(params.get("projectitemid"))) {
 
-					int amount = Integer.parseInt(params.get("modalPrice"))
-							* Integer.parseInt(params.get("modalQuantity"));
+					double amount = Integer.parseInt(params.get("modalPrice"))
+							* Double.parseDouble(params.get("modalQuantity"));
 
 					tempdpmobj.setAmount(String.valueOf(amount));
 					tempdpmobj.setPrice(params.get("modalPrice"));

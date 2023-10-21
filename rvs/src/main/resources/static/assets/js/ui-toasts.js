@@ -210,4 +210,101 @@ $(function () {
   $('#cleartoasts').click(function () {
     toastr.clear();
   });
+  
+  
+  function showtoaster_rvs(title,msg,msgtype){
+    var shortCutFunction = msgtype,
+      isRtl = $('html').attr('dir') === 'rtl',
+      msg = msg,
+      title = title || '',
+      $showDuration = 300,
+      $hideDuration = 1000,
+      $timeOut = 5000,
+      $extendedTimeOut =1000,
+      $showEasing = 'swing',
+      $hideEasing = 'linear',
+      $showMethod = 'fadeIn',
+      $hideMethod = 'fadeOut',
+      toastIndex = toastCount++,
+      addClear = true,
+      prePositionClass = 'toast-top-right';
+
+    prePositionClass =
+      typeof toastr.options.positionClass === 'undefined' ? 'toast-top-right' : toastr.options.positionClass;
+
+    toastr.options = {
+      maxOpened: 1,
+      autoDismiss: true,
+      closeButton: true,
+      debug: false,
+      newestOnTop:true,
+      progressBar: true,
+      positionClass: 'toast-top-right',
+      preventDuplicates:true,
+      onclick: null,
+      rtl: isRtl
+    };
+
+    //Add fix for multiple toast open while changing the position
+    if (prePositionClass != toastr.options.positionClass) {
+      toastr.options.hideDuration = 0;
+      toastr.clear();
+    }
+
+  
+    if ($showDuration.val().length) {
+      toastr.options.showDuration = parseInt($showDuration.val());
+    }
+    if ($hideDuration.val().length) {
+      toastr.options.hideDuration = parseInt($hideDuration.val());
+    }
+    if ($timeOut.val().length) {
+      toastr.options.timeOut = addClear ? 0 : parseInt($timeOut.val());
+    }
+    if ($extendedTimeOut.val().length) {
+      toastr.options.extendedTimeOut = addClear ? 0 : parseInt($extendedTimeOut.val());
+    }
+    if ($showEasing.val().length) {
+      toastr.options.showEasing = $showEasing.val();
+    }
+    if ($hideEasing.val().length) {
+      toastr.options.hideEasing = $hideEasing.val();
+    }
+    if ($showMethod.val().length) {
+      toastr.options.showMethod = $showMethod.val();
+    }
+    if ($hideMethod.val().length) {
+      toastr.options.hideMethod = $hideMethod.val();
+    }
+    if (addClear) {
+      msg = getMessageWithClearButton(msg);
+      toastr.options.tapToDismiss = false;
+    }
+    if (!msg) {
+      msg = getMessage();
+    }
+    var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
+    $toastlast = $toast;
+    if (typeof $toast === 'undefined') {
+      return;
+    }
+    if ($toast.find('#okBtn').length) {
+      $toast.delegate('#okBtn', 'click', function () {
+        alert('you clicked me. i was toast #' + toastIndex + '. goodbye!');
+        $toast.remove();
+      });
+    }
+    if ($toast.find('#surpriseBtn').length) {
+      $toast.delegate('#surpriseBtn', 'click', function () {
+        alert('Surprise! you clicked me. i was toast #' + toastIndex + '. You could perform an action here.');
+      });
+    }
+    if ($toast.find('.clear').length) {
+      $toast.delegate('.clear', 'click', function () {
+        toastr.clear($toast, {
+          force: true
+        });
+      });
+    }
+  }
 });

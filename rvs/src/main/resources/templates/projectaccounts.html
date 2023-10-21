@@ -72,6 +72,8 @@
 	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/toastr/toastr.css}" />
 <!-- Page CSS -->
 
 <link rel="stylesheet"
@@ -1362,7 +1364,7 @@
 		<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
 		<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
 		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
-
+		<script th:src="@{/assets/vendor/libs/toastr/toastr.js}"></script>
 		<!-- Main JS -->
 		<script th:src="@{/assets/js/main.js}"></script>
 
@@ -1384,7 +1386,7 @@
 		<script th:src="@{/assets/js/app-user-view-account.js}"></script>
 
 		<script th:src="@{/assets/js/ui-popover.js}"></script>
-
+		<script th:src="@{/assets/js/ui-toasts.js}"></script>
 		<script>
 		var invoiceIncre=1;
 		
@@ -1777,7 +1779,7 @@
 									           	  
 									           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editinvoiceinfo(this)' id='"+element.invoiceid +"'>"+element.invoiceNo+"</td>";
 									           	 htmlop +="<td class='text-nowrap'>"+element.invoiceType +"</td><td class='text-nowrap'>"+element.invoiceDateMMMddyyyy +"</td><td>"+element.dueDateMMMddyyyy +"</td>";
-									           	 htmlop +="<td>"+sub_total.toFixed(2) +" <i class='bx bx-money  generatenewreceipt' onclick='generatereceipt("+element.invoiceid +")'  ></i></td></tr>";
+									           	 htmlop +="<td>"+sub_total.toFixed(2) +" <i class='bx bx-receipt  generatenewreceipt' onclick='generatereceipt("+element.invoiceid +")'  ></i></td></tr>";
 									           	 total +=parseFloat(sub_total);
 								            });
 											
@@ -2550,7 +2552,85 @@
 				$(".btn-apply-changes").click();
 				
 			});
-		//------------------------------------------------------
+			//------------------------------------------------------
+			var toastCount = 0;
+			function showtoaster_rvs(title,msg,msgtype){
+				    var shortCutFunction = msgtype,
+				      isRtl = $('html').attr('dir') === 'rtl',
+				      msg = msg,
+				      title = title || '',
+				      $showDuration = 300,
+				      $hideDuration = 300,
+				      $timeOut = 5000,
+				      $extendedTimeOut =1000,
+				      $showEasing = 'swing',
+				      $hideEasing = 'linear',
+				      $showMethod = 'fadeIn',
+				      $hideMethod = 'fadeOut',
+				      toastIndex = toastCount++,
+				      addClear = true,
+				      prePositionClass = 'toast-top-right';
+				
+				    prePositionClass =
+				      typeof toastr.options.positionClass === 'undefined' ? 'toast-top-right' : toastr.options.positionClass;
+				
+				    toastr.options = {
+				      maxOpened: 1,
+				      autoDismiss: true,
+				      closeButton: true,
+				      debug: false,
+				      newestOnTop:false,
+				      progressBar:true,
+				      positionClass: 'toast-top-right',
+				      preventDuplicates:false,
+				      onclick: null,
+				      rtl: isRtl
+				    };
+				
+				    
+				
+				  
+				    if ($showDuration.length) {
+				      toastr.options.showDuration = parseInt($showDuration);
+				    }
+				    if ($hideDuration.length) {
+				      toastr.options.hideDuration = parseInt($hideDuration);
+				    }
+				    if ($timeOut.length) {
+				      toastr.options.timeOut = addClear ? 0 : parseInt($timeOut);
+				    }
+				    if ($extendedTimeOut.length) {
+				      toastr.options.extendedTimeOut = addClear ? 0 : parseInt($extendedTimeOut);
+				    }
+				    if ($showEasing.length) {
+				      toastr.options.showEasing = $showEasing;
+				    }
+				    if ($hideEasing.length) {
+				      toastr.options.hideEasing = $hideEasing;
+				    }
+				    if ($showMethod.length) {
+				      toastr.options.showMethod = $showMethod;
+				    }
+				    if ($hideMethod.length) {
+				      toastr.options.hideMethod = $hideMethod;
+				    }
+				    
+				    var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
+				    $toastlast = $toast;
+				    if (typeof $toast === 'undefined') {
+				      return;
+				    }
+				    
+				    if ($toast.find('.clear').length) {
+				      $toast.delegate('.clear', 'click', function () {
+				        toastr.clear($toast, {
+				          force: true
+				        });
+				      });
+				    }
+				  }
+			//------------------------------------------------------
+			
 		</script>
 </body>
 </html>

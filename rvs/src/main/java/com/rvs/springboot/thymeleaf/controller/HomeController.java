@@ -7921,7 +7921,7 @@ public class HomeController {
 		activityMaster.setHtmlnotes(param.get("htmlnotes").toString());
 		activityMaster.setMastercategory(param.get("mastercategory").toString());
 		activityMaster.setMastercategoryid(param.get("mastercategoryid").toString());
-		activityMaster.setNotes(param.get("notes").toString());
+		activityMaster.setNotes("");
 		activityMaster.setStartdate(param.get("startdate").toString());
 		activityMaster.setStarttime(param.get("starttime").toString());
 		if (param.get("status") != null) {

@@ -1262,18 +1262,8 @@
 																			
 																			validationformprojectreset();
 																			
-																			Swal.fire({
-																		        title: '',
-																		        text: 'Project details has been removed',
-																		        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-																		        imageWidth: 400,
-																		        imageAlt: 'Custom image',
-																		        confirmButtonText: 'Ok',
-																		        customClass: {
-																		          confirmButton: 'btn btn-primary'
-																		        },
-																		        buttonsStyling: false
-																		      });
+																			showtoaster_rvs("","Project details has been removed","info");
+																			
 																			
 																			getprojectlist();
 																			
@@ -1585,19 +1575,8 @@
 																	
 																	validationformprojectreset();
 																	
-																	Swal.fire({
-																        title: '',
-																        text: 'Project details updated',
-																        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-																        imageWidth: 400,
-																        imageAlt: 'Custom image',
-																        confirmButtonText: 'Ok',
-																        customClass: {
-																          confirmButton: 'btn btn-primary'
-																        },
-																        buttonsStyling: false
-																      });
-																	
+																	showtoaster_rvs("","Project details updated","success");
+																		
 																	getprojectlist();
 																	
 
@@ -2099,9 +2078,84 @@
 			    }
 			  }
 		//------------------------------------------------------
+		var toastCount = 0;
+		function showtoaster_rvs(title,msg,msgtype){
+			    var shortCutFunction = msgtype,
+			      isRtl = $('html').attr('dir') === 'rtl',
+			      msg = msg,
+			      title = title || '',
+			      $showDuration = 300,
+			      $hideDuration = 300,
+			      $timeOut = 5000,
+			      $extendedTimeOut =1000,
+			      $showEasing = 'swing',
+			      $hideEasing = 'linear',
+			      $showMethod = 'fadeIn',
+			      $hideMethod = 'fadeOut',
+			      toastIndex = toastCount++,
+			      addClear = true,
+			      prePositionClass = 'toast-top-right';
+			
+			    prePositionClass =
+			      typeof toastr.options.positionClass === 'undefined' ? 'toast-top-right' : toastr.options.positionClass;
+			
+			    toastr.options = {
+			      maxOpened: 1,
+			      autoDismiss: true,
+			      closeButton: true,
+			      debug: false,
+			      newestOnTop:false,
+			      progressBar:true,
+			      positionClass: 'toast-top-right',
+			      preventDuplicates:false,
+			      onclick: null,
+			      rtl: isRtl
+			    };
+			
+			    
+			
+			  
+			    if ($showDuration.length) {
+			      toastr.options.showDuration = parseInt($showDuration);
+			    }
+			    if ($hideDuration.length) {
+			      toastr.options.hideDuration = parseInt($hideDuration);
+			    }
+			    if ($timeOut.length) {
+			      toastr.options.timeOut = addClear ? 0 : parseInt($timeOut);
+			    }
+			    if ($extendedTimeOut.length) {
+			      toastr.options.extendedTimeOut = addClear ? 0 : parseInt($extendedTimeOut);
+			    }
+			    if ($showEasing.length) {
+			      toastr.options.showEasing = $showEasing;
+			    }
+			    if ($hideEasing.length) {
+			      toastr.options.hideEasing = $hideEasing;
+			    }
+			    if ($showMethod.length) {
+			      toastr.options.showMethod = $showMethod;
+			    }
+			    if ($hideMethod.length) {
+			      toastr.options.hideMethod = $hideMethod;
+			    }
+			    
+			    var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
+			    $toastlast = $toast;
+			    if (typeof $toast === 'undefined') {
+			      return;
+			    }
+			    
+			    if ($toast.find('.clear').length) {
+			      $toast.delegate('.clear', 'click', function () {
+			        toastr.clear($toast, {
+			          force: true
+			        });
+			      });
+			    }
+			  }
+		//------------------------------------------------------
 		
-		showtoaster_rvs("Title1","Message1","error");
-		showtoaster_rvs("Title2","Message2","success");
 			
 		</script>
 </body>

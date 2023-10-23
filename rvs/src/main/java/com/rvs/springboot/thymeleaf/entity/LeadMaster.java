@@ -114,5 +114,7 @@ public class LeadMaster {
 	private String leadfollowerids;
 	@Transient
 	private String tdateMMddYYY;
+	@Transient
+	private String leaddays;
 	
 }

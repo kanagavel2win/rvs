@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -5385,18 +5386,16 @@ public class HomeController {
 				if (insurancemasternew.getInsuranceTo().equalsIgnoreCase("Staff")) {
 					EmployeeMaster employee = employeeMasterService
 							.findById(Integer.parseInt(insurancemasternew.getStaffID()));
-					
-					if(!nullremover(String.valueOf(objindetail.getNominee())).equalsIgnoreCase("")) 
-					{
-						List<EmployeeEmgContact> emgls = employee.getEmployeeEmgContact().stream().filter(C -> C.getEmpEmgContactid() ==Integer.parseInt(objindetail.getNominee())).collect(Collectors.toList());			
-						if(emgls.size() > 0)
-						{
+
+					if (!nullremover(String.valueOf(objindetail.getNominee())).equalsIgnoreCase("")) {
+						List<EmployeeEmgContact> emgls = employee.getEmployeeEmgContact().stream()
+								.filter(C -> C.getEmpEmgContactid() == Integer.parseInt(objindetail.getNominee()))
+								.collect(Collectors.toList());
+						if (emgls.size() > 0) {
 							objindetail.setNominee_name_str(emgls.get(0).getEmg_Name());
 						}
 					}
-					
-					
-					
+
 				} else {
 					objindetail.setNominee_name_str("");
 				}
@@ -6387,7 +6386,22 @@ public class HomeController {
 			} else {
 				tmp1obj.setNextactivity("<span class='red'>No Activity</span>");
 			}
-			// --------------------------------------------------
+			// ----------------------------------------------------------------------------------------------------
+			if (!nullremover(String.valueOf(tmp1obj.getLeadDate())).equalsIgnoreCase("")) {
+
+				long timeDiff;
+				try {
+					timeDiff = Math.abs(displaydateFormatrev.parse(tmp1obj.getLeadDate()).getTime() - new Date().getTime());
+					long daysDiff = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
+					tmp1obj.setLeaddays(daysDiff + "");
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+			// ----------------------------------------------------------------------------------------------------
+
 			for (LeadFollowers leadfol : tmp1obj.getLeadFollowers()) {
 				String followerstr = nullremover(String.valueOf(leadfol.getEmpid()));
 
@@ -6412,6 +6426,7 @@ public class HomeController {
 					e.printStackTrace();
 				}
 			}
+
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			leadmasterls.add(tmp1obj);
@@ -6466,6 +6481,17 @@ public class HomeController {
 					e.printStackTrace();
 				}
 			}
+
+			if (!nullremover(String.valueOf(tmp1obj.getTdate())).equalsIgnoreCase("")) {
+
+				try {
+					tmp1obj.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(tmp1obj.getTdate())).toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			dealmasterls.add(tmp1obj);
@@ -7542,7 +7568,7 @@ public class HomeController {
 				.collect(Collectors.toList()).get(0);
 
 	}
-	
+
 	@PostMapping("getprojectitem")
 	@ResponseBody
 	public ProjectItemMaster getprojectitem1(@RequestParam Map<String, String> params) {
@@ -7567,7 +7593,8 @@ public class HomeController {
 
 			dealprojectList = dm.getDealProjectMaster();
 			DealProjectMaster dpmobj = new DealProjectMaster();
-			double amount = Integer.parseInt(params.get("modalPrice")) * Double.parseDouble(params.get("modalQuantity"));
+			double amount = Integer.parseInt(params.get("modalPrice"))
+					* Double.parseDouble(params.get("modalQuantity"));
 
 			dpmobj.setAmount(String.valueOf(amount));
 			dpmobj.setPrice(params.get("modalPrice"));
@@ -7582,7 +7609,7 @@ public class HomeController {
 				if (tempdpmobj.getDealprojectid() == Integer.parseInt(params.get("projectid"))) {
 
 					double amount = Integer.parseInt(params.get("modalPrice"))
-							*Double.parseDouble(params.get("modalQuantity"));
+							* Double.parseDouble(params.get("modalQuantity"));
 
 					tempdpmobj.setAmount(String.valueOf(amount));
 					tempdpmobj.setPrice(params.get("modalPrice"));
@@ -7625,7 +7652,8 @@ public class HomeController {
 
 			projectprojectList = dm.getProjectItemMaster();
 			ProjectItemMaster dpmobj = new ProjectItemMaster();
-			double amount = Integer.parseInt(params.get("modalPrice")) * Double.parseDouble(params.get("modalQuantity"));
+			double amount = Integer.parseInt(params.get("modalPrice"))
+					* Double.parseDouble(params.get("modalQuantity"));
 
 			dpmobj.setAmount(String.valueOf(amount));
 			dpmobj.setPrice(params.get("modalPrice"));
@@ -7670,22 +7698,22 @@ public class HomeController {
 
 		return "";
 	}
-	
+
 	@PostMapping("projectitemdelete")
 	@ResponseBody
 	public String projectitemdelete(@RequestParam Map<String, String> params) {
 
-		//System.out.println(params);
+		// System.out.println(params);
 		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
 
 		List<ProjectItemMaster> projectprojectList = new ArrayList();
-		
-			for (ProjectItemMaster tempdpmobj : dm.getProjectItemMaster()) {
-				if (tempdpmobj.getProjectitemid() != Integer.parseInt(params.get("projectitemid"))) {
-					projectprojectList.add(tempdpmobj);	
-				}
-				
+
+		for (ProjectItemMaster tempdpmobj : dm.getProjectItemMaster()) {
+			if (tempdpmobj.getProjectitemid() != Integer.parseInt(params.get("projectitemid"))) {
+				projectprojectList.add(tempdpmobj);
 			}
+
+		}
 
 		try {
 
@@ -7921,7 +7949,7 @@ public class HomeController {
 		activityMaster.setHtmlnotes(param.get("htmlnotes").toString());
 		activityMaster.setMastercategory(param.get("mastercategory").toString());
 		activityMaster.setMastercategoryid(param.get("mastercategoryid").toString());
-		activityMaster.setNotes("");
+		activityMaster.setNotes(param.get("notes").toString());
 		activityMaster.setStartdate(param.get("startdate").toString());
 		activityMaster.setStarttime(param.get("starttime").toString());
 		if (param.get("status") != null) {
@@ -8314,7 +8342,7 @@ public class HomeController {
 		projectMaster.setUNITS(dealMaster.getUNITS());
 		projectMaster.setNatureofWork(dealMaster.getNatureofWork());
 		projectMaster.setArea(dealMaster.getArea());
-		
+
 		projectMaster.setAddressline1(dealMaster.getAddressline1());
 		projectMaster.setAddressline2(dealMaster.getAddressline2());
 		projectMaster.setLankmark(dealMaster.getLankmark());
@@ -8324,7 +8352,7 @@ public class HomeController {
 		projectMaster.setPincode(dealMaster.getPincode());
 		projectMaster.setLanlong(dealMaster.getLanlong());
 		projectMaster.setProjectID(getProjectid_starting());
-		
+
 		List<ProjectFollowers> dfls = new ArrayList<>();
 		for (DealFollowers lfobj : dealMaster.getDealFollowers()) {
 			dfls.add(new ProjectFollowers(0, lfobj.getEmpid(), "", ""));
@@ -8348,16 +8376,16 @@ public class HomeController {
 			projectMaster.setProjectFiles(projectfilels);
 		}
 		// ------------------------------------------
-		
-		List<ProjectItemMaster> PrjItemls= new ArrayList<ProjectItemMaster>();
-		for(DealProjectMaster dproObj : dealMaster.getDealProjectMaster())
-		{
-			PrjItemls.add(new ProjectItemMaster(0, dproObj.getProjecttype(),dproObj.getQuantity(), dproObj.getUnit() , 0, 0, 0, 0, dproObj.getPrice(),dproObj.getAmount()));		
+
+		List<ProjectItemMaster> PrjItemls = new ArrayList<ProjectItemMaster>();
+		for (DealProjectMaster dproObj : dealMaster.getDealProjectMaster()) {
+			PrjItemls.add(new ProjectItemMaster(0, dproObj.getProjecttype(), dproObj.getQuantity(), dproObj.getUnit(),
+					0, 0, 0, 0, dproObj.getPrice(), dproObj.getAmount()));
 		}
-			
-			// ------------------------------------------
+
+		// ------------------------------------------
 		projectMaster.setProjectItemMaster(PrjItemls);
-		
+
 		projectMaster = projectMasterService.save(projectMaster);
 
 		dealMaster.setStatus("Move to Project");
@@ -11820,8 +11848,7 @@ public class HomeController {
 				obj.setPrjExpenseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(obj.getPrjExpenseDate())).toString());
 
-				obj.setStaffname(emplist.stream()
-						.filter(C -> C.getEmpMasterid() == Integer.parseInt(params.get("mastercategoryid")))
+				obj.setStaffname(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(obj.getStaff()))
 
 						.collect(Collectors.toList()).get(0).getStaffName());
 				obj.setCategory_name(accountheadsService.findById(Integer.parseInt(obj.getCategory())).getCategory());
@@ -12567,64 +12594,60 @@ public class HomeController {
 		List<String> stringsArr = Arrays.asList("1", "4", "2", "3", "5", "3");
 		List<String> arr1 = stringsArr.stream().filter(C -> Integer.parseInt(C) > 2).collect(Collectors.toList());
 		arr1.stream().distinct().toList();
-	
+
 		List<String> arr3 = arr1.stream().distinct().sorted().toList();
 
 		return arr3;
 
 	}
-	
 
 	@GetMapping("/test1")
 	@ResponseBody
-	public Map<String, Long>  test1() {
+	public Map<String, Long> test1() {
 		String s1 = "aabbbdc";
-		
-		char[] arr1 =s1.toCharArray();
+
+		char[] arr1 = s1.toCharArray();
 		List<String> arr2 = new ArrayList<>();
-		
-		for(char x : arr1)
-		{
+
+		for (char x : arr1) {
 			arr2.add(String.valueOf(x));
-		
+
 		}
-		
-		 Map<String, Long> op = arr2.stream().collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
-		 
-		
-		 
-		 for(Entry x: op.entrySet())
-		 {
-			 if(x.getValue().toString().equalsIgnoreCase("1"))
-			 {
-				 System.out.println(x.getKey() + " - "+ x.getValue());
-			 	 System.exit(0);
-			 }
-		 }
-		 return op;	 
-	
+
+		Map<String, Long> op = arr2.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+		for (Entry x : op.entrySet()) {
+			if (x.getValue().toString().equalsIgnoreCase("1")) {
+				System.out.println(x.getKey() + " - " + x.getValue());
+				System.exit(0);
+			}
+		}
+		return op;
+
 	}
-	
+
 	public String getProjectid_starting() {
-		String formate1="";
+		String formate1 = "";
 
-		   LocalDate currentDate = LocalDate.now();
+		LocalDate currentDate = LocalDate.now();
 
-	        
-		   if (currentDate.getMonthValue() >4) {
-	            Year financialYearStart = Year.from(currentDate);
-	            Year financialYearEnd = financialYearStart.plusYears(1);
+		if (currentDate.getMonthValue() > 4) {
+			Year financialYearStart = Year.from(currentDate);
+			Year financialYearEnd = financialYearStart.plusYears(1);
 
-	            formate1 = financialYearStart.toString().substring(2, 4) + "" + financialYearEnd.toString().substring(2, 4) + "-" +financialYearStart.toString().substring(2, 4) + "-" + String.format("%02d", currentDate.getMonthValue())+"-" ;
-	        } else {
-	            Year financialYearStart = Year.from(currentDate.minusMonths(currentDate.getMonthValue()));
-	            Year financialYearEnd = financialYearStart.plusYears(1);
+			formate1 = financialYearStart.toString().substring(2, 4) + "" + financialYearEnd.toString().substring(2, 4)
+					+ "-" + financialYearStart.toString().substring(2, 4) + "-"
+					+ String.format("%02d", currentDate.getMonthValue()) + "-";
+		} else {
+			Year financialYearStart = Year.from(currentDate.minusMonths(currentDate.getMonthValue()));
+			Year financialYearEnd = financialYearStart.plusYears(1);
 
-	            formate1 = financialYearStart.toString().substring(2, 4) + "" + financialYearEnd.toString().substring(2, 4) + "-" +financialYearEnd.toString().substring(2, 4)+ "-"  + String.format("%02d", currentDate.getMonthValue())+"-";
-	        }
-     
-        
-		return "RVSLS "+formate1;
+			formate1 = financialYearStart.toString().substring(2, 4) + "" + financialYearEnd.toString().substring(2, 4)
+					+ "-" + financialYearEnd.toString().substring(2, 4) + "-"
+					+ String.format("%02d", currentDate.getMonthValue()) + "-";
+		}
+
+		return "RVSLS " + formate1;
 	}
-	
+
 }

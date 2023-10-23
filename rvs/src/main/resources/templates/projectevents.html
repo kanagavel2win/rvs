@@ -576,8 +576,8 @@
 												class="btn-close activityMasterformclose"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
-												<h3>Activity Information</h3>
-												<p>Update Activity Basic Information</p>
+												<h3>Schedule an Activity</h3>
+												<p>What Coming Next </p>
 											</div>
 											<form id="activityMasterform" th:object="${activityMaster}"
 												class="wizard-horizontal" onsubmit="return false"
@@ -686,11 +686,24 @@
 															</div>
 														</div>
 													</div>
-													
 
 
-												</div>
+												<div class="col-md-12">
+														<div class="form-group">
+															<label for="addmodel">Note </label><span class="notes-sm">(Note
+																visible only For You)</span>
+															<div class="position-relative  has-icon-left">
+																<fieldset class="form-group">
+																	<textarea class="form-control " rows="4"
+																		th:field="*{notes}" id="notes"
+																		th:value="${activityMaster['notes']}">
+																							</textarea>
 
+																</fieldset>
+															</div>
+														</div>
+
+													</div>
 												<div class="col-md-12">
 													<div class="form-group">
 														<label for="addmodel">Followers</label>
@@ -728,7 +741,7 @@
 									</div>
 								</div>
 							</div>
-
+					</div>
 							<!--/ Edit Activity Modal -->
 
 							<!-- Edit User Modal -->
@@ -2170,10 +2183,28 @@
 					phoneRegionCode : 'US'
 				});
 			}
+			// ------------------------------------------------------------------------------
+			 const flatpickrFriendlystartdate = document.querySelector('#startdate');
+			 // Human Friendly
+			  if (flatpickrFriendlystartdate) {
+				  flatpickrFriendlystartdate.flatpickr({
+			      altInput: true,
+			      altFormat: 'F j, Y',
+			      dateFormat: 'Y-m-d'
+			    });
+			  }
+			// ------------------------------------------------------------------------------
+			  const flatpickrFriendlyenddate = document.querySelector('#enddate');
+				 // Human Friendly
+				  if (flatpickrFriendlyenddate) {
+					  flatpickrFriendlyenddate.flatpickr({
+				      altInput: true,
+				      altFormat: 'F j, Y',
+				      dateFormat: 'Y-m-d'
+				    });
+				  }
 			
-			
-			
-			//--------------------------
+			// ------------------------------------------------------------------------------
 			function editactivity(e){
 				var activityid= e.getAttribute("id").replace("actid","");
 				var phaseid= e.getAttribute("name");

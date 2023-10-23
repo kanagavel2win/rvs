@@ -193,14 +193,14 @@
 											<th>id</th>
 											<th>Title</th>
 											<th>Activity</th>
-											<th>RM</th>
+											<th>Followers</th>
 											<th>Label</th>
-											<th>Source</th>
-											<th>Purpose</th>
+											<th>Source/Purpose</th>
 											<th>Branch</th>
 											<th>Value</th>
 											<th>Lead In</th>
-
+											<th>Lead Days</th>
+											
 										</tr>
 									</thead>
 								</table>
@@ -277,7 +277,7 @@
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="Purpose">Nature of Work</label>
+										<label class="form-label" for="NatureofWork">Nature of Work</label>
 										<div>
 											
 											<select class="form-control" id="NatureofWork"
@@ -301,7 +301,7 @@
 
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="Purpose">Unit</label>
+										<label class="form-label" for="UNITS">Unit</label>
 										<div>
 											
 											<select class="form-control" id="UNITS"
@@ -342,9 +342,7 @@
 
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="Purpose">PURPOSE<label
-											class="emptitle additem" name="addPurposedata"><i
-												class="bx bxs-plus-circle ownstyle1"></i></label></label>
+										<label class="form-label" for="Purpose">PURPOSE</label>
 										<div>
 											
 											<select class="form-control  addPurposedata" id="Purpose"
@@ -359,9 +357,7 @@
 									</div>
 									
 									<div class="col-sm-12">
-										<label class="form-label" for="Source">SOURCE <label
-											class="emptitle additem" name="addsourcedata"><i
-												class="bx bxs-plus-circle ownstyle1"></i></label></label>
+										<label class="form-label" for="Source">SOURCE </label>
 										<div>
 											<select class="form-control  addsourcedata" id="Source"
 												name="Source">
@@ -595,6 +591,9 @@
     $(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	let fv;
+    	$("#Status").val("Open").change();
+    	$("#Purpose").val("Dont Know");
+    	$("#Source").val("Dont Know");
     	
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	// Custom list & inline suggestion
@@ -734,10 +733,10 @@
 			        { data: '' },
 			        { data: 'label' },
 			        { data: 'source' },
-			        { data: 'purpose' },	
 			        { data: 'branchname' },
 			        { data: 'leadvalue' },			        
 			        { data: 'leaddateMMddYYY' },
+			        { data: 'leaddays'}
 			      
 			      ],
 			      columnDefs: [
@@ -845,11 +844,41 @@
 				           	
 				           	 return $row_output;
 				           }
-				         },{
+				         }
+				        ,{
+					           targets:6,
+					           render: function(data, type, full, meta) {
+					           	 		$op="";
+					           	 		if(full['label']=='Hot')
+				           	 			{
+					           	 			$op="<span class='badge bg-danger'>Hot</span>";
+				           	 			}
+						           	 	if(full['label']=='Warm')
+				           	 			{
+						           	 		$op="<span class='badge bg-warning'>Warm</span>";
+				           	 			}
+						           	 	if(full['label']=='Cool')
+				           	 			{
+						           	 		$op="<span class='badge bg-primary'>Cool</span>";
+				           	 			}
+					        	   			
+					        	   			
+					        	   			
+					           	 return 	 $op; 
+					           }
+					     }
+				        ,{
 					           targets:9,
 					           render: function(data, type, full, meta) {
 					           	 
 					           	 return 	  '<a href="editbranch?id='+ full['branch'] +'">'+ full["branchname"] +'</a>'; 
+					           }
+					     }
+				        ,{
+					           targets:7,
+					           render: function(data, type, full, meta) {
+					           	 
+					           	 return full['source'] +" / "+ full["purpose"]; 
 					           }
 					     }
 				         

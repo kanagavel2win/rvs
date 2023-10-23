@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,7 +59,8 @@ public class ActivityMaster {
 	private String description;
 	@Column
 	private String notes;
-	@Column
+	
+	@Column(length = 65555)
 	private String htmlnotes;
 	@Column
 	private String activityfollowers;	

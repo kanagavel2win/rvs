@@ -193,13 +193,13 @@
 											<th>id</th>
 											<th>Title</th>
 											<th>Activity</th>
-											<th>RM</th>
-											<th>Pipeline</th>
-											<th>Source</th>
-											<th>Purpose</th>
+											<th>Followers</th>
+											<th>Label</th>
+											<th>Pipeline/Status</th>
+											<th>Source/Purpose</th>
 											<th>Branch</th>
 											<th>Value</th>
-											<th>Deal In</th>
+											<th>In / Due Date</th>
 
 										</tr>
 									</thead>
@@ -278,7 +278,7 @@
 
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="Purpose">Nature of Work</label>
+										<label class="form-label" for="NatureofWork">Nature of Work</label>
 										<div>
 											
 											<select class="form-control" id="NatureofWork"
@@ -302,7 +302,7 @@
 
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="Purpose">Unit</label>
+										<label class="form-label" for="UNITS">Unit</label>
 										<div>
 											
 											<select class="form-control" id="UNITS"
@@ -604,6 +604,9 @@
     $(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	let fv;
+    	$("#Status").val("Open").change();
+    	$("#Purpose").val("Dont Know");
+    	$("#Source").val("Dont Know");
     	
     	//--------------------------------------------------------------------------------------------------------------------------------------
     	// Custom list & inline suggestion
@@ -743,7 +746,6 @@
 			        { data: '' },
 			        { data: 'pipeline' },
 			        { data: 'source' },
-			        { data: 'purpose' },	
 			        { data: 'branchname' },
 			        { data: 'dealvalue' },			        
 			        { data: 'dealdateMMddYYY' },
@@ -853,11 +855,66 @@
 				           	
 				           	 return $row_output;
 				           }
-				         },{
+				         },
+				         {
+					           targets:6,
+					           render: function(data, type, full, meta) {
+					           	 		$op="";
+					           	 		if(full['label']=='Hot')
+				           	 			{
+					           	 			$op="<span class='badge bg-danger'>Hot</span>";
+				           	 			}
+						           	 	if(full['label']=='Warm')
+				           	 			{
+						           	 		$op="<span class='badge bg-warning'>Warm</span>";
+				           	 			}
+						           	 	if(full['label']=='Cool')
+				           	 			{
+						           	 		$op="<span class='badge bg-primary'>Cool</span>";
+				           	 			}
+					        	   			
+					        	   			
+					        	   			
+					           	 return 	 $op; 
+					           }
+					     },
+				         {
+					           targets:7,
+					           render: function(data, type, full, meta) {
+					           	 
+					           	 return 	   full['pipeline'] +"/ "+ full["status"] +''; 
+					           }
+					     },
+					     {
+					           targets:8,
+					           render: function(data, type, full, meta) {
+					           	 
+					           	 return 	   full['source'] +"/ "+ full["purpose"] +''; 
+					           }
+					     },{
 					           targets:9,
 					           render: function(data, type, full, meta) {
 					           	 
 					           	 return 	  '<a href="editbranch?id='+ full['branch'] +'">'+ full["branchname"] +'</a>'; 
+					           }
+					     },
+					     {
+					           targets:11,
+					           render: function(data, type, full, meta) {
+					        	  let temp1 ="";
+					           	 if(full['dealdateMMddYYY'] == null){
+					           		temp1 ="-/";
+					           	 }else
+					           	 {
+					           		temp1 =full['dealdateMMddYYY'] +"/";
+					           	 }
+					           	if(full['expectedclosingdateMMddYYY'] == null){
+					           		temp1 +="-";
+					           	 }else
+					           	 {
+					           		temp1 +=full['expectedclosingdateMMddYYY'];
+					           	 }
+					           	 return  temp1; 
 					           }
 					     }
 				         

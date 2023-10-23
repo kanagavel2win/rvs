@@ -587,8 +587,8 @@
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
 																				<select id="projectpurchaseType"
-																					name="projectpurchaseType" class="form-select"
-																					aria-label="Default select example" required>
+																					name="projectpurchaseType" class="form-select item-details"
+																					required>
 																					<option value="">-</option>
 																					<option value="Tax Invoice">Tax Invoice</option>
 																					<option value="Proforma Invoice">Proforma
@@ -1743,7 +1743,7 @@
 									           	  
 									           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editpurchaseinfo(this)' id='"+element.projectpurchaseid +"'>"+element.projectpurchaseNo+"</td>";
 									           	 htmlop +="<td class='text-nowrap'>"+element.projectpurchaseType +"</td><td class='text-nowrap'>"+element.projectpurchaseDateMMMddyyyy +"</td><td>"+element.dueDateMMMddyyyy +"</td>";
-									           	 htmlop +="<td>"+sub_total.toFixed(2) +" <i class='bx bx-money  generatenewreceipt' onclick='generatereceipt("+element.projectpurchaseid +")'  ></i></td></tr>";
+									           	 htmlop +="<td>"+sub_total.toFixed(2) +" <i class='bx bx-receipt  generatenewreceipt' onclick='generatereceipt("+element.projectpurchaseid +")'  ></i></td></tr>";
 									           	 total +=parseFloat(sub_total);
 								            });
 											

@@ -1188,7 +1188,7 @@
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$(".NotesMasterformsubmit").click(function() {
-									var htmlnotes = $(".ql-editor").html().trim();
+									var htmlnotes = $(".ql-editor").html().replaceAll("<p><br></p>","").trim();
 									if (htmlnotes != '') {
 										$('.NotesMasterformsubmit').prop("disabled",true);
 										$('.NotesMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');

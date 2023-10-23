@@ -73,6 +73,8 @@
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
 <link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/toastr/toastr.css}" />
 <!-- Page CSS -->
 
 <link rel="stylesheet"
@@ -252,7 +254,7 @@ cursor: pointer;
 
 												<li class="mb-3"><span class="fw-bold me-2">Organization:</span>
 													<span th:text="${dealMaster.OrganizationName}"
-													id="Lbl_organization"></span></li>
+													id="Lbl_organization"></span><hr/></li>
 												<li class="mb-3"><span class="fw-bold me-2">Deal Date:</span>
 													<span th:text="${dealMaster.dealdateMMddYYY}" id="Lbl_dealdateMMddYYY"></span>
 												</li>
@@ -276,7 +278,7 @@ cursor: pointer;
 												</li> -->
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${dealMaster.purpose}" id="Lbl_purpose"></span>
-												</li>
+												<hr/></li>
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
 													<span th:text="${dealMaster.branchname}" id="Lbl_branchname"></span>
 												</li>
@@ -385,14 +387,14 @@ cursor: pointer;
 								<!-- User Pills -->
 								<ul class="nav nav-pills flex-column flex-md-row mb-3">
 									<li class="nav-item"><a class="nav-link active"
-										href="javascript:void(0);"><i class="bx bx-user me-1"></i>Activity</a>
+										href="javascript:void(0);"><i class="bx bx-task me-1"></i>Activity</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
-										th:href="'dealprojectinfo?id='+${dealMaster.id}"><i class='bx bxl-ok-ru'></i>Projects</a>
+										th:href="'dealprojectinfo?id='+${dealMaster.id}"><i class='bx bx-hard-hat'></i>Projects</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'dealattachment?id='+${dealMaster.id}"><i
-											class="bx bx-link me-1"></i>Files</a></li>
+											class="bx bx-folder me-1"></i>Files</a></li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'dealnotes?id='+${dealMaster.id}"><i
 											class='bx bx-notepad'></i>Notes</a></li>
@@ -454,8 +456,8 @@ cursor: pointer;
 												class="btn-close activityMasterformclose"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 											<div class="text-center mb-4">
-												<h3>Activity Information</h3>
-												<p>Update Activity Basic Information</p>
+												<h3>Schedule an Activity</h3>
+												<p>What Coming Next </p>
 											</div>
 											<form id="activityMasterform" th:object="${activityMaster}"
 												class="wizard-horizontal" onsubmit="return false"
@@ -571,7 +573,7 @@ cursor: pointer;
 																<fieldset class="form-group">
 																	<textarea class="form-control " rows="4"
 																		th:field="*{notes}" id="notes"
-																		th:value="${activityMaster['notes']}" required>
+																		th:value="${activityMaster['notes']}">
 																							</textarea>
 
 																</fieldset>
@@ -1120,12 +1122,13 @@ cursor: pointer;
 		<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
 		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
 		<script th:src="@{/assets/js/forms-selects.js}"></script>
+		<script th:src="@{/assets/vendor/libs/toastr/toastr.js}"></script>
 		<!-- Page JS -->
 		<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
 		<script th:src="@{/assets/js/app-user-view.js}"></script>
 		<script th:src="@{/assets/js/app-user-view-account.js}"></script>
 		<script th:src="@{/assets/js/forms-editors.js}"></script>
-
+		<script th:src="@{/assets/js/ui-toasts.js}"></script>
 
 		<script>
 			$(document)
@@ -1299,18 +1302,8 @@ cursor: pointer;
 											url : "activitymarkascompleted",
 											data : formData,
 											success : function(result) {
-												Swal.fire({
-											        title: '',
-											        text: 'Activity Completed',
-											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-											        imageWidth: 400,
-											        imageAlt: 'Custom image',
-											        confirmButtonText: 'Ok',
-											        customClass: {
-											          confirmButton: 'btn btn-primary'
-											        },
-											        buttonsStyling: false
-											      });
+											
+												showtoaster_rvs("","Activity Completed.","success");
 												
 												gettimelinelistCompleted();
 												gettimelinelistNotCompleted();
@@ -1381,19 +1374,8 @@ cursor: pointer;
 															result) {
 														
 														validationactivityeventformreset();
+														showtoaster_rvs("","Your Activity event added.","success");
 														
-														Swal.fire({
-													        title: '',
-													        text: 'Your Activity event added',
-													        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-													        imageWidth: 400,
-													        imageAlt: 'Custom image',
-													        confirmButtonText: 'Ok',
-													        customClass: {
-													          confirmButton: 'btn btn-primary'
-													        },
-													        buttonsStyling: false
-													      });
 														
 														gettimelinelistCompleted();
 														gettimelinelistNotCompleted();
@@ -1908,6 +1890,104 @@ cursor: pointer;
 					      dateFormat: 'Y-m-d'
 					    });
 					  }
+					 
+					  const flatpickrFriendlystartdate = document.querySelector('#startdate');
+						 // Human Friendly
+						  if (flatpickrFriendlystartdate) {
+							  flatpickrFriendlystartdate.flatpickr({
+						      altInput: true,
+						      altFormat: 'F j, Y',
+						      dateFormat: 'Y-m-d'
+						    });
+						  }
+						  const flatpickrFriendlyenddate = document.querySelector('#enddate');
+							 // Human Friendly
+							  if (flatpickrFriendlyenddate) {
+								  flatpickrFriendlyenddate.flatpickr({
+							      altInput: true,
+							      altFormat: 'F j, Y',
+							      dateFormat: 'Y-m-d'
+							    });
+							  }
+					//------------------------------------------------------
+						var toastCount = 0;
+						function showtoaster_rvs(title,msg,msgtype){
+							    var shortCutFunction = msgtype,
+							      isRtl = $('html').attr('dir') === 'rtl',
+							      msg = msg,
+							      title = title || '',
+							      $showDuration = 300,
+							      $hideDuration = 300,
+							      $timeOut = 5000,
+							      $extendedTimeOut =1000,
+							      $showEasing = 'swing',
+							      $hideEasing = 'linear',
+							      $showMethod = 'fadeIn',
+							      $hideMethod = 'fadeOut',
+							      toastIndex = toastCount++,
+							      addClear = true,
+							      prePositionClass = 'toast-top-right';
+							
+							    prePositionClass =
+							      typeof toastr.options.positionClass === 'undefined' ? 'toast-top-right' : toastr.options.positionClass;
+							
+							    toastr.options = {
+							      maxOpened: 1,
+							      autoDismiss: true,
+							      closeButton: true,
+							      debug: false,
+							      newestOnTop:false,
+							      progressBar:true,
+							      positionClass: 'toast-top-right',
+							      preventDuplicates:false,
+							      onclick: null,
+							      rtl: isRtl
+							    };
+							
+							    
+							
+							  
+							    if ($showDuration.length) {
+							      toastr.options.showDuration = parseInt($showDuration);
+							    }
+							    if ($hideDuration.length) {
+							      toastr.options.hideDuration = parseInt($hideDuration);
+							    }
+							    if ($timeOut.length) {
+							      toastr.options.timeOut = addClear ? 0 : parseInt($timeOut);
+							    }
+							    if ($extendedTimeOut.length) {
+							      toastr.options.extendedTimeOut = addClear ? 0 : parseInt($extendedTimeOut);
+							    }
+							    if ($showEasing.length) {
+							      toastr.options.showEasing = $showEasing;
+							    }
+							    if ($hideEasing.length) {
+							      toastr.options.hideEasing = $hideEasing;
+							    }
+							    if ($showMethod.length) {
+							      toastr.options.showMethod = $showMethod;
+							    }
+							    if ($hideMethod.length) {
+							      toastr.options.hideMethod = $hideMethod;
+							    }
+							    
+							    var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
+							    $toastlast = $toast;
+							    if (typeof $toast === 'undefined') {
+							      return;
+							    }
+							    
+							    if ($toast.find('.clear').length) {
+							      $toast.delegate('.clear', 'click', function () {
+							        toastr.clear($toast, {
+							          force: true
+							        });
+							      });
+							    }
+							  }
+						//------------------------------------------------------
+						
 		</script>
 </body>
 </html>

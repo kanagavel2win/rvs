@@ -73,6 +73,8 @@
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
 <link rel="stylesheet" th:href="@{/assets/vendor/libs/quill/editor.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/toastr/toastr.css}" />
 <!-- Page CSS -->
 
 <link rel="stylesheet"
@@ -252,6 +254,7 @@ cursor: pointer;
 													id="Lbl_organization"></span></li>
 												<li class="mb-3"><span class="fw-bold me-2">Lead Date:</span>
 													<span th:text="${leadMaster.leaddateMMddYYY}" id="Lbl_leaddateMMddYYY"></span>
+												<hr/>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Nature Of Work:</span>
 													<span th:text="${leadMaster.NatureofWork}" id="Lbl_NatureofWork"></span>
@@ -268,11 +271,10 @@ cursor: pointer;
 												<li class="mb-3"><span class="fw-bold me-2">T.Date:</span>
 													<span th:text="${leadMaster.tdateMMddYYY}" id="Lbl_tdate"></span>
 												</li>
-												<li class="mb-3"><span class="fw-bold me-2">T.Estimate:</span>
-													<span th:text="${leadMaster.purpose}" id="Lbl_projectvalue"></span>
-												</li>
+												
 												<li class="mb-3"><span class="fw-bold me-2">Purpose:</span>
 													<span th:text="${leadMaster.purpose}" id="Lbl_purpose"></span>
+												<hr/>
 												</li>
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
 													<span th:text="${leadMaster.branchname}" id="Lbl_branchname"></span>
@@ -380,11 +382,11 @@ cursor: pointer;
 								<!-- User Pills -->
 								<ul class="nav nav-pills flex-column flex-md-row mb-3">
 									<li class="nav-item"><a class="nav-link"
-										th:href="'leadview?id='+${leadMaster.id}"><i class="bx bx-user me-1"></i>Activity</a>
+										th:href="'leadview?id='+${leadMaster.id}"><i class="bx bx-task me-1"></i>Activity</a>
 									</li>
 									<li class="nav-item"><a class="nav-link"
 										th:href="'leadattachment?id='+${leadMaster.id}"><i
-											class="bx bx-link me-1"></i>Files</a></li>
+											class="bx bx-folder me-1"></i>Files</a></li>
 									<li class="nav-item"><a class="nav-link active"
 										href="javascript:void(0);"><i
 											class="bx bx-notepad me-1"></i>Notes</a></li>
@@ -916,11 +918,13 @@ cursor: pointer;
 		<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
 		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
 		<script th:src="@{/assets/js/forms-selects.js}"></script>
+		<script th:src="@{/assets/vendor/libs/toastr/toastr.js}"></script>
 		<!-- Page JS -->
 		<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
 		<script th:src="@{/assets/js/app-user-view.js}"></script>
 		<script th:src="@{/assets/js/app-user-view-account.js}"></script>
 		<script th:src="@{/assets/js/forms-editors.js}"></script>
+		<script th:src="@{/assets/js/ui-toasts.js}"></script>
 
 
 		<script>
@@ -1071,19 +1075,7 @@ cursor: pointer;
 											url : "activitymarkascompleted",
 											data : formData,
 											success : function(result) {
-												Swal.fire({
-											        title: '',
-											        text: 'Activity Completed',
-											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-											        imageWidth: 400,
-											        imageAlt: 'Custom image',
-											        confirmButtonText: 'Ok',
-											        customClass: {
-											          confirmButton: 'btn btn-primary'
-											        },
-											        buttonsStyling: false
-											      });
-												
+												showtoaster_rvs("","Activity Completed.","success");
 												gettimelinelistCompleted();
 												gettimelinelistNotCompleted();
 											},
@@ -1109,7 +1101,7 @@ cursor: pointer;
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$(".NotesMasterformsubmit").click(function() {
-									var htmlnotes = $(".ql-editor").html().trim();
+									var htmlnotes = $(".ql-editor").html().replaceAll("<p><br></p>","").trim();
 									if (htmlnotes != '') {
 										$('.NotesMasterformsubmit').prop("disabled",true);
 										$('.NotesMasterformsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
@@ -1152,18 +1144,7 @@ cursor: pointer;
 													result) {
 												
 												validationactivitynotesformreset();
-												Swal.fire({
-											        title: '',
-											        text: 'Your notes added',
-											        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-											        imageWidth: 400,
-											        imageAlt: 'Custom image',
-											        confirmButtonText: 'Ok',
-											        customClass: {
-											          confirmButton: 'btn btn-primary'
-											        },
-											        buttonsStyling: false
-											      });
+												showtoaster_rvs("","Your notes added.","success");
 												
 												gettimelinelistCompleted();
 												
@@ -1664,6 +1645,86 @@ cursor: pointer;
 					      dateFormat: 'Y-m-d'
 					    });
 					  }
+					 
+					//------------------------------------------------------
+						var toastCount = 0;
+						function showtoaster_rvs(title,msg,msgtype){
+							    var shortCutFunction = msgtype,
+							      isRtl = $('html').attr('dir') === 'rtl',
+							      msg = msg,
+							      title = title || '',
+							      $showDuration = 300,
+							      $hideDuration = 300,
+							      $timeOut = 5000,
+							      $extendedTimeOut =1000,
+							      $showEasing = 'swing',
+							      $hideEasing = 'linear',
+							      $showMethod = 'fadeIn',
+							      $hideMethod = 'fadeOut',
+							      toastIndex = toastCount++,
+							      addClear = true,
+							      prePositionClass = 'toast-top-right';
+							
+							    prePositionClass =
+							      typeof toastr.options.positionClass === 'undefined' ? 'toast-top-right' : toastr.options.positionClass;
+							
+							    toastr.options = {
+							      maxOpened: 1,
+							      autoDismiss: true,
+							      closeButton: true,
+							      debug: false,
+							      newestOnTop:false,
+							      progressBar:true,
+							      positionClass: 'toast-top-right',
+							      preventDuplicates:false,
+							      onclick: null,
+							      rtl: isRtl
+							    };
+							
+							    
+							
+							  
+							    if ($showDuration.length) {
+							      toastr.options.showDuration = parseInt($showDuration);
+							    }
+							    if ($hideDuration.length) {
+							      toastr.options.hideDuration = parseInt($hideDuration);
+							    }
+							    if ($timeOut.length) {
+							      toastr.options.timeOut = addClear ? 0 : parseInt($timeOut);
+							    }
+							    if ($extendedTimeOut.length) {
+							      toastr.options.extendedTimeOut = addClear ? 0 : parseInt($extendedTimeOut);
+							    }
+							    if ($showEasing.length) {
+							      toastr.options.showEasing = $showEasing;
+							    }
+							    if ($hideEasing.length) {
+							      toastr.options.hideEasing = $hideEasing;
+							    }
+							    if ($showMethod.length) {
+							      toastr.options.showMethod = $showMethod;
+							    }
+							    if ($hideMethod.length) {
+							      toastr.options.hideMethod = $hideMethod;
+							    }
+							    
+							    var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
+							    $toastlast = $toast;
+							    if (typeof $toast === 'undefined') {
+							      return;
+							    }
+							    
+							    if ($toast.find('.clear').length) {
+							      $toast.delegate('.clear', 'click', function () {
+							        toastr.clear($toast, {
+							          force: true
+							        });
+							      });
+							    }
+							  }
+						//------------------------------------------------------
+						
 		</script>
 </body>
 </html>

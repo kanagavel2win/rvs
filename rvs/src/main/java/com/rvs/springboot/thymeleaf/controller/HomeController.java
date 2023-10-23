@@ -1698,6 +1698,9 @@ public class HomeController {
 						.collect(Collectors.toList()));
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
+		theModel.addAttribute("ActiveStaffcount", branchMasterService.getemployeeActivecount(branchid));
+		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
+				
 		return "branchadd";
 	}
 
@@ -1793,7 +1796,9 @@ public class HomeController {
 		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses_objectlist());
 		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
 				.filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
-
+		theModel.addAttribute("ActiveStaffcount", branchMasterService.getemployeeActivecount(branchid));
+		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
+		
 		return "branchexpense";
 	}
 
@@ -2736,11 +2741,14 @@ public class HomeController {
 		EmployeeMaster employeemasternew = new EmployeeMaster();
 		employeemasternew = employeeMasterService.findById(empid);
 		// DOB MM DD format
-		try {
-			employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
-					.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
-		} catch (ParseException e) {
-			e.printStackTrace();
+		if (!nullremover(String.valueOf(employeemasternew.getDateofBirth())).equalsIgnoreCase("")) {
+			try {
+
+				employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 
 		if (employeemasternew.getEmployeeAccNo().size() == 0) {
@@ -6391,13 +6399,14 @@ public class HomeController {
 
 				long timeDiff;
 				try {
-					timeDiff = Math.abs(displaydateFormatrev.parse(tmp1obj.getLeadDate()).getTime() - new Date().getTime());
+					timeDiff = Math
+							.abs(displaydateFormatrev.parse(tmp1obj.getLeadDate()).getTime() - new Date().getTime());
 					long daysDiff = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
 					tmp1obj.setLeaddays(daysDiff + "");
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 
 			// ----------------------------------------------------------------------------------------------------
@@ -6485,13 +6494,13 @@ public class HomeController {
 			if (!nullremover(String.valueOf(tmp1obj.getTdate())).equalsIgnoreCase("")) {
 
 				try {
-					tmp1obj.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(tmp1obj.getTdate())).toString());
+					tmp1obj.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(tmp1obj.getTdate())).toString());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 			}
-			
-			
+
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			dealmasterls.add(tmp1obj);

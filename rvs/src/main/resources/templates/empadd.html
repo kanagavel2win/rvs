@@ -156,7 +156,7 @@
 																th:text="${employeemaster.t_branch_name}"></th:block></li>
 														<li class="list-inline-item fw-semibold"><i
 															class="bx bx-calendar-alt"></i> <th:block
-																th:text="'Joined '+ ${employeemaster.t_joindateMMformat}"></th:block>
+																th:text="'Experience '+ ${employeemaster.t_joindatetimeline}"></th:block>
 														</li>
 													</ul>
 												</div>
@@ -304,7 +304,7 @@
 															</div>
 															<div class="d-flex flex-column text-start text-lg-end">
 																<div class="d-flex order-sm-0 order-1 mt-3">
-																	<button
+																	<button th:unless="${contactObj.primarycontact}"
 																		class="btn btn-label-secondary contactdeletebtn"
 																		th:name="${contactObj.employeecontactid}">
 																		<i class='bx bxs-trash-alt'></i>

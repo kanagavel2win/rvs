@@ -68,7 +68,7 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css}" />
     <!-- Form Validation -->
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
-
+	<link rel="stylesheet"	th:href="@{/assets/vendor/libs/toastr/toastr.css}" />
 
     <!-- Page CSS -->
 
@@ -343,10 +343,11 @@
 
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
-
+	<script th:src="@{/assets/vendor/libs/toastr/toastr.js}"></script>
     <!-- Page JS -->
     <!-- <script th:src="@{/assets/js/tables-datatables-basic.js}"></script> -->
     <script th:src="@{/assets/js/form-validation.js}"></script> 
+    <script th:src="@{/assets/js/ui-toasts.js}"></script>
     <script>
     $(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------
@@ -691,18 +692,8 @@
 						type : "POST",url : "employeesavejson",
 						data : formData, success : function(result) {
 							validationformreset();
-							Swal.fire({
-						        title: 'Congratulations!',
-						        text: 'New Employee is Added Successfully',
-						        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
-						        imageWidth: 400,
-						        imageAlt: 'Custom image',
-						        confirmButtonText: 'Welcome',
-						        customClass: {
-						          confirmButton: 'btn btn-primary'
-						        },
-						        buttonsStyling: false
-						      });
+							showtoaster_rvs("","New Employee is Added","success");
+						
 							
 							$('.datatables-basic').DataTable().ajax.reload();
 							
@@ -754,6 +745,85 @@
 	      });
 	    }
 	    
+	  //------------------------------------------------------
+		var toastCount = 0;
+		function showtoaster_rvs(title,msg,msgtype){
+			    var shortCutFunction = msgtype,
+			      isRtl = $('html').attr('dir') === 'rtl',
+			      msg = msg,
+			      title = title || '',
+			      $showDuration = 300,
+			      $hideDuration = 300,
+			      $timeOut = 5000,
+			      $extendedTimeOut =1000,
+			      $showEasing = 'swing',
+			      $hideEasing = 'linear',
+			      $showMethod = 'fadeIn',
+			      $hideMethod = 'fadeOut',
+			      toastIndex = toastCount++,
+			      addClear = true,
+			      prePositionClass = 'toast-top-right';
+			
+			    prePositionClass =
+			      typeof toastr.options.positionClass === 'undefined' ? 'toast-top-right' : toastr.options.positionClass;
+			
+			    toastr.options = {
+			      maxOpened: 1,
+			      autoDismiss: true,
+			      closeButton: true,
+			      debug: false,
+			      newestOnTop:false,
+			      progressBar:true,
+			      positionClass: 'toast-top-right',
+			      preventDuplicates:false,
+			      onclick: null,
+			      rtl: isRtl
+			    };
+			
+			    
+			
+			  
+			    if ($showDuration.length) {
+			      toastr.options.showDuration = parseInt($showDuration);
+			    }
+			    if ($hideDuration.length) {
+			      toastr.options.hideDuration = parseInt($hideDuration);
+			    }
+			    if ($timeOut.length) {
+			      toastr.options.timeOut = addClear ? 0 : parseInt($timeOut);
+			    }
+			    if ($extendedTimeOut.length) {
+			      toastr.options.extendedTimeOut = addClear ? 0 : parseInt($extendedTimeOut);
+			    }
+			    if ($showEasing.length) {
+			      toastr.options.showEasing = $showEasing;
+			    }
+			    if ($hideEasing.length) {
+			      toastr.options.hideEasing = $hideEasing;
+			    }
+			    if ($showMethod.length) {
+			      toastr.options.showMethod = $showMethod;
+			    }
+			    if ($hideMethod.length) {
+			      toastr.options.hideMethod = $hideMethod;
+			    }
+			    
+			    var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
+			    $toastlast = $toast;
+			    if (typeof $toast === 'undefined') {
+			      return;
+			    }
+			    
+			    if ($toast.find('.clear').length) {
+			      $toast.delegate('.clear', 'click', function () {
+			        toastr.clear($toast, {
+			          force: true
+			        });
+			      });
+			    }
+			  }
+		//------------------------------------------------------
+		
     </script>
   </body>
 </html>

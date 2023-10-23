@@ -1,6 +1,7 @@
 package com.rvs.springboot.thymeleaf.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 
@@ -16,4 +17,8 @@ public interface BranchMasterService {
 	public int insertbranchAccountdetails(int acid, String acno,String acname , String bankname,String branchname,String ifsccode, int branchid);
 	public int insertbranchFiles(String DocumentType,String DocumentNo , String FilePath, int branchid);
 	public int deletebranchFiles(int id);
+	
+	public int    getemployeeActivecount(int branchid);
+	
 }
+   

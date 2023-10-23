@@ -3,9 +3,11 @@ package com.rvs.springboot.thymeleaf.service;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -108,6 +110,18 @@ public class BranchMasterImp implements BranchMasterService {
 		String sql="UPDATE `branch_acc_no` SET `acname`='"+ acname + "',`acno`='"+ acno + "',`bankname`='"+ bankname + "',`branchname`='"+ branchname + "',`ifsccode`='"+ ifsccode + "',`branchid`='"+ branchid + "' WHERE branch_accnoid="+  acid;
 		return jdbcTemplate.update(sql);
 		
+	}
+
+	@Override
+	public int  getemployeeActivecount(int branchid) {
+		int result = 0;
+		try {			result = jdbcTemplate.queryForObject( "select count(*) as empcount from (select max(empjob.jobeffectivedate),empjob.employeeid,empjob.joblocation from rvsland_cms.employeejobinfo as empjob  group by employeeid,joblocation) t1 where joblocation="+branchid,Integer.class);
+
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 		
 	

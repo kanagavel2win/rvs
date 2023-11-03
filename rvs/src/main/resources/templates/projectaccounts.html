@@ -2332,7 +2332,7 @@
 							$("#duedatetxt").text(bmobj.duedate);
 							$("#invoiceamounttxt").text(bmobj.amount);
 							$("#invoicetotalpaidNotxt").text(bmobj.totalpaidamount);
-							$("#invoiceBalancetxt").text(bmobj.balanceamount);
+							$("#invoiceBalancetxt").text((bmobj.balanceamount).toFixed(2));
 							$("#recinvoiceid").val(bmobj.invoiceid);
 							
 							$('#receiptmodel').modal('show');
@@ -2417,8 +2417,8 @@
 				//-------------------------------------------------
 				
 			
-				$('#totalamount').text((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(2));
-				$('#totalamtwithouttax').text(totalamtwithouttax.toFixed(2));
+				$('#totalamount').text((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(0));
+				$('#totalamtwithouttax').text((totalamtwithouttax+Discountamt).toFixed(0));
 				
 				
 									
@@ -2493,7 +2493,7 @@
 											$("#duedatetxt").text(bmobj.duedate);
 											$("#invoiceamounttxt").text(bmobj.amount);
 											$("#invoicetotalpaidNotxt").text(bmobj.totalpaidamount);
-											$("#invoiceBalancetxt").text(bmobj.balanceamount);
+											$("#invoiceBalancetxt").text((bmobj.balanceamount).toFixed(2));
 											$("#recinvoiceid").val(bmobj.invoiceid);
 											
 											$('#receiptmodel').modal('show');

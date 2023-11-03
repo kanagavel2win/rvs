@@ -747,8 +747,8 @@
 			        { data: 'pipeline' },
 			        { data: 'source' },
 			        { data: 'branchname' },
-			        { data: 'dealvalue' },			        
-			        { data: 'dealdateMMddYYY' },
+			        { data: '' },			        
+			        { data: 'dealvalue' },
 			      
 			      ],
 			      columnDefs: [
@@ -898,6 +898,7 @@
 					           	 return 	  '<a href="editbranch?id='+ full['branch'] +'">'+ full["branchname"] +'</a>'; 
 					           }
 					     },
+					     
 					     {
 					           targets:11,
 					           render: function(data, type, full, meta) {

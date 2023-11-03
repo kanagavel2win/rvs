@@ -1795,7 +1795,7 @@ public class HomeController {
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses_objectlist());
 		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
-				.filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
+				.filter(C -> C.getAssetType().trim().equalsIgnoreCase("Vehicle")).collect(Collectors.toList()));
 		theModel.addAttribute("ActiveStaffcount", branchMasterService.getemployeeActivecount(branchid));
 		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
 		
@@ -11776,7 +11776,7 @@ public class HomeController {
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 
 		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
-				.filter(C -> C.getAssetType().equalsIgnoreCase("Vehicles")).collect(Collectors.toList()));
+				.filter(C -> C.getAssetType().trim().equalsIgnoreCase("Vehicle")).collect(Collectors.toList()));
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses_objectlist());
 		return "projectexpense1";
@@ -12320,7 +12320,7 @@ public class HomeController {
 						.format(displaydateFormatrev.parse(obj.getPrjExpenseDate())).toString());
 
 				obj.setStaffname(emplist.stream()
-						.filter(C -> C.getEmpMasterid() == Integer.parseInt(params.get("mastercategoryid")))
+						.filter(C -> C.getEmpMasterid() == Integer.parseInt(obj.getStaff()))
 
 						.collect(Collectors.toList()).get(0).getStaffName());
 				obj.setCategory_name(accountheadsService.findById(Integer.parseInt(obj.getCategory())).getCategory());

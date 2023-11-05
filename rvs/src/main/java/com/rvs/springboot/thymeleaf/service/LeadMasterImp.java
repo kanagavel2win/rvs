@@ -2,6 +2,7 @@ package com.rvs.springboot.thymeleaf.service;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.LeadMasterRepository;
 import com.rvs.springboot.thymeleaf.entity.LeadMaster;
+import com.rvs.springboot.thymeleaf.entity.LeadMaster;
+import com.rvs.springboot.thymeleaf.entity.LeadMaster;
+import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 
 @Service
 public class LeadMasterImp implements LeadMasterService {
@@ -34,7 +38,14 @@ public class LeadMasterImp implements LeadMasterService {
 		LeadMaster bm = null;
 
 		if (obj.isPresent()) {
-			bm = obj.get();
+			
+			
+			// ----- Object Validation------------------
+			Optional<LeadMaster> privillageObject = privillageValidation(obj);
+			if (privillageObject.isPresent()) {
+				bm = privillageObject.get();
+			}
+			
 		} else {
 			throw new RuntimeException("Did find any records of leadMaster id " + id);
 		}
@@ -44,7 +55,16 @@ public class LeadMasterImp implements LeadMasterService {
 	@Override
 	public List<LeadMaster> findAll() {
 
-		return leadMasterRepo.findAll();
+		List<LeadMaster> ls = new ArrayList<>();
+		for (LeadMaster as : leadMasterRepo.findAll()) {
+			// ----- Object Validation------------------
+			Optional<LeadMaster> privillageObject = privillageValidation(Optional.of(as));
+			if (privillageObject.isPresent()) {
+				ls.add(privillageObject.get());
+			}
+		}
+
+		return ls;
 	}
 
 	@Override
@@ -96,4 +116,11 @@ public class LeadMasterImp implements LeadMasterService {
 		return jdbcTemplate.update(sql);
 	}
 
+	private Optional<LeadMaster> privillageValidation(Optional<LeadMaster> obj) {
+
+		if (emppojoPrivillage.allowBranches.contains(obj.get().getBranch())) {
+			return obj;
+		}
+		return null;
+	}
 }

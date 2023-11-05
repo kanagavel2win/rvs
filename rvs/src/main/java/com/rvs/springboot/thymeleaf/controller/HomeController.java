@@ -97,6 +97,7 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeJobempstatus;
 import com.rvs.springboot.thymeleaf.entity.EmployeeJobinfo;
 import com.rvs.springboot.thymeleaf.entity.EmployeeLanguage;
 import com.rvs.springboot.thymeleaf.entity.EmployeeMaster;
+import com.rvs.springboot.thymeleaf.entity.EmployeePrivillage;
 import com.rvs.springboot.thymeleaf.entity.HireMaster;
 import com.rvs.springboot.thymeleaf.entity.HireMasterQuestions;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
@@ -135,6 +136,7 @@ import com.rvs.springboot.thymeleaf.entity.ProjectpurchaseMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchasePaymentMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
+import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
 import com.rvs.springboot.thymeleaf.pojo.springtest;
 import com.rvs.springboot.thymeleaf.pojo.tagify;
@@ -264,6 +266,7 @@ public class HomeController {
 		String dataLoginEmpName = "";
 		String dataLoginrole = "";
 		String dataLoginEmpprofiileimg = "";
+		List<EmployeePrivillage> dataemployeePrivillage = new ArrayList<>();
 		try {
 
 			try {
@@ -279,17 +282,22 @@ public class HomeController {
 				if (request.getSession().getAttribute("dataLoginEmpprofiileimg").toString().equals(null)) {
 					request.getSession().setAttribute("dataLoginEmpprofiileimg", getdataLoginEmpprofiileimg());
 				}
+				if (request.getSession().getAttribute("dataLoginEmppprivillage").toString().equals(null)) {
+					request.getSession().setAttribute("dataLoginEmppprivillage", getdataLoginEmppprivillage());
+				}
 			} catch (NullPointerException e) {
 				request.getSession().setAttribute("dataLoginEmpID", getLoginempID());
 				request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
 				request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
 				request.getSession().setAttribute("dataLoginEmpprofiileimg", getdataLoginEmpprofiileimg());
+				request.getSession().setAttribute("dataLoginEmppprivillage", getdataLoginEmppprivillage());
 			}
 
 			dataLoginEmpID = request.getSession().getAttribute("dataLoginEmpID").toString();
 			dataLoginEmpName = request.getSession().getAttribute("dataLoginEmpName").toString();
 			dataLoginrole = request.getSession().getAttribute("dataLoginrole").toString();
 			dataLoginEmpprofiileimg = request.getSession().getAttribute("dataLoginEmpprofiileimg").toString();
+			dataemployeePrivillage=(List<EmployeePrivillage>) request.getSession().getAttribute("dataLoginEmppprivillage");
 		} catch (Exception e) {
 
 		} finally {
@@ -297,7 +305,7 @@ public class HomeController {
 			themodel.addAttribute("dataLoginEmpName", dataLoginEmpName);
 			themodel.addAttribute("dataLoginrole", dataLoginrole);
 			themodel.addAttribute("dataLoginEmpprofiileimg", dataLoginEmpprofiileimg);
-
+			themodel.addAttribute("dataLoginemployeePrivillage", dataemployeePrivillage);
 		}
 
 	}
@@ -392,6 +400,18 @@ public class HomeController {
 		}
 
 		return profilephoto;
+	}
+
+	public List<EmployeePrivillage> getdataLoginEmppprivillage() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
+		
+		emppojoPrivillage.allowBranches.clear();
+		 for(EmployeePrivillage priObj: obj.getEmployeePrivillage()) {
+			 emppojoPrivillage.allowBranches.add(priObj.getBranchid());
+		 }
+		
+		return obj.getEmployeePrivillage();
 	}
 
 	@GetMapping("login")
@@ -1699,8 +1719,9 @@ public class HomeController {
 		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
 		theModel.addAttribute("ActiveStaffcount", branchMasterService.getemployeeActivecount(branchid));
-		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
-				
+		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream()
+				.filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
+
 		return "branchadd";
 	}
 
@@ -1797,8 +1818,9 @@ public class HomeController {
 		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
 				.filter(C -> C.getAssetType().trim().equalsIgnoreCase("Vehicle")).collect(Collectors.toList()));
 		theModel.addAttribute("ActiveStaffcount", branchMasterService.getemployeeActivecount(branchid));
-		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream().filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
-		
+		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream()
+				.filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
+
 		return "branchexpense";
 	}
 
@@ -12319,8 +12341,7 @@ public class HomeController {
 				obj.setPrjExpenseDateMMMddyyyy(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(obj.getPrjExpenseDate())).toString());
 
-				obj.setStaffname(emplist.stream()
-						.filter(C -> C.getEmpMasterid() == Integer.parseInt(obj.getStaff()))
+				obj.setStaffname(emplist.stream().filter(C -> C.getEmpMasterid() == Integer.parseInt(obj.getStaff()))
 
 						.collect(Collectors.toList()).get(0).getStaffName());
 				obj.setCategory_name(accountheadsService.findById(Integer.parseInt(obj.getCategory())).getCategory());

@@ -2,6 +2,7 @@ package com.rvs.springboot.thymeleaf.service;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.ContactOrganizationRepository;
 import com.rvs.springboot.thymeleaf.entity.OrganizationContacts;
+import com.rvs.springboot.thymeleaf.entity.OrganizationContacts;
+import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 
 @Service
 public class ContactOrganizationImp implements ContactOrganizationService {
@@ -36,8 +39,12 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 		OrganizationContacts bm=null;
 		
 		if(obj.isPresent())
-		{	
-			bm=obj.get();
+		{	//-----  Object Validation------------------
+			Optional<OrganizationContacts> privillageObject=	privillageValidation(obj);
+			if (privillageObject.isPresent()) {
+				bm=privillageObject.get();
+			}
+
 		}else
 		{
 			throw new RuntimeException("Did find any records of contactOrganization id "+ id);
@@ -48,7 +55,17 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 	@Override
 	public List<OrganizationContacts> findAll() {
 		
-		return contactOrganizationRepo.findAll();
+		 List<OrganizationContacts> ls = new ArrayList<>();
+		 for(OrganizationContacts as : contactOrganizationRepo.findAll())
+		 {
+			//-----  Object Validation------------------
+				Optional<OrganizationContacts> privillageObject=	privillageValidation(Optional.of(as));
+				if (privillageObject.isPresent()) {
+					ls.add(privillageObject.get());
+				}
+		 }
+		 
+		return ls;
 	}
 
 	@Override
@@ -122,4 +139,11 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 		
 	}
 		
+	private Optional<OrganizationContacts> privillageValidation(Optional<OrganizationContacts> obj) {
+		
+		if(emppojoPrivillage.allowBranches.contains(obj.get().getBranchid())) {
+			return obj;	
+		}
+		return null;
+	}
 }

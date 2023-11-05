@@ -2,6 +2,7 @@ package com.rvs.springboot.thymeleaf.service;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.AssetMasterRepository;
 import com.rvs.springboot.thymeleaf.entity.AssetMaster;
+import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 
 @Service
 public class AssetMasterImp implements AssetMasterService {
@@ -36,7 +38,12 @@ public class AssetMasterImp implements AssetMasterService {
 		AssetMaster bm = null;
 
 		if (obj.isPresent()) {
-			bm = obj.get();
+			//-----  Object Validation------------------
+			Optional<AssetMaster> privillageObject=	privillageValidation(obj);
+			if (privillageObject.isPresent()) {
+				bm=privillageObject.get();
+			}
+			
 		} else {
 			throw new RuntimeException("Did find any records of Asset id " + id);
 		}
@@ -46,7 +53,16 @@ public class AssetMasterImp implements AssetMasterService {
 	@Override
 	public List<AssetMaster> findAll() {
 
-		return assetRepo.findAll();
+		 List<AssetMaster> ls = new ArrayList<>();
+		 for(AssetMaster as : assetRepo.findAll())
+		 {
+			//-----  Object Validation------------------
+				Optional<AssetMaster> privillageObject=	privillageValidation(Optional.of(as));
+				if (privillageObject.isPresent()) {
+					ls.add(privillageObject.get());
+				}
+		 }
+		return ls;
 	}
 
 	@Override
@@ -103,7 +119,25 @@ public class AssetMasterImp implements AssetMasterService {
 	@Override
 	public List<AssetMaster> findByManyassetIds(List<Integer> assetidlist) {
 	
-		return assetRepo.findByManyassetIds(assetidlist);
+		 List<AssetMaster> ls = new ArrayList<>();
+		 for(AssetMaster as : assetRepo.findByManyassetIds(assetidlist))
+		 {
+			//-----  Object Validation------------------
+				Optional<AssetMaster> privillageObject=	privillageValidation(Optional.of(as));
+				if (privillageObject.isPresent()) {
+					ls.add(privillageObject.get());
+				}
+		 }
+		 
+		return ls;
+	}
+	
+	private Optional<AssetMaster> privillageValidation(Optional<AssetMaster> obj) {
+		
+		if(emppojoPrivillage.allowBranches.contains(Integer.parseInt(obj.get().getBranch()))) {
+			return obj;	
+		}
+		return null;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.rvs.springboot.thymeleaf.service;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.ProjectMasterRepository;
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
+import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 
 @Service
 @Transactional
@@ -24,8 +26,7 @@ public class ProjectMasterImp implements ProjectMasterService {
 	ProjectMasterRepository projectMasterRepo;
 	@Autowired
 	private JdbcTemplate JdbcTemplate;
-	
-	
+
 	@Override
 	public ProjectMaster save(ProjectMaster obj) {
 		return projectMasterRepo.save(obj);
@@ -33,24 +34,36 @@ public class ProjectMasterImp implements ProjectMasterService {
 
 	@Override
 	public ProjectMaster findById(Integer id) {
-		Optional<ProjectMaster> obj=projectMasterRepo.findById(id);
-		
-		ProjectMaster bm=null;
-		
-		if(obj.isPresent())
-		{	
-			bm=obj.get();
-		}else
-		{
-			throw new RuntimeException("Did find any records of projectMaster id "+ id);
+		Optional<ProjectMaster> obj = projectMasterRepo.findById(id);
+
+		ProjectMaster bm = null;
+
+		if (obj.isPresent()) {
+			// ----- Object Validation------------------
+			Optional<ProjectMaster> privillageObject = privillageValidation(obj);
+			if (privillageObject.isPresent()) {
+				bm = privillageObject.get();
+			}
+
+		} else {
+			throw new RuntimeException("Did find any records of projectMaster id " + id);
 		}
 		return bm;
 	}
 
 	@Override
 	public List<ProjectMaster> findAll() {
-		
-		return projectMasterRepo.findAll();
+
+		List<ProjectMaster> ls = new ArrayList<>();
+		for (ProjectMaster as : projectMasterRepo.findAll()) {
+			// ----- Object Validation------------------
+			Optional<ProjectMaster> privillageObject = privillageValidation(Optional.of(as));
+			if (privillageObject.isPresent()) {
+				ls.add(privillageObject.get());
+			}
+		}
+
+		return ls;
 	}
 
 	@Override
@@ -59,63 +72,61 @@ public class ProjectMasterImp implements ProjectMasterService {
 	}
 
 	@Override
-	public void updatepipeline(String str,String pipeline, String notes) {
-		
+	public void updatepipeline(String str, String pipeline, String notes) {
+
 		String sql = "";
-		if(notes.equalsIgnoreCase(""))
-		{
-			sql = "update projectmaster set pipeline ='" + pipeline +"'  where id in ("+ str +")";
-		}else
-		{
-			sql = "update projectmaster set pipeline ='" + pipeline +"', lossbacktoleadreason= '"+ notes.trim() + "'  where id in ("+ str +")";
+		if (notes.equalsIgnoreCase("")) {
+			sql = "update projectmaster set pipeline ='" + pipeline + "'  where id in (" + str + ")";
+		} else {
+			sql = "update projectmaster set pipeline ='" + pipeline + "', lossbacktoleadreason= '" + notes.trim()
+					+ "'  where id in (" + str + ")";
 		}
-		
+
 		JdbcTemplate.execute(sql);
-		
+
 	}
 
 	@Override
 	public List<String> getStateAll() {
-		
-		String sql="select distinct(State) from statedistrict";
-		return JdbcTemplate.queryForList(sql,String.class);
+
+		String sql = "select distinct(State) from statedistrict";
+		return JdbcTemplate.queryForList(sql, String.class);
 	}
 
 	@Override
 	public List<String> getDistrictAll(String state) {
-		String sql="select distinct(District) from statedistrict where State='"+ state+ "'";
-			
-		return JdbcTemplate.queryForList(sql,String.class);
+		String sql = "select distinct(District) from statedistrict where State='" + state + "'";
+
+		return JdbcTemplate.queryForList(sql, String.class);
 	}
 
 	@Override
 	public int addnewtask(int projectdetailid, String taskname) {
-		String sql="INSERT INTO projecttaskmaster(projecttasktitle, projectdetailid) VALUES ('"+ taskname + "','"+ projectdetailid +"')";
-		
+		String sql = "INSERT INTO projecttaskmaster(projecttasktitle, projectdetailid) VALUES ('" + taskname + "','"
+				+ projectdetailid + "')";
+
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		JdbcTemplate.update(connection -> {
-		    PreparedStatement ps = connection.prepareStatement(sql, 
-		                           Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-		    return ps;
+			return ps;
 		}, keyHolder);
 
 		return keyHolder.getKey().intValue();
-		
-		
+
 	}
-		
+
 	@Override
 	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int projectid, String createddate) {
-		final String sql="INSERT INTO `projectfiles`(`document_no`, `document_type`, `file_path`, `id`, createddate) VALUES ('"+ DocumentNo +"','"+ DocumentType  +"','"+ FilePath +"',"+ projectid +",'"+ createddate + "')";
-		
-		KeyHolder keyHolder =new GeneratedKeyHolder();
-		
-		JdbcTemplate.update(connection -> {
-		    PreparedStatement ps = connection.prepareStatement(sql, 
-		                           Statement.RETURN_GENERATED_KEYS);
+		final String sql = "INSERT INTO `projectfiles`(`document_no`, `document_type`, `file_path`, `id`, createddate) VALUES ('"
+				+ DocumentNo + "','" + DocumentType + "','" + FilePath + "'," + projectid + ",'" + createddate + "')";
 
-		    return ps;
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		JdbcTemplate.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			return ps;
 		}, keyHolder);
 
 		return keyHolder.getKey().intValue();
@@ -123,14 +134,14 @@ public class ProjectMasterImp implements ProjectMasterService {
 
 	@Override
 	public int deleteFiles(int id) {
-		String sql ="DELETE FROM `projectfiles` WHERE  fileid=" +id ;
+		String sql = "DELETE FROM `projectfiles` WHERE  fileid=" + id;
 		return JdbcTemplate.update(sql);
-	}		
-	
+	}
+
 	@Override
 	public int insertContact(int contactpersonid, int projectid) {
-		final String sql = "INSERT INTO project_contact(`contact_person`, `id`) VALUES ("
-				+ contactpersonid + "," + projectid + ")";
+		final String sql = "INSERT INTO project_contact(`contact_person`, `id`) VALUES (" + contactpersonid + ","
+				+ projectid + ")";
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -145,9 +156,15 @@ public class ProjectMasterImp implements ProjectMasterService {
 
 	@Override
 	public int deleteContact(int contactpersonid, int projectid) {
-		String sql ="DELETE FROM `project_contact` WHERE  contact_person=" +contactpersonid + " and id="+ projectid ;
+		String sql = "DELETE FROM `project_contact` WHERE  contact_person=" + contactpersonid + " and id=" + projectid;
 		return JdbcTemplate.update(sql);
 	}
-	
-	
+
+	private Optional<ProjectMaster> privillageValidation(Optional<ProjectMaster> obj) {
+
+		if (emppojoPrivillage.allowBranches.contains(obj.get().getBranch())) {
+			return obj;
+		}
+		return null;
+	}
 }

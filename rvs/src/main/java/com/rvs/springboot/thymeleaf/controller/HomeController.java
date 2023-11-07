@@ -159,6 +159,7 @@ import com.rvs.springboot.thymeleaf.service.EmployeeJobcompensationService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobinfoService;
 import com.rvs.springboot.thymeleaf.service.EmployeeMasterService;
+import com.rvs.springboot.thymeleaf.service.EmployeePrivillageService;
 import com.rvs.springboot.thymeleaf.service.HireMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
 import com.rvs.springboot.thymeleaf.service.InsuranceMasterService;
@@ -248,6 +249,9 @@ public class HomeController {
 
 	@Autowired
 	AccountheadsService accountheadsService;
+	
+	@Autowired
+	EmployeePrivillageService employeePrivillageService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
@@ -266,10 +270,13 @@ public class HomeController {
 		String dataLoginEmpName = "";
 		String dataLoginrole = "";
 		String dataLoginEmpprofiileimg = "";
-		List<EmployeePrivillage> dataemployeePrivillage = new ArrayList<>();
+		Object dataemployeePrivillage = new ArrayList<>();
 		try {
-
+			getdataLoginEmppprivillage();
 			try {
+				if (request.getSession().getAttribute("dataLoginEmppprivillage").toString().equals(null)) {
+					//request.getSession().setAttribute("dataLoginEmppprivillage", getdataLoginEmppprivillage());
+				}
 				if (request.getSession().getAttribute("dataLoginEmpID").toString().equals(null)) {
 					request.getSession().setAttribute("dataLoginEmpID", getLoginempID());
 				}
@@ -282,22 +289,21 @@ public class HomeController {
 				if (request.getSession().getAttribute("dataLoginEmpprofiileimg").toString().equals(null)) {
 					request.getSession().setAttribute("dataLoginEmpprofiileimg", getdataLoginEmpprofiileimg());
 				}
-				if (request.getSession().getAttribute("dataLoginEmppprivillage").toString().equals(null)) {
-					request.getSession().setAttribute("dataLoginEmppprivillage", getdataLoginEmppprivillage());
-				}
+				
 			} catch (NullPointerException e) {
+				//request.getSession().setAttribute("dataLoginEmppprivillage", getdataLoginEmppprivillage());
 				request.getSession().setAttribute("dataLoginEmpID", getLoginempID());
 				request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
 				request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
 				request.getSession().setAttribute("dataLoginEmpprofiileimg", getdataLoginEmpprofiileimg());
-				request.getSession().setAttribute("dataLoginEmppprivillage", getdataLoginEmppprivillage());
+				
 			}
 
 			dataLoginEmpID = request.getSession().getAttribute("dataLoginEmpID").toString();
 			dataLoginEmpName = request.getSession().getAttribute("dataLoginEmpName").toString();
 			dataLoginrole = request.getSession().getAttribute("dataLoginrole").toString();
 			dataLoginEmpprofiileimg = request.getSession().getAttribute("dataLoginEmpprofiileimg").toString();
-			dataemployeePrivillage=(List<EmployeePrivillage>) request.getSession().getAttribute("dataLoginEmppprivillage");
+		//	dataemployeePrivillage= request.getSession().getAttribute("dataLoginEmppprivillage");
 		} catch (Exception e) {
 
 		} finally {
@@ -305,7 +311,7 @@ public class HomeController {
 			themodel.addAttribute("dataLoginEmpName", dataLoginEmpName);
 			themodel.addAttribute("dataLoginrole", dataLoginrole);
 			themodel.addAttribute("dataLoginEmpprofiileimg", dataLoginEmpprofiileimg);
-			themodel.addAttribute("dataLoginemployeePrivillage", dataemployeePrivillage);
+			//themodel.addAttribute("dataLoginemployeePrivillage", dataemployeePrivillage);
 		}
 
 	}
@@ -402,16 +408,21 @@ public class HomeController {
 		return profilephoto;
 	}
 
-	public List<EmployeePrivillage> getdataLoginEmppprivillage() {
+	public void  getdataLoginEmppprivillage() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		EmployeeMaster obj = employeeMasterService.findById(Integer.parseInt(authentication.getName()));
-		
+	
+		List<EmployeePrivillage> empprls = employeePrivillageService.findByEmployeeid(Integer.parseInt(authentication.getName()));
 		emppojoPrivillage.allowBranches.clear();
-		 for(EmployeePrivillage priObj: obj.getEmployeePrivillage()) {
-			 emppojoPrivillage.allowBranches.add(priObj.getBranchid());
-		 }
 		
-		return obj.getEmployeePrivillage();
+		  for(EmployeePrivillage priObj: empprls) {
+		  emppojoPrivillage.allowBranches.add(priObj.getBranchid()); 
+		  }
+		 
+		//emppojoPrivillage.allowBranches.addAll(Arrays.asList(1,4,5,6));
+		
+		//System.out.println(emppojoPrivillage.allowBranches);
+			
+		//return obj.getEmployeePrivillage();
 	}
 
 	@GetMapping("login")
@@ -420,6 +431,7 @@ public class HomeController {
 		request.getSession().setAttribute("dataLoginEmpName", null);
 		request.getSession().setAttribute("dataLoginrole", null);
 		request.getSession().setAttribute("dataLoginEmpprofiileimg", null);
+		request.getSession().setAttribute("dataLoginEmppprivillage", null);
 		return "login";
 	}
 
@@ -465,6 +477,27 @@ public class HomeController {
 		return "redirect:/createpwd?success";
 	}
 
+	@ResponseBody
+	@PostMapping("createpwdjson")
+	public String createpwdjson(@RequestParam(name = "privilege", defaultValue = "ROLE_EMPLOYEE") String privilege,@RequestParam("empid") int empid) {
+
+		Login existing = loginService.findByEmpid(String.valueOf(empid));
+		if (existing != null) {
+			return "error";
+		} else {
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(String.valueOf(empid)));
+
+			LoginRegistrationDto loginDto = new LoginRegistrationDto();
+			loginDto.setEmpid(String.valueOf(empobj.getEmpMasterid()));
+			loginDto.setConfirmPassword(String.valueOf(empobj.getEmpMasterid()));
+			loginDto.setPassword(String.valueOf(empobj.getEmpMasterid()));
+
+			loginService.save(loginDto, privilege);
+
+		}
+		return "success";
+	}
+
 	@GetMapping("changerole")
 	public String changeroleget(Model themodel, @RequestParam(name = "id", required = false) Long id) {
 
@@ -505,6 +538,52 @@ public class HomeController {
 			return "redirect:/changerole?error";
 		}
 		return "redirect:/changerole?success";
+	}
+	
+	@ResponseBody
+	@PostMapping("changerolejson")
+	public String changerolejson(@RequestParam(name = "empid") int id, @RequestParam(name = "privilege") String privilege,
+			@RequestParam(name = "checkboxresetpwd", defaultValue = "false") boolean checkboxresetpwd) {
+
+		Login existing = loginService.findByEmpid(String.valueOf(id));
+		if (existing != null) {
+
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(String.valueOf(id)));
+			LoginRegistrationDto loginDto = new LoginRegistrationDto();
+			loginDto.setEmpid(String.valueOf(empobj.getEmpMasterid()));
+			if (checkboxresetpwd) {
+				loginDto.setPassword(passwordEncoder.encode(String.valueOf(empobj.getEmpMasterid())));
+			} else {
+				loginDto.setPassword(existing.getPassword());
+			}
+
+			loginService.resetall(loginDto, privilege, existing.getId());
+
+		} else {
+
+			return "error";
+		}
+		return "success";
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("allowedbranchessavejson")
+	public String allowedbranchessavejson(@RequestParam(name = "empid") int id, 
+			@RequestParam(name = "tagallowedBranches") String tagallowedBranches) {
+		employeePrivillageService.deleteByEmployeeid(id);
+		
+		List<String> t1 = Arrays.asList(tagallowedBranches.split(","));
+		List<EmployeePrivillage> eplsall = new ArrayList<>();
+		
+		for(String str1 : t1) {
+			eplsall.add(new EmployeePrivillage(0,Integer.parseInt(str1),id,""));
+			}
+		
+		employeePrivillageService.saveall(eplsall);
+		getdataLoginEmppprivillage();
+		
+		return "success";
 	}
 
 	@GetMapping("addnewbranch")
@@ -2959,7 +3038,22 @@ public class HomeController {
 		theModel.addAttribute("greenpointcompensationstatus", greenpointcompensationstatus);
 		theModel.addAttribute("branchls", branchls);
 		theModel.addAttribute("employeeJobemphiredate", stringhiredate);
+		
+		 List<EmployeePrivillage> empls= employeePrivillageService.findByEmployeeid(empid);
 
+		 String allowedbranchids = "";
+		 for(EmployeePrivillage ep1 : empls)
+		{
+			ep1.setBranchName(branchMasterService.findById(ep1.getBranchid()).getBRANCH_NAME());
+			allowedbranchids +=ep1.getBranchid()+ ",";
+		}
+		 if (!allowedbranchids.equalsIgnoreCase("")) {
+			 allowedbranchids = allowedbranchids.substring(0, allowedbranchids.length() - 1);
+		}
+		theModel.addAttribute("allowedbranchids",allowedbranchids);
+		theModel.addAttribute("employeePrivillageList",empls);
+		theModel.addAttribute("loginRoles", loginService.findByEmpid(String.valueOf(empid)).getRoles());
+		
 		obj.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate).reversed());
 		infoobj.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate).reversed());
 		comoobj.sort(Comparator.comparing(EmployeeJobcompensation::getComeffectivedate).reversed());
@@ -2973,6 +3067,9 @@ public class HomeController {
 		theModel.addAttribute("emptitle",
 				emobj.getEmpid() + "000" + emobj.getEmpMasterid() + " - " + emobj.getStaffName());
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
+		
+		
+				
 		return "empjob";
 	}
 

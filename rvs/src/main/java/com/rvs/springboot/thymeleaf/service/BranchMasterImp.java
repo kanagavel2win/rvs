@@ -57,7 +57,7 @@ public class BranchMasterImp implements BranchMasterService {
 		List<BranchMaster> ls = new ArrayList<>();
 		for (BranchMaster as : branchRepo.findAll()) {
 			// ----- Object Validation------------------
-			Optional<BranchMaster> privillageObject = privillageValidation(Optional.of(as));
+			Optional<BranchMaster> privillageObject = privillageValidation(Optional.ofNullable(as));
 			if (privillageObject.isPresent()) {
 				ls.add(privillageObject.get());
 			}

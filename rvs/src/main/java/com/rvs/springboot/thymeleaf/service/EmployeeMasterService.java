@@ -12,6 +12,7 @@ public interface EmployeeMasterService {
 	
 	public EmployeeMaster save(EmployeeMaster obj);
 	public EmployeeMaster findById(Integer id);
+	public EmployeeMaster findByLoginId(Integer id);
 	public List<EmployeeMaster> findAll();
 	
 	public int insertemployeeContact(String dep,String phonenumber , String email, int employeeid, boolean primarycontact);

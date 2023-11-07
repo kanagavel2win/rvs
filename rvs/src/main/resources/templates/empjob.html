@@ -67,6 +67,8 @@
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/select2/select2.css}" />
 <link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />	
+<link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
 
 <!-- Page CSS -->
@@ -92,6 +94,10 @@
 	cursor:pointer;
 	padding-left:10px;
 	
+}
+.empnewcredential
+{
+	float:right;
 }
 </style>
 
@@ -431,6 +437,76 @@ var tblemployeecompensationid=0;
 									</div>
 								</div>
 								<!--/ About User -->
+								<!--/ About User -->
+								<div class="card mb-4">
+									<div class="card-header align-items-center">
+										<h6 class="card-action-title mb-0">
+											Access Management 
+											<div class="card-action-element" style="float: right">
+												<button class="btn btn-primary btn-sm newempnewcredential"
+													type="button" name="-" data-bs-toggle="modal"
+													data-bs-target="#newempnewcredentialScrollable">
+													Create Credential
+												</button>
+											</div>
+										</h6>
+
+									</div>
+									<div class="card-body">
+										<div class="table-responsive mt-2">
+											<table class="table table-hover table-bordered mb-0"
+												id="tbl_compensation_information">
+												<thead>
+													<tr>
+														<th>Allowed Role</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>
+															<th:block th:each="rolobj : ${loginRoles}">
+																<th:block th:text="${rolobj.role}"></th:block>
+															</th:block>
+															<button class="btn btn-secondary btn-sm empnewcredential"
+																type="button" name="-" data-bs-toggle="modal"
+																data-bs-target="#empnewcredentialScrollable">
+																Reset the Pwd / Role
+															</button>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="table-responsive mt-2">
+											<table class="table table-hover table-bordered mb-0"
+												id="tbl_compensation_information">
+												<thead>
+													<tr>
+														<th>Allowed Branches
+														<div class="card-action-element" style="float: right">
+															<button class="btn btn-primary btn-sm accessToBranch"
+																type="button" name="-" data-bs-toggle="modal"
+																data-bs-target="#accessToBranchScrollable">
+																Access To Branch
+															</button>
+														</div>
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>
+															<th:block th:each="epobj : ${employeePrivillageList}">
+																<p th:text="${epobj.branchName}"></p>
+															</th:block>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!--/ About User -->
 
 							</div>
 						</div>
@@ -690,6 +766,130 @@ var tblemployeecompensationid=0;
 						</div>
 						<!--/ Edit COMPENSATION Modal -->
 
+						<!-- Edit newempnewcredential Modal -->
+						<div class="modal fade" id="newempnewcredentialScrollable" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h5>Create Credential</h5>
+										</div>
+										<form id="newempnewcredential">
+										
+										<div class="col-12">
+											<label class="form-label" for="comPayschedule">PRIVILEGE </label>
+											<select class="form-select" id="privilege" name="privilege">
+												<option value="">-</option>
+                                                <option value="ROLE_EMPLOYEE">ROLE_EMPLOYEE</option>
+                                                <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+											</select>
+										</div>
+										
+										<div class="col-12 text-center mt-4">
+											<button type="button" class="btn btn-primary  me-sm-3 me-1"
+												id="newempnewcredential_save">Submit</button>
+											<button type="reset" class="btn btn-label-secondary newempnewcredential_close"
+												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+										</div>
+									</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Edit newempnewcredential Modal -->
+
+						<!-- Edit rest empnewcredential Modal -->
+						<div class="modal fade" id="empnewcredentialScrollable" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h5>Change Role / Password</h5>
+										</div>
+										<form id="empnewcredential">
+										
+										<div class="col-12">
+											<label class="form-label" for="comPayschedule">PRIVILEGE </label>
+											<select class="form-select" id="resetprivilege" name="resetprivilege">
+												<option value="">-</option>
+                                                <option value="ROLE_EMPLOYEE">ROLE_EMPLOYEE</option>
+                                                <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+											</select>
+										</div>
+										<div class="col-12">
+										<br/>
+												<div class="form-check form-check-success">
+						                          <input class="form-check-input" type="checkbox" value="" id="checkboxresetpwd" name="checkboxresetpwd" >
+						                          <label class="form-check-label" for="checkboxresetpwd">Reset Password as well</label>
+						                        </div>
+										</div>
+										
+										<div class="col-12 text-center mt-4">
+											<button type="button" class="btn btn-primary  me-sm-3 me-1"
+												id="restempnewcredential_save">Submit</button>
+											<button type="reset" class="btn btn-label-secondary resetempnewcredential_close"
+												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+										</div>
+									</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Edit rest empnewcredential Modal -->
+
+					<!-- Edit rest access To Branch Modal -->
+						<div class="modal fade" id="accessToBranchScrollable" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h5>Access To Branch</h5>
+										</div>
+										<form id="empnewcredential">
+										
+										<div class="col-12">
+						
+											<label class="form-label" for="tagallowedBranches">Access To </label>
+											<div>
+												<select
+													class="select2  form-select tagallowedBranches form-control "
+													id="tagallowedBranches" name="tagallowedBranches" multiple="multiple"
+													required>
+													<th:block th:each="obj : ${branchls}">
+														<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+													</th:block>
+												</select>
+
+											</div>
+										</div>
+										
+										<div class="col-12 text-center mt-4">
+											<button type="button" class="btn btn-primary  me-sm-3 me-1"
+												id="tagallowedBranches_save">Submit</button>
+											<button type="reset" class="btn btn-label-secondary tagallowedBranches_close"
+												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+										</div>
+									</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Edit rest access To Branch Modal -->
 
 					</div>
 					<!-- / Content -->
@@ -750,6 +950,7 @@ var tblemployeecompensationid=0;
 	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
 	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
 	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/toastr/toastr.js}"></script>
 	<!-- Form Validation -->
 	<script
 		th:src="@{/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js}"></script>
@@ -771,6 +972,8 @@ var tblemployeecompensationid=0;
 	<script
 		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
 	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+		<script th:src="@{/assets/js/forms-selects.js}"></script>
 
 	<!-- Page JS -->
 	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
@@ -808,6 +1011,11 @@ var tblemployeecompensationid=0;
 	$(document)
 			.ready(
 					function() {
+						
+						var allowedbranchids="[[${allowedbranchids}]]";
+						
+						$("#tagallowedBranches").val(allowedbranchids.split(",")).change();
+						
 						var empid = $('#empid').val();
 
 						$(".Termination").hide();
@@ -1160,7 +1368,127 @@ var tblemployeecompensationid=0;
 						});
 
 						//--------------------------------------------------------------------------------------------------------------------------------------		 
-						//--------------------------------------------------------------------------------------------------------------------------------------		 		
+						//--------------------------------------------------------------------------------------------------------------------------------------
+						
+						$("#newempnewcredential_save").click(function() {
+							var privilege = $("#privilege").val();
+							var formData = {
+									empid : empid,
+									privilege : privilege
+								}
+							$.ajax({
+								type : "POST",
+								url : "createpwdjson",
+								data : formData,
+								success : function(result) {
+									if(result=="error")
+									{
+										Swal.fire({
+				   				              icon: 'danger',
+				   				              title: '',
+				   				              text: 'Already Credential has been created',
+				   				              customClass: {
+				   				                confirmButton: 'btn btn-danger'
+				   				              }
+				   				            });
+									}else
+									{
+										Swal.fire({
+				   				              icon: 'success',
+				   				              title: '',
+				   				              text: 'Credential has been created',
+				   				              customClass: {
+				   				                confirmButton: 'btn btn-success'
+				   				              }
+				   				            });
+										location.reload();
+									}
+									
+								}
+							});
+							
+							$('#newempnewcredentialScrollable').modal('toggle');
+						});
+						//--------------------------------------------------------------------------------------------------------------------------------------
+						//--------------------------------------------------------------------------------------------------------------------------------------
+						
+						$("#restempnewcredential_save").click(function() {
+							var resetprivilege = $("#resetprivilege").val();
+							var checkboxresetpwd= false;
+							if( $("#checkboxresetpwd").is(':checked'))
+							{
+								checkboxresetpwd= true;
+							}
+							
+							var formData = {
+									empid : empid,
+									privilege : resetprivilege,
+									checkboxresetpwd :checkboxresetpwd
+								}
+								
+							$.ajax({
+								type : "POST",
+								url : "changerolejson",
+								data : formData,
+								success : function(result) {
+									if(result=="error")
+									{
+										Swal.fire({
+				   				              icon: 'danger',
+				   				              title: '',
+				   				              text: 'Please Create the Credential',
+				   				              customClass: {
+				   				                confirmButton: 'btn btn-danger'
+				   				              }
+				   				            });
+									}else
+									{
+										Swal.fire({
+				   				              icon: 'success',
+				   				              title: '',
+				   				              text: 'Changes has been applied',
+				   				              customClass: {
+				   				                confirmButton: 'btn btn-success'
+				   				              }
+				   				            });
+										location.reload();
+									}
+								}
+							});
+							
+						});
+						//--------------------------------------------------------------------------------------------------------------------------------------
+						//--------------------------------------------------------------------------------------------------------------------------------------
+						
+						$("#tagallowedBranches_save").click(function() {
+							var tagallowedBranches = $("#tagallowedBranches").val()+"";
+							var formData = {
+									empid : empid,
+									tagallowedBranches : tagallowedBranches
+								}
+								
+							$.ajax({
+								type : "GET",
+								url : "allowedbranchessavejson",
+								data : formData,
+								success : function(result) {
+									
+									Swal.fire({
+			   				              icon: 'success',
+			   				              title: '',
+			   				              text: 'Branch access also modified',
+			   				              customClass: {
+			   				                confirmButton: 'btn btn-success'
+			   				              }
+			   				            });
+									location.reload();
+									
+								}
+							});
+							
+						});
+						//--------------------------------------------------------------------------------------------------------------------------------------
+						//--------------------------------------------------------------------------------------------------------------------------------------
 						$("#tbl_jobinfo_save")
 								.click(
 										function() {

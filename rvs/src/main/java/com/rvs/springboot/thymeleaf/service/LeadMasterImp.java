@@ -41,7 +41,7 @@ public class LeadMasterImp implements LeadMasterService {
 			
 			
 			// ----- Object Validation------------------
-			Optional<LeadMaster> privillageObject = privillageValidation(obj);
+			Optional<LeadMaster> privillageObject = Optional.ofNullable(privillageValidation(obj.get()));
 			if (privillageObject.isPresent()) {
 				bm = privillageObject.get();
 			}
@@ -58,7 +58,7 @@ public class LeadMasterImp implements LeadMasterService {
 		List<LeadMaster> ls = new ArrayList<>();
 		for (LeadMaster as : leadMasterRepo.findAll()) {
 			// ----- Object Validation------------------
-			Optional<LeadMaster> privillageObject = privillageValidation(Optional.of(as));
+			Optional<LeadMaster> privillageObject = Optional.ofNullable(privillageValidation(as));
 			if (privillageObject.isPresent()) {
 				ls.add(privillageObject.get());
 			}
@@ -116,9 +116,9 @@ public class LeadMasterImp implements LeadMasterService {
 		return jdbcTemplate.update(sql);
 	}
 
-	private Optional<LeadMaster> privillageValidation(Optional<LeadMaster> obj) {
+	private LeadMaster privillageValidation(LeadMaster obj) {
 
-		if (emppojoPrivillage.allowBranches.contains(obj.get().getBranch())) {
+		if (emppojoPrivillage.allowBranches.contains(obj.getBranch())) {
 			return obj;
 		}
 		return null;

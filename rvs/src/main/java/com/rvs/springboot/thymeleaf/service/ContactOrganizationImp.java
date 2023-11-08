@@ -40,7 +40,7 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 		
 		if(obj.isPresent())
 		{	//-----  Object Validation------------------
-			Optional<OrganizationContacts> privillageObject=	privillageValidation(obj);
+			Optional<OrganizationContacts> privillageObject=	Optional.ofNullable(privillageValidation(obj.get()));
 			if (privillageObject.isPresent()) {
 				bm=privillageObject.get();
 			}
@@ -59,7 +59,7 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 		 for(OrganizationContacts as : contactOrganizationRepo.findAll())
 		 {
 			//-----  Object Validation------------------
-				Optional<OrganizationContacts> privillageObject=	privillageValidation(Optional.of(as));
+				Optional<OrganizationContacts> privillageObject=	Optional.ofNullable(privillageValidation(as));
 				if (privillageObject.isPresent()) {
 					ls.add(privillageObject.get());
 				}
@@ -139,9 +139,9 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 		
 	}
 		
-	private Optional<OrganizationContacts> privillageValidation(Optional<OrganizationContacts> obj) {
+	private OrganizationContacts privillageValidation(OrganizationContacts obj) {
 		
-		if(emppojoPrivillage.allowBranches.contains(obj.get().getBranchid())) {
+		if(emppojoPrivillage.allowBranches.contains(obj.getBranchid())) {
 			return obj;	
 		}
 		return null;

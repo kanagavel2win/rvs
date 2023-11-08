@@ -53,7 +53,7 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 
 		if (obj.isPresent()) {
 			// ----- Object Validation------------------
-			Optional<EmployeeMaster> privillageObject = privillageValidation(obj);
+			Optional<EmployeeMaster> privillageObject = Optional.ofNullable(privillageValidation(obj.get()));
 			if (privillageObject.isPresent()) {
 				bm = privillageObject.get();
 			}
@@ -69,7 +69,7 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 		List<EmployeeMaster> ls = new ArrayList<>();
 		for (EmployeeMaster as : employeeRepo.findAll()) {
 			// ----- Object Validation------------------
-			Optional<EmployeeMaster> privillageObject = privillageValidation(Optional.of(as));
+			Optional<EmployeeMaster> privillageObject = Optional.ofNullable(privillageValidation(as));
 			if (privillageObject.isPresent()) {
 				ls.add(privillageObject.get());
 			}
@@ -281,10 +281,10 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 		return jdbcTemplate.update(sql);
 	}
 
-	private Optional<EmployeeMaster> privillageValidation(Optional<EmployeeMaster> obj) {
+	private EmployeeMaster privillageValidation(EmployeeMaster obj) {
 
 		List<EmployeeJobinfo> infoobjjob = new ArrayList<>();
-		infoobjjob = employeeJobinfoService.findByEmployeeid(obj.get().getEmpMasterid());
+		infoobjjob = employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
 		if (infoobjjob.size() > 0) {
 			List<EmployeeJobinfo> infoobjjobgreen = infoobjjob.stream()
 					.filter(c -> dateFormat.format(date).compareTo(c.getJobeffectivedate().toString()) >= 0)

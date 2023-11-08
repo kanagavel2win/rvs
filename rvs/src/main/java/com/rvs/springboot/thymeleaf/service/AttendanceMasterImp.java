@@ -39,7 +39,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 
 		if (obj.isPresent()) {
 			// ----- Object Validation------------------
-			Optional<AttendanceMaster> privillageObject = privillageValidation(obj);
+			Optional<AttendanceMaster> privillageObject = Optional.ofNullable(privillageValidation(obj.get()));
 			if (privillageObject.isPresent()) {
 				bm = privillageObject.get();
 			}
@@ -56,7 +56,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 		List<AttendanceMaster> ls = new ArrayList<>();
 		for (AttendanceMaster as : attendanceMasterRepository.findAll()) {
 			// ----- Object Validation------------------
-			Optional<AttendanceMaster> privillageObject = privillageValidation(Optional.of(as));
+			Optional<AttendanceMaster> privillageObject = Optional.ofNullable(privillageValidation(as));
 			if (privillageObject.isPresent()) {
 				ls.add(privillageObject.get());
 			}
@@ -158,9 +158,9 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 
 	}
 
-	private Optional<AttendanceMaster> privillageValidation(Optional<AttendanceMaster> obj) {
+	private AttendanceMaster privillageValidation(AttendanceMaster obj) {
 
-		if (emppojoPrivillage.allowBranches.contains(obj.get().getBranchMasterid())) {
+		if (emppojoPrivillage.allowBranches.contains(obj.getBranchMasterid())) {
 			return obj;
 		}
 		return null;

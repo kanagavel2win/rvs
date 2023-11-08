@@ -41,7 +41,7 @@ public class BranchMasterImp implements BranchMasterService {
 		if (obj.isPresent()) {
 			bm = obj.get();
 			// ----- Object Validation------------------
-			Optional<BranchMaster> privillageObject = privillageValidation(obj);
+			Optional<BranchMaster> privillageObject = Optional.ofNullable(privillageValidation(bm));
 			if (privillageObject.isPresent()) {
 				bm = privillageObject.get();
 			}
@@ -57,7 +57,7 @@ public class BranchMasterImp implements BranchMasterService {
 		List<BranchMaster> ls = new ArrayList<>();
 		for (BranchMaster as : branchRepo.findAll()) {
 			// ----- Object Validation------------------
-			Optional<BranchMaster> privillageObject = privillageValidation(Optional.ofNullable(as));
+			Optional<BranchMaster> privillageObject = Optional.ofNullable(privillageValidation(as));
 			if (privillageObject.isPresent()) {
 				ls.add(privillageObject.get());
 			}
@@ -164,9 +164,9 @@ public class BranchMasterImp implements BranchMasterService {
 
 	}
 
-	private Optional<BranchMaster> privillageValidation(Optional<BranchMaster> obj) {
+	private BranchMaster privillageValidation(BranchMaster obj) {
 
-		if (emppojoPrivillage.allowBranches.contains(obj.get().getId())) {
+		if (emppojoPrivillage.allowBranches.contains(obj.getId())) {
 			return obj;
 		}
 		return null;

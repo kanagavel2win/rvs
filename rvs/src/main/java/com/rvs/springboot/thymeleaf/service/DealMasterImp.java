@@ -39,7 +39,7 @@ public class DealMasterImp implements DealMasterService {
 
 		if (obj.isPresent()) {
 			// ----- Object Validation------------------
-			Optional<DealMaster> privillageObject = privillageValidation(obj);
+			Optional<DealMaster> privillageObject = Optional.ofNullable(privillageValidation(obj.get()));
 			if (privillageObject.isPresent()) {
 				bm = privillageObject.get();
 			}
@@ -56,7 +56,7 @@ public class DealMasterImp implements DealMasterService {
 		List<DealMaster> ls = new ArrayList<>();
 		for (DealMaster as : dealMasterRepo.findAll()) {
 			// ----- Object Validation------------------
-			Optional<DealMaster> privillageObject = privillageValidation(Optional.of(as));
+			Optional<DealMaster> privillageObject = Optional.ofNullable(privillageValidation(as));
 			if (privillageObject.isPresent()) {
 				ls.add(privillageObject.get());
 			}
@@ -143,9 +143,9 @@ public class DealMasterImp implements DealMasterService {
 		return JdbcTemplate.update(sql);
 	}
 
-	private Optional<DealMaster> privillageValidation(Optional<DealMaster> obj) {
+	private DealMaster privillageValidation(DealMaster obj) {
 
-		if (emppojoPrivillage.allowBranches.contains(obj.get().getBranch())) {
+		if (emppojoPrivillage.allowBranches.contains(obj.getBranch())) {
 			return obj;
 		}
 		return null;

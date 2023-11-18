@@ -817,6 +817,8 @@
 	const dolabels = [];	 
 	const doseries = [];
 	var doinc=0;
+	
+	//--------------------------------------------------------------
 	$.ajax({
 		type : "GET",
 		url : "SourcebyLeadDealdonutchart",
@@ -833,7 +835,7 @@
 		}
 
 	});
-		 
+	//-----------------------------------------------------------------	 
 	const donutChartEl = document.querySelector('#donutChart'),
 	  donutChartConfig = {
 	    chart: {
@@ -972,7 +974,114 @@
 	}
 	
 
-	
+	 //--------------------------------------------------------------------------------------------
+	/*  const receiptarrlist =[];
+	 const expensearrlist =[];
+	 const xaxisarrlist= [];
+	 */
+	 $.ajax({
+		type : "GET",
+		url : "admindashboardbarchart",
+		success : function(result) {
+			var bmobj = JSON.parse(JSON.stringify(result));
+			
+			var ymax=0;
+			bmobj.receipt.map(d => {
+				ymax = Math.max(ymax, d)
+				});
+			bmobj.expense.map(d => {
+				ymax = Math.max(ymax, d)
+				});
+			
+			 // Analytics - Bar Chart
+			  // --------------------------------------------------------------------
+			  const analyticsBarChartEl = document.querySelector('#analyticsBarChart'),
+			    analyticsBarChartConfig = {
+			      chart: {
+			        height: 250,
+			        type: 'bar',
+			        toolbar: {
+			          show: false
+			        }
+			      },
+			      plotOptions: {
+			        bar: {
+			          horizontal: false,
+			          columnWidth: '40%',
+			          borderRadius: 5,
+			          startingShape: 'rounded'
+			        }
+			      },
+			      dataLabels: {
+			        enabled: false
+			      },
+			      colors: [config.colors.primary, config.colors_label.primary],
+			      series: [
+			        {
+			          name: 'Income',
+			          data: bmobj.receipt
+			        },
+			        {
+			          name: 'Expense',
+			          data: bmobj.expense
+			        }
+			      ],
+			      grid: {
+			        borderColor: borderColor,
+			        padding: {
+			          bottom: -8
+			        }
+			      },
+			      xaxis: {
+			        categories: bmobj.xaxis,
+			        axisBorder: {
+			          show: false
+			        },
+			        axisTicks: {
+			          show: false
+			        },
+			        labels: {
+			          style: {
+			            colors: labelColor
+			          }
+			        }
+			      },
+			      yaxis: {
+			        min: 0,
+			        max: ymax,
+			        tickAmount: 5,
+			        labels: {
+			          style: {
+			            colors: labelColor
+			          }
+			        }
+			      },
+			      legend: {
+			        show: false
+			      },
+			      tooltip: {
+			        y: {
+			          formatter: function (val) {
+			            return 'Rs:' + val ;
+			          }
+			        }
+			      }
+			    };
+			  if (typeof analyticsBarChartEl !== undefined && analyticsBarChartEl !== null) {
+			    const analyticsBarChart = new ApexCharts(analyticsBarChartEl, analyticsBarChartConfig);
+			    analyticsBarChart.render();
+			  }
+			//--------------------------------------------------------------------------------------------
+			
+			
+		},
+		error : function(e) {
+			console.log("Error" + e);
+			
+		}
+
+	});
+
 	
 	});
 	

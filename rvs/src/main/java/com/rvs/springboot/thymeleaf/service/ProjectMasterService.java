@@ -1,6 +1,7 @@
 package com.rvs.springboot.thymeleaf.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
 
@@ -19,4 +20,7 @@ public interface ProjectMasterService {
 	public int deleteFiles(int id);
 	public int insertContact(int contactpersonid, int projectid);
 	public int deleteContact(int contactpersonid, int projectid);
+	
+	public List<Map<String, Object>> getdatainvoicereceipt_graph();
+	public List<Map<String, Object>> getdataexpense_graph();
 }

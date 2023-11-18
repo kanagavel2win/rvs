@@ -31,7 +31,6 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -137,6 +136,7 @@ import com.rvs.springboot.thymeleaf.entity.ProjectpurchaseItemMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchaseMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchasePaymentMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
+import com.rvs.springboot.thymeleaf.pojo.Admindashboardbarchart;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
 import com.rvs.springboot.thymeleaf.pojo.donutchart;
 import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
@@ -12807,6 +12807,81 @@ public class HomeController {
 		leadrs.forEach((k,v) ->{
 			dcls.add(new donutchart(k,v));	
 		});	
+		
+		return dcls;
+	}
+	
+	@ResponseBody
+	@GetMapping("admindashboardbarchart")
+	public Admindashboardbarchart admindashboardbarchart() {
+
+		SimpleDateFormat formatteryear = new SimpleDateFormat("yyyy");
+		SimpleDateFormat formattermonth = new SimpleDateFormat("M");
+		
+		Date date = new Date();
+		int currentyear = Integer.parseInt(formatteryear.format(date).toString());
+		int currentmonth = Integer.parseInt(formattermonth.format(date).toString());
+		
+		
+		List<Map<String, Object>> receiptamt = projectMasterService.getdatainvoicereceipt_graph().stream().limit(9).toList();
+		List<Map<String, Object>> expenseamt = projectMasterService.getdataexpense_graph().stream().limit(9).toList();
+		
+		Map<String,Double> receiptamtMap = new HashMap<>();
+		Map<String,Double> expenseamtMap = new HashMap<>();
+		
+		receiptamt.forEach(	data ->{
+			receiptamtMap.put( data.get("ryear").toString() +"-"+ data.get("rmonth").toString(),Double.parseDouble(data.get("ramt").toString()));
+			});
+		
+		expenseamt.forEach(	data ->{
+			expenseamtMap.put( data.get("eyear").toString() +"-"+ data.get("emonth").toString(),Double.parseDouble(data.get("eamt").toString()));
+			});
+		List<Integer> receipt = new ArrayList<>();
+		List<Integer> expense = new ArrayList<>();
+		List<String> xaxis = new ArrayList<>();
+		
+		for(int i=1; i<10; i++)
+		{
+			String searchStr = currentyear+"-"+currentmonth;
+			//---------------------------------------
+			if(receiptamtMap.containsKey(searchStr))
+			{
+				receipt.add((int) receiptamtMap.get(searchStr).doubleValue());
+				
+			}else
+			{
+				receipt.add(0);
+			}
+			//---------------------------------------
+			if(expenseamtMap.containsKey(searchStr))
+			{
+				expense.add((int) expenseamtMap.get(searchStr).doubleValue());
+				
+			}else
+			{
+				expense.add(0);
+			}
+			//---------------------------------------
+			 Month month = Month.of(currentmonth);
+			 String monthAbbreviation = month.getDisplayName(
+			            java.time.format.TextStyle.SHORT, 
+			            java.util.Locale.ENGLISH
+			        );
+			 xaxis.add(monthAbbreviation);
+			 
+			 //---------------------------------------
+			if(currentmonth == 1)
+			{
+				currentmonth = 12;
+				currentyear = currentyear-1;				
+			}else
+			{
+				currentmonth=currentmonth-1;
+			}
+		}
+		
+		Admindashboardbarchart dcls = new Admindashboardbarchart(receipt,expense,xaxis);
+		
 		
 		return dcls;
 	}

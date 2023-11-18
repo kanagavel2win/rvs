@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -166,5 +167,23 @@ public class ProjectMasterImp implements ProjectMasterService {
 			return obj;
 		}
 		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getdatainvoicereceipt_graph() {
+		String sql="SELECT sum(amount) as ramt,MONTH(STR_TO_DATE(recepit_date, '%Y-%m-%d')) as rmonth , Year(STR_TO_DATE(recepit_date, '%Y-%m-%d')) as ryear FROM rvsland_cms.invoice_receipt_master group by Month(STR_TO_DATE(recepit_date, '%Y-%m-%d')) , Year(STR_TO_DATE(recepit_date, '%Y-%m-%d')) order by  Year(STR_TO_DATE(recepit_date, '%Y-%m-%d')) desc,Month(STR_TO_DATE(recepit_date, '%Y-%m-%d')) desc;";
+		
+		List<Map<String, Object>> atm = JdbcTemplate.queryForList(sql);
+		
+		return atm;
+	}
+
+	@Override
+	public List<Map<String, Object>> getdataexpense_graph() {
+		String sql="SELECT sum(amount) as eamt,MONTH(STR_TO_DATE(prj_expense_date, '%Y-%m-%d')) as emonth , Year(STR_TO_DATE(prj_expense_date, '%Y-%m-%d')) as eyear FROM rvsland_cms.project_expense group by Month(STR_TO_DATE(prj_expense_date, '%Y-%m-%d')) , Year(STR_TO_DATE(prj_expense_date, '%Y-%m-%d')) order by Year(STR_TO_DATE(prj_expense_date, '%Y-%m-%d')) desc,  Month(STR_TO_DATE(prj_expense_date, '%Y-%m-%d')) desc;";
+		
+		List<Map<String, Object>> atm = JdbcTemplate.queryForList(sql);
+		
+		return atm;
 	}
 }

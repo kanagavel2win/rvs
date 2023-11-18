@@ -27,9 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -136,6 +138,7 @@ import com.rvs.springboot.thymeleaf.entity.ProjectpurchaseMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchasePaymentMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
+import com.rvs.springboot.thymeleaf.pojo.donutchart;
 import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
 import com.rvs.springboot.thymeleaf.pojo.springtest;
@@ -249,7 +252,7 @@ public class HomeController {
 
 	@Autowired
 	AccountheadsService accountheadsService;
-	
+
 	@Autowired
 	EmployeePrivillageService employeePrivillageService;
 
@@ -275,7 +278,8 @@ public class HomeController {
 			getdataLoginEmppprivillage();
 			try {
 				if (request.getSession().getAttribute("dataLoginEmppprivillage").toString().equals(null)) {
-					//request.getSession().setAttribute("dataLoginEmppprivillage", getdataLoginEmppprivillage());
+					// request.getSession().setAttribute("dataLoginEmppprivillage",
+					// getdataLoginEmppprivillage());
 				}
 				if (request.getSession().getAttribute("dataLoginEmpID").toString().equals(null)) {
 					request.getSession().setAttribute("dataLoginEmpID", getLoginempID());
@@ -289,21 +293,23 @@ public class HomeController {
 				if (request.getSession().getAttribute("dataLoginEmpprofiileimg").toString().equals(null)) {
 					request.getSession().setAttribute("dataLoginEmpprofiileimg", getdataLoginEmpprofiileimg());
 				}
-				
+
 			} catch (NullPointerException e) {
-				//request.getSession().setAttribute("dataLoginEmppprivillage", getdataLoginEmppprivillage());
+				// request.getSession().setAttribute("dataLoginEmppprivillage",
+				// getdataLoginEmppprivillage());
 				request.getSession().setAttribute("dataLoginEmpID", getLoginempID());
 				request.getSession().setAttribute("dataLoginEmpName", getLoginEmpName());
 				request.getSession().setAttribute("dataLoginrole", getdataLoginrole());
 				request.getSession().setAttribute("dataLoginEmpprofiileimg", getdataLoginEmpprofiileimg());
-				
+
 			}
 
 			dataLoginEmpID = request.getSession().getAttribute("dataLoginEmpID").toString();
 			dataLoginEmpName = request.getSession().getAttribute("dataLoginEmpName").toString();
 			dataLoginrole = request.getSession().getAttribute("dataLoginrole").toString();
 			dataLoginEmpprofiileimg = request.getSession().getAttribute("dataLoginEmpprofiileimg").toString();
-		//	dataemployeePrivillage= request.getSession().getAttribute("dataLoginEmppprivillage");
+			// dataemployeePrivillage=
+			// request.getSession().getAttribute("dataLoginEmppprivillage");
 		} catch (Exception e) {
 
 		} finally {
@@ -311,7 +317,7 @@ public class HomeController {
 			themodel.addAttribute("dataLoginEmpName", dataLoginEmpName);
 			themodel.addAttribute("dataLoginrole", dataLoginrole);
 			themodel.addAttribute("dataLoginEmpprofiileimg", dataLoginEmpprofiileimg);
-			//themodel.addAttribute("dataLoginemployeePrivillage", dataemployeePrivillage);
+			// themodel.addAttribute("dataLoginemployeePrivillage", dataemployeePrivillage);
 		}
 
 	}
@@ -408,21 +414,22 @@ public class HomeController {
 		return profilephoto;
 	}
 
-	public void  getdataLoginEmppprivillage() {
+	public void getdataLoginEmppprivillage() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	
-		List<EmployeePrivillage> empprls = employeePrivillageService.findByEmployeeid(Integer.parseInt(authentication.getName()));
+
+		List<EmployeePrivillage> empprls = employeePrivillageService
+				.findByEmployeeid(Integer.parseInt(authentication.getName()));
 		emppojoPrivillage.allowBranches.clear();
-		
-		  for(EmployeePrivillage priObj: empprls) {
-		  emppojoPrivillage.allowBranches.add(priObj.getBranchid()); 
-		  }
-		 
-		//emppojoPrivillage.allowBranches.addAll(Arrays.asList(1,4,5,6));
-		
-		//System.out.println(emppojoPrivillage.allowBranches);
-			
-		//return obj.getEmployeePrivillage();
+
+		for (EmployeePrivillage priObj : empprls) {
+			emppojoPrivillage.allowBranches.add(priObj.getBranchid());
+		}
+
+		// emppojoPrivillage.allowBranches.addAll(Arrays.asList(1,4,5,6));
+
+		// System.out.println(emppojoPrivillage.allowBranches);
+
+		// return obj.getEmployeePrivillage();
 	}
 
 	@GetMapping("login")
@@ -479,7 +486,8 @@ public class HomeController {
 
 	@ResponseBody
 	@PostMapping("createpwdjson")
-	public String createpwdjson(@RequestParam(name = "privilege", defaultValue = "ROLE_EMPLOYEE") String privilege,@RequestParam("empid") int empid) {
+	public String createpwdjson(@RequestParam(name = "privilege", defaultValue = "ROLE_EMPLOYEE") String privilege,
+			@RequestParam("empid") int empid) {
 
 		Login existing = loginService.findByEmpid(String.valueOf(empid));
 		if (existing != null) {
@@ -539,10 +547,11 @@ public class HomeController {
 		}
 		return "redirect:/changerole?success";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("changerolejson")
-	public String changerolejson(@RequestParam(name = "empid") int id, @RequestParam(name = "privilege") String privilege,
+	public String changerolejson(@RequestParam(name = "empid") int id,
+			@RequestParam(name = "privilege") String privilege,
 			@RequestParam(name = "checkboxresetpwd", defaultValue = "false") boolean checkboxresetpwd) {
 
 		Login existing = loginService.findByEmpid(String.valueOf(id));
@@ -565,24 +574,23 @@ public class HomeController {
 		}
 		return "success";
 	}
-	
-	
+
 	@ResponseBody
 	@GetMapping("allowedbranchessavejson")
-	public String allowedbranchessavejson(@RequestParam(name = "empid") int id, 
+	public String allowedbranchessavejson(@RequestParam(name = "empid") int id,
 			@RequestParam(name = "tagallowedBranches") String tagallowedBranches) {
 		employeePrivillageService.deleteByEmployeeid(id);
-		
+
 		List<String> t1 = Arrays.asList(tagallowedBranches.split(","));
 		List<EmployeePrivillage> eplsall = new ArrayList<>();
-		
-		for(String str1 : t1) {
-			eplsall.add(new EmployeePrivillage(0,Integer.parseInt(str1),id,""));
-			}
-		
+
+		for (String str1 : t1) {
+			eplsall.add(new EmployeePrivillage(0, Integer.parseInt(str1), id, ""));
+		}
+
 		employeePrivillageService.saveall(eplsall);
 		getdataLoginEmppprivillage();
-		
+
 		return "success";
 	}
 
@@ -3038,22 +3046,31 @@ public class HomeController {
 		theModel.addAttribute("greenpointcompensationstatus", greenpointcompensationstatus);
 		theModel.addAttribute("branchls", branchls);
 		theModel.addAttribute("employeeJobemphiredate", stringhiredate);
-		
-		 List<EmployeePrivillage> empls= employeePrivillageService.findByEmployeeid(empid);
 
-		 String allowedbranchids = "";
-		 for(EmployeePrivillage ep1 : empls)
-		{
+		List<EmployeePrivillage> empls = employeePrivillageService.findByEmployeeid(empid);
+
+		String allowedbranchids = "";
+		for (EmployeePrivillage ep1 : empls) {
 			ep1.setBranchName(branchMasterService.findById(ep1.getBranchid()).getBRANCH_NAME());
-			allowedbranchids +=ep1.getBranchid()+ ",";
+			allowedbranchids += ep1.getBranchid() + ",";
 		}
-		 if (!allowedbranchids.equalsIgnoreCase("")) {
-			 allowedbranchids = allowedbranchids.substring(0, allowedbranchids.length() - 1);
+		if (!allowedbranchids.equalsIgnoreCase("")) {
+			allowedbranchids = allowedbranchids.substring(0, allowedbranchids.length() - 1);
 		}
-		theModel.addAttribute("allowedbranchids",allowedbranchids);
-		theModel.addAttribute("employeePrivillageList",empls);
-		theModel.addAttribute("loginRoles", loginService.findByEmpid(String.valueOf(empid)).getRoles());
-		
+		theModel.addAttribute("allowedbranchids", allowedbranchids);
+		theModel.addAttribute("employeePrivillageList", empls);
+
+		Optional<Login> loginObj = Optional.ofNullable(loginService.findByEmpid(String.valueOf(empid)));
+
+		if (loginObj.isPresent()) {
+			if (loginObj.get().getRoles().size() > 0) {
+				theModel.addAttribute("loginRoles", loginObj.get().getRoles());
+
+			} else {
+				theModel.addAttribute("loginRoles", "");
+			}
+		}
+
 		obj.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate).reversed());
 		infoobj.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate).reversed());
 		comoobj.sort(Comparator.comparing(EmployeeJobcompensation::getComeffectivedate).reversed());
@@ -3067,9 +3084,7 @@ public class HomeController {
 		theModel.addAttribute("emptitle",
 				emobj.getEmpid() + "000" + emobj.getEmpMasterid() + " - " + emobj.getStaffName());
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
-		
-		
-				
+
 		return "empjob";
 	}
 
@@ -12775,6 +12790,25 @@ public class HomeController {
 		}
 
 		return "RVSLS " + formate1;
+	}
+
+	@ResponseBody
+	@GetMapping("SourcebyLeadDealdonutchart")
+	public List<donutchart> SourcebyLeadDealdonutchart() {
+
+		List<donutchart> dcls = new ArrayList<>();
+
+		Map<String, Long> leadrs = leadMasterService.findAll().stream()
+				.collect(Collectors.groupingBy(LeadMaster::getSource, Collectors.counting()));
+		Map<String, Long> dealrs = dealMasterService.findAll().stream()
+				.collect(Collectors.groupingBy(DealMaster::getSource, Collectors.counting()));
+		dealrs.forEach(((k,v) -> leadrs.merge(k, v, Long::sum)));
+		
+		leadrs.forEach((k,v) ->{
+			dcls.add(new donutchart(k,v));	
+		});	
+		
+		return dcls;
 	}
 
 }

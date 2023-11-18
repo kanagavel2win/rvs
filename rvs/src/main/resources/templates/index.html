@@ -139,6 +139,14 @@
                 <!-- Referral, conversion, impression & income charts -->
                 <div class="col-lg-6 col-md-12">
                   <div class="row">
+                    <!-- Impression Radial Chart-->
+                    <div class="col-sm-6 col-12 mb-4">
+                      <div class="card">
+                        <div class="card-body text-center">
+                          <div id="donutChart"></div>
+                        </div>
+                      </div>
+                    </div>
                     <!-- Referral Chart-->
                     <div class="col-sm-6 col-12 mb-4">
                       <div class="card">
@@ -167,14 +175,7 @@
                         </div>
                       </div>
                     </div>
-                    <!-- Impression Radial Chart-->
-                    <div class="col-sm-6 col-12 mb-4">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <div id="impressionDonutChart"></div>
-                        </div>
-                      </div>
-                    </div>
+                   
                     <!-- Growth Chart-->
                     <div class="col-sm-6 col-12">
                       <div class="row">
@@ -770,5 +771,211 @@
 
     <!-- Page JS -->
     <script th:src="@{/assets/js/dashboards-analytics.js}"></script>
-  </body>
+  
+	<script type="text/javascript">
+	$(document).ready(function() { 
+		
+		  let cardColor, headingColor, labelColor, borderColor, legendColor, radialTrackColor;
+
+		  if (isDarkStyle) {
+		    cardColor = config.colors_dark.cardColor;
+		    headingColor = config.colors_dark.headingColor;
+		    labelColor = config.colors_dark.textMuted;
+		    legendColor = config.colors_dark.bodyColor;
+		    borderColor = config.colors_dark.borderColor;
+		    radialTrackColor = '#36435C';
+		  } else {
+		    cardColor = config.colors.cardColor;
+		    headingColor = config.colors.headingColor;
+		    labelColor = config.colors.textMuted;
+		    legendColor = config.colors.bodyColor;
+		    borderColor = config.colors.borderColor;
+		    radialTrackColor = config.colors_label.secondary;
+		  }
+		  
+		 // Color constant
+		  const chartColors = {
+		    column: {
+		      series1: '#826af9',
+		      series2: '#d2b0ff',
+		      bg: '#f8d3ff'
+		    },
+		    donut: {
+		      series1: '#fee802',
+		      series2: '#fd7e14',
+		      series3: '#826bf8',
+		      series4: '#3fd0bd',
+		      series5: '#2b9bf4',
+		    },
+		    area: {
+		      series1: '#29dac7',
+		      series2: '#60f2ca',
+		      series3: '#a5f8cd'
+		    }
+		  };
+		 
+	const dolabels = [];	 
+	const doseries = [];
+	var doinc=0;
+	$.ajax({
+		type : "GET",
+		url : "SourcebyLeadDealdonutchart",
+		success : function(result) {
+			result.forEach(function (obj) {
+				dolabels[doinc]=obj.labels;
+				doseries[doinc]=obj.series;
+				doinc++;
+			});
+		},
+		error : function(e) {
+			console.log("Error" + e);
+			
+		}
+
+	});
+		 
+	const donutChartEl = document.querySelector('#donutChart'),
+	  donutChartConfig = {
+	    chart: {
+	      height: 390,
+	      type: 'donut'
+	    },
+	    labels: dolabels,
+	    series: doseries,
+	    colors: [
+	      chartColors.donut.series1,
+	      chartColors.donut.series2,
+	      chartColors.donut.series3,
+	      chartColors.donut.series4,
+	      chartColors.donut.series5
+	    ],
+	    stroke: {
+	      show: false,
+	      curve: 'straight'
+	    },
+	    dataLabels: {
+	      enabled: true,
+	      formatter: function (val, opt) {
+	        return parseInt(val, 10) + '%';
+	      }
+	    },
+	    legend: {
+	      show: true,
+	      position: 'bottom',
+	      markers: { offsetX: -3 },
+	      itemMargin: {
+	        vertical: 3,
+	        horizontal: 10
+	      },
+	      labels: {
+	        colors: legendColor,
+	        useSeriesColors: true
+	      }
+	    },
+	    plotOptions: {
+	      pie: {
+	        donut: {
+	          labels: {
+	            show: true,
+	            name: {
+	              fontSize: '14px',
+	              fontFamily: 'IBM Plex Sans'
+	            },
+	            value: {
+	              fontSize: '12px',
+	              color: legendColor,
+	              fontFamily: 'IBM Plex Sans',
+	              formatter: function (val) {
+	                return parseInt(val , 10) + '%';
+	              }
+	            }
+	          }
+	        }
+	      }
+	    },
+	    responsive: [
+	      {
+	        breakpoint: 992,
+	        options: {
+	          chart: {
+	            height: 380
+	          },
+	          legend: {
+	            position: 'bottom',
+	            labels: {
+	              colors: legendColor,
+	              useSeriesColors: false
+	            }
+	          }
+	        }
+	      },
+	      {
+	        breakpoint: 576,
+	        options: {
+	          chart: {
+	            height: 320
+	          },
+	          plotOptions: {
+	            pie: {
+	              donut: {
+	                labels: {
+	                  show: true,
+	                  name: {
+	                    fontSize: '1.5rem'
+	                  },
+	                  value: {
+	                    fontSize: '1rem'
+	                  },
+	                  total: {
+	                    fontSize: '1.5rem'
+	                  }
+	                }
+	              }
+	            }
+	          },
+	          legend: {
+	            position: 'bottom',
+	            labels: {
+	              colors: legendColor,
+	              useSeriesColors: false
+	            }
+	          }
+	        }
+	      },
+	      {
+	        breakpoint: 420,
+	        options: {
+	          chart: {
+	            height: 280
+	          },
+	          legend: {
+	            show: false
+	          }
+	        }
+	      },
+	      {
+	        breakpoint: 360,
+	        options: {
+	          chart: {
+	            height: 250
+	          },
+	          legend: {
+	            show: false
+	          }
+	        }
+	      }
+	    ]
+	  };
+	if (typeof donutChartEl !== undefined && donutChartEl !== null) {
+	  const donutChart = new ApexCharts(donutChartEl, donutChartConfig);
+	  donutChart.render();
+	}
+	
+
+	
+	
+	});
+	
+	</script>
+</body>	
 </html>

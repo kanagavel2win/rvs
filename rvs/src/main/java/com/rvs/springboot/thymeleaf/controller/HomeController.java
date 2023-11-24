@@ -12885,5 +12885,31 @@ public class HomeController {
 		
 		return dcls;
 	}
+	
+	@ResponseBody
+	@GetMapping("rptInvoiceoveraperiodoftime")
+	public List<ProjectMaster> rptInvoiceoveraperiodoftime(@RequestParam("sdate") String sdate, @RequestParam("edate") String edate) {
+		
+		List<ProjectMaster> invLs= projectMasterService.findAll();
+		List<ProjectMaster> invLs1=new ArrayList<>();
+		try
+		{
+			invLs1=	invLs.stream().filter( C -> C.getInvoiceList().stream().anyMatch(O -> {
+				try {
+					return displaydateFormatrev.parse(O.getInvoiceDate()).after(displaydateFormatrev.parse(sdate)) && displaydateFormatrev.parse(O.getInvoiceDate()).before(displaydateFormatrev.parse(edate));
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				}
+				return false;
+			})).collect(Collectors.toList());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+				
+				return invLs1;
+	}
 
 }

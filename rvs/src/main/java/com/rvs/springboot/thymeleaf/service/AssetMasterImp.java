@@ -39,7 +39,8 @@ public class AssetMasterImp implements AssetMasterService {
 
 		if (obj.isPresent()) {
 			//-----  Object Validation------------------
-			Optional<AssetMaster> privillageObject=	privillageValidation(obj);
+			bm = obj.get();
+			Optional<AssetMaster> privillageObject=	Optional.ofNullable(privillageValidation(bm));
 			if (privillageObject.isPresent()) {
 				bm=privillageObject.get();
 			}
@@ -57,7 +58,7 @@ public class AssetMasterImp implements AssetMasterService {
 		 for(AssetMaster as : assetRepo.findAll())
 		 {
 			//-----  Object Validation------------------
-				Optional<AssetMaster> privillageObject=	privillageValidation(Optional.of(as));
+				Optional<AssetMaster> privillageObject=	Optional.ofNullable(privillageValidation(as));
 				if (privillageObject.isPresent()) {
 					ls.add(privillageObject.get());
 				}
@@ -123,7 +124,7 @@ public class AssetMasterImp implements AssetMasterService {
 		 for(AssetMaster as : assetRepo.findByManyassetIds(assetidlist))
 		 {
 			//-----  Object Validation------------------
-				Optional<AssetMaster> privillageObject=	privillageValidation(Optional.of(as));
+				Optional<AssetMaster> privillageObject=	Optional.ofNullable(privillageValidation(as));
 				if (privillageObject.isPresent()) {
 					ls.add(privillageObject.get());
 				}
@@ -132,9 +133,9 @@ public class AssetMasterImp implements AssetMasterService {
 		return ls;
 	}
 	
-	private Optional<AssetMaster> privillageValidation(Optional<AssetMaster> obj) {
+	private AssetMaster privillageValidation(AssetMaster obj) {
 		
-		if(emppojoPrivillage.allowBranches.contains(Integer.parseInt(obj.get().getBranch()))) {
+		if(emppojoPrivillage.allowBranches.contains(Integer.parseInt(obj.getBranch()))) {
 			return obj;	
 		}
 		return null;

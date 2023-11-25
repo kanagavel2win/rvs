@@ -149,7 +149,7 @@ public class BranchMasterImp implements BranchMasterService {
 			int result = 0;
 			try {
 				result = jdbcTemplate.queryForObject(
-						"select count(*) as empcount from (select max(empjob.jobeffectivedate),empjob.employeeid,empjob.joblocation from rvsland_cms.employeejobinfo as empjob  group by employeeid,joblocation) t1 where joblocation="
+						"select count(*) as empcount from (select max(empjob.jobeffectivedate),empjob.employeeid,empjob.joblocation from employeejobinfo as empjob  group by employeeid,joblocation) t1 where joblocation="
 								+ branchid,
 						Integer.class);
 

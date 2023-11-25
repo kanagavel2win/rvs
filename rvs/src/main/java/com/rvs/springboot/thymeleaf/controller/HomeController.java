@@ -1601,8 +1601,26 @@ public class HomeController {
 
 			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
 				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()));
-				cp.setFollowerimg(getemp_photo(empobj));
-				cp.setFollowername(empobj.getStaffName());
+				if (empobj != null)
+				{
+					cp.setFollowerimg(getemp_photo(empobj));
+					cp.setFollowername(empobj.getStaffName());	
+					
+					//Set Primary contact
+					List<EmployeeContact> ecls = empobj
+							.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+							.collect(Collectors.toList());
+					if (ecls.size() > 0) {
+						cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+	
+					}
+				}else
+				{
+					cp.setFollowerimg("");
+					cp.setFollowername("");
+					cp.setFollowerprimarymob("");
+				}
+				
 			}
 
 			// branch name
@@ -1625,18 +1643,7 @@ public class HomeController {
 				cp.setPrimarymob(bcls.get(0).getPhonenumber());
 				cp.setPrimaryemail(bcls.get(0).getEmail());
 			}
-			// ---------------------------------------------------------
-			// Set primary contact
-			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
-
-				List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
-						.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
-						.collect(Collectors.toList());
-				if (ecls.size() > 0) {
-					cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
-
-				}
-			}
+			
 			// ---------------------------------------------------------
 			cp.setOrganizationname(nullremover(String.valueOf(cp.getOrganizationname())));
 			cp.setFollowername(nullremover(String.valueOf(cp.getFollowername())));
@@ -1661,17 +1668,25 @@ public class HomeController {
 
 			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
 				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()));
-				cp.setFollowerimg(getemp_photo(empobj));
-				cp.setFollowername(empobj.getStaffName());
+				if(empobj != null)
+				{
+					cp.setFollowerimg(getemp_photo(empobj));
+					cp.setFollowername(empobj.getStaffName());
+					// Set primary contact
+					List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
+							.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+							.collect(Collectors.toList());
+					if (ecls.size() > 0) {
+						cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
 
-				// Set primary contact
-				List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
-						.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
-						.collect(Collectors.toList());
-				if (ecls.size() > 0) {
-					cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
-
+					}
+				}else
+				{
+					cp.setFollowerimg("");
+					cp.setFollowername("");	
+					cp.setFollowerprimarymob("");
 				}
+				
 			}
 			// branch name
 			BranchMaster bm = branchMasterService.findById(cp.getBranchid());
@@ -5353,11 +5368,25 @@ public class HomeController {
 			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
 
 				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
-				obj.setStaffassetname(asset.getAssetName().toString());
+				
+				if(asset != null)
+				{
+					obj.setStaffassetname(asset.getAssetName().toString());	
+				}else
+				{
+					continue;
+				}
 
 			} else {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
-				obj.setStaffassetname(employee.getStaffName().toString());
+				if(employee != null)
+				{
+					obj.setStaffassetname(employee.getStaffName().toString());	
+				}else
+				{
+					continue;
+				}
+				
 
 			}
 
@@ -6068,19 +6097,29 @@ public class HomeController {
 		// -------------------------------------------
 		if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
 			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()));
-			cp.setFollowerimg(getemp_photo(empobj));
-			cp.setFollowername(empobj.getStaffName());
-		}
-		// Set primary contact
-		if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
-			List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
-					.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
-					.collect(Collectors.toList());
-			if (ecls.size() > 0) {
-				cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
-
+			
+			if( empobj != null)
+			{
+				cp.setFollowerimg(getemp_photo(empobj));
+				cp.setFollowername(empobj.getStaffName());
+				// Set primary contact
+				if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
+					List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()))
+							.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+							.collect(Collectors.toList());
+					if (ecls.size() > 0) {
+						cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+	
+					}
+				}
+			}else
+			{
+				cp.setFollowerimg("");
+				cp.setFollowername("");	
+				cp.setFollowerprimarymob("");
 			}
 		}
+		
 		// -------------------------------------------
 		return cp;
 	}
@@ -6550,13 +6589,23 @@ public class HomeController {
 
 				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(followerstr));
 
-				leadfol.setFollowername(empobj.getStaffName());
+				if( empobj != null)
+				{
+					leadfol.setFollowername(empobj.getStaffName());	
+				
+				
 
 				List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
 						.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
 				if (validProfilephoto.size() > 0) {
 
 					leadfol.setFollowerimg(validProfilephoto.get(0).getFilePath());
+				}
+				
+				}else
+				{
+					leadfol.setFollowername("");
+					leadfol.setFollowerimg("");
 				}
 			}
 
@@ -6791,7 +6840,8 @@ public class HomeController {
 
 			followerids += lf.getEmpid() + ",";
 			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
-
+			
+			if(empobj != null) {
 			lf.setFollowername(empobj.getStaffName());
 
 			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
@@ -6802,6 +6852,12 @@ public class HomeController {
 			}
 
 			leadfolloersls.add(lf);
+			}else
+			{
+				lf.setFollowername("");
+				lf.setFollowerimg("");
+				
+			}
 		}
 
 		followerids = followerids.substring(0, followerids.length() - 1);
@@ -12693,26 +12749,26 @@ public class HomeController {
 
 			switch (obj.getRefnumber()) {
 			case "1100":
-				obj.setAmount(getSalesIncomeamt - getinvoice_receipt_masteramt);
+				obj.setAmount(Math.round(getSalesIncomeamt - getinvoice_receipt_masteramt));
 				break;
 			case "2100":
-				obj.setAmount(getAccountsPayableamt - getprojectpurchase_payment_masteramt
-						- getbranchpurchase_payment_masteramt);
+				obj.setAmount(Math.round(getAccountsPayableamt - getprojectpurchase_payment_masteramt
+						- getbranchpurchase_payment_masteramt));
 				break;
 			case "2201":
-				obj.setAmount(getGSTPayableamt);
+				obj.setAmount(Math.round(getGSTPayableamt));
 				break;
 			case "2202":
-				obj.setAmount(getGSTReceivableamt);
+				obj.setAmount(Math.round(getGSTReceivableamt));
 				break;
 			case "4000":
-				obj.setAmount(getAccountsReceivableamt);
+				obj.setAmount(Math.round(getAccountsReceivableamt));
 				break;
 			case "4100":
-				obj.setAmount(getInterestIncomeamt);
+				obj.setAmount(Math.round(getInterestIncomeamt));
 				break;
 			case "4900":
-				obj.setAmount(getOtherIncomeamt);
+				obj.setAmount(Math.round(getOtherIncomeamt));
 				break;
 			}
 

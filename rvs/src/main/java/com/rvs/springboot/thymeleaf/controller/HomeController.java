@@ -1601,26 +1601,23 @@ public class HomeController {
 
 			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
 				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()));
-				if (empobj != null)
-				{
+				if (empobj != null) {
 					cp.setFollowerimg(getemp_photo(empobj));
-					cp.setFollowername(empobj.getStaffName());	
-					
-					//Set Primary contact
-					List<EmployeeContact> ecls = empobj
-							.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
-							.collect(Collectors.toList());
+					cp.setFollowername(empobj.getStaffName());
+
+					// Set Primary contact
+					List<EmployeeContact> ecls = empobj.getEmployeeContact().stream()
+							.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
 					if (ecls.size() > 0) {
 						cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
-	
+
 					}
-				}else
-				{
+				} else {
 					cp.setFollowerimg("");
 					cp.setFollowername("");
 					cp.setFollowerprimarymob("");
 				}
-				
+
 			}
 
 			// branch name
@@ -1643,7 +1640,7 @@ public class HomeController {
 				cp.setPrimarymob(bcls.get(0).getPhonenumber());
 				cp.setPrimaryemail(bcls.get(0).getEmail());
 			}
-			
+
 			// ---------------------------------------------------------
 			cp.setOrganizationname(nullremover(String.valueOf(cp.getOrganizationname())));
 			cp.setFollowername(nullremover(String.valueOf(cp.getFollowername())));
@@ -1668,8 +1665,7 @@ public class HomeController {
 
 			if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
 				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()));
-				if(empobj != null)
-				{
+				if (empobj != null) {
 					cp.setFollowerimg(getemp_photo(empobj));
 					cp.setFollowername(empobj.getStaffName());
 					// Set primary contact
@@ -1680,13 +1676,12 @@ public class HomeController {
 						cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
 
 					}
-				}else
-				{
+				} else {
 					cp.setFollowerimg("");
-					cp.setFollowername("");	
+					cp.setFollowername("");
 					cp.setFollowerprimarymob("");
 				}
-				
+
 			}
 			// branch name
 			BranchMaster bm = branchMasterService.findById(cp.getBranchid());
@@ -3001,7 +2996,7 @@ public class HomeController {
 
 			if (!nullremover(String.valueOf(stmojb.getJobreportsto())).equalsIgnoreCase("")) {
 				stmojb.setReportstoname(
-						employeeMasterService.findById(Integer.parseInt(stmojb.getJobreportsto())).getStaffName());
+						employeeMasterService.findByLoginId(Integer.parseInt(stmojb.getJobreportsto())).getStaffName());
 			}
 			stmojb.setJoblocation_str(
 					branchMasterService.findById(Integer.parseInt(stmojb.getJoblocation())).getBRANCH_NAME());
@@ -3244,7 +3239,11 @@ public class HomeController {
 		}
 
 		// -----------------------------------------------------------
-		String temptargetedbranchName = "Coimbatore";
+		EmployeeMaster emp= fillemployeeobject(Integer.parseInt(getLoginempID()));
+		//System.out.println(emp);
+		String temptargetedbranchName = emp.getT_branch_name();
+		
+		//String temptargetedbranchName = "Coimbatore";
 		if (!branch.equalsIgnoreCase("")) {
 			temptargetedbranchName = branch;
 		}
@@ -3447,7 +3446,6 @@ public class HomeController {
 		return "empattendance";
 
 	}
-
 	private boolean calculateTerminatedstatus(int EmpMasterid, Date date) {
 		// --------------------------------------------
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -3514,13 +3512,14 @@ public class HomeController {
 	@PostMapping("holidaysave")
 	public String holidaysave(@RequestParam Map<String, String> param) {
 
+//System.out.println(param);
 		Holiday obj = new Holiday();
 		if (param.get("calid") != null && (!param.get("calid").equalsIgnoreCase(""))) {
 			obj.setId(Integer.parseInt(param.get("calid").toString()));
 		}
 		obj.setTitle(param.get("title").toString());
 		obj.setStart(param.get("fromdate").toString());
-		obj.setEnd(param.get("").toString());
+		obj.setEnd(param.get("todate").toString());
 		obj.setAllDay(Boolean.valueOf(param.get("allDay")));
 
 		HolidayextendedProps holiextra = new HolidayextendedProps();
@@ -4076,8 +4075,13 @@ public class HomeController {
 	@GetMapping("attendancereport")
 	public String empattendancereport(Model themodel,
 			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth,
-			@RequestParam(name = "branch", required = false, defaultValue = "1") String branchid) {
+			@RequestParam(name = "branch", required = false, defaultValue = "99999") String branchidsrc) {
 
+		if(branchidsrc.equalsIgnoreCase("99999")) {
+			EmployeeMaster emp= fillemployeeobject(Integer.parseInt(getLoginempID()));
+			branchidsrc = emp.getT_branch_id();
+		}
+		final String branchid = branchidsrc;
 		int prdenddate;
 		String monthstr = "";
 		int yearstr = 0;
@@ -4106,6 +4110,8 @@ public class HomeController {
 
 		monthstr = yearstr + "-" + month;
 
+		final String monthstr1= monthstr;
+		
 		// -------------------------------------------------------
 		// Get Attendance details for particular month
 		// -------------------------------------------------------
@@ -4121,47 +4127,72 @@ public class HomeController {
 			int T = 0;
 			int HL = 0;
 
-			reportstr += rowMap.get("staff_name").toString() + " ~";
-			reportstr += rowMap.get("employeeid").toString() + " ~";
+			List<EmployeeJobinfo> infoobj = employeeJobinfoService
+					.findByEmployeeid(Integer.parseInt(rowMap.get("employeeid").toString()));
 
-			for (int i = 1; i < 10; i++) {
-				String temp = rowMap.get("0" + i).toString().trim();
-				reportstr += temp + " ~";
+			if (infoobj.size() > 0) {
+				try {
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					Date dateforeffectemp = dateFormat.parse(monthstr1 + "-01");
+					List<EmployeeJobinfo> infoobjgreen = infoobj.stream().filter(
+							c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0)
+							.collect(Collectors.toList());
+					infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 
-				if (temp.equalsIgnoreCase("A")) {
-					A++;
-				}
-				if (temp.equalsIgnoreCase("P")) {
-					P++;
-				}
-				if (temp.equalsIgnoreCase("HL")) {
-					HL++;
-				}
-				if (temp.equalsIgnoreCase("T")) {
-					T++;
+					if (infoobjgreen.size() > 0) {
+						if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation().equalsIgnoreCase(branchid)) {
+
+							if (!calculateTerminatedstatus(Integer.parseInt(rowMap.get("employeeid").toString()),
+									dateforeffectemp)) {
+
+								reportstr += rowMap.get("staff_name").toString() + " ~";
+								reportstr += rowMap.get("employeeid").toString() + " ~";
+
+								for (int i = 1; i < 10; i++) {
+									String temp = rowMap.get("0" + i).toString().trim();
+									reportstr += temp + " ~";
+
+									if (temp.equalsIgnoreCase("A")) {
+										A++;
+									}
+									if (temp.equalsIgnoreCase("P")) {
+										P++;
+									}
+									if (temp.equalsIgnoreCase("HL")) {
+										HL++;
+									}
+									if (temp.equalsIgnoreCase("T")) {
+										T++;
+									}
+								}
+								for (int j = 10; j <= prdenddate; j++) {
+									String temp = rowMap.get(String.valueOf(j)).toString().trim();
+									reportstr += temp + " ~";
+
+									if (temp.equalsIgnoreCase("A")) {
+										A++;
+									}
+									if (temp.equalsIgnoreCase("P")) {
+										P++;
+									}
+									if (temp.equalsIgnoreCase("HL")) {
+										HL++;
+									}
+									if (temp.equalsIgnoreCase("T")) {
+										T++;
+									}
+								}
+
+								reportstr += P + " ~" + A + " ~" + HL + " ~" + T + " ~";
+								reportarr.add(reportstr);
+
+							}
+						}
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
 			}
-			for (int j = 10; j <= prdenddate; j++) {
-				String temp = rowMap.get(String.valueOf(j)).toString().trim();
-				reportstr += temp + " ~";
-
-				if (temp.equalsIgnoreCase("A")) {
-					A++;
-				}
-				if (temp.equalsIgnoreCase("P")) {
-					P++;
-				}
-				if (temp.equalsIgnoreCase("HL")) {
-					HL++;
-				}
-				if (temp.equalsIgnoreCase("T")) {
-					T++;
-				}
-			}
-
-			reportstr += P + " ~" + A + " ~" + HL + " ~" + T + " ~";
-			reportarr.add(reportstr);
-
 		});
 
 		// -------------------------------------------------------
@@ -5368,25 +5399,20 @@ public class HomeController {
 			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
 
 				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
-				
-				if(asset != null)
-				{
-					obj.setStaffassetname(asset.getAssetName().toString());	
-				}else
-				{
+
+				if (asset != null) {
+					obj.setStaffassetname(asset.getAssetName().toString());
+				} else {
 					continue;
 				}
 
 			} else {
 				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
-				if(employee != null)
-				{
-					obj.setStaffassetname(employee.getStaffName().toString());	
-				}else
-				{
+				if (employee != null) {
+					obj.setStaffassetname(employee.getStaffName().toString());
+				} else {
 					continue;
 				}
-				
 
 			}
 
@@ -6097,9 +6123,8 @@ public class HomeController {
 		// -------------------------------------------
 		if (!nullremover(String.valueOf(cp.getFollowers())).equalsIgnoreCase("")) {
 			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(cp.getFollowers()));
-			
-			if( empobj != null)
-			{
+
+			if (empobj != null) {
 				cp.setFollowerimg(getemp_photo(empobj));
 				cp.setFollowername(empobj.getStaffName());
 				// Set primary contact
@@ -6109,17 +6134,16 @@ public class HomeController {
 							.collect(Collectors.toList());
 					if (ecls.size() > 0) {
 						cp.setFollowerprimarymob(ecls.get(0).getPhonenumber());
-	
+
 					}
 				}
-			}else
-			{
+			} else {
 				cp.setFollowerimg("");
-				cp.setFollowername("");	
+				cp.setFollowername("");
 				cp.setFollowerprimarymob("");
 			}
 		}
-		
+
 		// -------------------------------------------
 		return cp;
 	}
@@ -6435,16 +6459,19 @@ public class HomeController {
 	public OrganizationContacts OrganizationContactsobjectfiller(OrganizationContacts corg) {
 		if (!nullremover(String.valueOf(corg.getFollowers())).equalsIgnoreCase("")) {
 			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(corg.getFollowers()));
-			corg.setFollowerimg(getemp_photo(empobj));
-			corg.setFollowername(empobj.getStaffName());
-
-			// Set primary contact
-			List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(corg.getFollowers()))
-					.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
-					.collect(Collectors.toList());
-			if (ecls.size() > 0) {
-				corg.setFollowerprimarymob(ecls.get(0).getPhonenumber());
-
+				if( empobj != null)
+				{
+				corg.setFollowerimg(getemp_photo(empobj));
+				corg.setFollowername(empobj.getStaffName());
+	
+				// Set primary contact
+				List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(corg.getFollowers()))
+						.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
+						.collect(Collectors.toList());
+				if (ecls.size() > 0) {
+					corg.setFollowerprimarymob(ecls.get(0).getPhonenumber());
+	
+				}
 			}
 		}
 
@@ -6589,21 +6616,17 @@ public class HomeController {
 
 				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(followerstr));
 
-				if( empobj != null)
-				{
-					leadfol.setFollowername(empobj.getStaffName());	
-				
-				
+				if (empobj != null) {
+					leadfol.setFollowername(empobj.getStaffName());
 
-				List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
-						.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
-				if (validProfilephoto.size() > 0) {
+					List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+							.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+					if (validProfilephoto.size() > 0) {
 
-					leadfol.setFollowerimg(validProfilephoto.get(0).getFilePath());
-				}
-				
-				}else
-				{
+						leadfol.setFollowerimg(validProfilephoto.get(0).getFilePath());
+					}
+
+				} else {
 					leadfol.setFollowername("");
 					leadfol.setFollowerimg("");
 				}
@@ -6624,7 +6647,9 @@ public class HomeController {
 			leadmasterls.add(tmp1obj);
 
 		}
-		return leadmasterls.stream().sorted(Comparator.comparing(LeadMaster::getId).reversed()).toList();
+		return leadmasterls.stream().sorted(Comparator.comparing(LeadMaster::getId).reversed())
+				.collect(Collectors.toList());
+
 	}
 
 	@ResponseBody
@@ -6689,7 +6714,8 @@ public class HomeController {
 			dealmasterls.add(tmp1obj);
 
 		}
-		return dealmasterls.stream().sorted(Comparator.comparing(DealMaster::getId).reversed()).toList();
+		return dealmasterls.stream().sorted(Comparator.comparing(DealMaster::getId).reversed())
+				.collect(Collectors.toList());
 	}
 
 	@ResponseBody
@@ -6750,7 +6776,8 @@ public class HomeController {
 
 		}
 
-		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed()).toList();
+		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList());
 	}
 
 	@ResponseBody
@@ -6840,23 +6867,22 @@ public class HomeController {
 
 			followerids += lf.getEmpid() + ",";
 			EmployeeMaster empobj = employeeMasterService.findById(lf.getEmpid());
-			
-			if(empobj != null) {
-			lf.setFollowername(empobj.getStaffName());
 
-			List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
-					.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
-			if (validProfilephoto.size() > 0) {
+			if (empobj != null) {
+				lf.setFollowername(empobj.getStaffName());
 
-				lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
-			}
+				List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+						.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+				if (validProfilephoto.size() > 0) {
 
-			leadfolloersls.add(lf);
-			}else
-			{
+					lf.setFollowerimg(validProfilephoto.get(0).getFilePath());
+				}
+
+				leadfolloersls.add(lf);
+			} else {
 				lf.setFollowername("");
 				lf.setFollowerimg("");
-				
+
 			}
 		}
 
@@ -11434,7 +11460,7 @@ public class HomeController {
 
 		}
 		atList = atList.stream().sorted(Comparator.comparing(AccountTransfer::getAccounttransferid).reversed())
-				.toList();
+				.collect(Collectors.toList());
 
 		return atList;
 
@@ -11495,7 +11521,8 @@ public class HomeController {
 			}
 
 		}
-		atList = atList.stream().sorted(Comparator.comparing(AccountsIncome::getAccountIncomeid).reversed()).toList();
+		atList = atList.stream().sorted(Comparator.comparing(AccountsIncome::getAccountIncomeid).reversed())
+				.collect(Collectors.toList());
 
 		return atList;
 
@@ -12593,7 +12620,7 @@ public class HomeController {
 	@GetMapping("accounts")
 	public String accountsreport(Model theModel) {
 		List<Accountsheads> ls = accountheadsService.findAll().stream()
-				.sorted(Comparator.comparing(Accountsheads::getRefnumber)).toList();
+				.sorted(Comparator.comparing(Accountsheads::getRefnumber)).collect(Collectors.toList());
 
 		// ----------------------------------------------------------------------------
 		double getAccountsReceivableamt;
@@ -12657,7 +12684,7 @@ public class HomeController {
 				for (BranchMaster bm : branchMasterService.findAll()) {
 					List<BranchexpenseMaster> lsbxm = bm.getBranchexpenseMasterList().stream()
 							.filter(C -> C.getDepitedfrom().equalsIgnoreCase(String.valueOf(obj.getAccountheadid())))
-							.toList();
+							.collect(Collectors.toList());
 					branchexpense_masteramt1 = branchexpense_masteramt1
 							+ lsbxm.stream().mapToDouble(BranchexpenseMaster::getTotal).sum();
 				}
@@ -12791,9 +12818,9 @@ public class HomeController {
 
 		List<String> stringsArr = Arrays.asList("1", "4", "2", "3", "5", "3");
 		List<String> arr1 = stringsArr.stream().filter(C -> Integer.parseInt(C) > 2).collect(Collectors.toList());
-		arr1.stream().distinct().toList();
+		arr1.stream().distinct().collect(Collectors.toList());
 
-		List<String> arr3 = arr1.stream().distinct().sorted().toList();
+		List<String> arr3 = arr1.stream().distinct().sorted().collect(Collectors.toList());
 
 		return arr3;
 
@@ -12858,114 +12885,107 @@ public class HomeController {
 				.collect(Collectors.groupingBy(LeadMaster::getSource, Collectors.counting()));
 		Map<String, Long> dealrs = dealMasterService.findAll().stream()
 				.collect(Collectors.groupingBy(DealMaster::getSource, Collectors.counting()));
-		dealrs.forEach(((k,v) -> leadrs.merge(k, v, Long::sum)));
-		
-		leadrs.forEach((k,v) ->{
-			dcls.add(new donutchart(k,v));	
-		});	
-		
+		dealrs.forEach(((k, v) -> leadrs.merge(k, v, Long::sum)));
+
+		leadrs.forEach((k, v) -> {
+			dcls.add(new donutchart(k, v));
+		});
+
 		return dcls;
 	}
-	
+
 	@ResponseBody
 	@GetMapping("admindashboardbarchart")
 	public Admindashboardbarchart admindashboardbarchart() {
 
 		SimpleDateFormat formatteryear = new SimpleDateFormat("yyyy");
 		SimpleDateFormat formattermonth = new SimpleDateFormat("M");
-		
+
 		Date date = new Date();
 		int currentyear = Integer.parseInt(formatteryear.format(date).toString());
 		int currentmonth = Integer.parseInt(formattermonth.format(date).toString());
-		
-		
-		List<Map<String, Object>> receiptamt = projectMasterService.getdatainvoicereceipt_graph().stream().limit(9).toList();
-		List<Map<String, Object>> expenseamt = projectMasterService.getdataexpense_graph().stream().limit(9).toList();
-		
-		Map<String,Double> receiptamtMap = new HashMap<>();
-		Map<String,Double> expenseamtMap = new HashMap<>();
-		
-		receiptamt.forEach(	data ->{
-			receiptamtMap.put( data.get("ryear").toString() +"-"+ data.get("rmonth").toString(),Double.parseDouble(data.get("ramt").toString()));
-			});
-		
-		expenseamt.forEach(	data ->{
-			expenseamtMap.put( data.get("eyear").toString() +"-"+ data.get("emonth").toString(),Double.parseDouble(data.get("eamt").toString()));
-			});
+
+		List<Map<String, Object>> receiptamt = projectMasterService.getdatainvoicereceipt_graph().stream().limit(9)
+				.collect(Collectors.toList());
+		List<Map<String, Object>> expenseamt = projectMasterService.getdataexpense_graph().stream().limit(9)
+				.collect(Collectors.toList());
+
+		Map<String, Double> receiptamtMap = new HashMap<>();
+		Map<String, Double> expenseamtMap = new HashMap<>();
+
+		receiptamt.forEach(data -> {
+			receiptamtMap.put(data.get("ryear").toString() + "-" + data.get("rmonth").toString(),
+					Double.parseDouble(data.get("ramt").toString()));
+		});
+
+		expenseamt.forEach(data -> {
+			expenseamtMap.put(data.get("eyear").toString() + "-" + data.get("emonth").toString(),
+					Double.parseDouble(data.get("eamt").toString()));
+		});
 		List<Integer> receipt = new ArrayList<>();
 		List<Integer> expense = new ArrayList<>();
 		List<String> xaxis = new ArrayList<>();
-		
-		for(int i=1; i<10; i++)
-		{
-			String searchStr = currentyear+"-"+currentmonth;
-			//---------------------------------------
-			if(receiptamtMap.containsKey(searchStr))
-			{
+
+		for (int i = 1; i < 10; i++) {
+			String searchStr = currentyear + "-" + currentmonth;
+			// ---------------------------------------
+			if (receiptamtMap.containsKey(searchStr)) {
 				receipt.add((int) receiptamtMap.get(searchStr).doubleValue());
-				
-			}else
-			{
+
+			} else {
 				receipt.add(0);
 			}
-			//---------------------------------------
-			if(expenseamtMap.containsKey(searchStr))
-			{
+			// ---------------------------------------
+			if (expenseamtMap.containsKey(searchStr)) {
 				expense.add((int) expenseamtMap.get(searchStr).doubleValue());
-				
-			}else
-			{
+
+			} else {
 				expense.add(0);
 			}
-			//---------------------------------------
-			 Month month = Month.of(currentmonth);
-			 String monthAbbreviation = month.getDisplayName(
-			            java.time.format.TextStyle.SHORT, 
-			            java.util.Locale.ENGLISH
-			        );
-			 xaxis.add(monthAbbreviation);
-			 
-			 //---------------------------------------
-			if(currentmonth == 1)
-			{
+			// ---------------------------------------
+			Month month = Month.of(currentmonth);
+			String monthAbbreviation = month.getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.ENGLISH);
+			xaxis.add(monthAbbreviation);
+
+			// ---------------------------------------
+			if (currentmonth == 1) {
 				currentmonth = 12;
-				currentyear = currentyear-1;				
-			}else
-			{
-				currentmonth=currentmonth-1;
+				currentyear = currentyear - 1;
+			} else {
+				currentmonth = currentmonth - 1;
 			}
 		}
-		
-		Admindashboardbarchart dcls = new Admindashboardbarchart(receipt,expense,xaxis);
-		
-		
+
+		Admindashboardbarchart dcls = new Admindashboardbarchart(receipt, expense, xaxis);
+
 		return dcls;
 	}
-	
+
 	@ResponseBody
 	@GetMapping("rptInvoiceoveraperiodoftime")
-	public List<ProjectMaster> rptInvoiceoveraperiodoftime(@RequestParam("sdate") String sdate, @RequestParam("edate") String edate) {
-		
-		List<ProjectMaster> invLs= projectMasterService.findAll();
-		List<ProjectMaster> invLs1=new ArrayList<>();
-		try
-		{
-			invLs1=	invLs.stream().filter( C -> C.getInvoiceList().stream().anyMatch(O -> {
+	public List<ProjectMaster> rptInvoiceoveraperiodoftime(@RequestParam("sdate") String sdate,
+			@RequestParam("edate") String edate) {
+
+		List<ProjectMaster> invLs = projectMasterService.findAll();
+		List<ProjectMaster> invLs1 = new ArrayList<>();
+		try {
+			invLs1 = invLs.stream().filter(C -> C.getInvoiceList().stream().anyMatch(O -> {
 				try {
-					return displaydateFormatrev.parse(O.getInvoiceDate()).after(displaydateFormatrev.parse(sdate)) && displaydateFormatrev.parse(O.getInvoiceDate()).before(displaydateFormatrev.parse(edate));
+					return displaydateFormatrev.parse(O.getInvoiceDate()).after(displaydateFormatrev.parse(sdate))
+							&& displaydateFormatrev.parse(O.getInvoiceDate()).before(displaydateFormatrev.parse(edate));
 				} catch (ParseException e) {
-					
+
 					e.printStackTrace();
 				}
 				return false;
 			})).collect(Collectors.toList());
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-			
-				
-				return invLs1;
+
+		return invLs1;
 	}
 
+	
 }

@@ -141,9 +141,10 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 		
 	private OrganizationContacts privillageValidation(OrganizationContacts obj) {
 		
-		if(emppojoPrivillage.allowBranches.contains(obj.getBranchid())) {
-			return obj;	
-		}
-		return null;
+		 return obj;
+		/*
+		 * if(emppojoPrivillage.allowBranches.contains(obj.getBranchid())) { return obj;
+		 * } return null;
+		 */
 	}
 }

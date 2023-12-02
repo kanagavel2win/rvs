@@ -24,8 +24,7 @@ public class RvsApplication extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(RvsApplication.class);
-	}
-	
+	}	
 	  @Bean
 	    public ServletWebServerFactory servletContainer() {
 	      TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {

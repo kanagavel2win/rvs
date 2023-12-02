@@ -141,10 +141,10 @@ public class ContactPersonImp implements ContactPersonService {
 	}
 
 	private ContactPerson privillageValidation(ContactPerson obj) {
-
-		if (emppojoPrivillage.allowBranches.contains(obj.getBranchid())) {
-			return obj;
-		}
-		return null;
+		return obj;
+		/*
+		 * if (emppojoPrivillage.allowBranches.contains(obj.getBranchid())) { return
+		 * obj; } return null;
+		 */
 	}
 }

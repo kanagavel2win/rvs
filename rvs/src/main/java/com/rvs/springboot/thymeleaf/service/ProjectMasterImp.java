@@ -41,7 +41,7 @@ public class ProjectMasterImp implements ProjectMasterService {
 
 		if (obj.isPresent()) {
 			// ----- Object Validation------------------
-			Optional<ProjectMaster> privillageObject = privillageValidation(obj);
+			Optional<ProjectMaster> privillageObject = Optional.ofNullable(privillageValidation(obj.get()));
 			if (privillageObject.isPresent()) {
 				bm = privillageObject.get();
 			}
@@ -58,7 +58,7 @@ public class ProjectMasterImp implements ProjectMasterService {
 		List<ProjectMaster> ls = new ArrayList<>();
 		for (ProjectMaster as : projectMasterRepo.findAll()) {
 			// ----- Object Validation------------------
-			Optional<ProjectMaster> privillageObject = privillageValidation(Optional.of(as));
+			Optional<ProjectMaster> privillageObject = Optional.ofNullable(privillageValidation(as));
 			if (privillageObject.isPresent()) {
 				ls.add(privillageObject.get());
 			}
@@ -161,9 +161,9 @@ public class ProjectMasterImp implements ProjectMasterService {
 		return JdbcTemplate.update(sql);
 	}
 
-	private Optional<ProjectMaster> privillageValidation(Optional<ProjectMaster> obj) {
+	private ProjectMaster privillageValidation(ProjectMaster obj) {
 
-		if (emppojoPrivillage.allowBranches.contains(obj.get().getBranch())) {
+		if (emppojoPrivillage.allowBranches.contains(obj.getBranch())) {
 			return obj;
 		}
 		return null;

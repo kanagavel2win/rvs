@@ -67,7 +67,7 @@
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/select2/select2.css}" />
 <link rel="stylesheet"
-	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />	
+	th:href="@{/assets/vendor/libs/tagify/tagify.css}" />
 <link rel="stylesheet"
 	th:href="@{/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css}" />
 
@@ -83,21 +83,17 @@
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script th:src="@{/assets/js/config.js}"></script>
 <style>
-
 .bxs-check-circle {
 	color: green;
-	
 }
 
-.bxs-trash-alt, .bxs-pencil
-{
-	cursor:pointer;
-	padding-left:10px;
-	
+.bxs-trash-alt, .bxs-pencil {
+	cursor: pointer;
+	padding-left: 10px;
 }
-.empnewcredential
-{
-	float:right;
+
+.empnewcredential {
+	float: right;
 }
 </style>
 
@@ -165,6 +161,7 @@ var tblemployeecompensationid=0;
 															class="bx bx-calendar-alt"></i> <th:block
 																th:text="'Experience  '+ ${employeemaster.t_joindatetimeline}"></th:block>
 														</li>
+														
 													</ul>
 												</div>
 												<!--  <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
@@ -188,9 +185,12 @@ var tblemployeecompensationid=0;
 									<li class="nav-item"><a class="nav-link active"><i
 											class="bx bx-group"></i> Job Title</a></li>
 									<li class="nav-item"><a class="nav-link"
-										href="underMaintenance"><i
-											class="bx bx-grid-alt"></i> Projects</a></li>
-									
+										href="underMaintenance"><i class="bx bx-grid-alt"></i>
+											Projects</a></li>
+									<li class="nav-item"><a class="nav-link"
+															th:href="'empbenefits?id=' + ${employeemaster['empMasterid']}"><i
+																class="bx bx-grid-alt"></i> Benefits</a></li>
+
 								</ul>
 							</div>
 						</div>
@@ -204,8 +204,8 @@ var tblemployeecompensationid=0;
 										<h6 class="card-action-title mb-0">
 											EMPLOYMENT STATUS
 											<div class="card-action-element" style="float: right">
-												<button class="btn btn-primary btn-sm newemplstatus" type="button"
-													name="-" data-bs-toggle="modal"
+												<button class="btn btn-primary btn-sm newemplstatus"
+													type="button" name="-" data-bs-toggle="modal"
 													data-bs-target="#editEmployeestatus">
 													<i class="bx bx-plus bx-xs me-1"></i>
 												</button>
@@ -236,14 +236,10 @@ var tblemployeecompensationid=0;
 																th:if="${emp.empstatus_effectivedate} !=''">
 																<span
 																	th:text="${#strings.arraySplit(emp.empstatus_effectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.empstatus_effectivedate,'-')[0]}"></span>
-															</th:block>
-															
-															<th:block
+															</th:block> <th:block
 																th:if="${emp.employeejobempstatusid} == ${greenpointemployementstatus}">
 																<span class="bx bxs-check-circle"></span>
-															</th:block> 
-															
-															</td>
+															</th:block></td>
 														<td><span
 															th:id="'tblempstatus_employmentstatus' + ${stat.index}"
 															th:text="${emp.empstatus_employmentstatus}"></span> <input
@@ -265,8 +261,8 @@ var tblemployeecompensationid=0;
 																data-target="#deleteInformationScrollable"
 																th:name="${emp.employeejobempstatusid}"
 																th:id="${stat.index}" class="deleteemplstatus"><i
-																	class="bx bxs-trash-alt"></i></span> </span>
-																	</td>
+																	class="bx bxs-trash-alt"></i></span>
+														</span></td>
 														<script>
 																	tblemployeeJobempstatusid = tblemployeeJobempstatusid + 1;
 																</script>
@@ -308,36 +304,32 @@ var tblemployeecompensationid=0;
 												</thead>
 												<tbody>
 													<tr th:each="emp,stat : ${employeeJobinfomation}">
-														<td class="text-bold-500"> <input type="hidden" th:value="${emp.employeejobinfoid}"
+														<td class="text-bold-500"><input type="hidden"
+															th:value="${emp.employeejobinfoid}"
 															th:id="'tblemployeejobinfoid' + ${stat.index}" /> <input
 															type="hidden" th:value="${emp.jobeffectivedate}"
 															th:id="'tbljobeffectivedate' + ${stat.index}" /> <th:block
 																th:if="${emp.jobeffectivedate} !=''">
 																<span
 																	th:text="${#strings.arraySplit(emp.jobeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.jobeffectivedate,'-')[0]}"></span>
-															</th:block>
-															
-															<th:block
+															</th:block> <th:block
 																th:if="${emp.employeejobinfoid} == ${greenpointjobstatus}">
 																<span class="bx bxs-check-circle"></span>
-															</th:block>
-															</td>
-														<td><span th:id="'tbljoblocation_str' + ${stat.index}"
-															th:text="${emp.joblocation_str}"></span>
-															<input type="hidden" th:id="'tbljoblocation' + ${stat.index}"
-															th:value="${emp.joblocation}" />
-															</td>
+															</th:block></td>
+														<td><span
+															th:id="'tbljoblocation_str' + ${stat.index}"
+															th:text="${emp.joblocation_str}"></span> <input
+															type="hidden" th:id="'tbljoblocation' + ${stat.index}"
+															th:value="${emp.joblocation}" /></td>
 														<td><span th:id="'tbljobdeparment' + ${stat.index}"
 															th:text="${emp.jobdeparment}"></span></td>
 														<td><span th:id="'tbljobtitle' + ${stat.index}"
 															th:text="${emp.jobtitle}"></span></td>
-														<td><input type="hidden" th:id="'tbljobreportsto' + ${stat.index}"
-															th:value="${emp.jobreportsto}"/>
-															
-															<span th:id="'tblreportstoname' + ${stat.index}"
-															th:text="${emp.reportstoname}"></span>
-															
-															</td>
+														<td><input type="hidden"
+															th:id="'tbljobreportsto' + ${stat.index}"
+															th:value="${emp.jobreportsto}" /> <span
+															th:id="'tblreportstoname' + ${stat.index}"
+															th:text="${emp.reportstoname}"></span></td>
 														<td><span class="iconalign"> <span
 																data-bs-toggle="modal"
 																data-bs-target="#jobInformationScrollable"
@@ -363,7 +355,8 @@ var tblemployeecompensationid=0;
 										<h6 class="card-action-title mb-0">
 											COMPENSATION
 											<div class="card-action-element" style="float: right">
-												<button class="btn btn-primary btn-sm newempcompensationstatus"
+												<button
+													class="btn btn-primary btn-sm newempcompensationstatus"
 													type="button" name="-" data-bs-toggle="modal"
 													data-bs-target="#compensationScrollable">
 													<i class="bx bx-plus bx-xs me-1"></i>
@@ -388,7 +381,7 @@ var tblemployeecompensationid=0;
 												</thead>
 												<tbody>
 													<tr th:each="emp,stat : ${employeecompensation}">
-														<td class="text-bold-500"> <input type="hidden"
+														<td class="text-bold-500"><input type="hidden"
 															th:value="${emp.employeejobcompensationid}"
 															th:id="'tblemployeejobcompensationid' + ${stat.index}" />
 															<input type="hidden" th:value="${emp.comeffectivedate}"
@@ -396,12 +389,10 @@ var tblemployeecompensationid=0;
 																th:if="${emp.comeffectivedate} !=''">
 																<span
 																	th:text="${#strings.arraySplit(emp.comeffectivedate,'-')[2]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[1]}+'-'+${#strings.arraySplit(emp.comeffectivedate,'-')[0]}"></span>
-															</th:block>
-															<th:block
+															</th:block> <th:block
 																th:if="${emp.employeejobcompensationid} == ${greenpointcompensationstatus}">
 																<span class="bx bxs-check-circle"></span>
-															</th:block>
-															</td>
+															</th:block></td>
 														<td><span th:id="'tblcomPayschedule' + ${stat.index}"
 															th:text="${emp.comPayschedule}"></span></td>
 														<td><span th:id="'tblcompaytype' + ${stat.index}"
@@ -441,13 +432,12 @@ var tblemployeecompensationid=0;
 								<div class="card mb-4">
 									<div class="card-header align-items-center">
 										<h6 class="card-action-title mb-0">
-											Access Management 
+											Access Management
 											<div class="card-action-element" style="float: right">
 												<button class="btn btn-primary btn-sm newempnewcredential"
 													type="button" name="-" data-bs-toggle="modal"
 													data-bs-target="#newempnewcredentialScrollable">
-													Create Credential
-												</button>
+													Create Credential</button>
 											</div>
 										</h6>
 
@@ -463,16 +453,13 @@ var tblemployeecompensationid=0;
 												</thead>
 												<tbody>
 													<tr>
-														<td>
-															<th:block th:each="rolobj : ${loginRoles}">
+														<td><th:block th:each="rolobj : ${loginRoles}">
 																<th:block th:text="${rolobj.role}"></th:block>
 															</th:block>
 															<button class="btn btn-secondary btn-sm empnewcredential"
 																type="button" name="-" data-bs-toggle="modal"
 																data-bs-target="#empnewcredentialScrollable">
-																Reset the Pwd / Role
-															</button>
-														</td>
+																Reset the Pwd / Role</button></td>
 													</tr>
 												</tbody>
 											</table>
@@ -483,23 +470,21 @@ var tblemployeecompensationid=0;
 												<thead>
 													<tr>
 														<th>Allowed Branches
-														<div class="card-action-element" style="float: right">
-															<button class="btn btn-primary btn-sm accessToBranch"
-																type="button" name="-" data-bs-toggle="modal"
-																data-bs-target="#accessToBranchScrollable">
-																Access To Branch
-															</button>
-														</div>
+															<div class="card-action-element" style="float: right">
+																<button class="btn btn-primary btn-sm accessToBranch"
+																	type="button" name="-" data-bs-toggle="modal"
+																	data-bs-target="#accessToBranchScrollable">
+																	Access To Branch</button>
+															</div>
 														</th>
 													</tr>
 												</thead>
 												<tbody>
 													<tr>
-														<td>
-															<th:block th:each="epobj : ${employeePrivillageList}">
+														<td><th:block
+																th:each="epobj : ${employeePrivillageList}">
 																<p th:text="${epobj.branchName}"></p>
-															</th:block>
-														</td>
+															</th:block></td>
 													</tr>
 												</tbody>
 											</table>
@@ -527,91 +512,91 @@ var tblemployeecompensationid=0;
 											<h5>Employment Status</h5>
 										</div>
 										<form id="addempstatus" class="needs-validation" novalidate>
-										<div class="col-12">
-										
-										
-											<label class="form-label" for="empstatus_employmentstatus">Employment
-												Status <label class="emptitle additem"
-												name="addemployeestatusdata" ><i
-													class="bx bxs-plus-circle ownstyle1"></i></label>
-											</label> <input type="hidden" id="employeeJobempstatusid" /> <input
-												type="hidden" id="employeeJobempstatusidrow" /> <select
-												class="form-select addemployeestatusdata"
-												id="empstatus_employmentstatus" required>
-												<option>-</option>
-												<th:block th:each="str :${EmploymentStatus}">
-													<option th:value="${str}" th:text="${str}"></option>
-												</th:block>
-												
-											</select>
-											<div class="invalid-feedback">Please choose a Status.</div>
-	
-										</div>
-										<div class="Termination col-12">
-											<label class="form-label" for="empstatus_terminationtype">Termination
-												Type <label class="emptitle additem"
-												name="addterminationtypedata"><i
-													class="bx bxs-plus-circle ownstyle1"></i></label>
-											</label> <select class="form-select addterminationtypedata"
-												id="empstatus_terminationtype">
-												<option>-</option>
-												<th:block th:each="str :${TerminationType}">
-													<option th:value="${str}" th:text="${str}"></option>
-												</th:block>
-												
-											</select>
+											<div class="col-12">
 
-										</div>
-										<div class="Termination  col-12">
-											<label class="form-label" for="empstatus_terminationreason">Termination
-												Reason <label class="emptitle additem"
-												name="addterminationreasondata"><i
-													class="bx bxs-plus-circle ownstyle1"></i></label>
-											</label> <select class="form-select addterminationreasondata"
-												id="empstatus_terminationreason">
-												<option>-</option>
-												<th:block th:each="str :${TerminationReason}">
-													<option th:value="${str}" th:text="${str}"></option>
-												</th:block>
 
-											</select>
-											<div class="invalid-feedback">Please choose a Reason.</div>
+												<label class="form-label" for="empstatus_employmentstatus">Employment
+													Status <label class="emptitle additem"
+													name="addemployeestatusdata"><i
+														class="bx bxs-plus-circle ownstyle1"></i></label>
+												</label> <input type="hidden" id="employeeJobempstatusid" /> <input
+													type="hidden" id="employeeJobempstatusidrow" /> <select
+													class="form-select addemployeestatusdata"
+													id="empstatus_employmentstatus" required>
+													<option>-</option>
+													<th:block th:each="str :${EmploymentStatus}">
+														<option th:value="${str}" th:text="${str}"></option>
+													</th:block>
 
-										</div>
-										<div class="Termination col-12 ">
-											<label class="form-label" for="empstatus_rehire">Eligible
-												for rehire </label> <select class="form-select"
-												id="empstatus_rehire">
-												<option>-</option>
-												<option>Yes</option>
-												<option>No</option>
-												<option>Upon review</option>
+												</select>
+												<div class="invalid-feedback">Please choose a Status.</div>
 
-											</select>
-											<div class="invalid-feedback">Please choose a rehire.</div>
+											</div>
+											<div class="Termination col-12">
+												<label class="form-label" for="empstatus_terminationtype">Termination
+													Type <label class="emptitle additem"
+													name="addterminationtypedata"><i
+														class="bx bxs-plus-circle ownstyle1"></i></label>
+												</label> <select class="form-select addterminationtypedata"
+													id="empstatus_terminationtype">
+													<option>-</option>
+													<th:block th:each="str :${TerminationType}">
+														<option th:value="${str}" th:text="${str}"></option>
+													</th:block>
 
-										</div>
-										<div class="col-12 ">
-											<label class="form-label" for="empstatus_effectivedate">Effective
-												Date </label> <input type="date" class="form-control"
-												id="empstatus_effectivedate" required>
+												</select>
+
+											</div>
+											<div class="Termination  col-12">
+												<label class="form-label" for="empstatus_terminationreason">Termination
+													Reason <label class="emptitle additem"
+													name="addterminationreasondata"><i
+														class="bx bxs-plus-circle ownstyle1"></i></label>
+												</label> <select class="form-select addterminationreasondata"
+													id="empstatus_terminationreason">
+													<option>-</option>
+													<th:block th:each="str :${TerminationReason}">
+														<option th:value="${str}" th:text="${str}"></option>
+													</th:block>
+
+												</select>
+												<div class="invalid-feedback">Please choose a Reason.</div>
+
+											</div>
+											<div class="Termination col-12 ">
+												<label class="form-label" for="empstatus_rehire">Eligible
+													for rehire </label> <select class="form-select"
+													id="empstatus_rehire">
+													<option>-</option>
+													<option>Yes</option>
+													<option>No</option>
+													<option>Upon review</option>
+
+												</select>
+												<div class="invalid-feedback">Please choose a rehire.</div>
+
+											</div>
+											<div class="col-12 ">
+												<label class="form-label" for="empstatus_effectivedate">Effective
+													Date </label> <input type="date" class="form-control"
+													id="empstatus_effectivedate" required>
 												<div class="invalid-feedback">Please choose a Date.</div>
-										</div>
-										<div class="col-12">
-											<label class="form-label" for="empstatus_remarks">Remarks</label>
-											<input type="text" class="form-control"
-												id="empstatus_remarks">
-										</div>
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="empstatus_remarks">Remarks</label>
+												<input type="text" class="form-control"
+													id="empstatus_remarks">
+											</div>
 
-										<div class="col-12 text-center mt-4">
-											<button type="button" class="btn btn-primary me-sm-3 me-1"
-												id="tbl_EMPLOYMENTSTATUS_save">Submit</button>
-											<button type="reset"
-												class="btn btn-label-secondary tbl_EMPLOYMENTSTATUS_close"
-												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-										</div>
+											<div class="col-12 text-center mt-4">
+												<button type="button" class="btn btn-primary me-sm-3 me-1"
+													id="tbl_EMPLOYMENTSTATUS_save">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary tbl_EMPLOYMENTSTATUS_close"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
 										</form>
-	
+
 									</div>
 								</div>
 							</div>
@@ -634,59 +619,60 @@ var tblemployeecompensationid=0;
 											<h5>Job Information</h5>
 										</div>
 										<form id="JobInformation">
-										<div class="col-12">
-											<label class="form-label" for="empstatus_employmentstatus">Effective
-												Date </label> <input type="hidden" class="form-control"
-												id="employeejobinfoid"> <input type="hidden"
-												class="form-control" id="employeejobinfoidrow"> <input
-												type="date" class="form-control" id="jobeffectivedate">
+											<div class="col-12">
+												<label class="form-label" for="empstatus_employmentstatus">Effective
+													Date </label> <input type="hidden" class="form-control"
+													id="employeejobinfoid"> <input type="hidden"
+													class="form-control" id="employeejobinfoidrow"> <input
+													type="date" class="form-control" id="jobeffectivedate">
 
-										</div>
-										<div class="col-12">
-											<label class="form-label" for="empstatus_terminationtype">Location
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="empstatus_terminationtype">Location
 
-											</label> <select class="form-select" id="joblocation">
-												<th:block th:each="obj : ${branchls}">
-													<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
-												</th:block>
-											</select>
-										</div>
-										<div class="col-12 ">
-											<label for="email-id-icon">Department 
-											</label> <select class="form-select adddepartmentdata" id="jobdeparment">
-												<option>-</option>
-												<th:block th:each="str :${Department}">
-													<option th:value="${str}" th:text="${str}"></option>
-												</th:block>
-											</select>
-										</div>
-										<div class="col-12 ">
-											<label for="email-id-icon">Job Title 
-											</label> <select class="form-select addjobtitledata" id="jobtitle">
-												<option>-</option>
-												<th:block th:each="str :${JobTitle}">
-													<option th:value="${str}" th:text="${str}"></option>
-												</th:block>
-											</select>
-										</div>
-										<div class="col-12">
-											<label for="contact-info-icon">Reports To</label> <select
-												class="form-control" id="jobreportsto">
-												<option>-</option>
-												<th:block th:each="str :${EffectiveEmployee}">
-													<option th:value="${str.empMasterid}"
-														th:text="${str.StaffName}"></option>
-												</th:block>
-											</select>
+												</label> <select class="form-select" id="joblocation">
+													<th:block th:each="obj : ${branchls}">
+														<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+													</th:block>
+												</select>
+											</div>
+											<div class="col-12 ">
+												<label for="email-id-icon">Department </label> <select
+													class="form-select adddepartmentdata" id="jobdeparment">
+													<option>-</option>
+													<th:block th:each="str :${Department}">
+														<option th:value="${str}" th:text="${str}"></option>
+													</th:block>
+												</select>
+											</div>
+											<div class="col-12 ">
+												<label for="email-id-icon">Job Title </label> <select
+													class="form-select addjobtitledata" id="jobtitle">
+													<option>-</option>
+													<th:block th:each="str :${JobTitle}">
+														<option th:value="${str}" th:text="${str}"></option>
+													</th:block>
+												</select>
+											</div>
+											<div class="col-12">
+												<label for="contact-info-icon">Reports To</label> <select
+													class="form-control" id="jobreportsto">
+													<option>-</option>
+													<th:block th:each="str :${EffectiveEmployee}">
+														<option th:value="${str.empMasterid}"
+															th:text="${str.StaffName}"></option>
+													</th:block>
+												</select>
 
-										</div>
+											</div>
 
-										<div class="col-12 text-center mt-4">
-											<button type="button" class="btn btn-primary  me-sm-3 me-1"
-												id="tbl_jobinfo_save">Submit</button>
-											<button type="reset" class="btn btn-label-secondary tbl_jobinfo_close"
-												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-										</div>
+											<div class="col-12 text-center mt-4">
+												<button type="button" class="btn btn-primary  me-sm-3 me-1"
+													id="tbl_jobinfo_save">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary tbl_jobinfo_close"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
 										</form>
 									</div>
 								</div>
@@ -708,58 +694,61 @@ var tblemployeecompensationid=0;
 											<h5>Compensation Information</h5>
 										</div>
 										<form id="CompensationInformation">
-										<div class="col-12">
-											<label class="form-label" for="comeffectivedate">Effective
-												Date </label> <input type="hidden" class="form-control"
-												id="employeejobcompensationid"> <input type="hidden"
-												class="form-control" id="employeejobcompensationidrow">
-											<input type="date" class="form-control" id="comeffectivedate">
-										</div>
-										<div class="col-12">
-											<label class="form-label" for="comPayschedule">Pay
-												Schedule </label><select class="form-select" id="comPayschedule">
-												<option>-</option>
-												<option>Monthly</option>
-												<option>Weekly</option>
-												<option>Day</option>
-											</select>
-										</div>
-										<div class="col-12 ">
-											<label for="compaytype">Pay Type 
-											</label> <select class="form-select" id="compaytype">
-												<option>-</option>
-												<option>Salary</option>
-											</select>
-										</div>
-										<div class="col-12">
-											<label for="compayratetype">Pay Rate</label><br /> <input
-												type="number" step="any" class="form-control"
-												style="width: 50%; float: left;" id="compayrate"> <select
-												class="form-select addpayratedata"
-												style="width: 50%; float: right" id="compayratetype">
-												<option>-</option>
-												<option>Day</option>
-												<option>Month</option>
-												<option>Year</option>
-											</select>
-										</div>
-										<div class="col-12">
-											<label for="comchangereason">Change Reason </label> <select class="form-select addchangereasondata"
-												id="comchangereason">
-												<option>-</option>
-												<th:block th:each="str :${PAYCHANGEREASON}">
-													<option th:value="${str}" th:text="${str}"></option>
-												</th:block>
+											<div class="col-12">
+												<label class="form-label" for="comeffectivedate">Effective
+													Date </label> <input type="hidden" class="form-control"
+													id="employeejobcompensationid"> <input
+													type="hidden" class="form-control"
+													id="employeejobcompensationidrow"> <input
+													type="date" class="form-control" id="comeffectivedate">
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="comPayschedule">Pay
+													Schedule </label><select class="form-select" id="comPayschedule">
+													<option>-</option>
+													<option>Monthly</option>
+													<option>Weekly</option>
+													<option>Day</option>
+												</select>
+											</div>
+											<div class="col-12 ">
+												<label for="compaytype">Pay Type </label> <select
+													class="form-select" id="compaytype">
+													<option>-</option>
+													<option>Salary</option>
+												</select>
+											</div>
+											<div class="col-12">
+												<label for="compayratetype">Pay Rate</label><br /> <input
+													type="number" step="any" class="form-control"
+													style="width: 50%; float: left;" id="compayrate"> <select
+													class="form-select addpayratedata"
+													style="width: 50%; float: right" id="compayratetype">
+													<option>-</option>
+													<option>Day</option>
+													<option>Month</option>
+													<option>Year</option>
+												</select>
+											</div>
+											<div class="col-12">
+												<label for="comchangereason">Change Reason </label> <select
+													class="form-select addchangereasondata"
+													id="comchangereason">
+													<option>-</option>
+													<th:block th:each="str :${PAYCHANGEREASON}">
+														<option th:value="${str}" th:text="${str}"></option>
+													</th:block>
 
-											</select>
-										</div>
-										<div class="col-12 text-center mt-4">
-											<button type="button" class="btn btn-primary  me-sm-3 me-1"
-												id="tbl_jobcompensation_save">Submit</button>
-											<button type="reset" class="btn btn-label-secondary tbl_jobcompensation_close"
-												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-										</div>
-									</form>
+												</select>
+											</div>
+											<div class="col-12 text-center mt-4">
+												<button type="button" class="btn btn-primary  me-sm-3 me-1"
+													id="tbl_jobcompensation_save">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary tbl_jobcompensation_close"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
@@ -767,8 +756,8 @@ var tblemployeecompensationid=0;
 						<!--/ Edit COMPENSATION Modal -->
 
 						<!-- Edit newempnewcredential Modal -->
-						<div class="modal fade" id="newempnewcredentialScrollable" tabindex="-1"
-							aria-hidden="true">
+						<div class="modal fade" id="newempnewcredentialScrollable"
+							tabindex="-1" aria-hidden="true">
 							<div
 								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
 								<div class="modal-content p-3 p-md-5">
@@ -780,23 +769,24 @@ var tblemployeecompensationid=0;
 											<h5>Create Credential</h5>
 										</div>
 										<form id="newempnewcredential">
-										
-										<div class="col-12">
-											<label class="form-label" for="comPayschedule">PRIVILEGE </label>
-											<select class="form-select" id="privilege" name="privilege">
-												<option value="">-</option>
-                                                <option value="ROLE_EMPLOYEE">ROLE_EMPLOYEE</option>
-                                                <option value="ROLE_ADMIN">ROLE_ADMIN</option>
-											</select>
-										</div>
-										
-										<div class="col-12 text-center mt-4">
-											<button type="button" class="btn btn-primary  me-sm-3 me-1"
-												id="newempnewcredential_save">Submit</button>
-											<button type="reset" class="btn btn-label-secondary newempnewcredential_close"
-												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-										</div>
-									</form>
+
+											<div class="col-12">
+												<label class="form-label" for="comPayschedule">PRIVILEGE
+												</label> <select class="form-select" id="privilege" name="privilege">
+													<option value="">-</option>
+													<option value="ROLE_EMPLOYEE">ROLE_EMPLOYEE</option>
+													<option value="ROLE_ADMIN">ROLE_ADMIN</option>
+												</select>
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="button" class="btn btn-primary  me-sm-3 me-1"
+													id="newempnewcredential_save">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary newempnewcredential_close"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
@@ -804,8 +794,8 @@ var tblemployeecompensationid=0;
 						<!--/ Edit newempnewcredential Modal -->
 
 						<!-- Edit rest empnewcredential Modal -->
-						<div class="modal fade" id="empnewcredentialScrollable" tabindex="-1"
-							aria-hidden="true">
+						<div class="modal fade" id="empnewcredentialScrollable"
+							tabindex="-1" aria-hidden="true">
 							<div
 								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
 								<div class="modal-content p-3 p-md-5">
@@ -817,39 +807,43 @@ var tblemployeecompensationid=0;
 											<h5>Change Role / Password</h5>
 										</div>
 										<form id="empnewcredential">
-										
-										<div class="col-12">
-											<label class="form-label" for="comPayschedule">PRIVILEGE </label>
-											<select class="form-select" id="resetprivilege" name="resetprivilege">
-												<option value="">-</option>
-                                                <option value="ROLE_EMPLOYEE">ROLE_EMPLOYEE</option>
-                                                <option value="ROLE_ADMIN">ROLE_ADMIN</option>
-											</select>
-										</div>
-										<div class="col-12">
-										<br/>
+
+											<div class="col-12">
+												<label class="form-label" for="comPayschedule">PRIVILEGE
+												</label> <select class="form-select" id="resetprivilege"
+													name="resetprivilege">
+													<option value="">-</option>
+													<option value="ROLE_EMPLOYEE">ROLE_EMPLOYEE</option>
+													<option value="ROLE_ADMIN">ROLE_ADMIN</option>
+												</select>
+											</div>
+											<div class="col-12">
+												<br />
 												<div class="form-check form-check-success">
-						                          <input class="form-check-input" type="checkbox" value="" id="checkboxresetpwd" name="checkboxresetpwd" >
-						                          <label class="form-check-label" for="checkboxresetpwd">Reset Password as well</label>
-						                        </div>
-										</div>
-										
-										<div class="col-12 text-center mt-4">
-											<button type="button" class="btn btn-primary  me-sm-3 me-1"
-												id="restempnewcredential_save">Submit</button>
-											<button type="reset" class="btn btn-label-secondary resetempnewcredential_close"
-												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-										</div>
-									</form>
+													<input class="form-check-input" type="checkbox" value=""
+														id="checkboxresetpwd" name="checkboxresetpwd"> <label
+														class="form-check-label" for="checkboxresetpwd">Reset
+														Password as well</label>
+												</div>
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="button" class="btn btn-primary  me-sm-3 me-1"
+													id="restempnewcredential_save">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary resetempnewcredential_close"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
 						</div>
 						<!--/ Edit rest empnewcredential Modal -->
 
-					<!-- Edit rest access To Branch Modal -->
-						<div class="modal fade" id="accessToBranchScrollable" tabindex="-1"
-							aria-hidden="true">
+						<!-- Edit rest access To Branch Modal -->
+						<div class="modal fade" id="accessToBranchScrollable"
+							tabindex="-1" aria-hidden="true">
 							<div
 								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
 								<div class="modal-content p-3 p-md-5">
@@ -861,30 +855,32 @@ var tblemployeecompensationid=0;
 											<h5>Access To Branch</h5>
 										</div>
 										<form id="empnewcredential">
-										
-										<div class="col-12">
-						
-											<label class="form-label" for="tagallowedBranches">Access To </label>
-											<div>
-												<select
-													class="select2  form-select tagallowedBranches form-control "
-													id="tagallowedBranches" name="tagallowedBranches" multiple="multiple"
-													required>
-													<th:block th:each="obj : ${branchls}">
-														<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
-													</th:block>
-												</select>
 
+											<div class="col-12">
+
+												<label class="form-label" for="tagallowedBranches">Access
+													To </label>
+												<div>
+													<select
+														class="select2  form-select tagallowedBranches form-control "
+														id="tagallowedBranches" name="tagallowedBranches"
+														multiple="multiple" required>
+														<th:block th:each="obj : ${branchls}">
+															<option th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+														</th:block>
+													</select>
+
+												</div>
 											</div>
-										</div>
-										
-										<div class="col-12 text-center mt-4">
-											<button type="button" class="btn btn-primary  me-sm-3 me-1"
-												id="tagallowedBranches_save">Submit</button>
-											<button type="reset" class="btn btn-label-secondary tagallowedBranches_close"
-												data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-										</div>
-									</form>
+
+											<div class="col-12 text-center mt-4">
+												<button type="button" class="btn btn-primary  me-sm-3 me-1"
+													id="tagallowedBranches_save">Submit</button>
+												<button type="reset"
+													class="btn btn-label-secondary tagallowedBranches_close"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
@@ -972,8 +968,8 @@ var tblemployeecompensationid=0;
 	<script
 		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
 	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
-		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
-		<script th:src="@{/assets/js/forms-selects.js}"></script>
+	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+	<script th:src="@{/assets/js/forms-selects.js}"></script>
 
 	<!-- Page JS -->
 	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->

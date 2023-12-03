@@ -100,9 +100,9 @@ public class DealMasterImp implements DealMasterService {
 	}
 
 	@Override
-	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int dealid, String createddate) {
-		final String sql = "INSERT INTO `dealfiles`(`document_no`, `document_type`, `file_path`, `id`, createddate) VALUES ('"
-				+ DocumentNo + "','" + DocumentType + "','" + FilePath + "'," + dealid + ",'" + createddate + "')";
+	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int dealid, String createddate, String DocumentGroup) {
+		final String sql = "INSERT INTO `dealfiles`(`document_no`, `document_type`, `file_path`, `id`, createddate,docgroup) VALUES ('"
+				+ DocumentNo + "','" + DocumentType + "','" + FilePath + "'," + dealid + ",'" + createddate + "','" + DocumentGroup+"')";
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 

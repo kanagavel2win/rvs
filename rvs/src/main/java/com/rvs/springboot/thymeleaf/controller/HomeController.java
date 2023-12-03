@@ -1064,17 +1064,19 @@ public class HomeController {
 
 			int ContactPersonid = Integer.parseInt(params.get("LeadID"));
 			String Documenttype = params.get("Documenttype");
+			String DocumentGroup = params.get("DocumentGroup");
 			String DocNo = params.get("DocNo");
 			itemlistService.savesingletxt(Documenttype, "Documenttype");
 			String createdate = displaydateFormatFirstMMMddYYYAMPM.format(new Date());
 			int id = leadMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid,
-					createdate);
+					createdate,DocumentGroup);
 
 			bfiles.setFileid(id);
 			bfiles.setDocumentNo(DocNo);
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
 			bfiles.setCreateddate(createdate);
+			bfiles.setDocgroup(DocumentGroup);
 			return bfiles;
 		} else if (params.get("functiontype").equalsIgnoreCase("Deal")) {
 			StringBuilder filename = new StringBuilder();
@@ -1106,17 +1108,19 @@ public class HomeController {
 
 			int ContactPersonid = Integer.parseInt(params.get("DealID"));
 			String Documenttype = params.get("Documenttype");
+			String DocumentGroup = params.get("DocumentGroup");
 			String DocNo = params.get("DocNo");
 			String createdate = displaydateFormatFirstMMMddYYYAMPM.format(new Date());
 			itemlistService.savesingletxt(Documenttype, "Documenttype");
 			int id = dealMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid,
-					createdate);
+					createdate,DocumentGroup);
 
 			bfiles.setFileid(id);
 			bfiles.setDocumentNo(DocNo);
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
 			bfiles.setCreateddate(createdate);
+			bfiles.setDocgroup(DocumentGroup);
 			return bfiles;
 		} else if (params.get("functiontype").equalsIgnoreCase("Project")) {
 			StringBuilder filename = new StringBuilder();
@@ -1148,17 +1152,19 @@ public class HomeController {
 
 			int ContactPersonid = Integer.parseInt(params.get("ProjectID"));
 			String Documenttype = params.get("Documenttype");
+			String DocumentGroup = params.get("DocumentGroup");
 			String DocNo = params.get("DocNo");
 			String createdate = displaydateFormatFirstMMMddYYYAMPM.format(new Date());
 			itemlistService.savesingletxt(Documenttype, "Documenttype");
 			int id = projectMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid,
-					createdate);
+					createdate,DocumentGroup);
 
 			bfiles.setFileid(id);
 			bfiles.setDocumentNo(DocNo);
 			bfiles.setDocumentType(Documenttype);
 			bfiles.setFilePath(filename.toString());
 			bfiles.setCreateddate(createdate);
+			bfiles.setDocgroup(DocumentGroup);
 			return bfiles;
 		} else {
 			throw new RuntimeException("functiontype is invalid");
@@ -7772,7 +7778,7 @@ public class HomeController {
 
 				} catch (ParseException e) {
 
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 
@@ -8401,7 +8407,7 @@ public class HomeController {
 		List<DealFiles> dealfilels = new ArrayList();
 		for (LeadFiles lc : leadMaster.getLeadFiles()) {
 			dealfilels.add(
-					new DealFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(), lc.getCreateddate()));
+					new DealFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(), lc.getCreateddate(),lc.getDocgroup()));
 		}
 		if (dealfilels.size() > 0) {
 			dealMaster.setDealFiles(dealfilels);
@@ -8459,7 +8465,7 @@ public class HomeController {
 		List<ProjectFiles> projectfilels = new ArrayList();
 		for (LeadFiles lc : leadMaster.getLeadFiles()) {
 			projectfilels.add(new ProjectFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
-					lc.getCreateddate()));
+					lc.getCreateddate(),lc.getDocgroup()));
 		}
 		if (projectfilels.size() > 0) {
 			projectMaster.setProjectFiles(projectfilels);
@@ -8526,7 +8532,7 @@ public class HomeController {
 			List<LeadFiles> leadfilels = new ArrayList();
 			for (DealFiles lc : dealMaster.getDealFiles()) {
 				leadfilels.add(new LeadFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
-						lc.getCreateddate()));
+						lc.getCreateddate(),lc.getDocgroup()));
 			}
 			if (leadfilels.size() > 0) {
 				leadMaster.setLeadFiles(leadfilels);
@@ -8595,7 +8601,7 @@ public class HomeController {
 		List<ProjectFiles> projectfilels = new ArrayList();
 		for (DealFiles lc : dealMaster.getDealFiles()) {
 			projectfilels.add(new ProjectFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
-					lc.getCreateddate()));
+					lc.getCreateddate(),lc.getDocgroup()));
 		}
 		if (projectfilels.size() > 0) {
 			projectMaster.setProjectFiles(projectfilels);

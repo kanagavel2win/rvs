@@ -118,9 +118,9 @@ public class ProjectMasterImp implements ProjectMasterService {
 	}
 
 	@Override
-	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int projectid, String createddate) {
-		final String sql = "INSERT INTO `projectfiles`(`document_no`, `document_type`, `file_path`, `id`, createddate) VALUES ('"
-				+ DocumentNo + "','" + DocumentType + "','" + FilePath + "'," + projectid + ",'" + createddate + "')";
+	public int insertFiles(String DocumentType, String DocumentNo, String FilePath, int projectid, String createddate, String DocumentGroup) {
+		final String sql = "INSERT INTO `projectfiles`(`document_no`, `document_type`, `file_path`, `id`, createddate,docgroup) VALUES ('"
+				+ DocumentNo + "','" + DocumentType + "','" + FilePath + "'," + projectid + ",'" + createddate + "','" + DocumentGroup+"')";
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 

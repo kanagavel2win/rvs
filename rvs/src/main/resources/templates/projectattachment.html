@@ -530,6 +530,20 @@
 													</div>
 												</div>
 												<div class="col-12">
+													<label class="form-label w-100" for="modalAddCard">Group </label>
+													<div class="input-group input-group-merge">
+														<select id="modalDocumentGroup"
+															class="form-select modalDocumentGroup">
+															<option value="">Default select</option>
+															<th:block th:each="str :${Documenttype}">
+																<option th:value="${str}" th:text="${str}"></option>
+															</th:block>
+
+														</select>
+
+													</div>
+												</div>
+												<div class="col-12">
 													<label class="form-label" for="modalAddCardName">Document
 														No </label> <input type="text" id="modalDocNo"
 														class="form-control" />
@@ -1297,6 +1311,7 @@
 							  						formdata.append("File_Attach",modalFile.files[0]);
 							  						formdata.append("ProjectID",$("#mastercategoryid").val());
 							  						formdata.append("Documenttype",$('#modalDocumenttype').val());
+							  						formdata.append("DocumentGroup",$('#modalDocumentGroup').val());
 							  						formdata.append("DocNo",$('#modalDocNo').val());
 							  						formdata.append("functiontype","Project");
 							  						

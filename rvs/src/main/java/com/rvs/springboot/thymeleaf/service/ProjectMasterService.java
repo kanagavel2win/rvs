@@ -16,7 +16,7 @@ public interface ProjectMasterService {
 	public List<String> getDistrictAll(String state);
 	public int addnewtask(int projectdetailid,String taskname);
 	
-	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id, String createddate);
+	public int insertFiles(String DocumentType,String DocumentNo , String FilePath, int id, String createddate, String DocumentGroup);
 	public int deleteFiles(int id);
 	public int insertContact(int contactpersonid, int projectid);
 	public int deleteContact(int contactpersonid, int projectid);

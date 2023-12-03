@@ -35,6 +35,8 @@ public class DealFiles {
 	private String FilePath;
 	@Column
 	private String createddate;
+	@Column
+	private String docgroup;
 	
 	
 	

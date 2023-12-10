@@ -286,7 +286,7 @@
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
 													<span th:text="${projectMaster.ReferenceName}"
 													id="Lbl_Reference"></span>
-												<hr /></li>
+													<hr /></li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Board:</span>
 													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
@@ -294,7 +294,7 @@
 												<li class="mb-3"><span class="fw-bold me-2">Branch:</span>
 													<span th:text="${projectMaster.branchname}"
 													id="Lbl_branchname"></span></li>
-												
+
 												<li class="mb-3"><span class="fw-bold me-2">Project
 														In Date:</span> <span
 													th:text="${projectMaster.expectedstartdateMMddYYY}"
@@ -438,58 +438,11 @@
 										</div>
 										<div class="card-body">
 											<div class="added-cards">
-												<th:block th:each="fileObj : ${projectMaster.projectFiles}">
-													<div
-														th:class="'cardMaster border p-3 rounded mb-3 filecard' + ${fileObj.fileid}">
-														<div>
-															<div class="card-information">
-																<table style="width: 100%;">
-																	<tr>
-																		<td>
-																			<h6 class="mb-1" th:text="${fileObj.DocumentType}"></h6>
-																		</td>
-																		<td><small class="text-muted filecreateddate"
-																			th:text="${fileObj.createddate}" style="float: right"></small>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td><span class="card-number"
-																			th:text="${fileObj.DocumentNo}"></span></td>
-																		<td rowspan="2">
-																			<div style="float: right">
-																				<button
-																					class="btn btn-label-secondary filedeletebtn"
-																					th:name="${fileObj.fileid}">
-																					<i class='bx bxs-trash-alt'></i>
-																				</button>
-																			</div>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td><th:block th:if="${fileObj.FilePath != ''}">
-																				<a th:href="${fileObj.FilePath}" target="_blank">
-																					<th:block
-																						th:if="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
-																						<img th:src="@{/assets/img/icons/misc/pdf.png}"
-																							alt="PDF image" width="20" class="me-2">
-																					</th:block> <th:block
-																						th:unless="${#strings.arraySplit(fileObj.FilePath,'.')[1]} == 'pdf'">
-																						<img th:src="@{/assets/img/icons/misc/jpg.png}"
-																							alt="PDF image" width="20" class="me-2">
-																					</th:block> <small class="text-body"
-																					th:text="${#strings.substring(#strings.arraySplit(fileObj.FilePath,'/')[1],15)}">
-																				</small>
-																				</a>
-																			</th:block></td>
-																	</tr>
-																</table>
-															</div>
-
-														</div>
-													</div>
-
-												</th:block>
-												<span id="fiprojectdidv"></span>
+												<div class="row gy-4 projectfiledetils">
+												
+												</div>
+												
+												
 											</div>
 										</div>
 									</div>
@@ -530,7 +483,8 @@
 													</div>
 												</div>
 												<div class="col-12">
-													<label class="form-label w-100" for="modalAddCard">Group </label>
+													<label class="form-label w-100" for="modalAddCard">Group
+													</label>
 													<div class="input-group input-group-merge">
 														<select id="modalDocumentGroup"
 															class="form-select modalDocumentGroup">
@@ -815,7 +769,7 @@
 													</div>
 
 												</div>
-											
+
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="startdateX1">Project
 														In Date</label>
@@ -1147,6 +1101,8 @@
 											}
 										});
 								//--------------------------------------------------------------------------------------------------------------------------------------		
+								
+								
 								$(".Referencediv").hide();
 								if($("#Source").val()=='Referral')
 								{
@@ -1322,34 +1278,8 @@
 							  			   	              processData: false,
 							  			   					success : function(result) {
 							  			   						
-							  			   					tempobj =JSON.parse(JSON.stringify(result));
-							  			   						
-							  			   					console.log(tempobj);
-							  								
-								  							let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.fileid  +'"><div>';		                              
-								  							tempresult += '<table style="width: 100%;"><tr><td><h6 class="mb-1">'+ tempobj.documentType +'</h6></td>';
-								  							tempresult += '<td><small class="text-muted filecreateddate" style="float:right">'+ tempobj.createddate +'</small></td></tr>';
-								  							tempresult += '<tr><td><span class="card-number">'+ tempobj.documentNo +'</span></td>';
-								  							tempresult += '<td rowspan="2"><div  style="float:right"><button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.fileid +'"   onClick="filedeleteoperation('+ tempobj.fileid +')"><i class="bx bxs-trash-alt"></i></button></div></td></tr>';
-								  							tempresult += '<tr><td>';
-								  							if(tempobj.filePath != '')
-								  							{
-								  								tempresult += '<a href="'+ tempobj.filePath +'" target="_blank">';
-								  								if(tempobj.filePath.split(".")[1] == 'pdf')
-							  									{
-								  									tempresult += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
-							  									}else
-							 									{
-							  										tempresult += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
-							 									}
-								  								tempresult += '<span class="text-body"> ' + tempobj.filePath.split("/")[1].substring(15) + '</span>';
-								  								tempresult += '</a>';
-								  							}
-								  							
-								  							tempresult += '</td></tr></div></div></div></div>';
-								  								
-								  							$('#fiprojectdidv').before(tempresult);
-								  							
+							  			   					getprojectfiledetails();
+							  			   					
 							  			   					validationformfilereset();
 							  			   					},
 							  			   					error : function(e) {
@@ -1609,6 +1539,90 @@
 								
 							}); // Jquery
 
+			// --------------------------------------------------------------------
+			$(document).ready(function(){
+			    setTimeout(function(){
+			    	getprojectfiledetails();
+			    	
+			     },500); // milliseconds
+			});
+			//--------------------------------------------------------------------------------
+			//function load the history events
+			function getprojectfiledetails() {
+				
+				var formData = {
+					id : "[[${projectMaster.id}]]",
+					
+				}
+
+				$.ajax({
+					type : "GET",
+					url : "getProjectFiledetails",
+					data : formData,
+					success : function(result) {
+						console.log(result);
+						html = "";
+						tempdocgroup="";
+						let i=0;
+						html += '<div class="col-md">';
+						result.forEach(function (obj) {
+							if(tempdocgroup != obj.docgroup)
+							{
+								if(i>0)
+								{
+									html +='	</div></div></div></div>';
+								}
+								tempdocgroup=obj.docgroup;
+								html +='<div class="accordion mt-3 cardMaster border rounded" id="accordionExample'+ i +'">';
+								html +='<div class="card accordion-item">';
+								html +='<h2 class="accordion-header" id="heading'+ i +'">';
+								html +='<button type="button" class="accordion-button"	data-bs-toggle="collapse" data-bs-target="#accordion'+ i +'" aria-expanded="false" 	aria-controls="accordion'+ i +'">';
+								html +=obj.docgroup;
+							    html +='</button></h2>';
+	
+							    html +='<div id="accordion'+ i +'" class="accordion-collapse collapse" data-bs-parent="#accordionExample'+ i +'">	<div class="accordion-body">';
+							}
+						    	html +='<div class="cardMaster border p-3 rounded mb-3 filecard' + obj.fileid +'"><div><div class="card-information"><table style="width: 100%;">';
+						    	html +='<tr><td><h6 class="mb-1"> ' + obj.documentType +'</h6>';
+						    	html +='</td><td><small class="text-muted filecreateddate"  style="float: right">'+ obj.createddate + '</small>';
+						    	html +='</td></tr>	<tr> <td><span class="card-number">'+ obj.documentNo +'</span></td>';
+								html +='<td rowspan="2"> <div style="float: right">	<button class="btn btn-label-secondary filedeletebtn" name="' + obj.fileid +'" onclick="filedeleteoperation(' + obj.fileid +')"><i class="bx bxs-trash-alt"></i></button></div></td></tr>';
+					 			html +='<tr><td>';
+					 			
+					 			if(obj.filePath !=''){
+					 				html +='<a th:href=" ' + obj.filePath +'" target="_blank">';
+					 				if(obj.filePath.split(".")[1] =='pdf')
+				 					{
+				 						html +='<img src="assets/img/icons/misc/pdf.png" 	alt="PDF image" width="20" class="me-2">';
+				 					}else
+			 						{	
+				 						html +='<img src="assets/img/icons/misc/jpg.png" 	alt="PDF image" width="20" class="me-2">';
+			 						}
+					 				html +='<small class="text-body">'+ obj.filePath.split("/")[1].substr(15) +'</small> ';
+					 				
+					 				html +='</a>';
+					 			}
+						    	
+					 			html +='</td></tr></table></div></div></div>';
+				 			
+					
+							
+							i++;
+						});
+					html +='</div>'	
+					;
+					$(".projectfiledetils").html(html);
+					
+					},
+					error : function(e) {
+						console.log("Error" + e);
+
+					}
+
+				});
+
+			}
+			// --------------------------------------------------------------------
 			//------------------------------------------------------
 			function makeprimarycontactperson(elem) {
 

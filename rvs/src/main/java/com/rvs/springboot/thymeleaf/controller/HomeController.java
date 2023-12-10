@@ -10528,6 +10528,9 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
+		List<ProjectFiles> pfls = projectMaster.getProjectFiles().stream().sorted(Comparator.comparing(ProjectFiles:: getDocgroup)).collect(Collectors.toList());
+		theModel.addAttribute("pfls", pfls);
+		// ----------------------------------------------------------
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -10584,6 +10587,14 @@ public class HomeController {
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		return "projectattachment";
+	}
+	@ResponseBody
+	@GetMapping("getProjectFiledetails")
+	public List<ProjectFiles> getProjectFiledetails(@RequestParam("id") int projectid)
+	{
+		
+		List<ProjectFiles> pfls = projectMasterService.findById(projectid).getProjectFiles().stream().sorted(Comparator.comparing(ProjectFiles:: getDocgroup)).collect(Collectors.toList());
+		return pfls;
 	}
 
 	@GetMapping("projectaccounts")

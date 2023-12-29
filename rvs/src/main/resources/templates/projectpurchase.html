@@ -18,7 +18,6 @@
 <meta name="description" content="" />
 
 
-
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
 	th:href="@{/assets/img/favicon/favicon.ico}" />
@@ -243,7 +242,7 @@
 													class="bx bx-rupee bx-sm"></i></span>
 												<div>
 													<h6 class="mb-0">
-														Rs.<span th:text="${projectMaster.projectvalue}"
+														Rs.<span th:text="${projectMaster.projecttotalvaluefromItem}"
 															id="Lbl_projectvaluetotal"></span>
 													</h6>
 													<span>Project Value</span>
@@ -883,7 +882,6 @@
 													<div>
 														<select class="form-control" id="board"
 															th:field="*{board}">
-															<option value="">-</option>
 															<th:block th:each="str :${board}">
 																<option th:value="${str.id}" th:text="${str.boardName}"></option>
 															</th:block>

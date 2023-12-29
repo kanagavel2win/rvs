@@ -104,7 +104,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 				+ " left join (select e2.joblocation,e2.employeeid from (SELECT  max(STR_TO_DATE(jobeffectivedate,'%Y-%m-%d')) as jdate,employeeid FROM employeejobinfo e where STR_TO_DATE(jobeffectivedate,'%Y-%m-%d') <=STR_TO_DATE('"
 				+ selectedmonth
 				+ "-31','%Y-%m-%d')  group by employeeid) e1 inner join employeejobinfo e2 on e1.jdate=e2.jobeffectivedate and e1.employeeid = e2.employeeid)t3 on t3.employeeid=t2.employeeid order by t2.employeeid";
-		// System.out.println(sql);
+		//System.out.println(sql);
 		List<Map<String, Object>> atm = JdbcTemplate.queryForList(sql);
 
 		return atm;

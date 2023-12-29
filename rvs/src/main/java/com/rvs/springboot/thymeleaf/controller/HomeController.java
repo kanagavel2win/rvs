@@ -1807,6 +1807,9 @@ public class HomeController {
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
 
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
+
 		theModel.addAttribute("BranchMaster", bm);
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
@@ -1903,7 +1906,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		theModel.addAttribute("BranchMaster", bm);
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
@@ -2837,7 +2841,9 @@ public class HomeController {
 		themodel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		themodel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		themodel.addAttribute("DocumentGroup", DocumentGroup);
+		
 		themodel.addAttribute("employeeEmgAddress", new EmployeeEmgContact());
 		themodel.addAttribute("employeeEducation", edulsnew);
 		themodel.addAttribute("employeeEmgContact", emglsnew);
@@ -3971,14 +3977,7 @@ public class HomeController {
 			double Monthlyincentives = 0.00;
 			double net = 0.00;
 			// ----------------------------------------------------
-			/*
-			 * System.out.println("HOLIDAYHL0-" + HOLIDAYHL0+ " SUNDAYHL0-" + SUNDAYHL0+
-			 * " HL0-" + HL0); System.out.println("P-" + P+ " A-" + A+ " T-" + T +" HL-" +
-			 * HL); System.out.println("HOLIDAYP-" + HOLIDAYP+ " HOLIDAYHL-" + HOLIDAYHL+
-			 * " HOLIDAYA-" + HOLIDAYA); System.out.println("SUNDAYP-" + SUNDAYP+
-			 * " SUNDAYHL-" + SUNDAYHL); System.out.println("0.5" + (P-HOLIDAYP-SUNDAYP) + T
-			 * + (HL-HOLIDAYHL-SUNDAYHL) );
-			 */
+		
 			Totalholidays = holidaylist.size();
 			TotalWWorkingDays = (P - HOLIDAYP - SUNDAYP) + T + (HL - HOLIDAYHL - SUNDAYHL);
 			Totalsundaywrkdays = SUNDAYP + SUNDAYHL;
@@ -3986,20 +3985,13 @@ public class HomeController {
 			ExtraWorkingDays = Totalsundaywrkdays + Totalholidaywrkdays;
 
 			Absent = A;
-			WorkingDays = TotalWWorkingDays + Totalholidays - HOLIDAYA;
+			WorkingDays = TotalWWorkingDays + Totalholidays;
 
-			/*
-			 * System.out.println("Totalholidays-" + Totalholidays+ " TotalWWorkingDays-" +
-			 * TotalWWorkingDays+ " Totalsundaywrkdays-" +
-			 * Totalsundaywrkdays+" Totalholidaywrkdays-" + Totalholidaywrkdays);
-			 * System.out.println("ExtraWorkingDays-" + ExtraWorkingDays+ " WorkingDays-" +
-			 * WorkingDays);
-			 */
-
-			BasicSalary = Math.round((ctc / 26) * WorkingDays * 0.40);
-			DA = Math.round((ctc / 26) * WorkingDays * 0.35);
-			HRA = Math.round((ctc / 26) * WorkingDays * 0.25);
-			TOTALGROSS = Math.round(BasicSalary + DA + HRA);
+		
+			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) *100)/100.00;
+			DA = Math.round(((ctc / 26) * WorkingDays * 0.35) *100)/100.00;
+			HRA = Math.round(((ctc / 26) * WorkingDays * 0.25) *100)/100.00;
+			TOTALGROSS = Math.round((BasicSalary + DA + HRA) *100)/100.00;
 			ESI = Math.round(BasicSalary * (0.01) * 0);
 			EPF = Math.round(BasicSalary * (0.12) * 0);
 			TOTALDeduction = ESI + EPF + Advance;
@@ -6062,6 +6054,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> MEMBERIN = itemlistService.findByFieldName("MEMBERIN");
 		theModel.addAttribute("MEMBERIN", MEMBERIN);
 
@@ -6511,7 +6505,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -6776,6 +6771,14 @@ public class HomeController {
 					// e.printStackTrace();
 				}
 			}
+			tmp1obj.setProjecttotalvaluefromItem("0");
+			if(tmp1obj.getProjectItemMaster().size()>0)
+			{
+				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(tmp1obj.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+				
+			}
+			// ----------------------------------------------------------
+			
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			projectmasterls.add(tmp1obj);
@@ -6953,7 +6956,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -7090,7 +7094,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -7234,7 +7239,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -7378,7 +7384,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -7532,7 +7539,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -7677,7 +7685,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -8051,7 +8060,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -9140,7 +9150,6 @@ public class HomeController {
 	@ResponseBody
 	public String projectsavestage1(@RequestParam Map<String, String> params) {
 
-		// System.out.println(params);
 		String ContactPerson = params.get("ContactPerson");
 		String Organization = params.get("Organization");
 		String Title = params.get("Title");
@@ -9152,7 +9161,7 @@ public class HomeController {
 		String phonenumber = params.get("phonenumber");
 		String Purpose = params.get("Purpose");
 		String startDate = params.get("startDate");
-		String board = "";
+		String board =  params.get("board");
 
 		String Status = params.get("Status");
 		String label = params.get("label");
@@ -9317,7 +9326,7 @@ public class HomeController {
 		projectMaster.setBranch(branch);
 		projectMaster.setProjectvalue(projectValue);
 		projectMaster.setStartdate(startDate);
-		// projectMaster.setBoard(board);
+		projectMaster.setBoard(board);
 
 		projectMaster.setStatus(Status);
 		projectMaster.setLabel(label);
@@ -10222,6 +10231,13 @@ public class HomeController {
 					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
 		}
 		// ----------------------------------------------------------
+		if(projectMaster.getProjectItemMaster().size()>0)
+		{
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+			
+		}
+		// ----------------------------------------------------------
+		
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -10229,7 +10245,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -10382,6 +10399,13 @@ public class HomeController {
 					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
 		}
 		// ----------------------------------------------------------
+		if(projectMaster.getProjectItemMaster().size()>0)
+		{
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+			
+		}
+		// ----------------------------------------------------------
+		
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -10389,7 +10413,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -10528,6 +10553,13 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
+		if(projectMaster.getProjectItemMaster().size()>0)
+		{
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+			
+		}
+		// ----------------------------------------------------------
+		
 		List<ProjectFiles> pfls = projectMaster.getProjectFiles().stream().sorted(Comparator.comparing(ProjectFiles:: getDocgroup)).collect(Collectors.toList());
 		theModel.addAttribute("pfls", pfls);
 		// ----------------------------------------------------------
@@ -10538,7 +10570,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -10594,6 +10627,22 @@ public class HomeController {
 	{
 		
 		List<ProjectFiles> pfls = projectMasterService.findById(projectid).getProjectFiles().stream().sorted(Comparator.comparing(ProjectFiles:: getDocgroup)).collect(Collectors.toList());
+		return pfls;
+	}
+	@ResponseBody
+	@GetMapping("getLeadFiledetails")
+	public List<LeadFiles> getLeadFiledetails(@RequestParam("id") int projectid)
+	{
+		
+		List<LeadFiles> pfls = leadMasterService.findById(projectid).getLeadFiles().stream().sorted(Comparator.comparing(LeadFiles:: getDocgroup)).collect(Collectors.toList());
+		return pfls;
+	}
+	@ResponseBody
+	@GetMapping("getDealFiledetails")
+	public List<DealFiles> getDealFiledetails(@RequestParam("id") int Dealid)
+	{
+		
+		List<DealFiles> pfls = dealMasterService.findById(Dealid).getDealFiles().stream().sorted(Comparator.comparing(DealFiles:: getDocgroup)).collect(Collectors.toList());
 		return pfls;
 	}
 
@@ -10681,8 +10730,14 @@ public class HomeController {
 			projectMaster.setBoardName(
 					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
 		}
-
 		// ----------------------------------------------------------
+		if(projectMaster.getProjectItemMaster().size()>0)
+		{
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+			
+		}
+		// ----------------------------------------------------------
+		
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -10690,7 +10745,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -10841,6 +10897,13 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
+		if(projectMaster.getProjectItemMaster().size()>0)
+		{
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+			
+		}
+		// ----------------------------------------------------------
+		
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -10848,7 +10911,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -11667,6 +11731,13 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
+		if(projectMaster.getProjectItemMaster().size()>0)
+		{
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+			
+		}
+		// ----------------------------------------------------------
+		
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -11674,7 +11745,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 
@@ -11944,6 +12016,13 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
+		if(projectMaster.getProjectItemMaster().size()>0)
+		{
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+			
+		}
+		// ----------------------------------------------------------
+		
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -11951,7 +12030,8 @@ public class HomeController {
 
 		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
 		theModel.addAttribute("Documenttype", Documenttype);
-
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
 		List<String> industry_type = itemlistService.findByFieldName("industry_type");
 		theModel.addAttribute("industry_type", industry_type);
 

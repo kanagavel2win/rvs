@@ -736,7 +736,21 @@
 														</div>
 													</div>
 												</div>
+												<div class="col-12">
+													<label class="form-label" for="followers">Team Members</label>
+													<div>
+														<select
+															class="select2  form-select followers form-control "
+															id="teamMember" name="teamMember" multiple="multiple"
+															>
+															<th:block th:each="str :${employeelist}">
+																<option th:value="${str.empMasterid}"
+																	th:text="${str.StaffName}"></option>
+															</th:block>
+														</select>
 
+													</div>
+												</div>
 
 												<div class="col-md-12">
 													<br />
@@ -1281,6 +1295,56 @@
 		<script th:src="@{/assets/js/ui-toasts.js}"></script>
 
 		<script>
+		 // Date Format
+		  
+			  const flatpickrFriendly = flatpickr("#expectedclosingdate", {
+				  altInput: true,
+			      altFormat: 'F j, Y',
+			      dateFormat: 'Y-m-d'
+			     });
+			
+			  const expectedstartdateX1 = flatpickr("#startdateX1", {
+				  altInput: true,
+			      altFormat: 'F j, Y',
+			      dateFormat: 'Y-m-d'
+			     });
+			
+				 //
+				
+				 const tdate = flatpickr("#tdate", {
+				  altInput: true,
+			      altFormat: 'F j, Y',
+			      dateFormat: 'Y-m-d'
+			     });
+			
+				
+			// Phone
+			const phoneMask = document.querySelector('.phone-number-otp-mask');
+
+			// Phone Number Input Mask
+			if (phoneMask) {
+				new Cleave(phoneMask, {
+					phone : true,
+					phoneRegionCode : 'US'
+				});
+			}
+			// ------------------------------------------------------------------------------
+				const flatpickrFriendlystartdate = flatpickr("#startdate", {
+				  altInput: true,
+			      altFormat: 'F j, Y',
+			      dateFormat: 'Y-m-d'
+			     });
+			
+			
+			// ------------------------------------------------------------------------------
+			const flatpickrFriendlyenddate = flatpickr("#enddate", {
+				  altInput: true,
+			      altFormat: 'F j, Y',
+			      dateFormat: 'Y-m-d'
+			     }); 
+			
+		
+				 
 			$(document)
 					.ready(
 							function() {
@@ -1639,10 +1703,12 @@
 								    	
 								     },500); // milliseconds
 								});
+								
+								
 								// --------------------------------------------------------------------
 								$("#startdate").change(function() {
 									if($('#enddate').val() ==''){
-										$('#enddate').val($(this).val());
+										flatpickrFriendlyenddate.setDate($(this).val());
 									}
 								});
 								$("#starttime").change(function() {
@@ -1738,6 +1804,7 @@
 												formData.append("File_Attach",null);
 												formData.append("guestid","");
 												formData.append("activityfollowers",$("#activityfollowers").val());
+												formData.append("teamMember1",$("#teamMember").val());
 												formData.append("Activitycategory","Activity");
 												formData.append("duedate","");
 												formData.append("htmlnotes","");													
@@ -2154,71 +2221,7 @@
 			}
 
 			//------------------------------------------------------    
-			 // Date Format
-			   const flatpickrFriendly = document.querySelector('#expectedclosingdate');
-				 // Human Friendly
-				  if (flatpickrFriendly) {
-				    flatpickrFriendly.flatpickr({
-				      altInput: true,
-				      altFormat: 'F j, Y',
-				      dateFormat: 'Y-m-d'
-				    });
-				  }
-				 
-				  const expectedstartdateX1 = document.querySelector('#startdateX1');
-					 // Human Friendly
-					  if (expectedstartdateX1) {
-						  expectedstartdateX1.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
-					 
-					 //
-					 
-					 const tdate = document.querySelector('#tdate');
-					 // Human Friendly
-					  if (tdate) {
-						  tdate.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
-			// Phone
-			const phoneMask = document.querySelector('.phone-number-otp-mask');
-
-			// Phone Number Input Mask
-			if (phoneMask) {
-				new Cleave(phoneMask, {
-					phone : true,
-					phoneRegionCode : 'US'
-				});
-			}
-			// ------------------------------------------------------------------------------
-			 const flatpickrFriendlystartdate = document.querySelector('#startdate');
-			 // Human Friendly
-			  if (flatpickrFriendlystartdate) {
-				  flatpickrFriendlystartdate.flatpickr({
-			      altInput: true,
-			      altFormat: 'F j, Y',
-			      dateFormat: 'Y-m-d'
-			    });
-			  }
-			// ------------------------------------------------------------------------------
-			  const flatpickrFriendlyenddate = document.querySelector('#enddate');
-				 // Human Friendly
-				  if (flatpickrFriendlyenddate) {
-					  flatpickrFriendlyenddate.flatpickr({
-				      altInput: true,
-				      altFormat: 'F j, Y',
-				      dateFormat: 'Y-m-d'
-				    });
-				  }
-			
-			// ------------------------------------------------------------------------------
-			function editactivity(e){
+				function editactivity(e){
 				var activityid= e.getAttribute("id").replace("actid","");
 				var phaseid= e.getAttribute("name");
 				var formData = {
@@ -2231,24 +2234,31 @@
 						data : formData,
 						success : function(result) {
 							var bmobj = JSON.parse(JSON.stringify(result));
-							console.log(bmobj);
+							//console.log(bmobj);
 							
 							$("#phaseid").val(phaseid);
-							
 							$("#mastercategoryid").val(bmobj.mastercategoryid);
 							$("#activityId").val(bmobj.activityId);
 							$("#createdtime").val(bmobj.createdtime);
 							$("#activitytitle").val(bmobj.activitytitle);
 							
-							$("#startdate").val(bmobj.startdate);
+							flatpickrFriendlystartdate.setDate(bmobj.startdate);
 							$("#starttime").val(bmobj.starttime);
-							$("#enddate").val(bmobj.enddate);
+							flatpickrFriendlyenddate.setDate(bmobj.enddate);
 							$("#endtime").val(bmobj.endtime);
 							$("#notes").val(bmobj.notes);
 							$("#activityfollowers").val(bmobj.activityfollowers).change();
 							$("input[name=activitytype][value="+ bmobj.activitytype +"]").attr('checked', true);
 							$(".activitytype").removeClass("active");
 							$(".activitytype"+bmobj.activitytype).addClass("active");
+							//------------------------------------
+							var multi = document.getElementById("teamMember");
+							var myArray = new Array();
+							for(var k=0; k<bmobj.activityMasterTeam.length; k++){
+								myArray.push(bmobj.activityMasterTeam[k].empid);
+							}
+							$("#teamMember").val(myArray).change();
+							//------------------------------------
 							$('#addevent').modal('show');
 						},
 						error : function(e) {

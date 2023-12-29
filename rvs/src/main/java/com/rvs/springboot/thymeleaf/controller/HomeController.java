@@ -58,6 +58,7 @@ import com.rvs.springboot.thymeleaf.entity.Accountsheads;
 import com.rvs.springboot.thymeleaf.entity.ActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterFiles;
 import com.rvs.springboot.thymeleaf.entity.ActivityMasterGuest;
+import com.rvs.springboot.thymeleaf.entity.ActivityMasterTeam;
 import com.rvs.springboot.thymeleaf.entity.AssetAudit;
 import com.rvs.springboot.thymeleaf.entity.AssetAuditFiles;
 import com.rvs.springboot.thymeleaf.entity.AssetMaster;
@@ -1069,7 +1070,7 @@ public class HomeController {
 			itemlistService.savesingletxt(Documenttype, "Documenttype");
 			String createdate = displaydateFormatFirstMMMddYYYAMPM.format(new Date());
 			int id = leadMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid,
-					createdate,DocumentGroup);
+					createdate, DocumentGroup);
 
 			bfiles.setFileid(id);
 			bfiles.setDocumentNo(DocNo);
@@ -1113,7 +1114,7 @@ public class HomeController {
 			String createdate = displaydateFormatFirstMMMddYYYAMPM.format(new Date());
 			itemlistService.savesingletxt(Documenttype, "Documenttype");
 			int id = dealMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid,
-					createdate,DocumentGroup);
+					createdate, DocumentGroup);
 
 			bfiles.setFileid(id);
 			bfiles.setDocumentNo(DocNo);
@@ -1157,7 +1158,7 @@ public class HomeController {
 			String createdate = displaydateFormatFirstMMMddYYYAMPM.format(new Date());
 			itemlistService.savesingletxt(Documenttype, "Documenttype");
 			int id = projectMasterService.insertFiles(Documenttype, DocNo, filename.toString(), ContactPersonid,
-					createdate,DocumentGroup);
+					createdate, DocumentGroup);
 
 			bfiles.setFileid(id);
 			bfiles.setDocumentNo(DocNo);
@@ -2843,7 +2844,7 @@ public class HomeController {
 		themodel.addAttribute("Documenttype", Documenttype);
 		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
 		themodel.addAttribute("DocumentGroup", DocumentGroup);
-		
+
 		themodel.addAttribute("employeeEmgAddress", new EmployeeEmgContact());
 		themodel.addAttribute("employeeEducation", edulsnew);
 		themodel.addAttribute("employeeEmgContact", emglsnew);
@@ -3251,11 +3252,11 @@ public class HomeController {
 		}
 
 		// -----------------------------------------------------------
-		EmployeeMaster emp= fillemployeeobject(Integer.parseInt(getLoginempID()));
-		//System.out.println(emp);
+		EmployeeMaster emp = fillemployeeobject(Integer.parseInt(getLoginempID()));
+		// System.out.println(emp);
 		String temptargetedbranchName = emp.getT_branch_name();
-		
-		//String temptargetedbranchName = "Coimbatore";
+
+		// String temptargetedbranchName = "Coimbatore";
 		if (!branch.equalsIgnoreCase("")) {
 			temptargetedbranchName = branch;
 		}
@@ -3458,6 +3459,7 @@ public class HomeController {
 		return "empattendance";
 
 	}
+
 	private boolean calculateTerminatedstatus(int EmpMasterid, Date date) {
 		// --------------------------------------------
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -3977,7 +3979,7 @@ public class HomeController {
 			double Monthlyincentives = 0.00;
 			double net = 0.00;
 			// ----------------------------------------------------
-		
+
 			Totalholidays = holidaylist.size();
 			TotalWWorkingDays = (P - HOLIDAYP - SUNDAYP) + T + (HL - HOLIDAYHL - SUNDAYHL);
 			Totalsundaywrkdays = SUNDAYP + SUNDAYHL;
@@ -3987,11 +3989,10 @@ public class HomeController {
 			Absent = A;
 			WorkingDays = TotalWWorkingDays + Totalholidays;
 
-		
-			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) *100)/100.00;
-			DA = Math.round(((ctc / 26) * WorkingDays * 0.35) *100)/100.00;
-			HRA = Math.round(((ctc / 26) * WorkingDays * 0.25) *100)/100.00;
-			TOTALGROSS = Math.round((BasicSalary + DA + HRA) *100)/100.00;
+			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) * 100) / 100.00;
+			DA = Math.round(((ctc / 26) * WorkingDays * 0.35) * 100) / 100.00;
+			HRA = Math.round(((ctc / 26) * WorkingDays * 0.25) * 100) / 100.00;
+			TOTALGROSS = Math.round((BasicSalary + DA + HRA) * 100) / 100.00;
 			ESI = Math.round(BasicSalary * (0.01) * 0);
 			EPF = Math.round(BasicSalary * (0.12) * 0);
 			TOTALDeduction = ESI + EPF + Advance;
@@ -4075,8 +4076,8 @@ public class HomeController {
 			@RequestParam(name = "month", required = false, defaultValue = "") String selectedmonth,
 			@RequestParam(name = "branch", required = false, defaultValue = "99999") String branchidsrc) {
 
-		if(branchidsrc.equalsIgnoreCase("99999")) {
-			EmployeeMaster emp= fillemployeeobject(Integer.parseInt(getLoginempID()));
+		if (branchidsrc.equalsIgnoreCase("99999")) {
+			EmployeeMaster emp = fillemployeeobject(Integer.parseInt(getLoginempID()));
 			branchidsrc = emp.getT_branch_id();
 		}
 		final String branchid = branchidsrc;
@@ -4108,8 +4109,8 @@ public class HomeController {
 
 		monthstr = yearstr + "-" + month;
 
-		final String monthstr1= monthstr;
-		
+		final String monthstr1 = monthstr;
+
 		// -------------------------------------------------------
 		// Get Attendance details for particular month
 		// -------------------------------------------------------
@@ -6459,18 +6460,17 @@ public class HomeController {
 	public OrganizationContacts OrganizationContactsobjectfiller(OrganizationContacts corg) {
 		if (!nullremover(String.valueOf(corg.getFollowers())).equalsIgnoreCase("")) {
 			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(corg.getFollowers()));
-				if( empobj != null)
-				{
+			if (empobj != null) {
 				corg.setFollowerimg(getemp_photo(empobj));
 				corg.setFollowername(empobj.getStaffName());
-	
+
 				// Set primary contact
 				List<EmployeeContact> ecls = employeeMasterService.findById(Integer.parseInt(corg.getFollowers()))
 						.getEmployeeContact().stream().filter(C -> C.getPrimarycontact() == true)
 						.collect(Collectors.toList());
 				if (ecls.size() > 0) {
 					corg.setFollowerprimarymob(ecls.get(0).getPhonenumber());
-	
+
 				}
 			}
 		}
@@ -6772,13 +6772,13 @@ public class HomeController {
 				}
 			}
 			tmp1obj.setProjecttotalvaluefromItem("0");
-			if(tmp1obj.getProjectItemMaster().size()>0)
-			{
-				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(tmp1obj.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
-				
+			if (tmp1obj.getProjectItemMaster().size() > 0) {
+				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(tmp1obj.getProjectItemMaster().stream()
+						.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
 			}
 			// ----------------------------------------------------------
-			
+
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 
 			projectmasterls.add(tmp1obj);
@@ -7756,7 +7756,7 @@ public class HomeController {
 
 			List<ActivityMaster> amls = activityMasterService.findByMastercategoryAndMastercategoryid("Project",
 					String.valueOf(pm.getId()));
-
+			
 			for (ActivityMaster am : amls) {
 				if (!nullremover(String.valueOf(am.getActivityfollowers())).equalsIgnoreCase("")) {
 					EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(am.getActivityfollowers()));
@@ -7784,13 +7784,16 @@ public class HomeController {
 					am.setStartdatestrformate(displaydateFormatFirstMMMddYYYAMPM
 							.format(displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' ' + am.getStarttime()))
 							.toString().toUpperCase());
+					
+					am.setStartdatestrformateorginial(displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' ' + am.getStarttime()));
 
 				} catch (ParseException e) {
 
-					//e.printStackTrace();
+					// e.printStackTrace();
 				}
 			}
-
+			amls.sort(Comparator.comparing(ActivityMaster:: getStartdatestrformateorginial).reversed());
+			
 			pm.setActivityMaster(amls);
 		}
 		return dm;
@@ -8165,7 +8168,7 @@ public class HomeController {
 
 	@PostMapping("activitysave")
 	@ResponseBody
-	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid,
+	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid, @RequestParam(name="teamMember1", required = false) List<String> teamMember,
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
 
@@ -8210,6 +8213,18 @@ public class HomeController {
 		 * lsactivityMasterguest.add(guestobj); }
 		 * activityMaster.setActivityMasterGuest(lsactivityMasterguest);
 		 */
+		// --------------------------------------------------
+		// Team Members
+		if (param.get("mastercategory").toString().equalsIgnoreCase("Project")) {
+			List<ActivityMasterTeam> lsactivityMasterTeam = new ArrayList();
+			for (String str :teamMember) {
+				ActivityMasterTeam teamobj = new ActivityMasterTeam();
+				teamobj.setEmpid(str);
+				lsactivityMasterTeam.add(teamobj);
+			}
+			activityMaster.setActivityMasterTeam(lsactivityMasterTeam);
+
+		}
 		// --------------------------------------------------
 		// File Uploading
 		List<ActivityMasterFiles> activityMasterFileslist = new ArrayList();
@@ -8416,8 +8431,8 @@ public class HomeController {
 		// ------------------------------------------
 		List<DealFiles> dealfilels = new ArrayList();
 		for (LeadFiles lc : leadMaster.getLeadFiles()) {
-			dealfilels.add(
-					new DealFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(), lc.getCreateddate(),lc.getDocgroup()));
+			dealfilels.add(new DealFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
+					lc.getCreateddate(), lc.getDocgroup()));
 		}
 		if (dealfilels.size() > 0) {
 			dealMaster.setDealFiles(dealfilels);
@@ -8475,7 +8490,7 @@ public class HomeController {
 		List<ProjectFiles> projectfilels = new ArrayList();
 		for (LeadFiles lc : leadMaster.getLeadFiles()) {
 			projectfilels.add(new ProjectFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
-					lc.getCreateddate(),lc.getDocgroup()));
+					lc.getCreateddate(), lc.getDocgroup()));
 		}
 		if (projectfilels.size() > 0) {
 			projectMaster.setProjectFiles(projectfilels);
@@ -8542,7 +8557,7 @@ public class HomeController {
 			List<LeadFiles> leadfilels = new ArrayList();
 			for (DealFiles lc : dealMaster.getDealFiles()) {
 				leadfilels.add(new LeadFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
-						lc.getCreateddate(),lc.getDocgroup()));
+						lc.getCreateddate(), lc.getDocgroup()));
 			}
 			if (leadfilels.size() > 0) {
 				leadMaster.setLeadFiles(leadfilels);
@@ -8611,7 +8626,7 @@ public class HomeController {
 		List<ProjectFiles> projectfilels = new ArrayList();
 		for (DealFiles lc : dealMaster.getDealFiles()) {
 			projectfilels.add(new ProjectFiles(0, lc.getDocumentType(), lc.getDocumentNo(), lc.getFilePath(),
-					lc.getCreateddate(),lc.getDocgroup()));
+					lc.getCreateddate(), lc.getDocgroup()));
 		}
 		if (projectfilels.size() > 0) {
 			projectMaster.setProjectFiles(projectfilels);
@@ -9161,7 +9176,7 @@ public class HomeController {
 		String phonenumber = params.get("phonenumber");
 		String Purpose = params.get("Purpose");
 		String startDate = params.get("startDate");
-		String board =  params.get("board");
+		String board = params.get("board");
 
 		String Status = params.get("Status");
 		String label = params.get("label");
@@ -10231,13 +10246,13 @@ public class HomeController {
 					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
 		}
 		// ----------------------------------------------------------
-		if(projectMaster.getProjectItemMaster().size()>0)
-		{
-			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
-			
+		if (projectMaster.getProjectItemMaster().size() > 0) {
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream()
+					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
 		}
 		// ----------------------------------------------------------
-		
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -10399,13 +10414,13 @@ public class HomeController {
 					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
 		}
 		// ----------------------------------------------------------
-		if(projectMaster.getProjectItemMaster().size()>0)
-		{
-			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
-			
+		if (projectMaster.getProjectItemMaster().size() > 0) {
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream()
+					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
 		}
 		// ----------------------------------------------------------
-		
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -10553,14 +10568,15 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
-		if(projectMaster.getProjectItemMaster().size()>0)
-		{
-			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
-			
+		if (projectMaster.getProjectItemMaster().size() > 0) {
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream()
+					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
 		}
 		// ----------------------------------------------------------
-		
-		List<ProjectFiles> pfls = projectMaster.getProjectFiles().stream().sorted(Comparator.comparing(ProjectFiles:: getDocgroup)).collect(Collectors.toList());
+
+		List<ProjectFiles> pfls = projectMaster.getProjectFiles().stream()
+				.sorted(Comparator.comparing(ProjectFiles::getDocgroup)).collect(Collectors.toList());
 		theModel.addAttribute("pfls", pfls);
 		// ----------------------------------------------------------
 		theModel.addAttribute("cplist", cplist);
@@ -10621,28 +10637,31 @@ public class HomeController {
 		theModel.addAttribute("board", projectTemplateBoardService.findAll());
 		return "projectattachment";
 	}
+
 	@ResponseBody
 	@GetMapping("getProjectFiledetails")
-	public List<ProjectFiles> getProjectFiledetails(@RequestParam("id") int projectid)
-	{
-		
-		List<ProjectFiles> pfls = projectMasterService.findById(projectid).getProjectFiles().stream().sorted(Comparator.comparing(ProjectFiles:: getDocgroup)).collect(Collectors.toList());
+	public List<ProjectFiles> getProjectFiledetails(@RequestParam("id") int projectid) {
+
+		List<ProjectFiles> pfls = projectMasterService.findById(projectid).getProjectFiles().stream()
+				.sorted(Comparator.comparing(ProjectFiles::getDocgroup)).collect(Collectors.toList());
 		return pfls;
 	}
+
 	@ResponseBody
 	@GetMapping("getLeadFiledetails")
-	public List<LeadFiles> getLeadFiledetails(@RequestParam("id") int projectid)
-	{
-		
-		List<LeadFiles> pfls = leadMasterService.findById(projectid).getLeadFiles().stream().sorted(Comparator.comparing(LeadFiles:: getDocgroup)).collect(Collectors.toList());
+	public List<LeadFiles> getLeadFiledetails(@RequestParam("id") int projectid) {
+
+		List<LeadFiles> pfls = leadMasterService.findById(projectid).getLeadFiles().stream()
+				.sorted(Comparator.comparing(LeadFiles::getDocgroup)).collect(Collectors.toList());
 		return pfls;
 	}
+
 	@ResponseBody
 	@GetMapping("getDealFiledetails")
-	public List<DealFiles> getDealFiledetails(@RequestParam("id") int Dealid)
-	{
-		
-		List<DealFiles> pfls = dealMasterService.findById(Dealid).getDealFiles().stream().sorted(Comparator.comparing(DealFiles:: getDocgroup)).collect(Collectors.toList());
+	public List<DealFiles> getDealFiledetails(@RequestParam("id") int Dealid) {
+
+		List<DealFiles> pfls = dealMasterService.findById(Dealid).getDealFiles().stream()
+				.sorted(Comparator.comparing(DealFiles::getDocgroup)).collect(Collectors.toList());
 		return pfls;
 	}
 
@@ -10731,13 +10750,13 @@ public class HomeController {
 					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
 		}
 		// ----------------------------------------------------------
-		if(projectMaster.getProjectItemMaster().size()>0)
-		{
-			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
-			
+		if (projectMaster.getProjectItemMaster().size() > 0) {
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream()
+					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
 		}
 		// ----------------------------------------------------------
-		
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -10897,13 +10916,13 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
-		if(projectMaster.getProjectItemMaster().size()>0)
-		{
-			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
-			
+		if (projectMaster.getProjectItemMaster().size() > 0) {
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream()
+					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
 		}
 		// ----------------------------------------------------------
-		
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -11731,13 +11750,13 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
-		if(projectMaster.getProjectItemMaster().size()>0)
-		{
-			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
-			
+		if (projectMaster.getProjectItemMaster().size() > 0) {
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream()
+					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
 		}
 		// ----------------------------------------------------------
-		
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -12016,13 +12035,13 @@ public class HomeController {
 		}
 
 		// ----------------------------------------------------------
-		if(projectMaster.getProjectItemMaster().size()>0)
-		{
-			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream().mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
-			
+		if (projectMaster.getProjectItemMaster().size() > 0) {
+			projectMaster.setProjecttotalvaluefromItem(String.valueOf(projectMaster.getProjectItemMaster().stream()
+					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
 		}
 		// ----------------------------------------------------------
-		
+
 		theModel.addAttribute("cplist", cplist);
 		theModel.addAttribute("projectMaster", projectMaster);
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
@@ -13084,5 +13103,4 @@ public class HomeController {
 		return invLs1;
 	}
 
-	
 }

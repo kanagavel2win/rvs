@@ -1,5 +1,6 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -76,6 +76,11 @@ public class ActivityMaster {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "activityId")
+	private List<ActivityMasterTeam> activityMasterTeam;
+	
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "activityId")
 	private List<ActivityMasterFiles> activityMasterFiles;
 
 	
@@ -84,6 +89,9 @@ public class ActivityMaster {
 	
 	@Transient
 	private String startdatestrformate;
+	
+	@Transient
+	private Date startdatestrformateorginial;
 	
 	
 }

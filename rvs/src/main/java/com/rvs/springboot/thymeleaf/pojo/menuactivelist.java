@@ -129,6 +129,12 @@ public class menuactivelist {
 			activemenus.put("project", true);
 			
 					
+		}else if(menutitle.equalsIgnoreCase("projectplan"))
+		{
+			activemenus.put("WorkItem", true);
+			activemenus.put("projectplan", true);
+			
+					
 		}else if(menutitle.equalsIgnoreCase("projecttemplatelist"))
 		{
 			activemenus.put("WorkItem", true);

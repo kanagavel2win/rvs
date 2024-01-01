@@ -162,6 +162,7 @@
 .strikeout {
 	text-decoration: line-through;
 }
+
 </style>
 <script th:inline="javascript">
 	var emplanstat = 0;
@@ -1582,7 +1583,7 @@
 											url : "getprojectobj",
 											data : formData,
 											success : function(result) {
-												//console.log(result);
+												
 												html = "";
 												let i=0;
 												result.projectPhases.forEach(function (obj) {
@@ -1609,7 +1610,7 @@
 																status = "<button type='button' id='" + actobj.activityId + "' name='"+ obj.id +"' class='btn rounded-pill btn-iconx btn-outline-success tooltipx markitascompleted'> <span class='tooltiptextx'>Mark as Completed</span></button>";
 															}
 															
-															html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td  class="editactivity '+ cmpclass +'" id="actid'+ actobj.activityId+'" name="'+ phaseid +'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
+															html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td  class="editactivity '+ cmpclass +'" id="actid'+ actobj.activityId+'" name="'+ phaseid +'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td> '+ actobj.activityMasterTeamimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
 		   													
 	   													});
 	   																							
@@ -1643,7 +1644,7 @@
 										url : "getprojectobj",
 										data : formData,
 										success : function(result) {
-											//console.log(result);
+											console.log(result);
 											html = "";
 											let i=0;
 											result.projectPhases.forEach(function (obj) {
@@ -1652,7 +1653,7 @@
 											   html +='<div class="accordion-item card" style="border-color: red;""><h2 class="accordion-header"><button type="button" class="accordion-button collapsed" ';
    												html +=` data-bs-toggle="collapse" data-bs-target="#accordionStyle-${obj.id}" id="accordionStyle${obj.id}" aria-expanded="false"> ${obj.phaseName}</button> </h2>`;
    												html +=`<div id="accordionStyle-${obj.id}" class="accordion-collapse collapse" data-bs-parent="#accordionStyle${obj.id}">`;
-   												html +=' <div class="table-responsive text-nowrap"><table class="table"><thead><tr><th></th><th>Done</th><th>Activity</th><th></th><th>Date</th><th>Notes</th></tr></thead><tbody class="table-border-bottom-0 activitycontainer'+ obj.id +'">';
+   												html +=' <div class="table-responsive text-nowrap"><table class="table"><thead><tr><th></th><th>Done</th><th>Activity</th><th></th><th>Team</th><th>Date</th><th>Notes</th></tr></thead><tbody class="table-border-bottom-0 activitycontainer'+ obj.id +'">';
    												obj.activityMaster.forEach(function (actobj) {
    													
    													let tempicon="";
@@ -1676,7 +1677,7 @@
 													}
 													
 													
-   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td class="editactivity '+ cmpclass +'" name="'+ obj.id +'"  id="actid'+ actobj.activityId+'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
+   													html +='<tr><td>'+ tempicon +' </td><td>'+ status +'</td><td class="editactivity '+ cmpclass +'" name="'+ obj.id +'"  id="actid'+ actobj.activityId+'" onclick="editactivity(this)">'+ actobj.activitytitle +'</td><td>'+ actobj.followerimg +'</td><td> '+ actobj.activityMasterTeamimg+'</td><td>'+ actobj.startdatestrformate +'</td><td>'+ actobj.notes +'</td></tr>';
    												});
    												
    												html += `</tbody></table></div> <br /><span class="addactivity col-12" name="${obj.id}">+ Add Activity</span></div></div></div>`;
@@ -1701,7 +1702,7 @@
 								    setTimeout(function(){
 								    	getphaseandactivitydetails();
 								    	
-								     },500); // milliseconds
+								     },100); // milliseconds
 								});
 								
 								

@@ -3556,6 +3556,7 @@ public class HomeController {
 		return "holidaydefine";
 	}
 
+	
 	@GetMapping("hire")
 	public String hire(Model theModel) {
 		List<HireMaster> hmlist = hireMasterService.findAll();
@@ -7777,9 +7778,26 @@ public class HomeController {
 										+ " <img class='rounded-circle' src='" + empphotos
 										+ " ' alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
 										+ "</span></span>");
+						
 					}
 				}
+				//---------------------------------------------------------------------------
+				String actitvity_team_img=" <ul class='list-unstyled m-0 d-flex align-items-center avatar-group '>";
+				
+				for(ActivityMasterTeam acTeam : am.getActivityMasterTeam()) {
+					
+					EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(acTeam.getEmpid()));
 
+					String img ="<img src='" + getemp_photo(empobj) + "' alt='Avatar' class='rounded-circle'>";
+					
+					actitvity_team_img +="<li data-bs-toggle='tooltip'  data-popup='tooltip-custom'  data-bs-placement='top' title='" + empobj.getStaffName() + "'  class='avatar pull-up' >";
+					actitvity_team_img +="<div class='avatar me-2 tooltipx'><a href='emp?id="+ empobj.getEmpMasterid() +"'>"+ img + "</a><span class='tooltiptextx'>" + empobj.getStaffName() + "</span></div></li>";
+									           	
+				}
+				actitvity_team_img +="</ul>";
+				am.setActivityMasterTeamimg(actitvity_team_img);
+				//---------------------------------------------------------------------------
+				
 				try {
 					am.setStartdatestrformate(displaydateFormatFirstMMMddYYYAMPM
 							.format(displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' ' + am.getStarttime()))
@@ -13103,4 +13121,12 @@ public class HomeController {
 		return invLs1;
 	}
 
+
+	@GetMapping("projectplan")
+	public String projectplan(Model theModel) {
+		List<BranchMaster> bmList = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmList);
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Holiday"));
+		return "projectplan";
+	}
 }

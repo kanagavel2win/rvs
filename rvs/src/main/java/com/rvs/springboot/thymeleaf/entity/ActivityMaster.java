@@ -93,5 +93,8 @@ public class ActivityMaster {
 	@Transient
 	private Date startdatestrformateorginial;
 	
+	@Transient
+	private String activityMasterTeamimg;
+	
 	
 }

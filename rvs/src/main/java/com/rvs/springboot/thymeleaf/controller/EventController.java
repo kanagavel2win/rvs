@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +15,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rvs.springboot.thymeleaf.entity.ActivityMaster;
 import com.rvs.springboot.thymeleaf.entity.Holiday;
+import com.rvs.springboot.thymeleaf.entity.ProjectMaster;
+import com.rvs.springboot.thymeleaf.entity.ProjectPhases;
+import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
+import com.rvs.springboot.thymeleaf.service.ActivityMasterService;
 import com.rvs.springboot.thymeleaf.service.HolidayService;
 import com.rvs.springboot.thymeleaf.service.LeaveMasterService;
+import com.rvs.springboot.thymeleaf.service.ProjectMasterService;
 
 @RestController
 public class EventController {
@@ -26,6 +33,12 @@ public class EventController {
 	@Autowired
 	LeaveMasterService leaveMasterService;
 
+
+	@Autowired
+	ProjectMasterService projectMasterService;
+	@Autowired
+	ActivityMasterService activityMasterService;
+	
 	@GetMapping("/events")
 	public List<Holiday> eventinformation() {
 
@@ -112,4 +125,52 @@ public class EventController {
 		return leaveinfoList;
 	}
 
+	@GetMapping("/projectevents_cal")
+	public List<CalenderFormat> projectevents() {
+		
+		
+		List<ProjectMaster> lsPMobj = projectMasterService.findAll();
+		List<CalenderFormat> calformate = new ArrayList<CalenderFormat>();
+		
+		for(ProjectMaster dm : lsPMobj)
+		{
+			for (ProjectPhases pm : dm.getProjectPhases()) {
+			
+				List<ActivityMaster> amls = activityMasterService.findByMastercategoryAndMastercategoryid("Project",
+						String.valueOf(pm.getId()));
+				for (ActivityMaster am : amls) {
+					
+					CalenderFormat cf = new CalenderFormat();
+					cf.setId(am.getActivityId());
+					cf.setAllDay(true);
+					cf.setTitle(dm.getTitle() + " ("+ am.getActivitytitle()+ ")");
+					cf.setStart(am.getStartdate() +" "+ am.getStarttime()+":00");
+					cf.setEnd(am.getEnddate() +" "+ am.getEndtime()+":00");
+					
+					HashMap<String, String> exextendedProps = new HashMap<>();
+					exextendedProps.put("projectID", String.valueOf(dm.getId() ));
+					
+					if(am.getStatus().equalsIgnoreCase("Completed")) {
+						exextendedProps.put("calendar", "Success");
+					}else
+					{
+						exextendedProps.put("calendar", "Inprogress");	
+					}
+					
+					exextendedProps.put("type", am.getActivitytype());
+					exextendedProps.put("description", am.getNotes());
+					exextendedProps.put("projectName", dm.getTitle());
+					exextendedProps.put("activityTitle", am.getActivitytitle());
+					
+					cf.setExtendedProps(exextendedProps);
+					calformate.add(cf);
+				}
+			}
+		}
+		//-------------------------------------------------------------
+	
+
+		return calformate;
+	}
+	
 }

@@ -46,6 +46,8 @@ public class MyErrorController implements ErrorController {
 		// display generic error
 		return "error";
 	}
+	
+	
 
 	
 }

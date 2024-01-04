@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.PaySlipRepository;
 import com.rvs.springboot.thymeleaf.entity.payslip;
-import com.rvs.springboot.thymeleaf.entity.payslip;
 
 @Service
 public class PaySlipServiceImpl implements PaySlipService {

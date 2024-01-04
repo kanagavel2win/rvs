@@ -194,6 +194,8 @@ td {
 											<th>Project Value</th>
 											<th>Billed</th>
 											<th>Received</th>
+											<th>Balance</th>
+											<th>Expense</th>
 											<th>In / Due Date</th>
 
 										</tr>
@@ -333,7 +335,9 @@ td {
 			        { data: 'branchname' },
 			        { data: 'projecttotalvaluefromItem' },		
 			        { data: 'projecttotalvaluebilled' },		
-			        { data: 'projecttotalvaluereceipt' },		
+			        { data: 'projecttotalvaluereceipt' },	
+			        { data: '' },	
+			        { data: 'projecttotalvalueexpense' },	
 			        { data: 'expectedstartdateMMddYYY' },
 			      
 			      ],
@@ -454,13 +458,28 @@ td {
 					           targets:5,
 					           render: function(data, type, full, meta) {
 					           	 
-					           	 return 	   full['pipeline'] +"/ "+ full["status"] +''; 
+					        	   if(full["status"] =="Completed")
+					        		   {
+					        		   return 	   full['pipeline'] +"/ <span class='badge bg-label-success'>"+ full["status"] +'</span>';
+					        		   }
+					        	   else
+					        		   {
+					        		   return 	   full['pipeline'] +"/ "+ full["status"] +'';	   
+					        		   }
+					           	  
+					           }
+					     },
+					     {
+					           targets:10,
+					           render: function(data, type, full, meta) {
+					           	 
+					           	 return 	   Math.round(full['projecttotalvaluebilled'] - full["projecttotalvaluereceipt"]); 
 					           }
 					     },
 					     
 					     
 				         {
-					           targets:10,
+					           targets:12,
 					           render: function(data, type, full, meta) {
 					        	  let temp1 ="";
 					           	 if(full['expectedstartdateMMddYYY'] == null){
@@ -497,19 +516,19 @@ td {
 			              extend: 'print',
 			              text: '<i class="bx bx-printer me-2" ></i>Print',
 			              className: 'dropdown-item',
-			              exportOptions: { columns: [3, 4, 5, 6, 7] }
+			              exportOptions: { columns: [3, 4, 5, 6, 7,8,9,10,11] }
 			            },
 			            {
 			              extend: 'csv',
 			              text: '<i class="bx bx-file me-2" ></i>Csv',
 			              className: 'dropdown-item',
-			              exportOptions: { columns: [3, 4, 5, 6, 7] }
+			              exportOptions: { columns: [3, 4, 5, 6, 7,8,9,10,11] }
 			            },
 			            {
 			              extend: 'excel',
 			              text: 'Excel',
 			              className: 'dropdown-item',
-			              exportOptions: { columns: [3, 4, 5, 6, 7] }
+			              exportOptions: { columns: [3, 4, 5, 6, 7,8,9,10,11] }
 			            },
 			            {
 			              extend: 'pdf',
@@ -521,7 +540,7 @@ td {
 			              extend: 'copy',
 			              text: '<i class="bx bx-copy me-2" ></i>Copy',
 			              className: 'dropdown-item',
-			              exportOptions: { columns: [3, 4, 5, 6, 7] }
+			              exportOptions: { columns: [3, 4, 5, 6, 7,8,9,10,11] }
 			            }
 			          ]
 			        },

@@ -13192,6 +13192,15 @@ public class HomeController {
 
 			}
 			// ----------------------------------------------------------
+			
+			tmp1obj.setProjecttotalvalueexpense("0");
+			if (tmp1obj.getProjectExpenseList().size() > 0) {
+				tmp1obj.setProjecttotalvalueexpense(String.valueOf(tmp1obj.getProjectExpenseList().stream()
+						.mapToDouble(x -> x.getTotal()).sum()));
+
+			}
+
+			// ----------------------------------------------------------
 			tmp1obj.setProjecttotalvaluebilled("0");
 			double billedamt=0;
 			if (tmp1obj.getInvoiceList().size() > 0) {

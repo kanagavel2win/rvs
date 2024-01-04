@@ -191,10 +191,12 @@ public class ProjectMaster {
 	
 	@Transient
 	private String projecttotalvaluereceipt;
-	
 
 	@Transient
 	private String projecttotalvaluebilled;
+
+	@Transient
+	private String projecttotalvalueexpense;
 	
 	@Transient
 	private String branchname;

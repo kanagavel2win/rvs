@@ -183,19 +183,16 @@ public class menuactivelist {
 			activemenus.put("AssetManagement", true);
 			activemenus.put("assetaudit", true);
 			
-		}else if(menutitle.equalsIgnoreCase("Accounts"))
+		}else if(menutitle.equalsIgnoreCase("accountsMain"))
 		{
 			activemenus.put("Accounts", true);
+			activemenus.put("accountsMain", true);
 			
+		}else if(menutitle.equalsIgnoreCase("PendingPayments"))
+		{
+			activemenus.put("Accounts", true);
+			activemenus.put("PendingPayments", true);
 		}
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		return activemenus;

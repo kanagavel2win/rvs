@@ -191,10 +191,25 @@
 				</a></li>
 			
 			</ul></li>
-		<li  class="menu-item"><a
-			href="accounts" class="menu-link" 	th:classappend="${menuactivelist.get('Accounts')} ? ' active' :'' ">   <i class="menu-icon tf-icons bx bx-food-menu"></i>
+		<li class="menu-item"
+			th:classappend="${menuactivelist.get('Accounts')} ? ' active open' :'' "><a
+			href="javascript:void(0);" class="menu-link menu-toggle"> <i
+				class="menu-icon tf-icons bx bx-grid"></i>
 				<div data-i18n="Accounts">Accounts</div>
-		</a></li>
+			</a>
+			<ul class="menu-sub">
+				<li class="menu-item"
+					th:classappend="${menuactivelist.get('accountsMain')} ? ' active' :'' "><a
+					href="accounts" class="menu-link">
+						<div data-i18n="Accounts">Accounts</div>
+				</a></li>
+				<li class="menu-item"
+					th:classappend="${menuactivelist.get('PendingPayments')} ? ' active' :'' "><a
+					href="accountPendingPayments" class="menu-link">
+						<div data-i18n="Pending Payments">Pending Payments</div>
+				</a></li>
+				
+			</ul></li>
 		<li  class="menu-item"><a
 			href="accounttransfer" class="menu-link" 	th:classappend="${menuactivelist.get('AccountTransfer')} ? ' active' :'' "> <i class='bx bx-transfer' ></i>
 				<div data-i18n="Account Transfer">Account Transfer</div>

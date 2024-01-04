@@ -12937,7 +12937,7 @@ public class HomeController {
 		}
 
 		theModel.addAttribute("accountslist", ls);
-		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("Accounts"));
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountsMain"));
 		return "accountsreport";
 	}
 
@@ -13126,7 +13126,96 @@ public class HomeController {
 	public String projectplan(Model theModel) {
 		List<BranchMaster> bmList = branchMasterService.findAll();
 		theModel.addAttribute("branchlist", bmList);
-		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Attendance_Holiday"));
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("projectplan"));
 		return "projectplan";
 	}
+
+	@GetMapping("accountPendingPayments")
+	public String PendingPayments(Model themodel) {
+
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("PendingPayments"));
+		
+		return "AccountPendingPayments";
+	}
+	@ResponseBody
+	@GetMapping("Accountsprojectlistjson")
+	public List<ProjectMaster> Accountsprojectlistjson(Model themodel) {
+		List<ProjectMaster> projectmasterls = new ArrayList<>();
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+
+		for (ProjectMaster tmp1obj : projectMasterService.findAll()) {
+			
+			// --------------------------------------------------
+			for (ProjectFollowers projectfol : tmp1obj.getProjectFollowers()) {
+				String followerstr = nullremover(String.valueOf(projectfol.getEmpid()));
+
+				EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(followerstr));
+
+				projectfol.setFollowername(empobj.getStaffName());
+
+				List<EmployeeFiles> validProfilephoto = empobj.getEmployeeFiles().stream()
+						.filter(c -> c.getDocumentType().equalsIgnoreCase("Photo")).collect(Collectors.toList());
+				if (validProfilephoto.size() > 0) {
+
+					projectfol.setFollowerimg(validProfilephoto.get(0).getFilePath());
+				}
+			}
+
+			try {
+				if (!nullremover(String.valueOf(tmp1obj.getStartdate())).equalsIgnoreCase("")) {
+					tmp1obj.setExpectedstartdateMMddYYY(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			if (!nullremover(String.valueOf(tmp1obj.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					tmp1obj.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(tmp1obj.getExpectedclosingdate())).toString());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					// e.printStackTrace();
+				}
+			}
+			tmp1obj.setProjecttotalvaluefromItem("0");
+			if (tmp1obj.getProjectItemMaster().size() > 0) {
+				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(tmp1obj.getProjectItemMaster().stream()
+						.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+
+			}
+			// ----------------------------------------------------------
+			tmp1obj.setProjecttotalvaluereceipt("0");
+			if (tmp1obj.getReceiptList().size() > 0) {
+				tmp1obj.setProjecttotalvaluereceipt(String.valueOf(tmp1obj.getReceiptList().stream()
+						.mapToDouble(x -> x.getAmount()).sum()));
+
+			}
+			// ----------------------------------------------------------
+			tmp1obj.setProjecttotalvaluebilled("0");
+			double billedamt=0;
+			if (tmp1obj.getInvoiceList().size() > 0) {
+				
+				for( InvoiceMaster tobj: tmp1obj.getInvoiceList())
+				{
+					if(tobj.getInvoiceItemMasterlist().size()>0)
+					{
+						billedamt =+ tobj.getInvoiceItemMasterlist().stream().mapToDouble(x -> x.getTotalamountAmount()).sum();
+					}
+				}				
+
+			}
+			tmp1obj.setProjecttotalvaluebilled(String.valueOf(billedamt));
+			
+			// ----------------------------------------------------------
+			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
+
+			projectmasterls.add(tmp1obj);
+
+		}
+
+		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList());
+	}
+
 }

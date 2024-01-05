@@ -7913,7 +7913,7 @@ public class HomeController {
 
 			projectprojectList = dm.getProjectItemMaster();
 			ProjectItemMaster dpmobj = new ProjectItemMaster();
-			double amount = Integer.parseInt(params.get("modalPrice"))
+			double amount = Double.parseDouble(params.get("modalPrice"))
 					* Double.parseDouble(params.get("modalQuantity"));
 
 			dpmobj.setAmount(String.valueOf(amount));
@@ -7928,7 +7928,7 @@ public class HomeController {
 			for (ProjectItemMaster tempdpmobj : dm.getProjectItemMaster()) {
 				if (tempdpmobj.getProjectitemid() == Integer.parseInt(params.get("projectitemid"))) {
 
-					double amount = Integer.parseInt(params.get("modalPrice"))
+					double amount = Double.parseDouble(params.get("modalPrice"))
 							* Double.parseDouble(params.get("modalQuantity"));
 
 					tempdpmobj.setAmount(String.valueOf(amount));

@@ -1841,7 +1841,7 @@
 									let modalPrice=	$("#modalPrice").val();
 									
 									if(modalPrice !='' && modalQuantity!=''){
-										$("#modalTotalamount").val((modalPrice * modalQuantity));	
+										$("#modalTotalamount").val(Math.round(modalPrice * modalQuantity));	
 									}
 									
 								}

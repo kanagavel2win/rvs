@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr" data-theme="theme-default" th:data-assets-path="@{/assets/}"
+	data-template="vertical-menu-template">
+<head>
+<meta charset="ISO-8859-1">
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<title>Report - Project Status</title>
+<link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com"  />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+<!-- Icons -->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/fontawesome.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/fonts/flag-icons.css}" />
+
+<!-- Core CSS -->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/demo.css}" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css}" />
+
+<!-- Helpers -->
+<script th:src="@{/assets/vendor/js/helpers.js}"></script>
+<script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+<script th:src="@{/assets/js/config.js}"></script>
+<style type="text/css">
+.bt-left{
+left:5.5px;
+}
+</style>
+</head>
+<body>
+
+<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<div th:insert="menu"></div>
+			<div class="layout-page">
+			<div th:insert="header"></div>
+			<div class="content-wrapper">
+			<div class="container-xxl flex-grow-1 container-p-y">
+						<h4 class="py-3 breadcrumb-wrapper mb-4">
+							<span class="text-muted fw-light">Reports /</span> Project Status
+						</h4>
+						
+							<div class="row">
+				<div class="col-md-12">
+			<div class="card my-4">
+			<div class="card-datatable table-responsive pt-0">
+                  <table class="datatables-basic table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>TITLE</th>
+                        <th>PLAN</th>
+                        <th>NW</th>
+                        <th>DOC</th>
+                        <th>INV</th>
+                        <th>IRCT</th>
+                        <th>PUR</th>
+                        <th>PRCT</th>
+                        <th>EXP</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                 
+                  </table>
+                </div>
+</div>
+
+				</div>
+				</div>
+					</div>
+			
+			</div>
+			
+					
+			</div>
+			</div>
+		</div>
+
+			
+<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/assets/vendor/js/menu.js}"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+    <script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+    <script th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:inline="javascript">
+
+$(function() {
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
+
+	var rowData = [[${data}]];
+    var status = {yes:'bg-success',no:'bg-danger'};
+    var icon = {yes:'&#x2713;',no:'&#x2715;'};
+    
+
+	
+$('.datatables-basic').DataTable({
+	data: rowData,
+	 columns: [
+	        { data: 'title' },
+	        { data: 'pphase' },
+	        { data: 'works' },
+	        { data: 'files' },
+	        { data: 'invoice' },
+	        { data: 'invoice_receipt' },
+	        { data: 'purchase' },
+	        { data: 'purchase_payment' },
+	        { data: 'expense' },
+	        { data: 'status' }
+	      ],
+	      columnDefs: [
+	    	  {
+		        	
+		            targets: 0,
+		            render: function(data, type, full, meta) {
+		            	return `<a href="projectview?id=${full['id']}">${full['title']}</a><br/><small class="emp_post text-truncate text-muted">${full['projectid']}</small>`;
+		            }
+		          },
+
+		          {
+		        targets: 1,
+		        render: function(data, type, full, meta) {
+		         return rendericon(full['pphase']);
+		        }
+		        },
+		          {
+		        targets: 2,
+		        render: function(data, type, full, meta) {
+		        	return rendericon(full['works']);
+		        }
+		        },
+		          {
+		        targets: 3,
+		        render: function(data, type, full, meta) {
+		        	return rendericon(full['files']);
+		        }
+		        },
+		          {
+		        targets: 4,
+		        render: function(data, type, full, meta) {
+		        	return rendericon(full['invoice']);
+		        }
+		        },
+		          {
+		        targets: 5,
+		        render: function(data, type, full, meta) {
+		        	return rendericon(full['invoice_receipt']);
+		        }
+		        },
+		          {
+		        targets: 6,
+		        render: function(data, type, full, meta) {
+		        	return rendericon(full['purchase']);
+		        }
+		        },
+		          {
+		        targets: 7,
+		        render: function(data, type, full, meta) {
+		        	return rendericon(full['purchase_payment']);
+		        }
+		        },
+		          {
+		        targets: 8,
+		        render: function(data, type, full, meta) {
+		        	return rendericon(full['expense']);
+		        }
+		        },
+		        {
+		        targets: 9,
+		        render: function(data, type, full, meta) {
+		        	var rstatus = full['status'] =='Completed' ? "bg-label-success" : "bg-label-danger";
+		        	return `<span class="badge rounded-pill ${rstatus}">${full['status']}</span>`;
+		        }
+		        },
+	    	  ],
+	dom:'<"card-header"<"head-label text-center"><"dt-action-buttons text-end"B>><"d-flex justify-content-between align-items-center row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+  displayLength: 10,
+  lengthMenu: [10, 25, 50, 75, 100],
+  buttons: [
+    {
+      extend: 'collection',
+      className: 'btn btn-label-primary dropdown-toggle me-2',
+      text: '<i class="bx bx-export me-2"></i>Export',
+      buttons: [
+        {
+          extend: 'print',
+          text: '<i class="bx bx-printer me-2" ></i>Print',
+          className: 'dropdown-item',
+          customize: function (win) {
+              $(win.document.body).find('i').each(function () {
+                  $(this).replaceWith('<div>' + $(this).html() + '</div>');
+              });
+          }
+  			 
+        },
+        {
+          extend: 'csv',
+          text: '<i class="bx bx-file me-2" ></i>Csv',
+          className: 'dropdown-item',
+         
+        },
+        {
+          extend: 'excel',
+          text: 'Excel',
+          className: 'dropdown-item',
+          
+        },
+        {
+          extend: 'pdf',
+          text: '<i class="bx bxs-file-pdf me-2"></i>Pdf',
+          className: 'dropdown-item',
+         
+        },
+        {
+          extend: 'copy',
+          text: '<i class="bx bx-copy me-2" ></i>Copy',
+          className: 'dropdown-item',
+          
+        }
+      ]
+    },
+  ],
+ 
+});
+
+function rendericon(s){
+	return  `<span class="badge badge-center rounded-pill ${status[s]}"><b>${icon[s]}</b></span>`;
+}
+
+});
+
+</script>
+</body>
+</html>

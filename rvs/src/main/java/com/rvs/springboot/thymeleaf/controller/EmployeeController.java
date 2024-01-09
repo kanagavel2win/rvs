@@ -128,7 +128,7 @@ public class EmployeeController {
 	@ResponseBody
 	@GetMapping("leaverequestlistjson")
 	public List<LeaveMaster> leaverequestlistjson(Model theModel, HttpSession session, HttpServletRequest request) {
-		int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
+		 int empid = Integer.parseInt(request.getSession().getAttribute("dataLoginEmpID").toString());
 		LeaveMaster leavemaster = new LeaveMaster();
 		List<LeaveMaster> leaveMasterlist = leaveMasterService.findByEmpid(empid);
 		Collections.sort(leaveMasterlist, Collections.reverseOrder());

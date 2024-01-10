@@ -292,8 +292,9 @@ table tr td {
 															<option
 																th:if="${obj.BRANCH_NAME} != ${targetedbranchName}"
 																th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+																
 														</th:block>
-
+														<!-- <option value="0">All</option> -->
 
 													</select>
 												</div>
@@ -337,11 +338,12 @@ table tr td {
 											<div class="form-group d3  ">
 												<label>Branch</label>
 												<h4 th:if="${branchobj}" th:text="${branchobj.BRANCH_NAME}" class=" text-white"></h4>
+												
 											</div>
 
 										</div>
 										<div class="col-md-1"></div>
-										<div class="col-md-3" th:if="${report}">
+										<div class="col-md-2" th:if="${report}">
 											<div class="form-group">
 												<form th:action="@{payroll}" method="POST"
 													class="wizard-horizontal" enctype="multipart/form-data">
@@ -361,9 +363,20 @@ table tr td {
 											</div>
 										</div>
 
-										<div class="col-md-2" th:if="${report}">
+										<div class="col-md-3" th:if="${report}">
 											<div class="form-group">
+												<form th:action="@{payrollexcel}" target="_blank"
+													method="POST" class="wizard-horizontal"
+													enctype="multipart/form-data">
+													<input type="hidden" th:value="${selectedmonth}"
+														name="month" /> <input type="hidden" th:value="${report}"
+														name="report" />
+														 <input type="hidden"
+														th:value="${branchobj.BRANCH_NAME}" name="branchname" />
+													<button type="submit" class="e2   btn btn-secondary m-1"
+														style="float: right">Export Excel</button>
 
+												</form>
 												<form th:action="@{payrollpdf}" target="_blank"
 													method="POST" class="wizard-horizontal"
 													enctype="multipart/form-data">

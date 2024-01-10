@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -139,6 +140,7 @@ import com.rvs.springboot.thymeleaf.entity.ProjectpurchasePaymentMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.Admindashboardbarchart;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
+import com.rvs.springboot.thymeleaf.pojo.PaySlip_ExcelGenerator;
 import com.rvs.springboot.thymeleaf.pojo.donutchart;
 import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
@@ -3556,7 +3558,6 @@ public class HomeController {
 		return "holidaydefine";
 	}
 
-	
 	@GetMapping("hire")
 	public String hire(Model theModel) {
 		List<HireMaster> hmlist = hireMasterService.findAll();
@@ -4070,6 +4071,38 @@ public class HomeController {
 		themodel.addAttribute("selectedmonth", selectedmonth);
 
 		return "payslippdf";
+	}
+
+	@PostMapping("payrollexcel")
+	public void payrollexcel(@RequestParam(name = "month") String selectedmonth, Model themodel,
+			@RequestParam(value = "report") String report, @RequestParam(value = "branchname") String branchname,
+			HttpServletResponse response) {
+		// System.out.println(selectedmonth);
+		String Str = this.theMonth(Integer.parseInt(String.valueOf(selectedmonth).substring(5, 7)) - 1).toUpperCase()
+				+ " " + String.valueOf(selectedmonth).substring(0, 4);
+		themodel.addAttribute("report", report.replace("]", ""));
+		themodel.addAttribute("monthtext", Str);
+		themodel.addAttribute("branchname", branchname);
+		themodel.addAttribute("selectedmonth", selectedmonth);
+
+		response.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=PaySlip_" + selectedmonth + "_" + branchname + "_" + currentDateTime
+				+ ".xlsx";
+		response.setHeader(headerKey, headerValue);
+		try {
+			List<String> listOfPaySlip = Arrays.asList(report.split(","));
+			PaySlip_ExcelGenerator generator = new PaySlip_ExcelGenerator(listOfPaySlip);
+
+			generator.generateExcelFile(response);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	@GetMapping("attendancereport")
@@ -7757,7 +7790,7 @@ public class HomeController {
 
 			List<ActivityMaster> amls = activityMasterService.findByMastercategoryAndMastercategoryid("Project",
 					String.valueOf(pm.getId()));
-			
+
 			for (ActivityMaster am : amls) {
 				if (!nullremover(String.valueOf(am.getActivityfollowers())).equalsIgnoreCase("")) {
 					EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(am.getActivityfollowers()));
@@ -7778,40 +7811,44 @@ public class HomeController {
 										+ " <img class='rounded-circle' src='" + empphotos
 										+ " ' alt='Avatar'><span class='tooltiptextx'>" + empobj.getStaffName()
 										+ "</span></span>");
-						
+
 					}
 				}
-				//---------------------------------------------------------------------------
-				String actitvity_team_img=" <ul class='list-unstyled m-0 d-flex align-items-center avatar-group '>";
-				
-				for(ActivityMasterTeam acTeam : am.getActivityMasterTeam()) {
-					
+				// ---------------------------------------------------------------------------
+				String actitvity_team_img = " <ul class='list-unstyled m-0 d-flex align-items-center avatar-group '>";
+
+				for (ActivityMasterTeam acTeam : am.getActivityMasterTeam()) {
+
 					EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(acTeam.getEmpid()));
 
-					String img ="<img src='" + getemp_photo(empobj) + "' alt='Avatar' class='rounded-circle'>";
-					
-					actitvity_team_img +="<li data-bs-toggle='tooltip'  data-popup='tooltip-custom'  data-bs-placement='top' title='" + empobj.getStaffName() + "'  class='avatar pull-up' >";
-					actitvity_team_img +="<div class='avatar me-2 tooltipx'><a href='emp?id="+ empobj.getEmpMasterid() +"'>"+ img + "</a><span class='tooltiptextx'>" + empobj.getStaffName() + "</span></div></li>";
-									           	
+					String img = "<img src='" + getemp_photo(empobj) + "' alt='Avatar' class='rounded-circle'>";
+
+					actitvity_team_img += "<li data-bs-toggle='tooltip'  data-popup='tooltip-custom'  data-bs-placement='top' title='"
+							+ empobj.getStaffName() + "'  class='avatar pull-up' >";
+					actitvity_team_img += "<div class='avatar me-2 tooltipx'><a href='emp?id=" + empobj.getEmpMasterid()
+							+ "'>" + img + "</a><span class='tooltiptextx'>" + empobj.getStaffName()
+							+ "</span></div></li>";
+
 				}
-				actitvity_team_img +="</ul>";
+				actitvity_team_img += "</ul>";
 				am.setActivityMasterTeamimg(actitvity_team_img);
-				//---------------------------------------------------------------------------
-				
+				// ---------------------------------------------------------------------------
+
 				try {
 					am.setStartdatestrformate(displaydateFormatFirstMMMddYYYAMPM
 							.format(displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' ' + am.getStarttime()))
 							.toString().toUpperCase());
-					
-					am.setStartdatestrformateorginial(displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' ' + am.getStarttime()));
+
+					am.setStartdatestrformateorginial(
+							displaydateFormatyyyMMddHHmm.parse(am.getStartdate() + ' ' + am.getStarttime()));
 
 				} catch (ParseException e) {
 
 					// e.printStackTrace();
 				}
 			}
-			amls.sort(Comparator.comparing(ActivityMaster:: getStartdatestrformateorginial).reversed());
-			
+			amls.sort(Comparator.comparing(ActivityMaster::getStartdatestrformateorginial).reversed());
+
 			pm.setActivityMaster(amls);
 		}
 		return dm;
@@ -8186,7 +8223,8 @@ public class HomeController {
 
 	@PostMapping("activitysave")
 	@ResponseBody
-	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid, @RequestParam(name="teamMember1", required = false) List<String> teamMember,
+	public String activitysave(@RequestParam Map<String, String> param, @RequestParam("guestid") List<String> guestid,
+			@RequestParam(name = "teamMember1", required = false, defaultValue = "") List<String> teamMember,
 			@RequestParam(name = "File_Attach", required = false) MultipartFile Files_Attach,
 			HttpServletRequest request) {
 
@@ -8235,7 +8273,8 @@ public class HomeController {
 		// Team Members
 		if (param.get("mastercategory").toString().equalsIgnoreCase("Project")) {
 			List<ActivityMasterTeam> lsactivityMasterTeam = new ArrayList();
-			for (String str :teamMember) {
+
+			for (String str : teamMember) {
 				ActivityMasterTeam teamobj = new ActivityMasterTeam();
 				teamobj.setEmpid(str);
 				lsactivityMasterTeam.add(teamobj);
@@ -8424,7 +8463,7 @@ public class HomeController {
 		// dealMaster.setDealDate(params.get("dealDate"));
 		dealMaster.setStatus("Open");
 		dealMaster.setLabel(leadMaster.getLabel());
-		// dealMaster.setTdate(params.get("tdate"));
+		dealMaster.setTdate(leadMaster.getTdate());
 		dealMaster.setLocation(leadMaster.getLocation());
 		dealMaster.setUNITS(leadMaster.getUNITS());
 		dealMaster.setNatureofWork(leadMaster.getNatureofWork());
@@ -8485,7 +8524,7 @@ public class HomeController {
 		// projectMaster.setDealDate(params.get("dealDate"));
 		projectMaster.setStatus("Open");
 		projectMaster.setLabel(leadMaster.getLabel());
-		// projectMaster.setTdate(params.get("tdate"));
+		projectMaster.setTdate(leadMaster.getTdate());
 		projectMaster.setLocation(leadMaster.getLocation());
 		projectMaster.setUNITS(leadMaster.getUNITS());
 		projectMaster.setNatureofWork(leadMaster.getNatureofWork());
@@ -8549,7 +8588,7 @@ public class HomeController {
 			// leadMaster.setDealDate(params.get("dealDate"));
 			leadMaster.setStatus("Open");
 			leadMaster.setLabel(dealMaster.getLabel());
-			// leadMaster.setTdate(params.get("tdate"));
+			leadMaster.setTdate(dealMaster.getTdate());
 			leadMaster.setLocation(dealMaster.getLocation());
 			leadMaster.setUNITS(dealMaster.getUNITS());
 			leadMaster.setNatureofWork(dealMaster.getNatureofWork());
@@ -8611,7 +8650,7 @@ public class HomeController {
 		// projectMaster.setDealDate(params.get("dealDate"));
 		projectMaster.setStatus("Open");
 		projectMaster.setLabel(dealMaster.getLabel());
-		// projectMaster.setTdate(params.get("tdate"));
+		projectMaster.setTdate(dealMaster.getTdate());
 		projectMaster.setLocation(dealMaster.getLocation());
 		projectMaster.setUNITS(dealMaster.getUNITS());
 		projectMaster.setNatureofWork(dealMaster.getNatureofWork());
@@ -10171,6 +10210,22 @@ public class HomeController {
 
 		ProjectMaster projectMaster = new ProjectMaster();
 		projectMaster = projectMasterService.findById(id);
+
+		if (projectMaster.getProjectPhases().size() == 0) {
+			
+			List<ProjectPhases> lsprojPhase= new ArrayList<>();
+			
+			ProjectTemplateBoard prgBoard= projectTemplateBoardService.findById(1);
+			for(ProjectTemplatePhase Objphase : prgBoard.getProjectTemplatePhase())
+			{
+				ProjectPhases obj1= new ProjectPhases();
+				obj1.setPhaseName(Objphase.getPhaseName());
+				obj1.setOrderID(Objphase.getOrderID());
+				lsprojPhase.add(obj1);
+			}
+			projectMaster.setProjectPhases(lsprojPhase);
+			projectMasterService.save(projectMaster);
+		}
 
 		if (!nullremover(String.valueOf(projectMaster.getOrganization())).equalsIgnoreCase("")) {
 			projectMaster.setOrganizationName(contactOrganizationService
@@ -13121,7 +13176,6 @@ public class HomeController {
 		return invLs1;
 	}
 
-
 	@GetMapping("projectplan")
 	public String projectplan(Model theModel) {
 		List<BranchMaster> bmList = branchMasterService.findAll();
@@ -13134,9 +13188,10 @@ public class HomeController {
 	public String PendingPayments(Model themodel) {
 
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("PendingPayments"));
-		
+
 		return "AccountPendingPayments";
 	}
+
 	@ResponseBody
 	@GetMapping("Accountsprojectlistjson")
 	public List<ProjectMaster> Accountsprojectlistjson(Model themodel) {
@@ -13144,7 +13199,7 @@ public class HomeController {
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
 		for (ProjectMaster tmp1obj : projectMasterService.findAll()) {
-			
+
 			// --------------------------------------------------
 			for (ProjectFollowers projectfol : tmp1obj.getProjectFollowers()) {
 				String followerstr = nullremover(String.valueOf(projectfol.getEmpid()));
@@ -13187,35 +13242,34 @@ public class HomeController {
 			// ----------------------------------------------------------
 			tmp1obj.setProjecttotalvaluereceipt("0");
 			if (tmp1obj.getReceiptList().size() > 0) {
-				tmp1obj.setProjecttotalvaluereceipt(String.valueOf(tmp1obj.getReceiptList().stream()
-						.mapToDouble(x -> x.getAmount()).sum()));
+				tmp1obj.setProjecttotalvaluereceipt(
+						String.valueOf(tmp1obj.getReceiptList().stream().mapToDouble(x -> x.getAmount()).sum()));
 
 			}
 			// ----------------------------------------------------------
-			
+
 			tmp1obj.setProjecttotalvalueexpense("0");
 			if (tmp1obj.getProjectExpenseList().size() > 0) {
-				tmp1obj.setProjecttotalvalueexpense(String.valueOf(tmp1obj.getProjectExpenseList().stream()
-						.mapToDouble(x -> x.getTotal()).sum()));
+				tmp1obj.setProjecttotalvalueexpense(
+						String.valueOf(tmp1obj.getProjectExpenseList().stream().mapToDouble(x -> x.getTotal()).sum()));
 
 			}
 
 			// ----------------------------------------------------------
 			tmp1obj.setProjecttotalvaluebilled("0");
-			double billedamt=0;
+			double billedamt = 0;
 			if (tmp1obj.getInvoiceList().size() > 0) {
-				
-				for( InvoiceMaster tobj: tmp1obj.getInvoiceList())
-				{
-					if(tobj.getInvoiceItemMasterlist().size()>0)
-					{
-						billedamt =+ tobj.getInvoiceItemMasterlist().stream().mapToDouble(x -> x.getTotalamountAmount()).sum();
+
+				for (InvoiceMaster tobj : tmp1obj.getInvoiceList()) {
+					if (tobj.getInvoiceItemMasterlist().size() > 0) {
+						billedamt = +tobj.getInvoiceItemMasterlist().stream().mapToDouble(x -> x.getTotalamountAmount())
+								.sum();
 					}
-				}				
+				}
 
 			}
 			tmp1obj.setProjecttotalvaluebilled(String.valueOf(billedamt));
-			
+
 			// ----------------------------------------------------------
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
 

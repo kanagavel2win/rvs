@@ -69,7 +69,8 @@ public class ActivityMasterImp implements ActivityMasterService {
 
 	@Override
 	public List<Map<String, Object>> nextactivity(String mastercategory, String mastercategoryid) {
-		String sql = "SELECT * FROM activitymaster WHERE activitycategory ='Activity' and STR_TO_DATE(duedate,'%Y-%m-%d') >= date_format(curdate(),'%Y-%m-%d') and  mastercategory='"+ mastercategory + "' and mastercategoryid in(" + mastercategoryid +") limit 1";
+		//String sql = "SELECT * FROM activitymaster WHERE activitycategory ='Activity' and STR_TO_DATE(duedate,'%Y-%m-%d') >= date_format(curdate(),'%Y-%m-%d') and  mastercategory='"+ mastercategory + "' and mastercategoryid in(" + mastercategoryid +") limit 1";
+		String sql ="SELECT act.*, COALESCE(DATEDIFF(STR_TO_DATE(enddate,'%Y-%m-%d'),date_format(curdate(),'%Y-%m-%d')),0) as taskdatecount FROM activitymaster act WHERE status <> 'Completed' and activitycategory ='Activity'  and  mastercategory='"+ mastercategory + "' and mastercategoryid in(" + mastercategoryid +") order by STR_TO_DATE(enddate,'%Y-%m-%d') desc limit 1";
 		//System.out.println(sql);
 		List<Map<String, Object>> result = JdbcTemplate.queryForList(sql);
 		return result;

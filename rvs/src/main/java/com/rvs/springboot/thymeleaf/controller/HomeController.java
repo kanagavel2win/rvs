@@ -6635,10 +6635,19 @@ public class HomeController {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 					String activitytype = String.valueOf(rowMap.get("activitytype"));
-					tmp1obj.setNextactivity(activitytype + " - " + activitytitle);
+					int taskdatecount = Integer.parseInt( String.valueOf(rowMap.get("taskdatecount")));
+					String activity_txt="";
+					if(taskdatecount <0 )
+					{
+						 activity_txt="<span class='red' title='"+ taskdatecount +" Over Due'>" +activitytype + " - " + activitytitle +"</span>";
+					}else
+					{
+						activity_txt=activitytype + " - " + activitytitle;
+					}
+						tmp1obj.setNextactivity(activity_txt);
 				});
 			} else {
-				tmp1obj.setNextactivity("<span class='red'>No Activity</span>");
+				tmp1obj.setNextactivity("<span class='red'>-</span>");
 			}
 			// ----------------------------------------------------------------------------------------------------
 			if (!nullremover(String.valueOf(tmp1obj.getLeadDate())).equalsIgnoreCase("")) {
@@ -6714,10 +6723,19 @@ public class HomeController {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 					String activitytype = String.valueOf(rowMap.get("activitytype"));
-					tmp1obj.setNextactivity(activitytype + " - " + activitytitle);
+					int taskdatecount = Integer.parseInt( String.valueOf(rowMap.get("taskdatecount")));
+					String activity_txt="";
+					if(taskdatecount <0 )
+					{
+						 activity_txt="<span class='red' title='"+ taskdatecount +" Over Due'>" +activitytype + " - " + activitytitle +"</span>";
+					}else
+					{
+						activity_txt=activitytype + " - " + activitytitle;
+					}
+						tmp1obj.setNextactivity(activity_txt);
 				});
 			} else {
-				tmp1obj.setNextactivity("<span class='red'>No Activity</span>");
+				tmp1obj.setNextactivity("<span class='red'>-</span>");
 			}
 			// --------------------------------------------------
 			for (DealFollowers dealfol : tmp1obj.getDealFollowers()) {
@@ -6769,19 +6787,39 @@ public class HomeController {
 	public List<ProjectMaster> projectlistjson(Model themodel) {
 		List<ProjectMaster> projectmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
-
+		String Phaseidsls="";
 		for (ProjectMaster tmp1obj : projectMasterService.findAll()) {
 			// --------------------------------------------------
+			Phaseidsls="";
+			for(ProjectPhases prjObj : tmp1obj.getProjectPhases()) {
+			
+				Phaseidsls +=prjObj.getId() +",";
+						
+			}
+			if(Phaseidsls.length()>0)
+			{
+				Phaseidsls= Phaseidsls.substring(0,Phaseidsls.length()-1);
+			}
 			List<Map<String, Object>> ls = activityMasterService.nextactivity("Project",
-					String.valueOf(tmp1obj.getId()));
+					Phaseidsls);
+			
 			if (ls.size() > 0) {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 					String activitytype = String.valueOf(rowMap.get("activitytype"));
-					tmp1obj.setNextactivity(activitytype + " - " + activitytitle);
+					int taskdatecount = Integer.parseInt( String.valueOf(rowMap.get("taskdatecount")));
+					String activity_txt="";
+					if(taskdatecount <0 )
+					{
+						 activity_txt="<span class='red' title='"+ taskdatecount +" Over Due'>" +activitytype + " - " + activitytitle +"</span>";
+					}else
+					{
+						activity_txt=activitytype + " - " + activitytitle;
+					}
+						tmp1obj.setNextactivity(activity_txt);
 				});
 			} else {
-				tmp1obj.setNextactivity("<span class='red'>No Activity</span>");
+				tmp1obj.setNextactivity("<span class='red'>-</span>");
 			}
 			// --------------------------------------------------
 			for (ProjectFollowers projectfol : tmp1obj.getProjectFollowers()) {

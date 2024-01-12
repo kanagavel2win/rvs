@@ -465,6 +465,9 @@ float:right;
 													<dd class="col-sm-8">
 														<span th:text="${dealMaster.lanlong}"
 															id="Lbl_Addresslanlong"></span>
+														<th:block th:if="${dealMaster.lanlong}">
+															<br/><a target="_blank" th:href="'https://maps.google.com/maps?q='+ ${dealMaster.lanlong}">View Map</a>
+														</th:block>
 													</dd>
 												</dl>
 											</div>
@@ -971,7 +974,7 @@ float:right;
 														Line 1</label> <input type="text" id="modalAddressAddress1"
 														name="modalAddressAddress1" class="form-control"
 														placeholder="Flat, House no, Building, Apartment"
-														th:value="${dealMaster.addressline1}" required />
+														th:value="${dealMaster.addressline1}" />
 												</div>
 												<div class="col-12">
 													<label class="form-label" for="modalAddressAddress2">Address
@@ -1016,7 +1019,8 @@ float:right;
 													<label class="form-label" for="modalAddresslanlong">Lat, Long</label> 
 													<input type="text" id="modalAddresslanlong" 
 														name="modalAddresslanlong" class="form-control"
-														th:value="${dealMaster.lanlong}" />
+														th:value="${dealMaster.lanlong}" required/>
+													
 												</div>
 
 												<div class="col-12 text-center mt-4">

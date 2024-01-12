@@ -90,13 +90,13 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 		 */
 		if (branch_masterid == 0) {
 			
-			String sql = "select * from (select b1.*,b2.staff_name, b2.bankacno,b2.bank_name from " + "(SELECT  employeeid,"
+			String sql = "select * from (select b1.*,b2.staff_name, b2.bankacno,b2.bank_name from " + "(SELECT  employeeid,branch_masterid,"
 					+ "sum(CASE WHEN (attstatus ='P') THEN 1 ELSE 0 END)AS 'P', "
 					+ "sum(CASE WHEN (attstatus ='A') THEN 1 ELSE 0 END)AS 'A', "
 					+ "sum(CASE WHEN (attstatus ='T') THEN 1 ELSE 0 END)AS 'T', "
 					+ "sum(CASE WHEN (attstatus ='HL') THEN 1 ELSE 0 END)AS 'HL' " + holidaysql
 					+ " FROM attendancemaster WHERE  attendance_date between"
-					+ "'" + selectedmonth + "-01 00:00:00' and '" + selectedmonth + "-31 00:00:00' group by employeeid)b1 "
+					+ "'" + selectedmonth + "-01 00:00:00' and '" + selectedmonth + "-31 00:00:00' group by employeeid,branch_masterid)b1 "
 					+ " left join employeemaster b2 on b1.employeeid=b2.emp_masterid)t1 "
 					+ " inner join (select c2.employeeid,c2.compayrate,c2.employeejobcompensationid from (SELECT  max(STR_TO_DATE(comeffectivedate,'%Y-%m-%d')) as rowid,e.employeeid FROM employeejobcompensation e where STR_TO_DATE(comeffectivedate,'%Y-%m-%d') <=STR_TO_DATE('"
 					+ selectedmonth
@@ -110,13 +110,13 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 			return atm;
 			}else if (emppojoPrivillage.allowBranches.contains(branch_masterid)) {
 			
-		String sql = "select * from (select b1.*,b2.staff_name, b2.bankacno,b2.bank_name from " + "(SELECT  employeeid,"
+		String sql = "select * from (select b1.*,b2.staff_name, b2.bankacno,b2.bank_name from " + "(SELECT  employeeid,branch_masterid,"
 				+ "sum(CASE WHEN (attstatus ='P') THEN 1 ELSE 0 END)AS 'P', "
 				+ "sum(CASE WHEN (attstatus ='A') THEN 1 ELSE 0 END)AS 'A', "
 				+ "sum(CASE WHEN (attstatus ='T') THEN 1 ELSE 0 END)AS 'T', "
 				+ "sum(CASE WHEN (attstatus ='HL') THEN 1 ELSE 0 END)AS 'HL' " + holidaysql
 				+ " FROM attendancemaster WHERE  branch_masterid=" + branch_masterid + " and attendance_date between"
-				+ "'" + selectedmonth + "-01 00:00:00' and '" + selectedmonth + "-31 00:00:00' group by employeeid)b1 "
+				+ "'" + selectedmonth + "-01 00:00:00' and '" + selectedmonth + "-31 00:00:00' group by employeeid,branch_masterid)b1 "
 				+ " left join employeemaster b2 on b1.employeeid=b2.emp_masterid)t1 "
 				+ " inner join (select c2.employeeid,c2.compayrate,c2.employeejobcompensationid from (SELECT  max(STR_TO_DATE(comeffectivedate,'%Y-%m-%d')) as rowid,e.employeeid FROM employeejobcompensation e where STR_TO_DATE(comeffectivedate,'%Y-%m-%d') <=STR_TO_DATE('"
 				+ selectedmonth

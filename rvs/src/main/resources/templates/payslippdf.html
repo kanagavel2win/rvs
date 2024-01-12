@@ -200,6 +200,7 @@ text-align:center;
 															<tr>
 																<th class="sticky-col first-col td1">S.No</th>
 																<th class="sticky-col second-col td1">Name</th>
+																<th class="td1">Branch</th>
 																<th>Working Days</th>
 																<th>Ex.Working Days</th>
 																<th>Basic Salary</th>
@@ -216,6 +217,7 @@ text-align:center;
 															<tr th:each="str,i : ${#strings.arraySplit(report,',')}">
 																<td class="sticky-col first-col td1" th:text="${i.index+1}"></td>
 																<td class="sticky-col second-col td1"  th:text="${#strings.arraySplit(str,'-')[1]}"></td>
+																<td class="td1" th:text="${#strings.arraySplit(str,'-')[17]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'-')[5]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'-')[6]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'-')[7]}"></td>
@@ -232,7 +234,7 @@ text-align:center;
 																<td colspan="2" class="td2">Prepard<br/><br/><br/><br/><br/></td>
 																<td colspan="4" class="td2">Verified<br/><br/><br/><br/><br/></td>
 																<td colspan="3" class="td2">Authorized Sign <br/><br/><br/><br/><br/></td>
-																<td colspan="2" class="td2">Authorized Sign<br/><br/><br/> <br/><br/></td>
+																<td colspan="3" class="td2">Authorized Sign<br/><br/><br/> <br/><br/></td>
 															</tr>
 														</tbody>
 													</table>

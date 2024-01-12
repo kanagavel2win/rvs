@@ -3959,7 +3959,8 @@ public class HomeController {
 			String staff_name = (String) rowMap.get("staff_name");
 			String AccountNo = (String) rowMap.get("bankacno");
 			String BankName = (String) rowMap.get("bank_name");
-			String Locationstate = (String) rowMap.get("joblocation");
+			String Locationstate = (String) rowMap.get("joblocation"); 
+			String branch_masterid_str=String.valueOf(rowMap.get("branch_masterid")); 
 			double compayrate = Integer.parseInt(rowMap.get("compayrate").toString());
 
 			double ctc = compayrate;
@@ -4006,8 +4007,8 @@ public class HomeController {
 			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + (WorkingDays + ExtraWorkingDays) + "-"
 					+ Absent + "-" + WorkingDays + "-" + ExtraWorkingDays;
 			str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance
-					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net;
-
+					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net+ "-" + branchMasterService.findById(Integer.parseInt(branch_masterid_str)).getBranchCode();
+			
 			report.add(str);
 			totalnet.set(0, totalnet.get(0) + net);
 
@@ -4036,7 +4037,7 @@ public class HomeController {
 				payslipboj.setTotalgross(String.valueOf(TOTALGROSS));
 				payslipboj.setTotalWorkingDays(String.valueOf(WorkingDays + ExtraWorkingDays));
 				payslipboj.setWorkingDays(String.valueOf(WorkingDays));
-				payslipboj.setBranchid(String.valueOf(branch_masterid));
+				payslipboj.setBranchid(String.valueOf(branch_masterid_str));
 
 				payslipserive.save(payslipboj);
 				themodel.addAttribute("save", "save");

@@ -49,7 +49,7 @@ public class PaySlip_ExcelGenerator {
         createCell(row, 14, "TOTAL DEDUCTION", style);
         createCell(row, 15, "MONTHLY INCENTIVES", style);
         createCell(row, 16, "NET SALARY", style);
-        
+        createCell(row, 17, "BRANCH", style); 
     }
     private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
         sheet.autoSizeColumn(columnCount);

@@ -278,6 +278,7 @@ td {
 										<label class="form-label" for="pipeline">Phase </label>
 										<div>
 											<select class="form-control " id="pipeline" name="pipeline">
+												<option value="">-</option>
 												<th:block th:each="str :${Phase}">
 													<option th:value="${str}" th:text="${str}"></option>
 												</th:block>
@@ -870,8 +871,15 @@ td {
 				         {
 					           targets:6,
 					           render: function(data, type, full, meta) {
-					           	 
-					           	 return 	   full['pipeline'] +"/ "+ full["status"] +''; 
+					           
+					        	   if(full["status"] =="Completed")
+				        		   {
+				        		   return 	   full['pipeline'] +"/ <span class='badge bg-label-success'>"+ full["status"] +'</span>';
+				        		   }
+				        	   else
+				        		   {
+				        		   return 	   full['pipeline'] +"/ "+ full["status"] +'';	   
+				        		   }
 					           }
 					     },
 					     {

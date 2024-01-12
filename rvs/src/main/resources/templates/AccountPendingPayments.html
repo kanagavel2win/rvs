@@ -188,8 +188,8 @@ td {
 											<th></th>
 											<th>id</th>
 											<th>Title</th>
-											<th>Followers</th>
-											<th>Phase/Status</th>
+											<th>Bill Type</th>
+											<th>Status</th>
 											<th>Branch</th>
 											<th>Project Value</th>
 											<th>Billed</th>
@@ -413,45 +413,14 @@ td {
 			        {
 				           targets:4,
 				           render: function(data, type, full, meta) {
-				           	 $projectFollowerslist = full['projectFollowers'];
-				           	 
-				           	 var $row_output='';
-				          		$row_output += ' <ul class="list-unstyled m-0 d-flex align-items-center avatar-group ">';
-				          		
-				          		
-				          		
-				          		var $output ="";
-				          		var $empMasterid="";
-				          		var   $name ="";
-				           	 $projectFollowerslist.forEach((element, index, array) =>
-				           	 {
-				           		
-				           		 var $user_img = element.followerimg ,
-				              	  $name = element.followername;
-				              	  $empMasterid=element.empid;
-				               
-				              if ($user_img != "" && $user_img != null) {
-				               // For Avatar image
-				                 $output =
-				                  '<img src="' + $user_img + '" alt="Avatar" class="rounded-circle">';
-				              } else {
-				                // For Avatar badge
-				                var stateNum = Math.floor(Math.random() * 6);
-				                var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
-				                var $state = states[stateNum],
-				                  $name = $name,
-				                  $initials = $name.match(/\b\w/g) || [];
-				                $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
-				                $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
-				              }
-				              // Creates full output for row
-				              
-				              $row_output +=
-					                '<li data-bs-toggle="tooltip"  data-popup="tooltip-custom"  data-bs-placement="top" title="' + $name + '"  class="avatar pull-up" >'+
-					                '<div class="avatar me-2 tooltipx"><a href="emp?id='+ $empMasterid +'">'+ $output + '</a><span class="tooltiptextx">' + $name + '</span></div></li>';
-				           	 });
-				           	 
-				           	 return $row_output;
+				        	   
+				        	   var billtyps="";
+				        	   
+				        	   full["invoiceList"].forEach(function (item) {
+				        		   billtyps +=item.invoiceType;
+				        	   });
+				            return billtyps;
+				            
 				           }
 				         },
 				         {
@@ -460,11 +429,11 @@ td {
 					           	 
 					        	   if(full["status"] =="Completed")
 					        		   {
-					        		   return 	   full['pipeline'] +"/ <span class='badge bg-label-success'>"+ full["status"] +'</span>';
+					        		   return 	  " <span class='badge bg-label-success'>"+ full["status"] +'</span>';
 					        		   }
 					        	   else
 					        		   {
-					        		   return 	   full['pipeline'] +"/ "+ full["status"] +'';	   
+					        		   return 	   full["status"] +'';	   
 					        		   }
 					           	  
 					           }

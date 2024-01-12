@@ -3869,9 +3869,11 @@ public class HomeController {
 
 		String Payperiod = prdStartdate + " - " + prdenddate;
 		if (!save.equalsIgnoreCase("")) {
+			
 			for (EmployeeMaster emoobj : EffectiveEmployee(employeeMasterService.findAll())) {
 				payslipserive.deleteByPayperiod(Payperiod, String.valueOf(branch_masterid));
 			}
+			
 		}
 
 		// -------------------------------------------------------
@@ -4049,7 +4051,15 @@ public class HomeController {
 		themodel.addAttribute("selectedmonth", selectedmonth);
 		themodel.addAttribute("totalnet", totalnet.get(0));
 
-		BranchMaster bm = branchMasterService.findById(branch_masterid);
+		BranchMaster bm =new BranchMaster();
+		
+		if(branch_masterid >0)
+		{
+			bm = branchMasterService.findById(branch_masterid);
+		}else
+		{
+			bm.setBRANCH_NAME("ALL");
+		}
 		themodel.addAttribute("branchobj", bm);
 
 		List<BranchMaster> branchls = branchMasterService.findAll();
@@ -7944,16 +7954,17 @@ public class HomeController {
 
 		// System.out.println(params);
 		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
-
+		DecimalFormat df = new DecimalFormat("#");  
+		
 		List<ProjectItemMaster> projectprojectList = new ArrayList();
 		if (nullremover(String.valueOf(params.get("projectitemid"))).equalsIgnoreCase("")) {
 
 			projectprojectList = dm.getProjectItemMaster();
 			ProjectItemMaster dpmobj = new ProjectItemMaster();
-			double amount = Double.parseDouble(params.get("modalPrice"))
-					* Double.parseDouble(params.get("modalQuantity"));
-
-			dpmobj.setAmount(String.valueOf(amount));
+			double amount = Double.parseDouble(params.get("modalPrice"))* Double.parseDouble(params.get("modalQuantity"));
+		
+			
+			dpmobj.setAmount(String.valueOf(df.format(amount)));
 			dpmobj.setPrice(params.get("modalPrice"));
 			dpmobj.setProjecttype(params.get("modalnatureofwork"));
 			dpmobj.setQuantity(params.get("modalQuantity"));
@@ -7965,10 +7976,9 @@ public class HomeController {
 			for (ProjectItemMaster tempdpmobj : dm.getProjectItemMaster()) {
 				if (tempdpmobj.getProjectitemid() == Integer.parseInt(params.get("projectitemid"))) {
 
-					double amount = Double.parseDouble(params.get("modalPrice"))
-							* Double.parseDouble(params.get("modalQuantity"));
-
-					tempdpmobj.setAmount(String.valueOf(amount));
+					double amount = Double.parseDouble(params.get("modalPrice"))* Double.parseDouble(params.get("modalQuantity"));
+					
+					tempdpmobj.setAmount(String.valueOf(df.format(amount)));
 					tempdpmobj.setPrice(params.get("modalPrice"));
 					tempdpmobj.setProjecttype(params.get("modalnatureofwork"));
 					tempdpmobj.setQuantity(params.get("modalQuantity"));
@@ -13281,4 +13291,5 @@ public class HomeController {
 				.collect(Collectors.toList());
 	}
 
+	
 }

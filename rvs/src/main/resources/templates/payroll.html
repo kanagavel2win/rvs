@@ -238,6 +238,11 @@ table tr td {
 	padding: .5rem 0.5rem;
 	line-height: 5px;
 }
+
+.td_left
+{
+	text-align: left;
+}
 </style>
 </head>
 
@@ -292,8 +297,9 @@ table tr td {
 															<option
 																th:if="${obj.BRANCH_NAME} != ${targetedbranchName}"
 																th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+																
 														</th:block>
-
+														<option value="0">All</option>
 
 													</select>
 												</div>
@@ -337,11 +343,12 @@ table tr td {
 											<div class="form-group d3  ">
 												<label>Branch</label>
 												<h4 th:if="${branchobj}" th:text="${branchobj.BRANCH_NAME}" class=" text-white"></h4>
+												
 											</div>
 
 										</div>
 										<div class="col-md-1"></div>
-										<div class="col-md-3" th:if="${report}">
+										<div class="col-md-2" th:if="${report}">
 											<div class="form-group">
 												<form th:action="@{payroll}" method="POST"
 													class="wizard-horizontal" enctype="multipart/form-data">
@@ -361,9 +368,20 @@ table tr td {
 											</div>
 										</div>
 
-										<div class="col-md-2" th:if="${report}">
+										<div class="col-md-3" th:if="${report}">
 											<div class="form-group">
+												<form th:action="@{payrollexcel}" target="_blank"
+													method="POST" class="wizard-horizontal"
+													enctype="multipart/form-data">
+													<input type="hidden" th:value="${selectedmonth}"
+														name="month" /> <input type="hidden" th:value="${report}"
+														name="report" />
+														 <input type="hidden"
+														th:value="${branchobj.BRANCH_NAME}" name="branchname" />
+													<button type="submit" class="e2   btn btn-secondary m-1"
+														style="float: right">Export Excel</button>
 
+												</form>
 												<form th:action="@{payrollpdf}" target="_blank"
 													method="POST" class="wizard-horizontal"
 													enctype="multipart/form-data">
@@ -391,6 +409,7 @@ table tr td {
 														<tr>
 															<th class="sticky-col first-col">S.No</th>
 															<th class="sticky-col second-col">Name</th>
+															<th>Branch</th>
 															<th>CTC</th>
 															<th>Total</th>
 															<th>Absent</th>
@@ -414,6 +433,7 @@ table tr td {
 															<td class="sticky-col first-col" th:text="${i.index+1}"></td>
 															<td class="sticky-col second-col"
 																th:text="${#strings.arraySplit(str,'-')[1]}"></td>
+															<td class="td_left" th:text="${#strings.arraySplit(str,'-')[17]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[2]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[3]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[4]}"></td>

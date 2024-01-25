@@ -1589,13 +1589,13 @@
 					 			html +='<tr><td>';
 					 			
 					 			if(obj.filePath !=''){
-					 				html +='<a th:href=" ' + obj.filePath +'" target="_blank">';
+					 				html +='<a href=" ' + obj.filePath +'" target="_blank">';
 					 				if(obj.filePath.split(".")[1] =='pdf')
 				 					{
-				 						html +='<img src="assets/img/icons/misc/pdf.png" 	alt="PDF image" width="20" class="me-2">';
+				 						html +='<img src="assets/img/icons/misc/pdf.png" 	alt="PDF image" width="20" class="me-2"/>';
 				 					}else
 			 						{	
-				 						html +='<img src="assets/img/icons/misc/jpg.png" 	alt="PDF image" width="20" class="me-2">';
+				 						html +='<img src="assets/img/icons/misc/jpg.png" 	alt="PDF image" width="20" class="me-2"/>';
 			 						}
 					 				html +='<small class="text-body">'+ obj.filePath.split("/")[1].substr(15) +'</small> ';
 					 				

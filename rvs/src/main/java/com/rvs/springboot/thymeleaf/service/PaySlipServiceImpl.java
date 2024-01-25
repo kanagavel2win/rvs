@@ -39,8 +39,15 @@ public class PaySlipServiceImpl implements PaySlipService {
 	public void deleteByPayperiod(String Payperiod,String branchid) {
 		
 		//payslipRepository.deleteByPayperiod(Payperiod);
-		String sql ="DELETE FROM `payslip` WHERE payperiod='" +Payperiod + "' and branchid = '" + branchid +"'" ;
-		jdbctemplate.update(sql);
+		if(branchid.equalsIgnoreCase("0"))
+		{
+			String sql ="DELETE FROM `payslip` WHERE payperiod='" +Payperiod + "'" ;
+			jdbctemplate.update(sql);
+		}else
+		{
+			String sql ="DELETE FROM `payslip` WHERE payperiod='" +Payperiod + "' and branchid = '" + branchid +"'" ;
+			jdbctemplate.update(sql);
+		}
 		
 	}
 

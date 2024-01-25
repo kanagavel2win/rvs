@@ -58,9 +58,8 @@ public class ActivityMaster {
 	@Column
 	private String description;
 	@Column
-	private String notes;
-	
-	@Column(length = 65555)
+	private String notes;	
+	@Column
 	private String htmlnotes;
 	@Column
 	private String activityfollowers;	

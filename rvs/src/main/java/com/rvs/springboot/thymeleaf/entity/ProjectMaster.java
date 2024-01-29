@@ -206,6 +206,12 @@ public class ProjectMaster {
 	
 	@Transient
 	private String boardName;
+
 	
+	@Transient
+	private String noofdaysRemaining;
+	
+	@Transient
+	private String noofdaysRemainingPercentage;
 	
 }

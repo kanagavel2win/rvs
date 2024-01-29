@@ -651,18 +651,17 @@ cursor: pointer;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="organization">ORAGNIZATION</label>
 													<div>
-													
-														<input
-							                            id="organization"
-							                            name="organization"
-							                            class="form-control"
-							                            th:value="${leadMaster['OrganizationName']}"
-							                            placeholder="select Organization"
-							                            
-							                          />
+														<select class="form-select followers form-control "
+															id="organization" th:field="*{Organization}"
+															th:value="${leadMaster['Organization']}">
+															<option value="">-</option>
+															<th:block th:each="str :${organizationlist}">
+																<option th:value="${str.id}" th:text="${str.orgname}"></option>
+															</th:block>
+														</select>
 
 														<div class="invalid-feedback">Please select
-															ORAGNIZATION.</div>
+															follower.</div>
 													</div>
 												</div>
 												<div class="col-12 col-md-6">
@@ -772,12 +771,12 @@ cursor: pointer;
 													<label class="form-label" for="Reference">REFERENCE</label>
 													<div>
 
-														<select class="select2 form-select" id="Reference"
+														<select class="form-control " id="Reference"
 															th:field="*{Reference}"
 															th:value="${leadMaster['Reference']}">
 															<option value="">-</option>
 															<th:block th:each="str :${personlist}">
-																<option th:value="${str.id}" th:text="${str.peoplename} +' - '+ ${str.primarymob}"></option>
+																<option th:value="${str.id}" th:text="${str.peoplename}"></option>
 															</th:block>
 														</select>
 													</div>
@@ -1404,7 +1403,7 @@ cursor: pointer;
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			
-																			$('#Lbl_Reference').text(bmobj.referenceName);
+																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
 																			$("#Lbl_purpose").text(bmobj.purpose);
@@ -1956,28 +1955,8 @@ cursor: pointer;
 							    }
 							  }
 						//------------------------------------------------------
-						// List
-						  const TagifyCustomListSuggestionEl = document.querySelector('#organization');
-						  
-						  $.ajax({
-									type : "GET",url : "organizationNameList",
-									data : '', success : function(result) {
-										
-										 // List
-									    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
-									      whitelist: result,
-									      maxTags: 1,
-									      dropdown: {
-									        maxItems: 20,
-									        classname: '',
-									        enabled: 0,
-									        closeOnSelect: false
-									      }
-									    });
-										 
-									}
-						  });
-							//------------------------------------------------------
+						
 		</script>
 </body>
 </html>
+>>>>>>> branch 'bootstrap5' of https://github.com/kanagavel2win/rvs.git

@@ -26,7 +26,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "OrganizationContacts")
-public class OrganizationContacts {
+public class OrganizationContacts  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,5 +86,6 @@ public class OrganizationContacts {
 	
 	@Transient
 	private List<ContactPerson> cplist;
+
 	
 }

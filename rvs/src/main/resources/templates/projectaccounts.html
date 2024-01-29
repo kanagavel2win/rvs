@@ -252,10 +252,25 @@
 													<span>Project Status</span>
 												</div>
 											</div>
-
-
-
 										</div>
+											 <!-- Options -->
+							                <div class="demo-vertical-spacingx">
+							                  	Days <span th:if="${projectMaster.noofdaysRemainingPercentage}" style="float:right" th:text=" ${projectMaster.noofdaysRemainingPercentage} +' % Completed' "> </span>
+							                    <div class="progress">
+							                      <div
+							                        class="progress-bar"
+							                        role="progressbar"
+							                        th:style="'width:'+ ${projectMaster.noofdaysRemainingPercentage} +'%'"
+							                        aria-valuemin="0"
+							                        aria-valuemax="100"
+							                      ></div>
+							                    </div>
+							                    <span  th:text="${projectMaster.noofdaysRemaining}"></span> Days Remaining
+							                   </div>
+							               <br/>
+							              <!--/ Options -->
+
+
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
@@ -721,6 +736,7 @@
 																		<div class="d-flex justify-content-between">
 																			<span class="w-px-100">Total Amount:</span> <span
 																				class="fw-semibold" id="totalamount">0.00</span>
+																			<input type="hidden" id="totalamount_hid" name="totalamount_hid" />
 																		</div>
 
 																	</div>
@@ -909,17 +925,17 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="organization">ORAGNIZATION</label>
 													<div>
-														<select class="form-select followers form-control "
-															id="organization" th:field="*{Organization}"
-															th:value="${projectMaster['Organization']}">
-															<option value="">-</option>
-															<th:block th:each="str :${organizationlist}">
-																<option th:value="${str.id}" th:text="${str.orgname}"></option>
-															</th:block>
-														</select>
+														<input
+							                            id="organization"
+							                            name="organization"
+							                            class="form-control"
+							                            th:value="${projectMaster['OrganizationName']}"
+							                            placeholder="select Organization"
+							                            
+							                          />
 
 														<div class="invalid-feedback">Please select
-															follower.</div>
+															ORAGNIZATION.</div>
 													</div>
 												</div>
 
@@ -1045,7 +1061,7 @@
 													<label class="form-label" for="Reference">REFERENCE</label>
 													<div>
 
-														<select class="form-control " id="Reference"
+														<select class="select2 form-select" id="Reference"
 															th:field="*{Reference}"
 															th:value="${projectMaster['Reference']}">
 															<option value="">-</option>
@@ -1627,7 +1643,7 @@
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
-																			$('#Lbl_Reference').text(bmobj.referencename);
+																			$('#Lbl_Reference').text(bmobj.referenceName);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_projectvalue").text(bmobj.projectvalue);
 																			$("#Lbl_purpose").text(bmobj.purpose);
@@ -1779,11 +1795,11 @@
 									           	  
 									           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editinvoiceinfo(this)' id='"+element.invoiceid +"'>"+element.invoiceNo+"</td>";
 									           	 htmlop +="<td class='text-nowrap'>"+element.invoiceType +"</td><td class='text-nowrap'>"+element.invoiceDateMMMddyyyy +"</td><td>"+element.dueDateMMMddyyyy +"</td>";
-									           	 htmlop +="<td>"+sub_total.toFixed(2) +" <i class='bx bx-receipt  generatenewreceipt' onclick='generatereceipt("+element.invoiceid +")'  ></i></td></tr>";
+									           	 htmlop +="<td>"+sub_total.toFixed(0) +" <i class='bx bx-receipt  generatenewreceipt' onclick='generatereceipt("+element.invoiceid +")'  ></i></td></tr>";
 									           	 total +=parseFloat(sub_total);
 								            });
 											
-											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
+											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(0) +"</p> </td> </tr>";
 												
 											$('#projectinvoicelist').html(htmlop);
 										},
@@ -2418,6 +2434,7 @@
 				
 			
 				$('#totalamount').text((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(0));
+				$("#totalamount_hid").val((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(0));
 				$('#totalamtwithouttax').text((totalamtwithouttax+Discountamt).toFixed(0));
 				
 				
@@ -2630,6 +2647,28 @@
 				    }
 				  }
 			//------------------------------------------------------
+			// List
+			  const TagifyCustomListSuggestionEl = document.querySelector('#organization');
+			  
+			  $.ajax({
+						type : "GET",url : "organizationNameList",
+						data : '', success : function(result) {
+							
+							 // List
+						    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
+						      whitelist: result,
+						      maxTags: 1,
+						      dropdown: {
+						        maxItems: 20,
+						        classname: '',
+						        enabled: 0,
+						        closeOnSelect: false
+						      }
+						    });
+							 
+						}
+			  });
+				//------------------------------------------------------
 			
 		</script>
 </body>

@@ -248,10 +248,26 @@
 													<span>Status</span>
 												</div>
 											</div>
-
-
-
 										</div>
+ 										<!-- Options -->
+							                <div class="demo-vertical-spacingx">
+							                  	Days <span th:if="${projectMaster.noofdaysRemainingPercentage}" style="float:right" th:text=" ${projectMaster.noofdaysRemainingPercentage} +' % Completed' "> </span>
+							                    <div class="progress">
+							                      <div
+							                        class="progress-bar"
+							                        role="progressbar"
+							                        th:style="'width:'+ ${projectMaster.noofdaysRemainingPercentage} +'%'"
+							                        aria-valuemin="0"
+							                        aria-valuemax="100"
+							                      ></div>
+							                    </div>
+							                    <span  th:text="${projectMaster.noofdaysRemaining}"></span> Days Remaining
+							                   </div>
+							               <br/>
+							              <!--/ Options -->
+
+
+										
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
 										<div class="info-container">
 											<ul class="list-unstyled">
@@ -518,17 +534,17 @@
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="organization">ORAGNIZATION</label>
 													<div>
-														<select class="form-select followers form-control "
-															id="organization" th:field="*{Organization}"
-															th:value="${projectMaster['Organization']}">
-															<option value="">-</option>
-															<th:block th:each="str :${organizationlist}">
-																<option th:value="${str.id}" th:text="${str.orgname}"></option>
-															</th:block>
-														</select>
+														<input
+							                            id="organization"
+							                            name="organization"
+							                            class="form-control"
+							                            th:value="${projectMaster['OrganizationName']}"
+							                            placeholder="select Organization"
+							                            
+							                          />
 
 														<div class="invalid-feedback">Please select
-															follower.</div>
+															ORAGNIZATION.</div>
 													</div>
 												</div>
 
@@ -653,7 +669,7 @@
 													<label class="form-label" for="Reference">REFERENCE</label>
 													<div>
 
-														<select class="form-control " id="Reference"
+														<select class="select2 form-select" id="Reference"
 															th:field="*{Reference}"
 															th:value="${projectMaster['Reference']}">
 															<option value="">-</option>
@@ -1277,7 +1293,7 @@
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
-																			$('#Lbl_Reference').text(bmobj.referencename);
+																			$('#Lbl_Reference').text(bmobj.referenceName);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_projectvalue").text(bmobj.projectvalue);
 																			$("#Lbl_purpose").text(bmobj.purpose);
@@ -1804,6 +1820,28 @@
 				    }
 				  }
 			//------------------------------------------------------
+			// List
+			  const TagifyCustomListSuggestionEl = document.querySelector('#organization');
+			  
+			  $.ajax({
+						type : "GET",url : "organizationNameList",
+						data : '', success : function(result) {
+							
+							 // List
+						    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
+						      whitelist: result,
+						      maxTags: 1,
+						      dropdown: {
+						        maxItems: 20,
+						        classname: '',
+						        enabled: 0,
+						        closeOnSelect: false
+						      }
+						    });
+							 
+						}
+			  });
+				//------------------------------------------------------
 			
 		</script>
 </body>

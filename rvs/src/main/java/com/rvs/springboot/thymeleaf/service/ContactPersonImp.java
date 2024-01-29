@@ -61,6 +61,9 @@ public class ContactPersonImp implements ContactPersonService {
 				}
 		 }
 		 
+		 ls.sort((o1,o2)-> o1.getPeoplename().compareToIgnoreCase(o2.getPeoplename()));
+		 
+		 
 		return ls;
 		
 	}

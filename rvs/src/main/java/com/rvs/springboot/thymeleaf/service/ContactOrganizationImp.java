@@ -65,6 +65,8 @@ public class ContactOrganizationImp implements ContactOrganizationService {
 				}
 		 }
 		 
+		 ls.sort((o1,o2) -> o1.getOrgname().compareToIgnoreCase(o2.getOrgname()));
+		 
 		return ls;
 	}
 

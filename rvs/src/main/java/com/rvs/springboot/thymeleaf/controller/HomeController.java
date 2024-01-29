@@ -3869,11 +3869,11 @@ public class HomeController {
 
 		String Payperiod = prdStartdate + " - " + prdenddate;
 		if (!save.equalsIgnoreCase("")) {
-			
+
 			for (EmployeeMaster emoobj : EffectiveEmployee(employeeMasterService.findAll())) {
 				payslipserive.deleteByPayperiod(Payperiod, String.valueOf(branch_masterid));
 			}
-			
+
 		}
 
 		// -------------------------------------------------------
@@ -3959,8 +3959,8 @@ public class HomeController {
 			String staff_name = (String) rowMap.get("staff_name");
 			String AccountNo = (String) rowMap.get("bankacno");
 			String BankName = (String) rowMap.get("bank_name");
-			String Locationstate = (String) rowMap.get("joblocation"); 
-			String branch_masterid_str=String.valueOf(rowMap.get("branch_masterid")); 
+			String Locationstate = (String) rowMap.get("joblocation");
+			String branch_masterid_str = String.valueOf(rowMap.get("branch_masterid"));
 			double compayrate = Integer.parseInt(rowMap.get("compayrate").toString());
 
 			double ctc = compayrate;
@@ -4007,8 +4007,9 @@ public class HomeController {
 			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + (WorkingDays + ExtraWorkingDays) + "-"
 					+ Absent + "-" + WorkingDays + "-" + ExtraWorkingDays;
 			str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance
-					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net+ "-" + branchMasterService.findById(Integer.parseInt(branch_masterid_str)).getBranchCode();
-			
+					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net + "-"
+					+ branchMasterService.findById(Integer.parseInt(branch_masterid_str)).getBranchCode();
+
 			report.add(str);
 			totalnet.set(0, totalnet.get(0) + net);
 
@@ -4052,13 +4053,11 @@ public class HomeController {
 		themodel.addAttribute("selectedmonth", selectedmonth);
 		themodel.addAttribute("totalnet", totalnet.get(0));
 
-		BranchMaster bm =new BranchMaster();
-		
-		if(branch_masterid >0)
-		{
+		BranchMaster bm = new BranchMaster();
+
+		if (branch_masterid > 0) {
 			bm = branchMasterService.findById(branch_masterid);
-		}else
-		{
+		} else {
 			bm.setBRANCH_NAME("ALL");
 		}
 		themodel.addAttribute("branchobj", bm);
@@ -6126,6 +6125,16 @@ public class HomeController {
 	}
 
 	@ResponseBody
+	@GetMapping("referralNameList")
+	public List<String> referralNameList() {
+		List<String> peolist = new ArrayList();
+		for (ContactPerson o : contactPersonService.findAll()) {
+			peolist.add(o.getPeoplename());
+		}
+		return peolist;
+	}
+
+	@ResponseBody
 	@GetMapping("organizationNameListtype1")
 	public List<tagify> organizationNameListtype1() {
 		List<tagify> taglist = new ArrayList<tagify>();
@@ -6635,16 +6644,15 @@ public class HomeController {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 					String activitytype = String.valueOf(rowMap.get("activitytype"));
-					int taskdatecount = Integer.parseInt( String.valueOf(rowMap.get("taskdatecount")));
-					String activity_txt="";
-					if(taskdatecount <0 )
-					{
-						 activity_txt="<span class='red' title='"+ taskdatecount +" Over Due'>" +activitytype + " - " + activitytitle +"</span>";
-					}else
-					{
-						activity_txt=activitytype + " - " + activitytitle;
+					int taskdatecount = Integer.parseInt(String.valueOf(rowMap.get("taskdatecount")));
+					String activity_txt = "";
+					if (taskdatecount < 0) {
+						activity_txt = "<span class='red' title='" + taskdatecount + " Over Due'>" + activitytype
+								+ " - " + activitytitle + "</span>";
+					} else {
+						activity_txt = activitytype + " - " + activitytitle;
 					}
-						tmp1obj.setNextactivity(activity_txt);
+					tmp1obj.setNextactivity(activity_txt);
 				});
 			} else {
 				tmp1obj.setNextactivity("<span class='red'>-</span>");
@@ -6723,16 +6731,15 @@ public class HomeController {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 					String activitytype = String.valueOf(rowMap.get("activitytype"));
-					int taskdatecount = Integer.parseInt( String.valueOf(rowMap.get("taskdatecount")));
-					String activity_txt="";
-					if(taskdatecount <0 )
-					{
-						 activity_txt="<span class='red' title='"+ taskdatecount +" Over Due'>" +activitytype + " - " + activitytitle +"</span>";
-					}else
-					{
-						activity_txt=activitytype + " - " + activitytitle;
+					int taskdatecount = Integer.parseInt(String.valueOf(rowMap.get("taskdatecount")));
+					String activity_txt = "";
+					if (taskdatecount < 0) {
+						activity_txt = "<span class='red' title='" + taskdatecount + " Over Due'>" + activitytype
+								+ " - " + activitytitle + "</span>";
+					} else {
+						activity_txt = activitytype + " - " + activitytitle;
 					}
-						tmp1obj.setNextactivity(activity_txt);
+					tmp1obj.setNextactivity(activity_txt);
 				});
 			} else {
 				tmp1obj.setNextactivity("<span class='red'>-</span>");
@@ -6787,36 +6794,33 @@ public class HomeController {
 	public List<ProjectMaster> projectlistjson(Model themodel) {
 		List<ProjectMaster> projectmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
-		String Phaseidsls="";
+		String Phaseidsls = "";
 		for (ProjectMaster tmp1obj : projectMasterService.findAll()) {
 			// --------------------------------------------------
-			Phaseidsls="";
-			for(ProjectPhases prjObj : tmp1obj.getProjectPhases()) {
-			
-				Phaseidsls +=prjObj.getId() +",";
-						
+			Phaseidsls = "";
+			for (ProjectPhases prjObj : tmp1obj.getProjectPhases()) {
+
+				Phaseidsls += prjObj.getId() + ",";
+
 			}
-			if(Phaseidsls.length()>0)
-			{
-				Phaseidsls= Phaseidsls.substring(0,Phaseidsls.length()-1);
+			if (Phaseidsls.length() > 0) {
+				Phaseidsls = Phaseidsls.substring(0, Phaseidsls.length() - 1);
 			}
-			List<Map<String, Object>> ls = activityMasterService.nextactivity("Project",
-					Phaseidsls);
-			
+			List<Map<String, Object>> ls = activityMasterService.nextactivity("Project", Phaseidsls);
+
 			if (ls.size() > 0) {
 				ls.forEach(rowMap -> {
 					String activitytitle = String.valueOf(rowMap.get("activitytitle"));
 					String activitytype = String.valueOf(rowMap.get("activitytype"));
-					int taskdatecount = Integer.parseInt( String.valueOf(rowMap.get("taskdatecount")));
-					String activity_txt="";
-					if(taskdatecount <0 )
-					{
-						 activity_txt="<span class='red' title='"+ taskdatecount +" Over Due'>" +activitytype + " - " + activitytitle +"</span>";
-					}else
-					{
-						activity_txt=activitytype + " - " + activitytitle;
+					int taskdatecount = Integer.parseInt(String.valueOf(rowMap.get("taskdatecount")));
+					String activity_txt = "";
+					if (taskdatecount < 0) {
+						activity_txt = "<span class='red' title='" + taskdatecount + " Over Due'>" + activitytype
+								+ " - " + activitytitle + "</span>";
+					} else {
+						activity_txt = activitytype + " - " + activitytitle;
 					}
-						tmp1obj.setNextactivity(activity_txt);
+					tmp1obj.setNextactivity(activity_txt);
 				});
 			} else {
 				tmp1obj.setNextactivity("<span class='red'>-</span>");
@@ -6911,7 +6915,18 @@ public class HomeController {
 
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 		themodel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -7045,7 +7060,18 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -7183,7 +7209,18 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -7328,7 +7365,18 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -7473,7 +7521,18 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -7628,7 +7687,18 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -7774,7 +7844,18 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -7993,16 +8074,16 @@ public class HomeController {
 
 		// System.out.println(params);
 		ProjectMaster dm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
-		DecimalFormat df = new DecimalFormat("#");  
-		
+		DecimalFormat df = new DecimalFormat("#");
+
 		List<ProjectItemMaster> projectprojectList = new ArrayList();
 		if (nullremover(String.valueOf(params.get("projectitemid"))).equalsIgnoreCase("")) {
 
 			projectprojectList = dm.getProjectItemMaster();
 			ProjectItemMaster dpmobj = new ProjectItemMaster();
-			double amount = Double.parseDouble(params.get("modalPrice"))* Double.parseDouble(params.get("modalQuantity"));
-		
-			
+			double amount = Double.parseDouble(params.get("modalPrice"))
+					* Double.parseDouble(params.get("modalQuantity"));
+
 			dpmobj.setAmount(String.valueOf(df.format(amount)));
 			dpmobj.setPrice(params.get("modalPrice"));
 			dpmobj.setProjecttype(params.get("modalnatureofwork"));
@@ -8015,8 +8096,9 @@ public class HomeController {
 			for (ProjectItemMaster tempdpmobj : dm.getProjectItemMaster()) {
 				if (tempdpmobj.getProjectitemid() == Integer.parseInt(params.get("projectitemid"))) {
 
-					double amount = Double.parseDouble(params.get("modalPrice"))* Double.parseDouble(params.get("modalQuantity"));
-					
+					double amount = Double.parseDouble(params.get("modalPrice"))
+							* Double.parseDouble(params.get("modalQuantity"));
+
 					tempdpmobj.setAmount(String.valueOf(df.format(amount)));
 					tempdpmobj.setPrice(params.get("modalPrice"));
 					tempdpmobj.setProjecttype(params.get("modalnatureofwork"));
@@ -8173,7 +8255,18 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		theModel.addAttribute("personlist", cplis);
@@ -8405,6 +8498,21 @@ public class HomeController {
 		return "";
 	}
 
+	public String getIDdetailsfromOrganization(String organization) {
+
+		if (organization != null && (!nullremover(organization).equalsIgnoreCase(""))) {
+
+			List<OrganizationContacts> conOrgls = contactOrganizationService.findbyOrgname(organization);
+			if (conOrgls.size() > 0) {
+				return String.valueOf(conOrgls.get(0).getId());
+			} else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
+
 	@PostMapping("leadsavestage2")
 	@ResponseBody
 	public LeadMaster leadsavestage2(@RequestParam Map<String, String> params) {
@@ -8413,7 +8521,14 @@ public class HomeController {
 		LeadMaster leadMaster = leadMasterService.findById(Integer.parseInt(params.get("leadMasterID")));
 
 		leadMaster.setTitle(params.get("Title"));
-		leadMaster.setOrganization(params.get("Organization"));
+
+		String organization = params.get("organization").replace("[{\"value\":\"", "").replace("\"}]", "");
+		if (organization != null && (!nullremover(String.valueOf(params.get("organization"))).equalsIgnoreCase(""))) {
+			leadMaster.setOrganization(getIDdetailsfromOrganization(organization));
+		} else {
+			leadMaster.setOrganization("");
+		}
+
 		leadMaster.setSource(params.get("Source"));
 		leadMaster.setPurpose(params.get("purpose"));
 		leadMaster.setLeadvalue(Integer.parseInt(params.get("leadvalue")));
@@ -8489,6 +8604,17 @@ public class HomeController {
 				// e.printStackTrace();
 			}
 		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(leadMaster.getReference())).equalsIgnoreCase("")) {
+			try {
+
+				leadMaster.setReferenceName(
+						contactPersonService.findById(Integer.parseInt(leadMaster.getReference())).getPeoplename());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
 
 		return leadMaster;
 	}
@@ -8764,7 +8890,12 @@ public class HomeController {
 		DealMaster dealMaster = dealMasterService.findById(Integer.parseInt(params.get("dealMasterID")));
 
 		dealMaster.setTitle(params.get("Title"));
-		dealMaster.setOrganization(params.get("Organization"));
+		String organization = params.get("organization").replace("[{\"value\":\"", "").replace("\"}]", "");
+		if (organization != null && (!nullremover(String.valueOf(params.get("organization"))).equalsIgnoreCase(""))) {
+			dealMaster.setOrganization(getIDdetailsfromOrganization(organization));
+		} else {
+			dealMaster.setOrganization("");
+		}
 		dealMaster.setSource(params.get("Source"));
 		dealMaster.setPurpose(params.get("purpose"));
 		dealMaster.setDealvalue(Integer.parseInt(params.get("dealvalue")));
@@ -8851,7 +8982,17 @@ public class HomeController {
 				// e.printStackTrace();
 			}
 		}
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(dealMaster.getReference())).equalsIgnoreCase("")) {
+			try {
 
+				dealMaster.setReferenceName(
+						contactPersonService.findById(Integer.parseInt(dealMaster.getReference())).getPeoplename());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// ----------------------------------------------------------
 		return dealMaster;
 	}
 
@@ -8862,7 +9003,14 @@ public class HomeController {
 		ProjectMaster projectMaster = projectMasterService.findById(Integer.parseInt(params.get("projectMasterID")));
 		projectMaster.setProjectID(params.get("projectID"));
 		projectMaster.setTitle(params.get("Title"));
-		projectMaster.setOrganization(params.get("Organization"));
+
+		String organization = params.get("organization").replace("[{\"value\":\"", "").replace("\"}]", "");
+		if (organization != null && (!nullremover(String.valueOf(params.get("organization"))).equalsIgnoreCase(""))) {
+			projectMaster.setOrganization(getIDdetailsfromOrganization(organization));
+		} else {
+			projectMaster.setOrganization("");
+		}
+
 		projectMaster.setSource(params.get("Source"));
 		projectMaster.setPurpose(params.get("purpose"));
 		projectMaster.setProjectvalue(Integer.parseInt(params.get("projectvalue")));
@@ -8954,6 +9102,17 @@ public class HomeController {
 		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
 			projectMaster.setBoardName(
 					projectTemplateBoardService.findById(Integer.parseInt(projectMaster.getBoard())).getBoardName());
+		}
+		// ----------------------------------------------------------
+		// ----------------------------------------------------------
+		if (!nullremover(String.valueOf(projectMaster.getReference())).equalsIgnoreCase("")) {
+			try {
+
+				projectMaster.setReferenceName(
+						contactPersonService.findById(Integer.parseInt(projectMaster.getReference())).getPeoplename());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		// ----------------------------------------------------------
 		return projectMaster;
@@ -9516,6 +9675,13 @@ public class HomeController {
 				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
+
 		}
 
 		themodel.addAttribute("contactPersonobj", contactPersonobj);
@@ -9643,6 +9809,12 @@ public class HomeController {
 				personorgls.add(cp.getId() + "|" + cp.getPeoplename() + " | | |");
 			}
 
+			List<ContactPersonContact> bcls = cp.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cp.setPrimarymob(bcls.get(0).getPhonenumber());
+				cp.setPrimaryemail(bcls.get(0).getEmail());
+			}
 		}
 
 		/*
@@ -10031,7 +10203,19 @@ public class HomeController {
 
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 		themodel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -10068,7 +10252,19 @@ public class HomeController {
 
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 		themodel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -10261,13 +10457,12 @@ public class HomeController {
 		projectMaster = projectMasterService.findById(id);
 
 		if (projectMaster.getProjectPhases().size() == 0) {
-			
-			List<ProjectPhases> lsprojPhase= new ArrayList<>();
-			
-			ProjectTemplateBoard prgBoard= projectTemplateBoardService.findById(1);
-			for(ProjectTemplatePhase Objphase : prgBoard.getProjectTemplatePhase())
-			{
-				ProjectPhases obj1= new ProjectPhases();
+
+			List<ProjectPhases> lsprojPhase = new ArrayList<>();
+
+			ProjectTemplateBoard prgBoard = projectTemplateBoardService.findById(1);
+			for (ProjectTemplatePhase Objphase : prgBoard.getProjectTemplatePhase()) {
+				ProjectPhases obj1 = new ProjectPhases();
 				obj1.setPhaseName(Objphase.getPhaseName());
 				obj1.setOrderID(Objphase.getOrderID());
 				lsprojPhase.add(obj1);
@@ -10350,6 +10545,41 @@ public class HomeController {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 			}
+
+			// -------------------------------------------------------------
+			if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					long NoofdaysRemaining = new SimpleDateFormat("yyyy-MM-dd")
+							.parse(projectMaster.getExpectedclosingdate()).getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					long totaldays = NoofdaysRemaining / (1000 * 60 * 60 * 24);
+					// ----------------------------------------------------------------
+
+					long NoofdaysRemaining_fromNow = new Date().getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
+
+					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
+
+					if (NoofdaysRemaining_fromNow_per > 100) {
+						NoofdaysRemaining_fromNow_per = 100;
+					}
+					projectMaster.setNoofdaysRemainingPercentage(String.valueOf(NoofdaysRemaining_fromNow_per));
+
+					// ----------------------------------------------------------------
+					totaldays = totaldays - NoofdaysRemaining_fromNow;
+					if (totaldays < 0) {
+						totaldays = 0;
+					}
+					projectMaster.setNoofdaysRemaining(String.valueOf(totaldays));
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			// -------------------------------------------------------------
 		}
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getTdate())).equalsIgnoreCase("")) {
@@ -10388,7 +10618,18 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -10518,6 +10759,41 @@ public class HomeController {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 			}
+
+			// -------------------------------------------------------------
+			if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					long NoofdaysRemaining = new SimpleDateFormat("yyyy-MM-dd")
+							.parse(projectMaster.getExpectedclosingdate()).getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					long totaldays = NoofdaysRemaining / (1000 * 60 * 60 * 24);
+					// ----------------------------------------------------------------
+
+					long NoofdaysRemaining_fromNow = new Date().getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
+
+					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
+
+					if (NoofdaysRemaining_fromNow_per > 100) {
+						NoofdaysRemaining_fromNow_per = 100;
+					}
+					projectMaster.setNoofdaysRemainingPercentage(String.valueOf(NoofdaysRemaining_fromNow_per));
+
+					// ----------------------------------------------------------------
+					totaldays = totaldays - NoofdaysRemaining_fromNow;
+					if (totaldays < 0) {
+						totaldays = 0;
+					}
+					projectMaster.setNoofdaysRemaining(String.valueOf(totaldays));
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			// -------------------------------------------------------------
 		}
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getTdate())).equalsIgnoreCase("")) {
@@ -10556,7 +10832,19 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -10682,6 +10970,41 @@ public class HomeController {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 			}
+
+			// -------------------------------------------------------------
+			if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					long NoofdaysRemaining = new SimpleDateFormat("yyyy-MM-dd")
+							.parse(projectMaster.getExpectedclosingdate()).getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					long totaldays = NoofdaysRemaining / (1000 * 60 * 60 * 24);
+					// ----------------------------------------------------------------
+
+					long NoofdaysRemaining_fromNow = new Date().getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
+
+					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
+
+					if (NoofdaysRemaining_fromNow_per > 100) {
+						NoofdaysRemaining_fromNow_per = 100;
+					}
+					projectMaster.setNoofdaysRemainingPercentage(String.valueOf(NoofdaysRemaining_fromNow_per));
+
+					// ----------------------------------------------------------------
+					totaldays = totaldays - NoofdaysRemaining_fromNow;
+					if (totaldays < 0) {
+						totaldays = 0;
+					}
+					projectMaster.setNoofdaysRemaining(String.valueOf(totaldays));
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			// -------------------------------------------------------------
 		}
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
@@ -10714,7 +11037,19 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -10865,6 +11200,41 @@ public class HomeController {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 			}
+
+			// -------------------------------------------------------------
+			if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					long NoofdaysRemaining = new SimpleDateFormat("yyyy-MM-dd")
+							.parse(projectMaster.getExpectedclosingdate()).getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					long totaldays = NoofdaysRemaining / (1000 * 60 * 60 * 24);
+					// ----------------------------------------------------------------
+
+					long NoofdaysRemaining_fromNow = new Date().getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
+
+					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
+
+					if (NoofdaysRemaining_fromNow_per > 100) {
+						NoofdaysRemaining_fromNow_per = 100;
+					}
+					projectMaster.setNoofdaysRemainingPercentage(String.valueOf(NoofdaysRemaining_fromNow_per));
+
+					// ----------------------------------------------------------------
+					totaldays = totaldays - NoofdaysRemaining_fromNow;
+					if (totaldays < 0) {
+						totaldays = 0;
+					}
+					projectMaster.setNoofdaysRemaining(String.valueOf(totaldays));
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			// -------------------------------------------------------------
 		}
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
@@ -10892,7 +11262,19 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -11030,6 +11412,41 @@ public class HomeController {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 			}
+
+			// -------------------------------------------------------------
+			if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					long NoofdaysRemaining = new SimpleDateFormat("yyyy-MM-dd")
+							.parse(projectMaster.getExpectedclosingdate()).getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					long totaldays = NoofdaysRemaining / (1000 * 60 * 60 * 24);
+					// ----------------------------------------------------------------
+
+					long NoofdaysRemaining_fromNow = new Date().getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
+
+					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
+
+					if (NoofdaysRemaining_fromNow_per > 100) {
+						NoofdaysRemaining_fromNow_per = 100;
+					}
+					projectMaster.setNoofdaysRemainingPercentage(String.valueOf(NoofdaysRemaining_fromNow_per));
+
+					// ----------------------------------------------------------------
+					totaldays = totaldays - NoofdaysRemaining_fromNow;
+					if (totaldays < 0) {
+						totaldays = 0;
+					}
+					projectMaster.setNoofdaysRemaining(String.valueOf(totaldays));
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			// -------------------------------------------------------------
 		}
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
@@ -11058,7 +11475,19 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -11255,7 +11684,7 @@ public class HomeController {
 		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
 
 		invitemmaster.setTaxableAmount(afetdiscountamount);
-		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + SGSTamount + IGSTamount);
+		invitemmaster.setTotalamountAmount(Double.parseDouble(params.get("totalamount_hid")));
 
 		return invitemmaster;
 	}
@@ -11864,6 +12293,41 @@ public class HomeController {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 			}
+
+			// -------------------------------------------------------------
+			if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					long NoofdaysRemaining = new SimpleDateFormat("yyyy-MM-dd")
+							.parse(projectMaster.getExpectedclosingdate()).getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					long totaldays = NoofdaysRemaining / (1000 * 60 * 60 * 24);
+					// ----------------------------------------------------------------
+
+					long NoofdaysRemaining_fromNow = new Date().getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
+
+					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
+
+					if (NoofdaysRemaining_fromNow_per > 100) {
+						NoofdaysRemaining_fromNow_per = 100;
+					}
+					projectMaster.setNoofdaysRemainingPercentage(String.valueOf(NoofdaysRemaining_fromNow_per));
+
+					// ----------------------------------------------------------------
+					totaldays = totaldays - NoofdaysRemaining_fromNow;
+					if (totaldays < 0) {
+						totaldays = 0;
+					}
+					projectMaster.setNoofdaysRemaining(String.valueOf(totaldays));
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			// -------------------------------------------------------------
 		}
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
@@ -12149,6 +12613,41 @@ public class HomeController {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 			}
+
+			// -------------------------------------------------------------
+			if (!nullremover(String.valueOf(projectMaster.getExpectedclosingdate())).equalsIgnoreCase("")) {
+				try {
+					long NoofdaysRemaining = new SimpleDateFormat("yyyy-MM-dd")
+							.parse(projectMaster.getExpectedclosingdate()).getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					long totaldays = NoofdaysRemaining / (1000 * 60 * 60 * 24);
+					// ----------------------------------------------------------------
+
+					long NoofdaysRemaining_fromNow = new Date().getTime()
+							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
+
+					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
+
+					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
+
+					if (NoofdaysRemaining_fromNow_per > 100) {
+						NoofdaysRemaining_fromNow_per = 100;
+					}
+					projectMaster.setNoofdaysRemainingPercentage(String.valueOf(NoofdaysRemaining_fromNow_per));
+
+					// ----------------------------------------------------------------
+					totaldays = totaldays - NoofdaysRemaining_fromNow;
+					if (totaldays < 0) {
+						totaldays = 0;
+					}
+					projectMaster.setNoofdaysRemaining(String.valueOf(totaldays));
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			// -------------------------------------------------------------
 		}
 		// ----------------------------------------------------------
 		if (!nullremover(String.valueOf(projectMaster.getBoard())).equalsIgnoreCase("")) {
@@ -12177,7 +12676,19 @@ public class HomeController {
 		theModel.addAttribute("industry_type", industry_type);
 
 		theModel.addAttribute("employeelist", emplist);
-		List<ContactPerson> cplis = contactPersonService.findAll();
+
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
 		// Next Activity & Followers Details
@@ -13330,5 +13841,4 @@ public class HomeController {
 				.collect(Collectors.toList());
 	}
 
-	
 }

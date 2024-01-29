@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Asset Transfer Receipt</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+body, td,table {
+	font-family: verdana;
+	color:#000;
+	
+}
+
+.title {
+	text-align: center;
+	font-size: 15px;
+}
+
+.img-fluid {
+	height:45px;
+	
+}
+
+.table, .table th, .table td, .table tr
+{
+ font-size: 12px;
+ 
+ padding: .5rem 0.5rem;
+}
+
+.table thead th 
+{
+	background-color: #ebebeb;
+	border-color: transparent;
+	color: #555;
+	font-weight: 700;
+	
+	transition: background-color .15s ease-in-out;
+}
+.table td,.table tr, .table thead th{
+border: solid 1px #000;
+border-bottom: solid 1px #000;
+font-family: verdana;
+}
+
+.td1{
+text-align:left;
+}
+
+.td2{
+text-align:center;
+border: solid 1px #fff;
+}
+</style>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body style="background: #fff">
+
+	<div class="content-body">
+
+		<div class="card-content">
+
+			<div class="card-body">
+<p class="title">
+					<img class="img-fluid"
+						th:src="@{/app-assets/images/logo/rvslogo1.png}"
+						alt="branding logo"> 	<b>RVS Land Surveyors</b>
+					</p>
+				<div class="col-md-12"  >
+					
+						<b>Asset Transfer Receipt</b><br/>
+						Name : <span th:text="${printcheckinstrEmpname}" ></span><br/>
+						Transfer To : <span th:text="${printcheckinstrEmpnameto}" ></span><br/>
+					
+					
+					
+						Assets List:<br/>
+				</div>
+	
+
+				<div class="col-md-12">
+					<table class="table">
+														<thead>
+															<tr>
+																<th class="sticky-col first-col td1">S.No</th>
+																
+																<th>Asset</th>
+																<th>Brand</th>
+																<th>Model</th>
+																<th>Serial No</th>
+																<th>Condition</th>
+																<th>Comments</th>
+																
+
+															</tr>
+														</thead>
+														<tbody>
+															<tr th:each="str,i : ${printstr}">
+																<td  th:text="${i.index+1}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[0]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[1]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[2]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[3]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[4]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[5]}"></td>
+																
+																
+																
+															</tr>
+															
+															<tr style="border: none;">
+																<td style="border: none;" colspan="2" class="td2"><br/><br/><br/><br/><br/>Custodian </td>
+																<td style="border: none;" colspan="2" class="td2"><br/><br/><br/><br/><br/>Date</td>
+																<td style="border: none;" colspan="2" class="td2"><br/><br/><br/><br/><br/>Asset Controller Officer</td>
+																<td style="border: none;" colspan="2" class="td2"><br/><br/><br/><br/><br/>Date</td>
+															</tr>
+														</tbody>
+													</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+	<!-- BEGIN Vendor JS-->
+
+	<!-- BEGIN: Page Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
+	<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+

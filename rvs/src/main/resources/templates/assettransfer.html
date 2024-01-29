@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Asset Transfer</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
+
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+
+
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+.emptitle {
+	color: #527a00;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+	cursor: pointer;
+}
+
+thead {
+	background-color: #ebebeb;
+	border-color: transparent;
+	color: #555;
+	font-weight: 700;
+	transition: background-color .15s ease-in-out;
+}
+
+tbody {
+	color: #222;
+	line-height: 10px;
+	border-right: 1px solid #ccc;
+}
+
+tbody>tr:hover .iconalign {
+	color: #527a00;
+	cursor: pointer;
+}
+
+.table tr td {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-right: 2px;
+	padding-left: 2px;
+}
+
+.table tr, table, table td {
+	padding: .5rem 0.5rem;
+	line-height: 5px;
+	border: 1px solid #ccc;
+}
+
+.red {
+	color: red;
+	font-size: 20px;
+}
+
+.Photo_Attach {
+	min-width: 200px;
+}
+
+.selectstatus {
+	min-width: 100px;
+}
+
+.loadingrow, .loadingrow td {
+	line-height: 30px;
+}
+</style>
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
+
+
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
+
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+
+							<h5 class="content-header-title float-left pr-1 mb-0">Asset Transfer</h5>
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+									<li class="breadcrumb-item"><a href="assetlist">Asset
+											List</a></li>
+
+								</ol>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-body">
+
+
+
+				<!-- Basic Vertical form layout section start -->
+				<section id="basic-vertical-layouts">
+					<div class="row match-height">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-content">
+									<div class="card-body">
+										<div th:if="${printstr}" class="form-group col-12">
+											<button type="button"
+												class="btn mb-1 btn-success btn-lg btn-block">Asset Transfer details are saved successfully</button>
+											<form th:action="@{/assettranferprint}" target="blank"
+												method="POST" class="wizard-horizontal"
+												enctype="multipart/form-data">
+
+												<center>
+													<button type="submit" class="btn btn-primary mr-1 mb-1"
+														style="width: 200px">Print Receipt</button>
+												</center>
+											</form>
+										</div>
+										<form th:action="@{/assettransfersave}" method="POST"
+											class="wizard-horizontal" enctype="multipart/form-data">
+											<div class="row">
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">From Branch <span
+															class="red"></span></label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" id="Branch"
+																name="Branch">
+																<option value="">--Select--</option>
+																<th:block th:each="emp : ${branchls}">
+																	<option th:value="${emp.id}"
+																		th:text="${emp.BRANCH_NAME}"></option>
+																</th:block>
+															</select>
+
+
+														</div>
+													</div>
+												</div>
+
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">From Custodian <span
+															class="red">*</span>
+															<div
+																class="Custodianloding spinner-border spinner-border-sm"
+																role="status" style="visibility: hidden;">
+																<span class="sr-only">Loading...</span>
+															</div>
+														</label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" id="StaffID"
+																name="StaffID" required>
+																<th:block th:if="${emp}">
+																	<th:block th:if="${emp.empMasterid} >0 ">
+																		<option th:value="${emp.empMasterid}"
+																			th:text="${emp.StaffName} + ' (RVS000' + ${emp.empMasterid} +')'"></option>
+																	</th:block>
+																</th:block>
+															</select>
+
+
+														</div>
+													</div>
+												</div>
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">Transfer Date<span
+															class="red">*</span></label>
+														<div class="position-relative">
+															<input type="date" class="form-control"
+																name="CheckInDate" id="CheckInDate" required>
+
+														</div>
+													</div>
+												</div>
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">&nbsp;</label>
+														<div class="position-relative">
+															<button type="button" id="Search"
+																class="btn btn-primary mr-1 mb-1">Search</button>
+
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<hr />
+
+											<div class="view">
+												<div class="wrapper">
+													<div class="table-responsive">
+														<table class="table">
+															<thead>
+																<tr>
+																	<th>S.No</th>
+																	<th>ASSET</th>
+																	<th>Condition</th>
+																	<th>Status</th>
+																	<th>Photo</th>
+																	<th>Comments</th>
+
+																</tr>
+															</thead>
+															<tbody class="tblbody">
+																<tr th:each="selasset, stat: ${selectedasset}">
+																	<td align="center">
+																		<div class="checkbox checkbox-success checkbox-glow">
+																			<input type="checkbox"
+																				th:id="'checkboxGlow'+ ${stat.index+1} "
+																				name="checkbox" checked=""> <label
+																				th:for="'checkboxGlow'+ ${stat.index+1}"></label>
+																		</div>
+																	</td>
+																	<td><input type="hidden"
+																		th:value="${selasset.AssetId}" name="AssetName" /> <span
+																		th:text="'&nbsp;'+ ${selasset.AssetName} + '&nbsp;'"></span></td>
+																	<td><select required="" id="ACondition"
+																		name="ACondition" class="form-control select">
+																			<option th:value="${selasset.ACondition}"
+																				th:text="${selasset.ACondition}"></option>
+																			<option value="Fair">Fair</option>
+																			<option value="Good">Good</option>
+																			<option value="New">New</option>
+																			<option value="Poor">Poor</option>
+																	</select></td>
+																	
+																	<td class="Photo_Attach"><input type='file'
+																		name='Photo_Attach' class="form-control Photo_Attach" /></td>
+																	<td><input type='text' name='Comments'
+																		class="form-control" /></td>
+
+																</tr>
+
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											
+											<div class="row">
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">To Branch <span
+															class="red"></span></label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" id="Branchto"
+																name="Branchto">
+																<option value="">--Select--</option>
+																<th:block th:each="emp : ${branchls}">
+																	<option th:value="${emp.id}"
+																		th:text="${emp.BRANCH_NAME}"></option>
+																</th:block>
+															</select>
+
+
+														</div>
+													</div>
+												</div>
+
+												<div class="col-3">
+													<div class="form-group">
+														<label for="first-name-icon">To Custodian <span
+															class="red">*</span>
+															<div
+																class="Custodianlodingto spinner-border spinner-border-sm"
+																role="status" style="visibility: hidden;">
+																<span class="sr-only">Loading...</span>
+															</div>
+														</label>
+														<div class="position-relative">
+
+															<select class="select2 form-control" id="StaffIDto"
+																name="StaffIDto" required>
+																
+															</select>
+
+
+														</div>
+													</div>
+												</div>
+											</div>
+											<div align="center">
+											
+											
+												<br /> <input type="checkbox" id="receipt" name="receipt"
+													required> <label for="receipt"
+													style="color: red; font-weight: bold"> Show Receipt
+													After Asset Transfer</label> <br />
+												<button type="submit" class="btn btn-primary mr-1 mb-1">Transfer</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- // Basic Vertical form layout section end -->
+
+
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+	</footer>
+	<!-- END: Footer-->
+
+
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+
+	<!-- BEGIN Vendor JS-->
+
+	<!-- BEGIN: Page Vendor JS-->
+	<script
+		th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+
+	<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
+	<!-- END: Page JS-->
+
+	<script>
+		$(document)
+				.ready(
+						function() {
+							//--------------------------------------------------------
+							$(function() {
+								var token = $("meta[name='_csrf']").attr(
+										"content");
+								var header = $("meta[name='_csrf_header']")
+										.attr("content");
+								$(document).ajaxSend(function(e, xhr, options) {
+									xhr.setRequestHeader(header, token);
+								});
+							});
+							//--------------------------------------------------------
+							//--------------------------------------------------------
+							$("#Branch")
+									.change(
+											function() {
+
+												var branch = $("#Branch").val();
+												$('#StaffID').html("");
+
+												if (branch != "") {
+													//---------------------------------
+													// Branch Details
+													var branchname = $(
+															"#Branch :Selected")
+															.text();
+													$(".Custodianloding").css(
+															"visibility",
+															"visible");
+													$('#StaffID').html("");
+													var formData = {
+														branchname : branchname
+													}
+													$
+															.ajax({
+																type : "POST",
+																url : "getEmployeelistbasedonbranch",
+																data : formData,
+																success : function(
+																		result) {
+
+																	$(
+																			'#StaffID')
+																			.append(
+																					result);
+																	$(
+																			".Custodianloding")
+																			.css(
+																					"visibility",
+																					"hidden");
+																},
+																error : function(
+																		e) {
+																	alert("Error"
+																			+ e);
+																	$(
+																			".Custodianloding")
+																			.css(
+																					"visibility",
+																					"hidden");
+																}
+															});
+													//---------------------------------
+													$('.tblbody')
+															.html(
+																	"<tr class='loadingrow'><td colspan='6' align='center'><br/> <br/></td></tr></tr>");
+												}
+											});
+							//-------------------------------
+
+							$("#Search")
+									.click(
+											function() {
+												var StaffID = $("#StaffID")
+														.val();
+
+												if (StaffID != "") {
+													$('.tblbody')
+															.html(
+																	"<tr  class='loadingrow'><td colspan='6' align='center'><br/><br/><div class='Custodianloding spinner-border spinner-border-sm' role='status'><span class='sr-only'>Loading...</span></div><br/><br/>&nbsp;</td></tr>");
+													var formData = {
+														StaffID : StaffID
+													}
+													$
+															.ajax({
+																type : "POST",
+																url : "getCheckoutlistfromassetMaster",
+																data : formData,
+																success : function(
+																		result) {
+
+																	if (result != "") {
+																		$(
+																				'.tblbody')
+																				.html(
+																						result);
+																	} else {
+																		$(
+																				'.tblbody')
+																				.html(
+																						"<tr class='loadingrow'><td colspan='6' align='center'><br/> No Item Found<br/></td></tr></tr>");
+
+																	}
+
+																},
+																error : function(
+																		e) {
+																	alert("Error"
+																			+ e);
+
+																}
+															});
+												}
+												//---------------------------------
+
+											});
+							//--------------------------------------------------------
+							$("#Branchto")
+									.change(
+											function() {
+
+												var branch = $("#Branchto").val();
+												$('#StaffIDto').html("");
+
+												if (branch != "") {
+													//---------------------------------
+													// Branch Details
+													var branchname = $(
+															"#Branchto :Selected")
+															.text();
+													$(".Custodianlodingto").css(
+															"visibility",
+															"visible");
+													$('#StaffIDto').html("");
+													var formData = {
+														branchname : branchname
+													}
+													$
+															.ajax({
+																type : "POST",
+																url : "getEmployeelistbasedonbranch",
+																data : formData,
+																success : function(
+																		result) {
+
+																	$(
+																			'#StaffIDto')
+																			.append(
+																					result);
+																	$(
+																			".Custodianlodingto")
+																			.css(
+																					"visibility",
+																					"hidden");
+																},
+																error : function(
+																		e) {
+																	alert("Error"
+																			+ e);
+																	$(
+																			".Custodianlodingto")
+																			.css(
+																					"visibility",
+																					"hidden");
+																}
+															});
+													//---------------------------------
+													
+												}
+											});
+							//-------------------------------
+						});
+	</script>
+
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

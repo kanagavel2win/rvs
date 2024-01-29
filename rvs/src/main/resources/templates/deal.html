@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Deal</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/forms/select/select2.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+	
+<link rel="stylesheet" type="text/css" th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+ <link rel="stylesheet" type="text/css" th:href="@{/app-assets/css/plugins/extensions/drag-and-drop.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+.bxs-error, .bxs-comment-detail
+{
+float:right;
+}
+
+.pop {
+	position: absolute;
+	right: -20px;
+	top: 0px;
+	cursor: pointer;
+}
+
+.emptitle {
+	color: #527a00;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+	font-family: Fira Sans, Trebuchet MS, sans-serif;
+	cursor: pointer;
+}
+
+.card {
+	margin-right: 10px;
+}
+
+.txttitle{
+	border:1px solid #E8E8E8;
+	background:#F7F7F7;
+	color:#000;
+	
+}
+
+.adddealinsection, .addContactmadesection, .addSiteVisitScheduledsection, .addProjectEvaluvatedsection, .addProposalmadesection, .addNegotiationsstartedsection{
+	color:#F7F7F7;
+	font-size:18px;
+}
+
+.adddealinsection:hover, .addContactmadesection:hover, .addSiteVisitScheduledsection:hover, .addProjectEvaluvatedsection:hover, .addProposalmadesection:hover, .addNegotiationsstartedsection:hover{
+	color:#BFBFBF;
+	background:#EBEBEB;
+}
+
+#div1:hover > .adddealinsection, #div2:hover > .addContactmadesection, #div3:hover > .addSiteVisitScheduledsection, #div4:hover > .addProjectEvaluvatedsection, #div5:hover > .addProposalmadesection, #div6:hover > .addNegotiationsstartedsection {
+	color:#BFBFBF;
+	
+}
+
+.dragdiver
+{
+border:1px solid #ccc;
+margin-top:3px;
+padding: 5px;
+border-radius:5px;
+line-height: 15px;
+font-size:12px;
+background:#fff;
+}
+.dragdiver:active{
+background:#F2F2F2;
+}
+
+
+.droptarget{
+background:#F7F7F7;
+border:0px solid #ccc;
+}
+.line1
+{
+	font-size:13px;
+	font-weight:bold;
+}
+.titleline1
+{
+	font-size:11px;
+}
+.titleline2
+{
+	font-size:11px;
+}
+.line3
+{
+	font-size:10px;
+}
+
+#infoi {
+	
+	 position: absolute;
+	  top: 91%;
+	  left: 27px;
+	  z-index: 10;
+}
+.lossdiv{
+color:red;
+}
+.wondiv{
+color:green;
+}
+.lossdiv,.wondiv,.backtodiv
+{
+	 padding-top:15px;
+	text-align:center;
+	vertical-align:middle;
+	height:50px;
+	min-height: 50px;	
+	width:100%;
+}
+#handle-list-1, #handle-list-2, #handle-list-3, #handle-list-4, #handle-list-5, #handle-list-6{
+	float: left;
+	width: 200px;
+	height: 335px;	
+	overflow-Y:auto;
+	padding: 2px;
+	border: 0px solid #ccc;
+	position: static;
+}
+
+
+
+.table-responsive {
+	
+	overflow: auto;
+}
+a 
+{
+color:#727E8C;
+}
+
+.new{
+border-radius:5px;
+padding:2px;
+background:green;
+color:#fff;
+font-size:9px;
+}
+
+.red{
+color:red;
+}
+
+.green{
+color:green;
+}
+
+</style>
+
+
+
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+	class="vertical-layout vertical-menu-modern boxicon-layout no-card-shadow 2-columns  navbar-sticky footer-static  "
+	data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+	<!-- BEGIN: Header-->
+	<div th:insert="header"></div>
+	<!-- END: Header-->
+
+
+	<!-- BEGIN: Main Menu-->
+	<div th:insert="menu"></div>
+	<!-- END: Main Menu-->
+
+	<!-- BEGIN: Content-->
+	<!-- BEGIN: Content-->
+	<div class="app-content content">
+		<div class="content-overlay"></div>
+		<div class="content-wrapper">
+			<div class="content-header row">
+				<div class="content-header-left col-12 mb-2 mt-1">
+					<div class="row breadcrumbs-top">
+						<div class="col-12">
+							
+							<h5 class="content-header-title float-left pr-1 mb-0">Deal</h5>
+
+							<div class="breadcrumb-wrapper col-12">
+								<ol class="breadcrumb p-0 mb-0">
+									<li class="breadcrumb-item"><a href="index"><i
+											class="bx bx-home-alt"></i></a></li>
+
+								</ol>
+<button type="button" class="btn btn-warning mr-1 mb-1 pop">Add
+									Deal</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-body">
+
+				<!-- Basic Vertical form layout section start -->
+				<section id="basic-vertical-layouts">
+					<div class="row match-height">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-content">
+									<div class="card-body">
+											
+										<!--scrolling content Modal -->
+										<div class="modal fade" id="peopleStatusScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="peopleStatusScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-warning">
+														<h5 class="modal-title white"
+															id="peopleStatusScrollableTitle">Deal Information</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="row">
+
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="email-id-icon">Contact Person
+																	<div class="spinner-border spinner-border-sm text-primary" role="status" style="visibility:hidden">
+						                                                <span class="sr-only">Loading...</span>
+						                                            </div>
+																	</label>
+
+																	<div class="position-relative has-icon-left">
+																		<fieldset class="form-group">
+																			<select
+																				class="select2 form-control form-control js-example-tags"
+																				multiple="multiple" style="width: 100%;" id="ContactPerson">
+																				<th:block th:each="str :${personorgls}">
+																					<option
+																						th:value="${#strings.arraySplit(str,'|')[0]} +'-' + ${#strings.arraySplit(str,'|')[2] }"
+																						th:text="${#strings.arraySplit(str,'|')[1]} +'[' + ${#strings.arraySplit(str,'|')[3] +']'}"></option>
+																				</th:block>
+
+																			</select>
+
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+
+
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Organization </label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+
+																			<select
+																				class="select2 form-control form-control js-example-tags"
+																				id="Organization" multiple="multiple"
+																				style="width: 100%;"> 
+																				<th:block th:each="str :${organizationlist}">
+																	
+																					<option  th:value="${str.id}"  th:text="${str.orgname}"></option>
+																				</th:block>
+																			</select>
+
+
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Title</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+																			<input type="text" id="Title"
+																				class="form-control form-control-sm capitalize">
+																			<div class="form-control-position">
+																				<i class="bx bx-task"></i>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Source <label
+																		class="emptitle additem" name="addsourcedata"><i
+																			class="bx bxs-plus-circle ownstyle1"></i></label>
+																	</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+																			<select
+																				class="form-control form-control-sm addsourcedata"
+																				id="Source">
+																				<th:block th:each="str :${SOURCE}">
+																					<option th:value="${str}" th:text="${str}"></option>
+																				</th:block>
+																			</select>
+																			<div class="form-control-position">
+																				<i class="bx bx-news"></i>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Reference</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+																			<select
+																				class="form-control form-control-sm"
+																				id="Reference">
+																				<option value="">-</option>
+																				<th:block th:each="str :${personlist}">
+																					<option th:value="${str.id}"
+																						th:text="${str.peoplename}"></option>
+																				</th:block>
+																			</select>
+
+																			<div class="form-control-position">
+																				<i class="bx bx-link-alt"></i>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																	<div class="form-group">
+																		<label for="addmodel">Purpose <label
+																			class="emptitle additem" name="addPurposedata"><i
+																				class="bx bxs-plus-circle ownstyle1"></i></label>
+																		</label>
+																		<div class="position-relative  has-icon-left">
+																			<fieldset class="form-group">
+																				<select
+																					class="form-control form-control-sm addPurposedata"
+																					id="purpose">
+																					<th:block th:each="str :${PURPOSE}">
+																						<option th:value="${str}" th:text="${str}"></option>
+																					</th:block>
+																				</select>
+																				<div class="form-control-position">
+																					<i class="bx bx-news"></i>
+																				</div>
+																			</fieldset>
+																		</div>
+																	</div>
+																</div>
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Pipeline</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+
+																			<select
+																				class="form-control form-control-sm"
+																				id="pipeline">
+																				<option value="Deal In">Deal In</option>
+																				<option value="Contact made">Contact made</option>
+																				<option value="Site Visit Scheduled">Site Visit Scheduled</option>
+																				<option value="Project Evaluvated">Project Evaluvated</option>
+																				<option value="Proposal made">Proposal made</option>
+																				<option value="Negotiations started">Negotiations started</option>
+																			</select>
+																			<div class="form-control-position">
+																				<i class="bx bx-label"></i>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Expected Closing Date</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+
+																			<input type="date" id="expectedclosingdate"
+																				class="form-control form-control-sm capitalize">
+																			<div class="form-control-position">
+																				<i class="bx bx-label"></i>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-12">
+																<div class="form-group">
+																	<hr />
+																	<label class="emptitle">PERSON Contact</label>
+																</div>
+															</div>
+															<div class="col-md-6">
+
+																<div class="form-group">
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="number"
+																			class="form-control  form-control-sm capitalize"
+																			id="phonework" placeholder="Work Phone" />
+																		<div class="form-control-position">
+																			<i class="bx bx-dialpad"></i>
+																		</div>
+																		<label for="phonework">Work Phone</label>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="number"
+																			class="form-control  form-control-sm capitalize"
+																			id="phonepersonal" placeholder="Personal Phone" />
+																		<div class="form-control-position">
+																			<i class="bx bxs-phone"></i>
+																		</div>
+																		<label for="phonepersonal">Personal Phone</label>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="number"
+																			class="form-control  form-control-sm capitalize"
+																			id="phoneothers" placeholder="Other Phone" />
+																		<div class="form-control-position">
+																			<i class="bx bxs-phone"></i>
+																		</div>
+																		<label for="phoneothers">Other Phone</label>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="email"
+																			class="form-control  form-control-sm  email"
+																			id="emailwork" placeholder="Work Email ID" />
+																		<div class="form-control-position">
+																			<i class="bx bx-mail-send"></i>
+																		</div>
+																		<label for="emailwork">Work Email ID</label>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="email"
+																			class="form-control  form-control-sm  email"
+																			id="emailpersonal" placeholder="Personal Email" />
+																		<div class="form-control-position">
+																			<i class="bx bx-mail-send"></i>
+																		</div>
+																		<label for="emailpersonal">Personal Email</label>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+
+																	<div
+																		class="form-label-group position-relative has-icon-left">
+																		<input type="email"
+																			class="form-control  form-control-sm  email"
+																			id="emailothers" placeholder="Other Email" />
+																		<div class="form-control-position">
+																			<i class="bx bx-mail-send"></i>
+																		</div>
+																		<label for="emailothers">Other Email</label>
+																	</div>
+																</div>
+															</div>
+
+
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Follower</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+																			<select
+																				class="select2 followers form-control form-control-sm"
+																				id="followers" multiple="multiple">
+																				<th:block th:each="str :${employeelist}">
+																					<option th:value="${str.empMasterid}"
+																						th:text="${str.StaffName}"></option>
+																				</th:block>
+																			</select>
+
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group">
+																	<label for="addmodel">Notes</label>
+																	<div class="position-relative  has-icon-left">
+																		<fieldset class="form-group">
+																			<input type="text" id="notes"
+																				class="form-control form-control-sm capitalize">
+																			<div class="form-control-position">
+																				<i class="bx bxs-notepad"></i>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</div>
+
+
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-secondary"
+															data-dismiss="modal">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Close</span>
+														</button>
+														<button type="button" class="btn btn-primary ml-1" id="savedeal">
+															<i class="bx bx-check d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">ADD</span>
+														</button>
+														<div class="spinner-border spinner-border-sm text-primary" role="status" style="visibility:hidden">
+						                                                <span class="sr-only">Loading...</span>
+						                                            </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+
+										<!--scrolling content Modal -->
+										<div class="modal fade" id="additemStatusScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="additemStatusScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-primary">
+														<h5 class="modal-title white"
+															id="additemStatusScrollableTitle"></h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group">
+																<label for="addmodel" id="additemalltxt"></label>
+																<div class="position-relative">
+																	<fieldset class="form-group">
+																		<input type="text" id="additemtxt" name="addmodel"
+																			class="form-control capitalize">
+																	</fieldset>
+																</div>
+															</div>
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-secondary"
+															data-dismiss="modal">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Close</span>
+														</button>
+														<button type="button" class="btn btn-primary ml-1"
+															id="additemallsavebtn">
+															<i class="bx bx-check d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">ADD</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+									
+									
+									<!--scrolling content Modal -->
+										<div class="modal fade" id="saveresultStatusScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="saveresultStatusScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-primary">
+														<h5 class="modal-title white"
+															id="saveresultStatusScrollableTitle"></h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group" align="center" id="saveresult">
+																 <div class="spinner-border spinner-border-sm text-primary" role="status">
+						                                                <span class="sr-only">Loading...</span>
+						                                            </div>
+															</div>
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-secondary" id="resultclose">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Close</span>
+														</button>
+													
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+										<!--scrolling content Modal -->
+										<div class="modal fade" id="lossbacktoleadinfoScrollable"
+											tabindex="-1" role="dialog"
+											aria-labelledby="lossbacktoleadinfoScrollableTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-scrollable"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header bg-primary">
+														<h5 class="modal-title white"
+															id="lossbacktoleadinfoScrollableTitle">Reason / Notes for <span class="losstitle"></span></h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<i class="bx bx-x"></i>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="col-md-12">
+															<div class="form-group" align="left">
+																 Notes
+																 <textarea class="form-control losscomments" placeholder="Notes" height="100px" >
+																 </textarea>
+																 <input type="hidden" class="lossid" />
+															</div>
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-light-primary" id="lossbacktoleadsave">
+															<i class="bx bx-x d-block d-sm-none"></i> <span
+																class="d-none d-sm-block">Save</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--scrolling content Modal -->
+										
+										<div class="table-responsive">
+											<!-- ----Start Drag & Drop -->
+											<table>
+												<tr>
+													<td>
+														<div class="col-12 txttitle">Deal In
+															<br/>
+															<span class="titleline1">Rs : <span id="1rs"></span></span>
+															<span class="titleline2">Deals : <span id="1nosdeals"></span></span> 
+														</div>
+														<div class="col3">
+ 															
+															<div id="handle-list-1" class="droptarget">
+																
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Deal In'">
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<th:block th:if="${nextactmap.get(obj.id)} == 'No' ">
+																			 	<i class="red bx bxs-error" title="No Activity"></i>
+																			</th:block>
+																			<th:block th:unless="${nextactmap.get(obj.id)} == 'No' ">
+																			 	
+																					<i class="green bx bxs-comment-detail" th:title="${nextactmap.get(obj.id)}"></i>
+																			</th:block>
+																			<br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
+																		
+																		</div></a>
+																	</th:block>	
+																</th:block>
+																<!--- <button class="col-12 btn adddealinsection">+</button> -->	
+															</div>
+															
+														</div>
+													</td>
+													<td>
+														<div class="col-12 txttitle">Contact made
+														<br/>
+															<span class="titleline1">Rs : <span id="2rs"></span></span>
+															<span class="titleline2">Deals : <span id="2nosdeals"></span></span> 
+														</div>
+														<div class="col3">
+
+															<div id="handle-list-2" class="droptarget">
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Contact made'">
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
+																		
+																		</div></a>
+																		
+																	</th:block>	
+																</th:block>
+															<!-- <button class="col-12 btn addContactmadesection">+</button> -->	
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="col-12 txttitle">Site Visit Scheduled
+														<br/>
+															<span class="titleline1">Rs : <span id="3rs"></span></span>
+															<span class="titleline2">Deals : <span id="3nosdeals"></span></span> 
+														</div>
+														<div class="col3">
+															<div id="handle-list-3" class="droptarget">
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Site Visit Scheduled'">
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
+																		
+																		</div></a>
+																	</th:block>	
+																</th:block>
+															<!-- <button class="col-12 btn addSiteVisitScheduledsection">+</button> -->	
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="col-12 txttitle">Project Evaluvated
+															<br/>
+															<span class="titleline1">Rs : <span id="4rs"></span></span>
+															<span class="titleline2">Deals : <span id="4nosdeals"></span></span> 
+														</div>
+														<div class="col3">
+															<div id="handle-list-4" class="droptarget">
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Project Evaluvated'">
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
+																		
+																		</div></a>
+																	</th:block>	
+																</th:block>
+															<!-- <button class="col-12 btn addProjectEvaluvatedsection">+</button> -->	
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="col-12 txttitle">Proposal made
+															<br/>
+															<span class="titleline1">Rs : <span id="5rs"></span></span>
+															<span class="titleline2">Deals : <span id="5nosdeals"></span></span> 
+														</div>
+														<div class="col3">
+															<div id="handle-list-5" class="droptarget">
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Proposal made'">
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			<br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
+																		
+																		</div></a>
+																	</th:block>	
+																</th:block>
+															<!-- <button class="col-12 btn addProposalmadesection">+</button> -->	
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="col-12 txttitle">Negotiations started
+															<br/>
+															<span class="titleline1">Rs : <span id="6rs"></span></span>
+															<span class="titleline2">Deals : <span id="6nosdeals"></span></span> 
+														</div>
+														<div class="col3">
+															<div id="handle-list-6" class="droptarget">
+																<th:block th:each="obj,stat :${dealmasterlist}">
+																	<th:block th:if="${obj.pipeline} =='Negotiations started'">
+																		<a th:href="'dealevents?id=' + ${obj.id}"> <div class="dragdiver handle"  onmousedown="mouseDown()" onmouseup="mouseUp()" 
+																			th:id="'dealin'+ ${stat.index}" >
+																			<input type="hidden" class='dealsids' th:value="${obj.id}" />
+																			<span class="line1" th:text="${obj.Title}"> </span>
+																			<th:block th:if="${#strings.arraySplit(obj.createddate,' ')[0] == todaydate }">
+																			 <span class="new">New</span> 
+																			</th:block>
+																			
+																			<br/>
+																			<span class="line2" th:text="${obj.purpose}"> </span><br/>
+																			<span class="line3" th:text="'Rs : ' + ${maptotalamt.get(obj.id)}"> </span>
+																		
+																		</div></a>
+																	</th:block>	
+																</th:block>
+																	
+															</div>
+														</div>
+													</td>
+													
+												</tr>
+											</table>
+											<div id="infoi"  class="col-11"  style="visibility:hidden">
+													<table class="col-12">
+														<tr>
+															<td width="33%">
+																<div class="txttitle lossdiv" id="handle-list-7" >
+																	 Loss
+																</div>
+															</td>
+															<td width="33%">
+																<div class="txttitle wondiv" id="handle-list-8" >
+																	 Won
+																</div>
+															</td>
+															<td width="33%">
+																<div class="txttitle backtodiv" id="handle-list-9"  >
+																	 Back To Lead
+																</div>
+															</td>
+														</tr>
+													</table>
+											 </div>
+											<!-- ----End Drag & Drop -->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- // Basic Vertical form layout section end -->
+
+
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+
+	<!-- BEGIN: Footer-->
+	<footer class="footer footer-static footer-light">
+		<p class="clearfix mb-0">
+			<span class="float-left d-inline-block"></span><span
+				class="float-right d-sm-inline-block d-none"></span>
+			<button class="btn btn-primary btn-icon scroll-top" type="button">
+				<i class="bx bx-up-arrow-alt"></i>
+			</button>
+		</p>
+	</footer>
+	<!-- END: Footer-->
+
+
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+
+	<!-- BEGIN: Page Vendor JS-->
+	<script
+		th:src="@{/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+	<script
+		th:src="@{/app-assets/vendors/js/forms/validation/jquery.validate.min.js}"></script>
+	    <script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+
+	<script th:src="@{/app-assets/js/scripts/forms/select/form-select2.js}"></script>
+	   
+	<!-- END: Page JS-->
+
+	<script>
+	
+	/* Events fired on the drag target */
+
+/*	document.addEventListener("dragstart", function(event) {
+	  event.dataTransfer.setData("Text", event.target.id);
+	  event.target.style.opacity = "0.4";
+	});
+
+	document.addEventListener("dragend", function(event) {
+	  event.target.style.opacity = "1";
+	  //alert('df');
+	});
+
+	document.addEventListener("dragenter", function(event) {
+	  if ( event.target.className == "droptarget" ) {
+	    event.target.style.background = "#eee";
+		
+	  }
+	});
+
+	document.addEventListener("dragover", function(event) {
+	  event.preventDefault();
+	});
+
+	document.addEventListener("dragleave", function(event) {
+	  if ( event.target.className == "droptarget" ) {
+	    event.target.style.background = "#F7F7F7";
+			
+	  }
+	});
+
+	document.addEventListener("drop", function(event) {
+//	  event.preventDefault();
+	  if ( event.target.className == "droptarget" ) {
+	    event.target.style.background = "#F7F7F7";
+		
+	    var data = event.dataTransfer.getData("Text");
+	    
+	    event.target.appendChild(document.getElementById(data));
+	  }
+	});*/
+	</script>
+	<script>
+			$(document).ready(
+					function() {
+	
+						$(document).on("click", ".pop", function() {
+	
+							$('#peopleStatusScrollable').modal('toggle');
+	
+						});
+						//--------------------------------------------------------------------------------------------------------------------------------------		 		
+	
+						$(function() {
+							var token = $("meta[name='_csrf']").attr("content");
+							var header = $("meta[name='_csrf_header']").attr("content");
+							$(document).ajaxSend(function(e, xhr, options) {
+								xhr.setRequestHeader(header, token);
+							});
+						});
+						//--------------------------------------------------------------------------------------------------------------------------------------		 
+						
+						$(document).on("click", ".additem", function() {
+	
+							var name = $(this).attr('name');
+							var labeltext = "";
+							if (name == "addsourcedata") {
+								labeltext = "New Source";
+							}
+							else if (name == "addPurposedata") {
+								labeltext = "New Purpose";
+							}
+	
+							$('#additemalltxt').text(labeltext);
+							$('#additemStatusScrollable').modal('toggle');
+	
+						});
+						//-----------------------------------------------------------
+						$("#additemallsavebtn").click(
+								function() {
+									if ($("#additemall").val() != '') {
+										var name = $('#additemalltxt').text();
+										var labeltext = "";
+										if (name == "New Source") {
+											labeltext = "addsourcedata";
+										}
+										if (name == "New Purpose") {
+											labeltext = "addPurposedata";
+										}
+	
+										$('.' + labeltext).append(
+												"<option value='"
+														+ $("#additemtxt").val()
+														+ "'>"
+														+ $("#additemtxt").val()
+														+ "</option>");
+										$("#additemall").val('');
+										$('#additemStatusScrollable').modal(
+												'toggle');
+									}
+								});
+	
+						//------------------------------------------------------------
+						$("#ContactPerson").change(function(){
+							var selectval = $(this).find(":selected").val();
+							if(selectval.indexOf("-") !== -1)
+							{
+							$('#Organization').val(selectval.split('-')[1]).change();
+							 var personid=selectval.split('-')[0];
+							 $(".spinner-border").css("visibility","visible");
+							 //---------------------------------------------------------------------------
+							 var formData = {
+									 personid : personid
+							 }
+							 $.ajax({
+									type : "POST",url : "contactpersondetails",
+									data : formData, success : function(result) {
+										
+											var arr =result.split("|");
+									      $('#phonework').val(arr[0].trim());
+									      $('#phonepersonal').val(arr[1].trim());
+									      $('#phoneothers').val(arr[2].trim());
+									      $('#emailwork').val(arr[3].trim());
+									      $('#emailpersonal').val(arr[4].trim());
+									      $('#emailothers').val(arr[5].trim());
+									      $('#followers').val(arr[6].trim().split(',')).change();
+									      
+									      
+									      $(".spinner-border").css("visibility","hidden");
+									},
+									error : function(e) {
+										console.log("Error" + e);
+										$(".spinner-border").css("visibility","hidden");
+									}
+									
+								});
+							 //---------------------------------------------------------------------------
+							}
+						});
+						
+						$("#Organization").change(function(){
+							$('#Title').val($(this).find(":selected").text() + ' Deal');
+							
+						});
+						//------------------------------------------------------------
+						$("#savedeal").click(function(){
+						 
+							   var ContactPerson = String($("#ContactPerson").val());
+							   var phonework= $("#phonework").val();
+							   
+							   if(ContactPerson !="" && phonework !="" )
+							  {
+								  $('#peopleStatusScrollable').modal('toggle');
+								  $('#saveresultStatusScrollable').modal('toggle');
+								  					  
+								   var ContactPersontemp="";
+								   var split1=ContactPerson.split(",");
+								   $.each(split1, function(index, value) { 
+								   
+									   if(value.includes("-"))
+								  		{
+										   var split2=value.split("-");
+										   ContactPersontemp +=split2[0]+",";
+								  		}else
+							  			{
+								  			ContactPersontemp +=value +",";
+							  			}
+								   
+								   });
+								   
+								   ContactPersontemp =ContactPersontemp.substring(0,ContactPersontemp.length-1); 
+								  
+								   var Organization =String($("#Organization").val());
+								   var Title= $("#Title").val();
+								   var Source= $("#Source").val();
+								   var Reference= $("#Reference").val();
+								   var notes= $("#notes").val();
+								   var expectedclosingdate= $("#expectedclosingdate").val();
+								   var pipeline= $("#pipeline").val();
+								   var purpose= $("#purpose").val();	
+								   
+								   var followers= String($("#followers").val());
+								   
+								   var phonepersonal= $("#phonepersonal").val();
+								   var phoneothers= $("#phoneothers").val();
+								   var emailwork= $("#emailwork").val();
+								   var emailpersonal= $("#emailpersonal").val();
+								   var emailothers= $("#emailothers").val();
+								   var formData = {
+										   ContactPerson:String(ContactPersontemp),
+										   Organization : String(Organization),
+										   Title : Title,
+										   Source : Source,
+										   Reference:Reference,
+										   expectedclosingdate : expectedclosingdate,
+										   pipeline : pipeline,
+										   purpose : purpose,
+										   notes : notes,
+										   followers : String(followers),
+										   phonework : phonework,
+										   phonepersonal : phonepersonal,
+										   phoneothers : phoneothers,
+										   emailwork : emailwork,
+										   emailpersonal : emailpersonal,
+										   emailothers : emailothers
+									 }
+								   
+								   
+									   $.ajax({
+											type : "POST",url : "dealsavestage1",
+											data : formData, success : function(result) {
+											      
+											      $(".spinner-border").css("visibility","hidden");
+											      $('#saveresult').text("Save Successfully");
+											},
+											error : function(e) {
+												console.log("Error" + e);
+												$(".spinner-border").css("visibility","hidden");
+												$('#saveresult').text(e);
+											}
+											
+										}); 
+								   
+							  }else
+							  {
+								  alert("Contact Person  & Phone (Work) is mandatory");
+							  }
+						});
+						//------------------------------------------------------------
+						$('#resultclose').click(function(){
+							$('#saveresultStatusScrollable').modal('toggle');
+							location.reload();
+						});
+						
+						//------------------------------------------------------------
+						// Handle Drag and drop
+						 var drake= dragula([document.getElementById("handle-list-1"), document.getElementById("handle-list-2"), document.getElementById("handle-list-3"), document.getElementById("handle-list-4"), document.getElementById("handle-list-5"), document.getElementById("handle-list-6"), document.getElementById("handle-list-7"), document.getElementById("handle-list-8"), document.getElementById("handle-list-9")], {
+						    moves: function (el, container, handle) {
+						      return handle.classList.contains('handle');
+						    },
+						  
+						  });
+						
+						 drake.on('drag', function (el) {
+							 el.className = el.className.replace('ex-moved', '');	
+							 el.className += ' ex-moved';
+							 $("#infoi").css("visibility","visible");
+						 });
+						  
+						 drake.on('drop', function (el,container) {
+						    	container.className =  container.className += ' ex-over';
+						    	$("#infoi").css("visibility","visible");
+						    	updatedealdashboard();
+						    	dbupdate();
+						    });
+						 
+						 drake.on('over', function (el,container) {
+							 $("#infoi").css("visibility","visible");
+						    	
+						    });
+						 drake.on('out', function (el,container) {
+						    	$("#infoi").css("visibility","hidden");
+						    	
+						    });
+						 
+						 function mouseDown() {
+							 //$("#infoi").css("visibility","visible");
+						}
+
+						function mouseUp() {
+							//$("#infoi").css("visibility","visible");
+						}
+						//------------------------------------------------------------
+							
+						 function updatedealdashboardexecute(eleid, rsid, nosdealsid){
+							 var div = document.getElementById(eleid);
+							 let u=0;
+							 let rs=0;
+							 $(div).find('.line3')
+							         .each(function() {
+							        	 rs += parseInt($(this).text().replace("Rs : ",""));
+							             u++;
+							         });
+							
+							 $("#"+rsid).text(rs);
+							 $("#"+nosdealsid).text(u);
+							}
+						 function updatedealdashboarddbexecute(eleid, txt){
+							 var div = document.getElementById(eleid);
+							 let ids="";
+							 
+							 $(div).find('.dealsids')
+							         .each(function() {
+							        	 ids += $(this).val()+ ",";
+							             
+							         });
+							 
+							 if(ids.length>1)
+							 {
+								 ids=ids.substring(0,ids.length-1);
+								  var formData = {
+										 ids:ids,
+										 txt:txt
+									 }
+								    $.ajax({
+											type : "POST",url : "dealsavestage3",
+											data : formData, success : function(result) {
+											},
+											error : function(e) {
+												console.log("Error" + e);
+											}
+										});  
+								 
+							 }
+							
+							}
+						 
+						 
+						 function updatedealdashboarddbexecuteforlossbacktolead(eleid, txt){
+							 var div = document.getElementById(eleid);
+							 let ids="";
+							 
+							 $(div).find('.dealsids')
+							         .each(function() {
+							        	 ids += $(this).val()+ ",";
+							             
+							         });
+							 
+							 if(ids.length>1)
+							 {
+								 ids=ids.substring(0,ids.length-1);
+								  var formData = {
+										 ids:ids,
+										 txt:txt,
+										 notes:""
+									 }
+								    $.ajax({
+											type : "POST",url : "dealsavestage3",
+											data : formData, success : function(result) {
+											},
+											error : function(e) {
+												console.log("Error" + e);
+											}
+										});  
+								 
+							 }
+							
+							}
+						 
+						 function updatedealdashboarddbexecutewithcomments(eleid, txt){
+								 var div = document.getElementById(eleid);
+								 let ids="";
+								 
+								 $(div).find('.dealsids')
+								         .each(function() {
+								        	 ids += $(this).val()+ ",";
+								             
+								         });
+								 
+								 ids=ids.substring(0,ids.length-1);
+								 if(ids.length>0)
+								 {
+									 if(txt=='Won')
+									 {
+										 
+										 $("#handle-list-8").html("Won");
+										 var formData = {
+												 ids:ids
+											 }
+										    $.ajax({
+													type : "POST",url : "dealsavestage4",
+													data : formData, success : function(result) {
+														alert("Item moved to Project");														
+													},
+													error : function(e) {
+														console.log("Error" + e);
+														
+													}
+												});  
+										 //-----------------------------------------------------------------
+									 }
+									 else
+									 {
+										 $(".losstitle").text(txt);
+										 $(".lossid").val(ids);
+										 $('#lossbacktoleadinfoScrollable').modal('toggle');
+										 $("#handle-list-7").html("Loss");
+										 $("#handle-list-9").html("Back To Lead");
+									 }
+									 
+								 }
+							
+							}
+						 
+						 $("#lossbacktoleadsave").click(function(){
+							  let lossid= $(".lossid").val();
+							  let losscomments= $(".losscomments").val();
+							  let losstitle= $(".losstitle").text().trim();
+							  
+							  var formData = {
+									 ids:lossid,
+									 txt:losstitle,
+									 notes:losscomments
+								 }
+							    $.ajax({
+										type : "POST",url : "dealsavestage3",
+										data : formData, success : function(result) {
+											$('#lossbacktoleadinfoScrollable').modal('toggle');
+											alert("Item moved to " +losstitle);
+											$("#handle-list-7").html("Loss");
+											$("#handle-list-9").html("Back To Lead");
+										},
+										error : function(e) {
+											console.log("Error" + e);
+											
+										}
+									});  
+						 	//--------------------------------------
+						 	// Back to lead
+						 	if(losstitle == "Back To Lead")
+					 		{
+						 			var formData = {
+										 ids:lossid
+										 
+									 }
+								    $.ajax({
+											type : "POST",url : "convertolead",
+											data : formData, success : function(result) {
+												
+												
+											},
+											error : function(e) {
+												console.log("Error" + e);
+												
+											}
+										}); 
+					 		
+					 		}
+						 });
+						  
+						  
+						 function updatedealdashboard(){
+							 updatedealdashboardexecute("handle-list-1","1rs","1nosdeals");
+							 updatedealdashboardexecute("handle-list-2","2rs","2nosdeals");
+							 updatedealdashboardexecute("handle-list-3","3rs","3nosdeals");
+							 updatedealdashboardexecute("handle-list-4","4rs","4nosdeals");
+							 updatedealdashboardexecute("handle-list-5","5rs","5nosdeals");
+							 updatedealdashboardexecute("handle-list-6","6rs","6nosdeals");
+							}
+						
+						 function dbupdate(){
+							 updatedealdashboarddbexecute("handle-list-1","Deal In");
+							 updatedealdashboarddbexecute("handle-list-2","Contact made");
+							 updatedealdashboarddbexecute("handle-list-3","Site Visit Scheduled");
+							 updatedealdashboarddbexecute("handle-list-4","Project Evaluvated");
+							 updatedealdashboarddbexecute("handle-list-5","Proposal made");
+							 updatedealdashboarddbexecute("handle-list-6","Negotiations started");
+							 updatedealdashboarddbexecutewithcomments("handle-list-8","Won");
+							 updatedealdashboarddbexecutewithcomments("handle-list-7","Loss");
+							 updatedealdashboarddbexecutewithcomments("handle-list-9","Back To Lead");
+						 }
+						 updatedealdashboard();
+						 
+						//------------------------------------------------------------
+							
+					});
+		</script>
+		<script>
+			$(".js-example-tags").select2({
+				tags : true
+			});
+		</script>
+</body>
+<!-- END: Body-->
+
+</html>
+
+
+
+

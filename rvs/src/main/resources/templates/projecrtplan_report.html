@@ -60,7 +60,6 @@ left:5.5px;
                     <thead>
                       <tr>
                         <th>TITLE</th>
-                        <th>branch</th>
                         <th>PLAN</th>
                         <th>NW</th>
                         <th>DOC</th>
@@ -132,7 +131,6 @@ $('.datatables-basic').DataTable({
 	data: rowData,
 	 columns: [
 	        { data: 'title' },
-	        { data: 'branch_code' },
 	        { data: 'pphase' },
 	        { data: 'works' },
 	        { data: 'files' },
@@ -153,55 +151,55 @@ $('.datatables-basic').DataTable({
 		          },
 
 		          {
-		        targets: 2,
+		        targets: 1,
 		        render: function(data, type, full, meta) {
 		         return rendericon(full['pphase']);
 		        }
 		        },
 		          {
-		        targets: 3,
+		        targets: 2,
 		        render: function(data, type, full, meta) {
 		        	return rendericon(full['works']);
 		        }
 		        },
 		          {
-		        targets: 4,
+		        targets: 3,
 		        render: function(data, type, full, meta) {
 		        	return rendericon(full['files']);
 		        }
 		        },
 		          {
-		        targets: 5,
+		        targets: 4,
 		        render: function(data, type, full, meta) {
 		        	return rendericon(full['invoice']);
 		        }
 		        },
 		          {
-		        targets: 6,
+		        targets: 5,
 		        render: function(data, type, full, meta) {
 		        	return rendericon(full['invoice_receipt']);
 		        }
 		        },
 		          {
-		        targets: 7,
+		        targets: 6,
 		        render: function(data, type, full, meta) {
 		        	return rendericon(full['purchase']);
 		        }
 		        },
 		          {
-		        targets: 8,
+		        targets: 7,
 		        render: function(data, type, full, meta) {
 		        	return rendericon(full['purchase_payment']);
 		        }
 		        },
 		          {
-		        targets: 9,
+		        targets: 8,
 		        render: function(data, type, full, meta) {
 		        	return rendericon(full['expense']);
 		        }
 		        },
 		        {
-		        targets: 10,
+		        targets: 9,
 		        render: function(data, type, full, meta) {
 		        	var rstatus = full['status'] =='Completed' ? "bg-label-success" : "bg-label-danger";
 		        	return `<span class="badge rounded-pill ${rstatus}">${full['status']}</span>`;

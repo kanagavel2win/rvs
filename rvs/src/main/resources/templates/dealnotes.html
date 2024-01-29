@@ -665,17 +665,17 @@ cursor: pointer;
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="organization">ORAGNIZATION</label>
 													<div>
-														<select class="form-select followers form-control "
-															id="organization" th:field="*{Organization}"
-															th:value="${dealMaster['Organization']}">
-															<option value="">-</option>
-															<th:block th:each="str :${organizationlist}">
-																<option th:value="${str.id}" th:text="${str.orgname}"></option>
-															</th:block>
-														</select>
+														<input
+							                            id="organization"
+							                            name="organization"
+							                            class="form-control"
+							                            th:value="${dealMaster['OrganizationName']}"
+							                            placeholder="select Organization"
+							                            
+							                          />
 
 														<div class="invalid-feedback">Please select
-															follower.</div>
+															ORAGNIZATION.</div>
 													</div>
 												</div>
 												
@@ -786,12 +786,12 @@ cursor: pointer;
 													<label class="form-label" for="Reference">REFERENCE</label>
 													<div>
 
-														<select class="form-control " id="Reference"
+														<select class="select2 form-select" id="Reference"
 															th:field="*{Reference}"
 															th:value="${dealMaster['Reference']}">
 															<option value="">-</option>
 															<th:block th:each="str :${personlist}">
-																<option th:value="${str.id}" th:text="${str.peoplename}"></option>
+																<option th:value="${str.id}" th:text="${str.peoplename} +' - '+ ${str.primarymob}"></option>
 															</th:block>
 														</select>
 													</div>
@@ -1444,7 +1444,7 @@ cursor: pointer;
 																			$('#Lbl_Title').text(bmobj.title);
 																			$('#Lbl_Source').text(bmobj.source);
 																			$('#Lbl_pipeline').text(bmobj.pipeline);
-																			$('#Lbl_Reference').text(bmobj.referencename);
+																			$('#Lbl_Reference').text(bmobj.referenceName);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_dealvalue").text(bmobj.dealvalue);
 																			$("#Lbl_purpose").text(bmobj.purpose);
@@ -1452,7 +1452,6 @@ cursor: pointer;
 																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
 																			
 																			$('#Lbl_notes').text(bmobj.notes);
-																			$('#Lbl_Reference').text(bmobj.referencename);
 																			$("#Lbl_organization").text(bmobj.organizationName);
 																			$("#Lbl_leadvalue").text(bmobj.leadvalue);
 																			$("#Lbl_purpose").text(bmobj.purpose);
@@ -1961,6 +1960,28 @@ cursor: pointer;
 							    }
 							  }
 						//------------------------------------------------------
+						// List
+						  const TagifyCustomListSuggestionEl = document.querySelector('#organization');
+						  
+						  $.ajax({
+									type : "GET",url : "organizationNameList",
+									data : '', success : function(result) {
+										
+										 // List
+									    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
+									      whitelist: result,
+									      maxTags: 1,
+									      dropdown: {
+									        maxItems: 20,
+									        classname: '',
+									        enabled: 0,
+									        closeOnSelect: false
+									      }
+									    });
+										 
+									}
+						  });
+							//------------------------------------------------------
 						
 		</script>
 </body>

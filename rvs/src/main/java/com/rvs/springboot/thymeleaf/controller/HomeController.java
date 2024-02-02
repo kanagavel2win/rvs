@@ -89,6 +89,7 @@ import com.rvs.springboot.thymeleaf.entity.DealFollowers;
 import com.rvs.springboot.thymeleaf.entity.DealMaster;
 import com.rvs.springboot.thymeleaf.entity.DealProjectMaster;
 import com.rvs.springboot.thymeleaf.entity.EmployeeAccNo;
+import com.rvs.springboot.thymeleaf.entity.EmployeeAdvance;
 import com.rvs.springboot.thymeleaf.entity.EmployeeContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
@@ -3111,6 +3112,28 @@ public class HomeController {
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
 
 		return "empjob";
+	}
+	@GetMapping("empadvance")
+	public String empadvance(Model theModel, @RequestParam("id") int empid) {
+
+		EmployeeMaster emobj = fillemployeeobject(empid);
+
+		List<EmployeeAdvance> advobj = new ArrayList<>();
+		advobj=emobj.getEmployeeAdvance();
+
+		theModel.addAttribute("employeeadvance", advobj);
+		theModel.addAttribute("empid", empid);
+		theModel.addAttribute("employeemaster", emobj);
+
+		List<String> ModeofPayment = itemlistService.findByFieldName("ModeofPayment");
+		theModel.addAttribute("ModeofPayment", ModeofPayment);
+
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("emptitle",
+				emobj.getEmpid() + "000" + emobj.getEmpMasterid() + " - " + emobj.getStaffName());
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
+
+		return "empadvance";
 	}
 
 	@PostMapping("employeehiredate")
@@ -12837,6 +12860,7 @@ public class HomeController {
 
 		return ls;
 	}
+	
 
 	@PostMapping("getbranchexpenseitem")
 	@ResponseBody
@@ -13841,4 +13865,89 @@ public class HomeController {
 				.collect(Collectors.toList());
 	}
 
+	@PostMapping("getemployeeadvancelist")
+	@ResponseBody
+	public List<EmployeeAdvance> getemployeeadvancelist(@RequestParam Map<String, String> params) {
+
+		List<EmployeeAdvance> empadvanceObj = employeeMasterService.findById(Integer.parseInt(params.get("mastercategoryid"))).getEmployeeAdvance();
+		
+		for(EmployeeAdvance empadv: empadvanceObj)
+		{
+			try {
+				empadv.setAdvancedate_DDMMMYYYY(displaydateFormatFirstMMMddYYY
+				.format(displaydateFormatrev.parse(empadv.getAdvancedate())).toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		if(empadvanceObj.size() >0) {
+			empadvanceObj.sort(Comparator.comparing(EmployeeAdvance::getEmployeeadvanceid).reversed());
+		}
+		return empadvanceObj;
+	}
+	
+	@ResponseBody
+	@PostMapping("employeeadvancesave")
+	public EmployeeMaster employeeadvancesave(@RequestParam Map<String, String> params) {
+
+		EmployeeMaster em = employeeMasterService.findById(Integer.parseInt(params.get("empid")));
+
+		List<EmployeeAdvance> eadvls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("employeeadvanceid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<EmployeeAdvance> ls = new ArrayList();
+
+			for (EmployeeAdvance invm : em.getEmployeeAdvance())
+			{
+				if (invm.getEmployeeadvanceid() == Integer.parseInt(tempreceiptid)) {
+
+					invm.setAdvancedate(String.valueOf(params.get("advancedate")));
+					invm.setAmount(Double.parseDouble(params.get("amount")));
+					invm.setModeofpayment(String.valueOf(params.get("modeofpayment")));
+					invm.setPaidfrom(String.valueOf(params.get("paidfrom")));
+					invm.setPurpose(String.valueOf(params.get("purpose")));
+					invm.setRepaymentcomments(String.valueOf(params.get("repaymentcomments")));
+					invm.setRepaymentmonths(String.valueOf(params.get("repaymentmonths")));
+					
+				}
+				ls.add(invm);
+
+			}
+			em.setEmployeeAdvance(ls);
+
+		} else {
+			EmployeeAdvance invm = new EmployeeAdvance();
+			invm.setAdvancedate(String.valueOf(params.get("advancedate")));
+			invm.setAmount(Double.parseDouble(params.get("amount")));
+			invm.setModeofpayment(String.valueOf(params.get("modeofpayment")));
+			invm.setPaidfrom(String.valueOf(params.get("paidfrom")));
+			invm.setPurpose(String.valueOf(params.get("purpose")));
+			invm.setRepaymentcomments(String.valueOf(params.get("repaymentcomments")));
+			invm.setRepaymentmonths(String.valueOf(params.get("repaymentmonths")));
+			
+			
+			em.getEmployeeAdvance().add(invm);
+		}
+
+		return employeeMasterService.save(em);
+	}
+	
+	@PostMapping("getadvanceitem")
+	@ResponseBody
+	public EmployeeAdvance getadvanceitem(@RequestParam Map<String, String> params) {
+
+		EmployeeAdvance obj = employeeMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getEmployeeAdvance().stream()
+				.filter(C -> C.getEmployeeadvanceid()== Integer.parseInt(params.get("advanceid")))
+				.collect(Collectors.toList()).get(0);
+
+		return obj;
+
+	}
+
+	
 }

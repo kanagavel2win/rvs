@@ -126,12 +126,10 @@ public class EmployeeMaster {
 	@JoinColumn(name = "empMasterid")
 	private List<EmployeeAccNo> employeeAccNo;
 	
-	/*
-	 * @OneToMany(cascade = CascadeType.ALL)
-	 * 
-	 * @JoinColumn(name = "empMasterid") public List<EmployeePrivillage>
-	 * employeePrivillage;
-	 */
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "empMasterid")
+	private List<EmployeeAdvance> employeeAdvance;
+	
 	
 	@Transient
 	private String dobMMformat;

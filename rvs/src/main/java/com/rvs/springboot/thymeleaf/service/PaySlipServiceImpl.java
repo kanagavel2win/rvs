@@ -34,6 +34,11 @@ public class PaySlipServiceImpl implements PaySlipService {
 		
 		return payslipRepository.findByPayperiod(Payperiod);
 	}
+	@Override
+	public List<payslip> findByPaymonth(String Payperiod) {
+		
+		return payslipRepository.findByPaymonth(Integer.parseInt(Payperiod));
+	}
 
 	@Override
 	public void deleteByPayperiod(String Payperiod,String branchid) {

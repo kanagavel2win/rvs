@@ -90,6 +90,7 @@ import com.rvs.springboot.thymeleaf.entity.DealMaster;
 import com.rvs.springboot.thymeleaf.entity.DealProjectMaster;
 import com.rvs.springboot.thymeleaf.entity.EmployeeAccNo;
 import com.rvs.springboot.thymeleaf.entity.EmployeeAdvance;
+import com.rvs.springboot.thymeleaf.entity.EmployeeAdvanceRepayment;
 import com.rvs.springboot.thymeleaf.entity.EmployeeContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
@@ -161,6 +162,7 @@ import com.rvs.springboot.thymeleaf.service.CheckOutService;
 import com.rvs.springboot.thymeleaf.service.ContactOrganizationService;
 import com.rvs.springboot.thymeleaf.service.ContactPersonService;
 import com.rvs.springboot.thymeleaf.service.DealMasterService;
+import com.rvs.springboot.thymeleaf.service.EmployeeAdvanceRepaymentService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobcompensationService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
@@ -259,6 +261,9 @@ public class HomeController {
 
 	@Autowired
 	EmployeePrivillageService employeePrivillageService;
+
+	@Autowired
+	EmployeeAdvanceRepaymentService employeeAdvanceRepaymentService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
@@ -3113,13 +3118,14 @@ public class HomeController {
 
 		return "empjob";
 	}
+
 	@GetMapping("empadvance")
 	public String empadvance(Model theModel, @RequestParam("id") int empid) {
 
 		EmployeeMaster emobj = fillemployeeobject(empid);
 
 		List<EmployeeAdvance> advobj = new ArrayList<>();
-		advobj=emobj.getEmployeeAdvance();
+		advobj = emobj.getEmployeeAdvance();
 
 		theModel.addAttribute("employeeadvance", advobj);
 		theModel.addAttribute("empid", empid);
@@ -4008,6 +4014,16 @@ public class HomeController {
 			double net = 0.00;
 			// ----------------------------------------------------
 
+			Advance = employeeMasterService.findById(employeeid).getEmployeeAdvance().stream()
+					.mapToDouble(EmployeeAdvance::getAmount).sum();
+			Advance = Advance - employeeAdvanceRepaymentService.findByEmployeeid(employeeid).stream()
+					.mapToDouble(EmployeeAdvanceRepayment::getAmount).sum();
+			// get Current month advance deduction details
+			double currentmonthadvance = employeeAdvanceRepaymentService.findByEmployeeidAndPayperiod(employeeid,
+					selectedmonth);
+			// Advance=Advance+currentmonthadvance;
+			// -----------------------------------------------------
+
 			Totalholidays = holidaylist.size();
 			TotalWWorkingDays = (P - HOLIDAYP - SUNDAYP) + T + (HL - HOLIDAYHL - SUNDAYHL);
 			Totalsundaywrkdays = SUNDAYP + SUNDAYHL;
@@ -4023,14 +4039,14 @@ public class HomeController {
 			TOTALGROSS = Math.round((BasicSalary + DA + HRA) * 100) / 100.00;
 			ESI = Math.round(BasicSalary * (0.01) * 0);
 			EPF = Math.round(BasicSalary * (0.12) * 0);
-			TOTALDeduction = ESI + EPF + Advance;
+			TOTALDeduction = ESI + EPF + currentmonthadvance;
 			Monthlyincentives = Math.round(ExtraWorkingDays * (ctc / 26));
 			net = Math.round((TOTALGROSS - TOTALDeduction) + Monthlyincentives);
 
 			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + (WorkingDays + ExtraWorkingDays) + "-"
 					+ Absent + "-" + WorkingDays + "-" + ExtraWorkingDays;
 			str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance
-					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net + "-"
+					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net + "-" + currentmonthadvance + "-"
 					+ branchMasterService.findById(Integer.parseInt(branch_masterid_str)).getBranchCode();
 
 			report.add(str);
@@ -4042,7 +4058,7 @@ public class HomeController {
 				payslipboj.setPaymonth(Integer.parseInt(selectedmonth.replace("-", "")));
 				payslipboj.setAbsent(String.valueOf(Absent));
 				payslipboj.setAccountNo(AccountNo);
-				payslipboj.setAdvance(String.valueOf(Advance));
+				payslipboj.setAdvance(String.valueOf(currentmonthadvance));
 				payslipboj.setBankName(String.valueOf(BankName));
 				payslipboj.setBasicSalary(String.valueOf(BasicSalary));
 				payslipboj.setCtc(String.valueOf(ctc));
@@ -4088,8 +4104,30 @@ public class HomeController {
 		List<BranchMaster> branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", branchls);
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Payroll"));
+		if (!save.equalsIgnoreCase("")) {
+			return "redirect:/payrollvoucher?mn=" + selectedmonth;
+		} else {
+			return "payroll";
+		}
+	}
 
-		return "payroll";
+	@GetMapping("payrollvoucher")
+	public String payrollvoucher( Model themodel,@RequestParam(name = "mn") String selectedmonth) {
+		
+		List<payslip> psls= payslipserive.findByPaymonth(selectedmonth.replace("-",""));
+		
+		for(payslip ps: psls) {
+			ps.setBranchName(branchMasterService.findById(Integer.parseInt(ps.getBranchid())).getBRANCH_NAME());		
+		}
+		psls.sort(Comparator.comparing(payslip::getEmployeeid));
+		
+		themodel.addAttribute("selectedmonth", selectedmonth);
+		themodel.addAttribute("paysliplist", psls);
+		themodel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		List<String> ModeofPayment = itemlistService.findByFieldName("ModeofPayment");
+		themodel.addAttribute("ModeofPayment", ModeofPayment);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Payroll"));
+		return "payslipvoucher";
 	}
 
 	@PostMapping("payrollpdf")
@@ -4105,7 +4143,8 @@ public class HomeController {
 
 		return "payslippdf";
 	}
-
+	
+	
 	@PostMapping("payrollexcel")
 	public void payrollexcel(@RequestParam(name = "month") String selectedmonth, Model themodel,
 			@RequestParam(value = "report") String report, @RequestParam(value = "branchname") String branchname,
@@ -12860,7 +12899,6 @@ public class HomeController {
 
 		return ls;
 	}
-	
 
 	@PostMapping("getbranchexpenseitem")
 	@ResponseBody
@@ -13869,25 +13907,25 @@ public class HomeController {
 	@ResponseBody
 	public List<EmployeeAdvance> getemployeeadvancelist(@RequestParam Map<String, String> params) {
 
-		List<EmployeeAdvance> empadvanceObj = employeeMasterService.findById(Integer.parseInt(params.get("mastercategoryid"))).getEmployeeAdvance();
-		
-		for(EmployeeAdvance empadv: empadvanceObj)
-		{
+		List<EmployeeAdvance> empadvanceObj = employeeMasterService
+				.findById(Integer.parseInt(params.get("mastercategoryid"))).getEmployeeAdvance();
+
+		for (EmployeeAdvance empadv : empadvanceObj) {
 			try {
 				empadv.setAdvancedate_DDMMMYYYY(displaydateFormatFirstMMMddYYY
-				.format(displaydateFormatrev.parse(empadv.getAdvancedate())).toString());
+						.format(displaydateFormatrev.parse(empadv.getAdvancedate())).toString());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		
-		if(empadvanceObj.size() >0) {
+
+		if (empadvanceObj.size() > 0) {
 			empadvanceObj.sort(Comparator.comparing(EmployeeAdvance::getEmployeeadvanceid).reversed());
 		}
 		return empadvanceObj;
 	}
-	
+
 	@ResponseBody
 	@PostMapping("employeeadvancesave")
 	public EmployeeMaster employeeadvancesave(@RequestParam Map<String, String> params) {
@@ -13901,8 +13939,7 @@ public class HomeController {
 		if (!tempreceiptid.equalsIgnoreCase("")) {
 			List<EmployeeAdvance> ls = new ArrayList();
 
-			for (EmployeeAdvance invm : em.getEmployeeAdvance())
-			{
+			for (EmployeeAdvance invm : em.getEmployeeAdvance()) {
 				if (invm.getEmployeeadvanceid() == Integer.parseInt(tempreceiptid)) {
 
 					invm.setAdvancedate(String.valueOf(params.get("advancedate")));
@@ -13912,7 +13949,7 @@ public class HomeController {
 					invm.setPurpose(String.valueOf(params.get("purpose")));
 					invm.setRepaymentcomments(String.valueOf(params.get("repaymentcomments")));
 					invm.setRepaymentmonths(String.valueOf(params.get("repaymentmonths")));
-					
+
 				}
 				ls.add(invm);
 
@@ -13928,26 +13965,75 @@ public class HomeController {
 			invm.setPurpose(String.valueOf(params.get("purpose")));
 			invm.setRepaymentcomments(String.valueOf(params.get("repaymentcomments")));
 			invm.setRepaymentmonths(String.valueOf(params.get("repaymentmonths")));
-			
-			
+
 			em.getEmployeeAdvance().add(invm);
 		}
 
 		return employeeMasterService.save(em);
 	}
-	
+
 	@PostMapping("getadvanceitem")
 	@ResponseBody
 	public EmployeeAdvance getadvanceitem(@RequestParam Map<String, String> params) {
 
 		EmployeeAdvance obj = employeeMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
 				.getEmployeeAdvance().stream()
-				.filter(C -> C.getEmployeeadvanceid()== Integer.parseInt(params.get("advanceid")))
+				.filter(C -> C.getEmployeeadvanceid() == Integer.parseInt(params.get("advanceid")))
 				.collect(Collectors.toList()).get(0);
 
 		return obj;
 
 	}
 
+	@PostMapping("saveadvancedetails_payroll")
+	@ResponseBody
+	public String saveadvancedetails_payroll(@RequestParam Map<String, String> params) {
+		//System.out.println(params);
+		String selectmonth = params.get("selectmonth");
+		String advancestring = params.get("advancestring");
+
+		List<String> t1 = Arrays.asList(advancestring.split(";"));
+
+		for (String str : t1) {
+			String arr[] = str.split("-");
+			employeeAdvanceRepaymentService.deleteByPayperiod(selectmonth, arr[1]);
+			EmployeeAdvanceRepayment ead = new EmployeeAdvanceRepayment();
+
+			ead.setAmount(Double.parseDouble(arr[0]));
+			ead.setDeductsource("Salary");
+			ead.setPayperiod(selectmonth);
+			ead.setEmployeeid(Integer.parseInt(arr[1].trim()));
+			employeeAdvanceRepaymentService.save(ead);
+		}
+
+		return "";
+	}
+
+	@PostMapping("savepayrollvoucher")
+	@ResponseBody
+	public String savepayrollvoucher(@RequestParam Map<String, String> params) {
+	
+		String advancestring = params.get("advancestring");
+
+		List<String> t1 = Arrays.asList(advancestring.split(";"));
+		for (String str : t1) {
+			String arr[] = str.split("\\|");
+			payslip ps = payslipserive.findById(Integer.parseInt(arr[0]));
+			
+			ps.setVoucher_date(arr[1].trim());
+			ps.setTransactionno(arr[2].trim());
+			ps.setNotes(arr[3].trim());
+			ps.setModeofPayment(arr[5].trim());
+			ps.setDepitedfrom(arr[4].trim());
+			
+			payslipserive.save(ps);
+			
+			
+		}
+		
+		return "";
+		
+	}
+	
 	
 }

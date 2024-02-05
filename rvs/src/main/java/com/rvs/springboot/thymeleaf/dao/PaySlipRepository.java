@@ -14,6 +14,7 @@ import com.rvs.springboot.thymeleaf.entity.payslip;
 public interface PaySlipRepository extends JpaRepository<payslip, Integer> {
 	public List<payslip> findByEmployeeid(String Employeeid);
 	public List<payslip> findByPayperiod(String Payperiod);
+	public List<payslip> findByPaymonth(int Payperiod);
 	
 	@Transactional
 	@Modifying

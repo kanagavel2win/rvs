@@ -1,11 +1,14 @@
 package com.rvs.springboot.thymeleaf.entity;
 
+
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -67,6 +70,23 @@ public class payslip implements Comparable<payslip> {
 	String net;
 	@Column
 	String branchid;
+	
+	@Column
+	private String modeofPayment;
+	@Column
+	private String depitedfrom;
+	@Column
+	private String voucher_no;
+	@Column
+	private String voucher_date;
+	@Column
+	private String transactionno;
+	@Column
+	private String notes;
+	
+	@Transient
+	private String branchName;
+	
 	
 	@Override
 	public int compareTo(payslip o) {

@@ -45,11 +45,12 @@ public class PaySlip_ExcelGenerator {
         createCell(row, 10, "TOTAL GROSS", style);
         createCell(row, 11, "ESI", style);
         createCell(row, 12, "EPF", style);
-        createCell(row, 13, "ADVANCE", style);
+        createCell(row, 13, "ADVANCE BAL", style);
         createCell(row, 14, "TOTAL DEDUCTION", style);
         createCell(row, 15, "MONTHLY INCENTIVES", style);
         createCell(row, 16, "NET SALARY", style);
-        createCell(row, 17, "BRANCH", style); 
+        createCell(row, 17, "ADV Deduction", style); 
+        createCell(row, 18, "BRANCH", style); 
     }
     private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
         sheet.autoSizeColumn(columnCount);

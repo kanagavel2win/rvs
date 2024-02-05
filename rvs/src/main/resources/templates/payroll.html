@@ -215,7 +215,10 @@ table tr td {
 	text-weight: bold;
 	color: #fff;
 }
-
+.deduction_ip{
+ margin: none;
+ padding: none;
+}
 /* .d1, .d1>div>label, .d1>div>h4 {
 	background: #c09F80;
 	padding: 1%;
@@ -335,7 +338,7 @@ table tr td {
 										<div class="col-md-2 d2  bg-success text-white ">
 											<div class="form-group d2 ">
 												<label>Total Amount</label>
-												<h4 th:text="${totalnet}" class=" text-white"></h4>
+												<h4 id="totalnet" th:text="${totalnet}" class=" text-white"></h4>
 											</div>
 
 										</div>
@@ -362,7 +365,7 @@ table tr td {
 														
 													<button type="submit"
 														class="e2 position-relative  btn btn-secondary m-1"
-														style="float: right">Generate Payslips</button>
+														style="float: right">Generate Payslip & Voucher</button>
 													<!-- <br/><label>Note: This is One Time Generation.</label> -->
 												</form>
 											</div>
@@ -404,7 +407,11 @@ table tr td {
 									<th:block>
 										<div class="row">
 											<div class="wrapper table-responsive p-0">
-												<table class="table">
+											
+									<form id="editPayrollForm" class="wizard-horizontal" onsubmit="return false">
+											<input type="hidden" th:value="${selectedmonth}"
+														id="selectedmonthAdvance" />
+												<table class="table" id="table_payroll">
 													<thead>
 														<tr>
 															<th class="sticky-col first-col">S.No</th>
@@ -421,7 +428,8 @@ table tr td {
 															<th>TOTAL GROSS</th>
 															<th>ESI</th>
 															<th>EPF</th>
-															<th>Advance</th>
+															<th>Advance Balance</th>
+															<th>Advance Deduction</th>
 															<th>TOTAL Deduction</th>
 															<th>Monthly incentives</th>
 															<th>Net salary</th>
@@ -433,7 +441,7 @@ table tr td {
 															<td class="sticky-col first-col" th:text="${i.index+1}"></td>
 															<td class="sticky-col second-col"
 																th:text="${#strings.arraySplit(str,'-')[1]}"></td>
-															<td class="td_left" th:text="${#strings.arraySplit(str,'-')[17]}"></td>
+															<td class="td_left" th:text="${#strings.arraySplit(str,'-')[18]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[2]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[3]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[4]}"></td>
@@ -442,19 +450,27 @@ table tr td {
 															<td th:text="${#strings.arraySplit(str,'-')[7]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[8]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[9]}"></td>
-															<td th:text="${#strings.arraySplit(str,'-')[10]}"></td>
+															<td th:id="'TotalGross_'+ ${#strings.arraySplit(str,'-')[0]}" th:text="${#strings.arraySplit(str,'-')[10]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[11]}"></td>
 															<td th:text="${#strings.arraySplit(str,'-')[12]}"></td>
-															<td th:text="${#strings.arraySplit(str,'-')[13]}"></td>
-															<td th:text="${#strings.arraySplit(str,'-')[14]}"></td>
-															<td th:text="${#strings.arraySplit(str,'-')[15]}"></td>
-															<td th:text="${#strings.arraySplit(str,'-')[16]}" class="td16" style="background-color: #66CD00;"></td>
+															<td  th:id="'Advance'+ ${#strings.arraySplit(str,'-')[0]}" th:text="${#strings.arraySplit(str,'-')[13]}"></td>
+															<td><input class="deduction_ip" name="advancededuction[]" th:id="'curmonthDeduction_'+ ${#strings.arraySplit(str,'-')[0]}" onchange="changeondeduction(this)" th:value="${#strings.arraySplit(str,'-')[17]}" type="number" step="any" min="0"/> 
+																<input type="hidden" name="empid[]" th:value="${#strings.arraySplit(str,'-')[0]}"/>
+															</td>
+															<td th:id="'TotalDeduction_'+ ${#strings.arraySplit(str,'-')[0]}" th:text="${#strings.arraySplit(str,'-')[14]}"></td>
+															<td th:id="'Incentive_'+ ${#strings.arraySplit(str,'-')[0]}" th:text="${#strings.arraySplit(str,'-')[15]}"></td>
+															<td  th:id="'NetSalary_'+ ${#strings.arraySplit(str,'-')[0]}" th:text="${#strings.arraySplit(str,'-')[16]}" class="netamt td16" style="background-color: #66CD00;"></td>
 
 
 														</tr>
 
 													</tbody>
 												</table>
+												
+												<br/>
+												<button type="submit" class="save_advance_details e2   btn btn-secondary m-1"
+														style="float: right">Save the Advance details</button>
+										</form>
 											</div>
 										</div>
 
@@ -560,12 +576,108 @@ table tr td {
     
     
     $(document).ready(function() {  
-      		
+   
+    	//--------------------------------------------------------------------------------------------------------------------------------------		 		
+
+		$(function() {
+			var token = $("meta[name='_csrf']").attr(
+					"content");
+			var header = $("meta[name='_csrf_header']")
+					.attr("content");
+			$(document).ajaxSend(
+					function(e, xhr, options) {
+						xhr.setRequestHeader(header,
+								token);
+					});
+		});
+		// --------------------------------------------------------------------
+		function validationphaseformreset() {
+			$('.save_advance_details').prop("disabled",false);
+			$('.save_advance_details').html("Save the Advance details");
+		}
+    	//--------------------------------------------------------------------------------------------------------------------------------------
+		$('#editPayrollForm').on('submit',function(event) {
+					if (event.target.checkValidity()) {
+						$('.save_advance_details').prop("disabled",true);
+						$('.save_advance_details').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+						
+					        var table = document.getElementById("table_payroll");
+					        var rows = table.getElementsByTagName("tr");
+							var AdvanceString="";
+					        for (var i = 0; i < rows.length; i++) {
+					            var inputBox = rows[i].getElementsByTagName("input")[0];
+					            var inputBox1 = rows[i].getElementsByTagName("input")[1];
+					            if (inputBox) {
+					            	if(Number(inputBox.value) >0)
+					            	{
+					            		AdvanceString += inputBox.value + "-"+ inputBox1.value+";" 
+					            	}
+					            }
+					        }
+
+					        var formData = {
+									selectmonth : $("#selectedmonthAdvance").val(),
+									advancestring : AdvanceString
+					        }
+						    
+						 $.ajax({
+							type : "POST",
+							url : "saveadvancedetails_payroll",
+							data : formData,
+							success : function(
+									result) {
+								
+								validationphaseformreset();
+								
+							},
+							error : function(e) {
+								console.log("Error"+ e);
+							}
+						}); 
+					} else {
+						$('.save_advance_details').prop("disabled",false);
+					}
+
+				});
+		// --------------------------------------------------------------------
+		
+    	
     	});
   //------------------------------------------------------------------------
-  
+  function changeondeduction(e)
+    	{
+    	  var curmonthDeduction= e.getAttribute("id").replace("curmonthDeduction_","");
+    	  var amount = e.value;
+    	 // var TotalDeduction = parseFloat($("#TotalDeduction_"+curmonthDeduction).text()) - amount;
+    	  $("#TotalDeduction_"+curmonthDeduction).text(amount);
+    	  calculateNetamount(curmonthDeduction);
+    	}
    
+  function calculateNetamount(id){
+	  
+	  var TotalGross = parseFloat($("#TotalGross_"+id).text());
+	  var Incentive = parseFloat($("#Incentive_"+id).text());
+	  var TotalDeduction = parseFloat($("#TotalDeduction_"+id).text());
+	  
+	  var NetSalary =TotalGross +  Incentive -TotalDeduction;
+	  $("#NetSalary_"+id).text(NetSalary.toFixed(0)+".0");
+	  findtotal();
+  }
    
+  function findtotal(){
+	  var sum = 0;        
+	  $(".netamt").each(function() 
+	  { 
+		  
+	    if(!isNaN(this.textContent) && this.textContent.length!=0) 
+	    {
+	      sum += parseFloat(this.textContent);            
+	    }         
+	  });
+	  
+	  $("#totalnet").text(sum +".0");
+	  
+  }
     </script>
 </body>
 </html>

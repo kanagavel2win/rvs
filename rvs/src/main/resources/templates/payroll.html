@@ -628,6 +628,20 @@ table tr td {
 									result) {
 								
 								validationphaseformreset();
+
+								 Swal.fire({
+								        title: 'Done  !',
+								        text: 'Advance details are updated successfully',
+								        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
+								        imageWidth: 400,
+								        imageAlt: 'Custom image',
+								        confirmButtonText: 'Ok',
+								        customClass: {
+								          confirmButton: 'btn btn-primary'
+								        },
+								        buttonsStyling: false
+								      });
+									
 								
 							},
 							error : function(e) {

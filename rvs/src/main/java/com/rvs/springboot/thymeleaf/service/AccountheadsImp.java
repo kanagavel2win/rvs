@@ -91,14 +91,14 @@ public class AccountheadsImp implements AccountheadsService {
 
 	@Override
 	public List<Map<String, Object>> getInterestIncome() {
-		String sql = "SELECT COALESCE(sum(iamount),0) as income FROM accounts_income where icategory=\"Interest Income\" ; ";
+		String sql = "SELECT COALESCE(sum(iamount),0) as income FROM accounts_income where icategory='Interest Income' ; ";
 		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
 		return op;
 	}
 
 	@Override
 	public List<Map<String, Object>> getOtherIncome() {
-		String sql = "SELECT COALESCE(sum(iamount),0) as income FROM accounts_income where icategory<>\"Interest Income\" ; ";
+		String sql = "SELECT COALESCE(sum(iamount),0) as income FROM accounts_income where icategory<>'Interest Income' ; ";
 		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
 		return op;
 	}
@@ -211,6 +211,21 @@ public class AccountheadsImp implements AccountheadsService {
 	@Override
 	public List<Map<String, Object>> getbranch_expensewithdraw(int searchid) {
 		String sql = "SELECT COALESCE(sum(total),0) as amount FROM branchexpense_master where depitedfrom ='"+ searchid +"'";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+	}
+
+	@Override
+	public List<Map<String, Object>> getsalary_payroll() {
+		String sql = "SELECT COALESCE(sum(net),0) as amount FROM payslip where depitedfrom <>''";
+		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
+		return op;
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> getsalary_payroll_expense(int searchid) {
+		String sql = "SELECT COALESCE(sum(net),0) as amount FROM payslip where depitedfrom ='"+ searchid +"'";
 		List<Map<String, Object>> op = JdbcTemplate.queryForList(sql);
 		return op;
 	}

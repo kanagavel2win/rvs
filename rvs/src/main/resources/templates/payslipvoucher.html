@@ -221,6 +221,17 @@ table tr td {
 	margin: none;
 	padding: none;
 }
+
+.tablex
+{
+width:50%; 
+border-collapse: collapse;
+
+}
+.tablex td,th{
+ border: 1px solid #ccc;
+ padding: 10px;
+}
 /* .d1, .d1>div>label, .d1>div>h4 {
 	background: #c09F80;
 	padding: 1%;
@@ -339,11 +350,11 @@ table tr td {
 																
 																<input type="hidden" name="payslipid" th:value="${ps.payslipid}" /> <br />
 																
-																<input type="date" class="form-control" name="voucher_date" th:value="${ps.voucher_date}" />
+																<input type="date" class="form-control pdate" name="voucher_date" th:value="${ps.voucher_date}" required />
 															</td>
 															<td>
-															<select class="form-select followers form-control "
-																id="depitedfrom" name="depitedfrom"  >
+															<select class="form-select followers form-control depitedfrom"
+																id="depitedfrom" name="depitedfrom" required >
 																	<option value="">-</option>
 																	<th:block th:each="obj1 : ${accountlist}">
 																		<option th:value="${obj1.accountheadid}"
@@ -351,7 +362,7 @@ table tr td {
 																	</th:block>
 															</select> 
 															<select id="modeofPayment" name="modeofPayment"
-																class="form-select" >
+																class="form-select modeofPayment" required>
 																	<option value="">-</option>
 																	<th:block th:each="str :${ModeofPayment}">
 																		<option th:value="${str}" th:text="${str}"  th:selected="${str}==${ps.modeofPayment}"></option>
@@ -361,7 +372,7 @@ table tr td {
 
 															<td><input type="text" class="form-control"
 																name="transactionno" placeholder="Transaction No"
-																th:value="${ps.transactionno}" /> <br />
+																th:value="${ps.transactionno}"  /> <br />
 															<input type="text" class="form-control" name="notes"
 																placeholder="Comments" th:value="${ps.notes}" /></td>
 
@@ -370,7 +381,45 @@ table tr td {
 													</tbody>
 												</table>
 
+												
 												<br />
+												<hr />
+													<table class="tablex"  align="center"  >
+														<tr>
+															<th>VOUCHER DATE</th>
+															<th>PAID FROM</th>
+															<th>MODE OF PAYMENT</th>															
+														</tr>
+														<tr>
+															<td><input type="date" class="form-control srcpdate" /></td>
+															<td>
+																<select class="form-select form-control sdepitedfrom"
+																 >
+																	<option value="">-</option>
+																	<th:block th:each="obj1 : ${accountlist}">
+																		<option th:value="${obj1.accountheadid}"
+																			th:text="${obj1.category}"></option>
+																	</th:block>
+																</select> 
+															</td>
+															<td>
+																<select class="form-select smodeofPayment" >
+																	<option value="">-</option>
+																	<th:block th:each="str :${ModeofPayment}">
+																		<option th:value="${str}" th:text="${str}"></option>
+																	</th:block>
+																</select>
+															</td>															
+														</tr>
+														<tr>
+															<td colspan="3">
+																<button type="button" class="apply_voucher_details  btn btn-secondary m-1"
+													>Apply All</button>
+															</td>
+														</tr>
+													</table>
+												<br />
+												
 												<button type="submit"
 													class="save_voucher_details e2   btn btn-secondary m-1"
 													style="float: right">Save the Voucher details</button>
@@ -585,6 +634,25 @@ table tr td {
 													}
 
 												});
+								// --------------------------------------------------------------------
+								
+								$(".apply_voucher_details").on('click',
+										function(event) {
+									
+									if($(".srcpdate").val()!="")
+									{
+										$(".pdate").val($(".srcpdate").val());
+									}
+									if($(".sdepitedfrom").val()!="")
+									{
+										$(".depitedfrom").val($(".sdepitedfrom").val()).change();
+									}
+									if($(".smodeofPayment").val()!="")
+									{
+										$(".modeofPayment").val($(".smodeofPayment").val()).change();
+									}
+									
+								});
 								// --------------------------------------------------------------------
 
 							});

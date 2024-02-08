@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13430,6 +13431,14 @@ public class HomeController {
 
 	@GetMapping("accounts")
 	public String accountsreport(Model theModel) {
+	
+		theModel.addAttribute("accountslist", account_calculation());
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountsMain"));
+		return "accountsreport";
+	}
+	
+	public List<Accountsheads> account_calculation() {
+		
 		List<Accountsheads> ls = accountheadsService.findAll().stream()
 				.sorted(Comparator.comparing(Accountsheads::getRefnumber)).collect(Collectors.toList());
 
@@ -13546,13 +13555,19 @@ public class HomeController {
 						.getbranch_expensewithdraw(obj.getAccountheadid());
 				getbranch_expensewithdrawamt = (double) getbranch_expensewithdraw.get(0).get("amount");
 				// ----------------------------------------------------------------------------
+				double getsalary_payroll_expenseamt;
+				List<Map<String, Object>> getsalary_payroll_expense = accountheadsService
+						.getsalary_payroll_expense(obj.getAccountheadid());
+				getsalary_payroll_expenseamt = (double) getsalary_payroll_expense.get(0).get("amount");
+				System.out.println(getsalary_payroll_expenseamt);
+				// ----------------------------------------------------------------------------
 
 				obj.setAmount(
 						(getaccounttransferdepositamt + getaccountincomedepositamt + getinvoice_receipt_masteramt1)
 								- (getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1
 										+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt
 										+ branchexpense_masteramt1 + getproject_expensewithdrawamt
-										+ getbranch_expensewithdrawamt));
+										+ getbranch_expensewithdrawamt+getsalary_payroll_expenseamt));
 
 			}
 			// -----------------------------------------------------------------
@@ -13608,14 +13623,66 @@ public class HomeController {
 			case "4900":
 				obj.setAmount(Math.round(getOtherIncomeamt));
 				break;
+			case "5800":
+				double getsalary_payrollamt;
+				List<Map<String, Object>> getsalary_payroll = accountheadsService
+						.getsalary_payroll();
+				getsalary_payrollamt = (double) getsalary_payroll.get(0).get("amount");
+				// ----------------------------------------------------------------------------
+				obj.setAmount(Math.round(getsalary_payrollamt));
+				break;
 			}
 
 			oldstr = obj.getMastergroup();
 		}
-
-		theModel.addAttribute("accountslist", ls);
-		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountsMain"));
-		return "accountsreport";
+		
+		return ls;
+	}
+	
+	@GetMapping("balancesheet")
+	public String balancesheet(Model theModel) {
+	
+		List<Accountsheads> src_divider = accountheadsService.findAll();
+		 
+		List<Accountsheads> ls =account_calculation();
+		 
+		 Map<String, Double> o =   ls.stream().collect(Collectors.groupingBy(Accountsheads::getAccountheads,Collectors.summingDouble(Accountsheads::getAmount)));	 
+		
+		 Map<String, Double> liabilities =new HashMap<String, Double>();
+		 Map<String, Double> assets =new HashMap<String, Double>();
+		 Double liabilities_sum=0.0;
+		 Double assets_sum=0.0;
+		 
+		 o.forEach((x,y)->{
+			 	
+			 String mastergroup =src_divider.stream().filter(C -> C.getAccountheads().equalsIgnoreCase(x.trim())).collect(Collectors.toList()).get(0).getMastergroup();
+			 
+			 if(mastergroup.equalsIgnoreCase("Assets / Bank") || mastergroup.equalsIgnoreCase("Income"))
+			 {
+				 assets.put(x, y);				
+			 }else
+			 {
+				 liabilities.put(x, y);				
+			 }
+		 });	 
+		 liabilities_sum= liabilities.values().stream().reduce(0.0,Double::sum);
+		 assets_sum= assets.values().stream().reduce(0.0,Double::sum);
+		 Map<String, Double> assets1 =assets.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(
+                 LinkedHashMap::new,       (map, entry) -> map.put(entry.getKey(), entry.getValue()), 
+                 LinkedHashMap::putAll
+         );
+		 Map<String, Double> liabilities1 =liabilities.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(
+                 LinkedHashMap::new,       (map, entry) -> map.put(entry.getKey(), entry.getValue()), 
+                 LinkedHashMap::putAll
+         );
+		 
+		 theModel.addAttribute("liabilities_sum", liabilities_sum);
+		 theModel.addAttribute("assets_sum", assets_sum);
+		 theModel.addAttribute("assets", assets1 );
+		 theModel.addAttribute("liabilities", liabilities1);
+		 
+		
+		return "balancesheet";
 	}
 
 	@GetMapping("underMaintenance")

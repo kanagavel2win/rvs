@@ -11651,7 +11651,7 @@ public class HomeController {
 									.collect(Collectors.toList()).get(0);
 						}
 
-						invitemls.add(addupdatedInvoiceMaster(params, initem, i, invitemids));
+						invitemls.add( addupdatedInvoiceMaster(params, initem, i, invitemids));
 					}
 					invm.setInvoiceItemMasterlist(invitemls);
 
@@ -11692,8 +11692,8 @@ public class HomeController {
 
 			List<InvoiceItemMaster> invitemls = new ArrayList();
 			for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
-
 				invitemls.add(addupdatedInvoiceMaster(params, new InvoiceItemMaster(), i, 0));
+				
 			}
 			newinv.setInvoiceItemMasterlist(invitemls);
 
@@ -11747,7 +11747,7 @@ public class HomeController {
 		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
 
 		invitemmaster.setTaxableAmount(afetdiscountamount);
-		invitemmaster.setTotalamountAmount(Double.parseDouble(params.get("totalamount_hid")));
+		invitemmaster.setTotalamountAmount(afetdiscountamount+CGSTamount+IGSTamount+SGSTamount);
 
 		return invitemmaster;
 	}
@@ -13559,7 +13559,7 @@ public class HomeController {
 				List<Map<String, Object>> getsalary_payroll_expense = accountheadsService
 						.getsalary_payroll_expense(obj.getAccountheadid());
 				getsalary_payroll_expenseamt = (double) getsalary_payroll_expense.get(0).get("amount");
-				System.out.println(getsalary_payroll_expenseamt);
+				//System.out.println(getsalary_payroll_expenseamt);
 				// ----------------------------------------------------------------------------
 
 				obj.setAmount(
@@ -13948,7 +13948,7 @@ public class HomeController {
 			tmp1obj.setProjecttotalvaluebilled("0");
 			double billedamt = 0;
 			if (tmp1obj.getInvoiceList().size() > 0) {
-
+					
 				for (InvoiceMaster tobj : tmp1obj.getInvoiceList()) {
 					if (tobj.getInvoiceItemMasterlist().size() > 0) {
 						billedamt = +tobj.getInvoiceItemMasterlist().stream().mapToDouble(x -> x.getTotalamountAmount())

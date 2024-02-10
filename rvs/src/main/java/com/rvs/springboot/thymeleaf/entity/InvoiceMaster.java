@@ -90,6 +90,7 @@ public class InvoiceMaster {
 	@Column
 	private String notes;
 	
+	
 	@OneToMany(cascade =  CascadeType.ALL)
 	@JoinColumn(name ="invoiceid")
 	@OrderBy("invoiceitemid ASC")

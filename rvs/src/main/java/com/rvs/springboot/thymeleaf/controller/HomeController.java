@@ -13656,13 +13656,23 @@ public class HomeController {
 		 o.forEach((x,y)->{
 			 	
 			 String mastergroup =src_divider.stream().filter(C -> C.getAccountheads().equalsIgnoreCase(x.trim())).collect(Collectors.toList()).get(0).getMastergroup();
-			 
-			 if(mastergroup.equalsIgnoreCase("Assets / Bank") || mastergroup.equalsIgnoreCase("Income"))
+			 String accounthead =src_divider.stream().filter(C -> C.getAccountheads().equalsIgnoreCase(x.trim())).collect(Collectors.toList()).get(0).getAccountheads();
+			 if (accounthead.equalsIgnoreCase("Income(Direct)")){
+			 }
+			 else if(mastergroup.equalsIgnoreCase("Assets / Bank") || mastergroup.equalsIgnoreCase("Income") || mastergroup.equalsIgnoreCase("Equity")  || mastergroup.equalsIgnoreCase("Retained Earnings"))
 			 {
-				 assets.put(x, y);				
+				 if(y>0)
+				 {
+					 assets.put(x, y);
+				 }
+				 				
 			 }else
 			 {
-				 liabilities.put(x, y);				
+				 if(y>0)
+				 {
+					 liabilities.put(x, y);
+				 }
+				 				
 			 }
 		 });	 
 		 liabilities_sum= liabilities.values().stream().reduce(0.0,Double::sum);
@@ -13671,10 +13681,14 @@ public class HomeController {
                  LinkedHashMap::new,       (map, entry) -> map.put(entry.getKey(), entry.getValue()), 
                  LinkedHashMap::putAll
          );
+		 Double profitAndLoss = assets_sum-liabilities_sum;
+		 
 		 Map<String, Double> liabilities1 =liabilities.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(
                  LinkedHashMap::new,       (map, entry) -> map.put(entry.getKey(), entry.getValue()), 
                  LinkedHashMap::putAll
          );
+		 liabilities1.put("Profit and Loss", profitAndLoss); 
+		 liabilities_sum=liabilities_sum+profitAndLoss;
 		 
 		 theModel.addAttribute("liabilities_sum", liabilities_sum);
 		 theModel.addAttribute("assets_sum", assets_sum);

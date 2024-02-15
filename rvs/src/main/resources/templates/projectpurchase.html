@@ -765,9 +765,9 @@
 
 
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitNo">Tally
+													<label class="form-label" for="recepitNo">
 														Receipt #</label> <input type="text" id="recepitNo"
-														name="recepitNo" class="form-control" required />
+														name="recepitNo" class="form-control" placeholder="Will auto generate" />
 												</div>
 
 												<div class="col-12 col-md-6">
@@ -802,7 +802,7 @@
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="amount">Amount </label> <input
-														type="text" id="amount" name="amount"
+														type="number" id="amount" name="amount"
 														class="form-control modal-edit-tax-id" required />
 												</div>
 												<div class="col-12 col-md-6">
@@ -2590,6 +2590,15 @@
 						}
 			  });
 				//------------------------------------------------------
+				$('#amount').on('change',function(event) {
+						var amount = $('#amount').val();
+						
+						if(amount > parseFloat($('#purpaymentBalancetxt').text()))
+						{
+							$('#amount').val($('#purpaymentBalancetxt').text());
+						}
+						
+					});
 		</script>
 </body>
 </html>

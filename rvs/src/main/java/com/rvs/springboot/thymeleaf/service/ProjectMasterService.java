@@ -23,4 +23,7 @@ public interface ProjectMasterService {
 	
 	public List<Map<String, Object>> getdatainvoicereceipt_graph();
 	public List<Map<String, Object>> getdataexpense_graph();
+	
+	public int getItemcountInvoicBillProma(String billType);
+	public int getItemcountReceipt();
 }

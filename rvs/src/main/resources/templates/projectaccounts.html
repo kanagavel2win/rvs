@@ -550,13 +550,12 @@
 																<div class="col-md-4">
 																	<dl class="row mb-2">
 																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																			<span class="text-capitalize mb-0 text-nowrap">Tally
-																				Ref #</span>
+																			<span class="text-capitalize mb-0 text-nowrap">Invoice No#</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
 																				<input type="text" class="form-control"
-																					id="invoiceNo" name="invoiceNo" required /> <input
+																					id="invoiceNo" name="invoiceNo" placeholder="Will auto generate"  /> <input
 																					type="hidden" class="form-control" id="invoiceid"
 																					name="invoiceid" />
 																			</div>
@@ -808,9 +807,9 @@
 
 
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitNo">Tally
+													<label class="form-label" for="recepitNo">
 														Receipt #</label> <input type="text" id="recepitNo"
-														name="recepitNo" class="form-control" required />
+														name="recepitNo" class="form-control" placeholder="Will auto generate" />
 												</div>
 
 												<div class="col-12 col-md-6">
@@ -845,7 +844,7 @@
 												</div>
 												<div class="col-12 col-md-6">
 													<label class="form-label" for="amount">Amount </label> <input
-														type="text" id="amount" name="amount"
+														type="number" id="amount" name="amount"
 														class="form-control modal-edit-tax-id" required />
 												</div>
 												<div class="col-12 col-md-6">
@@ -1533,6 +1532,7 @@
 								 $('.addNewInvoicebtn').on('click', function(event){
 									validationinvoiceformreset();
 									$("#projectitemid").val("");
+									$("#invoiceid").val("");									
 									$("#invoiceType").val("Tax Invoice").change();
 									
 								 });
@@ -1614,10 +1614,16 @@
 									}
 								});
 								// --------------------------------------------------------------------
-								
-								
-								
-								
+								$('#amount').on('change',function(event) {
+									var amount = $('#amount').val();
+									
+									
+									if(amount > parseFloat($('#invoiceBalancetxt').text()))
+									{
+										$('#amount').val($('#invoiceBalancetxt').text());
+									}
+									
+								});
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$('#editprojectMasterdetailsForm').on('submit',function(event) {
 

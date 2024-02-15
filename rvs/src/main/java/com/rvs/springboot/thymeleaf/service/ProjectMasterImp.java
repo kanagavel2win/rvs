@@ -186,4 +186,19 @@ public class ProjectMasterImp implements ProjectMasterService {
 		
 		return atm;
 	}
+
+	@Override
+	public int getItemcountInvoicBillProma(String billType) {
+		String sql="select Count(*) as itemcount from  invoice_master where invoice_type='"+  billType+"'";
+		int atm = JdbcTemplate.queryForObject(sql,Integer.class);
+		return atm +1 ;
+		
+	}
+
+	@Override
+	public int getItemcountReceipt() {
+		String sql="select Count(*) as itemcount from  invoice_receipt_master";
+		int atm = JdbcTemplate.queryForObject(sql,Integer.class);
+		return atm +1;
+	}
 }

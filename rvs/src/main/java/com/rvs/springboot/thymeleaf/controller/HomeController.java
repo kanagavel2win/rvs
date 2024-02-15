@@ -11688,7 +11688,7 @@ public class HomeController {
 			newinv.setRvsaddress(
 					"29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
 			newinv.setReceivable("");
-			newinv.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
+			newinv.setInvoiceNo(String.valueOf(getInvoiceautogeneration(String.valueOf(params.get("invoiceType")))));
 
 			List<InvoiceItemMaster> invitemls = new ArrayList();
 			for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
@@ -12085,7 +12085,7 @@ public class HomeController {
 		} else {
 			InvoiceReceiptMaster invm = new InvoiceReceiptMaster();
 
-			invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+			invm.setRecepitNo(projectMasterService.getItemcountReceipt()+"");
 			invm.setAmount(Double.parseDouble(params.get("amount")));
 			invm.setDepositedto(String.valueOf(params.get("depositedto")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
@@ -12131,7 +12131,7 @@ public class HomeController {
 		} else {
 			ProjectpurchasePaymentMaster invm = new ProjectpurchasePaymentMaster();
 
-			invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+			invm.setRecepitNo(String.valueOf(pm.getPurchasePaymentMasterList().size() +1 ));
 			invm.setAmount(Double.parseDouble(params.get("amount")));
 			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
@@ -12856,7 +12856,7 @@ public class HomeController {
 			invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
 			invm.setNotes(String.valueOf(params.get("Notes")));
 			invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
-			invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
+			invm.setPrjreceiptno(String.valueOf(pm.getProjectExpenseList().size() +1 ));
 			invm.setQuantity(Double.parseDouble(params.get("Quantity")));
 			invm.setStaff(String.valueOf(params.get("staff")));
 			invm.setTotal(Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));
@@ -13652,7 +13652,7 @@ public class HomeController {
 		 Map<String, Double> assets =new HashMap<String, Double>();
 		 Double liabilities_sum=0.0;
 		 Double assets_sum=0.0;
-		 
+		 //System.out.println(o);
 		 o.forEach((x,y)->{
 			 	
 			 String mastergroup =src_divider.stream().filter(C -> C.getAccountheads().equalsIgnoreCase(x.trim())).collect(Collectors.toList()).get(0).getMastergroup();
@@ -14108,8 +14108,6 @@ public class HomeController {
 			ps.setDepitedfrom(arr[4].trim());
 			
 			payslipserive.save(ps);
-			
-			
 		}
 		
 		return "";
@@ -14117,4 +14115,39 @@ public class HomeController {
 	}
 	
 	
+	public String getFinancialYears()
+	{
+		int CurrentYear = Calendar.getInstance().get(Calendar.YEAR);
+		int CurrentMonth = (Calendar.getInstance().get(Calendar.MONTH)+1);
+		String financiyalYearFrom="";
+		String financiyalYearTo="";
+		if (CurrentMonth<4) {
+		   return String.valueOf(CurrentYear-1).substring(2)+ "-"+String.valueOf(CurrentYear).substring(2);
+		}  else {
+			return String.valueOf(CurrentYear).substring(2)+ "-"+String.valueOf(CurrentYear+1).substring(2);
+		}
+	}
+	
+	public String getInvoiceautogeneration(String invType)
+	{
+		int itemcount = projectMasterService.getItemcountInvoicBillProma(invType);
+		
+		if(invType.equalsIgnoreCase("Tax Invoice")) {
+			return "INV"+ getFinancialYears() +"/"+itemcount;
+		}else if(invType.equalsIgnoreCase("Proforma Invoice")) {
+			return "PRO"+ getFinancialYears() +"/"+itemcount;
+		}else
+		{
+			return "BILL"+ getFinancialYears() +"/"+itemcount;
+		}
+		
+	}
+	
+	@GetMapping("prjinvoiceprint")
+	public String prjinvoiceprint(@RequestParam("id") int invoiceid) {
+	
+		return "invoiceprint";
+		
+	}
+		
 }

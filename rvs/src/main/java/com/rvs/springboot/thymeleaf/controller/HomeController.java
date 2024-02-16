@@ -4113,15 +4113,15 @@ public class HomeController {
 	}
 
 	@GetMapping("payrollvoucher")
-	public String payrollvoucher( Model themodel,@RequestParam(name = "mn") String selectedmonth) {
-		
-		List<payslip> psls= payslipserive.findByPaymonth(selectedmonth.replace("-",""));
-		
-		for(payslip ps: psls) {
-			ps.setBranchName(branchMasterService.findById(Integer.parseInt(ps.getBranchid())).getBRANCH_NAME());		
+	public String payrollvoucher(Model themodel, @RequestParam(name = "mn") String selectedmonth) {
+
+		List<payslip> psls = payslipserive.findByPaymonth(selectedmonth.replace("-", ""));
+
+		for (payslip ps : psls) {
+			ps.setBranchName(branchMasterService.findById(Integer.parseInt(ps.getBranchid())).getBRANCH_NAME());
 		}
 		psls.sort(Comparator.comparing(payslip::getEmployeeid));
-		
+
 		themodel.addAttribute("selectedmonth", selectedmonth);
 		themodel.addAttribute("paysliplist", psls);
 		themodel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
@@ -4144,8 +4144,7 @@ public class HomeController {
 
 		return "payslippdf";
 	}
-	
-	
+
 	@PostMapping("payrollexcel")
 	public void payrollexcel(@RequestParam(name = "month") String selectedmonth, Model themodel,
 			@RequestParam(value = "report") String report, @RequestParam(value = "branchname") String branchname,
@@ -11651,7 +11650,7 @@ public class HomeController {
 									.collect(Collectors.toList()).get(0);
 						}
 
-						invitemls.add( addupdatedInvoiceMaster(params, initem, i, invitemids));
+						invitemls.add(addupdatedInvoiceMaster(params, initem, i, invitemids));
 					}
 					invm.setInvoiceItemMasterlist(invitemls);
 
@@ -11693,7 +11692,7 @@ public class HomeController {
 			List<InvoiceItemMaster> invitemls = new ArrayList();
 			for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
 				invitemls.add(addupdatedInvoiceMaster(params, new InvoiceItemMaster(), i, 0));
-				
+
 			}
 			newinv.setInvoiceItemMasterlist(invitemls);
 
@@ -11742,12 +11741,13 @@ public class HomeController {
 
 		invitemmaster.setInvoiceItem(String.valueOf(params.get("InvoiceItem" + index)));
 		invitemmaster.setDescription(String.valueOf(params.get("Description" + index)));
+		invitemmaster.setHSN(String.valueOf(params.get("HSN" + index)));
 		invitemmaster.setQuantity(qty);
 		invitemmaster.setPrice(price);
 		invitemmaster.setUnit(String.valueOf(params.get("Unit" + index)));
 
 		invitemmaster.setTaxableAmount(afetdiscountamount);
-		invitemmaster.setTotalamountAmount(afetdiscountamount+CGSTamount+IGSTamount+SGSTamount);
+		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + IGSTamount + SGSTamount);
 
 		return invitemmaster;
 	}
@@ -12085,7 +12085,7 @@ public class HomeController {
 		} else {
 			InvoiceReceiptMaster invm = new InvoiceReceiptMaster();
 
-			invm.setRecepitNo(projectMasterService.getItemcountReceipt()+"");
+			invm.setRecepitNo(projectMasterService.getItemcountReceipt() + "");
 			invm.setAmount(Double.parseDouble(params.get("amount")));
 			invm.setDepositedto(String.valueOf(params.get("depositedto")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
@@ -12131,7 +12131,7 @@ public class HomeController {
 		} else {
 			ProjectpurchasePaymentMaster invm = new ProjectpurchasePaymentMaster();
 
-			invm.setRecepitNo(String.valueOf(pm.getPurchasePaymentMasterList().size() +1 ));
+			invm.setRecepitNo(String.valueOf(pm.getPurchasePaymentMasterList().size() + 1));
 			invm.setAmount(Double.parseDouble(params.get("amount")));
 			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
@@ -12856,7 +12856,7 @@ public class HomeController {
 			invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
 			invm.setNotes(String.valueOf(params.get("Notes")));
 			invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
-			invm.setPrjreceiptno(String.valueOf(pm.getProjectExpenseList().size() +1 ));
+			invm.setPrjreceiptno(String.valueOf(pm.getProjectExpenseList().size() + 1));
 			invm.setQuantity(Double.parseDouble(params.get("Quantity")));
 			invm.setStaff(String.valueOf(params.get("staff")));
 			invm.setTotal(Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));
@@ -13431,14 +13431,14 @@ public class HomeController {
 
 	@GetMapping("accounts")
 	public String accountsreport(Model theModel) {
-	
+
 		theModel.addAttribute("accountslist", account_calculation());
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountsMain"));
 		return "accountsreport";
 	}
-	
+
 	public List<Accountsheads> account_calculation() {
-		
+
 		List<Accountsheads> ls = accountheadsService.findAll().stream()
 				.sorted(Comparator.comparing(Accountsheads::getRefnumber)).collect(Collectors.toList());
 
@@ -13559,7 +13559,7 @@ public class HomeController {
 				List<Map<String, Object>> getsalary_payroll_expense = accountheadsService
 						.getsalary_payroll_expense(obj.getAccountheadid());
 				getsalary_payroll_expenseamt = (double) getsalary_payroll_expense.get(0).get("amount");
-				//System.out.println(getsalary_payroll_expenseamt);
+				// System.out.println(getsalary_payroll_expenseamt);
 				// ----------------------------------------------------------------------------
 
 				obj.setAmount(
@@ -13567,7 +13567,7 @@ public class HomeController {
 								- (getprojectpurchase_payment_masteramt1 + getbranchpurchase_payment_masteramt1
 										+ getaccounttransferwithdrawamt + getaccountincomewithdrawamt
 										+ branchexpense_masteramt1 + getproject_expensewithdrawamt
-										+ getbranch_expensewithdrawamt+getsalary_payroll_expenseamt));
+										+ getbranch_expensewithdrawamt + getsalary_payroll_expenseamt));
 
 			}
 			// -----------------------------------------------------------------
@@ -13625,8 +13625,7 @@ public class HomeController {
 				break;
 			case "5800":
 				double getsalary_payrollamt;
-				List<Map<String, Object>> getsalary_payroll = accountheadsService
-						.getsalary_payroll();
+				List<Map<String, Object>> getsalary_payroll = accountheadsService.getsalary_payroll();
 				getsalary_payrollamt = (double) getsalary_payroll.get(0).get("amount");
 				// ----------------------------------------------------------------------------
 				obj.setAmount(Math.round(getsalary_payrollamt));
@@ -13635,67 +13634,61 @@ public class HomeController {
 
 			oldstr = obj.getMastergroup();
 		}
-		
+
 		return ls;
 	}
-	
+
 	@GetMapping("balancesheet")
 	public String balancesheet(Model theModel) {
-	
+
 		List<Accountsheads> src_divider = accountheadsService.findAll();
-		 
-		List<Accountsheads> ls =account_calculation();
-		 
-		 Map<String, Double> o =   ls.stream().collect(Collectors.groupingBy(Accountsheads::getAccountheads,Collectors.summingDouble(Accountsheads::getAmount)));	 
-		
-		 Map<String, Double> liabilities =new HashMap<String, Double>();
-		 Map<String, Double> assets =new HashMap<String, Double>();
-		 Double liabilities_sum=0.0;
-		 Double assets_sum=0.0;
-		 //System.out.println(o);
-		 o.forEach((x,y)->{
-			 	
-			 String mastergroup =src_divider.stream().filter(C -> C.getAccountheads().equalsIgnoreCase(x.trim())).collect(Collectors.toList()).get(0).getMastergroup();
-			 String accounthead =src_divider.stream().filter(C -> C.getAccountheads().equalsIgnoreCase(x.trim())).collect(Collectors.toList()).get(0).getAccountheads();
-			 if (accounthead.equalsIgnoreCase("Income(Direct)")){
-			 }
-			 else if(mastergroup.equalsIgnoreCase("Assets / Bank") || mastergroup.equalsIgnoreCase("Income") || mastergroup.equalsIgnoreCase("Equity")  || mastergroup.equalsIgnoreCase("Retained Earnings"))
-			 {
-				 if(y>0)
-				 {
-					 assets.put(x, y);
-				 }
-				 				
-			 }else
-			 {
-				 if(y>0)
-				 {
-					 liabilities.put(x, y);
-				 }
-				 				
-			 }
-		 });	 
-		 liabilities_sum= liabilities.values().stream().reduce(0.0,Double::sum);
-		 assets_sum= assets.values().stream().reduce(0.0,Double::sum);
-		 Map<String, Double> assets1 =assets.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(
-                 LinkedHashMap::new,       (map, entry) -> map.put(entry.getKey(), entry.getValue()), 
-                 LinkedHashMap::putAll
-         );
-		 Double profitAndLoss = assets_sum-liabilities_sum;
-		 
-		 Map<String, Double> liabilities1 =liabilities.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(
-                 LinkedHashMap::new,       (map, entry) -> map.put(entry.getKey(), entry.getValue()), 
-                 LinkedHashMap::putAll
-         );
-		 liabilities1.put("Profit and Loss", profitAndLoss); 
-		 liabilities_sum=liabilities_sum+profitAndLoss;
-		 
-		 theModel.addAttribute("liabilities_sum", liabilities_sum);
-		 theModel.addAttribute("assets_sum", assets_sum);
-		 theModel.addAttribute("assets", assets1 );
-		 theModel.addAttribute("liabilities", liabilities1);
-		 
-		
+
+		List<Accountsheads> ls = account_calculation();
+
+		Map<String, Double> o = ls.stream().collect(Collectors.groupingBy(Accountsheads::getAccountheads,
+				Collectors.summingDouble(Accountsheads::getAmount)));
+
+		Map<String, Double> liabilities = new HashMap<String, Double>();
+		Map<String, Double> assets = new HashMap<String, Double>();
+		Double liabilities_sum = 0.0;
+		Double assets_sum = 0.0;
+		// System.out.println(o);
+		o.forEach((x, y) -> {
+
+			String mastergroup = src_divider.stream().filter(C -> C.getAccountheads().equalsIgnoreCase(x.trim()))
+					.collect(Collectors.toList()).get(0).getMastergroup();
+			String accounthead = src_divider.stream().filter(C -> C.getAccountheads().equalsIgnoreCase(x.trim()))
+					.collect(Collectors.toList()).get(0).getAccountheads();
+			if (accounthead.equalsIgnoreCase("Income(Direct)")) {
+			} else if (mastergroup.equalsIgnoreCase("Assets / Bank") || mastergroup.equalsIgnoreCase("Income")
+					|| mastergroup.equalsIgnoreCase("Equity") || mastergroup.equalsIgnoreCase("Retained Earnings")) {
+				if (y > 0) {
+					assets.put(x, y);
+				}
+
+			} else {
+				if (y > 0) {
+					liabilities.put(x, y);
+				}
+
+			}
+		});
+		liabilities_sum = liabilities.values().stream().reduce(0.0, Double::sum);
+		assets_sum = assets.values().stream().reduce(0.0, Double::sum);
+		Map<String, Double> assets1 = assets.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(
+				LinkedHashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), LinkedHashMap::putAll);
+		Double profitAndLoss = assets_sum - liabilities_sum;
+
+		Map<String, Double> liabilities1 = liabilities.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(
+				LinkedHashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), LinkedHashMap::putAll);
+		liabilities1.put("Profit and Loss", profitAndLoss);
+		liabilities_sum = liabilities_sum + profitAndLoss;
+
+		theModel.addAttribute("liabilities_sum", liabilities_sum);
+		theModel.addAttribute("assets_sum", assets_sum);
+		theModel.addAttribute("assets", assets1);
+		theModel.addAttribute("liabilities", liabilities1);
+
 		return "balancesheet";
 	}
 
@@ -13962,11 +13955,11 @@ public class HomeController {
 			tmp1obj.setProjecttotalvaluebilled("0");
 			double billedamt = 0;
 			if (tmp1obj.getInvoiceList().size() > 0) {
-					
+
 				for (InvoiceMaster tobj : tmp1obj.getInvoiceList()) {
 					if (tobj.getInvoiceItemMasterlist().size() > 0) {
-						billedamt = +tobj.getInvoiceItemMasterlist().stream().mapToDouble(x -> x.getTotalamountAmount())
-								.sum();
+						billedamt = billedamt + tobj.getInvoiceItemMasterlist().stream()
+								.mapToDouble(x -> x.getTotalamountAmount()).sum();
 					}
 				}
 
@@ -14069,7 +14062,7 @@ public class HomeController {
 	@PostMapping("saveadvancedetails_payroll")
 	@ResponseBody
 	public String saveadvancedetails_payroll(@RequestParam Map<String, String> params) {
-		//System.out.println(params);
+		// System.out.println(params);
 		String selectmonth = params.get("selectmonth");
 		String advancestring = params.get("advancestring");
 
@@ -14093,61 +14086,156 @@ public class HomeController {
 	@PostMapping("savepayrollvoucher")
 	@ResponseBody
 	public String savepayrollvoucher(@RequestParam Map<String, String> params) {
-	
+
 		String advancestring = params.get("advancestring");
 
 		List<String> t1 = Arrays.asList(advancestring.split(";"));
 		for (String str : t1) {
 			String arr[] = str.split("\\|");
 			payslip ps = payslipserive.findById(Integer.parseInt(arr[0]));
-			
+
 			ps.setVoucher_date(arr[1].trim());
 			ps.setTransactionno(arr[2].trim());
 			ps.setNotes(arr[3].trim());
 			ps.setModeofPayment(arr[5].trim());
 			ps.setDepitedfrom(arr[4].trim());
-			
+
 			payslipserive.save(ps);
 		}
-		
+
 		return "";
-		
+
 	}
-	
-	
-	public String getFinancialYears()
-	{
+
+	public String getFinancialYears() {
 		int CurrentYear = Calendar.getInstance().get(Calendar.YEAR);
-		int CurrentMonth = (Calendar.getInstance().get(Calendar.MONTH)+1);
-		String financiyalYearFrom="";
-		String financiyalYearTo="";
-		if (CurrentMonth<4) {
-		   return String.valueOf(CurrentYear-1).substring(2)+ "-"+String.valueOf(CurrentYear).substring(2);
-		}  else {
-			return String.valueOf(CurrentYear).substring(2)+ "-"+String.valueOf(CurrentYear+1).substring(2);
+		int CurrentMonth = (Calendar.getInstance().get(Calendar.MONTH) + 1);
+		String financiyalYearFrom = "";
+		String financiyalYearTo = "";
+		if (CurrentMonth < 4) {
+			return String.valueOf(CurrentYear - 1).substring(2) + "-" + String.valueOf(CurrentYear).substring(2);
+		} else {
+			return String.valueOf(CurrentYear).substring(2) + "-" + String.valueOf(CurrentYear + 1).substring(2);
 		}
 	}
-	
-	public String getInvoiceautogeneration(String invType)
-	{
+
+	public String getInvoiceautogeneration(String invType) {
 		int itemcount = projectMasterService.getItemcountInvoicBillProma(invType);
-		
-		if(invType.equalsIgnoreCase("Tax Invoice")) {
-			return "INV"+ getFinancialYears() +"/"+itemcount;
-		}else if(invType.equalsIgnoreCase("Proforma Invoice")) {
-			return "PRO"+ getFinancialYears() +"/"+itemcount;
-		}else
-		{
-			return "BILL"+ getFinancialYears() +"/"+itemcount;
+
+		if (invType.equalsIgnoreCase("Tax Invoice")) {
+			return "INV" + getFinancialYears() + "/" + itemcount;
+		} else if (invType.equalsIgnoreCase("Proforma Invoice")) {
+			return "PRO" + getFinancialYears() + "/" + itemcount;
+		} else {
+			return "BILL" + getFinancialYears() + "/" + itemcount;
 		}
-		
+
 	}
-	
+
 	@GetMapping("prjinvoiceprint")
-	public String prjinvoiceprint(@RequestParam("id") int invoiceid) {
-	
+	public String prjinvoiceprint(@RequestParam("id") int projectid, @RequestParam("inv") int invoiceId,
+			Model themodel) {
+
+		ProjectMaster pm = projectMasterService.findById(projectid);
+
+		InvoiceMaster inv = pm.getInvoiceList().stream().filter(C -> C.getInvoiceid() == invoiceId)
+				.collect(Collectors.toList()).get(0);
+		try {
+			inv.setInvoiceDateMMMddyyyy(
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(inv.getInvoiceDate())).toString());
+		} catch (ParseException e) {
+
+		}
+
+		int CgstCount = inv.getInvoiceItemMasterlist().stream().filter(C -> C.getCGSTper() > 0)
+				.collect(Collectors.toList()).size();
+		int IgstCount = inv.getInvoiceItemMasterlist().stream().filter(C -> C.getIGSTper() > 0)
+				.collect(Collectors.toList()).size();
+
+		boolean Cgststatus = false;
+		boolean Igststatus = false;
+
+		if (CgstCount > 0) {
+			Cgststatus = true;
+		}
+		if (IgstCount > 0) {
+			Igststatus = true;
+		}
+		double total_CGSTamount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getCGSTamount).sum();
+		double total_IGSTamount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getIGSTamount).sum();
+		double total_SGSTamount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getSGSTamount).sum();
+		double total_Discountamt= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getDiscountamt).sum();
+		double total_amountAmount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
+		double total_TaxableAmount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getTaxableAmount).sum();
+		themodel.addAttribute("total_CGSTamount", total_CGSTamount);
+		themodel.addAttribute("total_IGSTamount", total_IGSTamount);
+		themodel.addAttribute("total_SGSTamount", total_SGSTamount);
+		themodel.addAttribute("total_Discountamt", total_Discountamt);
+		themodel.addAttribute("total_amountAmount", total_amountAmount);
+		themodel.addAttribute("total_TaxableAmount", total_TaxableAmount);
+		themodel.addAttribute("amountinWords", convertAmountToWords(total_amountAmount));
+		themodel.addAttribute("Igststatus", Igststatus);
+		themodel.addAttribute("Cgststatus", Cgststatus);
+		themodel.addAttribute("project", pm);
+		themodel.addAttribute("invoice", inv);
 		return "invoiceprint";
-		
+
 	}
-		
+
+	public String convertAmountToWords(double amount) {
+		if (amount == 0) {
+			return "zero";
+		}
+		int amountInLong = (int) amount;
+
+		return convert(amountInLong);
+	}
+
+	public static final String[] units = { "", "One", "Two", "Three", "Four",
+			"Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
+			"Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
+			"Eighteen", "Nineteen" };
+
+	public static final String[] tens = { 
+			"", 		// 0
+			"",		// 1
+			"Twenty", 	// 2
+			"Thirty", 	// 3
+			"Forty", 	// 4
+			"Fifty", 	// 5
+			"Sixty", 	// 6
+			"Seventy",	// 7
+			"Eighty", 	// 8
+			"Ninety" 	// 9
+	};
+
+	public static String convert(final int n) {
+		if (n < 0) {
+			return "Minus " + convert(-n);
+		}
+
+		if (n < 20) {
+			return units[n];
+		}
+
+		if (n < 100) {
+			return tens[n / 10] + ((n % 10 != 0) ? " " : "") + units[n % 10];
+		}
+
+		if (n < 1000) {
+			return units[n / 100] + " Hundred" + ((n % 100 != 0) ? " " : "") + convert(n % 100);
+		}
+
+		if (n < 100000) {
+			return convert(n / 1000) + " Thousand" + ((n % 10000 != 0) ? " " : "") + convert(n % 1000);
+		}
+
+		if (n < 10000000) {
+			return convert(n / 100000) + " Lakh" + ((n % 100000 != 0) ? " " : "") + convert(n % 100000);
+		}
+
+		return convert(n / 10000000) + " Crore" + ((n % 10000000 != 0) ? " " : "") + convert(n % 10000000);
+	}
+	 
+
 }

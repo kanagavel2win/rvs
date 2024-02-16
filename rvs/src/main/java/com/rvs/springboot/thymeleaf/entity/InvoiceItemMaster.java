@@ -32,6 +32,8 @@ public class InvoiceItemMaster {
 	@Column
 	private String Description;
 	@Column
+	private String HSN;
+	@Column
 	private double Quantity;
 	@Column
 	private String Unit;

@@ -115,7 +115,7 @@ margin-left:-180px;
 }
 
 .img-fluid {
-	height:115px;
+	height:95px;
 	
 }
 table{
@@ -130,11 +130,20 @@ table, th, td {
 {
  font-size: 12px;
  border-spacing:0px;
- padding: 0rem 0.2rem;
+ padding: 0rem 0.3rem;
  border: 1px solid black;
-  border-collapse: collapse;
+ border-collapse: collapse;
  
 }
+.tboarder, .tboarder th
+{
+border: 0px solid black;
+ border-collapse: collapse;
+}
+.tboarder tr, .tboarder td {
+border: 1px solid black;
+}
+
 .td16{
 	background:#F4A460;
 	font-weight:bold;
@@ -176,7 +185,7 @@ text-align:right;
 }
 .desc_td
 {
-max-width: 200px;
+max-width: 300px;
 	
 }
 @media print { 
@@ -185,14 +194,40 @@ max-width: 200px;
    } 
 }
 
-header {
-position: fixed;
-height:300px;
-top: 0;
+.logodiv1
+{
+float: left;
+width: 30%;
 }
-.header-space	 {
+
+.amt_align{
+
+text-align: right;
 
 }
+
+.logodiv2
+{
+float: left;
+padding-left: 10px;
+width: 65%;
+}
+
+ /*
+.header { 
+                position: fixed; 
+                top: 0; 
+                left: 0; 
+                right: 0; 
+                height: 50px; 
+            } 
+ .empty-header{
+ height:200px;
+ }
+
+.hitd{
+border-style : hidden!important;
+}*/
 </style>
 </head>
 <!-- END: Head-->
@@ -211,11 +246,11 @@ top: 0;
 					
 					<table class="table header" align="center">
 							<tr>
-								<td rowspan="4"> 
-									<img class="img-fluid" th:src="@{/assets/img/logo/rvslogo1.png}" />
-								</td>
-								<td  rowspan="4" class=>
-								
+								<td rowspan="3"> 
+								<div class="logodiv1">	
+								<img class="img-fluid" th:src="@{/assets/img/logo/rvslogo1.png}" />
+								</div>
+								<div class="logodiv2"> 
 								<b>RVS Land Surveyors</b> <br/>
 								29,PALANI ILLAM <br/>
 								SUNDARAM BROTHERS LAY OUT <br/>
@@ -224,21 +259,25 @@ top: 0;
 								GSTIN/UIN: 33AASFR5322C1ZD  <br/>
 								State Name : Tamil Nadu, Code : 33 <br/>
 								E-Mail : accounts@rvsls.com
+								</div>
 								</td>
-								<td>Invoice No. <br/><th:block th:text="${invoice.invoiceNo}"></th:block></td>
-								<td>Dated<br/><th:block th:text="${invoice.invoiceDateMMMddyyyy}"></th:block></td>
+								
+								<td>
+								
+								<th:block th:if="${invoice.invoiceType}=='Tax Invoice'" th:text="'Invoice No.'"></th:block>
+								<th:block th:if="${invoice.invoiceType}=='Proforma Invoice'" th:text="'Proforma Invoice No.'"></th:block>
+								<th:block th:if="${invoice.invoiceType}=='Bill'" th:text="'Bill'"></th:block>
+								
+								 <br/><th:block th:text="${invoice.invoiceNo}"></th:block></td>
+								<td>Date<br/><th:block th:text="${invoice.invoiceDateMMMddyyyy}"></th:block></td>
+								
 							</tr>
 							<tr>
-								<td>Delivery Note<br/></td><td>Mode/Terms of Payment<br/></td>
+								<td>Ref.<br/><th:block th:text="${project.projectID}"></th:block></td>
+								<td>Po #.<br/>&nbsp;</td>
 							</tr>
 							<tr>
-								<td>Supplier’s Ref. <br/></td><td>Other Reference(s) <br/></td>
-							</tr>
-							<tr>
-								<td>Buyer’s Order No.<br/></td><td>Dated<br/></td>
-							</tr>
-							<tr>
-								<td rowspan="3" colspan="2">
+								<td rowspan="3" colspan="3">
 								Buyer<br/>
 								<th:block th:if="${invoice.billaddressline1}!=''" th:utext="${invoice.billaddressline1}+ '<br/>'"></th:block>
 								<th:block th:if="${invoice.billaddressline2}!=''" th:utext="${invoice.billaddressline2}+ '<br/>'"></th:block>
@@ -246,69 +285,67 @@ top: 0;
 								<th:block th:if="${invoice.billstate}!=''" th:utext="${invoice.billstate}+ ''"></th:block>
 								<th:block th:if="${invoice.billpincode}!=''" th:utext="${invoice.billpincode}+ '<br/>'"></th:block>
 								<th:block th:if="${invoice.billGSTNo}!=''" th:utext="'GSTIN/UIN : '+ ${invoice.billGSTNo}+ '<br/>'"></th:block>
-								
 								</td>
-								<td>Despatch Document No.<br/><th:block th:text="${project.projectID}"></th:block></td><td>Delivery Note Date<br/></td>
 							</tr>
-							<tr>
-								<td>Despatched through<br/></td><td>Destination<br/></td>
-							</tr>
-							<tr>
-								<td colspan="2">Terms of Delivery</td>
-							</tr>
+							
+						
+							
 							
 					</table>
 					
 					
-					<table class="table empty-header" align="center" >
-						<tr><td>
-					    <div class="header-space">&nbsp;</div>
-					  </td></tr>
-						<tr >
-							<td rowspan="2">#</td>
-							<td rowspan="2">Item & Description</td>
-							<td rowspan="2">HSN/SAC</td>
-							<td rowspan="2">Qty</td>
-							<td rowspan="2">Rate</td>
-							<td colspan="2" th:if="${Igststatus}">IGST</td>
-							<td colspan="2" th:if="${Cgststatus}">CGST</td>
-							<td colspan="2" th:if="${Cgststatus}">SGST</td>
-							<td rowspan="2">Amount</td>
-							
-						</tr>
-						<tr>
-						<th:block th:if="${Igststatus}">
-							<td>%</td>
-							<td>Amount</td>
-						</th:block>
-						<th:block th:if="${Cgststatus}">
-							<td>%</td>
-							<td>Amount</td>
-							<td>%</td>
-							<td>Amount</td>
-						</th:block>	
-						</tr>
-						<tr th:each="obj,i : ${invoice.invoiceItemMasterlist}">
-							<td  th:text="${i.index+1}"></td>
-							<td class="desc_td"> <th:block  th:text="${obj.InvoiceItem}">
-								</th:block>
-								<th:block  th:if="${obj.Description}!=''" th:utext="'<br/>'+ ${obj.Description}">
-								</th:block>
-							</td>
-							<td th:text="${obj.HSN}"></td>
-							<td th:text="${obj.Quantity} +' ' +${obj.Unit}"></td>
-							<td th:text="${obj.Price}"></td>
-							<td th:if="${Igststatus}" th:text="${obj.IGSTper}"></td>
-							<td th:if="${Igststatus}" th:text="${obj.IGSTamount}"></td>
-							<td th:if="${Cgststatus}" th:text="${obj.CGSTper}"></td>
-							<td th:if="${Cgststatus}" th:text="${obj.CGSTamount}"></td>
-							<td th:if="${Cgststatus}" th:text="${obj.SGSTper}"></td>
-							<td th:if="${Cgststatus}" th:text="${obj.SGSTamount}"></td>
-							<td th:utext="'<b>'+ ${obj.totalamountAmount}+'</b>'"></td>
-						</tr>
+					<table class="table" align="center" >
+						<!-- <thead><tr class="hitd"><td class="hitd">
+						<div class="empty-header"></div>
+						</td></tr></thead>
+-->
+					  	<tbody>
+							<tr >
+								<td rowspan="2">#</td>
+								<td rowspan="2">Item & Description</td>
+								<td rowspan="2">HSN</td>
+								<td rowspan="2">Qty</td>
+								<td rowspan="2">Rate</td>
+								<td colspan="2" th:if="${Igststatus}">IGST</td>
+								<td colspan="2" th:if="${Cgststatus}">CGST</td>
+								<td colspan="2" th:if="${Cgststatus}">SGST</td>
+								<td rowspan="2">Amount</td>
+								
+							</tr>
+							<tr>
+							<th:block th:if="${Igststatus}">
+								<td>%</td>
+								<td>&#8377;</td>
+							</th:block>
+							<th:block th:if="${Cgststatus}">
+								<td>%</td>
+								<td>&#8377;</td>
+								<td>%</td>
+								<td>&#8377;</td>
+							</th:block>	
+							</tr>
+							<tr th:each="obj,i : ${invoice.invoiceItemMasterlist}">
+								<td  th:text="${i.index+1}"></td>
+								<td class="desc_td"> <th:block  th:text="${obj.InvoiceItem}">
+									</th:block>
+									<th:block  th:if="${obj.Description}!=''" th:utext="'<br/>'+ ${obj.Description}">
+									</th:block>
+								</td>
+								<td th:text="${obj.HSN}"></td>
+								<td th:text="${obj.Quantity} +' ' +${obj.Unit}"></td>
+								<td class="amt_align" th:text="${obj.Price}"></td>
+								<td class="amt_align" th:if="${Igststatus}" th:text="${obj.IGSTper}"></td>
+								<td class="amt_align" th:if="${Igststatus}" th:text="${obj.IGSTamount}"></td>
+								<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.CGSTper}"></td>
+								<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.CGSTamount}"></td>
+								<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.SGSTper}"></td>
+								<td class="amt_align"  th:if="${Cgststatus}" th:text="${obj.SGSTamount}"></td>
+								<td  class="amt_align" th:utext="'<b>'+ ${obj.totalamountAmount}+'</b>'"></td>
+							</tr>
+						</tbody>
 					</table>
 				
-					<table class="tbeTotal" align="right"  >
+					<table class="table" align="right"  >
 						<tr>	
 							<td align="left"> 
 							Company’s Bank Details <br/>
@@ -317,14 +354,14 @@ top: 0;
 							Branch & IFS Code : Dr Balasundram Road & IBKL0000006
 							</td>
 							<td>
-								<th:block th:utext="'Sub Total <br/>'"></th:block>
-								<th:block th:if="${total_Discountamt}>0" th:utext="'Discount <br/>'"></th:block>
-								<th:block th:if="${Igststatus}" th:utext="'IGST <br/>'"></th:block>
-								<th:block th:if="${Cgststatus}" th:utext="'CGST <br/>'"></th:block>
-								<th:block th:if="${Cgststatus}" th:utext="'SGST <br/>'"></th:block>
-								<th:block th:utext="'Total'"></th:block>
+								<th:block th:utext="'Sub Total (&#x20B9;)<br/>'"></th:block>
+								<th:block th:if="${total_Discountamt}>0" th:utext="'Discount (&#x20B9;)<br/>'"></th:block>
+								<th:block th:if="${Igststatus}" th:utext="'IGST (&#x20B9;)<br/>'"></th:block>
+								<th:block th:if="${Cgststatus}" th:utext="'CGST (&#x20B9;)<br/>'"></th:block>
+								<th:block th:if="${Cgststatus}" th:utext="'SGST (&#x20B9;)<br/>'"></th:block>
+								<th:block th:utext="'Total (&#x20B9;)'"></th:block>
 							</td>
-							<td>
+							<td class="amt_align">
 								<th:block th:utext="'<b>'+ ${total_TaxableAmount} +'</b><br/>'"></th:block>
 								<th:block th:if="${total_Discountamt}>0" th:utext="${total_Discountamt} +'<br/>'"></th:block>
 								<th:block th:if="${Igststatus}" th:utext="${total_IGSTamount} +'<br/>'"></th:block>
@@ -342,7 +379,7 @@ top: 0;
 								
 								for RVS Land Surveyors<br/><br/> <br/><br/>
 								Authorised Signatory
-								<hr/>
+								
 							</td>
 						</tr>
 						

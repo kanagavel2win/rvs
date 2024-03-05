@@ -13905,10 +13905,9 @@ public class HomeController {
 
 		return "AccountPendingPayments";
 	}
-
-	@ResponseBody
-	@GetMapping("Accountsprojectlistjson")
-	public List<ProjectMaster> Accountsprojectlistjson(Model themodel) {
+	
+	public List<ProjectMaster> AccountsprojectlistjsonMain()
+	{
 		List<ProjectMaster> projectmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
@@ -13990,7 +13989,41 @@ public class HomeController {
 			projectmasterls.add(tmp1obj);
 
 		}
+		
+		return projectmasterls;
+	}
 
+	@ResponseBody
+	@GetMapping("Accountsprojectinvlistjson")
+	public List<ProjectMaster> Accountsprojectinvlistjson(Model themodel) {
+		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain().stream().filter(C->
+		Double.parseDouble(C.getProjecttotalvaluebilled())>0).collect(Collectors.toList());
+		
+		
+		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList());
+	}
+	
+	@GetMapping("invoiceedit")
+	public String invoiceedit(Model themodel, @RequestParam("pid") String projectid,@RequestParam("id") String invoiceid) {
+		
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
+		themodel.addAttribute("projectid",projectid);
+		themodel.addAttribute("invoiceid", invoiceid);
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		themodel.addAttribute("UNITS", UNITS);
+		
+		return "accountInvoice";
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("Accountsprojectlistjson")
+	public List<ProjectMaster> Accountsprojectlistjson(Model themodel) {
+		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
 		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
 				.collect(Collectors.toList());
 	}
@@ -14004,8 +14037,7 @@ public class HomeController {
 	@ResponseBody
 	@GetMapping("Accountsprojectlistjsondatefilter")
 	public List<ProjectMaster> Accountsprojectlistjsondatefilter(Model themodel, @RequestParam("dateRange") String dateRange) {
-		System.out.println(dateRange);
-		
+	//	System.out.println(dateRange);
 		String [] dates=dateRange.split("to");
 		String sr_startdate=dates[0].trim();
 		String sr_enddate=dates[1].trim();
@@ -14373,6 +14405,15 @@ public class HomeController {
 
 		return convert(n / 10000000) + " Crore" + ((n % 10000000 != 0) ? " " : "") + convert(n % 10000000);
 	}
-	 
 
+	
+	@GetMapping("accountInvoicels")
+	public String prjinvoiceprint(Model themodel)
+	{
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
+		return "accountInvoicels";
+		
+	}
+	
+//------------------------
 }

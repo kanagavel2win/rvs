@@ -27,174 +27,186 @@ public class menuactivelist {
 		activemenus.clear();
 		
 		
+		switch (menutitle)
+		{
+		case "index":
 		
-		if(menutitle.equalsIgnoreCase("index"))
-		{
 			activemenus.put("index", true);
-			
-		}else if(menutitle.equalsIgnoreCase("admin_hr_employeelist"))
-		{
+		break;	
+		case "admin_hr_employeelist":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Employee", true);
-			
-		}else if(menutitle.equalsIgnoreCase("admin_branchlist"))
-		{
+			break;	
+		case "admin_branchlist":
+		
 			
 			activemenus.put("Administration", true);
 			activemenus.put("Branches", true);
+			break;
 			
-			
-		}else if(menutitle.equalsIgnoreCase("admin_hr_Hire"))
-		{
+		case "admin_hr_Hire":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Hire", true);
-			
-		}else if(menutitle.equalsIgnoreCase("admin_hr_Insurance"))
-		{
+			break;
+		case "admin_hr_Insurance":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Insurance", true);
-			
-		}else if(menutitle.equalsIgnoreCase("admin_hr_Attendance_Daily Attendance"))
-		{
+			break;
+		case "admin_hr_Attendance_Daily Attendance":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
-			activemenus.put("Daily Attendance", true);						
-		}else if(menutitle.equalsIgnoreCase("admin_hr_Attendance_Attendance Report"))
-		{
+			activemenus.put("Daily Attendance", true);	
+			break;
+		case "admin_hr_Attendance_Attendance Report":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
-			activemenus.put("Attendance Report", true);						
-		}else if(menutitle.equalsIgnoreCase("admin_hr_Attendance_Holiday"))
-		{
+			activemenus.put("Attendance Report", true);	
+			break;
+		case "admin_hr_Attendance_Holiday":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
 			activemenus.put("Holiday", true);						
-		}else if(menutitle.equalsIgnoreCase("admin_hr_Attendance_Leave Approval"))
-		{
+		case "admin_hr_Attendance_Leave Approval":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
 			activemenus.put("Leave Approval", true);						
-		}else if(menutitle.equalsIgnoreCase("admin_hr_Attendance_Leave History"))
-		{
+		case "admin_hr_Attendance_Leave History":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
-			activemenus.put("Leave History", true);						
-		}else if(menutitle.equalsIgnoreCase("admin_hr_Payroll"))
-		{
+			activemenus.put("Leave History", true);
+			break;
+		case "admin_hr_Payroll":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Payroll", true);
-					
-		}else if(menutitle.equalsIgnoreCase("admin_AssetManagement"))
-		{
+			break;
+		case "admin_AssetManagement" :
+		
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
-			
+			break;
 					
-		}else if(menutitle.equalsIgnoreCase("contact_People"))
-		{
+		case "contact_People":
+		
 			activemenus.put("Contact", true);
 			activemenus.put("People", true);
-			
+			break;
 					
-		}else if(menutitle.equalsIgnoreCase("contact_Organization"))
-		{
+		case "contact_Organization":
+		
 			activemenus.put("Contact", true);
 			activemenus.put("Organization", true);
-			
+			break;
 					
-		}else if(menutitle.equalsIgnoreCase("lead"))
-		{
+		case "lead":
+		
 			activemenus.put("WorkItem", true);
 			activemenus.put("lead", true);
-			
+			break;	
 					
-		}else if(menutitle.equalsIgnoreCase("deal"))
-		{
+		case "deal":
+		
 			activemenus.put("WorkItem", true);
 			activemenus.put("deal", true);
-			
+			break;	
 					
-		}else if(menutitle.equalsIgnoreCase("project"))
-		{
+		case "project":
+		
 			activemenus.put("WorkItem", true);
 			activemenus.put("project", true);
-			
+			break;	
 					
-		}else if(menutitle.equalsIgnoreCase("projectplan"))
-		{
+		case "projectplan":
+		
 			activemenus.put("WorkItem", true);
 			activemenus.put("projectplan", true);
-			
+			break;	
 					
-		}else if(menutitle.equalsIgnoreCase("projecttemplatelist"))
-		{
+		case "projecttemplatelist":
+		
 			activemenus.put("WorkItem", true);
 			activemenus.put("project", true);
-			
+			break;
 					
-		}else if(menutitle.equalsIgnoreCase("Insurance"))
-		{
+		case "Insurance":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Insurance", true);
-		}else if(menutitle.equalsIgnoreCase("Invoice"))
-		{
+			break;
+		case "Invoice":
+		
 			activemenus.put("Invoice", true);
-			
-		}else if(menutitle.equalsIgnoreCase("AccountTransfer"))
-		{
+		break;
+		case "AccountTransfer":
+		
 			activemenus.put("AccountTransfer", true);
-			
-		}else if(menutitle.equalsIgnoreCase("Income"))
-		{
+		break;	
+		case "Income":
+		
 			activemenus.put("Income", true);
-			
-		}else if(menutitle.equalsIgnoreCase("Asset List"))
-		{
+		break;	
+		case "Asset List":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			activemenus.put("Asset List", true);
+			break;
 			
-			
-		}else if(menutitle.equalsIgnoreCase("Check Out"))
-		{
+		case "Check Out":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			activemenus.put("Check Out", true);
-			
-		}else if(menutitle.equalsIgnoreCase("Check In"))
-		{
+			break;	
+		case "Check In":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			activemenus.put("Check In", true);
-			
-		}else if(menutitle.equalsIgnoreCase("assetaudit"))
-		{
+			break;
+		case "assetaudit":
+		
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			activemenus.put("assetaudit", true);
-			
-		}else if(menutitle.equalsIgnoreCase("accountsMain"))
-		{
+			break;
+		case "accountsMain":
+		
 			activemenus.put("Accounts", true);
 			activemenus.put("accountsMain", true);
-			
-		}else if(menutitle.equalsIgnoreCase("PendingPayments"))
-		{
+			break;
+		case "PendingPayments": 
+		
 			activemenus.put("Accounts", true);
 			activemenus.put("PendingPayments", true);
+		
+			break;
+			
+		case "accountInvoicels" :
+			activemenus.put("Accounts", true);
+			activemenus.put("accInvoice", true);
+			
+			break;
 		}
-		
-		
+			
 		return activemenus;
 	}
 	

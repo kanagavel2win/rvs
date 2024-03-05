@@ -355,8 +355,8 @@ td {
 			});
 		});
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
-
-  	  var dt_basic_table = $('.datatables-basic');
+	 	var dateRange ="[[${dateRange}]]";
+		var dt_basic_table = $('.datatables-basic');
 
   	  	// DataTable with buttons
   	  	// --------------------------------------------------------------------
@@ -366,7 +366,7 @@ td {
 			  if (dt_basic_table.length) {
 			    var dt_basic = dt_basic_table.DataTable({
 			    	 ajax: {
-			             "url": "Accountsprojectlistjson",
+			             "url": "Accountsprojectlistjsondatefilter?dateRange="+dateRange,
 			             "type": "GET",
 			             "dataSrc": "",
 			         },
@@ -592,7 +592,7 @@ td {
 			        }
 			      }
 			    });
-			    $('div.head-label').html('<h5 class="card-title mb-0">Projects</h5>');
+			    $('div.head-label').html('<h5 class="card-title mb-0">Projects - Priod ('+ dateRange +')</h5>');
 		}
  // --------------------------------------------------------------------
 			  const flatpickrRange = document.querySelector('#flatpickr-range');
@@ -608,7 +608,7 @@ td {
 				if(dateRange.indexOf("to")>0)
 				{
 					 requestUrl = "accountPendingPaymentsadv?dateRange="+dateRange;
-					 window.location.href= requestUrl;
+					 window.location.href (requestUrl);
 					 //dt_basic.ajax.url(requestUrl).load();
 				}else
 				{

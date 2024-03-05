@@ -353,8 +353,8 @@ table tr td {
 										<div class="col-md-1"></div>
 										<div class="col-md-2" th:if="${report}">
 											<div class="form-group">
-												<form th:action="@{payroll}" method="POST"
-													class="wizard-horizontal" enctype="multipart/form-data">
+												<form id="vouchergenerateFrom" th:action="@{payroll}"  method="POST"
+													class="wizard-horizontal" enctype="multipart/form-data" >
 													<input type="hidden" th:value="${selectedmonth}"
 														name="month" /> <input type="hidden"
 														th:value="${selectedmonth}" name="save" />
@@ -363,9 +363,9 @@ table tr td {
 														th:value="${branchobj.id}" name="branch" />
 														
 														
-													<button type="submit"
+													<button type="button"
 														class="e2 position-relative  btn btn-secondary m-1"
-														style="float: right">Generate Payslip & Voucher</button>
+														style="float: right" onclick="validateVoucher(this);">Generate Payslip & Voucher</button>
 													<!-- <br/><label>Note: This is One Time Generation.</label> -->
 												</form>
 											</div>
@@ -692,6 +692,38 @@ table tr td {
 	  $("#totalnet").text(sum +".0");
 	  
   }
+  
+  
+  function validateVoucher(id){
+	  pscount = "[[${pscount}]]";
+	  selectedmonth = "[[${selectedmonth}]]";
+	  if(pscount =="true")
+	{
+		  Swal.fire({
+          title: 'Are you sure?',
+          
+          html: "To Delete the old Payslip voucher and generate the new. You won't be able to revert this!" +
+          	"<br/> <a href='payrollvoucher?mn="+selectedmonth+"'> View Voucher</a>",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          customClass: {
+            confirmButton: 'btn btn-primary me-3',
+            cancelButton: 'btn btn-label-secondary'
+          },
+          buttonsStyling: false
+        }).then(function (result) {
+          if (result.value) {
+        	  $("#vouchergenerateFrom").submit();
+          }
+        });
+	}else
+	{
+		$("#vouchergenerateFrom").submit();
+	
+	}
+		
+        }
     </script>
 </body>
 </html>

@@ -141,9 +141,14 @@ border: 0px solid black;
  border-collapse: collapse;
 }
 .tboarder tr, .tboarder td {
-border: 1px solid black;
+border: 0px solid black;
 }
+.tableminhight{
+min-height:550px;
+border: 1px solid black;
+border-top: 0px solid black;
 
+}
 .td16{
 	background:#F4A460;
 	font-weight:bold;
@@ -293,58 +298,58 @@ border-style : hidden!important;
 							
 					</table>
 					
-					
-					<table class="table" align="center" >
-						<!-- <thead><tr class="hitd"><td class="hitd">
-						<div class="empty-header"></div>
-						</td></tr></thead>
--->
-					  	<tbody>
-							<tr >
-								<td rowspan="2">#</td>
-								<td rowspan="2">Item & Description</td>
-								<td rowspan="2">HSN</td>
-								<td rowspan="2">Qty</td>
-								<td rowspan="2">Rate</td>
-								<td colspan="2" th:if="${Igststatus}">IGST</td>
-								<td colspan="2" th:if="${Cgststatus}">CGST</td>
-								<td colspan="2" th:if="${Cgststatus}">SGST</td>
-								<td rowspan="2">Amount</td>
-								
-							</tr>
-							<tr>
-							<th:block th:if="${Igststatus}">
-								<td>%</td>
-								<td>&#8377;</td>
-							</th:block>
-							<th:block th:if="${Cgststatus}">
-								<td>%</td>
-								<td>&#8377;</td>
-								<td>%</td>
-								<td>&#8377;</td>
-							</th:block>	
-							</tr>
-							<tr th:each="obj,i : ${invoice.invoiceItemMasterlist}">
-								<td  th:text="${i.index+1}"></td>
-								<td class="desc_td"> <th:block  th:text="${obj.InvoiceItem}">
-									</th:block>
-									<th:block  th:if="${obj.Description}!=''" th:utext="'<br/>'+ ${obj.Description}">
-									</th:block>
-								</td>
-								<td th:text="${obj.HSN}"></td>
-								<td th:text="${obj.Quantity} +' ' +${obj.Unit}"></td>
-								<td class="amt_align" th:text="${obj.Price}"></td>
-								<td class="amt_align" th:if="${Igststatus}" th:text="${obj.IGSTper}"></td>
-								<td class="amt_align" th:if="${Igststatus}" th:text="${obj.IGSTamount}"></td>
-								<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.CGSTper}"></td>
-								<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.CGSTamount}"></td>
-								<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.SGSTper}"></td>
-								<td class="amt_align"  th:if="${Cgststatus}" th:text="${obj.SGSTamount}"></td>
-								<td  class="amt_align" th:utext="'<b>'+ ${obj.totalamountAmount}+'</b>'"></td>
-							</tr>
-						</tbody>
-					</table>
-				
+					<div class="tableminhight">
+						<table class="table" align="center" >
+							<!-- <thead><tr class="hitd"><td class="hitd">
+							<div class="empty-header"></div>
+							</td></tr></thead>
+	-->
+						  	<tbody>
+								<tr >
+									<td rowspan="2">#</td>
+									<td rowspan="2">Item & Description</td>
+									<td rowspan="2">HSN</td>
+									<td rowspan="2">Qty</td>
+									<td rowspan="2">Rate</td>
+									<td colspan="2" th:if="${Igststatus}">IGST</td>
+									<td colspan="2" th:if="${Cgststatus}">CGST</td>
+									<td colspan="2" th:if="${Cgststatus}">SGST</td>
+									<td rowspan="2">Amount</td>
+									
+								</tr>
+								<tr>
+								<th:block th:if="${Igststatus}">
+									<td>%</td>
+									<td>&#8377;</td>
+								</th:block>
+								<th:block th:if="${Cgststatus}">
+									<td>%</td>
+									<td>&#8377;</td>
+									<td>%</td>
+									<td>&#8377;</td>
+								</th:block>	
+								</tr>
+								<tr th:each="obj,i : ${invoice.invoiceItemMasterlist}">
+									<td  th:text="${i.index+1}"></td>
+									<td class="desc_td"> <th:block  th:text="${obj.InvoiceItem}">
+										</th:block>
+										<th:block  th:if="${obj.Description}!=''" th:utext="'<br/>'+ ${obj.Description}">
+										</th:block>
+									</td>
+									<td th:text="${obj.HSN}"></td>
+									<td th:text="${obj.Quantity} +' ' +${obj.Unit}"></td>
+									<td class="amt_align" th:text="${obj.Price}"></td>
+									<td class="amt_align" th:if="${Igststatus}" th:text="${obj.IGSTper}"></td>
+									<td class="amt_align" th:if="${Igststatus}" th:text="${obj.IGSTamount}"></td>
+									<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.CGSTper}"></td>
+									<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.CGSTamount}"></td>
+									<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.SGSTper}"></td>
+									<td class="amt_align"  th:if="${Cgststatus}" th:text="${obj.SGSTamount}"></td>
+									<td  class="amt_align" th:utext="'<b>'+ ${obj.totalamountAmount}+'</b>'"></td>
+								</tr>
+							</tbody>
+						</table>
+				</div>
 					<table class="table" align="right"  >
 						<tr>	
 							<td align="left"> 

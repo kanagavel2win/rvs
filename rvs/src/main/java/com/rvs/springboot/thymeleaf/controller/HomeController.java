@@ -3881,6 +3881,7 @@ public class HomeController {
 	public String payrollget(Model themodel) {
 		List<BranchMaster> branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", branchls);
+		themodel.addAttribute("pscount", false);
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Payroll"));
 		return "payroll";
 	}
@@ -3928,10 +3929,12 @@ public class HomeController {
 			Sundaysqlstr = ", sum(CASE WHEN (attendance_date in (" + Sundaysql
 					+ ") and attstatus in('T','P')) THEN 1 ELSE 0 END)AS 'SUNDAYP' ,"
 					+ "sum(CASE WHEN (attendance_date in (" + Sundaysql
-					+ ") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'SUNDAYHL' ";
+					+ ") and attstatus in('HL')) THEN 1 ELSE 0 END)AS 'SUNDAYHL' ,"
+					+ "sum(CASE WHEN (attendance_date in (" + Sundaysql
+					+ ") and attstatus in('A')) THEN 1 ELSE 0 END)AS 'SUNDAYA' ";
 
 		} else {
-			Sundaysqlstr = ",0 AS 'SUNDAYP' ,0 AS 'SUNDAYHL' ,0 AS 'SUNDAYT' ";
+			Sundaysqlstr = ",0 AS 'SUNDAYP' ,0 AS 'SUNDAYHL' ,0 AS 'SUNDAYT' ,0 AS 'SUNDAYA' ";
 		}
 
 		// -------------------------------------------------------
@@ -3981,6 +3984,7 @@ public class HomeController {
 			double SUNDAYP = Double.parseDouble(rowMap.get("SUNDAYP").toString());
 			double SUNDAYHL0 = Double.parseDouble(rowMap.get("SUNDAYHL").toString());
 			double HOLIDAYA = Double.parseDouble(rowMap.get("HOLIDAYA").toString());
+			double SUNDAYA = Double.parseDouble(rowMap.get("SUNDAYA").toString());
 
 			double HL = HL0 / 2;
 			double HOLIDAYHL = HOLIDAYHL0 / 2;
@@ -4032,7 +4036,8 @@ public class HomeController {
 			ExtraWorkingDays = Totalsundaywrkdays + Totalholidaywrkdays;
 
 			Absent = A;
-			WorkingDays = TotalWWorkingDays + Totalholidays;
+			//WorkingDays = TotalWWorkingDays + Totalholidays;
+			WorkingDays= 26-(A-HOLIDAYA-SUNDAYA)-(HL - HOLIDAYHL - SUNDAYHL);
 
 			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) * 100) / 100.00;
 			DA = Math.round(((ctc / 26) * WorkingDays * 0.35) * 100) / 100.00;
@@ -4094,17 +4099,30 @@ public class HomeController {
 		themodel.addAttribute("totalnet", totalnet.get(0));
 
 		BranchMaster bm = new BranchMaster();
-
+		int  pslsCount =0;
 		if (branch_masterid > 0) {
 			bm = branchMasterService.findById(branch_masterid);
+			pslsCount= payslipserive.findByPaymonth(selectedmonth.replace("-", "")).stream().filter(C -> C.getBranchid().equalsIgnoreCase(String.valueOf(branch_masterid))).collect(Collectors.toList()).size();
+					
 		} else {
 			bm.setBRANCH_NAME("ALL");
+			pslsCount= payslipserive.findByPaymonth(selectedmonth.replace("-", "")).size();
 		}
 		themodel.addAttribute("branchobj", bm);
 
 		List<BranchMaster> branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", branchls);
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Payroll"));
+		
+		if(pslsCount >0)
+		{
+			themodel.addAttribute("pscount", true);
+		}else
+		{
+			themodel.addAttribute("pscount", false);
+		}
+		
+		
 		if (!save.equalsIgnoreCase("")) {
 			return "redirect:/payrollvoucher?mn=" + selectedmonth;
 		} else {
@@ -13931,15 +13949,15 @@ public class HomeController {
 			}
 			tmp1obj.setProjecttotalvaluefromItem("0");
 			if (tmp1obj.getProjectItemMaster().size() > 0) {
-				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(tmp1obj.getProjectItemMaster().stream()
-						.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum()));
+				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(Math.round(tmp1obj.getProjectItemMaster().stream()
+						.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum())));
 
 			}
 			// ----------------------------------------------------------
 			tmp1obj.setProjecttotalvaluereceipt("0");
 			if (tmp1obj.getReceiptList().size() > 0) {
 				tmp1obj.setProjecttotalvaluereceipt(
-						String.valueOf(tmp1obj.getReceiptList().stream().mapToDouble(x -> x.getAmount()).sum()));
+						String.valueOf(Math.round(tmp1obj.getReceiptList().stream().mapToDouble(x -> x.getAmount()).sum())));
 
 			}
 			// ----------------------------------------------------------
@@ -13947,7 +13965,7 @@ public class HomeController {
 			tmp1obj.setProjecttotalvalueexpense("0");
 			if (tmp1obj.getProjectExpenseList().size() > 0) {
 				tmp1obj.setProjecttotalvalueexpense(
-						String.valueOf(tmp1obj.getProjectExpenseList().stream().mapToDouble(x -> x.getTotal()).sum()));
+						String.valueOf(Math.round(tmp1obj.getProjectExpenseList().stream().mapToDouble(x -> x.getTotal()).sum())));
 
 			}
 
@@ -13964,7 +13982,7 @@ public class HomeController {
 				}
 
 			}
-			tmp1obj.setProjecttotalvaluebilled(String.valueOf(billedamt));
+			tmp1obj.setProjecttotalvaluebilled(String.valueOf(Math.round(billedamt)));
 
 			// ----------------------------------------------------------
 			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
@@ -13974,6 +13992,125 @@ public class HomeController {
 		}
 
 		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList());
+	}
+
+	@GetMapping("accountPendingPaymentsadv")
+	public String accountPendingPaymentsadv(Model themodel, @RequestParam("dateRange") String dateRange) {
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("PendingPayments"));
+		themodel.addAttribute("dateRange",dateRange);
+		return "accountPendingPaymentsadv";
+	}
+	@ResponseBody
+	@GetMapping("Accountsprojectlistjsondatefilter")
+	public List<ProjectMaster> Accountsprojectlistjsondatefilter(Model themodel, @RequestParam("dateRange") String dateRange) {
+		System.out.println(dateRange);
+		
+		String [] dates=dateRange.split("to");
+		String sr_startdate=dates[0].trim();
+		String sr_enddate=dates[1].trim();
+		
+		
+		List<ProjectMaster> projectmasterls = new ArrayList<>();
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+
+		for (ProjectMaster tmp1obj : projectMasterService.findAll()) {
+
+			// --------------------------------------------------
+			
+			tmp1obj.setProjecttotalvaluefromItem("0");
+			if (tmp1obj.getProjectItemMaster().size() > 0) {
+				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(Math.round(tmp1obj.getProjectItemMaster().stream()
+					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum())));
+
+			}
+			// ----------------------------------------------------------
+			tmp1obj.setProjecttotalvaluereceipt("0");
+			if (tmp1obj.getReceiptList().size() > 0) {
+				String temp="";
+						try
+						{
+							temp=String.valueOf(Math.round(tmp1obj.getReceiptList().stream()
+								.filter( C -> {
+									try {
+										return (displaydateFormatrev.parse(C.getRecepitDate()).getTime()- displaydateFormatrev.parse(sr_startdate).getTime() )>=0 &&
+												(displaydateFormatrev.parse(C.getRecepitDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0;
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										//e.printStackTrace();
+									}finally
+									{
+										return false;
+									}
+								})
+								.collect(Collectors.toList()).stream()	
+								.mapToDouble(x -> x.getAmount()).sum()));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						tmp1obj.setProjecttotalvaluereceipt(temp);
+			}
+			// ----------------------------------------------------------
+
+			tmp1obj.setProjecttotalvalueexpense("0");
+			if (tmp1obj.getProjectExpenseList().size() > 0) {
+				tmp1obj.setProjecttotalvalueexpense(
+						String.valueOf(Math.round(tmp1obj.getProjectExpenseList().stream()
+								.filter( C -> {
+									try {
+										return (displaydateFormatrev.parse(C.getPrjExpenseDate()).getTime()- displaydateFormatrev.parse(sr_startdate).getTime() )>=0 &&
+												(displaydateFormatrev.parse(C.getPrjExpenseDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0;
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										//e.printStackTrace();
+									}finally
+									{
+										return false;
+									}
+								})
+								.collect(Collectors.toList()).stream()
+								.mapToDouble(x -> x.getTotal()).sum())));
+
+			}
+
+			// ----------------------------------------------------------
+			tmp1obj.setProjecttotalvaluebilled("0");
+			double billedamt = 0;
+			if (tmp1obj.getInvoiceList().size() > 0) {
+
+				for (InvoiceMaster tobj : tmp1obj.getInvoiceList()) {
+					try {
+						if((displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()- displaydateFormatrev.parse(sr_startdate).getTime() )>=0 &&
+													(displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0)
+						{
+							if (tobj.getInvoiceItemMasterlist().size() > 0) {
+								billedamt = billedamt + tobj.getInvoiceItemMasterlist().stream()
+										
+										.mapToDouble(x -> x.getTotalamountAmount()).sum();
+							}
+						}
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						//e.printStackTrace();
+					}
+				}
+
+			}
+			tmp1obj.setProjecttotalvaluebilled(String.valueOf(Math.round(billedamt)));
+
+			// ----------------------------------------------------------
+			tmp1obj.setBranchname(branchMasterService.findById(tmp1obj.getBranch()).getBRANCH_NAME());
+
+			projectmasterls.add(tmp1obj);
+
+		}
+		
+		List<ProjectMaster> projectmasterls_final =projectmasterls.stream().filter(C->
+				Double.parseDouble(C.getProjecttotalvaluebilled())>0 ||
+				Double.parseDouble(C.getProjecttotalvalueexpense())>0 ||
+				Double.parseDouble(C.getProjecttotalvaluereceipt())>0 ).collect(Collectors.toList());
+
+		return projectmasterls_final.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
 				.collect(Collectors.toList());
 	}
 

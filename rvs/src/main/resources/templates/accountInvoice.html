@@ -156,6 +156,15 @@ td {
 	border: 1px solid #ccc;
 	padding-left: 10px;
 }
+
+.sameasInvoiceto {
+	float: right;
+	padding-left: 10px;
+	font-weight: normal;
+	font-size: 13px;
+}
+
+
 </style>
 </head>
 
@@ -257,7 +266,15 @@ td {
 							</dl>
 						</div>
 					</div>
-
+					
+					<b>Project Name</b> 
+					<select id="ProjectName" class="select2 form-select form-select-lg" data-allow-clear="true">
+                          	<option>-</option>
+                          <th:block th:each="obj :${projectls}">
+                          		<option th:value="${obj.id}" th:text="${obj.Title} +'-('+${obj.projectID}+')'"></option>
+                          </th:block>
+                     </select>
+                     
                       <hr class="my-4 mx-n4" />
 
                       <div class="row p-sm-3 p-0">
@@ -267,29 +284,29 @@ td {
 							<p class="row mb-1">
 								<input type="text" class="col-12 form-control lxd"
 									name="invoiceaddressline1" id="invoiceaddressline1"
-									Placeholder="Address Line1" />
+									Placeholder="Address Line1" readonly />
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-12 form-control lxd"
 									name="invoiceaddressline2" id="invoiceaddressline2"
-									Placeholder="Address Line2" />
+									Placeholder="Address Line2" readonly/>
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-6 form-control lxd"
 									name="invoiceaddresscity" id="invoiceaddresscity"
-									Placeholder="City / District" style="width: 50%" />
+									Placeholder="City / District" style="width: 50%" readonly/>
 								<input type="text" class="col-6 form-control lxd"
 									name="invoiceaddresspincode"
 									id="invoiceaddresspincode" Placeholder="Pincode"
-									style="width: 50%" />
+									style="width: 50%" readonly/>
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-6 form-control lxd"
 									name="invoiceaddressState" id="invoiceaddressState"
-									Placeholder="State" style="width: 50%" /> <input
+									Placeholder="State" style="width: 50%" readonly/> <input
 									type="text" class="col-6 form-control lxd"
 									name="invoiceGSTNo" id="invoiceGSTNo"
-									Placeholder="GST" style="width: 50%" />
+									Placeholder="GST" style="width: 50%" readonly/>
 							</p>
 
 						</div>
@@ -305,28 +322,28 @@ td {
 							<p class="row mb-1">
 								<input type="text" class="col-12 form-control lxd"
 									name="billaddressline1" id="billaddressline1"
-									Placeholder="Address Line1" />
+									Placeholder="Address Line1" readonly/>
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-12 form-control lxd"
 									name="billaddressline2" id="billaddressline2"
-									Placeholder="Address Line2" />
+									Placeholder="Address Line2" readonly/>
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-6 form-control lxd"
 									name="billaddresscity" id="billaddresscity"
-									Placeholder="City / District" style="width: 50%" />
+									Placeholder="City / District" style="width: 50%" readonly/>
 								<input type="text" class="col-6 form-control lxd"
 									name="billaddresspincode" id="billaddresspincode"
-									Placeholder="Pincode" style="width: 50%" />
+									Placeholder="Pincode" style="width: 50%" readonly/>
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-6 form-control lxd"
 									name="billaddressState" id="billaddressState"
-									Placeholder="State" style="width: 50%" /> <input
+									Placeholder="State" style="width: 50%" readonly/> <input
 									type="text" class="col-6 form-control lxd"
 									name="billGSTNo" id="billGSTNo" Placeholder="GST"
-									style="width: 50%" />
+									style="width: 50%" readonly/>
 							</p>
 
 						</div>
@@ -419,15 +436,15 @@ td {
                       <button
                         class="btn btn-primary d-grid w-100"
                         data-bs-toggle="offcanvas"
-                        data-bs-target="#sendInvoiceOffcanvas"
+                        data-bs-target="#searchAddressOffcanvas" id="address_search"
                       >
                         <span class="d-flex align-items-center justify-content-center text-nowrap"
-                          ><i class="bx bx-paper-plane bx-xs me-3"></i>Send Invoice</span
+                          ><i class="bx bx-paper-plane bx-xs me-3"></i>Address</span
                         >
                       </button>
                       <div class="d-flex my-3">
-                        <a href="./app-invoice-preview.html" class="btn btn-label-secondary w-100 me-3">Preview</a>
-                        <button type="button" class="btn btn-label-secondary w-100">Save</button>
+                        <a th:href="'prjinvoiceprint?id='+ ${projectid} +'&inv='+ ${invoiceid}" target="_blank" class="btn btn-label-secondary w-100 me-6">Preview</a>
+                        
                       </div>
                       <button
                         class="btn btn-primary d-grid w-100"
@@ -448,51 +465,6 @@ td {
                       <option value="Card">Credit/Debit Card</option>
                       <option value="UPI Transfer">UPI Transfer</option>
                     </select>
-                    <div class="d-flex justify-content-between mb-2">
-                      <label for="payment-terms" class="mb-0">Payment Terms</label>
-                      <label class="switch switch-primary me-0">
-                        <input type="checkbox" class="switch-input" id="payment-terms" checked="" />
-                        <span class="switch-toggle-slider">
-                          <span class="switch-on">
-                            <i class="bx bx-check"></i>
-                          </span>
-                          <span class="switch-off">
-                            <i class="bx bx-x"></i>
-                          </span>
-                        </span>
-                        <span class="switch-label"></span>
-                      </label>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                      <label for="client-notes" class="mb-0">Client Notes</label>
-                      <label class="switch switch-primary me-0">
-                        <input type="checkbox" class="switch-input" id="client-notes" />
-                        <span class="switch-toggle-slider">
-                          <span class="switch-on">
-                            <i class="bx bx-check"></i>
-                          </span>
-                          <span class="switch-off">
-                            <i class="bx bx-x"></i>
-                          </span>
-                        </span>
-                        <span class="switch-label"></span>
-                      </label>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                      <label for="payment-stub" class="mb-0">Payment Stub</label>
-                      <label class="switch switch-primary me-0">
-                        <input type="checkbox" class="switch-input" id="payment-stub" />
-                        <span class="switch-toggle-slider">
-                          <span class="switch-on">
-                            <i class="bx bx-check"></i>
-                          </span>
-                          <span class="switch-off">
-                            <i class="bx bx-x"></i>
-                          </span>
-                        </span>
-                        <span class="switch-label"></span>
-                      </label>
-                    </div>
                   </div>
                 </div>
                 <!-- /Invoice Actions -->
@@ -500,9 +472,9 @@ td {
 
               <!-- Offcanvas -->
               <!-- Send Invoice Sidebar -->
-              <div class="offcanvas offcanvas-end" id="sendInvoiceOffcanvas" aria-hidden="true">
+              <div class="offcanvas offcanvas-end" id="searchAddressOffcanvas" aria-hidden="true">
                 <div class="offcanvas-header border-bottom">
-                  <h6 class="offcanvas-title">Send Invoice</h6>
+                  <h6 class="offcanvas-title">Available Address</h6>
                   <button
                     type="button"
                     class="btn-close text-reset"
@@ -510,58 +482,8 @@ td {
                     aria-label="Close"
                   ></button>
                 </div>
-                <div class="offcanvas-body flex-grow-1">
-                  <form>
-                    <div class="mb-3">
-                      <label for="invoice-from" class="form-label">From</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="invoice-from"
-                        value="shelbyComapny@email.com"
-                        placeholder="company@email.com"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label for="invoice-to" class="form-label">To</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="invoice-to"
-                        value="qConsolidated@email.com"
-                        placeholder="company@email.com"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label for="invoice-subject" class="form-label">Subject</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="invoice-subject"
-                        value="Invoice of purchased Admin Templates"
-                        placeholder="Invoice regarding goods"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label for="invoice-message" class="form-label">Message</label>
-                      <textarea class="form-control" name="invoice-message" id="invoice-message" cols="3" rows="8">
-Dear Queen Consolidated,
-          Thank you for your business, always a pleasure to work with you!
-          We have generated a new invoice in the amount of $95.59
-          We would appreciate payment of this invoice by 05/11/2021</textarea
-                      >
-                    </div>
-                    <div class="mb-4">
-                      <span class="badge bg-label-primary">
-                        <i class="bx bx-link bx-xs"></i>
-                        <span class="align-middle">Invoice Attached</span>
-                      </span>
-                    </div>
-                    <div class="mb-3 d-flex flex-wrap">
-                      <button type="button" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Send</button>
-                      <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-                    </div>
-                  </form>
+                <div class="offcanvas-body flex-grow-1 address_ls_div">
+                 	
                 </div>
               </div>
               <!-- /Send Invoice Sidebar -->
@@ -710,6 +632,11 @@ Dear Queen Consolidated,
 		<!-- Page JS -->
 		<!-- <script th:src="@{/assets/js/tables-datatables-basic.js}"></script> -->
 		<script th:src="@{/assets/js/form-validation.js}"></script>
+		
+		<script th:src="@{/assets/js/forms-selects.js}"></script>
+	    <script th:src="@{/assets/js/forms-tagify.js}"></script>
+	    <script th:src="@{/assets/js/forms-typeahead.js}"></script>
+		
 		<script>
     $(document).ready(function() {  
     	
@@ -729,6 +656,7 @@ Dear Queen Consolidated,
 		var NATUREOFWORK="[[${NATUREOFWORK}]]";
 		var UNITS="[[${UNITS}]]";
 		
+		$("#ProjectName").val(ids).change();
 		NATUREOFWORK_temp="";
 		
 		var array = NATUREOFWORK.replace("[","").replace("]","").split(",");
@@ -749,7 +677,7 @@ Dear Queen Consolidated,
 	   				$('.editInvoicesubmit').prop("disabled",false);
 	   				
 	   				invoiceIncre=1;
-	   				html='<div class="d-flex border rounded position-relative pe-0 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" /> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number"  step="any" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required /> <input type="text" class="form-control" value="998344" id="HSN'+ invoiceIncre +'" name="HSN'+ invoiceIncre +'" />	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="0" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="0" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="0" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="0" name="SGSTper'+ invoiceIncre +'" /> 	 <div>  <span  data-bs-toggle="tooltip"  data-bs-offset="0,4" data-bs-placement="right" data-bs-html="true"	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select CGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select SGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select IGST"  onchange="IGSTchange('+ invoiceIncre +')"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+	   				html='<div class="paddingTop d-flex border rounded position-relative pe-0 m-1 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" /> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number"  step="any" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required /> <input type="text" class="form-control" value="998344" id="HSN'+ invoiceIncre +'" name="HSN'+ invoiceIncre +'" />	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="0" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="0" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="0" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="0" name="SGSTper'+ invoiceIncre +'" /> 	 <div>  <span  data-bs-toggle="tooltip"  data-bs-offset="0,4" data-bs-placement="right" data-bs-html="true"	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select CGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select SGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select IGST"  onchange="IGSTchange('+ invoiceIncre +')"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
 					$('#invoiceitemlist').html(html);
 	   				
 	   				invoiceamountCalculator();
@@ -779,6 +707,18 @@ Dear Queen Consolidated,
 						
 						validationinvoiceformreset();
 						
+						Swal.fire({
+					        title: 'Invoice Saved Successfully!',
+					        text: 'Share it to the customer',
+					        imageUrl: assetsPath + 'img/bg_rvs/New Project Added.jpg',
+					        imageWidth: 400,
+					        imageAlt: 'Custom image',
+					        confirmButtonText: 'Ok',
+					        customClass: {
+					          confirmButton: 'btn btn-primary'
+					        },
+					        buttonsStyling: false
+					      });
 						
 
 					},
@@ -795,7 +735,7 @@ Dear Queen Consolidated,
 		$("#addnewinvoiceitem").click(function() {
 			invoiceIncre = invoiceIncre+1;
 			
-			html='<div class="d-flex border rounded position-relative pe-0 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" /> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" step="any" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required />  <input type="text" class="form-control" value="998344" id="HSN'+ invoiceIncre +'" name="HSN'+ invoiceIncre +'" />	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="0" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="0" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="0" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="0" name="SGSTper'+ invoiceIncre +'" /> 	 <div>  <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select CGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select SGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select IGST" onchange="IGSTchange('+ invoiceIncre +')"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+			html='<div class="d-flex border rounded position-relative pe-0 m-1 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" /> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="">-</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information"></textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" step="any" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required />  <input type="text" class="form-control" value="998344" id="HSN'+ invoiceIncre +'" name="HSN'+ invoiceIncre +'" />	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="">-</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="0" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="0" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="0" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="0" name="SGSTper'+ invoiceIncre +'" /> 	 <div>  <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">0%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">0%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">0%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">0%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">0.00</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select CGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select SGST"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select IGST" onchange="IGSTchange('+ invoiceIncre +')"> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
 			$('#invoiceitemlist').append(html);
 			$('#invoiceType').change();
 		});
@@ -909,7 +849,7 @@ Dear Queen Consolidated,
 						bmobj.invoiceItemMasterlist.forEach((element, index, array) =>
 			           	{
 			           	 	invoiceIncre= invoiceIncre+1;
-							html +='<div class="d-flex border rounded position-relative pe-0 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" value="'+ element.invoiceitemid + '"/> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="'+ element.invoiceItem + '">'+ element.invoiceItem + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" step="any" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" value="'+ element.quantity + '" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required />  <input type="text" class="form-control" id="HSN'+ invoiceIncre +'" value="'+ element.hsn + '" name="HSN'+ invoiceIncre +'" /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="'+ element.discountper + '" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="'+ element.igstper + '" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ invoiceIncre +'" /> 	 <div>  <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select CGST"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select SGST"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select IGST"  onchange="IGSTchange('+ invoiceIncre +')"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
+							html +='<div class="d-flex border rounded position-relative pe-0 m-1 incontact'+ invoiceIncre + '"> <div class="row w-100 m-0 p-3"> 	<div class="col-md-4 col-12 mb-md-0 mb-3 ps-md-0"> <p class="mb-2 repeater-title">Item Description</p> <input type="hidden" id="InvoiceItemid'+ invoiceIncre +'" name="InvoiceItemid'+ invoiceIncre +'" value="'+ element.invoiceitemid + '"/> <select class="form-select item-details mb-2" id="InvoiceItem'+ invoiceIncre +'" name="InvoiceItem'+ invoiceIncre +'" required> <option value="'+ element.invoiceItem + '">'+ element.invoiceItem + '</option> ' + NATUREOFWORK_temp + '</select> <textarea class="form-control" rows="2" id="Description'+ invoiceIncre +'" name="Description'+ invoiceIncre +'" placeholder="Item Information">'+ element.description + '</textarea> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Qty</p> <input type="number" step="any" class="form-control invoice-item-qty"  min="1" max="500" id="Quantity'+ invoiceIncre +'" value="'+ element.quantity + '" name="Quantity'+ invoiceIncre +'" onchange="invoiceamountCalculator()" required />  <input type="text" class="form-control" id="HSN'+ invoiceIncre +'" value="'+ element.hsn + '" name="HSN'+ invoiceIncre +'" /> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Unit</p> <select class="form-select item-details mb-2" id="Unit'+ invoiceIncre +'" name="Unit'+ invoiceIncre +'" required> <option value="'+ element.unit + '">'+ element.unit + '</option> '+ UNITS_temp +'  </select> 	</div> 	<div class="col-md-2 col-12 mb-md-0 mb-3"> <p class="mb-2 repeater-title">Price</p> <input type="number" class="form-control invoice-item-price mb-2" onchange="invoiceamountCalculator()" id="Price'+ invoiceIncre +'" name="Price'+ invoiceIncre +'"  value="'+ element.price + '" required/> <input type="hidden" id="Discountperip'+ invoiceIncre +'" value="'+ element.discountper + '" name="Discountper'+ invoiceIncre +'" /> <input type="hidden" id="CGSTperip'+ invoiceIncre +'" value="'+ element.cgstper + '" name="CGSTper'+ invoiceIncre +'" /> <input type="hidden" id="IGSTperip'+ invoiceIncre +'" value="'+ element.igstper + '" name="IGSTper'+ invoiceIncre +'" /> <input type="hidden" id="SGSTperip'+ invoiceIncre +'" value="'+ element.sgstper + '" name="SGSTper'+ invoiceIncre +'" /> 	 <div>  <span  data-bs-toggle="tooltip" data-bs-placement="top" 	title="Discount %"	class="discount me-2" id="Discountpertxt'+  invoiceIncre +'">'+ element.discountper + '%</span> <span class="tax-1 me-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="CGST %" 	id="CGSTpertxt'+  invoiceIncre +'">'+ element.cgstper + '%</span> <span class="tax-2" 	data-bs-toggle="tooltip" data-bs-placement="top" 	title="SGST %" id="SGSTpertxt'+  invoiceIncre +'">'+ element.sgstper + '%</span> <span 	class="tax-2" data-bs-toggle="tooltip" 	data-bs-placement="top" title="IGST %" 	id="IGSTpertxt'+  invoiceIncre +'">'+ element.igstper + '%</span> </div> 	</div> 	<div class="col-md-2 col-12 pe-0"> <p class="mb-2 repeater-title">Taxable Amount</p> <p class="mb-0" id="taxableamount'+  invoiceIncre +'">'+ element.taxableAmount.toFixed(2) +'</p> 	</div> </div> <div 	class="d-flex flex-column align-items-center justify-content-between border-start p-2"> 	<i class="bx bx-x fs-4 text-muted cursor-pointer" onclick="deleteinvoiceItem('+ invoiceIncre +')"></i> 	<div class="dropdown"> <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> </i> <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton"> <div class="row g-3"> 	<div class="col-12"> <label for="discountInput" class="form-label">Discount(%)</label> <input type="number" class="form-control" id="Discountper'+ invoiceIncre +'" min="0" max="100" value="'+ element.discountper+'" /> 	</div> 	<div class="col-md-6"> <label for="taxInput1" class="form-label">CGST % 1</label> <select id="CGSTper'+ invoiceIncre +'" class="form-select tax-select CGST"> <option value="'+ element.cgstper +'" >'+ element.cgstper +'%</option> <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-6"> <label for="taxInput2" class="form-label">SGST % 2</label> <select id="SGSTper'+ invoiceIncre +'" class="form-select tax-select SGST"><option value="'+ element.sgstper +'" >'+ element.sgstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> 	<div class="col-md-12"> <label for="taxInput2" class="form-label">IGST % 2</label> <select id="IGSTper'+ invoiceIncre +'" class="form-select tax-select IGST"  onchange="IGSTchange('+ invoiceIncre +')"><option value="'+ element.igstper +'" >'+ element.igstper +'%</option>  <option value="0" >0%</option> <option value="1.5">1.5%</option> <option value="2.5">2.5%</option><option value="6">6%</option><option value="9">9%</option><option value="10">10%</option> <option value="14">14%</option> <option value="18">18%</option> </select> 	</div> </div> <div class="dropdown-divider my-3"></div> <button type="button" onclick="applydiscountandtax(this)" name="'+ invoiceIncre + '"	class="btn btn-label-primary btn-apply-changes">Apply</button> </div> 	</div> </div> </div>';
 			           	});
 			           	
 						$('#invoiceitemlist').html(html);
@@ -1249,7 +1189,68 @@ Dear Queen Consolidated,
 				    }
 				  }
 			//------------------------------------------------------
-			
+			$("#address_search").on('click',function(event) {
+				var ProjectName =$("#ProjectName").val();
+				var addressIncre=0;
+				html="";
+				if(ProjectName !="")
+				{
+					$('.address_ls_div').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+					
+					var formData = {
+							projectid : ProjectName
+						}
+
+						$.ajax({
+							type : "GET",
+							url : "getprojectaddress",
+							data : formData,
+							success : function(result) {
+								var bmobj = JSON.parse(JSON.stringify(result));
+								bmobj.forEach((element, index, array) =>
+					           	{
+					           	 	addressIncre= addressIncre+1;
+									html +='<div class="border p-3" id="section-block">'; 
+									html +='<p id="addressline1'+addressIncre+'">  '+element.addressline1 +'</p>';
+									html +='<p id="addressline2'+addressIncre+'">  '+element.addressline2 +'</p>';
+									html +='<p id="district'+addressIncre+'">  '+element.district +'</p>';
+									html +='<p id="state'+addressIncre+'">  '+element.state +'</p>';
+									html +='<p id="pincode'+addressIncre+'">  '+element.pincode +'</p>';
+									html +='<p id="gst'+addressIncre+'">  '+element.gst +'</p>';
+									html +='<button type="button" onclick="movetocustomer('+addressIncre+')" class="btn btn-sm btn-primary"><< Customer</button>';
+									html +='&nbsp;<button type="button" onclick="movetobilling('+addressIncre+')" class="btn btn-sm btn-primary"><< Billing</button></div>';
+					           	});
+					           	
+								$('.address_ls_div').html(html);
+								
+							},
+							error : function(e) {
+								console.log("Error" + e);
+							}
+						});
+					
+					
+				}				
+			});
+			//------------------------------------------------------
+			function movetocustomer(id){
+				$("#invoiceaddressline1").val($("#addressline1"+id).text());
+				$("#invoiceaddressline2").val($("#addressline2"+id).text());
+				$("#invoiceaddresscity").val($("#district"+id).text());
+				$("#invoiceaddresspincode").val($("#pincode"+id).text());
+				$("#invoiceaddressState").val($("#state"+id).text());
+				$("#invoiceGSTNo").val($("#gst"+id).text());
+				$('.offcanvas').offcanvas('hide');
+			}
+			function movetobilling(id){
+				$("#billaddressline1").val($("#addressline1"+id).text());
+				$("#billaddressline2").val($("#addressline2"+id).text());
+				$("#billaddresscity").val($("#district"+id).text());
+				$("#billaddresspincode").val($("#pincode"+id).text());
+				$("#billaddressState").val($("#state"+id).text());
+				$("#billGSTNo").val($("#gst"+id).text());
+				$('.offcanvas').offcanvas('hide');
+			}
     </script>
 </body>
 </html>

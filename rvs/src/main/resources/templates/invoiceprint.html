@@ -339,12 +339,12 @@ border-style : hidden!important;
 									<td th:text="${obj.HSN}"></td>
 									<td th:text="${obj.Quantity} +' ' +${obj.Unit}"></td>
 									<td class="amt_align" th:text="${obj.Price}"></td>
-									<td class="amt_align" th:if="${Igststatus}" th:text="${obj.IGSTper}"></td>
-									<td class="amt_align" th:if="${Igststatus}" th:text="${obj.IGSTamount}"></td>
-									<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.CGSTper}"></td>
-									<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.CGSTamount}"></td>
-									<td class="amt_align" th:if="${Cgststatus}" th:text="${obj.SGSTper}"></td>
-									<td class="amt_align"  th:if="${Cgststatus}" th:text="${obj.SGSTamount}"></td>
+									<td class="amt_align" th:if="${Igststatus}" th:text="${#numbers.formatDecimal(obj.IGSTper == null ? 0 : obj.IGSTper, 0, 0)}"></td>
+									<td class="amt_align" th:if="${Igststatus}" th:text="${#numbers.formatDecimal(obj.IGSTamount == null ? 0 : obj.IGSTamount, 0, 0)}"></td>
+									<td class="amt_align" th:if="${Cgststatus}" th:text="${#numbers.formatDecimal(obj.CGSTper == null ? 0 : obj.CGSTper, 0, 0)}"></td>
+									<td class="amt_align" th:if="${Cgststatus}" th:text="${#numbers.formatDecimal(obj.CGSTamount == null ? 0 : obj.CGSTamount, 0, 0)}"></td>
+									<td class="amt_align" th:if="${Cgststatus}" th:text="${#numbers.formatDecimal(obj.SGSTper == null ? 0 : obj.SGSTper, 0, 0)}"></td>
+									<td class="amt_align"  th:if="${Cgststatus}" th:text="${#numbers.formatDecimal(obj.SGSTamount == null ? 0 : obj.CGSTamount, 0, 0)}"></td>
 									<td  class="amt_align" th:utext="'<b>'+ ${obj.totalamountAmount}+'</b>'"></td>
 								</tr>
 							</tbody>
@@ -372,7 +372,8 @@ border-style : hidden!important;
 								<th:block th:if="${Igststatus}" th:utext="${total_IGSTamount} +'<br/>'"></th:block>
 								<th:block th:if="${Cgststatus}" th:utext="${total_CGSTamount} +'<br/>'"></th:block>
 								<th:block th:if="${Cgststatus}" th:utext="${total_SGSTamount} +'<br/>'"></th:block>
-								<th:block th:utext="'<b>'+ ${total_amountAmount} +'</b><br/>'"></th:block>
+								
+								<th:block th:utext="'<b>'+ ${#numbers.formatDecimal(total_amountAmount == null ? 0 : total_amountAmount, 0, 0)}  +'.0</b><br/>'"></th:block>
 							
 							</td>
 							

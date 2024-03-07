@@ -147,6 +147,7 @@ import com.rvs.springboot.thymeleaf.pojo.PaySlip_ExcelGenerator;
 import com.rvs.springboot.thymeleaf.pojo.donutchart;
 import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
+import com.rvs.springboot.thymeleaf.pojo.projectaddress;
 import com.rvs.springboot.thymeleaf.pojo.springtest;
 import com.rvs.springboot.thymeleaf.pojo.tagify;
 import com.rvs.springboot.thymeleaf.service.AccountIncomeService;
@@ -1225,6 +1226,7 @@ public class HomeController {
 			corg.setAddressCity(params.get("AddressCity"));
 			corg.setAddressState(params.get("AddressState"));
 			corg.setAddressZIP(params.get("AddressZipCode"));
+			corg.setAddressGST(params.get("AddressGST"));
 			corg = contactOrganizationService.save(corg);
 			return OrganizationContactsobjectfiller(corg);
 		}
@@ -14010,7 +14012,10 @@ public class HomeController {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
 		themodel.addAttribute("projectid",projectid);
 		themodel.addAttribute("invoiceid", invoiceid);
-
+		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls",projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList()));
+		
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
@@ -14021,6 +14026,47 @@ public class HomeController {
 	
 	
 	@ResponseBody
+	@GetMapping("getprojectaddress")
+	public List<projectaddress> getprojectaddress(Model themodel, @RequestParam("projectid") String projectid) {
+		List<projectaddress> adrsLs=new ArrayList();
+		
+		ProjectMaster pm=projectMasterService.findById(Integer.parseInt(projectid));
+		
+		if(!pm.getOrganization().equalsIgnoreCase(""))
+		{
+			OrganizationContacts org = contactOrganizationService.findById(Integer.parseInt(pm.getOrganization()));
+			
+			projectaddress pad= new projectaddress();
+			pad.setAddressline1(org.getOrgname());
+			pad.setAddressline2(org.getAddressStreet1() + "" + org.getAddressStreet2());
+			pad.setDistrict(org.getAddressCity());
+			pad.setState(org.getAddressState());
+			pad.setPincode(org.getAddressZIP());
+			pad.setGst(org.getAddressGST());
+			adrsLs.add(pad);
+		}
+		if(pm.getProjectContact().size()>0)
+		{
+			for(ProjectContact cp: pm.getProjectContact())
+			{
+				ContactPerson ccp= contactPersonService.findById(cp.getContactPerson());
+				
+				projectaddress pad= new projectaddress();
+				pad.setAddressline1(ccp.getPeoplename());
+				pad.setAddressline2(ccp.getAddressStreet1() + "" + ccp.getAddressStreet2());
+				pad.setDistrict(ccp.getAddressCity());
+				pad.setState(ccp.getAddressState());
+				pad.setPincode(ccp.getAddressZIP());
+				pad.setGst("");
+				adrsLs.add(pad);
+			}
+			
+		}
+		
+			return adrsLs;
+	}
+
+	@ResponseBody
 	@GetMapping("Accountsprojectlistjson")
 	public List<ProjectMaster> Accountsprojectlistjson(Model themodel) {
 		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
@@ -14028,11 +14074,11 @@ public class HomeController {
 				.collect(Collectors.toList());
 	}
 
-	@GetMapping("accountPendingPaymentsadv")
-	public String accountPendingPaymentsadv(Model themodel, @RequestParam("dateRange") String dateRange) {
+	@GetMapping("accpendingpayadv")
+	public String accpendingpayadv(Model themodel, @RequestParam("dateRange") String dateRange) {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("PendingPayments"));
 		themodel.addAttribute("dateRange",dateRange);
-		return "accountPendingPaymentsadv";
+		return "accpendingpayadv";
 	}
 	@ResponseBody
 	@GetMapping("Accountsprojectlistjsondatefilter")

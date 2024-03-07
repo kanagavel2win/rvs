@@ -261,9 +261,13 @@ cursor:pointer;
                             <span class="fw-bold me-2">State:</span>
                             <span th:text="${OrganizationContacts.addressState}" id="Lbl_AddressState"></span>
                           </li>
-                        <li class="mb-3">
+                       	 <li class="mb-3">
                             <span class="fw-bold me-2">Pin code:</span>
                             <span th:text="${OrganizationContacts.addressZIP}" id="Lbl_AddressZipCode"></span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-bold me-2">GST:</span>
+                            <span th:text="${OrganizationContacts.addressGST}" id="Lbl_addressGST"></span>
                           </li>
                         </ul>
                         <div class="d-flex justify-content-center pt-3">
@@ -922,6 +926,17 @@ cursor:pointer;
                             
                           />
                         </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="modalAddressZipCode">GST</label>
+                          <input
+                            type="text"
+                            id="modaladdressGST"
+                            name="modaladdressGST"
+                            class="form-control"
+                            th:value="${OrganizationContacts.addressGST}"
+                            
+                          />
+                        </div>
                         
                         <div class="col-12 text-center mt-4">
                           <button type="submit" class="btn btn-primary me-sm-3 me-1 editorganizationAddressdatasubmit">Update</button>
@@ -1356,6 +1371,7 @@ Model_CURRENT_STATUS
 		    	    	var modalAddressCity =$('#modalAddressCity').val();
 		    	    	var modalAddressState =$('#modalAddressState').val();
 		    	    	var modalAddressZipCode =$('#modalAddressZipCode').val();
+		    	    	var modaladdressGST =$('#modaladdressGST').val();
 		    	    	var formData = {
 		  	        			 OrganizationContactsID: OrganizationContactsID,
 		  	        			AddressCountry : modalAddressCountry,
@@ -1366,6 +1382,7 @@ Model_CURRENT_STATUS
 		  	        			AddressCity : modalAddressCity,
 		  	        			AddressState : modalAddressState,
 		  	        			AddressZipCode : modalAddressZipCode,
+		  	        			AddressGST : modaladdressGST,
 		  	        			functiontype : 'OrganizationContacts'
 		  				 }
 		  				 $.ajax({
@@ -1381,6 +1398,7 @@ Model_CURRENT_STATUS
 		  							$('#Lbl_AddressCity').text(bmobj.addressCity);
 		  							$('#Lbl_AddressState').text(bmobj.addressState);
 		  							$('#Lbl_AddressZipCode').text(bmobj.addressZIP);
+		  							$('#Lbl_addressGST').text(bmobj.addressGST);
 									validationformaddressreset();
 		  						},
 		  						error : function(e) {

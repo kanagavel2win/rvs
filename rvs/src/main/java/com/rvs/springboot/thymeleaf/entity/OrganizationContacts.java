@@ -60,6 +60,8 @@ public class OrganizationContacts  {
 	private String addressZIP;
 	@Column
 	private String addressCountry;
+	@Column
+	private String addressGST;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")

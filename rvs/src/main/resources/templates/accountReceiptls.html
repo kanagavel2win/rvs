@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Invoice List</title>
+<title>Receipt List</title>
 
 <meta name="description" content="" />
 
@@ -156,6 +156,10 @@ td {
 	border: 1px solid #ccc;
 	padding-left: 10px;
 }
+
+.generatenewreceipt {
+	cursor: pointer;
+}
 </style>
 </head>
 
@@ -180,7 +184,7 @@ td {
 					<!-- Content -->
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="py-3 breadcrumb-wrapper mb-4">
-							<span class="text-muted fw-light">Accounts / </span>Project Invoice
+							<span class="text-muted fw-light">Accounts / </span>Project Invoice Receipt
 						</h4>
 
 
@@ -213,7 +217,7 @@ td {
 							<!-- Edit Receipt Modal -->
 							<div class="modal fade" id="projectmodel" tabindex="-1"
 								aria-hidden="true">
-								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+								<div class="modal-dialog modal-xl modal-simple modal-edit-user">
 									<div class="modal-content p-3 p-md-5">
 										<div class="modal-body">
 											<button type="button" class="btn-close"
@@ -232,7 +236,180 @@ td {
 								                     </select>
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
-														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Create Invoice</button>
+														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Create Receipt</button>
+
+													<button type="reset"
+														class="btn btn-label-secondary editReceiptclose"
+														data-bs-dismiss="modal" aria-label="Close">
+														Cancel</button>
+												</div>
+											</form>
+											<br/>
+											<!-- Project   Card -->
+											<div class="cardx  mb-4">
+												<div class="card-body1">
+													<div class="card-header align-items-center">
+														<h5 class="card-action-title mb-0">
+															Invoice List
+															
+														</h5>
+													</div>
+													<div class="table-responsive">
+														<table class="table border-top m-0">
+															<thead>
+																<tr>
+																	<th>Invoice #</th>
+																	<th>Type</th>
+																	<th>Date</th>
+																	<th>Due Date</th>
+																	<th>Amount</th>
+																</tr>
+															</thead>
+															<tbody id="projectinvoicelist">
+			
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<!-- /Project   Card -->
+			
+											<!-- Receipts   Card -->
+											<div class="cardx  mb-4">
+												<div class="card-body1">
+													<div class="card-header align-items-center">
+														<h5 class="card-action-title mb-0">Receipts List</h5>
+													</div>
+													<div class="table-responsive">
+														<table class="table border-top m-0">
+															<thead>
+																<tr>
+																	<th>Ref #</th>
+																	<th>Invoice #</th>
+																	<th>Date</th>
+																	<th>Account</th>
+			
+																	<th>Amount Paid</th>
+																</tr>
+															</thead>
+															<tbody id="receiptslist">
+			
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<!-- /Receipts   Card -->
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+
+							<!--/ Edit User Modal -->
+							<!-- Edit Receipt Modal -->
+							<div class="modal fade" id="receiptmodel" tabindex="-1"
+								aria-hidden="true">
+								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+									<div class="modal-content p-3 p-md-5">
+										<div class="modal-body">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+											<div class="text-center mb-4">
+												<h5>Payment Receipt</h5>
+											</div>
+											<form class="row g-3 needs-validation" id="editreceiptformx"
+												onsubmit="return false">
+												<div class="row p-sm-3 p-0">
+													<div class="col-md-6 mb-md-0 mb-4">
+
+														<p class="mb-1">
+															<b>Invoice No# :</b> <span id="invoiceNotxt"></span> <input
+																type="hidden" id="recepitid" name="recepitid" /> <input
+																type="hidden" id="recinvoiceid" name="recinvoiceid"
+																required />
+														</p>
+														<p class="mb-1">
+															<b>Due Date :</b> <span id="duedatetxt"></span>
+														</p>
+														<p class="mb-0"></p>
+													</div>
+													<div class="col-md-6">
+														<p class="mb-1" align="right">
+															<b>Amount :</b> <span id="invoiceamounttxt"></span>
+														</p>
+														<p class="mb-1" align="right">
+															<b>Total paid :</b> <span id="invoicetotalpaidNotxt"></span>
+														</p>
+														<p class="mb-0" align="right">
+															<b>Balance Due :</b> <span id="invoiceBalancetxt"></span>
+														</p>
+													</div>
+
+												</div>
+
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="recepitNo">
+														Receipt #</label> <input type="text" id="recepitNo"
+														name="recepitNo" class="form-control" placeholder="Will auto generate" />
+												</div>
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="recepitDate">Date</label> <input
+														type="date" id="recepitDate" name="recepitDate"
+														class="form-control" required />
+												</div>
+
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="depositedto">Deposited
+														To</label> <select id="depositedto" name="depositedto"
+														class="form-select" aria-label="Default select example"
+														required>
+														<option value="">-</option>
+														<th:block th:each="obj1 : ${accountlist}">
+															<option th:value="${obj1.accountheadid}"
+																th:text="${obj1.category}"></option>
+														</th:block>
+
+													</select>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="modeofPayment">Mode
+														of Payment</label> <select id="modeofPayment" name="modeofPayment"
+														class="form-select" aria-label="Default select example"
+														required>
+														<option value="">-</option>
+														<th:block th:each="str :${ModeofPayment}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+													</select>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="form-label" for="amount">Amount </label> <input
+														type="number" id="amount" name="amount"
+														class="form-control modal-edit-tax-id" required />
+												</div>
+												<div class="col-12 col-md-6">
+													<br /> <label class="switch"> <input
+														type="checkbox" class="switch-input" id="payfull" /> <span
+														class="switch-toggle-slider"> <span
+															class="switch-on"></span> <span class="switch-off"></span>
+													</span> <span class="switch-label">Pay in Full</span>
+													</label>
+												</div>
+												<div class="col-12">
+													<label class="form-label" for="notes">Notes </label> <input
+														type="text" id="notes" name="notes"
+														class="form-control modal-edit-tax-id" />
+												</div>
+
+												<div class="col-12 text-center mt-4">
+													<button type="submit"
+														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
+													</button>
 
 													<button type="reset"
 														class="btn btn-label-secondary editReceiptclose"
@@ -245,10 +422,6 @@ td {
 								</div>
 							</div>
 
-
-
-
-							<!--/ Edit User Modal -->
 
 						<!-- Footer -->
 						<footer class="content-footer footer bg-footer-theme"> </footer>
@@ -505,7 +678,7 @@ td {
 			      lengthMenu: [10, 25, 50, 75, 100],
 			      buttons: [
 		    	 	 {
-		              text: '<i class="bx bx-plus me-md-2"></i><span class="d-md-inline-block d-none" onclick="createInvoice()">Create Invoice</span>',
+		              text: '<i class="bx bx-plus me-md-2"></i><span class="d-md-inline-block d-none" onclick="createReceipt()">Create Receipt</span>',
 		              className: 'btn btn-primary',
 		              action: function (e, dt, button, config) {
 		                
@@ -588,14 +761,222 @@ td {
 				
     });
     
-    function createInvoice(){
+    function createReceipt(){
     	$("#projectmodel").modal("show");
     }
     
     $('#editexpenseformx').on('submit',function(event) {
-    	window.open("accountInvoicecreate?id="+$("#ProjectName").val());
-    	$("#projectmodel").modal("hide");
+    	//window.open("accountInvoicecreate?id="+$("#ProjectName").val());
+    	//$("#projectmodel").modal("hide");
+    	getinvoicelist($("#ProjectName").val());
+    	getreceiptlist($("#ProjectName").val());
+    	
     });
+    
+    
+ // ----------------------------------------------------------------------------------------------------------------------------------------
+	function getinvoicelist(mastercategoryid) {
+		
+		var formData = {
+			mastercategoryid : mastercategoryid
+		}
+
+		$.ajax({
+			type : "POST",
+			url : "getprojectinvoicelist",
+			data : formData,
+			success : function(result) {
+				var htmlop="";
+				var bmobj = JSON.parse(JSON.stringify(result));
+				var total=0;
+				//console.log(bmobj);
+				
+				bmobj.forEach((element, index, array) =>
+	           	{
+	           		var sub_total=0;
+	           	  
+	           		element.invoiceItemMasterlist.forEach((elementx, indexx, arrayx) =>
+		           	  {
+		           		sub_total +=elementx.taxableAmount + elementx.cgstamount + elementx.sgstamount+ elementx.igstamount; 
+		           	  });
+		           	  
+		           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editinvoiceinfo(this)' id='"+element.invoiceid +"'>"+element.invoiceNo+"</td>";
+		           	 htmlop +="<td class='text-nowrap'>"+element.invoiceType +" <a href='prjinvoiceprint?id="+ mastercategoryid +"&inv="+ element.invoiceid + "' target='_blank'><i class='bx bx-printer'></i></a></td><td class='text-nowrap'>"+element.invoiceDateMMMddyyyy +"</td><td>"+element.dueDateMMMddyyyy +"</td>";
+		           	 htmlop +="<td>"+sub_total.toFixed(0) +" <i class='bx bx-receipt  generatenewreceipt' onclick='generatereceipt("+element.invoiceid +","+ mastercategoryid +")'  ></i></td></tr>";
+		           	 total +=parseFloat(sub_total);
+	            });
+				
+				 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(0) +"</p> </td> </tr>";
+					
+				$('#projectinvoicelist').html(htmlop);
+			},
+			error : function(e) {
+				console.log("Error" + e);
+
+			}
+
+		});
+
+	}
+	
+	
+	// ----------------------------------------------------------------------------------------------------------------------------------------
+	function getreceiptlist( mastercategoryid ) {
+		
+		var formData = {
+			mastercategoryid : mastercategoryid
+		}
+
+		$.ajax({
+			type : "POST",
+			url : "getprojectreceiptlist",
+			data : formData,
+			success : function(result) {
+				var htmlop="";
+				var bmobj = JSON.parse(JSON.stringify(result));
+				var total=0;
+				//console.log(bmobj);
+				
+				bmobj.forEach((element, index, array) =>
+	           	{
+	           		var sub_total=0;
+	           	  
+	           		
+		           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editreceiptinfo(this)' id='"+element.recepitid +"'>"+element.recepitNo+"</td>";
+		           	 htmlop +="<td class='text-nowrap'>"+element.invoiceNo +"</td><td class='text-nowrap'>"+element.recepitDateMMMddyyyy +"</td><td>"+element.depositedto_txt +"</td>";
+		           	 htmlop +="<td>"+element.amount.toFixed(2) +"</td></tr>";
+		           	 total +=parseFloat(element.amount);
+	            });
+				
+				 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
+					
+				$('#receiptslist').html(htmlop);
+			},
+			error : function(e) {
+				console.log("Error" + e);
+
+			}
+
+		});
+
+	}
+	//------------------------------------------------------
+	function generatereceipt(invoiceid,mastercategoryid)
+	{
+		
+		$("#recepitid").val("");
+		
+		var formData = {
+				invoiceid : invoiceid,
+				mastercategoryid: mastercategoryid
+			}
+
+			$.ajax({
+				type : "POST",
+				url : "getinvoicereceiptitem",
+				data : formData,
+				success : function(result) {
+					var bmobj = JSON.parse(JSON.stringify(result));
+					//console.log(bmobj);
+					
+					$("#invoiceNotxt").text(bmobj.Invoiceno);
+					$("#duedatetxt").text(bmobj.duedate);
+					$("#invoiceamounttxt").text(bmobj.amount);
+					$("#invoicetotalpaidNotxt").text(bmobj.totalpaidamount);
+					$("#invoiceBalancetxt").text(parseInt(bmobj.balanceamount).toFixed(2));
+					$("#recinvoiceid").val(bmobj.invoiceid);
+					
+					$('#receiptmodel').modal('show');
+				},
+				error : function(e) {
+					console.log("Error" + e);
+				}
+			});
+		
+	}
+	// --------------------------------------------------------------------
+	$('#amount').on('change',function(event) {
+		var amount = $('#amount').val();
+		
+		
+		if(amount > parseFloat($('#invoiceBalancetxt').text()))
+		{
+			$('#amount').val($('#invoiceBalancetxt').text());
+		}
+		
+	});
+	//-------------------------------------------
+	$('#payfull').change(function() {
+        if(this.checked) {
+        	$("#amount").val($('#invoiceBalancetxt').text());
+        	
+        }
+	});
+	//------------------------------------------------------------------------------------
+	
+	 function editreceiptinfo(e){
+			var projectid= e.getAttribute("id");
+			var temppid=$("#ProjectName").val();
+				var formData = {
+					projectid : projectid,
+					mastercategoryid: temppid
+				}
+
+				$.ajax({
+					type : "POST",
+					url : "getreceiptitem",
+					data : formData,
+					success : function(result) {
+						var bmobj = JSON.parse(JSON.stringify(result));
+					//	console.log(bmobj);
+						
+						$("#recepitid").val(bmobj.recepitid);
+						$("#recepitNo").val(bmobj.recepitNo);
+						$("#recepitDate").val(bmobj.recepitDate);
+						$("#recinvoiceid").val(bmobj.invoiceid);
+						$("#depositedto").val(bmobj.depositedto).change();
+						$("#modeofPayment").val(bmobj.modeofPayment).change();
+						$("#amount").val(bmobj.amount);
+						$("#notes").val(bmobj.notes);
+						
+					
+						var formData = {
+								invoiceid : bmobj.invoiceid,
+								mastercategoryid: temppid
+							}
+
+							$.ajax({
+								type : "POST",
+								url : "getinvoicereceiptitem",
+								data : formData,
+								success : function(result) {
+									var bmobj = JSON.parse(JSON.stringify(result));
+									//console.log(bmobj);
+									
+									$("#invoiceNotxt").text(bmobj.Invoiceno);
+									$("#duedatetxt").text(bmobj.duedate);
+									$("#invoiceamounttxt").text(bmobj.amount);
+									$("#invoicetotalpaidNotxt").text(bmobj.totalpaidamount);
+									$("#invoiceBalancetxt").text(parseInt(bmobj.balanceamount).toFixed(2));
+									$("#recinvoiceid").val(bmobj.invoiceid);
+									
+									$('#receiptmodel').modal('show');
+								},
+								error : function(e) {
+									console.log("Error" + e);
+								}
+							});
+						
+					},
+					error : function(e) {
+						console.log("Error" + e);
+					}
+				});
+			
+		}
+	
+	// ----------------------------------------------------------------------------------------------------------------------------------------
+	
     </script>
 </body>
 </html>

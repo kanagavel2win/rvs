@@ -11826,10 +11826,16 @@ public class HomeController {
 				.collect(Collectors.toList()).get(0);
 
 		try {
+			if(obj.getInvoiceDate() != null)
+			{
 			obj.setInvoiceDateMMMddyyyy(
 					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
+			}
+			if(obj.getDueDate() != null)
+			{
 			obj.setDueDateMMMddyyyy(
 					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+			}
 		} catch (ParseException e) {
 
 			// e.printStackTrace();
@@ -14095,7 +14101,7 @@ public class HomeController {
 		for (ProjectMaster tmp1obj : projectMasterService.findAll()) {
 
 			// --------------------------------------------------
-			
+			//System.out.println(tmp1obj);
 			tmp1obj.setProjecttotalvaluefromItem("0");
 			if (tmp1obj.getProjectItemMaster().size() > 0) {
 				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(Math.round(tmp1obj.getProjectItemMaster().stream()
@@ -14115,7 +14121,7 @@ public class HomeController {
 												(displaydateFormatrev.parse(C.getRecepitDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0;
 									} catch (ParseException e) {
 										// TODO Auto-generated catch block
-										//e.printStackTrace();
+										e.printStackTrace();
 									}finally
 									{
 										return false;
@@ -14140,7 +14146,7 @@ public class HomeController {
 												(displaydateFormatrev.parse(C.getPrjExpenseDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0;
 									} catch (ParseException e) {
 										// TODO Auto-generated catch block
-										//e.printStackTrace();
+										e.printStackTrace();
 									}finally
 									{
 										return false;
@@ -14158,18 +14164,21 @@ public class HomeController {
 
 				for (InvoiceMaster tobj : tmp1obj.getInvoiceList()) {
 					try {
-						if((displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()- displaydateFormatrev.parse(sr_startdate).getTime() )>=0 &&
-													(displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0)
+						if(tobj.getInvoiceDate() != null)
 						{
-							if (tobj.getInvoiceItemMasterlist().size() > 0) {
-								billedamt = billedamt + tobj.getInvoiceItemMasterlist().stream()
-										
-										.mapToDouble(x -> x.getTotalamountAmount()).sum();
+							if((displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()- displaydateFormatrev.parse(sr_startdate).getTime() )>=0 &&
+														(displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0)
+							{
+								if (tobj.getInvoiceItemMasterlist().size() > 0) {
+									billedamt = billedamt + tobj.getInvoiceItemMasterlist().stream()
+											
+											.mapToDouble(x -> x.getTotalamountAmount()).sum();
+								}
 							}
 						}
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
-						//e.printStackTrace();
+						e.printStackTrace();
 					}
 				}
 
@@ -14456,10 +14465,51 @@ public class HomeController {
 	@GetMapping("accountInvoicels")
 	public String prjinvoiceprint(Model themodel)
 	{
+
+		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls",projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList()));
+		
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
 		return "accountInvoicels";
 		
 	}
+	
+	@GetMapping("accountReceiptls")
+	public String accountReceiptls(Model themodel)
+	{
+
+		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls",projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList()));
+		
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
+		themodel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		List<String> ModeofPayment = itemlistService.findByFieldName("ModeofPayment");
+		themodel.addAttribute("ModeofPayment", ModeofPayment);
+		
+		return "accountReceiptls";
+		
+	}
+	
+	@GetMapping("accountInvoicecreate")
+	public String accountInvoicecreate(Model themodel,@RequestParam("id") int projectid )
+	{
+		
+		ProjectMaster pm = projectMasterService.findById(projectid);
+		
+		InvoiceMaster im = new InvoiceMaster();
+		im.setInvoiceDate(displaydateFormatrev.format(new Date()));
+		pm.getInvoiceList().add(im);
+		ProjectMaster pm1 =projectMasterService.save(pm);
+		
+		int invoicid = pm1.getInvoiceList().stream().mapToInt(v->v.getInvoiceid()).max().orElse(0);
+		
+		return "redirect:invoiceedit?pid="+ projectid+ "&&id="+invoicid;
+		
+	}
+	
+	
 	
 //------------------------
 }

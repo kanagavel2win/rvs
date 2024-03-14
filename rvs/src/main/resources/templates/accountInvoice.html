@@ -443,7 +443,7 @@ td {
                         >
                       </button>
                       <div class="d-flex my-3">
-                        <a th:href="'prjinvoiceprint?id='+ ${projectid} +'&inv='+ ${invoiceid}" target="_blank" class="btn btn-label-secondary w-100 me-6">Preview</a>
+                        <a th:href="'prjinvoiceprint?id='+ ${projectid} +'&inv='+ ${invoiceid}" target="_blank" class="btn btn-label-secondary w-100 me-6">Print & Preview</a>
                         
                       </div>
                       <button
@@ -638,6 +638,8 @@ td {
 	    <script th:src="@{/assets/js/forms-typeahead.js}"></script>
 		
 		<script>
+		var Discountamt =0;
+		var invoiceIncre = 0 ;
     $(document).ready(function() {  
     	
     	
@@ -655,6 +657,8 @@ td {
 		var ids="[[${projectid}]]";
 		var NATUREOFWORK="[[${NATUREOFWORK}]]";
 		var UNITS="[[${UNITS}]]";
+		
+		
 		
 		$("#ProjectName").val(ids).change();
 		NATUREOFWORK_temp="";

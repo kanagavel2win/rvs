@@ -205,6 +205,19 @@ public class menuactivelist {
 			activemenus.put("accInvoice", true);
 			
 			break;
+		
+		case "accProject Expense" :
+			activemenus.put("Accounts", true);
+			activemenus.put("accGeneral", true);
+			activemenus.put("accProject Expense", true);
+			
+			break;
+		case "accGeneral Expense" :
+			activemenus.put("Accounts", true);
+			activemenus.put("accGeneral", true);
+			activemenus.put("accGeneral Expense", true);
+			
+			break;
 		}
 			
 		return activemenus;

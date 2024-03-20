@@ -11780,10 +11780,17 @@ public class HomeController {
 				.getInvoiceList();
 		for (InvoiceMaster obj : ls) {
 			try {
+				if(!nullremover(obj.getInvoiceDate()).equalsIgnoreCase(""))
+				{
 				obj.setInvoiceDateMMMddyyyy(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
-				obj.setDueDateMMMddyyyy(
-						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+				}
+				if(!nullremover(obj.getDueDate()).equalsIgnoreCase(""))
+				{
+					obj.setDueDateMMMddyyyy(
+							displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+				}
+				
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -14510,6 +14517,99 @@ public class HomeController {
 	}
 	
 	
+
+	@GetMapping("accountprojectexpensels")
+	public String accountprojectexpensels(Model themodel)
+	{
+		
+		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls",projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList()));
+		
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accProject Expense"));
+		return "accountprjexpls";
+	}
+	@ResponseBody
+	@GetMapping("accountsprojectexpenlistjson")
+	public List<ProjectMaster> accountsprojectexpenlistjson(Model themodel) {
+		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain().stream().filter(C->
+		Double.parseDouble(C.getProjecttotalvalueexpense())>0).collect(Collectors.toList());
+		
+		
+		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList());
+	}
 	
+	
+	@GetMapping("accprojectexpense")
+	public String accprojectexpense(Model themodel, @RequestParam("id") int id)
+	{
+		
+		ProjectMaster projectMaster = projectMasterService.findById(id);
+		
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		themodel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		themodel.addAttribute("Documenttype", Documenttype);
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		themodel.addAttribute("DocumentGroup", DocumentGroup);
+		List<String> industry_type = itemlistService.findByFieldName("industry_type");
+		themodel.addAttribute("industry_type", industry_type);
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+		themodel.addAttribute("employeelist", emplist);
+
+		List<ContactPerson> cplis = new ArrayList();
+
+		for (ContactPerson cpobj : contactPersonService.findAll()) {
+
+			List<ContactPersonContact> bcls = cpobj.getContactPersonContact().stream()
+					.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+			if (bcls.size() > 0) {
+				cpobj.setPrimarymob(bcls.get(0).getPhonenumber());
+				cpobj.setPrimaryemail(bcls.get(0).getEmail());
+			}
+			cplis.add(cpobj);
+		}
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		// Next Activity & Followers Details
+		HashMap<Integer, String> nextactmap = new HashMap();
+		HashMap<Integer, String> followersmap = new HashMap();
+		String followerstr = "";
+
+		themodel.addAttribute("personlist", cplis);
+		themodel.addAttribute("organizationlist", corglis);
+
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		themodel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		themodel.addAttribute("PURPOSE", PURPOSE);
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		themodel.addAttribute("UNITS", UNITS);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", bmlist);
+
+		List<String> ModeofPayment = itemlistService.findByFieldName("ModeofPayment");
+		themodel.addAttribute("ModeofPayment", ModeofPayment);
+
+		List<String> Label = itemlistService.findByFieldName("Label");
+		themodel.addAttribute("Label", Label);
+		List<String> Phase = itemlistService.findByFieldName("Phase");
+		themodel.addAttribute("Phase", Phase);
+		themodel.addAttribute("expenselist", getaaccountsHeads_Expenses_objectlist());
+		themodel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		themodel.addAttribute("projectMaster", projectMaster);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accProject Expense"));
+		themodel.addAttribute("vechiclels", assetMasterService.findAll().stream()
+				.filter(C -> C.getAssetType().trim().equalsIgnoreCase("Vehicle")).collect(Collectors.toList()));
+		return "accprojectexpense";
+	}
 //------------------------
 }

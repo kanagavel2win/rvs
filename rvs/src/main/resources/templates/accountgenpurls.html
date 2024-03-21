@@ -21,7 +21,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>General Expense</title>
+    <title>General Purchase</title>
 
     <meta name="description" content="" />
 
@@ -105,7 +105,7 @@
           <div class="content-wrapper">
             <!-- Content -->
 				 <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Accounts/ </span>General Expense</h4>
+              <h4 class="py-3 breadcrumb-wrapper mb-4"><span class="text-muted fw-light">Accounts/ </span>General Purchase</h4>
 
 <!-- Users List -->
                        
@@ -131,8 +131,7 @@
                 </div>
               </div>
              
-            
-	
+             
 	        <!-- / Content -->
 
             <!-- Footer -->
@@ -301,7 +300,7 @@
 		                	{
 		                	 $branchCode= full['branchCode'] + "-"+ full['id'];
 		                	}
-			            	 $row_output ='<a href="accountgeneralexpense?id='+ full['id'] +'" target="_blank"> '+ $name +" ("+ $branch_Type+ ") </a><br/><small class='emp_post text-truncate text-muted'>"+  $branchCode + "</span>";
+			            	 $row_output ='<a href="accountgenpurchase?id='+ full['id'] +'" target="_blank"> '+ $name +" ("+ $branch_Type+ ") </a><br/><small class='emp_post text-truncate text-muted'>"+  $branchCode + "</span>";
 			            	 return $row_output;
 			            }
 			          },
@@ -412,7 +411,7 @@
 			          render: function(data, type, full, meta) {
 			            return (
 			           
-			              '<a href="accountgeneralexpense?id='+ full['id'] +'"  target="_blank" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
+			              '<a href="accountgenpurchase?id='+ full['id'] +'"  target="_blank" class="btn btn-sm text-primary btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
 			            );
 			          }
 			        }

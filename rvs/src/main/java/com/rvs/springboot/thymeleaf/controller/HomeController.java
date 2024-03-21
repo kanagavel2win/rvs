@@ -4038,8 +4038,8 @@ public class HomeController {
 			ExtraWorkingDays = Totalsundaywrkdays + Totalholidaywrkdays;
 
 			Absent = A;
-			//WorkingDays = TotalWWorkingDays + Totalholidays;
-			WorkingDays= 26-(A-HOLIDAYA-SUNDAYA)-(HL - HOLIDAYHL - SUNDAYHL);
+			// WorkingDays = TotalWWorkingDays + Totalholidays;
+			WorkingDays = 26 - (A - HOLIDAYA - SUNDAYA) - (HL - HOLIDAYHL - SUNDAYHL);
 
 			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) * 100) / 100.00;
 			DA = Math.round(((ctc / 26) * WorkingDays * 0.35) * 100) / 100.00;
@@ -4101,30 +4101,29 @@ public class HomeController {
 		themodel.addAttribute("totalnet", totalnet.get(0));
 
 		BranchMaster bm = new BranchMaster();
-		int  pslsCount =0;
+		int pslsCount = 0;
 		if (branch_masterid > 0) {
 			bm = branchMasterService.findById(branch_masterid);
-			pslsCount= payslipserive.findByPaymonth(selectedmonth.replace("-", "")).stream().filter(C -> C.getBranchid().equalsIgnoreCase(String.valueOf(branch_masterid))).collect(Collectors.toList()).size();
-					
+			pslsCount = payslipserive.findByPaymonth(selectedmonth.replace("-", "")).stream()
+					.filter(C -> C.getBranchid().equalsIgnoreCase(String.valueOf(branch_masterid)))
+					.collect(Collectors.toList()).size();
+
 		} else {
 			bm.setBRANCH_NAME("ALL");
-			pslsCount= payslipserive.findByPaymonth(selectedmonth.replace("-", "")).size();
+			pslsCount = payslipserive.findByPaymonth(selectedmonth.replace("-", "")).size();
 		}
 		themodel.addAttribute("branchobj", bm);
 
 		List<BranchMaster> branchls = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", branchls);
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_Payroll"));
-		
-		if(pslsCount >0)
-		{
+
+		if (pslsCount > 0) {
 			themodel.addAttribute("pscount", true);
-		}else
-		{
+		} else {
 			themodel.addAttribute("pscount", false);
 		}
-		
-		
+
 		if (!save.equalsIgnoreCase("")) {
 			return "redirect:/payrollvoucher?mn=" + selectedmonth;
 		} else {
@@ -11780,17 +11779,15 @@ public class HomeController {
 				.getInvoiceList();
 		for (InvoiceMaster obj : ls) {
 			try {
-				if(!nullremover(obj.getInvoiceDate()).equalsIgnoreCase(""))
-				{
-				obj.setInvoiceDateMMMddyyyy(displaydateFormatFirstMMMddYYY
-						.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
+				if (!nullremover(obj.getInvoiceDate()).equalsIgnoreCase("")) {
+					obj.setInvoiceDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
 				}
-				if(!nullremover(obj.getDueDate()).equalsIgnoreCase(""))
-				{
-					obj.setDueDateMMMddyyyy(
-							displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+				if (!nullremover(obj.getDueDate()).equalsIgnoreCase("")) {
+					obj.setDueDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+							.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
 				}
-				
+
 			} catch (ParseException e) {
 
 				// e.printStackTrace();
@@ -11833,15 +11830,13 @@ public class HomeController {
 				.collect(Collectors.toList()).get(0);
 
 		try {
-			if(obj.getInvoiceDate() != null)
-			{
-			obj.setInvoiceDateMMMddyyyy(
-					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
+			if (obj.getInvoiceDate() != null) {
+				obj.setInvoiceDateMMMddyyyy(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(obj.getInvoiceDate())).toString());
 			}
-			if(obj.getDueDate() != null)
-			{
-			obj.setDueDateMMMddyyyy(
-					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
+			if (obj.getDueDate() != null) {
+				obj.setDueDateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(obj.getDueDate())).toString());
 			}
 		} catch (ParseException e) {
 
@@ -13392,10 +13387,10 @@ public class HomeController {
 			}
 
 		}
-		ls =ls.stream().sorted(Comparator.comparing(BranchexpenseMaster::getBranchexpenseid,Comparator.reverseOrder()))
-				  .collect(Collectors.toList());
-	    
-		
+		ls = ls.stream()
+				.sorted(Comparator.comparing(BranchexpenseMaster::getBranchexpenseid, Comparator.reverseOrder()))
+				.collect(Collectors.toList());
+
 		return ls;
 	}
 
@@ -13923,9 +13918,8 @@ public class HomeController {
 
 		return "AccountPendingPayments";
 	}
-	
-	public List<ProjectMaster> AccountsprojectlistjsonMain()
-	{
+
+	public List<ProjectMaster> AccountsprojectlistjsonMain() {
 		List<ProjectMaster> projectmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
@@ -13970,19 +13964,33 @@ public class HomeController {
 						.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum())));
 
 			}
+			
+			// ----------------------------------------------------------
+			tmp1obj.setProjecttotalvaluepurchase("0");
+			double purchaseamt = 0;
+			if (tmp1obj.getProjectpurchaseMasterList().size() > 0) {
+				
+				for (ProjectpurchaseMaster tobj : tmp1obj.getProjectpurchaseMasterList()){
+					if (tobj.getProjectpurchaseItemMasterlist().size() > 0) {
+						purchaseamt = purchaseamt + tobj.getProjectpurchaseItemMasterlist().stream()
+								.mapToDouble(x -> x.getTotalamountAmount()).sum();
+					}
+				}
+			}
+			tmp1obj.setProjecttotalvaluepurchase(String.valueOf(Math.round(purchaseamt)));
 			// ----------------------------------------------------------
 			tmp1obj.setProjecttotalvaluereceipt("0");
 			if (tmp1obj.getReceiptList().size() > 0) {
-				tmp1obj.setProjecttotalvaluereceipt(
-						String.valueOf(Math.round(tmp1obj.getReceiptList().stream().mapToDouble(x -> x.getAmount()).sum())));
+				tmp1obj.setProjecttotalvaluereceipt(String
+						.valueOf(Math.round(tmp1obj.getReceiptList().stream().mapToDouble(x -> x.getAmount()).sum())));
 
 			}
 			// ----------------------------------------------------------
 
 			tmp1obj.setProjecttotalvalueexpense("0");
 			if (tmp1obj.getProjectExpenseList().size() > 0) {
-				tmp1obj.setProjecttotalvalueexpense(
-						String.valueOf(Math.round(tmp1obj.getProjectExpenseList().stream().mapToDouble(x -> x.getTotal()).sum())));
+				tmp1obj.setProjecttotalvalueexpense(String.valueOf(
+						Math.round(tmp1obj.getProjectExpenseList().stream().mapToDouble(x -> x.getTotal()).sum())));
 
 			}
 
@@ -14007,52 +14015,50 @@ public class HomeController {
 			projectmasterls.add(tmp1obj);
 
 		}
-		
+
 		return projectmasterls;
 	}
 
 	@ResponseBody
 	@GetMapping("Accountsprojectinvlistjson")
 	public List<ProjectMaster> Accountsprojectinvlistjson(Model themodel) {
-		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain().stream().filter(C->
-		Double.parseDouble(C.getProjecttotalvaluebilled())>0).collect(Collectors.toList());
-		
-		
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain().stream()
+				.filter(C -> Double.parseDouble(C.getProjecttotalvaluebilled()) > 0).collect(Collectors.toList());
+
 		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
 				.collect(Collectors.toList());
 	}
-	
+
 	@GetMapping("invoiceedit")
-	public String invoiceedit(Model themodel, @RequestParam("pid") String projectid,@RequestParam("id") String invoiceid) {
-		
+	public String invoiceedit(Model themodel, @RequestParam("pid") String projectid,
+			@RequestParam("id") String invoiceid) {
+
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
-		themodel.addAttribute("projectid",projectid);
+		themodel.addAttribute("projectid", projectid);
 		themodel.addAttribute("invoiceid", invoiceid);
-		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
-		themodel.addAttribute("projectls",projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
-				.collect(Collectors.toList()));
-		
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls", projectmasterls.stream()
+				.sorted(Comparator.comparing(ProjectMaster::getId).reversed()).collect(Collectors.toList()));
+
 		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
-		
+
 		return "accountInvoice";
 	}
-	
-	
+
 	@ResponseBody
 	@GetMapping("getprojectaddress")
 	public List<projectaddress> getprojectaddress(Model themodel, @RequestParam("projectid") String projectid) {
-		List<projectaddress> adrsLs=new ArrayList();
-		
-		ProjectMaster pm=projectMasterService.findById(Integer.parseInt(projectid));
-		
-		if(!pm.getOrganization().equalsIgnoreCase(""))
-		{
+		List<projectaddress> adrsLs = new ArrayList();
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(projectid));
+
+		if (!pm.getOrganization().equalsIgnoreCase("")) {
 			OrganizationContacts org = contactOrganizationService.findById(Integer.parseInt(pm.getOrganization()));
-			
-			projectaddress pad= new projectaddress();
+
+			projectaddress pad = new projectaddress();
 			pad.setAddressline1(org.getOrgname());
 			pad.setAddressline2(org.getAddressStreet1() + "" + org.getAddressStreet2());
 			pad.setDistrict(org.getAddressCity());
@@ -14061,13 +14067,11 @@ public class HomeController {
 			pad.setGst(org.getAddressGST());
 			adrsLs.add(pad);
 		}
-		if(pm.getProjectContact().size()>0)
-		{
-			for(ProjectContact cp: pm.getProjectContact())
-			{
-				ContactPerson ccp= contactPersonService.findById(cp.getContactPerson());
-				
-				projectaddress pad= new projectaddress();
+		if (pm.getProjectContact().size() > 0) {
+			for (ProjectContact cp : pm.getProjectContact()) {
+				ContactPerson ccp = contactPersonService.findById(cp.getContactPerson());
+
+				projectaddress pad = new projectaddress();
 				pad.setAddressline1(ccp.getPeoplename());
 				pad.setAddressline2(ccp.getAddressStreet1() + "" + ccp.getAddressStreet2());
 				pad.setDistrict(ccp.getAddressCity());
@@ -14076,16 +14080,16 @@ public class HomeController {
 				pad.setGst("");
 				adrsLs.add(pad);
 			}
-			
+
 		}
-		
-			return adrsLs;
+
+		return adrsLs;
 	}
 
 	@ResponseBody
 	@GetMapping("Accountsprojectlistjson")
 	public List<ProjectMaster> Accountsprojectlistjson(Model themodel) {
-		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain();
 		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
 				.collect(Collectors.toList());
 	}
@@ -14093,77 +14097,73 @@ public class HomeController {
 	@GetMapping("accpendingpayadv")
 	public String accpendingpayadv(Model themodel, @RequestParam("dateRange") String dateRange) {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("PendingPayments"));
-		themodel.addAttribute("dateRange",dateRange);
+		themodel.addAttribute("dateRange", dateRange);
 		return "accpendingpayadv";
 	}
+
 	@ResponseBody
 	@GetMapping("Accountsprojectlistjsondatefilter")
-	public List<ProjectMaster> Accountsprojectlistjsondatefilter(Model themodel, @RequestParam("dateRange") String dateRange) {
-	//	System.out.println(dateRange);
-		String [] dates=dateRange.split("to");
-		String sr_startdate=dates[0].trim();
-		String sr_enddate=dates[1].trim();
-		
-		
+	public List<ProjectMaster> Accountsprojectlistjsondatefilter(Model themodel,
+			@RequestParam("dateRange") String dateRange) {
+		// System.out.println(dateRange);
+		String[] dates = dateRange.split("to");
+		String sr_startdate = dates[0].trim();
+		String sr_enddate = dates[1].trim();
+
 		List<ProjectMaster> projectmasterls = new ArrayList<>();
 		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
 
 		for (ProjectMaster tmp1obj : projectMasterService.findAll()) {
 
 			// --------------------------------------------------
-			//System.out.println(tmp1obj);
+			// System.out.println(tmp1obj);
 			tmp1obj.setProjecttotalvaluefromItem("0");
 			if (tmp1obj.getProjectItemMaster().size() > 0) {
 				tmp1obj.setProjecttotalvaluefromItem(String.valueOf(Math.round(tmp1obj.getProjectItemMaster().stream()
-					.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum())));
+						.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum())));
 
 			}
 			// ----------------------------------------------------------
 			tmp1obj.setProjecttotalvaluereceipt("0");
 			if (tmp1obj.getReceiptList().size() > 0) {
-				String temp="";
-						try
-						{
-							temp=String.valueOf(Math.round(tmp1obj.getReceiptList().stream()
-								.filter( C -> {
-									try {
-										return (displaydateFormatrev.parse(C.getRecepitDate()).getTime()- displaydateFormatrev.parse(sr_startdate).getTime() )>=0 &&
-												(displaydateFormatrev.parse(C.getRecepitDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0;
-									} catch (ParseException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}finally
-									{
-										return false;
-									}
-								})
-								.collect(Collectors.toList()).stream()	
-								.mapToDouble(x -> x.getAmount()).sum()));
-						} catch (Exception e) {
+				String temp = "";
+				try {
+					temp = String.valueOf(Math.round(tmp1obj.getReceiptList().stream().filter(C -> {
+						try {
+							return (displaydateFormatrev.parse(C.getRecepitDate()).getTime()
+									- displaydateFormatrev.parse(sr_startdate).getTime()) >= 0
+									&& (displaydateFormatrev.parse(C.getRecepitDate()).getTime()
+											- displaydateFormatrev.parse(sr_enddate).getTime()) <= 0;
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
 							e.printStackTrace();
+						} finally {
+							return false;
 						}
-						tmp1obj.setProjecttotalvaluereceipt(temp);
+					}).collect(Collectors.toList()).stream().mapToDouble(x -> x.getAmount()).sum()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				tmp1obj.setProjecttotalvaluereceipt(temp);
 			}
 			// ----------------------------------------------------------
 
 			tmp1obj.setProjecttotalvalueexpense("0");
 			if (tmp1obj.getProjectExpenseList().size() > 0) {
 				tmp1obj.setProjecttotalvalueexpense(
-						String.valueOf(Math.round(tmp1obj.getProjectExpenseList().stream()
-								.filter( C -> {
-									try {
-										return (displaydateFormatrev.parse(C.getPrjExpenseDate()).getTime()- displaydateFormatrev.parse(sr_startdate).getTime() )>=0 &&
-												(displaydateFormatrev.parse(C.getPrjExpenseDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0;
-									} catch (ParseException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}finally
-									{
-										return false;
-									}
-								})
-								.collect(Collectors.toList()).stream()
-								.mapToDouble(x -> x.getTotal()).sum())));
+						String.valueOf(Math.round(tmp1obj.getProjectExpenseList().stream().filter(C -> {
+							try {
+								return (displaydateFormatrev.parse(C.getPrjExpenseDate()).getTime()
+										- displaydateFormatrev.parse(sr_startdate).getTime()) >= 0
+										&& (displaydateFormatrev.parse(C.getPrjExpenseDate()).getTime()
+												- displaydateFormatrev.parse(sr_enddate).getTime()) <= 0;
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} finally {
+								return false;
+							}
+						}).collect(Collectors.toList()).stream().mapToDouble(x -> x.getTotal()).sum())));
 
 			}
 
@@ -14174,14 +14174,14 @@ public class HomeController {
 
 				for (InvoiceMaster tobj : tmp1obj.getInvoiceList()) {
 					try {
-						if(tobj.getInvoiceDate() != null)
-						{
-							if((displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()- displaydateFormatrev.parse(sr_startdate).getTime() )>=0 &&
-														(displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()- displaydateFormatrev.parse(sr_enddate).getTime() )<=0)
-							{
+						if (tobj.getInvoiceDate() != null) {
+							if ((displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()
+									- displaydateFormatrev.parse(sr_startdate).getTime()) >= 0
+									&& (displaydateFormatrev.parse(tobj.getInvoiceDate()).getTime()
+											- displaydateFormatrev.parse(sr_enddate).getTime()) <= 0) {
 								if (tobj.getInvoiceItemMasterlist().size() > 0) {
 									billedamt = billedamt + tobj.getInvoiceItemMasterlist().stream()
-											
+
 											.mapToDouble(x -> x.getTotalamountAmount()).sum();
 								}
 							}
@@ -14201,11 +14201,12 @@ public class HomeController {
 			projectmasterls.add(tmp1obj);
 
 		}
-		
-		List<ProjectMaster> projectmasterls_final =projectmasterls.stream().filter(C->
-				Double.parseDouble(C.getProjecttotalvaluebilled())>0 ||
-				Double.parseDouble(C.getProjecttotalvalueexpense())>0 ||
-				Double.parseDouble(C.getProjecttotalvaluereceipt())>0 ).collect(Collectors.toList());
+
+		List<ProjectMaster> projectmasterls_final = projectmasterls.stream()
+				.filter(C -> Double.parseDouble(C.getProjecttotalvaluebilled()) > 0
+						|| Double.parseDouble(C.getProjecttotalvalueexpense()) > 0
+						|| Double.parseDouble(C.getProjecttotalvaluereceipt()) > 0)
+				.collect(Collectors.toList());
 
 		return projectmasterls_final.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
 				.collect(Collectors.toList());
@@ -14395,12 +14396,18 @@ public class HomeController {
 		if (IgstCount > 0) {
 			Igststatus = true;
 		}
-		double total_CGSTamount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getCGSTamount).sum();
-		double total_IGSTamount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getIGSTamount).sum();
-		double total_SGSTamount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getSGSTamount).sum();
-		double total_Discountamt= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getDiscountamt).sum();
-		double total_amountAmount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
-		double total_TaxableAmount= inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getTaxableAmount).sum();
+		double total_CGSTamount = inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getCGSTamount)
+				.sum();
+		double total_IGSTamount = inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getIGSTamount)
+				.sum();
+		double total_SGSTamount = inv.getInvoiceItemMasterlist().stream().mapToDouble(InvoiceItemMaster::getSGSTamount)
+				.sum();
+		double total_Discountamt = inv.getInvoiceItemMasterlist().stream()
+				.mapToDouble(InvoiceItemMaster::getDiscountamt).sum();
+		double total_amountAmount = inv.getInvoiceItemMasterlist().stream()
+				.mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
+		double total_TaxableAmount = inv.getInvoiceItemMasterlist().stream()
+				.mapToDouble(InvoiceItemMaster::getTaxableAmount).sum();
 		themodel.addAttribute("total_CGSTamount", total_CGSTamount);
 		themodel.addAttribute("total_IGSTamount", total_IGSTamount);
 		themodel.addAttribute("total_SGSTamount", total_SGSTamount);
@@ -14425,22 +14432,20 @@ public class HomeController {
 		return convert(amountInLong);
 	}
 
-	public static final String[] units = { "", "One", "Two", "Three", "Four",
-			"Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
-			"Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
-			"Eighteen", "Nineteen" };
+	public static final String[] units = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+			"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen",
+			"Nineteen" };
 
-	public static final String[] tens = { 
-			"", 		// 0
-			"",		// 1
-			"Twenty", 	// 2
-			"Thirty", 	// 3
-			"Forty", 	// 4
-			"Fifty", 	// 5
-			"Sixty", 	// 6
-			"Seventy",	// 7
-			"Eighty", 	// 8
-			"Ninety" 	// 9
+	public static final String[] tens = { "", // 0
+			"", // 1
+			"Twenty", // 2
+			"Thirty", // 3
+			"Forty", // 4
+			"Fifty", // 5
+			"Sixty", // 6
+			"Seventy", // 7
+			"Eighty", // 8
+			"Ninety" // 9
 	};
 
 	public static String convert(final int n) {
@@ -14471,85 +14476,76 @@ public class HomeController {
 		return convert(n / 10000000) + " Crore" + ((n % 10000000 != 0) ? " " : "") + convert(n % 10000000);
 	}
 
-	
 	@GetMapping("accountInvoicels")
-	public String prjinvoiceprint(Model themodel)
-	{
+	public String prjinvoiceprint(Model themodel) {
 
-		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
-		themodel.addAttribute("projectls",projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
-				.collect(Collectors.toList()));
-		
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls", projectmasterls.stream()
+				.sorted(Comparator.comparing(ProjectMaster::getId).reversed()).collect(Collectors.toList()));
+
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
 		return "accountInvoicels";
-		
-	}
-	
-	@GetMapping("accountReceiptls")
-	public String accountReceiptls(Model themodel)
-	{
 
-		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
-		themodel.addAttribute("projectls",projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
-				.collect(Collectors.toList()));
-		
+	}
+
+	@GetMapping("accountReceiptls")
+	public String accountReceiptls(Model themodel) {
+
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls", projectmasterls.stream()
+				.sorted(Comparator.comparing(ProjectMaster::getId).reversed()).collect(Collectors.toList()));
+
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
 		themodel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		List<String> ModeofPayment = itemlistService.findByFieldName("ModeofPayment");
 		themodel.addAttribute("ModeofPayment", ModeofPayment);
-		
+
 		return "accountReceiptls";
-		
+
 	}
-	
+
 	@GetMapping("accountInvoicecreate")
-	public String accountInvoicecreate(Model themodel,@RequestParam("id") int projectid )
-	{
-		
+	public String accountInvoicecreate(Model themodel, @RequestParam("id") int projectid) {
+
 		ProjectMaster pm = projectMasterService.findById(projectid);
-		
+
 		InvoiceMaster im = new InvoiceMaster();
 		im.setInvoiceDate(displaydateFormatrev.format(new Date()));
 		pm.getInvoiceList().add(im);
-		ProjectMaster pm1 =projectMasterService.save(pm);
-		
-		int invoicid = pm1.getInvoiceList().stream().mapToInt(v->v.getInvoiceid()).max().orElse(0);
-		
-		return "redirect:invoiceedit?pid="+ projectid+ "&&id="+invoicid;
-		
+		ProjectMaster pm1 = projectMasterService.save(pm);
+
+		int invoicid = pm1.getInvoiceList().stream().mapToInt(v -> v.getInvoiceid()).max().orElse(0);
+
+		return "redirect:invoiceedit?pid=" + projectid + "&&id=" + invoicid;
+
 	}
-	
-	
 
 	@GetMapping("accountprojectexpensels")
-	public String accountprojectexpensels(Model themodel)
-	{
-		
-		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain();
-		themodel.addAttribute("projectls",projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
-				.collect(Collectors.toList()));
-		
+	public String accountprojectexpensels(Model themodel) {
+
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls", projectmasterls.stream()
+				.sorted(Comparator.comparing(ProjectMaster::getId).reversed()).collect(Collectors.toList()));
+
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accProject Expense"));
 		return "accountprjexpls";
 	}
+
 	@ResponseBody
 	@GetMapping("accountsprojectexpenlistjson")
 	public List<ProjectMaster> accountsprojectexpenlistjson(Model themodel) {
-		List<ProjectMaster> projectmasterls=AccountsprojectlistjsonMain().stream().filter(C->
-		Double.parseDouble(C.getProjecttotalvalueexpense())>0).collect(Collectors.toList());
-		
-		
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain().stream()
+				.filter(C -> Double.parseDouble(C.getProjecttotalvalueexpense()) > 0).collect(Collectors.toList());
+
 		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
 				.collect(Collectors.toList());
 	}
-	
-	
+
 	@GetMapping("accprojectexpense")
-	public String accprojectexpense(Model themodel, @RequestParam("id") int id)
-	{
-		
+	public String accprojectexpense(Model themodel, @RequestParam("id") int id) {
+
 		ProjectMaster projectMaster = projectMasterService.findById(id);
-		
+
 		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
 		themodel.addAttribute("CONTACTTYPE", CONTACTTYPE);
 
@@ -14614,17 +14610,16 @@ public class HomeController {
 				.filter(C -> C.getAssetType().trim().equalsIgnoreCase("Vehicle")).collect(Collectors.toList()));
 		return "accprojectexpense";
 	}
-	
+
 	@GetMapping("accountgeneralexpensels")
-	public String accountgeneralexpensels(Model themodel)
-	{
-		
+	public String accountgeneralexpensels(Model themodel) {
+
 		List<BranchMaster> bmList = branchMasterService.findAll();
 		themodel.addAttribute("branchlist", bmList);
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accGeneral Expense"));
 		return "accountgenexpls";
 	}
-	
+
 	@GetMapping("accountgeneralexpense")
 	public String accountgeneralexpense(Model theModel, @RequestParam("id") int branchid) {
 		List<BranchMaster> bmlist = branchMasterService.findAll();
@@ -14724,5 +14719,131 @@ public class HomeController {
 
 		return "accountgeneralexpense";
 	}
+
+	@GetMapping("accountgeneralpurchasels")
+	public String accountgeneralpurchansels(Model themodel) {
+
+		List<BranchMaster> bmList = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", bmList);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accGeneral Purchanse"));
+		return "accountgenpurls";
+	}
+
+	@GetMapping("accountgenpurchase")
+	public String accountgenpurchase(Model theModel, @RequestParam("id") int branchid) {
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+
+		BranchMaster bm = branchMasterService.findById(branchid);
+		
+		// -------------------------------------------
+		// -------------------------------------------
+		
+		theModel.addAttribute("BranchMaster", bm);
+		theModel.addAttribute("BranchList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accGeneral Purchanse"));
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		theModel.addAttribute("supplierlist",
+				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+						.collect(Collectors.toList()));
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
+		theModel.addAttribute("ActiveStaffcount", branchMasterService.getemployeeActivecount(branchid));
+		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream()
+				.filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
+		
+		return "accountgenpurchase";
+	}
+	
+	@GetMapping("accountprojectpurchasels")
+	public String accountprojectpurchasels(Model themodel) {
+
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain();
+		themodel.addAttribute("projectls", projectmasterls.stream()
+				.sorted(Comparator.comparing(ProjectMaster::getId).reversed()).collect(Collectors.toList()));
+
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accProject Purchanse"));
+		return "accountprjpurchasels";
+	}
+
+	@ResponseBody
+	@GetMapping("accountsprojectpurchaselistjson")
+	public List<ProjectMaster> accountsprojectpurchaselistjson(Model themodel) {
+		List<ProjectMaster> projectmasterls = AccountsprojectlistjsonMain().stream()
+				.filter(C -> Double.parseDouble(C.getProjecttotalvaluepurchase()) > 0).collect(Collectors.toList());
+
+		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
+				.collect(Collectors.toList());
+	}
+	
+	@GetMapping("accprojectpurchase")
+	public String accprojectpurchase(Model theModel, @RequestParam("id") int id) {
+
+		List<EmployeeMaster> emplist = EffectiveEmployee(employeeMasterService.findAll());
+
+		ProjectMaster projectMaster = new ProjectMaster();
+		projectMaster = projectMasterService.findById(id);
+
+		// ----------------------------------------------------------
+
+		theModel.addAttribute("projectMaster", projectMaster);
+		
+
+		theModel.addAttribute("employeelist", emplist);
+		List<ContactPerson> cplis = contactPersonService.findAll();
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+
+		
+		theModel.addAttribute("personlist", cplis);
+		theModel.addAttribute("organizationlist", corglis);
+		theModel.addAttribute("supplierlist",
+				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+						.collect(Collectors.toList()));
+
+		List<String> MEMBERIN = itemlistService.findByFieldName("SOURCE");
+		theModel.addAttribute("SOURCE", MEMBERIN);
+
+		List<String> PURPOSE = itemlistService.findByFieldName("PURPOSE");
+		theModel.addAttribute("PURPOSE", PURPOSE);
+
+		List<String> NATUREOFWORK = itemlistService.findByFieldName("NATUREOFWORK");
+		theModel.addAttribute("NATUREOFWORK", NATUREOFWORK);
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+		theModel.addAttribute("branchlist", bmlist);
+
+		theModel.addAttribute("contactPeopleList",
+				contactPersonService.contactpersonlistbyorgname(projectMaster.getOrganization()));
+		theModel.addAttribute("branchMasterList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
+		// ---------------------------
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("project"));
+		theModel.addAttribute("board", projectTemplateBoardService.findAll());
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses());
+
+		List<String> ModeofPayment = itemlistService.findByFieldName("ModeofPayment");
+		theModel.addAttribute("ModeofPayment", ModeofPayment);
+
+		List<String> Label = itemlistService.findByFieldName("Label");
+		theModel.addAttribute("Label", Label);
+
+		List<String> Phase = itemlistService.findByFieldName("Phase");
+		theModel.addAttribute("Phase", Phase);
+
+		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
+		theModel.addAttribute("ProjectStatus", ProjectStatus);
+		
+		return "accountprjpurchase";
+	}
+
 //------------------------
 }

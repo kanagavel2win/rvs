@@ -218,6 +218,18 @@ public class menuactivelist {
 			activemenus.put("accGeneral Expense", true);
 			
 			break;
+		case "accGeneral Purchanse" :
+			activemenus.put("Accounts", true);
+			activemenus.put("accGeneralPurchanse", true);
+			activemenus.put("accGeneral Purchanse", true);
+			
+			break;
+		case "accProject Purchanse" :
+			activemenus.put("Accounts", true);
+			activemenus.put("accGeneralPurchanse", true);
+			activemenus.put("accProject Purchanse", true);
+			
+			break;
 		}
 			
 		return activemenus;

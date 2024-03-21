@@ -13392,7 +13392,10 @@ public class HomeController {
 			}
 
 		}
-
+		ls =ls.stream().sorted(Comparator.comparing(BranchexpenseMaster::getBranchexpenseid,Comparator.reverseOrder()))
+				  .collect(Collectors.toList());
+	    
+		
 		return ls;
 	}
 
@@ -14610,6 +14613,116 @@ public class HomeController {
 		themodel.addAttribute("vechiclels", assetMasterService.findAll().stream()
 				.filter(C -> C.getAssetType().trim().equalsIgnoreCase("Vehicle")).collect(Collectors.toList()));
 		return "accprojectexpense";
+	}
+	
+	@GetMapping("accountgeneralexpensels")
+	public String accountgeneralexpensels(Model themodel)
+	{
+		
+		List<BranchMaster> bmList = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", bmList);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accGeneral Expense"));
+		return "accountgenexpls";
+	}
+	
+	@GetMapping("accountgeneralexpense")
+	public String accountgeneralexpense(Model theModel, @RequestParam("id") int branchid) {
+		List<BranchMaster> bmlist = branchMasterService.findAll();
+
+		BranchMaster bm = branchMasterService.findById(branchid);
+		if (bm.getBranchAccNo().size() == 0) {
+			List<BranchAccNo> BranchAccNols = new ArrayList();
+			BranchAccNols.add(new BranchAccNo());
+			bm.setBranchAccNo(BranchAccNols);
+			bm = branchMasterService.save(bm);
+		}
+		// ---------------------------------------
+		// Get Primary contact
+		List<BranchContact> branchContactls = bm.getBranchContact().stream().filter(C -> C.getPrimarycontact() == true)
+				.collect(Collectors.toList());
+		if (branchContactls.size() == 0) {
+			theModel.addAttribute("primaryContact", false);
+		} else {
+			theModel.addAttribute("primaryContact", true);
+		}
+		// ---------------------------------------
+		if (!bm.getCOMES_UNDER().equalsIgnoreCase("Root")) {
+			int comes_underint = Integer.parseInt(bm.getCOMES_UNDER());
+			List<BranchMaster> templist = bmlist.stream().filter(C -> C.getId() == comes_underint)
+					.collect(Collectors.toList());
+			if (templist.size() > 0) {
+				bm.setCOMES_UNDER_name(templist.get(0).getBRANCH_NAME());
+			}
+		} else {
+			bm.setCOMES_UNDER_name("Root");
+		}
+		if (!bm.getB_TYPE().equalsIgnoreCase("")) {
+			bm.setBRANCH_Type_2w(bm.getB_TYPE().substring(0, 1) + "O");
+		}
+		if (!nullremover(String.valueOf(bm.getBRANCH_IN_CHARGE())).equalsIgnoreCase("")) {
+			EmployeeMaster empobj = employeeMasterService.findById(Integer.parseInt(bm.getBRANCH_IN_CHARGE()));
+			bm.setBRANCH_IN_CHARGE_img(getemp_photo(empobj));
+			bm.setBRANCH_IN_CHARGE_name(empobj.getStaffName());
+
+		}
+		if (!bm.getSTATED_DATE().equalsIgnoreCase("")) {
+
+			try {
+				bm.setStartdateMMformat(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(bm.getSTATED_DATE())).toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
+		}
+
+		// -------------------------------------------
+		// Branch Effective
+		List<BranchEffective> branchEffective = new ArrayList<>();
+		branchEffective = branchMasterService.findById(branchid).getBranchEffective();
+		if (branchEffective.size() > 0) {
+			branchEffective.sort(Comparator.comparing(BranchEffective::getEffectivedate));
+			bm.setEffectiveon(branchEffective.get(branchEffective.size() - 1).getEffectivedate());
+			try {
+				bm.setEffectiveonMMformat(
+						displaydateFormatFirstMMMddYYY
+								.format(displaydateFormatrev
+										.parse(branchEffective.get(branchEffective.size() - 1).getEffectivedate()))
+								.toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		// -------------------------------------------
+		// -------------------------------------------
+		List<String> CONTACTTYPE = itemlistService.findByFieldName("CONTACTTYPE");
+		theModel.addAttribute("CONTACTTYPE", CONTACTTYPE);
+
+		List<String> Documenttype = itemlistService.findByFieldName("Documenttype");
+		theModel.addAttribute("Documenttype", Documenttype);
+		List<String> DocumentGroup = itemlistService.findByFieldName("DocumentGroup");
+		theModel.addAttribute("DocumentGroup", DocumentGroup);
+		theModel.addAttribute("BranchMaster", bm);
+		theModel.addAttribute("BranchList", branchMasterService.findAll());
+		theModel.addAttribute("EffectiveEmployee", employeeMasterService.findAll());
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accGeneral Expense"));
+
+		List<String> UNITS = itemlistService.findByFieldName("UNITS");
+		theModel.addAttribute("UNITS", UNITS);
+
+		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
+		theModel.addAttribute("supplierlist",
+				corglis.stream().filter(C -> nullremover(C.getCustomer_supplier()).equalsIgnoreCase("Supplier"))
+						.collect(Collectors.toList()));
+		theModel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
+		theModel.addAttribute("expenselist", getaaccountsHeads_Expenses_objectlist());
+		theModel.addAttribute("vechiclels", assetMasterService.findAll().stream()
+				.filter(C -> C.getAssetType().trim().equalsIgnoreCase("Vehicle")).collect(Collectors.toList()));
+		theModel.addAttribute("ActiveStaffcount", branchMasterService.getemployeeActivecount(branchid));
+		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream()
+				.filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
+
+		return "accountgeneralexpense";
 	}
 //------------------------
 }

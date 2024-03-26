@@ -140,6 +140,7 @@ import com.rvs.springboot.thymeleaf.entity.ProjectTemplatePhase;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchaseItemMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchaseMaster;
 import com.rvs.springboot.thymeleaf.entity.ProjectpurchasePaymentMaster;
+import com.rvs.springboot.thymeleaf.entity.SnoMaster;
 import com.rvs.springboot.thymeleaf.entity.payslip;
 import com.rvs.springboot.thymeleaf.pojo.Admindashboardbarchart;
 import com.rvs.springboot.thymeleaf.pojo.CalenderFormat;
@@ -182,6 +183,7 @@ import com.rvs.springboot.thymeleaf.service.PaySlipService;
 import com.rvs.springboot.thymeleaf.service.ProjectMasterService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateBoardService;
 import com.rvs.springboot.thymeleaf.service.ProjectTemplateMasterService;
+import com.rvs.springboot.thymeleaf.service.SnoService;
 
 @Controller
 
@@ -266,6 +268,9 @@ public class HomeController {
 
 	@Autowired
 	EmployeeAdvanceRepaymentService employeeAdvanceRepaymentService;
+	
+	@Autowired
+	SnoService snoservice;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
@@ -4039,7 +4044,12 @@ public class HomeController {
 
 			Absent = A;
 			// WorkingDays = TotalWWorkingDays + Totalholidays;
-			WorkingDays = 26 - (A - HOLIDAYA - SUNDAYA) - (HL - HOLIDAYHL - SUNDAYHL);
+			WorkingDays = 26 - (A + HOLIDAYA + SUNDAYA) - (HL + HOLIDAYHL + SUNDAYHL);
+			
+			if(WorkingDays <1)
+			{
+				WorkingDays=0;
+			}
 
 			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) * 100) / 100.00;
 			DA = Math.round(((ctc / 26) * WorkingDays * 0.35) * 100) / 100.00;
@@ -4261,6 +4271,25 @@ public class HomeController {
 					List<EmployeeJobinfo> infoobjgreen = infoobj.stream().filter(
 							c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0)
 							.collect(Collectors.toList());
+					
+					if (infoobjgreen.size() == 0) {
+						LocalDate lastDayOfMonth = LocalDate.parse(monthstr1 + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+						       .with(TemporalAdjusters.lastDayOfMonth());
+						//System.out.println(lastDayOfMonth);
+						
+						infoobjgreen = infoobj.stream().filter(
+								c -> {
+									try {
+										return dateFormat.format(dateFormat.parse(String.valueOf(lastDayOfMonth))).compareTo(c.getJobeffectivedate().toString()) >= 0;
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									return false;
+								})
+								.collect(Collectors.toList());
+					
+					}
 					infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 
 					if (infoobjgreen.size() > 0) {
@@ -10225,9 +10254,9 @@ public class HomeController {
 		return result[0] + "<li class='timeline-end-indicator'>  <i class='bx bx-badge-check'></i> </li>";
 	}
 
-	public String nullremover(String str) {
-
-		return str.replace("null", "").replace("Null", "").replace("NULL", "");
+	public String nullremover(Object str) {
+		String str1= String.valueOf(str);	
+		return str1.replace("null", "").replace("Null", "").replace("NULL", "");
 	}
 
 	/*
@@ -11622,9 +11651,14 @@ public class HomeController {
 
 		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
 		List<InvoiceMaster> invls = new ArrayList();
-
+		
+		
 		String tempinvoiceid = nullremover(String.valueOf(params.get("invoiceid")));
 
+		if(params.get("typecheckallower").equalsIgnoreCase("createNew"))
+		{
+			tempinvoiceid="";
+		}
 		if (!tempinvoiceid.equalsIgnoreCase("")) {
 			List<InvoiceMaster> ls = new ArrayList();
 
@@ -11638,7 +11672,8 @@ public class HomeController {
 					invm.setBillMobileno("");
 					invm.setBillpincode(String.valueOf(params.get("billaddresspincode")));
 					invm.setBillstate(String.valueOf(params.get("billaddressState")));
-					invm.setDueDate(String.valueOf(params.get("dueDate")));
+					invm.setDueDate(duedatecalculator(String.valueOf(params.get("invoiceDate")),String.valueOf(params.get("dueType"))));
+					invm.setDueType(String.valueOf(params.get("dueType")));
 					invm.setGSTCode(String.valueOf(params.get("GSTCode")));
 					invm.setInvoiceaddresscity(String.valueOf(params.get("invoiceaddresscity")));
 					invm.setInvoiceaddressline1(String.valueOf(params.get("invoiceaddressline1")));
@@ -11654,8 +11689,15 @@ public class HomeController {
 					invm.setRvsaddress(
 							"29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
 					invm.setReceivable("");
-					invm.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
-
+					
+					if(!nullremover(String.valueOf(params.get("invoiceNo"))).equalsIgnoreCase(""))
+					{
+						invm.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
+					}else
+					{
+						invm.setInvoiceNo(String.valueOf(getInvoiceautogeneration(String.valueOf(params.get("invoiceType")))));
+					}
+					
 					List<InvoiceItemMaster> invitemls = new ArrayList();
 					for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
 
@@ -11690,7 +11732,8 @@ public class HomeController {
 			newinv.setBillMobileno("");
 			newinv.setBillpincode(String.valueOf(params.get("billaddresspincode")));
 			newinv.setBillstate(String.valueOf(params.get("billaddressState")));
-			newinv.setDueDate(String.valueOf(params.get("dueDate")));
+			newinv.setDueDate(duedatecalculator(String.valueOf(params.get("invoiceDate")),String.valueOf(params.get("dueType"))));
+			newinv.setDueType(String.valueOf(params.get("dueType")));
 			newinv.setGSTCode(String.valueOf(params.get("GSTCode")));
 			newinv.setInvoiceaddresscity(String.valueOf(params.get("invoiceaddresscity")));
 			newinv.setInvoiceaddressline1(String.valueOf(params.get("invoiceaddressline1")));
@@ -11719,6 +11762,43 @@ public class HomeController {
 		}
 
 		return projectMasterService.save(pm);
+	}
+	
+	public String duedatecalculator(String invdate,String dueType) {
+		int additiondays=0;
+		
+		switch (dueType){
+		case "Immediate":
+			additiondays=0;
+			break;
+		case "15 Days":
+			additiondays=15;
+			break;
+		case "30 Days":
+			additiondays=30;
+			break;
+		case "45 Days":
+			additiondays=45;
+			break;
+		case "60 Days":
+			additiondays=60;
+			break;
+		case "90 Days":
+			additiondays=90;
+			break;
+		}	
+		
+		Calendar cal = Calendar.getInstance();  
+		try {
+			cal.setTime(displaydateFormatrev.parse(invdate));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+		
+		cal.add(Calendar.DAY_OF_MONTH, additiondays);
+		
+		return  displaydateFormatrev.format(cal.getTime());  
 	}
 
 	public InvoiceItemMaster addupdatedInvoiceMaster(Map<String, String> params, InvoiceItemMaster invitemmaster,
@@ -11768,6 +11848,7 @@ public class HomeController {
 		invitemmaster.setTaxableAmount(afetdiscountamount);
 		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + IGSTamount + SGSTamount);
 
+		
 		return invitemmaster;
 	}
 
@@ -13947,7 +14028,7 @@ public class HomeController {
 							.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
 				}
 			} catch (ParseException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			if (!nullremover(String.valueOf(tmp1obj.getExpectedclosingdate())).equalsIgnoreCase("")) {
 				try {
@@ -14355,9 +14436,29 @@ public class HomeController {
 	}
 
 	public String getInvoiceautogeneration(String invType) {
-		int itemcount = projectMasterService.getItemcountInvoicBillProma(invType);
+		
+		List<SnoMaster> snoArr= snoservice.findByCatogeryAndFinyear(invType,getFinancialYears());
+		int itemcount = 1;		
+		
+		if(snoArr.size()>0)
+		{
+			SnoMaster sno = snoArr.get(0);
+			itemcount = sno.getIncNo();
+			sno.setIncNo(sno.getIncNo()+1);
+			snoservice.save(sno);
+		}else {
+			SnoMaster sno = new SnoMaster();
+			sno.setIncNo(2);
+			sno.setCatogery(invType);
+			sno.setFinyear(getFinancialYears());
+			snoservice.save(sno);
+		}
+		
+		
+		// int itemcount = projectMasterService.getItemcountInvoicBillProma(invType);
 
 		if (invType.equalsIgnoreCase("Tax Invoice")) {
+			
 			return "INV" + getFinancialYears() + "/" + itemcount;
 		} else if (invType.equalsIgnoreCase("Proforma Invoice")) {
 			return "PRO" + getFinancialYears() + "/" + itemcount;
@@ -14365,6 +14466,8 @@ public class HomeController {
 			return "BILL" + getFinancialYears() + "/" + itemcount;
 		}
 
+	
+		
 	}
 
 	@GetMapping("prjinvoiceprint")

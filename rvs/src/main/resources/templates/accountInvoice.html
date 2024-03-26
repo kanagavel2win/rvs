@@ -163,7 +163,9 @@ td {
 	font-weight: normal;
 	font-size: 13px;
 }
-
+input:read-only {
+  background-color:#F3F2F2;
+}
 
 </style>
 </head>
@@ -219,8 +221,8 @@ td {
 								</dt>
 								<dd class="col-sm-6 d-flex justify-content-md-end">
 									<div class="w-px-150">
-										<input type="text" class="form-control"
-											id="invoiceNo" name="invoiceNo" placeholder="Will auto generate"  /> <input
+										<input type="text" class="form-control disable"
+											id="invoiceNo" name="invoiceNo" placeholder="Will auto generate" readonly /> <input
 											type="hidden" class="form-control" id="invoiceid"
 											name="invoiceid" />
 									</div>
@@ -258,8 +260,19 @@ td {
 								</dt>
 								<dd class="col-sm-6 d-flex justify-content-md-end">
 									<div class="w-px-150">
-										<input type="date" class="form-control date-picker"
-											id="dueDate" name="dueDate" required />
+										<select id="dueType" name="dueType"
+											class="form-select"
+											aria-label="Default select example" required>
+											<option value="">-</option>
+											<option value="Immediate">Immediate</option>
+											<option value="15 Days">15 Days</option>
+											<option value="30 Days">30 Days</option>
+											<option value="45 Days">45 Days</option>
+											<option value="60 Days">60 Days</option>
+											<option value="90 Days">90 Days</option>
+										</select>
+										<input type="hidden" class="form-control date-picker"
+											id="dueDate" name="dueDate" />
 									</div>
 								</dd>
 
@@ -268,7 +281,7 @@ td {
 					</div>
 					
 					<b>Project Name</b> 
-					<select id="ProjectName" class="select2 form-select form-select-lg" data-allow-clear="true">
+					<select id="ProjectName" class="select2 form-select form-select-lg" data-allow-clear="true" readonly disabled>
                           	<option>-</option>
                           <th:block th:each="obj :${projectls}">
                           		<option th:value="${obj.id}" th:text="${obj.Title} +'-('+${obj.projectID}+')'"></option>
@@ -294,19 +307,19 @@ td {
 							<p class="row mb-1">
 								<input type="text" class="col-6 form-control lxd"
 									name="invoiceaddresscity" id="invoiceaddresscity"
-									Placeholder="City / District" style="width: 50%" readonly/>
+									Placeholder="City / District" style="width: 50%"  readonly/>
 								<input type="text" class="col-6 form-control lxd"
 									name="invoiceaddresspincode"
 									id="invoiceaddresspincode" Placeholder="Pincode"
-									style="width: 50%" readonly/>
+									style="width: 50%"  readonly/>
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-6 form-control lxd"
 									name="invoiceaddressState" id="invoiceaddressState"
-									Placeholder="State" style="width: 50%" readonly/> <input
+									Placeholder="State" style="width: 50%"  readonly /> <input
 									type="text" class="col-6 form-control lxd"
 									name="invoiceGSTNo" id="invoiceGSTNo"
-									Placeholder="GST" style="width: 50%" readonly/>
+									Placeholder="GST" style="width: 50%"  readonly />
 							</p>
 
 						</div>
@@ -322,28 +335,28 @@ td {
 							<p class="row mb-1">
 								<input type="text" class="col-12 form-control lxd"
 									name="billaddressline1" id="billaddressline1"
-									Placeholder="Address Line1" readonly/>
+									Placeholder="Address Line1"  readonly />
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-12 form-control lxd"
 									name="billaddressline2" id="billaddressline2"
-									Placeholder="Address Line2" readonly/>
+									Placeholder="Address Line2"  readonly />
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-6 form-control lxd"
 									name="billaddresscity" id="billaddresscity"
-									Placeholder="City / District" style="width: 50%" readonly/>
+									Placeholder="City / District" style="width: 50%"  readonly />
 								<input type="text" class="col-6 form-control lxd"
 									name="billaddresspincode" id="billaddresspincode"
-									Placeholder="Pincode" style="width: 50%" readonly/>
+									Placeholder="Pincode" style="width: 50%"  readonly />
 							</p>
 							<p class="row mb-1">
 								<input type="text" class="col-6 form-control lxd"
 									name="billaddressState" id="billaddressState"
-									Placeholder="State" style="width: 50%" readonly/> <input
+									Placeholder="State" style="width: 50%"  readonly /> <input
 									type="text" class="col-6 form-control lxd"
 									name="billGSTNo" id="billGSTNo" Placeholder="GST"
-									style="width: 50%" readonly/>
+									style="width: 50%"  readonly />
 							</p>
 
 						</div>
@@ -640,6 +653,7 @@ td {
 		<script>
 		var Discountamt =0;
 		var invoiceIncre = 0 ;
+		var SrcinvoiceType="";
     $(document).ready(function() {  
     	
     	
@@ -690,50 +704,96 @@ td {
 		   }
 		
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
-		
+		function typecheckallower()
+		{
+			if(SrcinvoiceType !="")
+			{
+				if(SrcinvoiceType != $("#invoiceType").val())
+				{
+					Swal.fire({
+			             title: 'Are you sure to create new '+ $("#invoiceType").val() +' from '+SrcinvoiceType,
+			             text: "You won't be able to revert this!",
+			             icon: 'warning',
+			             showCancelButton: true,
+			             confirmButtonText: 'Yes, Create it!',
+			             customClass: {
+			               confirmButton: 'btn btn-primary me-3',
+			               cancelButton: 'btn btn-label-secondary'
+			             },
+			             buttonsStyling: false
+			           }).then(function (result) {
+			             if (result.value) {
+									
+			            	 saveinvoice("createNew");
+			             }else
+		            	 {
+		            	 	
+		            	 }
+						});
+					
+				}else
+				{
+					saveinvoice("");
+				}
+				
+				
+				
+			}else
+			{
+				saveinvoice("");
+			}
+			
+		}
 		//--------------------------------------------------------------------------------------------------------------------------------------
 		$('#editinvoiceformx').on('submit',function(event) {
+			typecheckallower();
+		});
+		function saveinvoice(typecheckallowerstr)
+		{
 			if (event.target.checkValidity()) {
-				$('.editInvoicesubmit').prop("disabled",true);
-				$('.editInvoicesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-				const formData = new FormData(document.querySelector("#editinvoiceformx"));
-				formData.append("projectid","[[${projectid}]]");
-				formData.append("invoiceitemcount", invoiceIncre);
 				
-				$.ajax({
-					type : "POST",
-					url : "projectinvoicesave",
-					processData : false,
-					contentType : false,
-					data : formData,
-					success : function(
-							result) {
-						
-						validationinvoiceformreset();
-						
-						Swal.fire({
-					        title: 'Invoice Saved Successfully!',
-					        text: 'Share it to the customer',
-					        imageUrl: assetsPath + 'img/bg_rvs/New Project Added.jpg',
-					        imageWidth: 400,
-					        imageAlt: 'Custom image',
-					        confirmButtonText: 'Ok',
-					        customClass: {
-					          confirmButton: 'btn btn-primary'
-					        },
-					        buttonsStyling: false
-					      });
-						
-
-					},
-					error : function(e) {
-						console.log("Error"+ e);
-					}
-				});
+					$('.editInvoicesubmit').prop("disabled",true);
+					$('.editInvoicesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+					const formData = new FormData(document.querySelector("#editinvoiceformx"));
+					formData.append("projectid","[[${projectid}]]");
+					formData.append("invoiceitemcount", invoiceIncre);
+					formData.append("typecheckallower", typecheckallowerstr);
+					
+					$.ajax({
+						type : "POST",
+						url : "projectinvoicesave",
+						processData : false,
+						contentType : false,
+						data : formData,
+						success : function(
+								result) {
+							
+							validationinvoiceformreset();
+							
+							Swal.fire({
+						        title: 'Invoice Saved Successfully!',
+						        text: 'Share it to the customer',
+						        imageUrl: assetsPath + 'img/bg_rvs/New Project Added.jpg',
+						        imageWidth: 400,
+						        imageAlt: 'Custom image',
+						        confirmButtonText: 'Ok',
+						        customClass: {
+						          confirmButton: 'btn btn-primary'
+						        },
+						        buttonsStyling: false
+						      });
+							
+	
+						},
+						error : function(e) {
+							console.log("Error"+ e);
+						}
+					});
+				
 			} else {
 				$('.editInvoicesubmit').prop("disabled",false);
 			}
-		});
+		}
 		// --------------------------------------------------------------------
 		
 		$("#addnewinvoiceitem").click(function() {
@@ -822,11 +882,12 @@ td {
 					success : function(result) {
 						var bmobj = JSON.parse(JSON.stringify(result));
 						//console.log(bmobj);
-						
+						SrcinvoiceType=bmobj.invoiceType;
 						$("#invoiceid").val(bmobj.invoiceid);
 						$("#invoiceNo").val(bmobj.invoiceNo);
 						$("#invoiceDate").val(bmobj.invoiceDate);
 						$("#dueDate").val(bmobj.dueDate);
+						$("#dueType").val(bmobj.dueType).change();
 						$("#invoiceType").val(bmobj.invoiceType).change();
 						$("#receivable").val(bmobj.receivable).change();
 						$("#GSTCode").val(bmobj.gstcode).change();

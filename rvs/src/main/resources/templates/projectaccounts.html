@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" lang="en"
 	class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr"
@@ -164,6 +164,10 @@
 	padding-left: 10px;
 	font-weight: normal;
 	font-size: 13px;
+}
+
+input:read-only {
+  background-color:#F3F2F2;
 }
 </style>
 <script th:inline="javascript">
@@ -555,7 +559,7 @@
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
 																				<input type="text" class="form-control"
-																					id="invoiceNo" name="invoiceNo" placeholder="Will auto generate"  /> <input
+																					id="invoiceNo" name="invoiceNo" placeholder="Will auto generate"  readonly disabled /> <input
 																					type="hidden" class="form-control" id="invoiceid"
 																					name="invoiceid" />
 																			</div>
@@ -597,8 +601,19 @@
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
-																				<input type="date" class="form-control date-picker"
-																					id="dueDate" name="dueDate" required />
+																				<select id="dueType" name="dueType"
+																					class="form-select"
+																					aria-label="Default select example" required>
+																					<option value="">-</option>
+																					<option value="Immediate">Immediate</option>
+																					<option value="15 Days">15 Days</option>
+																					<option value="30 Days">30 Days</option>
+																					<option value="45 Days">45 Days</option>
+																					<option value="60 Days">60 Days</option>
+																					<option value="90 Days">90 Days</option>
+																				</select>
+																				<input type="hidden" class="form-control date-picker"
+																					id="dueDate" name="dueDate" />
 																			</div>
 																		</dd>
 
@@ -615,29 +630,29 @@
 																	<p class="row mb-1">
 																		<input type="text" class="col-12 form-control lxd"
 																			name="invoiceaddressline1" id="invoiceaddressline1"
-																			Placeholder="Address Line1" />
+																			Placeholder="Address Line1"  readonly disabled />
 																	</p>
 																	<p class="row mb-1">
 																		<input type="text" class="col-12 form-control lxd"
 																			name="invoiceaddressline2" id="invoiceaddressline2"
-																			Placeholder="Address Line2" />
+																			Placeholder="Address Line2"  readonly disabled/>
 																	</p>
 																	<p class="row mb-1">
 																		<input type="text" class="col-6 form-control lxd"
 																			name="invoiceaddresscity" id="invoiceaddresscity"
-																			Placeholder="City / District" style="width: 50%" />
+																			Placeholder="City / District" style="width: 50%"  readonly disabled/>
 																		<input type="text" class="col-6 form-control lxd"
 																			name="invoiceaddresspincode"
 																			id="invoiceaddresspincode" Placeholder="Pincode"
-																			style="width: 50%" />
+																			style="width: 50%"  readonly disabled/>
 																	</p>
 																	<p class="row mb-1">
 																		<input type="text" class="col-6 form-control lxd"
 																			name="invoiceaddressState" id="invoiceaddressState"
-																			Placeholder="State" style="width: 50%" /> <input
+																			Placeholder="State" style="width: 50%"  readonly disabled/> <input
 																			type="text" class="col-6 form-control lxd"
 																			name="invoiceGSTNo" id="invoiceGSTNo"
-																			Placeholder="GST" style="width: 50%" />
+																			Placeholder="GST" style="width: 50%"  readonly disabled/>
 																	</p>
 
 																</div>
@@ -653,28 +668,28 @@
 																	<p class="row mb-1">
 																		<input type="text" class="col-12 form-control lxd"
 																			name="billaddressline1" id="billaddressline1"
-																			Placeholder="Address Line1" />
+																			Placeholder="Address Line1"  readonly disabled/>
 																	</p>
 																	<p class="row mb-1">
 																		<input type="text" class="col-12 form-control lxd"
 																			name="billaddressline2" id="billaddressline2"
-																			Placeholder="Address Line2" />
+																			Placeholder="Address Line2"  readonly disabled/>
 																	</p>
 																	<p class="row mb-1">
 																		<input type="text" class="col-6 form-control lxd"
 																			name="billaddresscity" id="billaddresscity"
-																			Placeholder="City / District" style="width: 50%" />
+																			Placeholder="City / District" style="width: 50%"  readonly disabled/>
 																		<input type="text" class="col-6 form-control lxd"
 																			name="billaddresspincode" id="billaddresspincode"
-																			Placeholder="Pincode" style="width: 50%" />
+																			Placeholder="Pincode" style="width: 50%"  readonly disabled/>
 																	</p>
 																	<p class="row mb-1">
 																		<input type="text" class="col-6 form-control lxd"
 																			name="billaddressState" id="billaddressState"
-																			Placeholder="State" style="width: 50%" /> <input
+																			Placeholder="State" style="width: 50%"  readonly disabled/> <input
 																			type="text" class="col-6 form-control lxd"
 																			name="billGSTNo" id="billGSTNo" Placeholder="GST"
-																			style="width: 50%" />
+																			style="width: 50%"  readonly disabled/>
 																	</p>
 
 																</div>
@@ -1543,7 +1558,7 @@
 								
 								
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#editinvoiceformx').on('submit',function(event) {
+								$('#editinvoiceformx_stop').on('submit',function(event) {
 									if (event.target.checkValidity()) {
 										$('.editInvoicesubmit').prop("disabled",true);
 										$('.editInvoicesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
@@ -2248,6 +2263,7 @@
 								$("#invoiceNo").val(bmobj.invoiceNo);
 								$("#invoiceDate").val(bmobj.invoiceDate);
 								$("#dueDate").val(bmobj.dueDate);
+								$("#dueType").val(bmobj.dueType).change();
 								$("#invoiceType").val(bmobj.invoiceType).change();
 								$("#receivable").val(bmobj.receivable).change();
 								$("#GSTCode").val(bmobj.gstcode).change();

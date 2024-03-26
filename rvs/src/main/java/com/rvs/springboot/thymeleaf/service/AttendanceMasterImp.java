@@ -160,6 +160,7 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 					+ monthstr + "-01 00:00:00' and  '" + monthstr + "-" + prdenddate
 					+ " 00:00:00' group by `employeeid` order by employeeid )t1 inner join employeemaster em on t1.employeeid=em.emp_masterid";
 
+			//System.out.println(sql);
 			List<Map<String, Object>> atm = JdbcTemplate.queryForList(sql);
 			return atm;
 		} else {

@@ -40,7 +40,8 @@ public class InvoiceMaster {
 	private String invoiceDate;
 	@Column
 	private String dueDate;
-	
+	@Column
+	private String dueType;
 	@Transient
 	private String invoiceDateMMMddyyyy;
 	@Transient

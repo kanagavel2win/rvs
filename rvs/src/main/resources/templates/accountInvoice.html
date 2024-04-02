@@ -382,6 +382,14 @@ input:read-only {
                       <div class="row py-sm-3">
 							<div class="col-6">
 								<div class="mb-3">
+									<div>
+					                    <p class="mb-2">Accept payments via</p>
+					                    <select class="form-select mb-4" name="bankaccount" id="bankaccount">
+					                      <th:block th:each="m : ${bankaccounts}">
+					                     	 <option th:value="${m.key}" th:text="${m.value}"></option>
+					                      </th:block>
+					                    </select>
+					                  </div>
 									<label for="note" class="form-label fw-semibold">Note:</label>
 									<textarea class="form-control" rows="2" id="note"
 										name="note" placeholder="Invoice note"></textarea>
@@ -459,26 +467,10 @@ input:read-only {
                         <a th:href="'prjinvoiceprint?id='+ ${projectid} +'&inv='+ ${invoiceid}" target="_blank" class="btn btn-label-secondary w-100 me-6">Print & Preview</a>
                         
                       </div>
-                      <button
-                        class="btn btn-primary d-grid w-100"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#addPaymentOffcanvas"
-                      >
-                        <span class="d-flex align-items-center justify-content-center text-nowrap"
-                          ><i class="bx bx-dollar bx-xs me-3"></i>Add Payment</span
-                        >
-                      </button>
+                      
                     </div>
                   </div>
-                  <div>
-                    <p class="mb-2">Accept payments via</p>
-                    <select class="form-select mb-4">
-                      <option value="Bank Account">Bank Account</option>
-                      <option value="Paypal">Paypal</option>
-                      <option value="Card">Credit/Debit Card</option>
-                      <option value="UPI Transfer">UPI Transfer</option>
-                    </select>
-                  </div>
+                  
                 </div>
                 <!-- /Invoice Actions -->
               </div>
@@ -908,6 +900,8 @@ input:read-only {
 						//$("#billEmail").val(bmobj.billEmail);
 						$("#billGSTNo").val(bmobj.billGSTNo);
 						$("#note").val(bmobj.notes);
+						$("#bankaccount").val(bmobj.bankaccount);
+						
 
 						invoiceIncre = 0 ;
 						html="";

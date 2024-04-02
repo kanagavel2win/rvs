@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.BranchMasterRepository;
-import com.rvs.springboot.thymeleaf.entity.BranchMaster;
+import com.rvs.springboot.thymeleaf.entity.BranchAccNo;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 
@@ -132,11 +131,34 @@ public class BranchMasterImp implements BranchMasterService {
 	public int insertbranchAccountdetails(int acid, String acno, String acname, String bankname, String branchname,
 			String ifsccode, int branchid) {
 		if (emppojoPrivillage.allowBranches.contains(branchid)) {
-
+			if(acid ==0)
+			{
+				Optional<BranchMaster> bm = branchRepo.findById(branchid);
+				
+				if(bm.isPresent())
+				{
+					BranchMaster bmobj= bm.get();
+					
+					BranchAccNo baccno = new BranchAccNo();
+					baccno.setAcname(acname);
+					baccno.setAcno(acno);
+					baccno.setBankname(bankname);
+					baccno.setBranchname(branchname);
+					baccno.setIfsccode(ifsccode);
+					List<BranchAccNo> branchAccNols =bmobj.getBranchAccNo();
+					branchAccNols.add(baccno); 
+					bmobj.setBranchAccNo(branchAccNols);
+					branchRepo.save(bmobj);
+				}
+				
+				return 0;
+			}else
+			{
 			String sql = "UPDATE `branch_acc_no` SET `acname`='" + acname + "',`acno`='" + acno + "',`bankname`='"
 					+ bankname + "',`branchname`='" + branchname + "',`ifsccode`='" + ifsccode + "',`branchid`='"
 					+ branchid + "' WHERE branch_accnoid=" + acid;
 			return jdbcTemplate.update(sql);
+			}
 		} else {
 			return 0;
 		}

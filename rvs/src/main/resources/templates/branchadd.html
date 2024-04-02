@@ -374,55 +374,65 @@ var Accountsheadsexpenseitems = [];
                       <h5 class="pb-2 border-bottom mb-4">Bank Details
                        
                         <div class="card-action-element" style="float:right">
-                        <button
-                          class="btn btn-primary btn-sm collapsetogglebtn"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          href="#bankdetailscollapseExample"
-                          aria-expanded="false"
-                          aria-controls="bankdetailscollapseExample"
-                        >
-                          <i id="collapsetoggleicon" class="bx bx-chevron-down bx-xs me-1"></i>
-                        </button>
+                        
+	                        <button
+	                          class="btn btn-primary btn-sm collapsetogglebtn"
+	                          type="button"
+	                          data-bs-toggle="collapse"
+	                          href="#bankdetailscollapseExample"
+	                          aria-expanded="false"
+	                          aria-controls="bankdetailscollapseExample"
+	                        >
+	                          <i id="collapsetoggleicon" class="bx bx-chevron-down bx-xs me-1"></i>
+	                        </button>
+	                        <button
+	                          class="btn btn-primary btn-sm"
+	                          type="button"
+	                          id="addbankbtn"
+	                          data-bs-toggle="modal"
+	                          data-bs-target="#addNewBankDetails"
+	                        >
+	                          <i class="bx bx-plus bx-xs me-1"></i> 
+	                        </button>
                       	</div>
                       </h5>
                       
                       <div class="info-container collapse" id="bankdetailscollapseExample">
-                      
-                      
-                         <ul class="list-unstyled" th:with ="accobj = ${BranchMaster.branchAccNo[0]}">
+                      <th:block th:each="accobj : ${BranchMaster.branchAccNo}">
+                       <div th:class="'cardMaster border p-3 rounded mb-3'">
+                         <ul class="list-unstyled ">
 	                          <li class="mb-3">
 	                            <span class="fw-bold me-2">A.C.No:</span>
-	                            <span th:text="${accobj.acno}" id="Lbl_acno"></span>
+	                            <span th:text="${accobj.acno}" th:class="'acno'+ ${accobj.branchAccnoid}" id="Lbl_acno"></span>
 	                          </li>
 	                          <li class="mb-3">
 	                            <span class="fw-bold me-2">Account Name:</span>
-	                            <span  th:text="${accobj.acname}"  id="Lbl_acname"></span>
+	                            <span  th:text="${accobj.acname}" th:class="'acname'+ ${accobj.branchAccnoid}" id="Lbl_acname"></span>
 	                          </li>
 	                          <li class="mb-3">
 	                            <span class="fw-bold me-2">Bank Name:</span>
-	                            <span  th:text="${accobj.bankname}"  id="Lbl_bankname"></span>
+	                            <span  th:text="${accobj.bankname}" th:class="'bankname'+ ${accobj.branchAccnoid}" id="Lbl_bankname"></span>
 	                          </li>
 	                          <li class="mb-3">
 	                            <span class="fw-bold me-2">Branch Name:</span>
-	                            <span th:text="${accobj.branchname}"  id="Lbl_branchname"></span>
+	                            <span th:text="${accobj.branchname}" th:class="'branchname'+ ${accobj.branchAccnoid}" id="Lbl_branchname"></span>
 	                          </li>
 	                          <li class="mb-3">
 	                            <span class="fw-bold me-2">IFSC Code:</span>
-	                            <span th:text="${accobj.ifsccode}" id="Lbl_ifsccode"></span>
+	                            <span th:text="${accobj.ifsccode}" th:class="'ifsccode'+ ${accobj.branchAccnoid}" id="Lbl_ifsccode"></span>
 	                          </li>
 	                        </ul>
-                        
-                        <div class="d-flex justify-content-center pt-3">
-                          <a
-                            href="javascript:;"
-                            class="btn btn-primary me-3"
-                            data-bs-target="#addNewBankDetails"
-                            data-bs-toggle="modal"
-                            >Edit</a
-                          >
-                          
-                        </div>
+                       
+	                        <div class="d-flex justify-content-center pt-3">
+	                          <a href="javascript:;"
+	                            class="btn btn-primary me-3 bankaccdetailsedit"
+	                            th:name="${accobj.branchAccnoid}"
+	                            
+	                            >Edit</a>
+	                          
+	                        </div>
+                         </div>
+                       </th:block>
                       </div>
                     </div>
                   </div>
@@ -1356,19 +1366,19 @@ var Accountsheadsexpenseitems = [];
                         <h3>Bank Details  </h3>
                         <p>Add/Update Bank Information</p>
                       </div>
-                      <form id="addNewBankDetails" class="row g-3" onsubmit="return false" th:with ="accobj = ${BranchMaster.branchAccNo[0]}">
+                      <form id="addNewBankDetails" class="row g-3 addNewBankDetails" onsubmit="return false" th:with ="accobj = ${BranchMaster.branchAccNo[0]}">
                         
                         <div class="col-12">
                           <label class="form-label" for="model_acno">A.C.No </label>
                            <input
                             type="hidden"
                             id="model_branchAccnoid"
-                            class="form-control expiry-date-mask" th:value="${accobj.branchAccnoid}" required
+                            class="form-control expiry-date-mask"  required
                           />
                           <input
                             type="text"
                             id="model_acno"
-                            class="form-control expiry-date-mask" th:value="${accobj.acno}" required
+                            class="form-control expiry-date-mask"  required
                           />
                         </div>
                         <div class="col-12">
@@ -1376,7 +1386,7 @@ var Accountsheadsexpenseitems = [];
                           <input
                             type="password"
                             id="model_acno_confirm" 
-                            class="form-control expiry-date-mask" th:value="${accobj.acno}" required
+                            class="form-control expiry-date-mask"  required
                           /> 
                         </div>
                         <div class="col-12">
@@ -1384,7 +1394,7 @@ var Accountsheadsexpenseitems = [];
                           <input
                             type="text"
                             id="model_acname"
-                            class="form-control expiry-date-mask" th:value="${accobj.acname}" required
+                            class="form-control expiry-date-mask"  required
                           />
                         </div>
                         <div class="col-12">
@@ -1392,7 +1402,7 @@ var Accountsheadsexpenseitems = [];
                           <input
                             type="text"
                             id="model_bankname"
-                            class="form-control expiry-date-mask" th:value="${accobj.bankname}" required
+                            class="form-control expiry-date-mask"  required
                           />
                         </div>
                         <div class="col-6">
@@ -1400,7 +1410,7 @@ var Accountsheadsexpenseitems = [];
                           <input
                             type="text"
                             id="model_branchname"
-                            class="form-control expiry-date-mask" th:value="${accobj.branchname}" required
+                            class="form-control expiry-date-mask"  required
                           />
                         </div>
                         <div class="col-6">
@@ -1408,7 +1418,7 @@ var Accountsheadsexpenseitems = [];
                           <input
                             type="text"
                             id="model_ifsccode"
-                            class="form-control expiry-date-mask" th:value="${accobj.ifsccode}" required
+                            class="form-control expiry-date-mask"  required
                           />
                         </div>
                         
@@ -1859,6 +1869,12 @@ Model_CURRENT_STATUS
   				$('#modalcontactid').val("-");
   			  });
   			//--------------------------------------------------------------------------------------------------------------------------------------
+  			  $("#addbankbtn").click(function(){
+  				  
+  				$('#model_branchAccnoid').val("");
+  				
+  			  });
+  			//--------------------------------------------------------------------------------------------------------------------------------------
 				$('#editPurchaseformx').on('submit',function(event) {
 					if (event.target.checkValidity()) {
 						$('.editPurchasesubmit').prop("disabled",true);
@@ -2147,7 +2163,18 @@ Model_CURRENT_STATUS
   			  });
   			// --------------------------------------------------------------------
   			
-  			
+  			  $('.bankaccdetailsedit').on('click', function(event){
+  				
+  				let id=$(this).attr("name");
+  				$('#model_branchAccnoid').val(id);
+				$('#model_acno').val($('.acno'+id).text());
+				$('#model_acno_confirm').val($('.acno'+id).text());
+				$('#model_acname').val($('.acname'+id).text());
+				$('#model_bankname').val($('.bankname'+id).text());
+				$('#model_branchname').val($('.branchname'+id).text());
+				$('#model_ifsccode').val($('.ifsccode'+id).text());
+				$('#addNewBankDetails').modal('show');
+  			  });
   			// --------------------------------------------------------------------
   		    // --------------------------------------------------------------------
   			// File uploading 		  
@@ -2296,12 +2323,22 @@ Model_CURRENT_STATUS
 				  						data : formData, success : function(result) {
 				  							var bmobj = JSON.parse(JSON.stringify(result));
 				  							//console.log(bmobj);
-				  							$('#Lbl_acno').text(model_acno);
+				  							/*$('#Lbl_acno').text(model_acno);
 				  							$('#Lbl_acname').text(model_acname);
 				  							$('#Lbl_bankname').text(model_bankname);
 				  							$('#Lbl_branchname').text(model_branchname);
-				  							$('#Lbl_ifsccode').text(model_ifsccode); 
+				  							$('#Lbl_ifsccode').text(model_ifsccode);*/ 
 				  							validationformbankaccreset();
+				  							Swal.fire({
+				  						        title: '',
+				  							        text: 'Account Details has been updated. Please wait',
+				  							        confirmButtonText: 'Ok',
+				  							        customClass: {
+				  							          confirmButton: 'btn btn-primary'
+				  							        },
+				  							        buttonsStyling: false
+				  							      });
+				  							location.reload();
 				  						},
 				  						error : function(e) {
 				  							console.log("Error" + e);

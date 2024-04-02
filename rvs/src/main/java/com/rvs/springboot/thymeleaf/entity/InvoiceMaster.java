@@ -91,6 +91,9 @@ public class InvoiceMaster {
 	@Column
 	private String notes;
 	
+	@Column
+	private int bankaccount;
+	
 	
 	@OneToMany(cascade =  CascadeType.ALL)
 	@JoinColumn(name ="invoiceid")

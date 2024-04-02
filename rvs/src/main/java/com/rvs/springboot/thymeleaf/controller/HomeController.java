@@ -1365,7 +1365,11 @@ public class HomeController {
 
 		if (params.get("functiontype").equalsIgnoreCase("Branch")) {
 			int branchid = Integer.parseInt(params.get("BranchID"));
-			int acid = Integer.parseInt(params.get("acid"));
+			int acid = 0;
+			if(!nullremover(params.get("acid")).equalsIgnoreCase(""))
+			{
+				acid =Integer.parseInt(params.get("acid"));
+			}
 			String acno = params.get("acno");
 			String acname = params.get("acname");
 			String bankname = params.get("bankname");
@@ -11686,6 +11690,7 @@ public class HomeController {
 					invm.setInvoiceType(String.valueOf(params.get("invoiceType")));
 					invm.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 					invm.setNotes(String.valueOf(params.get("note")));
+					invm.setBankaccount(Integer.parseInt(params.get("bankaccount")));
 					invm.setRvsaddress(
 							"29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
 					invm.setReceivable("");
@@ -11746,6 +11751,7 @@ public class HomeController {
 			newinv.setInvoiceType(String.valueOf(params.get("invoiceType")));
 			newinv.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 			newinv.setNotes(String.valueOf(params.get("note")));
+			newinv.setBankaccount(Integer.parseInt(params.get("bankaccount")));
 			newinv.setRvsaddress(
 					"29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
 			newinv.setReceivable("");
@@ -14125,6 +14131,18 @@ public class HomeController {
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
+		Map<Integer,String> bankaccounts = new HashMap<>();
+		
+		List<BranchMaster> bmls= branchMasterService.findAll();
+		
+		for(BranchMaster bm : bmls)
+		{
+			for(BranchAccNo ac: bm.getBranchAccNo()){
+				bankaccounts.put(ac.getBranchAccnoid(),bm.getBRANCH_NAME()+" - "+ac.getBankname());
+				}
+		}
+		
+		themodel.addAttribute("bankaccounts", bankaccounts);
 
 		return "accountInvoice";
 	}
@@ -14614,6 +14632,20 @@ public class HomeController {
 
 		InvoiceMaster im = new InvoiceMaster();
 		im.setInvoiceDate(displaydateFormatrev.format(new Date()));
+		List<InvoiceItemMaster> invItemls = new ArrayList<>();
+		for(ProjectItemMaster pmiObj : pm.getProjectItemMaster())
+		{	 
+			InvoiceItemMaster InIM_tempObj= new InvoiceItemMaster();
+			InIM_tempObj.setInvoiceItem(pmiObj.getProjecttype());
+			InIM_tempObj.setQuantity(Double.parseDouble(pmiObj.getQuantity()));
+			InIM_tempObj.setUnit(pmiObj.getUnit());
+			InIM_tempObj.setPrice(Double.parseDouble(pmiObj.getPrice()));
+			InIM_tempObj.setTaxableAmount(Double.parseDouble(pmiObj.getAmount()));
+			InIM_tempObj.setHSN("");
+			InIM_tempObj.setDescription("");
+			invItemls.add(InIM_tempObj);
+		}
+		im.setInvoiceItemMasterlist(invItemls);;
 		pm.getInvoiceList().add(im);
 		ProjectMaster pm1 = projectMasterService.save(pm);
 

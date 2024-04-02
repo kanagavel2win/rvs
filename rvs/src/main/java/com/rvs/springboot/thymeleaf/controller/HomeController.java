@@ -11691,6 +11691,15 @@ public class HomeController {
 					invm.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 					invm.setNotes(String.valueOf(params.get("note")));
 					invm.setBankaccount(Integer.parseInt(params.get("bankaccount")));
+					//-----------------------------------------
+					BranchAccNo bno =getBankAccountDetails(Integer.parseInt(params.get("bankaccount")));
+					invm.setInv_acname(bno.getAcname());
+					invm.setInv_acno(bno.getAcno());
+					invm.setInv_bankname(bno.getBankname());
+					invm.setInv_branchname(bno.getBranchname());
+					invm.setInv_ifsccode(bno.getIfsccode());
+					
+					//-----------------------------------------
 					invm.setRvsaddress(
 							"29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
 					invm.setReceivable("");
@@ -11752,6 +11761,16 @@ public class HomeController {
 			newinv.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 			newinv.setNotes(String.valueOf(params.get("note")));
 			newinv.setBankaccount(Integer.parseInt(params.get("bankaccount")));
+			//-----------------------------------------
+			BranchAccNo bno =getBankAccountDetails(Integer.parseInt(params.get("bankaccount")));
+			newinv.setInv_acname(bno.getAcname());
+			newinv.setInv_acno(bno.getAcno());
+			newinv.setInv_bankname(bno.getBankname());
+			newinv.setInv_branchname(bno.getBranchname());
+			newinv.setInv_ifsccode(bno.getIfsccode());
+			
+			//-----------------------------------------
+			
 			newinv.setRvsaddress(
 					"29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
 			newinv.setReceivable("");
@@ -11770,6 +11789,23 @@ public class HomeController {
 		return projectMasterService.save(pm);
 	}
 	
+	public BranchAccNo getBankAccountDetails(int bankid) {
+		
+		List<BranchMaster> bmls = branchMasterService.findAll();
+		BranchAccNo bmobj= new BranchAccNo();
+		for(BranchMaster bm : bmls)
+		{
+			List<BranchAccNo> BranchAccNols = bm.getBranchAccNo().stream().filter(C -> C.getBranchAccnoid()== bankid).collect(Collectors.toList());
+			
+			if(BranchAccNols.size()>0) {
+				bmobj=BranchAccNols.get(0);
+				break;
+			}
+		}
+		
+		return bmobj;
+		
+	}
 	public String duedatecalculator(String invdate,String dueType) {
 		int additiondays=0;
 		
@@ -14529,6 +14565,8 @@ public class HomeController {
 				.mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
 		double total_TaxableAmount = inv.getInvoiceItemMasterlist().stream()
 				.mapToDouble(InvoiceItemMaster::getTaxableAmount).sum();
+		
+		
 		themodel.addAttribute("total_CGSTamount", total_CGSTamount);
 		themodel.addAttribute("total_IGSTamount", total_IGSTamount);
 		themodel.addAttribute("total_SGSTamount", total_SGSTamount);

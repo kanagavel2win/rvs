@@ -33,7 +33,7 @@ public class InvoiceMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int invoiceid;
-	
+
 	@Column
 	private String invoiceNo;
 	@Column
@@ -46,7 +46,7 @@ public class InvoiceMaster {
 	private String invoiceDateMMMddyyyy;
 	@Transient
 	private String dueDateMMMddyyyy;
-	
+
 	@Column
 	private String invoiceType;
 	@Column
@@ -87,17 +87,27 @@ public class InvoiceMaster {
 	private String billEmail;
 	@Column
 	private String billGSTNo;
-	
+
 	@Column
 	private String notes;
-	
+
 	@Column
 	private int bankaccount;
-	
-	
-	@OneToMany(cascade =  CascadeType.ALL)
-	@JoinColumn(name ="invoiceid")
+
+	@Column
+	private String inv_acno;
+	@Column
+	private String inv_acname;
+	@Column
+	private String inv_bankname;
+	@Column
+	private String inv_branchname;
+	@Column
+	private String inv_ifsccode;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoiceid")
 	@OrderBy("invoiceitemid ASC")
 	private List<InvoiceItemMaster> invoiceItemMasterlist;
-	
+
 }

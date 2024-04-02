@@ -354,9 +354,9 @@ border-style : hidden!important;
 						<tr>	
 							<td align="left"> 
 							Company’s Bank Details <br/>
-							Bank Name : IDBI Bank <br/>
-							A/c No. : 0006102000076395<br/>
-							Branch & IFS Code : Dr Balasundram Road & IBKL0000006
+							Bank Name : <th:block th:text="${invoice.inv_bankname}"></th:block> <br/>
+							A/c No. : <th:block th:text="${invoice.inv_acno}"></th:block> <br/>
+							Branch & IFS Code : <th:block th:text="${invoice.inv_branchname} +' - '+ ${invoice.inv_ifsccode}"></th:block>
 							</td>
 							<td>
 								<th:block th:utext="'Sub Total (&#x20B9;)<br/>'"></th:block>

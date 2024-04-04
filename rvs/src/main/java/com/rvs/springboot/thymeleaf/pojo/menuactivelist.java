@@ -205,6 +205,12 @@ public class menuactivelist {
 			activemenus.put("accInvoice", true);
 			
 			break;
+			
+		case "accountReceiptls" :
+			activemenus.put("Accounts", true);
+			activemenus.put("accReceipt", true);
+			
+			break;
 		
 		case "accProject Expense" :
 			activemenus.put("Accounts", true);

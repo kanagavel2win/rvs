@@ -268,7 +268,7 @@ public class HomeController {
 
 	@Autowired
 	EmployeeAdvanceRepaymentService employeeAdvanceRepaymentService;
-	
+
 	@Autowired
 	SnoService snoservice;
 
@@ -1366,9 +1366,8 @@ public class HomeController {
 		if (params.get("functiontype").equalsIgnoreCase("Branch")) {
 			int branchid = Integer.parseInt(params.get("BranchID"));
 			int acid = 0;
-			if(!nullremover(params.get("acid")).equalsIgnoreCase(""))
-			{
-				acid =Integer.parseInt(params.get("acid"));
+			if (!nullremover(params.get("acid")).equalsIgnoreCase("")) {
+				acid = Integer.parseInt(params.get("acid"));
 			}
 			String acno = params.get("acno");
 			String acname = params.get("acname");
@@ -4049,10 +4048,9 @@ public class HomeController {
 			Absent = A;
 			// WorkingDays = TotalWWorkingDays + Totalholidays;
 			WorkingDays = 26 - (A + HOLIDAYA + SUNDAYA) - (HL + HOLIDAYHL + SUNDAYHL);
-			
-			if(WorkingDays <1)
-			{
-				WorkingDays=0;
+
+			if (WorkingDays < 1) {
+				WorkingDays = 0;
 			}
 
 			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) * 100) / 100.00;
@@ -4275,24 +4273,24 @@ public class HomeController {
 					List<EmployeeJobinfo> infoobjgreen = infoobj.stream().filter(
 							c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0)
 							.collect(Collectors.toList());
-					
+
 					if (infoobjgreen.size() == 0) {
-						LocalDate lastDayOfMonth = LocalDate.parse(monthstr1 + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
-						       .with(TemporalAdjusters.lastDayOfMonth());
-						//System.out.println(lastDayOfMonth);
-						
-						infoobjgreen = infoobj.stream().filter(
-								c -> {
-									try {
-										return dateFormat.format(dateFormat.parse(String.valueOf(lastDayOfMonth))).compareTo(c.getJobeffectivedate().toString()) >= 0;
-									} catch (ParseException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									return false;
-								})
-								.collect(Collectors.toList());
-					
+						LocalDate lastDayOfMonth = LocalDate
+								.parse(monthstr1 + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+								.with(TemporalAdjusters.lastDayOfMonth());
+						// System.out.println(lastDayOfMonth);
+
+						infoobjgreen = infoobj.stream().filter(c -> {
+							try {
+								return dateFormat.format(dateFormat.parse(String.valueOf(lastDayOfMonth)))
+										.compareTo(c.getJobeffectivedate().toString()) >= 0;
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							return false;
+						}).collect(Collectors.toList());
+
 					}
 					infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 
@@ -10259,7 +10257,7 @@ public class HomeController {
 	}
 
 	public String nullremover(Object str) {
-		String str1= String.valueOf(str);	
+		String str1 = String.valueOf(str);
 		return str1.replace("null", "").replace("Null", "").replace("NULL", "");
 	}
 
@@ -11655,13 +11653,11 @@ public class HomeController {
 
 		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
 		List<InvoiceMaster> invls = new ArrayList();
-		
-		
+
 		String tempinvoiceid = nullremover(String.valueOf(params.get("invoiceid")));
 
-		if(params.get("typecheckallower").equalsIgnoreCase("createNew"))
-		{
-			tempinvoiceid="";
+		if (params.get("typecheckallower").equalsIgnoreCase("createNew")) {
+			tempinvoiceid = "";
 		}
 		if (!tempinvoiceid.equalsIgnoreCase("")) {
 			List<InvoiceMaster> ls = new ArrayList();
@@ -11676,7 +11672,8 @@ public class HomeController {
 					invm.setBillMobileno("");
 					invm.setBillpincode(String.valueOf(params.get("billaddresspincode")));
 					invm.setBillstate(String.valueOf(params.get("billaddressState")));
-					invm.setDueDate(duedatecalculator(String.valueOf(params.get("invoiceDate")),String.valueOf(params.get("dueType"))));
+					invm.setDueDate(duedatecalculator(String.valueOf(params.get("invoiceDate")),
+							String.valueOf(params.get("dueType"))));
 					invm.setDueType(String.valueOf(params.get("dueType")));
 					invm.setGSTCode(String.valueOf(params.get("GSTCode")));
 					invm.setInvoiceaddresscity(String.valueOf(params.get("invoiceaddresscity")));
@@ -11691,27 +11688,26 @@ public class HomeController {
 					invm.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 					invm.setNotes(String.valueOf(params.get("note")));
 					invm.setBankaccount(Integer.parseInt(params.get("bankaccount")));
-					//-----------------------------------------
-					BranchAccNo bno =getBankAccountDetails(Integer.parseInt(params.get("bankaccount")));
+					// -----------------------------------------
+					BranchAccNo bno = getBankAccountDetails(Integer.parseInt(params.get("bankaccount")));
 					invm.setInv_acname(bno.getAcname());
 					invm.setInv_acno(bno.getAcno());
 					invm.setInv_bankname(bno.getBankname());
 					invm.setInv_branchname(bno.getBranchname());
 					invm.setInv_ifsccode(bno.getIfsccode());
-					
-					//-----------------------------------------
+
+					// -----------------------------------------
 					invm.setRvsaddress(
 							"29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
 					invm.setReceivable("");
-					
-					if(!nullremover(String.valueOf(params.get("invoiceNo"))).equalsIgnoreCase(""))
-					{
+
+					if (!nullremover(String.valueOf(params.get("invoiceNo"))).equalsIgnoreCase("")) {
 						invm.setInvoiceNo(String.valueOf(params.get("invoiceNo")));
-					}else
-					{
-						invm.setInvoiceNo(String.valueOf(getInvoiceautogeneration(String.valueOf(params.get("invoiceType")))));
+					} else {
+						invm.setInvoiceNo(
+								String.valueOf(getInvoiceautogeneration(String.valueOf(params.get("invoiceType")))));
 					}
-					
+
 					List<InvoiceItemMaster> invitemls = new ArrayList();
 					for (int i = 1; i <= Integer.parseInt(params.get("invoiceitemcount")); i++) {
 
@@ -11746,7 +11742,8 @@ public class HomeController {
 			newinv.setBillMobileno("");
 			newinv.setBillpincode(String.valueOf(params.get("billaddresspincode")));
 			newinv.setBillstate(String.valueOf(params.get("billaddressState")));
-			newinv.setDueDate(duedatecalculator(String.valueOf(params.get("invoiceDate")),String.valueOf(params.get("dueType"))));
+			newinv.setDueDate(duedatecalculator(String.valueOf(params.get("invoiceDate")),
+					String.valueOf(params.get("dueType"))));
 			newinv.setDueType(String.valueOf(params.get("dueType")));
 			newinv.setGSTCode(String.valueOf(params.get("GSTCode")));
 			newinv.setInvoiceaddresscity(String.valueOf(params.get("invoiceaddresscity")));
@@ -11761,16 +11758,16 @@ public class HomeController {
 			newinv.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 			newinv.setNotes(String.valueOf(params.get("note")));
 			newinv.setBankaccount(Integer.parseInt(params.get("bankaccount")));
-			//-----------------------------------------
-			BranchAccNo bno =getBankAccountDetails(Integer.parseInt(params.get("bankaccount")));
+			// -----------------------------------------
+			BranchAccNo bno = getBankAccountDetails(Integer.parseInt(params.get("bankaccount")));
 			newinv.setInv_acname(bno.getAcname());
 			newinv.setInv_acno(bno.getAcno());
 			newinv.setInv_bankname(bno.getBankname());
 			newinv.setInv_branchname(bno.getBranchname());
 			newinv.setInv_ifsccode(bno.getIfsccode());
-			
-			//-----------------------------------------
-			
+
+			// -----------------------------------------
+
 			newinv.setRvsaddress(
 					"29, Palani Illam, Sundaram Brothers Layout, Ramanathapuram, Coimbatore - 641045.  GSTIN/UlN: 33AASFR5322C1ZD + 91 96007 31477, accounts@rvsls.com");
 			newinv.setReceivable("");
@@ -11788,59 +11785,60 @@ public class HomeController {
 
 		return projectMasterService.save(pm);
 	}
-	
+
 	public BranchAccNo getBankAccountDetails(int bankid) {
-		
+
 		List<BranchMaster> bmls = branchMasterService.findAll();
-		BranchAccNo bmobj= new BranchAccNo();
-		for(BranchMaster bm : bmls)
-		{
-			List<BranchAccNo> BranchAccNols = bm.getBranchAccNo().stream().filter(C -> C.getBranchAccnoid()== bankid).collect(Collectors.toList());
-			
-			if(BranchAccNols.size()>0) {
-				bmobj=BranchAccNols.get(0);
+		BranchAccNo bmobj = new BranchAccNo();
+		for (BranchMaster bm : bmls) {
+			List<BranchAccNo> BranchAccNols = bm.getBranchAccNo().stream().filter(C -> C.getBranchAccnoid() == bankid)
+					.collect(Collectors.toList());
+
+			if (BranchAccNols.size() > 0) {
+				bmobj = BranchAccNols.get(0);
 				break;
 			}
 		}
-		
+
 		return bmobj;
-		
+
 	}
-	public String duedatecalculator(String invdate,String dueType) {
-		int additiondays=0;
-		
-		switch (dueType){
+
+	public String duedatecalculator(String invdate, String dueType) {
+		int additiondays = 0;
+
+		switch (dueType) {
 		case "Immediate":
-			additiondays=0;
+			additiondays = 0;
 			break;
 		case "15 Days":
-			additiondays=15;
+			additiondays = 15;
 			break;
 		case "30 Days":
-			additiondays=30;
+			additiondays = 30;
 			break;
 		case "45 Days":
-			additiondays=45;
+			additiondays = 45;
 			break;
 		case "60 Days":
-			additiondays=60;
+			additiondays = 60;
 			break;
 		case "90 Days":
-			additiondays=90;
+			additiondays = 90;
 			break;
-		}	
-		
-		Calendar cal = Calendar.getInstance();  
+		}
+
+		Calendar cal = Calendar.getInstance();
 		try {
 			cal.setTime(displaydateFormatrev.parse(invdate));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
-		
+
 		cal.add(Calendar.DAY_OF_MONTH, additiondays);
-		
-		return  displaydateFormatrev.format(cal.getTime());  
+
+		return displaydateFormatrev.format(cal.getTime());
 	}
 
 	public InvoiceItemMaster addupdatedInvoiceMaster(Map<String, String> params, InvoiceItemMaster invitemmaster,
@@ -11890,7 +11888,6 @@ public class HomeController {
 		invitemmaster.setTaxableAmount(afetdiscountamount);
 		invitemmaster.setTotalamountAmount(afetdiscountamount + CGSTamount + IGSTamount + SGSTamount);
 
-		
 		return invitemmaster;
 	}
 
@@ -12009,9 +12006,13 @@ public class HomeController {
 			try {
 				obj.setRecepitDateMMMddyyyy(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(obj.getRecepitDate())).toString());
-
-				obj.setInvoiceNo(invls.stream().filter(C -> C.getInvoiceid() == Integer.parseInt(obj.getInvoiceid()))
-						.collect(Collectors.toList()).get(0).getInvoiceNo());
+				if (!obj.getInvoiceid().equalsIgnoreCase("")) {
+					obj.setInvoiceNo(
+							invls.stream().filter(C -> C.getInvoiceid() == Integer.parseInt(obj.getInvoiceid()))
+									.collect(Collectors.toList()).get(0).getInvoiceNo());
+				} else {
+					obj.setInvoiceNo("Advance");
+				}
 				obj.setDepositedto_txt(
 						accountheadsService.findById(Integer.parseInt(obj.getDepositedto())).getCategory());
 			} catch (ParseException e) {
@@ -12105,28 +12106,36 @@ public class HomeController {
 
 		map.put("totalpaidamount", String.valueOf(totalpaidamount));
 
-		InvoiceMaster inv = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
-				.getInvoiceList().stream().filter(C -> C.getInvoiceid() == Integer.parseInt(params.get("invoiceid")))
-				.collect(Collectors.toList()).get(0);
+		if (!params.get("invoiceid").equalsIgnoreCase("")) {
+			InvoiceMaster inv = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+					.getInvoiceList().stream()
+					.filter(C -> C.getInvoiceid() == Integer.parseInt(params.get("invoiceid")))
+					.collect(Collectors.toList()).get(0);
 
-		try {
-			inv.setDueDateMMMddyyyy(
-					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(inv.getDueDate())).toString());
-		} catch (ParseException e) {
+			try {
+				inv.setDueDateMMMddyyyy(
+						displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(inv.getDueDate())).toString());
+			} catch (ParseException e) {
 
-			// e.printStackTrace();
+				// e.printStackTrace();
+			}
+
+			double totalinvoiceamount = inv.getInvoiceItemMasterlist().stream()
+					.mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
+			map.put("Invoiceno", inv.getInvoiceNo());
+			map.put("duedate", inv.getDueDateMMMddyyyy());
+			map.put("amount", String.valueOf(totalinvoiceamount));
+			map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
+			map.put("invoiceid", String.valueOf(inv.getInvoiceid()));
+		}else
+		{
+			map.put("Invoiceno", "");
+			map.put("duedate", "");
+			map.put("amount", "");
+			map.put("balanceamount" , "");
+			map.put("invoiceid", "");
 		}
-
-		double totalinvoiceamount = inv.getInvoiceItemMasterlist().stream()
-				.mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
-		map.put("Invoiceno", inv.getInvoiceNo());
-		map.put("duedate", inv.getDueDateMMMddyyyy());
-		map.put("amount", String.valueOf(totalinvoiceamount));
-		map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
-		map.put("invoiceid", String.valueOf(inv.getInvoiceid()));
-
 		return map;
-
 	}
 
 	@PostMapping("getpurchasepaymentMasteritem")
@@ -14070,7 +14079,7 @@ public class HomeController {
 							.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
 				}
 			} catch (ParseException e) {
-				//e.printStackTrace();
+				// e.printStackTrace();
 			}
 			if (!nullremover(String.valueOf(tmp1obj.getExpectedclosingdate())).equalsIgnoreCase("")) {
 				try {
@@ -14087,13 +14096,13 @@ public class HomeController {
 						.mapToDouble(x -> Double.parseDouble(x.getAmount())).sum())));
 
 			}
-			
+
 			// ----------------------------------------------------------
 			tmp1obj.setProjecttotalvaluepurchase("0");
 			double purchaseamt = 0;
 			if (tmp1obj.getProjectpurchaseMasterList().size() > 0) {
-				
-				for (ProjectpurchaseMaster tobj : tmp1obj.getProjectpurchaseMasterList()){
+
+				for (ProjectpurchaseMaster tobj : tmp1obj.getProjectpurchaseMasterList()) {
 					if (tobj.getProjectpurchaseItemMasterlist().size() > 0) {
 						purchaseamt = purchaseamt + tobj.getProjectpurchaseItemMasterlist().stream()
 								.mapToDouble(x -> x.getTotalamountAmount()).sum();
@@ -14167,17 +14176,16 @@ public class HomeController {
 		themodel.addAttribute("NATUREOFWORK", NATUREOFWORK);
 		List<String> UNITS = itemlistService.findByFieldName("UNITS");
 		themodel.addAttribute("UNITS", UNITS);
-		Map<Integer,String> bankaccounts = new HashMap<>();
-		
-		List<BranchMaster> bmls= branchMasterService.findAll();
-		
-		for(BranchMaster bm : bmls)
-		{
-			for(BranchAccNo ac: bm.getBranchAccNo()){
-				bankaccounts.put(ac.getBranchAccnoid(),bm.getBRANCH_NAME()+" - "+ac.getBankname());
-				}
+		Map<Integer, String> bankaccounts = new HashMap<>();
+
+		List<BranchMaster> bmls = branchMasterService.findAll();
+
+		for (BranchMaster bm : bmls) {
+			for (BranchAccNo ac : bm.getBranchAccNo()) {
+				bankaccounts.put(ac.getBranchAccnoid(), bm.getBRANCH_NAME() + " - " + ac.getBankname());
+			}
 		}
-		
+
 		themodel.addAttribute("bankaccounts", bankaccounts);
 
 		return "accountInvoice";
@@ -14490,29 +14498,27 @@ public class HomeController {
 	}
 
 	public String getInvoiceautogeneration(String invType) {
-		
-		List<SnoMaster> snoArr= snoservice.findByCatogeryAndFinyear(invType,getFinancialYears());
-		int itemcount = 1;		
-		
-		if(snoArr.size()>0)
-		{
+
+		List<SnoMaster> snoArr = snoservice.findByCatogeryAndFinyear(invType, getFinancialYears());
+		int itemcount = 1;
+
+		if (snoArr.size() > 0) {
 			SnoMaster sno = snoArr.get(0);
 			itemcount = sno.getIncNo();
-			sno.setIncNo(sno.getIncNo()+1);
+			sno.setIncNo(sno.getIncNo() + 1);
 			snoservice.save(sno);
-		}else {
+		} else {
 			SnoMaster sno = new SnoMaster();
 			sno.setIncNo(2);
 			sno.setCatogery(invType);
 			sno.setFinyear(getFinancialYears());
 			snoservice.save(sno);
 		}
-		
-		
+
 		// int itemcount = projectMasterService.getItemcountInvoicBillProma(invType);
 
 		if (invType.equalsIgnoreCase("Tax Invoice")) {
-			
+
 			return "INV" + getFinancialYears() + "/" + itemcount;
 		} else if (invType.equalsIgnoreCase("Proforma Invoice")) {
 			return "PRO" + getFinancialYears() + "/" + itemcount;
@@ -14520,8 +14526,6 @@ public class HomeController {
 			return "BILL" + getFinancialYears() + "/" + itemcount;
 		}
 
-	
-		
 	}
 
 	@GetMapping("prjinvoiceprint")
@@ -14565,8 +14569,7 @@ public class HomeController {
 				.mapToDouble(InvoiceItemMaster::getTotalamountAmount).sum();
 		double total_TaxableAmount = inv.getInvoiceItemMasterlist().stream()
 				.mapToDouble(InvoiceItemMaster::getTaxableAmount).sum();
-		
-		
+
 		themodel.addAttribute("total_CGSTamount", total_CGSTamount);
 		themodel.addAttribute("total_IGSTamount", total_IGSTamount);
 		themodel.addAttribute("total_SGSTamount", total_SGSTamount);
@@ -14654,7 +14657,7 @@ public class HomeController {
 		themodel.addAttribute("projectls", projectmasterls.stream()
 				.sorted(Comparator.comparing(ProjectMaster::getId).reversed()).collect(Collectors.toList()));
 
-		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountInvoicels"));
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("accountReceiptls"));
 		themodel.addAttribute("accountlist", getaaccountsHeads_AssetBank_Accounts());
 		List<String> ModeofPayment = itemlistService.findByFieldName("ModeofPayment");
 		themodel.addAttribute("ModeofPayment", ModeofPayment);
@@ -14671,9 +14674,8 @@ public class HomeController {
 		InvoiceMaster im = new InvoiceMaster();
 		im.setInvoiceDate(displaydateFormatrev.format(new Date()));
 		List<InvoiceItemMaster> invItemls = new ArrayList<>();
-		for(ProjectItemMaster pmiObj : pm.getProjectItemMaster())
-		{	 
-			InvoiceItemMaster InIM_tempObj= new InvoiceItemMaster();
+		for (ProjectItemMaster pmiObj : pm.getProjectItemMaster()) {
+			InvoiceItemMaster InIM_tempObj = new InvoiceItemMaster();
 			InIM_tempObj.setInvoiceItem(pmiObj.getProjecttype());
 			InIM_tempObj.setQuantity(Double.parseDouble(pmiObj.getQuantity()));
 			InIM_tempObj.setUnit(pmiObj.getUnit());
@@ -14683,7 +14685,8 @@ public class HomeController {
 			InIM_tempObj.setDescription("");
 			invItemls.add(InIM_tempObj);
 		}
-		im.setInvoiceItemMasterlist(invItemls);;
+		im.setInvoiceItemMasterlist(invItemls);
+		;
 		pm.getInvoiceList().add(im);
 		ProjectMaster pm1 = projectMasterService.save(pm);
 
@@ -14907,10 +14910,10 @@ public class HomeController {
 		List<BranchMaster> bmlist = branchMasterService.findAll();
 
 		BranchMaster bm = branchMasterService.findById(branchid);
-		
+
 		// -------------------------------------------
 		// -------------------------------------------
-		
+
 		theModel.addAttribute("BranchMaster", bm);
 		theModel.addAttribute("BranchList", branchMasterService.findAll());
 		theModel.addAttribute("EffectiveEmployee", EffectiveEmployee(employeeMasterService.findAll()));
@@ -14928,10 +14931,10 @@ public class HomeController {
 		theModel.addAttribute("ActiveStaffcount", branchMasterService.getemployeeActivecount(branchid));
 		theModel.addAttribute("projectdontcount", projectMasterService.findAll().stream()
 				.filter(C -> C.getStatus().equalsIgnoreCase("Completed") && C.getBranch() == branchid).count());
-		
+
 		return "accountgenpurchase";
 	}
-	
+
 	@GetMapping("accountprojectpurchasels")
 	public String accountprojectpurchasels(Model themodel) {
 
@@ -14952,7 +14955,7 @@ public class HomeController {
 		return projectmasterls.stream().sorted(Comparator.comparing(ProjectMaster::getId).reversed())
 				.collect(Collectors.toList());
 	}
-	
+
 	@GetMapping("accprojectpurchase")
 	public String accprojectpurchase(Model theModel, @RequestParam("id") int id) {
 
@@ -14964,13 +14967,11 @@ public class HomeController {
 		// ----------------------------------------------------------
 
 		theModel.addAttribute("projectMaster", projectMaster);
-		
 
 		theModel.addAttribute("employeelist", emplist);
 		List<ContactPerson> cplis = contactPersonService.findAll();
 		List<OrganizationContacts> corglis = contactOrganizationService.findAll();
 
-		
 		theModel.addAttribute("personlist", cplis);
 		theModel.addAttribute("organizationlist", corglis);
 		theModel.addAttribute("supplierlist",
@@ -15014,7 +15015,7 @@ public class HomeController {
 
 		List<String> ProjectStatus = itemlistService.findByFieldName("ProjectStatus");
 		theModel.addAttribute("ProjectStatus", ProjectStatus);
-		
+
 		return "accountprjpurchase";
 	}
 

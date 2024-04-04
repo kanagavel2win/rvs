@@ -220,11 +220,11 @@ var Accountsheadsexpenseitems = [];
 													<div class="col-md-6 mb-md-0 mb-4">
 														<dl class="row mb-2">
 															
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+															<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																<span class="fw-normal">Supplier:</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
+																<div class="w-px-200">
 																	<select class="form-select followers form-control "
 																		id="purchase_supplierid" name="purchase_supplierid" >
 																		<option value="">-</option>
@@ -234,12 +234,12 @@ var Accountsheadsexpenseitems = [];
 																	</select>
 																</div>
 															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+															<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																<span class="text-capitalize mb-0 text-nowrap">
 																	Supplier Ref#</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
+																<div class="w-px-200">
 																	<input type="text" class="form-control"
 																		id="branchpurchaseNo" name="branchpurchaseNo" required /> <input
 																		type="hidden" class="form-control" id="branchpurchaseid"
@@ -247,11 +247,11 @@ var Accountsheadsexpenseitems = [];
 																</div>
 															</dd>
 															
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+															<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																<span class="fw-normal">Submitted by:</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
+																<div class="w-px-200">
 																	<select
 																		class="form-select  form-control "
 																		id="purchase_employeeid" name="purchase_employeeid" 
@@ -270,11 +270,11 @@ var Accountsheadsexpenseitems = [];
 													</div>
 													<div class="col-md-6">
 														<dl class="row mb-2">
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+															<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																<span class="fw-normal">Bill Type:</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
+																<div class="w-px-200">
 																	<select id="branchpurchaseType" name="branchpurchaseType"
 																		class="form-select"
 																		aria-label="Default select example" required>
@@ -286,22 +286,22 @@ var Accountsheadsexpenseitems = [];
 																	</select>
 																</div>
 															</dd>
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+															<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																<span class=" text-capitalize mb-0 text-nowrap">
 																	Date:</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
+																<div class="w-px-200">
 																	<input type="date" class="form-control"
 																		id="branchpurchaseDate" name="branchpurchaseDate" required />
 																</div>
 															</dd>
 															
-															<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+															<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																<span class="fw-normal">Due Date:</span>
 															</dt>
 															<dd class="col-sm-6 d-flex justify-content-md-end">
-																<div class="w-px-150">
+																<div class="w-px-200">
 																	<input type="date" class="form-control date-picker"
 																		id="dueDate" name="dueDate" required/>
 																</div>
@@ -423,13 +423,12 @@ var Accountsheadsexpenseitems = [];
 											</div>
 								
 								
-									<div class="col-12 col-md-6">
-										<label class="form-label" for="recepitNo">Ref #</label> <input type="text" id="recepitNo"
-											name="recepitNo" class="form-control" required/>
-									</div>
 								
 									<div class="col-12 col-md-6">
-										<label class="form-label" for="recepitDate">Date</label> <input type="date" id="recepitDate"
+										<label class="form-label" for="recepitDate">Receipt Date</label> 
+										<input type="hidden" id="recepitNo"
+											name="recepitNo" class="form-control" />
+										<input type="date" id="recepitDate"
 											name="recepitDate" class="form-control" required/>
 									</div>
 									

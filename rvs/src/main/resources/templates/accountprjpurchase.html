@@ -316,11 +316,11 @@
 															<div class="row p-sm-3 p-0">
 																<div class="col-md-6 mb-md-0 mb-4">
 																	<dl class="row mb-2">
-																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																			<span class="fw-normal">Supplier:</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
-																			<div class="w-px-150">
+																			<div class="w-px-200">
 																				<select class="form-select followers form-control "
 																					id="purchase_supplierid" name="purchase_supplierid">
 																					<option value="">-</option>
@@ -331,12 +331,12 @@
 																				</select>
 																			</div>
 																		</dd>
-																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																			<span class="text-capitalize mb-0 text-nowrap">
 																				Supplier Ref#</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
-																			<div class="w-px-150">
+																			<div class="w-px-200">
 																				<input type="text" class="form-control"
 																					id="projectpurchaseNo" name="projectpurchaseNo"
 																					required /> <input type="hidden"
@@ -345,11 +345,11 @@
 																			</div>
 																		</dd>
 
-																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																			<span class="fw-normal">Submitted by:</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
-																			<div class="w-px-150">
+																			<div class="w-px-200">
 																				<select class="form-select  form-control "
 																					id="purchase_employeeid" name="purchase_employeeid"
 																					required>
@@ -367,11 +367,11 @@
 																</div>
 																<div class="col-md-6">
 																	<dl class="row mb-2">
-																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																			<span class="fw-normal">Bill Type:</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
-																			<div class="w-px-150">
+																			<div class="w-px-200">
 																				<select id="projectpurchaseType"
 																					name="projectpurchaseType" class="form-select item-details"
 																					required>
@@ -383,23 +383,23 @@
 																				</select>
 																			</div>
 																		</dd>
-																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																			<span class=" text-capitalize mb-0 text-nowrap">
 																				Date:</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
-																			<div class="w-px-150">
+																			<div class="w-px-200">
 																				<input type="date" class="form-control"
 																					id="projectpurchaseDate" name="projectpurchaseDate"
 																					required />
 																			</div>
 																		</dd>
 
-																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+																		<dt class="col-sm-6 mb-2 mb-sm-0 ">
 																			<span class="fw-normal">Due Date:</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
-																			<div class="w-px-150">
+																			<div class="w-px-200">
 																				<input type="date" class="form-control date-picker"
 																					id="dueDate" name="dueDate" required />
 																			</div>
@@ -536,15 +536,11 @@
 
 
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitNo">
-														Receipt #</label> <input type="text" id="recepitNo"
-														name="recepitNo" class="form-control" placeholder="Will auto generate" />
-												</div>
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitDate">Date</label> <input
+													<label class="form-label" for="recepitDate">Receipt Date</label> <input
 														type="date" id="recepitDate" name="recepitDate"
 														class="form-control" required />
+														<input type="hidden" id="recepitNo"
+														name="recepitNo" class="form-control" placeholder="Will auto generate" />
 												</div>
 
 												<div class="col-12 col-md-6">

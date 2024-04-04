@@ -236,10 +236,10 @@ td {
 								                     </select>
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
-														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Create Receipt</button>
+														class="btn btn-primary editCreateReceipt me-sm-3 me-1">Search</button>
 
 													<button type="reset"
-														class="btn btn-label-secondary editReceiptclose"
+														class="btn btn-label-secondary editCreateReceiptClose"
 														data-bs-dismiss="modal" aria-label="Close">
 														Cancel</button>
 												</div>
@@ -278,7 +278,9 @@ td {
 											<div class="cardx  mb-4">
 												<div class="card-body1">
 													<div class="card-header align-items-center">
-														<h5 class="card-action-title mb-0">Receipts List</h5>
+														<h5 class="card-action-title mb-0">Receipts List
+															
+														</h5>
 													</div>
 													<div class="table-responsive">
 														<table class="table border-top m-0">
@@ -296,6 +298,12 @@ td {
 			
 															</tbody>
 														</table>
+													</div>
+													<div class="card-action-element" >
+														<button class="btn btn-primary btn-sm addAdvanceReceipt" type="button"
+															>
+															<i class="bx bx-plus bx-xs me-1"></i> Advance Receipt
+														</button>
 													</div>
 												</div>
 											</div>
@@ -329,7 +337,7 @@ td {
 															<b>Invoice No# :</b> <span id="invoiceNotxt"></span> <input
 																type="hidden" id="recepitid" name="recepitid" /> <input
 																type="hidden" id="recinvoiceid" name="recinvoiceid"
-																required />
+																 />
 														</p>
 														<p class="mb-1">
 															<b>Due Date :</b> <span id="duedatetxt"></span>
@@ -351,16 +359,13 @@ td {
 												</div>
 
 
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitNo">
-														Receipt #</label> <input type="text" id="recepitNo"
-														name="recepitNo" class="form-control" placeholder="Will auto generate" />
-												</div>
 
 												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitDate">Date</label> <input
+													<label class="form-label" for="recepitDate">Receipt Date</label> <input
 														type="date" id="recepitDate" name="recepitDate"
 														class="form-control" required />
+														<input type="hidden" id="recepitNo"
+														name="recepitNo" class="form-control" placeholder="Will auto generate" />
 												</div>
 
 												<div class="col-12 col-md-6">
@@ -520,7 +525,7 @@ td {
 		<script>
     $(document).ready(function() {  
     	
-    	
+    	var projectid_receipt="";
     	//--------------------------------------------------------------------------------------------------------------------------------------		 		
 
 		$(function() {
@@ -758,7 +763,7 @@ td {
 			    $('div.head-label').html('<h5 class="card-title mb-0">Projects Invoice</h5>');
 		}
  // --------------------------------------------------------------------
-				
+	
     });
     
     function createReceipt(){
@@ -768,6 +773,7 @@ td {
     $('#editexpenseformx').on('submit',function(event) {
     	//window.open("accountInvoicecreate?id="+$("#ProjectName").val());
     	//$("#projectmodel").modal("hide");
+    	projectid_receipt=$("#ProjectName").val();
     	getinvoicelist($("#ProjectName").val());
     	getreceiptlist($("#ProjectName").val());
     	
@@ -881,7 +887,7 @@ td {
 					
 					$("#invoiceNotxt").text(bmobj.Invoiceno);
 					$("#duedatetxt").text(bmobj.duedate);
-					$("#invoiceamounttxt").text(bmobj.amount);
+					$("#invoiceamounttxt").text(Math.round(bmobj.amount));
 					$("#invoicetotalpaidNotxt").text(bmobj.totalpaidamount);
 					$("#invoiceBalancetxt").text(parseInt(bmobj.balanceamount).toFixed(2));
 					$("#recinvoiceid").val(bmobj.invoiceid);
@@ -911,6 +917,18 @@ td {
         	$("#amount").val($('#invoiceBalancetxt').text());
         	
         }
+	});
+	//-------------------------------------------
+	$('.addAdvanceReceipt').click(function() {
+		$("#invoiceNotxt").text("");
+		$("#duedatetxt").text("");
+		$("#invoiceamounttxt").text("");
+		$("#invoicetotalpaidNotxt").text("");
+		$("#invoiceBalancetxt").text("");
+		$("#recinvoiceid").val("");
+		$("#recepitid").val("");
+		
+		$('#receiptmodel').modal('show');
 	});
 	//------------------------------------------------------------------------------------
 	
@@ -976,7 +994,44 @@ td {
 		}
 	
 	// ----------------------------------------------------------------------------------------------------------------------------------------
-	
+	function validationreceiptformreset()
+	   {
+		$('.editReceiptclose').click();
+		$('.editReceiptsubmit').prop("disabled",false);
+		$('.editReceiptsubmit').html("Save");
+	   			
+	   }
+	// ----------------------------------------------------------------------------------------------------------------------------------------
+	$('#editreceiptformx').on('submit',function(event) {
+			if (event.target.checkValidity()) {
+				$('.editReceiptsubmit').prop("disabled",true);
+				$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+				const formData = new FormData(document.querySelector("#editreceiptformx"));
+				formData.append("projectid",projectid_receipt);
+				
+				$.ajax({
+					type : "POST",
+					url : "projectreceiptsave",
+					processData : false,
+					contentType : false,
+					data : formData,
+					success : function(
+							result) {
+						
+						validationreceiptformreset();
+						$("#projectmodel").modal("show");
+						getreceiptlist($("#ProjectName").val());
+						
+					},
+					error : function(e) {
+						console.log("Error"+ e);
+					}
+				});
+			} else {
+				$('.editReceiptsubmit').prop("disabled",false);
+			}
+		});
+		// --------------------------------------------------------------------
     </script>
 </body>
 </html>

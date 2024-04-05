@@ -49,4 +49,7 @@ public class InvoiceReceiptMaster {
 	private String invoiceNo;
 	@Transient
 	private String depositedto_txt;
+	
+	@Column
+	private String cancel_status;
 }

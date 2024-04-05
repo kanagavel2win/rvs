@@ -91,6 +91,10 @@
 .contacteditbtn {
 	cursor: pointer;
 }
+.linethr
+{
+ text-decoration: line-through;
+}
 
 .activitytypeicon {
 	position: relative;
@@ -392,6 +396,10 @@
 													<button type="submit"
 														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
 														The Expense</button>
+														
+													<button type="button"
+														class="btn btn-danger editReceiptcancel me-sm-3 me-1">Cancel the Receipt
+													</button>
 
 													<button type="reset"
 														class="btn btn-label-secondary editReceiptclose"
@@ -975,49 +983,10 @@
 								
 								
 								
-								//--------------------------------------------------------------------------------------------------------------------------------------		
-								$(".Referencediv").hide();
-								if($("#Source").val()=='Referral')
-								{
-									$(".Referencediv").show();
-								}else
-								{
-									$(".Referencediv").hide();
-								}
 								
-								$('#Source').change(function(){
-									
-									if($(this).val()=='Referral')
-									{
-										$(".Referencediv").show();
-									}else
-									{
-										$(".Referencediv").hide();
-									}
-								});
 								//--------------------------------------------------------------------------------------  
 
-								function validationformreset() {
-
-									$('.editorganizationdataclose').click();
-									$('.editorganizationdatasubmit').prop(
-											"disabled", false);
-									$('.editorganizationdatasubmit').html(
-											"Submit");
-								}
-								function validationlinkformreset() {
-									$('.linkpeopledataclose').click();
-									$('.linkpeopledatasubmit').prop("disabled",
-											false);
-									$('.linkpeopledatasubmit').html("Submit");
-								}
-								function validationformprojectreset()
-								   {
-							   				$('.projectprojectclose').click();
-							   				$('.projectprojectsave').prop("disabled",false);
-								   			$('.projectprojectsave').html("Submit");
-								   }
-								
+							
 								
 								function validationreceiptformreset()
 								   {
@@ -1026,51 +995,91 @@
 						   			$('.editReceiptsubmit').html("Save");
 								   			
 								   }
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$("#startdate").change(function() {
-									if($('#enddate').val() ==''){
-										$('#enddate').val($(this).val());
-									}
-								});
-								$("#starttime").change(function() {
-									if($('#endtime').val() ==''){
-										$('#endtime').val($(this).val());
-									}
-								});
+								
 								 //------------------------------------------------------------------------ 
 								 $('.addNewExpensebtn').on('click', function(event){
 									$("#prjExpenseid").val("");
+									$(".editReceiptcancel").hide();
+									$(".editReceiptsubmit").show();
 									validationreceiptformreset();
 								 });
-								
+								// ----------------------------------------------------------------------------------------------------------------------------------------
+									$('.editReceiptcancel').on('click',function(event) {
+										
+										Swal.fire({
+								            title: 'Are you sure?',
+								            text: "You won't be able to revert this!",
+								            icon: 'warning',
+								            showCancelButton: true,
+								            confirmButtonText: 'Yes, Cancel it!',
+								            customClass: {
+								              confirmButton: 'btn btn-primary me-3',
+								              cancelButton: 'btn btn-label-secondary'
+								            },
+								            buttonsStyling: false
+								          }).then(function (result) {
+								            if (result.value) {
+									             var formData =
+									             {
+									            	 prjExpenseid: $("#prjExpenseid").val(),
+									            	 projectid : "[[${projectMaster['id']}]]"
+									          	 }
+									  			 $.ajax({
+									  					type : "POST",url : "projectexpensecancel",
+									  					data : formData, success : function(result) {
+									  					
+									  						getexpenselist();
+									  						
+									  						$("#receiptmodel").modal("hide");
+									  						Swal.fire({
+									  				              icon: 'success',
+									  				              title: 'Cancelled!',
+									  				              text: 'Receipt has been cancelled.',
+									  				              customClass: {
+									  				                confirmButton: 'btn btn-success'
+									  				              }
+									  				            });
+									  					},
+									  					error : function(e) {
+									  						console.log("Error" + e);
+									  					}
+									  				});
+								              
+								              }
+								          });
+									}); 
+					  			
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$('#editexpenseformx').on('submit',function(event) {
-									if (event.target.checkValidity()) {
-										$('.editReceiptsubmit').prop("disabled",true);
-										$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-										const formData = new FormData(document.querySelector("#editexpenseformx"));
-										formData.append("projectid","[[${projectMaster['id']}]]");
-										
-										$.ajax({
-											type : "POST",
-											url : "projectexpensesave",
-											processData : false,
-											contentType : false,
-											data : formData,
-											success : function(
-													result) {
-												
-												validationreceiptformreset();
-												
-												getexpenselist();
-
-											},
-											error : function(e) {
-												console.log("Error"+ e);
-											}
-										});
-									} else {
-										$('.editReceiptsubmit').prop("disabled",false);
+									if($("#prjExpenseid").val()=="")
+									{
+										if (event.target.checkValidity()) {
+											$('.editReceiptsubmit').prop("disabled",true);
+											$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+											const formData = new FormData(document.querySelector("#editexpenseformx"));
+											formData.append("projectid","[[${projectMaster['id']}]]");
+											
+											$.ajax({
+												type : "POST",
+												url : "projectexpensesave",
+												processData : false,
+												contentType : false,
+												data : formData,
+												success : function(
+														result) {
+													
+													validationreceiptformreset();
+													
+													getexpenselist();
+	
+												},
+												error : function(e) {
+													console.log("Error"+ e);
+												}
+											});
+										} else {
+											$('.editReceiptsubmit').prop("disabled",false);
+										}
 									}
 								});
 								// --------------------------------------------------------------------
@@ -1078,156 +1087,6 @@
 								
 								
 								
-								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#editprojectMasterdetailsForm').on('submit',function(event) {
-
-													if (event.target.checkValidity()) {
-														$('.editorganizationdatasubmit').prop("disabled",true);
-														$('.editorganizationdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														const formData = new FormData(document.querySelector("#editprojectMasterdetailsForm"));
-														
-														formData.append("followers",$("#followers").val());
-														/* for (var pair of formData.entries()) {
-														   console.log(pair); 
-														} */
-														$.ajax({
-																	type : "POST",
-																	url : "projectsavestage2",
-																	processData : false,
-																	contentType : false,
-																	data : formData,
-																	success : function(result) {
-																		var bmobj = JSON.parse(JSON.stringify(result));
-																		console.log(bmobj);
-																			
-																		$('#Lbl_ProjectID').text("PROJECT ID :"+bmobj.projectID);
-																			$('#Lbl_Title').text(bmobj.title);
-																			$('#Lbl_Source').text(bmobj.source);
-																			$('#Lbl_pipeline').text(bmobj.pipeline);
-																			$('#Lbl_Reference').text(bmobj.referenceName);
-																			$("#Lbl_organization").text(bmobj.organizationName);
-																			$("#Lbl_projectvalue").text(bmobj.projectvalue);
-																			$("#Lbl_purpose").text(bmobj.purpose);
-																			$("#Lbl_branchname").text(bmobj.branchname);
-																			$("#Lbl_expectedclosingdate").text(bmobj.expectedclosingdateMMddYYY);
-																			$("#Lbl_expectedstartdate").text(bmobj.expectedstartdateMMddYYY);
-																			$("#Lbl_board").text(bmobj.boardName);	
-																			
-																			if (bmobj.label == "Hot") {
-																				$('#Lbl_label').html("<span class='badge bg-danger'>Hot</span>");
-																			} else if (bmobj.label == "Warm") {
-																				$('#Lbl_label').html("<span class='badge bg-warning'>Warm</span>");
-																			} else {
-																				$('#Lbl_label').html("<span class='badge bg-primary'>Cold</span>");
-																			}
-																			
-																			$("#Lbl_Status").text(bmobj.status);	
-																			$("#Lbl_NatureofWork").text(bmobj.natureofWork);	
-																			$("#Lbl_Area").text(bmobj.area);	
-																			$("#Lbl_UNITS").text(bmobj.units);	
-																			$("#Lbl_Location").text(bmobj.location);	
-																			$("#Lbl_tdate").text(bmobj.tdateMMddYYY);	
-																			
-																			
-																			$name ="";
-																			
-																			bmobj.projectFollowers.forEach((element, index, array) =>
-																           	{
-																           	    $name += element.followername+ "<br>";
-																            });
-																           	$('#Lbl_follower').html($name);
-																           	
-																			$('.editorganizationdataclose').click();
-																			$('.editorganizationdatasubmit').prop("disabled",false);
-																			$('.editorganizationdatasubmit').html("Submit");
-																		
-
-																	},
-																	error : function(
-																			e) {
-																		console
-																				.log("Error"
-																						+ e);
-																	}
-																});
-													} else {
-														$(
-																'.editorganizationdatasubmit')
-																.prop(
-																		"disabled",
-																		false);
-													}
-
-												});
-								// --------------------------------------------------------------------
-								
-								// --------------------------------------------------------------------
-								$(".additem").click(function() {
-									var name = $(this).attr('name');
-									var labeltext = "";
-									if (name == "addmodalcontacttype") {
-										labeltext = "New Contact Type";
-									} else if (name == "addmodaldocumenttype") {
-										labeltext = "New Document Type";
-									} else if (name == "addModel_Source") {
-										labeltext = "New Industry Type";
-									}else if (name == "addpurposedata") {
-										labeltext = "New Purpose";
-									}
-									
-									
-
-									$('#additemalltxt').text(labeltext);
-									$('#ItemStatusScrollable').modal('toggle');
-
-								});
-
-								$("#additemallsavebtn")
-										.click(
-												function() {
-													if ($("#additemall").val() != '') {
-														var name = $(
-																'#additemalltxt')
-																.text();
-														var labeltext = "";
-														if (name == "New Contact Type") {
-															labeltext = "modalcontacttype";
-														} else if (name == "New Document Type") {
-															labeltext = "modalDocumenttype";
-														} else if (name == "New Industry Type") {
-															labeltext = "addModel_Source";
-														} else if (name == "New Purpose") {
-															labeltext = "addpurposedata";
-														}
-
-														$('.' + labeltext)
-																.append(
-																		"<option value='"
-																				+ $(
-																						"#additemall")
-																						.val()
-																				+ "'>"
-																				+ $(
-																						"#additemall")
-																						.val()
-																				+ "</option>");
-														//$('.' + labeltext).val($("#additemall").val());
-														$("#additemall")
-																.val('');
-														$(
-																'#ItemStatusScrollable')
-																.modal('toggle');
-													}
-												});
-
-								// --------------------------------------------------------------------
-
-								function validationformreset() {
-									$('.editpeopledataclose').click();
-									$('.editpeopledatasubmit').prop("disabled",
-											false);
-									$('.editpeopledatasubmit').html("Submit");
-								}
 								// ----------------------------------------------------------------------------------------------------------------------------------------
 								function getexpenselist() {
 									
@@ -1251,7 +1110,14 @@
 								           	  
 								           		
 									           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editexpenseinfo(this)' id='"+element.prjExpenseid +"'>"+element.staffname+"</td>";
-									           	 htmlop +="<td class='text-nowrap'>"+element.category_name +"</td><td class='text-nowrap'>"+element.prjExpenseDateMMMddyyyy +"</td><td>"+element.quantity +"</td>";
+									           	if(element.cancel_status=="N")
+								           		{
+									           		htmlop +="<td class='text-nowrap'>"+element.category_name +"</td>";
+								           		}else
+							           			{
+								           			htmlop +="<td class='text-nowrap 	linethr' >"+element.category_name +"</td>";
+							           			}
+									           	 htmlop +="<td class='text-nowrap'>"+element.prjExpenseDateMMMddyyyy +"</td><td>"+element.quantity +"</td>";
 									           	 htmlop +="<td>"+element.total.toFixed(2) +"</td></tr>";
 									           	 total +=parseFloat(element.total);
 								            });
@@ -1269,182 +1135,7 @@
 	
 								}
 								// ----------------------------------------------------------------------------------------------------------------------------------------
-								$('#editPeopledetailsForm')
-										.on(
-												'submit',
-												function(event) {
-
-													if (event.target
-															.checkValidity()) {
-														$(
-																'.editpeopledatasubmit')
-																.prop(
-																		"disabled",
-																		true);
-														$(
-																'.editpeopledatasubmit')
-																.html(
-																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-
-														var projectMasterID = $(
-																'#projectMasterID')
-																.val();
-														var peoplename = $(
-																'#Model_peoplename')
-																.val();
-														var phonenumber = $(
-																'#Model_peoplecontact')
-																.val();
-														var branch = $(
-																"#branch")
-																.val();
-														var followers = $(
-																"#followers")
-																.val();
-														var organization = $(
-																"#organization")
-																.val();
-														var formData = {
-															id : projectMasterID,
-															category : 'Project',
-															organization : organization,
-															branch : branch,
-															peoplename : peoplename,
-															phonenumber : phonenumber,
-															followers : followers
-
-														}
-														$
-																.ajax({
-																	type : "POST",
-																	url : "workcontactpersonsavejson",
-																	data : formData,
-																	success : function(
-																			result) {
-																		validationformreset();
-																		var bmobj = JSON
-																				.parse(JSON
-																						.stringify(result));
-
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+result+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
-																		+ bmobj
-																		+ '" target="_blank"> <h6 class="mb-0">'
-																		+ peoplename
-																		+ '</h6></a> <small class="text-muted">'
-																		+ phonenumber
-																		+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
-																		+ result
-																		+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
-																		+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + result +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div>  </div> </div>';
-																
-																		$(
-																				'#contactpeopprojectdidv')
-																				.before(
-																						temphtml);
-
-																	},
-																	error : function(
-																			e) {
-																		console
-																				.log("Error"
-																						+ e);
-
-																	}
-
-																});
-
-													} else {
-														$(
-																'.editpeopledatasubmit')
-																.prop(
-																		"disabled",
-																		false);
-													}
-
-												});
-								// --------------------------------------------------------------------
-								$('#linkPeopledetailsForm')
-										.on(
-												'submit',
-												function(event) {
-
-													if (event.target
-															.checkValidity()) {
-														$(
-																'.linkpeopledatasubmit')
-																.prop(
-																		"disabled",
-																		true);
-														$(
-																'.linkpeopledatasubmit')
-																.html(
-																		'<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-														var projectMasterID = $(
-																'#projectMasterID')
-																.val();
-														var linkpeoplename = $(
-																'#Model_linkpeoplename')
-																.val();
-
-														var formData = {
-															id : projectMasterID,
-															category : 'Project',
-															linkpeoplename : linkpeoplename,
-
-														}
-														$
-																.ajax({
-																	type : "POST",
-																	url : "workcontactlinkpersonsavejson",
-																	data : formData,
-																	success : function(
-																			result) {
-
-																		var bmobj = JSON
-																				.parse(JSON
-																						.stringify(result));
-																		let primarymob = ""
-																		if (bmobj.primarymob != null) {
-																			primarymob = bmobj.primarymob;
-																		}
-
-																		let temphtml = '<div class="d-flex mb-3"> <div class="flex-grow-1 row dcon'+bmobj.id+'"> <div class="col-6 mb-sm-0 mb-2"> <a href="contactpersonview?id='
-																		+ bmobj.id
-																		+ '" target="_blank"> <h6 class="mb-0">'
-																		+ bmobj.peoplename
-																		+ '</h6></a> <small class="text-muted">'
-																		+ primarymob
-																		+ '</small> </div> <div class="col-3 text-end"> <label class="switch me-0"> <input type="checkbox" class="switch-input" name="'
-																		+ bmobj.id
-																		+ '" onclick="makeprimarycontactperson(this)"/> <span class="switch-toggle-slider"> <span class="switch-on"> <i class="bx bx-check"></i> </span> <span class="switch-off"> <i class="bx bx-x"></i> </span> </span> <span class="switch-label"></span> </label> </div> '
-																		+ '<div class="col-3"> 		<div class="dropdown">   <button     class="btn p-0"     type="button"     id="salesReport"     data-bs-toggle="dropdown"     aria-haspopup="true"     aria-expanded="false"   >     <i class="bx bx-dots-vertical-rounded"></i>   </button>   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesReport">     <a class="dropdown-item" name="' + bmobj.id +'" 	onclick="removecontactperson(this)">Unlink</a>       </div>     </div> 	 </div> </div> </div>';
-																
-																		$(
-																				'#contactpeopprojectdidv')
-																				.before(
-																						temphtml);
-																		validationlinkformreset();
-																	},
-																	error : function(
-																			e) {
-																		console
-																				.log("Error"
-																						+ e);
-
-																	}
-
-																});
-
-													} else {
-														$(
-																'.linkpeopledatasubmit')
-																.prop(
-																		"disabled",
-																		false);
-													}
-
-												});
-								
+							
 								
 								//-------------------------------------------
 								function calctotalamount(){
@@ -1508,125 +1199,7 @@
 							}); // Jquery
 
 			//------------------------------------------------------
-			function makeprimarycontactperson(elem) {
-
-				var formData = {
-					personid : elem.getAttribute("name"),
-					primarystatus : elem.checked
-				}
-				$.ajax({
-					type : "POST",
-					url : "makeprimarycontactperson",
-					data : formData,
-					success : function(result) {
-
-					},
-					error : function(e) {
-						console.log("Error" + e);
-					}
-				});
-			}
-			//------------------------------------------------------
-			function removecontactperson(elem) {
-
-				Swal.fire({
-		             title: 'Are you sure?',
-		             text: "You won't be able to revert this!",
-		             icon: 'warning',
-		             showCancelButton: true,
-		             confirmButtonText: 'Yes, delete it!',
-		             customClass: {
-		               confirmButton: 'btn btn-primary me-3',
-		               cancelButton: 'btn btn-label-secondary'
-		             },
-		             buttonsStyling: false
-		           }).then(function (result) {
-		             if (result.value) {
-								var formData = {
-									personid : elem.getAttribute("name"),
-									projectMasterID: $("#projectMasterID").val(),
-									module : "Project"
-								}
-								$.ajax({
-									type : "POST",
-									url : "unlinkcontactperson",
-									data : formData,
-									success : function(result) {
-									 $(".dcon"+elem.getAttribute("name")).remove();
-									},
-									error : function(e) {
-										console.log("Error" + e);
-									}
-								});
-								
-		             }
-					});
-			}
-			//------------------------------------------------------    
-			 // Date Format
-			   const flatpickrFriendly = document.querySelector('#expectedclosingdate');
-				 // Human Friendly
-				  if (flatpickrFriendly) {
-				    flatpickrFriendly.flatpickr({
-				      altInput: true,
-				      altFormat: 'F j, Y',
-				      dateFormat: 'Y-m-d'
-				    });
-				  }
-				 
-				  const expectedstartdateX1 = document.querySelector('#startdateX1');
-					 // Human Friendly
-					  if (expectedstartdateX1) {
-						  expectedstartdateX1.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
-					 
-					 //
-					 
-					 const tdate = document.querySelector('#tdate');
-					 // Human Friendly
-					  if (tdate) {
-						  tdate.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
-					 
-					 
-				  const invoiceDate = document.querySelector('#invoiceDatex');
-					 // Human Friendly
-					  if (invoiceDate) {
-						  invoiceDate.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
-						 
-				  const duedate = document.querySelector('#dueDatex');
-					 // Human Friendly
-					  if (duedate) {
-						  duedate.flatpickr({
-					      altInput: true,
-					      altFormat: 'F j, Y',
-					      dateFormat: 'Y-m-d'
-					    });
-					  }
-			//----------------------------------------------------------
-			// Phone
-			const phoneMask = document.querySelector('.phone-number-otp-mask');
-
-			// Phone Number Input Mask
-			if (phoneMask) {
-				new Cleave(phoneMask, {
-					phone : true,
-					phoneRegionCode : 'US'
-				});
-			}
+		
 			
 			//------------------------------------------------------------------------------------
 			
@@ -1644,7 +1217,7 @@
 							data : formData,
 							success : function(result) {
 								var bmobj = JSON.parse(JSON.stringify(result));
-								console.log(bmobj);
+								//console.log(bmobj);
 								
 								$("#prjExpenseid").val(bmobj.prjExpenseid);
 								$("#recepitNo").val(bmobj.prjreceiptno);
@@ -1667,108 +1240,12 @@
 							}
 							
 						});
+						$(".editReceiptcancel").show();
+						$(".editReceiptsubmit").hide();
 						$("#receiptmodel").modal('toggle');
 					
 				}
-				//------------------------------------------------------
-				var toastCount = 0;
-				function showtoaster_rvs(title,msg,msgtype){
-					    var shortCutFunction = msgtype,
-					      isRtl = $('html').attr('dir') === 'rtl',
-					      msg = msg,
-					      title = title || '',
-					      $showDuration = 300,
-					      $hideDuration = 300,
-					      $timeOut = 5000,
-					      $extendedTimeOut =1000,
-					      $showEasing = 'swing',
-					      $hideEasing = 'linear',
-					      $showMethod = 'fadeIn',
-					      $hideMethod = 'fadeOut',
-					      toastIndex = toastCount++,
-					      addClear = true,
-					      prePositionClass = 'toast-top-right';
-					
-					    prePositionClass =
-					      typeof toastr.options.positionClass === 'undefined' ? 'toast-top-right' : toastr.options.positionClass;
-					
-					    toastr.options = {
-					      maxOpened: 1,
-					      autoDismiss: true,
-					      closeButton: true,
-					      debug: false,
-					      newestOnTop:false,
-					      progressBar:true,
-					      positionClass: 'toast-top-right',
-					      preventDuplicates:false,
-					      onclick: null,
-					      rtl: isRtl
-					    };
-					
-					    
-					
-					  
-					    if ($showDuration.length) {
-					      toastr.options.showDuration = parseInt($showDuration);
-					    }
-					    if ($hideDuration.length) {
-					      toastr.options.hideDuration = parseInt($hideDuration);
-					    }
-					    if ($timeOut.length) {
-					      toastr.options.timeOut = addClear ? 0 : parseInt($timeOut);
-					    }
-					    if ($extendedTimeOut.length) {
-					      toastr.options.extendedTimeOut = addClear ? 0 : parseInt($extendedTimeOut);
-					    }
-					    if ($showEasing.length) {
-					      toastr.options.showEasing = $showEasing;
-					    }
-					    if ($hideEasing.length) {
-					      toastr.options.hideEasing = $hideEasing;
-					    }
-					    if ($showMethod.length) {
-					      toastr.options.showMethod = $showMethod;
-					    }
-					    if ($hideMethod.length) {
-					      toastr.options.hideMethod = $hideMethod;
-					    }
-					    
-					    var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
-					    $toastlast = $toast;
-					    if (typeof $toast === 'undefined') {
-					      return;
-					    }
-					    
-					    if ($toast.find('.clear').length) {
-					      $toast.delegate('.clear', 'click', function () {
-					        toastr.clear($toast, {
-					          force: true
-					        });
-					      });
-					    }
-					  }
-				//------------------------------------------------------
-				// List
-			  const TagifyCustomListSuggestionEl = document.querySelector('#organization');
-			  
-			  $.ajax({
-						type : "GET",url : "organizationNameList",
-						data : '', success : function(result) {
-							
-							 // List
-						    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
-						      whitelist: result,
-						      maxTags: 1,
-						      dropdown: {
-						        maxItems: 20,
-						        classname: '',
-						        enabled: 0,
-						        closeOnSelect: false
-						      }
-						    });
-							 
-						}
-			  });
+				
 				//------------------------------------------------------
 				
 		</script>

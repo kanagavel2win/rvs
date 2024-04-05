@@ -64,4 +64,6 @@ public class ProjectExpense {
 
 	@Transient
 	private String category_name;
+	@Column
+	private String cancel_status;
 }

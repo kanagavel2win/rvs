@@ -92,7 +92,7 @@ public class InvoiceMaster {
 	private String notes;
 
 	@Column
-	private int bankaccount;
+	private String bankaccount;
 
 	@Column
 	private String inv_acno;

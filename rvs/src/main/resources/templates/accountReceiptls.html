@@ -97,7 +97,10 @@
 #branchName, #branchemail, #branch_startdate {
 	border-right: solid 1px #d4d8dd;
 }
-
+.linethr
+{
+ text-decoration: line-through;
+}
 .tooltipx .tooltiptextx {
 	visibility: hidden;
 	font-size: 12px;
@@ -414,6 +417,9 @@ td {
 												<div class="col-12 text-center mt-4">
 													<button type="submit"
 														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
+													</button>
+													<button type="button"
+														class="btn btn-danger editReceiptcancel me-sm-3 me-1">Cancel the Receipt
 													</button>
 
 													<button type="reset"
@@ -849,7 +855,16 @@ td {
 	           	  
 	           		
 		           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editreceiptinfo(this)' id='"+element.recepitid +"'>"+element.recepitNo+"</td>";
-		           	 htmlop +="<td class='text-nowrap'>"+element.invoiceNo +"</td><td class='text-nowrap'>"+element.recepitDateMMMddyyyy +"</td><td>"+element.depositedto_txt +"</td>";
+		           	if(element.cancel_status=="N")
+	           		{
+		           		htmlop +="<td class='text-nowrap'>"+element.invoiceNo +"</td>";
+	           		}else
+           			{
+	           			htmlop +="<td class='text-nowrap 	linethr' >"+element.invoiceNo +"</td>";
+           			}
+		           	 
+		           	
+		           	htmlop +="<td class='text-nowrap'>"+element.recepitDateMMMddyyyy +"</td><td>"+element.depositedto_txt +"</td>";
 		           	 htmlop +="<td>"+element.amount.toFixed(2) +"</td></tr>";
 		           	 total +=parseFloat(element.amount);
 	            });
@@ -892,6 +907,8 @@ td {
 					$("#invoiceBalancetxt").text(parseInt(bmobj.balanceamount).toFixed(2));
 					$("#recinvoiceid").val(bmobj.invoiceid);
 					
+					$(".editReceiptcancel").hide();
+					$(".editReceiptsubmit").show();
 					$('#receiptmodel').modal('show');
 				},
 				error : function(e) {
@@ -927,6 +944,10 @@ td {
 		$("#invoiceBalancetxt").text("");
 		$("#recinvoiceid").val("");
 		$("#recepitid").val("");
+		
+		
+		$(".editReceiptcancel").hide();
+		$(".editReceiptsubmit").show();
 		
 		$('#receiptmodel').modal('show');
 	});
@@ -984,6 +1005,10 @@ td {
 									console.log("Error" + e);
 								}
 							});
+						$(".editReceiptcancel").show();
+						$(".editReceiptsubmit").hide();
+
+
 						
 					},
 					error : function(e) {
@@ -1002,33 +1027,83 @@ td {
 	   			
 	   }
 	// ----------------------------------------------------------------------------------------------------------------------------------------
+	$('.editReceiptcancel').on('click',function(event) {
+		
+		Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Cancel it!',
+            customClass: {
+              confirmButton: 'btn btn-primary me-3',
+              cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+          }).then(function (result) {
+            if (result.value) {
+	             var formData =
+	             {
+	            	 recepitid: $("#recepitid").val(),
+	          	 	projectid : projectid_receipt
+	          	 }
+	  			 $.ajax({
+	  					type : "POST",url : "projectreceiptcancel",
+	  					data : formData, success : function(result) {
+	  					
+	  						getreceiptlist($("#ProjectName").val());
+	  						
+	  						$("#receiptmodel").modal("hide");
+	  						Swal.fire({
+	  				              icon: 'success',
+	  				              title: 'Cancelled!',
+	  				              text: 'Receipt has been cancelled.',
+	  				              customClass: {
+	  				                confirmButton: 'btn btn-success'
+	  				              }
+	  				            });
+	  					},
+	  					error : function(e) {
+	  						console.log("Error" + e);
+	  					}
+	  				});
+              
+              }
+          });
+	});
+	// ----------------------------------------------------------------------------------------------------------------------------------------
 	$('#editreceiptformx').on('submit',function(event) {
+		if($("#recepitid").val()=="")
+		{
 			if (event.target.checkValidity()) {
-				$('.editReceiptsubmit').prop("disabled",true);
-				$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-				const formData = new FormData(document.querySelector("#editreceiptformx"));
-				formData.append("projectid",projectid_receipt);
-				
-				$.ajax({
-					type : "POST",
-					url : "projectreceiptsave",
-					processData : false,
-					contentType : false,
-					data : formData,
-					success : function(
-							result) {
+					$('.editReceiptsubmit').prop("disabled",true);
+					$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+					const formData = new FormData(document.querySelector("#editreceiptformx"));
+					formData.append("projectid",projectid_receipt);
+					
+					$.ajax({
+						type : "POST",
+						url : "projectreceiptsave",
+						processData : false,
+						contentType : false,
+						data : formData,
+						success : function(
+								result) {
 						
-						validationreceiptformreset();
-						$("#projectmodel").modal("show");
-						getreceiptlist($("#ProjectName").val());
+							getreceiptlist($("#ProjectName").val());
+							
+							validationreceiptformreset();
+							$("#projectmodel").modal("show");
 						
-					},
-					error : function(e) {
-						console.log("Error"+ e);
-					}
-				});
-			} else {
-				$('.editReceiptsubmit').prop("disabled",false);
+							
+						},
+						error : function(e) {
+							console.log("Error"+ e);
+						}
+					});
+				} else {
+					$('.editReceiptsubmit').prop("disabled",false);
+				}
 			}
 		});
 		// --------------------------------------------------------------------

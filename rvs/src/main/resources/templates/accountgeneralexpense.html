@@ -82,6 +82,10 @@
 cursor:pointer;
 }
 
+.linethr
+{
+ text-decoration: line-through;
+}
 </style>
 
 <script>
@@ -302,6 +306,10 @@ var Accountsheadsexpenseitems = [];
 									<button type="submit"
 										class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
 										The Expense</button>
+										
+									<button type="button"
+														class="btn btn-danger editReceiptcancel me-sm-3 me-1">Cancel the Receipt
+													</button>
 
 									<button type="reset"
 										class="btn btn-label-secondary editReceiptclose"
@@ -1081,12 +1089,7 @@ Model_CURRENT_STATUS
 	
 	$(document).ready(function() {  
     	//--------------------------------------------------------------------------------------------------------------------------------------
-    	 var branchtypp="[[${BranchMaster['B_TYPE']}]]";
-    	 document.getElementById("radio"+ branchtypp +"").checked=true;
-    	 
-    	 var country="[[${BranchMaster['COUNTRY']}]]";
-    	 $('#modalAddressCountry').val(country).change();
- 		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+    	//--------------------------------------------------------------------------------------------------------------------------------------		 		
 
     	 	var UNITS="[[${UNITS}]]";
 			
@@ -1119,215 +1122,12 @@ Model_CURRENT_STATUS
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
 	
 
-		 $('#editBranchdetailsForm').on('submit', function(event){
-
-			 if($('#Model_STATED_DATE').val() == '' || $('#Model_effectiveon').val() == '')
-	    	 {
-		    	  Swal.fire({
-				        title: '',
-				        text: 'Start & Effect Date Should not be empty!',
-				        confirmButtonText: 'Ok',
-				        customClass: {
-				          confirmButton: 'btn btn-primary'
-				        },
-				        buttonsStyling: false
-				      });
-	   		 }else
-	   		 {	
-		    	    if(event.target.checkValidity()){
-		   			
-		    	    	$('.editbranchdatasubmit').prop("disabled",true);
-		    	    	$('.editbranchdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-		    	    	var BranchID=$("#BranchID").val();
-		    	    	var branchName =$('#Model_BRANCH_NAME').val();
-		  	        	var branch_type =$("input[name=Model_B_TYPE]:checked").val();
-		  	        	var branch_incharge =$('#Model_BRANCH_IN_CHARGE').val();
-		  	        	var branch_startdate =$('#Model_STATED_DATE').val();
-		  	        	var Model_COMES_UNDER =$('#Model_COMES_UNDER').val();
-		  	        	var branchCode =$('#Model_BranchCode').val();
-		  	        	var effectiveon =$('#Model_effectiveon').val();
-		  	        	var branchcurrentstatus =$('#Model_CURRENT_STATUS').val();
-		  	        	
-		  	        	 var formData = {
-		  	        			 BranchID: BranchID,
-		  	        			 branchName : branchName,
-		  	        			 branch_type : branch_type,
-		  	        			 branch_incharge : branch_incharge,
-		  	        			 branch_startdate : branch_startdate,
-		  	        			 branchHierarchy : Model_COMES_UNDER,
-		  	        			 branchstatus : branchcurrentstatus,
-		  	        			 effectiveon: effectiveon,
-		  	        			 branchCode : branchCode
-		  				 }
-		  				 $.ajax({
-		  						type : "POST",url : "branchupdatejson",
-		  						data : formData, success : function(result) {
-		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							//console.log(bmobj);
-		  							
-		  							$('#Lbl_B_TYPE').text(bmobj.b_TYPE);
-		  							$('#Lbl_BRANCH_NAME').text(bmobj.branch_NAME);
-		  							$('#Lbl_BRANCH_IN_CHARGE').text(bmobj.branch_IN_CHARGE_name);
-		  							$('#Lbl_STATED_DATE').text(bmobj.startdateMMformat);
-		  							$('#Lbl_COMES_UNDER').text(bmobj.comes_UNDER_name);
-		  							$('#Lbl_BranchCode').text(bmobj.branchCode);
-		  							$('#Lbl_effectiveon').text(bmobj.effectiveonMMformat);
-		  							if(bmobj.current_STATUS == 'Active')
-	  								{
-		  								$('#Lbl_CURRENT_STATUS').html('<span  class="badge bg-label-success">Active</span>');
-	  								}else
-  									{
-	  									$('#Lbl_CURRENT_STATUS').html('<span  class="badge bg-label-danger">In Active</span>');
-  									}
-
-		  							validationformreset();
-			  								
-		  						},
-		  						error : function(e) {
-		  							console.log("Error" + e);
-		  						}
-		  					});
-		  	        }	
-		    	    else
-		        	{
-		    	    	$('.editbranchdatasubmit').prop("disabled",false);
-		        	}
-
-	   		 }
-		    	
-		      });
+		
 		// --------------------------------------------------------------------
 	     
-	     $(document).on("change", "input[name=Model_B_TYPE]", function() {	
-				var val=$(this).val();
-				
-				if(val == 'Head-Office')
-				{
-					let branchid = $("#BranchID").val();
-					formData={
-							branchid : branchid
-					}
-					 $.ajax({
-							type : "GET",url : "checkHeadofficeisPresant",
-							data :formData ,success : function(result) {
-									if(result == true)
-										{
-											Swal.fire({
-										        title: '',
-										        text: "A company can only have one head and it already exists",
-										        confirmButtonText: 'Ok',
-										        customClass: {
-										          confirmButton: 'btn btn-primary'
-										        },
-										        buttonsStyling: false
-										      });
-											document.getElementById("radioHead-Office").checked=false;
-											
-										}else
-										{
-											
-											$('#Model_COMES_UNDER').append('<option value="Root">Root</option>');
-											$('#Model_COMES_UNDER').val('Root').change();
-											$('#Model_COMES_UNDER').attr('disabled',true);
-										}
-							 }
-					 });
-					 
-				}else
-					{
-					    $('#Model_COMES_UNDER option[value="Root"]').remove();
-						$('#Model_COMES_UNDER').attr('disabled',false);
-					}
-			});
-	   //------------------------------------------------------------------------ 			 
-	
-
-		 $('.editbranchAddressdatasubmit').on('click', function(event){
-
-		    	  $('.editbranchAddressdatasubmit').prop("disabled",true);
-		    	  
-		    	    if(event.target.checkValidity()){
-		    	    	$('.editbranchAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-		    	    	var BranchID=$("#BranchID").val();
-		    	    	var modalAddressCountry =$('#modalAddressCountry').val();
-		    	    	var modalAddressAddress1 =$('#modalAddressAddress1').val();
-		    	    	var modalAddressAddress2 =$('#modalAddressAddress2').val();
-		    	    	var modalAddressLandmark =$('#modalAddressLandmark').val();
-		    	    	var modalAddressVillage =$('#modalAddressVillage').val();
-		    	    	var modalAddressCity =$('#modalAddressCity').val();
-		    	    	var modalAddressState =$('#modalAddressState').val();
-		    	    	var modalAddressZipCode =$('#modalAddressZipCode').val();
-		    	    	var formData = {
-		  	        			 BranchID: BranchID,
-		  	        			AddressCountry : modalAddressCountry,
-		  	        			AddressAddress1 : modalAddressAddress1,
-		  	        			AddressAddress2 : modalAddressAddress2,
-		  	        			AddressLandmark : modalAddressLandmark,
-		  	        			AddressVillage : modalAddressVillage,
-		  	        			AddressCity : modalAddressCity,
-		  	        			AddressState : modalAddressState,
-		  	        			AddressZipCode : modalAddressZipCode,
-		  	        			functiontype : 'Branch'
-		  				 }
-		  				 $.ajax({
-		  						type : "POST",url : "Addressupdatejson",
-		  						data : formData, success : function(result) {
-		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							//console.log(bmobj);
-		  							$('#Lbl_AddressCountry').text(bmobj.country);
-		  							$('#Lbl_AddressAddress1').text(bmobj.branch_ADDRESSLINE1);
-		  							$('#Lbl_AddressAddress2').text(bmobj.branch_ADDRESSLINE2);
-		  							$('#Lbl_AddressLandmark').text(bmobj.branch_ADDRESSLandMark);
-		  							$('#Lbl_AddressVillage').text(bmobj.branch_ADDRESSVillage);
-		  							$('#Lbl_AddressCity').text(bmobj.city);
-		  							$('#Lbl_AddressState').text(bmobj.state);
-		  							$('#Lbl_AddressZipCode').text(bmobj.zip_CODE);
-									validationformaddressreset();
-		  						},
-		  						error : function(e) {
-		  							console.log("Error" + e);
-		  						}
-		  					});
-		  	        }	
-		    	    else
-		        	{
-		    	    	$('.editbranchAddressdatasubmit').prop("disabled",false);
-		        	}
-		      });
+	    
 	  		// --------------------------------------------------------------------
-		   		function validationformreset()
-			   {
-		   				$('.editbranchdataclose').click();
-		   				$('.editbranchdatasubmit').prop("disabled",false);
-			   			$('.editbranchdatasubmit').html("Submit");
-			   }
-		   		function validationformaddressreset()
-			   {
-		   				$('.editbranchAddressdataclose').click();
-		   				$('.editbranchAddressdatasubmit').prop("disabled",false);
-			   			$('.editbranchAddressdatasubmit').html("Submit");
-			   }
-		   		function validationformContactreset()
-				   {
-			   				$('.contactclosebtn').click();
-			   				$('.contactsavebtn').prop("disabled",false);
-				   			$('.contactsavebtn').html("Submit");
-				   			$('#modalcontactid').val("-");
-				   }
-		   		
-		   		function validationformfilereset()
-				   {
-			   				$('.documentclose').click();
-			   				$('.documentsave').prop("disabled",false);
-				   			$('.documentsave').html("Submit");
-				   }
-		   		function validationformbankaccreset()
-		   		{
-		   			$('.BankDetailsclose').click();
-	   				$('.BankDetailssave').prop("disabled",false);
-		   			$('.BankDetailssave').html("Submit");
-		   		}
-
+		
 		   		function validationreceiptformreset()
 				   {
 					$('.editReceiptclose').click();
@@ -1338,43 +1138,90 @@ Model_CURRENT_STATUS
 			//------------------------------------------------------------------------ 
 			 $('.addNewExpensebtn').on('click', function(event){
 				$("#branchexpenseid").val("");
-				
+				$(".editReceiptcancel").hide();
+				$(".editReceiptsubmit").show();
 				
 				validationreceiptformreset();
 			 });	
-		   	// --------------------------------------------------------------------
-		   	 
-  			  $(".addcontactbtn").click(function(){
-  				$('#modalcontactid').val("-");
-  			  });
+			
+			// ----------------------------------------------------------------------------------------------------------------------------------------
+				$('.editReceiptcancel').on('click',function(event) {
+					
+					Swal.fire({
+			            title: 'Are you sure?',
+			            text: "You won't be able to revert this!",
+			            icon: 'warning',
+			            showCancelButton: true,
+			            confirmButtonText: 'Yes, Cancel it!',
+			            customClass: {
+			              confirmButton: 'btn btn-primary me-3',
+			              cancelButton: 'btn btn-label-secondary'
+			            },
+			            buttonsStyling: false
+			          }).then(function (result) {
+			            if (result.value) {
+				             var formData =
+				             {
+				            	 branchexpenseid: $("#branchexpenseid").val(),
+				            	 branchid : "[[${BranchMaster['id']}]]"
+				          	 }
+				  			 $.ajax({
+				  					type : "POST",url : "branchexpensecancel",
+				  					data : formData, success : function(result) {
+				  					
+				  						getexpenselist();
+				  						
+				  						$("#receiptmodel").modal("hide");
+				  						Swal.fire({
+				  				              icon: 'success',
+				  				              title: 'Cancelled!',
+				  				              text: 'Receipt has been cancelled.',
+				  				              customClass: {
+				  				                confirmButton: 'btn btn-success'
+				  				              }
+				  				            });
+				  					},
+				  					error : function(e) {
+				  						console.log("Error" + e);
+				  					}
+				  				});
+			              
+			              }
+			          });
+				}); 
+  			
   			//--------------------------------------------------------------------------------------------------------------------------------------
 			$('#editexpenseformx').on('submit',function(event) {
-				if (event.target.checkValidity()) {
-					$('.editReceiptsubmit').prop("disabled",true);
-					$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-					const formData = new FormData(document.querySelector("#editexpenseformx"));
-					formData.append("branchid","[[${BranchMaster['id']}]]");
-					
-					$.ajax({
-						type : "POST",
-						url : "branchexpensesave",
-						processData : false,
-						contentType : false,
-						data : formData,
-						success : function(
-								result) {
-							
-							validationreceiptformreset();
-							
-							getexpenselist();
-
-						},
-						error : function(e) {
-							console.log("Error"+ e);
-						}
-					});
-				} else {
-					$('.editReceiptsubmit').prop("disabled",false);
+				if($("#branchexpenseid").val()=="")
+				{
+				
+					if (event.target.checkValidity()) {
+						$('.editReceiptsubmit').prop("disabled",true);
+						$('.editReceiptsubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+						const formData = new FormData(document.querySelector("#editexpenseformx"));
+						formData.append("branchid","[[${BranchMaster['id']}]]");
+						
+						$.ajax({
+							type : "POST",
+							url : "branchexpensesave",
+							processData : false,
+							contentType : false,
+							data : formData,
+							success : function(
+									result) {
+								
+								validationreceiptformreset();
+								
+								getexpenselist();
+	
+							},
+							error : function(e) {
+								console.log("Error"+ e);
+							}
+						});
+					} else {
+						$('.editReceiptsubmit').prop("disabled",false);
+					}
 				}
 			});	
 			// --------------------------------------------------------------------
@@ -1409,7 +1256,14 @@ Model_CURRENT_STATUS
 				           	  
 				           		
 					           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editexpenseinfo(this)' id='"+element.branchexpenseid +"'>"+element.staffname+"</td>";
-					           	 htmlop +="<td class='text-nowrap'>"+element.category_name +"</td><td class='text-nowrap'>"+element.prjExpenseDateMMMddyyyy +"</td><td>"+element.quantity +"</td>";
+					           	if(element.cancel_status=="N")
+				           		{
+					           		htmlop +="<td class='text-nowrap'>"+element.category_name +"</td>";
+				           		}else
+			           			{
+				           			htmlop +="<td class='text-nowrap 	linethr' >"+element.category_name +"</td>";
+			           			}
+					           	 htmlop +="<td class='text-nowrap'>"+element.prjExpenseDateMMMddyyyy +"</td><td>"+element.quantity +"</td>";
 					           	 htmlop +="<td>"+element.total.toFixed(2) +"</td></tr>";
 					           	 total +=parseFloat(element.total);
 				            });
@@ -1427,320 +1281,7 @@ Model_CURRENT_STATUS
 
 				}
 								
-								
-  			// --------------------------------------------------------------------
-  			
-  			   	$('#addContactform').on('submit', function(event){
-  			   	
-  			   		formData={
-						branchid : $("#BranchID").val(),
-						src : "Branch",
-						modalcontactid : $('#modalcontactid').val()								
-				}
-  			  $.ajax({
-				type : "GET",url : "checkPrimaryContactisPresant",
-				data :formData ,success : function(result) {
-						if(result == true && $("#modalcontactprimary").is(':checked'))
-							{
-								Swal.fire({
-							        title: '',
-							        text: "Primary Contact it already exists",
-							        confirmButtonText: 'Ok',
-							        customClass: {
-							          confirmButton: 'btn btn-primary'
-							        },
-							        buttonsStyling: false
-							      });
-								document.getElementById("radioHead-Office").checked=false;
-								
-							}else
-							{
-  			   	
-					  			   		$('.contactsavebtn').prop("disabled",true);
-							    	  
-							    	    if(event.target.checkValidity()){
-							    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-							    	    	var BranchID=$("#BranchID").val();
-							    	    	var modalcontactid =$('#modalcontactid').val();
-							    	    	var modalcontacttype =$('#modalcontacttype').val();
-							    	    	var modalcontactPhone =$('#modalcontactPhone').val();
-							    	    	var modalContactemail =$('#modalContactemail').val();
-							    	    	var primarycontact =$("#modalcontactprimary").is(':checked');
-							    	  
-							    	    	
-							    	    	var formData = {
-							  	        			 BranchID: BranchID,
-							  	        			 contactid: modalcontactid,
-							  	        			 contacttype : modalcontacttype,
-							  	        			 contactPhone : modalcontactPhone,
-							  	        			 contactemail : modalContactemail,
-							  	        			 primarycontact: primarycontact,
-							  	        			functiontype : 'Branch'
-							  				 }
-							  				 $.ajax({
-							  						type : "POST",url : "Contactupdatejson",
-							  						data : formData, success : function(result) {
-							  							var bmobj = JSON.parse(JSON.stringify(result));
-							  							
-							  							if(modalcontactid == '-')
-						  								{
-							  								let tempresultid=bmobj;
-							  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"','"+ primarycontact +"'";
-								  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
-								  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacteditbtn contacttype'+  tempresultid +'"   onClick="reply_click('+ parameters +')">'+ modalcontacttype +'</h6>';
-								  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
-								  							
-								  							tempresult += '<span class="primarycontactlablecontainer'+  tempresultid +'">';
-								  							if(primarycontact)
-							  								{
-								  								tempresult += '<span class="primarycontacttxt'+  tempresultid +'"><span class="badge bg-label-primary ">Primary</span></span>';
-							  								}
-								  							tempresult += '</span>'; 
-								  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
-								  							//tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
-								  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
-								  						
-								  							$('#contactaddidv').before(tempresult);
-								  						    
-						  								}
-							  							else
-						  								{
-							  								
-							  								if(primarycontact)
-							  								{
-							  									$('.primarycontactlablecontainer'+modalcontactid).html("<span class='badge bg-label-primary'>Primary</span>");
-							  									
-							  								}else
-						  									{
-							  									$('.primarycontactlablecontainer'+modalcontactid).html("");
-							  										 
-						  									}
-							  								$('.contacttype'+modalcontactid).text(modalcontacttype);
-							  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
-							  								$('.email'+modalcontactid).text(modalContactemail);
-							  								$('.primarycontact'+modalcontactid).val(primarycontact);
-							  								
-						  								}
-								  							validationformContactreset();
-							  						},
-							  						error : function(e) {
-							  							console.log("Error" + e);
-							  						}
-							  					});
-							  	        }	
-							    	    else
-							        	{
-							    	    	$('.contactsavebtn').prop("disabled",false);
-							        	}
-									}
-							 }
-					 });
-  			   	});	
-  			// --------------------------------------------------------------------
-  			  $('.contacteditbtn').on('click', function(event){
-  				$('.contactsavebtn').prop("disabled",false);
-	   			$('.contactsavebtn').html("Submit");
-	   			
-  				let id=$(this).attr("name");
-  				$('#modalcontactid').val(id);
-				$('#modalcontacttype').val($('.contacttype'+id).text());
-				$('#modalcontactPhone').val($('.phonenumber'+id).text());
-				$('#modalContactemail').val($('.email'+id).text());
-				if($('.primarycontact'+id).val()=='true')
-				{
-					$('#modalcontactprimary').prop("checked",true);	
-				}else
-				{
-					$('#modalcontactprimary').prop("checked",false);
-				}
-				 
-				$('#addNewContact').modal('show');
-  			  });
-  			// --------------------------------------------------------------------
-  			
-  			
-  			// --------------------------------------------------------------------
-  		    // --------------------------------------------------------------------
-  			// File uploading 		  
-  					 const addNewdocumentForm =document.getElementById("addNewdocument");
-  					 const modalFile =document.getElementById("modalFile");
-  					 addNewdocumentForm.addEventListener("submit", e =>{
-  						 
-  						 if($('#modalDocNo').val() == '' && modalFile.files[0] == null)
-  				    	 {
-  					    	  Swal.fire({
-  							        title: '',
-  							        text: 'Either Document No (or) Upload file is mandatory!',
-  							        confirmButtonText: 'Ok',
-  							        customClass: {
-  							          confirmButton: 'btn btn-primary'
-  							        },
-  							        buttonsStyling: false
-  							      });
-  				   		 }else
-  				   		 {	 
-		  						$('.documentsave').prop("disabled",true);
-		  						$('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-		  						const endpoint ="fileuploadjson";
-		  						const formdata= new FormData();
-		  						//console.log(modalFile.files);
-		  						
-		  						formdata.append("File_Attach",modalFile.files[0]);
-		  						formdata.append("BranchID",$('#BranchID').val());
-		  						formdata.append("Documenttype",$('#modalDocumenttype').val());
-		  						formdata.append("DocNo",$('#modalDocNo').val());
-		  						formdata.append("functiontype","Branch");
-		  						
-		  						  $.ajax({
-		  			   					type : "POST",url : endpoint,
-		  			   					data : formdata,
-		  			   					contentType: false,
-		  			   	              processData: false,
-		  			   					success : function(result) {
-		  			   						
-		  			   					tempobj =JSON.parse(JSON.stringify(result));
-		  			   						
-		  			   					//console.log(tempobj);
-		  								
-			  							let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.branchfilesid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
-			  							tempresult += '<h6 class="mb-1">'+ tempobj.documentType +'</h6>';
-			  							tempresult += '<span class="card-number">'+ tempobj.documentNo +'</span>';
-			  							if(tempobj.filePath != '')
-			  							{
-			  								tempresult += '<br/><a href="'+ tempobj.filePath +'" target="_blank">';
-			  								if(tempobj.filePath.split(".")[1] == 'pdf')
-		  									{
-			  									tempresult += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
-		  									}else
-		 									{
-		  										tempresult += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
-		 									}
-			  								tempresult += '<span class="text-body"> ' + tempobj.filePath.split("/")[1].substring(15) + '</span>';
-			  								tempresult += '</a>';
-			  							}
-			  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
-			  							
-			  							tempresult += '<button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.branchfilesid +'"   onClick="filedeleteoperation('+ tempobj.branchfilesid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
-			  								
-			  							$('#fileaddidv').before(tempresult);
-			  							
-		  			   					validationformfilereset();
-		  			   					},
-		  			   					error : function(e) {
-		  			   						console.log("Error" + e);
-		  			   					}
-		  			   				});
-  				   		 }
-  					 });
-  				// --------------------------------------------------------------------
-  				
-  				$(".additem").click(function() {
-					var name = $(this).attr('name');
-					var labeltext = "";
-					if (name == "addmodalcontacttype") {
-						labeltext = "New Contact Type";
-					}else if(name == "addmodaldocumenttype")
-					{
-						labeltext = "New Document Type";
-					}
-					
-					$('#additemalltxt').text(labeltext);
-					$('#ItemStatusScrollable').modal('toggle');
-
-				});
-
-				$("#additemallsavebtn").click(
-						function() {
-					if ($("#additemall").val() != '') {
-						var name = $('#additemalltxt').text();
-						var labeltext = "";
-						if (name == "New Contact Type") {
-							labeltext = "modalcontacttype";
-						}else if (name == "New Document Type") {
-							labeltext = "modalDocumenttype";
-						}
-						
-						$('.' + labeltext).append(
-								"<option value='"
-										+ $("#additemall").val()
-										+ "'>"
-										+ $("#additemall").val()
-										+ "</option>");
-						//$('.' + labeltext).val($("#additemall").val());
-						$("#additemall").val('');
-						$('#ItemStatusScrollable').modal(
-								'toggle');
-					}
-				});
-  				
-  				// --------------------------------------------------------------------
-  				
-  			   	$('#addNewBankDetails').on('submit', function(event){
-  			   	 
-  			   		
-	  			   	if($('#model_acno').val() ==  $('#model_acno_confirm').val())
-	  		    	 {
-	  			    	  	$('.BankDetailssave').prop("disabled",true);
-				    	  
-				    	    if(event.target.checkValidity()){
-				    	    	$('.BankDetailssave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-				    	    	var BranchID=$("#BranchID").val();
-				    	    	var model_acid =$('#model_branchAccnoid').val();
-				    	    	var model_acno =$('#model_acno').val();
-				    	    	var model_acname =$('#model_acname').val();
-				    	    	var model_bankname =$('#model_bankname').val();
-				    	    	var model_branchname =$('#model_branchname').val();
-				    	    	var model_ifsccode =$('#model_ifsccode').val();
-				    	    	var formData = {
-				  	        			BranchID: BranchID,
-				  	        			acid: model_acid,
-				  	        			acno: model_acno,
-				  	        			acname : model_acname,
-				  	        			bankname : model_bankname,
-				  	        			branchname : model_branchname,
-				  	        			ifsccode : model_ifsccode,
-				  	        			functiontype : 'Branch'
-				  				 }
-				    	    	
-				  				 $.ajax({
-				  						type : "POST",url : "Bankaccupdatejson",
-				  						data : formData, success : function(result) {
-				  							var bmobj = JSON.parse(JSON.stringify(result));
-				  							//console.log(bmobj);
-				  							$('#Lbl_acno').text(model_acno);
-				  							$('#Lbl_acname').text(model_acname);
-				  							$('#Lbl_bankname').text(model_bankname);
-				  							$('#Lbl_branchname').text(model_branchname);
-				  							$('#Lbl_ifsccode').text(model_ifsccode); 
-				  							validationformbankaccreset();
-				  						},
-				  						error : function(e) {
-				  							console.log("Error" + e);
-				  						}
-				  					});
-		  	        }	
-		    	    else
-		        	{
-		    	    	$('.BankDetailssave').prop("disabled",false);
-		        	}
-  		   		 }else{
-  		   			 Swal.fire({
-				        title: '',
-					        text: 'Account number is not match!',
-					        confirmButtonText: 'Ok',
-					        customClass: {
-					          confirmButton: 'btn btn-primary'
-					        },
-					        buttonsStyling: false
-					      });
-		   		 }
-		   		 
-  			   	});	
-  			// --------------------------------------------------------------------
-  			$('.collapsetogglebtn').click(function(){
-  				 $('#collapsetoggleicon').toggleClass('bx-chevron-down bx-chevron-up'); 
-  			});
-  			// --------------------------------------------------------------------
+			// --------------------------------------------------------------------
   			//-------------------------------------------
 								$('#payfull').change(function() {
 							        if(this.checked) {
@@ -1790,104 +1331,7 @@ Model_CURRENT_STATUS
 			//-------------------------------------------
 		    }); // Jquery
     
-    function reply_click(id,contacttype,phonenumber,email,primarycontact)
-	{
-		$('#modalcontactid').val(id);
-		$('#modalcontacttype').val(contacttype);
-		$('#modalcontactPhone').val(phonenumber);
-		$('#modalContactemail').val(email);
-		if(primarycontact=='true')
-		{
-			$('#modalcontactprimary').prop("checked",true);	
-		}else
-		{
-			$('#modalcontactprimary').prop("checked",false);
-		}
-		$('#addNewContact').modal('show');
-	}
-		 
- 
-    function contactdeleteoperation(id){
-    	 Swal.fire({
-             title: 'Are you sure?',
-             text: "You won't be able to revert this!",
-             icon: 'warning',
-             showCancelButton: true,
-             confirmButtonText: 'Yes, delete it!',
-             customClass: {
-               confirmButton: 'btn btn-primary me-3',
-               cancelButton: 'btn btn-label-secondary'
-             },
-             buttonsStyling: false
-           }).then(function (result) {
-             if (result.value) {
-              var formData = {
-           	 contactid: id,
-           	functiontype : 'Branch'
-           	 }
-   			 $.ajax({
-   					type : "POST",url : "Contactdeletejson",
-   					data : formData, success : function(result) {
-   						$('.card'+id).remove();
-   						Swal.fire({
-   				              icon: 'success',
-   				              title: 'Deleted!',
-   				              text: 'Contact has been deleted.',
-   				              customClass: {
-   				                confirmButton: 'btn btn-success'
-   				              }
-   				            });
-   					},
-   					error : function(e) {
-   						console.log("Error" + e);
-   					}
-   				});
-               
-               }
-           });
-    }
-  
-  //------------------------------------------------------    
-   function filedeleteoperation(id){
-    	 Swal.fire({
-             title: 'Are you sure?',
-             text: "You won't be able to revert this!",
-             icon: 'warning',
-             showCancelButton: true,
-             confirmButtonText: 'Yes, delete it!',
-             customClass: {
-               confirmButton: 'btn btn-primary me-3',
-               cancelButton: 'btn btn-label-secondary'
-             },
-             buttonsStyling: false
-           }).then(function (result) {
-             if (result.value) {
-              var formData = {
-            		  fileid: id,
-            		  functiontype : 'Branch'
-           	 }
-   			 $.ajax({
-   					type : "POST",url : "Filedeletejson",
-   					data : formData, success : function(result) {
-   						$('.filecard'+id).remove();
-   						Swal.fire({
-   				              icon: 'success',
-   				              title: 'Deleted!',
-   				              text: 'File has been deleted.',
-   				              customClass: {
-   				                confirmButton: 'btn btn-success'
-   				              }
-   				            });
-   					},
-   					error : function(e) {
-   						console.log("Error" + e);
-   					}
-   				});
-               
-               }
-           });
-    }
-  
+   
   //------------------------------------------------------    
   
   $('.contactdeletebtn').on('click', function(event){
@@ -1931,6 +1375,8 @@ Model_CURRENT_STATUS
 	        phoneRegionCode: 'US'
 	      });
 	    }    
+	    
+	   
 	  //------------------------------------------------------    
 		 
 		 function editexpenseinfo(e){
@@ -1969,115 +1415,12 @@ Model_CURRENT_STATUS
 						}
 						
 					});
+					$(".editReceiptcancel").show();
+					$(".editReceiptsubmit").hide();
 					$("#receiptmodel").modal('toggle');
 			}
 		//------------------------------------------------------
-		//
-		// 
-		$('.invoice-item-qty').on('change',function(event) {
-			invoiceamountCalculator();
-			
-		});
-		$('.invoice-item-price').on('change',function(event) {
-			invoiceamountCalculator();
-			
-		});
-		//------------------------------------------------------------------------------------
-		function applydiscountandtax(e){
-			var rowid= e.getAttribute("name");
-			
-			Discountper =$("#Discountper"+ rowid).val();
-			if(Discountper ==""){
-				$("#Discountperip"+ rowid).val(0);
-				$("#Discountpertxt"+ rowid).text("0%");
-			}else{
-				$("#Discountperip"+ rowid).val($("#Discountper"+ rowid).val());	
-				$("#Discountpertxt"+ rowid).text($("#Discountper"+ rowid).val()+ "%");
-			}
-			$("#CGSTperip"+ rowid).val($("#CGSTper"+ rowid).val());
-			$("#IGSTperip"+ rowid).val($("#IGSTper"+ rowid).val());
-			$("#SGSTperip"+ rowid).val($("#SGSTper"+ rowid).val());
-			
-			
-			$("#CGSTpertxt"+ rowid).text($("#CGSTper"+ rowid).val()+ "%");
-			$("#IGSTpertxt"+ rowid).text($("#IGSTper"+ rowid).val()+ "%");
-			$("#SGSTpertxt"+ rowid).text($("#SGSTper"+ rowid).val()+ "%");
-			$('.more-options-dropdown').click();
-			invoiceamountCalculator();
-		}
-		//------------------------------------------------------
-	
-		//------------------------------------------------------------------------------------
-		function invoiceamountCalculator(){
-			totalamtwithouttax =0.00;
-			totalCGST =0.00;
-			totalSGST =0.00;
-			totalIGST =0.00;
-			totalamount =0.00;
-			
-			for( i =1; i<=expenseIncre;i++)
-			{
-				 price = $("#Price"+i).val();
-				 qty = $("#Quantity"+i).val();
-				 taxableAmount =price *  qty ;
-				 
-				 CGSTper = $("#CGSTperip"+i).val();
-				 IGSTper = $("#IGSTperip"+i).val();
-				 SGSTper = $("#SGSTperip"+i).val();
-				 Discountper = $("#Discountperip"+i).val();
-				 
-				 Discountamt =taxableAmount * (Discountper/100);
-				 afetdiscountamount =  taxableAmount -Discountamt;
-				$('#taxableamount'+i).text(afetdiscountamount.toFixed(2));
-				
-				IGSTamount =afetdiscountamount * (IGSTper/100);
-				SGSTamount =afetdiscountamount * (SGSTper/100);
-				CGSTamount=afetdiscountamount * (CGSTper/100);
-				
-				
-				totalamtwithouttax = totalamtwithouttax+afetdiscountamount;
-				totalCGST =totalCGST+CGSTamount;
-				totalSGST = totalSGST+SGSTamount;
-				totalIGST = totalIGST+IGSTamount;
-				
-				
-			}
-			
-			$('#totalCGST').text(totalCGST.toFixed(2));
-			$('#totalSGST').text(totalSGST.toFixed(2));
-			$('#totalIGST').text(totalIGST.toFixed(2));
-			$('#totalamount').text((totalamtwithouttax+ totalCGST + totalSGST + totalIGST).toFixed(2));
-			$('#totalamtwithouttax').text(totalamtwithouttax.toFixed(2));
-			
-			
-								
-		}
-		//------------------------------------------------------------------------------------
-		function deleteprojectexpenseItem(id){
-			
-			 Swal.fire({
-	             title: 'Are you sure?',
-	             text: "You won't be able to revert this!",
-	             icon: 'warning',
-	             showCancelButton: true,
-	             confirmButtonText: 'Yes, delete it!',
-	             customClass: {
-	               confirmButton: 'btn btn-primary me-3',
-	               cancelButton: 'btn btn-label-secondary'
-	             },
-	             buttonsStyling: false
-	           }).then(function (result) {
-	             if (result.value) {
-	            	 $(".incontact"+id).remove();
-	            	 expenseIncre=expenseIncre-1;
-	            	 invoiceamountCalculator();
-			   			
-	               }
-	           });
-			
-		}
 		
-		//------------------------------------------------------
     </script>
 		  </body>
 		</html>

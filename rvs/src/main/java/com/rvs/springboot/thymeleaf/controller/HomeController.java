@@ -4047,7 +4047,7 @@ public class HomeController {
 
 			Absent = A;
 			// WorkingDays = TotalWWorkingDays + Totalholidays;
-			WorkingDays = 26 - (A + HOLIDAYA + SUNDAYA) - (HL + HOLIDAYHL + SUNDAYHL);
+			WorkingDays = 26 - (A - HOLIDAYA - SUNDAYA) - (HL - HOLIDAYHL - SUNDAYHL);
 
 			if (WorkingDays < 1) {
 				WorkingDays = 0;
@@ -11687,7 +11687,7 @@ public class HomeController {
 					invm.setInvoiceType(String.valueOf(params.get("invoiceType")));
 					invm.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 					invm.setNotes(String.valueOf(params.get("note")));
-					invm.setBankaccount(Integer.parseInt(params.get("bankaccount")));
+					invm.setBankaccount(params.get("bankaccount"));
 					// -----------------------------------------
 					BranchAccNo bno = getBankAccountDetails(Integer.parseInt(params.get("bankaccount")));
 					invm.setInv_acname(bno.getAcname());
@@ -11757,7 +11757,7 @@ public class HomeController {
 			newinv.setInvoiceType(String.valueOf(params.get("invoiceType")));
 			newinv.setInvoiceGSTNo(String.valueOf(params.get("invoiceGSTNo")));
 			newinv.setNotes(String.valueOf(params.get("note")));
-			newinv.setBankaccount(Integer.parseInt(params.get("bankaccount")));
+			newinv.setBankaccount(params.get("bankaccount"));
 			// -----------------------------------------
 			BranchAccNo bno = getBankAccountDetails(Integer.parseInt(params.get("bankaccount")));
 			newinv.setInv_acname(bno.getAcname());
@@ -12226,7 +12226,7 @@ public class HomeController {
 		String tempreceiptid = nullremover(String.valueOf(params.get("recepitid")));
 
 		if (!tempreceiptid.equalsIgnoreCase("")) {
-			List<InvoiceReceiptMaster> ls = new ArrayList();
+			/*List<InvoiceReceiptMaster> ls = new ArrayList();
 
 			for (InvoiceReceiptMaster invm : pm.getReceiptList()) {
 				if (invm.getRecepitid() == Integer.parseInt(tempreceiptid)) {
@@ -12237,11 +12237,12 @@ public class HomeController {
 					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
 					invm.setNotes(String.valueOf(params.get("notes")));
 					invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
-				}
+					invm.setCancel_status("N");
+					}
 				ls.add(invm);
 
 			}
-			pm.setReceiptList(ls);
+			pm.setReceiptList(ls); */
 		} else {
 			InvoiceReceiptMaster invm = new InvoiceReceiptMaster();
 
@@ -12252,8 +12253,34 @@ public class HomeController {
 			invm.setNotes(String.valueOf(params.get("notes")));
 			invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
 			invm.setInvoiceid(String.valueOf(params.get("recinvoiceid")));
-
+			invm.setCancel_status("N");
 			pm.getReceiptList().add(invm);
+		}
+
+		return projectMasterService.save(pm);
+	}
+	@ResponseBody
+	@PostMapping("projectreceiptcancel")
+	public ProjectMaster projectreceiptcancel(@RequestParam Map<String, String> params) {
+
+		
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+		List<InvoiceReceiptMaster> invls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("recepitid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<InvoiceReceiptMaster> ls = new ArrayList();
+
+			for (InvoiceReceiptMaster invm : pm.getReceiptList()) {
+				if (invm.getRecepitid() == Integer.parseInt(tempreceiptid)) {
+
+					invm.setCancel_status("Y");
+					}
+				ls.add(invm);
+
+			}
+			pm.setReceiptList(ls); 
 		}
 
 		return projectMasterService.save(pm);
@@ -12984,7 +13011,7 @@ public class HomeController {
 		String tempreceiptid = nullremover(String.valueOf(params.get("prjExpenseid")));
 
 		if (!tempreceiptid.equalsIgnoreCase("")) {
-			List<ProjectExpense> ls = new ArrayList();
+			/*List<ProjectExpense> ls = new ArrayList();
 
 			for (ProjectExpense invm : pm.getProjectExpenseList()) {
 				if (invm.getPrjExpenseid() == Integer.parseInt(tempreceiptid)) {
@@ -13008,7 +13035,7 @@ public class HomeController {
 
 			}
 			pm.setProjectExpenseList(ls);
-
+			*/
 		} else {
 			ProjectExpense invm = new ProjectExpense();
 
@@ -13025,13 +13052,40 @@ public class HomeController {
 			invm.setVehicle(String.valueOf(params.get("vehicle")));
 			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
-
+			invm.setCancel_status("N");
+			
 			pm.getProjectExpenseList().add(invm);
 		}
 
 		return projectMasterService.save(pm);
 	}
 
+	@ResponseBody
+	@PostMapping("projectexpensecancel")
+	public ProjectMaster projectexpensecancel(@RequestParam Map<String, String> params) {
+		
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
+
+		List<ProjectExpense> invls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("prjExpenseid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<ProjectExpense> ls = new ArrayList();
+
+			for (ProjectExpense invm : pm.getProjectExpenseList()) {
+				if (invm.getPrjExpenseid() == Integer.parseInt(tempreceiptid)) {
+
+					invm.setCancel_status("Y");
+					}
+				ls.add(invm);
+
+			}
+			pm.setProjectExpenseList(ls);
+			
+		}
+		return projectMasterService.save(pm);
+	}
 	@PostMapping("getprojectexpenselist")
 	@ResponseBody
 	public List<ProjectExpense> getprojectexpenselist(@RequestParam Map<String, String> params) {
@@ -13446,7 +13500,7 @@ public class HomeController {
 		String tempreceiptid = nullremover(String.valueOf(params.get("branchexpenseid")));
 
 		if (!tempreceiptid.equalsIgnoreCase("")) {
-			List<BranchexpenseMaster> ls = new ArrayList();
+			/*List<BranchexpenseMaster> ls = new ArrayList();
 
 			for (BranchexpenseMaster invm : pm.getBranchexpenseMasterList()) {
 				if (invm.getBranchexpenseid() == Integer.parseInt(tempreceiptid)) {
@@ -13469,7 +13523,7 @@ public class HomeController {
 				ls.add(invm);
 
 			}
-			pm.setBranchexpenseMasterList(ls);
+			pm.setBranchexpenseMasterList(ls);*/
 
 		} else {
 			BranchexpenseMaster invm = new BranchexpenseMaster();
@@ -13487,10 +13541,39 @@ public class HomeController {
 			invm.setVehicle(String.valueOf(params.get("vehicle")));
 			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
-
+			invm.setCancel_status("N");
+			
 			pm.getBranchexpenseMasterList().add(invm);
 		}
 
+		return branchMasterService.save(pm);
+	}
+	
+	@ResponseBody
+	@PostMapping("branchexpensecancel")
+	public BranchMaster branchexpensecancel(@RequestParam Map<String, String> params) {
+
+		BranchMaster pm = branchMasterService.findById(Integer.parseInt(params.get("branchid")));
+
+		List<BranchexpenseMaster> invls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("branchexpenseid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<BranchexpenseMaster> ls = new ArrayList();
+
+			for (BranchexpenseMaster invm : pm.getBranchexpenseMasterList()) {
+				if (invm.getBranchexpenseid() == Integer.parseInt(tempreceiptid)) {
+
+					
+					invm.setCancel_status("Y");;
+				}
+				ls.add(invm);
+
+			}
+			pm.setBranchexpenseMasterList(ls);
+
+		} 
 		return branchMasterService.save(pm);
 	}
 

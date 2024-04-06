@@ -3901,10 +3901,13 @@ public class HomeController {
 			@RequestParam(name = "branch") int branch_masterid, Model themodel,
 			@RequestParam(value = "save", defaultValue = "", required = false) String save) {
 
+
 		LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
 				.with(TemporalAdjusters.lastDayOfMonth());
 
 		String prd[] = lastDayOfMonth.toString().split("-");
+		int totaldayofmonth=Integer.parseInt(prd[2]);
+		
 		String prdenddate = prd[2] + "." + prd[1] + "." + prd[0];
 		String prdStartdate = "01." + prd[1] + "." + prd[0];
 
@@ -4052,7 +4055,10 @@ public class HomeController {
 			if (WorkingDays < 1) {
 				WorkingDays = 0;
 			}
-
+			if(totaldayofmonth == A) {
+				WorkingDays=0;
+			}
+			
 			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) * 100) / 100.00;
 			DA = Math.round(((ctc / 26) * WorkingDays * 0.35) * 100) / 100.00;
 			HRA = Math.round(((ctc / 26) * WorkingDays * 0.25) * 100) / 100.00;

@@ -6,25 +6,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
+import com.rvs.springboot.thymeleaf.controller.HomeController;
 import com.rvs.springboot.thymeleaf.dao.LeadMasterRepository;
 import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.entity.LeadMaster;
 import com.rvs.springboot.thymeleaf.pojo.emppojoPrivillage;
 
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+
 @Service
+
 public class LeadMasterImp implements LeadMasterService {
 
 	@Autowired
 	LeadMasterRepository leadMasterRepo;
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
+	private static final Logger logger=Logger.getLogger(LeadMasterImp.class);
+	
 	
 	@Override
 	public LeadMaster save(LeadMaster obj) {
@@ -33,10 +42,14 @@ public class LeadMasterImp implements LeadMasterService {
 
 	@Override
 	public LeadMaster findById(Integer id) {
+		
+			
+	
+		
 		Optional<LeadMaster> obj = leadMasterRepo.findById(id);
 
 		LeadMaster bm = null;
-
+		try {
 		if (obj.isPresent()) {
 			
 			
@@ -48,6 +61,9 @@ public class LeadMasterImp implements LeadMasterService {
 			
 		} else {
 			throw new RuntimeException("Did find any records of leadMaster id " + id);
+		}
+		}catch (Exception e) {
+			logger.error(e);
 		}
 		return bm;
 	}

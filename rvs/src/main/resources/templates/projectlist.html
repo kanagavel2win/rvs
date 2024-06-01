@@ -243,8 +243,17 @@ td {
 									<div class="col-sm-12">
 										<label class="form-label" for="organization">organization</label>
 										<div>
-											<input id="organization" name="organization"
-												class="form-control" />
+											<fieldset class="form-group">	
+												<select class="select2 form-control "
+														id="organization" name="organization"
+														required>
+														<option value="">-</option>
+														<th:block th:each="str :${organizationlist}">
+															<option th:value="${str.id}"
+																th:text="${str.orgname}"></option>
+														</th:block>
+												</select>
+											</fieldset>
 										</div>
 
 									</div>
@@ -640,26 +649,7 @@ td {
 							}
 	   });
 	 //--------------------------------------------------------------------------------------  
-	   const TagifyCustomListSuggestionEl = document.querySelector('#organization');
 
-	  $.ajax({
-				type : "GET",url : "organizationNameListtype1",
-				data : '', success : function(result) {
-					
-					 // List
-				    let TagifyCustomListSuggestion = new Tagify(TagifyCustomListSuggestionEl, {
-				      whitelist: result,
-				      maxTags: 1,
-				      dropdown: {
-				        maxItems: 20,
-				        classname: 'tags-inline',
-				        enabled: 0,
-				        closeOnSelect: false
-				      }
-				    });
-					 
-				}
-	  });
 		//--------------------------------------------------------------------------------------------------------------------------------------		
 			$(".Referencediv").hide();
 

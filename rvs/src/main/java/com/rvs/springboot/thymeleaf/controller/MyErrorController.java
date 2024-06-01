@@ -3,16 +3,18 @@ package com.rvs.springboot.thymeleaf.controller;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MyErrorController implements ErrorController {
 
+	//private static Logger log = Logger.getLogger(MyErrorController.class);
+	  
 	@Override
 	public String getErrorPath() {
 		return "/error";
@@ -24,6 +26,7 @@ public class MyErrorController implements ErrorController {
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		Object Errormessage = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
 		themodel.addAttribute("Errormessage", Errormessage);
+		
 		
 		// TODO: log error details here
 

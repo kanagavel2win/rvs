@@ -160,7 +160,7 @@
 }
 
 td.sunday {
-	
+	background: #FFE4E1;
 }
 
 .holiday {
@@ -254,9 +254,9 @@ td.holiday {
 																					<option
 																						th:if="${obj.BRANCH_NAME} != ${targetedbranchName}"
 																						th:value="${obj.id}" th:text="${obj.BRANCH_NAME}"></option>
+																					
 																				</th:block>
-
-
+																				<option value="All">All</option>
 																			</select>
 
 																		</div>
@@ -478,7 +478,7 @@ $(document).ready(function () {
 	//--------------------------------------------------------
 	$("#branch").val("[[${branchid}]]").change();
 	var month="[[${monthstr}]]";
-
+ 	var printCounter =0;
 	if(month.length==6)
 	{
 		var arr=month.split("-");
@@ -490,28 +490,26 @@ $(document).ready(function () {
 	
 	
 	var table = $('#empattendancereport').DataTable({
-		dom: 'Bfrtip',
+		dom: 'lfrtip',
+		
         lengthChange: true,
         buttons: [ 'copy','excel',
         	{
 	            extend: 'csv',
 	           
 	        },
-	        {
-	            extend: 'pdf',
-	            messageBottom: null
-	        },
+	        
 	        {
 	            extend: 'print',
 	            messageTop: function () {
 	                printCounter++;
-	
-	                if ( printCounter === 1 ) {
+					 return "";
+	                /* if ( printCounter === 1 ) {
 	                    return 'This is the first time you have printed this document.';
 	                }
 	                else {
 	                    return 'You have printed this document '+printCounter+' times';
-	                }
+	                }*/
 	            },
 	            messageBottom: null
 	        }],

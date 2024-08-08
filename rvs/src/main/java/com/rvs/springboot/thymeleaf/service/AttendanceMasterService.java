@@ -14,5 +14,6 @@ public interface AttendanceMasterService {
 	public List<Map<String, Object>> getpayrolldetails(String selectedmonth, String holidaysql, int branch_masterid);
 	
 	public List<Map<String, Object>> getatttendancereport(String monthstr, int prdenddate, int branchid);
+	public List<Map<String, Object>> getatttendancereport_AllBranch(String monthstr, int prdenddate);
 	public void deleteById(int attendid);
 }

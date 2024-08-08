@@ -16,6 +16,7 @@ import java.time.Period;
 import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -283,9 +284,8 @@ public class HomeController {
 	DateFormat displaydateFormatAMPM = new SimpleDateFormat("hh:mm a");
 	DateFormat displaydateFormathhmm = new SimpleDateFormat("hh:mm");
 
-	private static final Logger logger=Logger.getLogger(HomeController.class);
-	
-	
+	private static final Logger logger = Logger.getLogger(HomeController.class);
+
 	@ModelAttribute
 	public void addAttributes(Model themodel, HttpSession session, HttpServletRequest request) {
 
@@ -295,7 +295,7 @@ public class HomeController {
 		String dataLoginEmpprofiileimg = "";
 		Object dataemployeePrivillage = new ArrayList<>();
 		try {
-			
+
 			getdataLoginEmppprivillage();
 			try {
 				if (request.getSession().getAttribute("dataLoginEmppprivillage").toString().equals(null)) {
@@ -848,8 +848,9 @@ public class HomeController {
 										.parse(branchEffective.get(branchEffective.size() - 1).getEffectivedate()))
 								.toString());
 			} catch (ParseException e) {
-				
-				logger.error(e); e.printStackTrace();
+
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		return branchListresponsebody(bm);
@@ -884,7 +885,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -923,7 +925,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -963,7 +966,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1002,7 +1006,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1043,7 +1048,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1078,7 +1084,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1122,7 +1129,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1166,7 +1174,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Files_Attach.getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1503,7 +1512,8 @@ public class HomeController {
 				bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
 
 			} catch (Exception e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 
 		}
@@ -1521,7 +1531,8 @@ public class HomeController {
 										.parse(branchEffective.get(branchEffective.size() - 1).getEffectivedate()))
 								.toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// -------------------------------------------
@@ -1593,7 +1604,8 @@ public class HomeController {
 					bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
 
 				} catch (Exception e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 
 			}
@@ -1803,7 +1815,8 @@ public class HomeController {
 				bm.setStartdateMMformat(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(bm.getSTATED_DATE())).toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 			bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
 		}
@@ -1822,7 +1835,8 @@ public class HomeController {
 										.parse(branchEffective.get(branchEffective.size() - 1).getEffectivedate()))
 								.toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// -------------------------------------------
@@ -1903,7 +1917,8 @@ public class HomeController {
 				bm.setStartdateMMformat(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(bm.getSTATED_DATE())).toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 			bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
 		}
@@ -1922,7 +1937,8 @@ public class HomeController {
 										.parse(branchEffective.get(branchEffective.size() - 1).getEffectivedate()))
 								.toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// -------------------------------------------
@@ -2151,7 +2167,8 @@ public class HomeController {
 			emp.setDobMMformat(displaydateFormatFirstMMMddYYY
 					.format(displaydateFormatrev.parse(params.get("DateofBirth"))).toString());
 		} catch (ParseException e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 		return employeeMasterService.save(emp);
 	}
@@ -2610,7 +2627,8 @@ public class HomeController {
 			try {
 				Files.write(fileNameandPath, Photo_Attach.getBytes());
 			} catch (IOException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 
 			filels.add(empfiles);
@@ -2626,7 +2644,8 @@ public class HomeController {
 			try {
 				Files.write(fileNameandPath, Resume_Attach.getBytes());
 			} catch (IOException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 
 			filels.add(empfiles);
@@ -2642,7 +2661,8 @@ public class HomeController {
 			try {
 				Files.write(fileNameandPath, Certificates_Attach.getBytes());
 			} catch (IOException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 
 			filels.add(empfiles);
@@ -2742,7 +2762,8 @@ public class HomeController {
 				employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		if (employeemasternew.getEmployeeAccNo().size() == 0) {
@@ -2839,7 +2860,8 @@ public class HomeController {
 						.format(displaydateFormatrev.parse(hireobj.get(0).getEmployeehiredate())).toString());
 				employeemasternew.setT_joindatetimeline(getTimeage(hireobj.get(0).getEmployeehiredate()));
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// -------------------------------------------
@@ -2904,7 +2926,8 @@ public class HomeController {
 				employeemasternew.setDobMMformat(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(employeemasternew.getDateofBirth())).toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 
@@ -2998,7 +3021,8 @@ public class HomeController {
 						.format(displaydateFormatrev.parse(hireobj.get(0).getEmployeehiredate())).toString());
 				employeemasternew.setT_joindatetimeline(getTimeage(hireobj.get(0).getEmployeehiredate()));
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// -------------------------------------------
@@ -3033,8 +3057,11 @@ public class HomeController {
 		for (EmployeeJobinfo stmojb : employeeJobinfoService.findByEmployeeid(empid)) {
 
 			if (!nullremover(String.valueOf(stmojb.getJobreportsto())).equalsIgnoreCase("")) {
-				stmojb.setReportstoname(
-						employeeMasterService.findByLoginId(Integer.parseInt(stmojb.getJobreportsto())).getStaffName());
+				if(!stmojb.getJobreportsto().equalsIgnoreCase("-"))
+				{
+					stmojb.setReportstoname(
+						employeeMasterService.findById(Integer.parseInt(stmojb.getJobreportsto())).getStaffName());
+				}
 			}
 			stmojb.setJoblocation_str(
 					branchMasterService.findById(Integer.parseInt(stmojb.getJoblocation())).getBRANCH_NAME());
@@ -3222,8 +3249,11 @@ public class HomeController {
 		employeeJobinfoService.save(obj);
 
 		if (!nullremover(String.valueOf(params.get("jobreportsto"))).equalsIgnoreCase("")) {
-			obj.setReportstoname(
+			if(!obj.getJobreportsto().equalsIgnoreCase("-"))
+			{
+				obj.setReportstoname(
 					employeeMasterService.findById(Integer.parseInt(params.get("jobreportsto"))).getStaffName());
+			}
 		}
 
 		obj.setJoblocation_str(branchMasterService.findById(Integer.parseInt(obj.getJoblocation())).getBRANCH_NAME());
@@ -3295,7 +3325,8 @@ public class HomeController {
 				temppredate = formatterdate.parse(attdate);
 				tempnxtdate = formatterdate.parse(attdate);
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 
@@ -3902,18 +3933,188 @@ public class HomeController {
 		return "payroll";
 	}
 
+	public boolean get_eligible_days(EmployeeMaster empobj, String selectedmonth) {
+		int eligible_days = 26;
+
+		//List<EmployeeJobinfo> infoobj = employeeJobinfoService.findByEmployeeid((empobj.getEmpMasterid()));
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		// -------------------------------------------
+		//** START Issue Fix 1 06_08_24
+		// CurrentStaus
+		List<EmployeeJobempstatus> jobobj = new ArrayList<>();
+		jobobj = employeeJobempstatusService.findByEmployeeid(empobj.getEmpMasterid());
+		Date date = new Date();
+		
+		String Termination_Status= "";
+		String Termination_Date= "";
+		
+		if (jobobj.size() > 0) {
+			List<EmployeeJobempstatus> jobobjjobgreen = jobobj.stream()
+					.filter(c -> dateFormat.format(date).compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
+					.collect(Collectors.toList());
+			jobobjjobgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
+			if (jobobjjobgreen.size() > 0) {
+				Termination_Status=	jobobjjobgreen.get(jobobjjobgreen.size() - 1).getEmpstatus_employmentstatus();
+				Termination_Date= 	jobobjjobgreen.get(jobobjjobgreen.size() - 1).getEmpstatus_effectivedate();
+			}
+		}
+		// -------------------------------------------
+		if(Termination_Status.equalsIgnoreCase("Terminated"))
+		{
+			String TerDate_MM_YY[] =Termination_Date.split("-");
+			if(TerDate_MM_YY[0].equalsIgnoreCase(selectedmonth.split("-")[0]))
+			{
+				if(TerDate_MM_YY[1].equalsIgnoreCase(selectedmonth.split("-")[1]))
+				{
+					return true;		
+				}
+			}
+			
+		}
+		// -------------------------------------------
+		//** END Issue Fix 1 06_08_24	
+			
+		List<EmployeeJobHire> hireobj = new ArrayList<>();
+		hireobj = employeeJobHireService.findByEmployeeid(empobj.getEmpMasterid());
+		
+		if (hireobj.size() > 0) {
+			// Issue Fix 1 25_07_24
+			String hireDate_MM_YY[] =hireobj.get(0).getEmployeehiredate().split("-");
+			LocalDate h_date=  LocalDate.parse(hireobj.get(0).getEmployeehiredate());
+			LocalDate dateforeffectemp = LocalDate.parse(selectedmonth + "-01");
+			
+			Period period = Period.between(dateforeffectemp, h_date);
+			int years = Math.abs(period.getYears());
+			int months = Math.abs(period.getMonths());
+			int days = Math.abs(period.getDays());
+
+			String timeline = "";
+
+			if (years > 0) {
+				return false;
+			}
+			if (months > 0) {
+				return false;
+			}
+			if (days > 0) {
+				//** START Issue Fix 1 25_07_24
+				if(hireDate_MM_YY[1].equalsIgnoreCase(selectedmonth.split("-")[1] ))
+				{
+					return true;
+				}else
+				{
+					return false;
+				}
+				//** END Issue Fix 1 25_07_24
+			}
+		}
+		//------------------------------------------------
+		
+
+		return false;
+
+	}
+	
+	private long cal_sundays(LocalDate startDate, LocalDate endDate) {
+		
+		LocalDate firstSunday = startDate.with(DayOfWeek.SUNDAY);
+        if (firstSunday.isBefore(startDate)) {
+            firstSunday = firstSunday.plusWeeks(1);
+        }
+
+        long daysBetween = ChronoUnit.DAYS.between(firstSunday, endDate);
+        return daysBetween / 7 + 1;
+		
+	}
+	
+	public int get_notavailable_days(EmployeeMaster empobj, String selectedmonth) {
+		
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		// -------------------------------------------
+		// CurrentStaus
+		List<EmployeeJobempstatus> jobobj = new ArrayList<>();
+		jobobj = employeeJobempstatusService.findByEmployeeid(empobj.getEmpMasterid());
+		Date date = new Date();
+		
+		String Termination_Status= "";
+		String Termination_Date= "";
+		
+		if (jobobj.size() > 0) {
+			List<EmployeeJobempstatus> jobobjjobgreen = jobobj.stream()
+					.filter(c -> dateFormat.format(date).compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
+					.collect(Collectors.toList());
+			jobobjjobgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
+			if (jobobjjobgreen.size() > 0) {
+				Termination_Status=	jobobjjobgreen.get(jobobjjobgreen.size() - 1).getEmpstatus_employmentstatus();
+				Termination_Date= 	jobobjjobgreen.get(jobobjjobgreen.size() - 1).getEmpstatus_effectivedate();
+			}
+		}
+		// -------------------------------------------
+		if(Termination_Status.equalsIgnoreCase("Terminated"))
+		{
+			String TerDate_MM_YY[] =Termination_Date.split("-");
+			if(TerDate_MM_YY[0].equalsIgnoreCase(selectedmonth.split("-")[0]))
+			{
+				if(TerDate_MM_YY[1].equalsIgnoreCase(selectedmonth.split("-")[1]))
+				{
+					LocalDate terminationDate =  LocalDate.parse(Termination_Date);
+					LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+							.with(TemporalAdjusters.lastDayOfMonth());
+					
+					Period period = Period.between(terminationDate, lastDayOfMonth);
+					int sundayCount = (int) cal_sundays(terminationDate, lastDayOfMonth);
+					return period.getDays()+1-sundayCount;		
+				}
+			}
+			
+		}
+		// -------------------------------------------
+		List<EmployeeJobHire> hireobj = new ArrayList<>();
+		hireobj = employeeJobHireService.findByEmployeeid(empobj.getEmpMasterid());
+		
+		if (hireobj.size() > 0) {
+			// Issue Fix 1 25_07_24
+			String hireDate_MM_YY[] =hireobj.get(0).getEmployeehiredate().split("-");
+			LocalDate h_date=  LocalDate.parse(hireobj.get(0).getEmployeehiredate());
+			LocalDate dateforeffectemp = LocalDate.parse(selectedmonth + "-01");
+			
+			Period period = Period.between(dateforeffectemp, h_date);
+			int years = Math.abs(period.getYears());
+			int months = Math.abs(period.getMonths());
+			int days = Math.abs(period.getDays());
+
+			String timeline = "";
+
+			
+			if (days > 0 && years < 1 && months <1) {
+				if(hireDate_MM_YY[1].equalsIgnoreCase(selectedmonth.split("-")[1] ))
+				{
+					int sundayCount = (int) cal_sundays(dateforeffectemp, h_date);
+					return days-sundayCount;
+				}
+			}
+		}
+		//------------------------------------------------
+		
+
+		return 0;
+
+	}
+
 	@PostMapping("payroll")
 	public String payrollpost(@RequestParam(name = "month") String selectedmonth,
 			@RequestParam(name = "branch") int branch_masterid, Model themodel,
 			@RequestParam(value = "save", defaultValue = "", required = false) String save) {
 
-
 		LocalDate lastDayOfMonth = LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
 				.with(TemporalAdjusters.lastDayOfMonth());
 
 		String prd[] = lastDayOfMonth.toString().split("-");
-		int totaldayofmonth=Integer.parseInt(prd[2]);
-		
+		int totaldayofmonth = Integer.parseInt(prd[2]);
+
 		String prdenddate = prd[2] + "." + prd[1] + "." + prd[0];
 		String prdStartdate = "01." + prd[1] + "." + prd[0];
 
@@ -4037,9 +4238,9 @@ public class HomeController {
 			double Monthlyincentives = 0.00;
 			double net = 0.00;
 			// ----------------------------------------------------
+			EmployeeMaster empobj = employeeMasterService.findById(employeeid);
 
-			Advance = employeeMasterService.findById(employeeid).getEmployeeAdvance().stream()
-					.mapToDouble(EmployeeAdvance::getAmount).sum();
+			Advance = empobj.getEmployeeAdvance().stream().mapToDouble(EmployeeAdvance::getAmount).sum();
 			Advance = Advance - employeeAdvanceRepaymentService.findByEmployeeid(employeeid).stream()
 					.mapToDouble(EmployeeAdvanceRepayment::getAmount).sum();
 			// get Current month advance deduction details
@@ -4056,15 +4257,29 @@ public class HomeController {
 
 			Absent = A;
 			// WorkingDays = TotalWWorkingDays + Totalholidays;
-			WorkingDays = 26 - (A - HOLIDAYA - SUNDAYA) - (HL - HOLIDAYHL - SUNDAYHL);
-
+			if(get_eligible_days(empobj, selectedmonth))// check join month is same
+			{
+				// Working day is less than a week consider actual working day
+				if(TotalWWorkingDays<=6){
+					WorkingDays=TotalWWorkingDays;	
+				}else
+				{
+					WorkingDays = 26 -get_notavailable_days(empobj, selectedmonth)- (A - HOLIDAYA - SUNDAYA) 
+							- (HL - HOLIDAYHL - SUNDAYHL);
+				}
+				
+			}
+			else
+			{
+				WorkingDays = 26 - (A - HOLIDAYA - SUNDAYA) - (HL - HOLIDAYHL - SUNDAYHL);
+			}
 			if (WorkingDays < 1) {
 				WorkingDays = 0;
 			}
-			if(totaldayofmonth == A) {
-				WorkingDays=0;
+			if (totaldayofmonth == A) {
+				WorkingDays = 0;
 			}
-			
+
 			BasicSalary = Math.round(((ctc / 26) * WorkingDays * 0.40) * 100) / 100.00;
 			DA = Math.round(((ctc / 26) * WorkingDays * 0.35) * 100) / 100.00;
 			HRA = Math.round(((ctc / 26) * WorkingDays * 0.25) * 100) / 100.00;
@@ -4215,7 +4430,8 @@ public class HomeController {
 			generator.generateExcelFile(response);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 
 	}
@@ -4263,8 +4479,16 @@ public class HomeController {
 		// -------------------------------------------------------
 		// Get Attendance details for particular month
 		// -------------------------------------------------------
-		List<Map<String, Object>> atm = attendanceMasterService.getatttendancereport(monthstr, prdenddate,
-				Integer.parseInt(branchid));
+		List<Map<String, Object>> atm = null;
+		
+		if(branchid.equalsIgnoreCase("all"))
+		{
+			atm = attendanceMasterService.getatttendancereport_AllBranch(monthstr, prdenddate);
+		}else
+		{
+			atm = attendanceMasterService.getatttendancereport(monthstr, prdenddate,
+					Integer.parseInt(branchid));
+		}
 
 		ArrayList<String> reportarr = new ArrayList<String>();
 
@@ -4298,7 +4522,8 @@ public class HomeController {
 										.compareTo(c.getJobeffectivedate().toString()) >= 0;
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
-								logger.error(e); e.printStackTrace();
+								logger.error(e);
+								e.printStackTrace();
 							}
 							return false;
 						}).collect(Collectors.toList());
@@ -4307,7 +4532,7 @@ public class HomeController {
 					infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
 
 					if (infoobjgreen.size() > 0) {
-						if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation().equalsIgnoreCase(branchid)) {
+						if (infoobjgreen.get(infoobjgreen.size() - 1).getJoblocation().equalsIgnoreCase(branchid) || branchid.equalsIgnoreCase("all")) {
 
 							if (!calculateTerminatedstatus(Integer.parseInt(rowMap.get("employeeid").toString()),
 									dateforeffectemp)) {
@@ -4357,7 +4582,8 @@ public class HomeController {
 						}
 					}
 				} catch (ParseException e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 		});
@@ -4646,7 +4872,8 @@ public class HomeController {
 			try {
 				Files.write(fileNameandPath, Files_Attach.getBytes());
 			} catch (IOException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 
 			filels.add(assetpfiles);
@@ -4761,7 +4988,8 @@ public class HomeController {
 					.filter(C -> C.getId() == Integer.parseInt(assetmasternew.getVendor())).collect(Collectors.toList())
 					.get(0).getOrgname());
 		} catch (Exception e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 		try {
 			assetmasternew.setBranchname(branchMasterService.findAll().stream()
@@ -4769,7 +4997,8 @@ public class HomeController {
 					.get(0).getBRANCH_NAME());
 
 		} catch (Exception e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 		;
 		try {
@@ -4779,7 +5008,8 @@ public class HomeController {
 			}
 
 		} catch (ParseException e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 		try {
 			if (!nullremover(String.valueOf(assetmasternew.getPurchased())).equalsIgnoreCase("")) {
@@ -4788,7 +5018,8 @@ public class HomeController {
 			}
 
 		} catch (ParseException e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 
 		theModel.addAttribute("assetobj", assetMasterService.findById(assetid));
@@ -4823,7 +5054,8 @@ public class HomeController {
 					.get(0).getBRANCH_NAME());
 
 		} catch (Exception e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -4833,7 +5065,8 @@ public class HomeController {
 					.get(0).getOrgname());
 
 		} catch (Exception e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -4843,7 +5076,8 @@ public class HomeController {
 			}
 
 		} catch (ParseException e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 		try {
 			if (!nullremover(String.valueOf(params.get("Purchased"))).equalsIgnoreCase("")) {
@@ -4852,7 +5086,8 @@ public class HomeController {
 			}
 
 		} catch (ParseException e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 		assetMasterService.save(assetmasternew);
 		return assetmasternew;
@@ -5174,7 +5409,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Photo_Attach[i].getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 					checkMasterfiles.add(chekinfiles);
 					obj.setCheckoutFiles(checkMasterfiles);
@@ -5341,7 +5577,8 @@ public class HomeController {
 						try {
 							Files.write(fileNameandPath, Photo_Attach[i].getBytes());
 						} catch (IOException e) {
-							logger.error(e); e.printStackTrace();
+							logger.error(e);
+							e.printStackTrace();
 						}
 						checkMasterfiles.add(chekinfiles);
 						obj.setCheckInFiles(checkMasterfiles);
@@ -5472,7 +5709,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, Photo_Attach[i].getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 					assetauditMasterfiles.add(assetauditfiles);
 					obj.setAssetauditFiles(assetauditMasterfiles);
@@ -5789,7 +6027,8 @@ public class HomeController {
 						pcobj.setPTo_str(displaydateFormatFirstMMMddYYY
 								.format(new SimpleDateFormat("yyyy-MM-dd").parse(pcobj.getPTo())));
 					} catch (ParseException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 
 				}
@@ -5898,7 +6137,8 @@ public class HomeController {
 				try {
 					Files.write(fileNameandPath, Files_Attach.getBytes());
 				} catch (IOException e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -6009,7 +6249,8 @@ public class HomeController {
 				try {
 					Files.write(fileNameandPath, Files_Attach.getBytes());
 				} catch (IOException e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -6124,7 +6365,8 @@ public class HomeController {
 					try {
 						Files.write(fileNameandPath, doc_Attach[i].getBytes());
 					} catch (IOException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -6791,7 +7033,8 @@ public class HomeController {
 					long daysDiff = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
 					tmp1obj.setLeaddays(daysDiff + "");
 				} catch (ParseException e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 
 			}
@@ -6825,7 +7068,7 @@ public class HomeController {
 					tmp1obj.setLeaddateMMddYYY(displaydateFormatFirstMMMddYYY
 							.format(displaydateFormatrev.parse(tmp1obj.getLeadDate())).toString());
 				} catch (ParseException e) {
-					//logger.error(e); e.printStackTrace();
+					// logger.error(e); e.printStackTrace();
 				}
 			}
 
@@ -6890,7 +7133,8 @@ public class HomeController {
 					tmp1obj.setDealdateMMddYYY(displaydateFormatFirstMMMddYYY
 							.format(displaydateFormatrev.parse(tmp1obj.getDealDate())).toString());
 				} catch (ParseException e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 
@@ -6900,7 +7144,8 @@ public class HomeController {
 					tmp1obj.setExpectedclosingdateMMddYYY(displaydateFormatFirstMMMddYYY
 							.format(displaydateFormatrev.parse(tmp1obj.getTdate())).toString());
 				} catch (ParseException e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 
@@ -6971,7 +7216,8 @@ public class HomeController {
 							.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
 				}
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 			if (!nullremover(String.valueOf(tmp1obj.getExpectedclosingdate())).equalsIgnoreCase("")) {
 				try {
@@ -8573,7 +8819,8 @@ public class HomeController {
 				try {
 					Files.write(fileNameandPath, Files_Attach.getBytes());
 				} catch (IOException e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 			ActivityMasterFiles activityMasterFiles = new ActivityMasterFiles();
@@ -8735,7 +8982,8 @@ public class HomeController {
 				leadMaster.setReferenceName(
 						contactPersonService.findById(Integer.parseInt(leadMaster.getReference())).getPeoplename());
 			} catch (Exception e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// ----------------------------------------------------------
@@ -9113,7 +9361,8 @@ public class HomeController {
 				dealMaster.setReferenceName(
 						contactPersonService.findById(Integer.parseInt(dealMaster.getReference())).getPeoplename());
 			} catch (Exception e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// ----------------------------------------------------------
@@ -9235,7 +9484,8 @@ public class HomeController {
 				projectMaster.setReferenceName(
 						contactPersonService.findById(Integer.parseInt(projectMaster.getReference())).getPeoplename());
 			} catch (Exception e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// ----------------------------------------------------------
@@ -9687,7 +9937,8 @@ public class HomeController {
 						tempdate = displaydateFormatrev.format(cal.getTime()).toString();
 
 					} catch (ParseException e) {
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 
 					ActivityMaster am = new ActivityMaster();
@@ -10896,9 +11147,15 @@ public class HomeController {
 
 					long NoofdaysRemaining_fromNow = new Date().getTime()
 							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
-
-					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
-
+					
+					if(NoofdaysRemaining_fromNow != 0)
+					{
+						NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
+					}else
+					{
+						NoofdaysRemaining_fromNow =0;	
+					}
+					
 					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
 
 					if (NoofdaysRemaining_fromNow_per > 100) {
@@ -11567,7 +11824,7 @@ public class HomeController {
 					projectMaster.setNoofdaysRemaining(String.valueOf(totaldays));
 
 				} catch (Exception ex) {
-					//ex.printStackTrace();
+					// ex.printStackTrace();
 				}
 			}
 			// -------------------------------------------------------------
@@ -12139,12 +12396,11 @@ public class HomeController {
 			map.put("amount", String.valueOf(totalinvoiceamount));
 			map.put("balanceamount", String.valueOf(totalinvoiceamount - totalpaidamount));
 			map.put("invoiceid", String.valueOf(inv.getInvoiceid()));
-		}else
-		{
+		} else {
 			map.put("Invoiceno", "");
 			map.put("duedate", "");
 			map.put("amount", "");
-			map.put("balanceamount" , "");
+			map.put("balanceamount", "");
 			map.put("invoiceid", "");
 		}
 		return map;
@@ -12238,23 +12494,22 @@ public class HomeController {
 		String tempreceiptid = nullremover(String.valueOf(params.get("recepitid")));
 
 		if (!tempreceiptid.equalsIgnoreCase("")) {
-			/*List<InvoiceReceiptMaster> ls = new ArrayList();
-
-			for (InvoiceReceiptMaster invm : pm.getReceiptList()) {
-				if (invm.getRecepitid() == Integer.parseInt(tempreceiptid)) {
-
-					invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
-					invm.setAmount(Double.parseDouble(params.get("amount")));
-					invm.setDepositedto(String.valueOf(params.get("depositedto")));
-					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
-					invm.setNotes(String.valueOf(params.get("notes")));
-					invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
-					invm.setCancel_status("N");
-					}
-				ls.add(invm);
-
-			}
-			pm.setReceiptList(ls); */
+			/*
+			 * List<InvoiceReceiptMaster> ls = new ArrayList();
+			 * 
+			 * for (InvoiceReceiptMaster invm : pm.getReceiptList()) { if
+			 * (invm.getRecepitid() == Integer.parseInt(tempreceiptid)) {
+			 * 
+			 * invm.setRecepitNo(String.valueOf(params.get("recepitNo")));
+			 * invm.setAmount(Double.parseDouble(params.get("amount")));
+			 * invm.setDepositedto(String.valueOf(params.get("depositedto")));
+			 * invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
+			 * invm.setNotes(String.valueOf(params.get("notes")));
+			 * invm.setRecepitDate(String.valueOf(params.get("recepitDate")));
+			 * invm.setCancel_status("N"); } ls.add(invm);
+			 * 
+			 * } pm.setReceiptList(ls);
+			 */
 		} else {
 			InvoiceReceiptMaster invm = new InvoiceReceiptMaster();
 
@@ -12271,11 +12526,11 @@ public class HomeController {
 
 		return projectMasterService.save(pm);
 	}
+
 	@ResponseBody
 	@PostMapping("projectreceiptcancel")
 	public ProjectMaster projectreceiptcancel(@RequestParam Map<String, String> params) {
 
-		
 		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
 		List<InvoiceReceiptMaster> invls = new ArrayList();
 
@@ -12288,11 +12543,11 @@ public class HomeController {
 				if (invm.getRecepitid() == Integer.parseInt(tempreceiptid)) {
 
 					invm.setCancel_status("Y");
-					}
+				}
 				ls.add(invm);
 
 			}
-			pm.setReceiptList(ls); 
+			pm.setReceiptList(ls);
 		}
 
 		return projectMasterService.save(pm);
@@ -13023,31 +13278,30 @@ public class HomeController {
 		String tempreceiptid = nullremover(String.valueOf(params.get("prjExpenseid")));
 
 		if (!tempreceiptid.equalsIgnoreCase("")) {
-			/*List<ProjectExpense> ls = new ArrayList();
-
-			for (ProjectExpense invm : pm.getProjectExpenseList()) {
-				if (invm.getPrjExpenseid() == Integer.parseInt(tempreceiptid)) {
-
-					invm.setCategory(String.valueOf(params.get("category")));
-					invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
-					invm.setNotes(String.valueOf(params.get("Notes")));
-					invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
-					invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
-					invm.setQuantity(Double.parseDouble(params.get("Quantity")));
-					invm.setStaff(String.valueOf(params.get("staff")));
-					invm.setTotal(
-							Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));
-					invm.setAmount(Double.parseDouble(params.get("Amount")));
-					invm.setUnit(String.valueOf(params.get("unit")));
-					invm.setVehicle(String.valueOf(params.get("vehicle")));
-					invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
-					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
-				}
-				ls.add(invm);
-
-			}
-			pm.setProjectExpenseList(ls);
-			*/
+			/*
+			 * List<ProjectExpense> ls = new ArrayList();
+			 * 
+			 * for (ProjectExpense invm : pm.getProjectExpenseList()) { if
+			 * (invm.getPrjExpenseid() == Integer.parseInt(tempreceiptid)) {
+			 * 
+			 * invm.setCategory(String.valueOf(params.get("category")));
+			 * invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
+			 * invm.setNotes(String.valueOf(params.get("Notes")));
+			 * invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
+			 * invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
+			 * invm.setQuantity(Double.parseDouble(params.get("Quantity")));
+			 * invm.setStaff(String.valueOf(params.get("staff"))); invm.setTotal(
+			 * Double.parseDouble(params.get("Amount")) *
+			 * Double.parseDouble(params.get("Quantity")));
+			 * invm.setAmount(Double.parseDouble(params.get("Amount")));
+			 * invm.setUnit(String.valueOf(params.get("unit")));
+			 * invm.setVehicle(String.valueOf(params.get("vehicle")));
+			 * invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+			 * invm.setModeofPayment(String.valueOf(params.get("modeofPayment"))); }
+			 * ls.add(invm);
+			 * 
+			 * } pm.setProjectExpenseList(ls);
+			 */
 		} else {
 			ProjectExpense invm = new ProjectExpense();
 
@@ -13065,7 +13319,7 @@ public class HomeController {
 			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
 			invm.setCancel_status("N");
-			
+
 			pm.getProjectExpenseList().add(invm);
 		}
 
@@ -13075,7 +13329,7 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping("projectexpensecancel")
 	public ProjectMaster projectexpensecancel(@RequestParam Map<String, String> params) {
-		
+
 		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("projectid")));
 
 		List<ProjectExpense> invls = new ArrayList();
@@ -13089,15 +13343,16 @@ public class HomeController {
 				if (invm.getPrjExpenseid() == Integer.parseInt(tempreceiptid)) {
 
 					invm.setCancel_status("Y");
-					}
+				}
 				ls.add(invm);
 
 			}
 			pm.setProjectExpenseList(ls);
-			
+
 		}
 		return projectMasterService.save(pm);
 	}
+
 	@PostMapping("getprojectexpenselist")
 	@ResponseBody
 	public List<ProjectExpense> getprojectexpenselist(@RequestParam Map<String, String> params) {
@@ -13512,30 +13767,30 @@ public class HomeController {
 		String tempreceiptid = nullremover(String.valueOf(params.get("branchexpenseid")));
 
 		if (!tempreceiptid.equalsIgnoreCase("")) {
-			/*List<BranchexpenseMaster> ls = new ArrayList();
-
-			for (BranchexpenseMaster invm : pm.getBranchexpenseMasterList()) {
-				if (invm.getBranchexpenseid() == Integer.parseInt(tempreceiptid)) {
-
-					invm.setCategory(String.valueOf(params.get("category")));
-					invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
-					invm.setNotes(String.valueOf(params.get("Notes")));
-					invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
-					invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
-					invm.setQuantity(Double.parseDouble(params.get("Quantity")));
-					invm.setStaff(String.valueOf(params.get("staff")));
-					invm.setTotal(
-							Double.parseDouble(params.get("Amount")) * Double.parseDouble(params.get("Quantity")));
-					invm.setAmount(Double.parseDouble(params.get("Amount")));
-					invm.setUnit(String.valueOf(params.get("unit")));
-					invm.setVehicle(String.valueOf(params.get("vehicle")));
-					invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
-					invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
-				}
-				ls.add(invm);
-
-			}
-			pm.setBranchexpenseMasterList(ls);*/
+			/*
+			 * List<BranchexpenseMaster> ls = new ArrayList();
+			 * 
+			 * for (BranchexpenseMaster invm : pm.getBranchexpenseMasterList()) { if
+			 * (invm.getBranchexpenseid() == Integer.parseInt(tempreceiptid)) {
+			 * 
+			 * invm.setCategory(String.valueOf(params.get("category")));
+			 * invm.setModelofTravel(String.valueOf(params.get("modelofTravel")));
+			 * invm.setNotes(String.valueOf(params.get("Notes")));
+			 * invm.setPrjExpenseDate(String.valueOf(params.get("prjExpenseDate")));
+			 * invm.setPrjreceiptno(String.valueOf(params.get("recepitNo")));
+			 * invm.setQuantity(Double.parseDouble(params.get("Quantity")));
+			 * invm.setStaff(String.valueOf(params.get("staff"))); invm.setTotal(
+			 * Double.parseDouble(params.get("Amount")) *
+			 * Double.parseDouble(params.get("Quantity")));
+			 * invm.setAmount(Double.parseDouble(params.get("Amount")));
+			 * invm.setUnit(String.valueOf(params.get("unit")));
+			 * invm.setVehicle(String.valueOf(params.get("vehicle")));
+			 * invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
+			 * invm.setModeofPayment(String.valueOf(params.get("modeofPayment"))); }
+			 * ls.add(invm);
+			 * 
+			 * } pm.setBranchexpenseMasterList(ls);
+			 */
 
 		} else {
 			BranchexpenseMaster invm = new BranchexpenseMaster();
@@ -13554,13 +13809,13 @@ public class HomeController {
 			invm.setDepitedfrom(String.valueOf(params.get("depitedfrom")));
 			invm.setModeofPayment(String.valueOf(params.get("modeofPayment")));
 			invm.setCancel_status("N");
-			
+
 			pm.getBranchexpenseMasterList().add(invm);
 		}
 
 		return branchMasterService.save(pm);
 	}
-	
+
 	@ResponseBody
 	@PostMapping("branchexpensecancel")
 	public BranchMaster branchexpensecancel(@RequestParam Map<String, String> params) {
@@ -13577,15 +13832,15 @@ public class HomeController {
 			for (BranchexpenseMaster invm : pm.getBranchexpenseMasterList()) {
 				if (invm.getBranchexpenseid() == Integer.parseInt(tempreceiptid)) {
 
-					
-					invm.setCancel_status("Y");;
+					invm.setCancel_status("Y");
+					;
 				}
 				ls.add(invm);
 
 			}
 			pm.setBranchexpenseMasterList(ls);
 
-		} 
+		}
 		return branchMasterService.save(pm);
 	}
 
@@ -14118,13 +14373,15 @@ public class HomeController {
 							&& displaydateFormatrev.parse(O.getInvoiceDate()).before(displaydateFormatrev.parse(edate));
 				} catch (ParseException e) {
 
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 				return false;
 			})).collect(Collectors.toList());
 
 		} catch (Exception e) {
-			logger.error(e); e.printStackTrace();
+			logger.error(e);
+			e.printStackTrace();
 		}
 
 		return invLs1;
@@ -14374,13 +14631,15 @@ public class HomeController {
 											- displaydateFormatrev.parse(sr_enddate).getTime()) <= 0;
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
-							logger.error(e); e.printStackTrace();
+							logger.error(e);
+							e.printStackTrace();
 						} finally {
 							return false;
 						}
 					}).collect(Collectors.toList()).stream().mapToDouble(x -> x.getAmount()).sum()));
 				} catch (Exception e) {
-					logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 				tmp1obj.setProjecttotalvaluereceipt(temp);
 			}
@@ -14397,7 +14656,8 @@ public class HomeController {
 												- displaydateFormatrev.parse(sr_enddate).getTime()) <= 0;
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
-								logger.error(e); e.printStackTrace();
+								logger.error(e);
+								e.printStackTrace();
 							} finally {
 								return false;
 							}
@@ -14426,7 +14686,8 @@ public class HomeController {
 						}
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
-						logger.error(e); e.printStackTrace();
+						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 
@@ -14462,7 +14723,8 @@ public class HomeController {
 				empadv.setAdvancedate_DDMMMYYYY(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(empadv.getAdvancedate())).toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 
 		}
@@ -14937,7 +15199,8 @@ public class HomeController {
 				bm.setStartdateMMformat(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(bm.getSTATED_DATE())).toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 			bm.setStartdatatimeline(getTimeage(bm.getSTATED_DATE()));
 		}
@@ -14956,7 +15219,8 @@ public class HomeController {
 										.parse(branchEffective.get(branchEffective.size() - 1).getEffectivedate()))
 								.toString());
 			} catch (ParseException e) {
-				logger.error(e); e.printStackTrace();
+				logger.error(e);
+				e.printStackTrace();
 			}
 		}
 		// -------------------------------------------

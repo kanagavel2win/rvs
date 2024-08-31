@@ -146,6 +146,9 @@
 .A {
 	color: red;
 }
+.SL {
+	color: red;
+}
 
 .T {
 	color: #FDAC41;
@@ -307,6 +310,7 @@ td.holiday {
 																	</th:block>
 																	<th>Total_P</th>
 																	<th>Total_A</th>
+																	<th>Total_SL</th>
 																	<th>Total_HL</th>
 																	<th>Total_T</th>
 
@@ -321,7 +325,7 @@ td.holiday {
 																		th:text="${#strings.arraySplit(rpt,'~')[0] }"></td>
 
 																	<th:block
-																		th:each="i : ${#numbers.sequence( 1, prdenddate+4, 1)}">
+																		th:each="i : ${#numbers.sequence( 1, prdenddate+5, 1)}">
 																		<td th:if="${#lists.contains(sundays,'|'+ i +'|')}"
 																			th:text="${#strings.arraySplit(rpt,'~')[i+1] }"
 																			th:class="${#strings.arraySplit(rpt,'~')[i+1] } + ' sunday'"></td>

@@ -3431,7 +3431,7 @@ public class HomeController {
 
 			p = attls.stream().filter(c -> c.getAttstatus().equalsIgnoreCase("P")
 					&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid)).count();
-			a = attls.stream().filter(c -> c.getAttstatus().equalsIgnoreCase("A")
+			a = attls.stream().filter(c -> c.getAttstatus().equalsIgnoreCase("A") || c.getAttstatus().equalsIgnoreCase("SL")
 					&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid)).count();
 			t = attls.stream().filter(c -> c.getAttstatus().equalsIgnoreCase("T")
 					&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid)).count();
@@ -4197,6 +4197,7 @@ public class HomeController {
 			int employeeid = (int) rowMap.get("employeeid");
 			double P = Double.parseDouble(rowMap.get("P").toString());
 			double A = Double.parseDouble(rowMap.get("A").toString());
+			double SL = Double.parseDouble(rowMap.get("SL").toString());
 			double T = Double.parseDouble(rowMap.get("T").toString());
 			double HL0 = Double.parseDouble(rowMap.get("HL").toString());
 			double HOLIDAYP = Double.parseDouble(rowMap.get("HOLIDAYP").toString());
@@ -4256,17 +4257,27 @@ public class HomeController {
 			ExtraWorkingDays = Totalsundaywrkdays + Totalholidaywrkdays;
 
 			Absent = A;
+			if(SL>=1)
+			{
+				A=A-1;
+				TotalWWorkingDays = TotalWWorkingDays+1;
+				if(SL>1)
+				{
+					A=A+SL;
+				}
+			}
+				
 			// WorkingDays = TotalWWorkingDays + Totalholidays;
 			if(get_eligible_days(empobj, selectedmonth))// check join month is same
 			{
 				// Working day is less than a week consider actual working day
-				if(TotalWWorkingDays<=6){
-					WorkingDays=TotalWWorkingDays;	
-				}else
-				{
+				//if(TotalWWorkingDays<=6){
+				//	WorkingDays=TotalWWorkingDays;	
+				//}else
+				//{
 					WorkingDays = 26 -get_notavailable_days(empobj, selectedmonth)- (A - HOLIDAYA - SUNDAYA) 
 							- (HL - HOLIDAYHL - SUNDAYHL);
-				}
+				//}
 				
 			}
 			else
@@ -4496,6 +4507,7 @@ public class HomeController {
 			String reportstr = "";
 			int P = 0;
 			int A = 0;
+			int SL = 0;
 			int T = 0;
 			int HL = 0;
 
@@ -4547,6 +4559,9 @@ public class HomeController {
 									if (temp.equalsIgnoreCase("A")) {
 										A++;
 									}
+									if (temp.equalsIgnoreCase("SL")) {
+										SL++;
+									}
 									if (temp.equalsIgnoreCase("P")) {
 										P++;
 									}
@@ -4567,6 +4582,9 @@ public class HomeController {
 									if (temp.equalsIgnoreCase("P")) {
 										P++;
 									}
+									if (temp.equalsIgnoreCase("SL")) {
+										SL++;
+									}
 									if (temp.equalsIgnoreCase("HL")) {
 										HL++;
 									}
@@ -4575,7 +4593,7 @@ public class HomeController {
 									}
 								}
 
-								reportstr += P + " ~" + A + " ~" + HL + " ~" + T + " ~";
+								reportstr += P + " ~" + A + " ~" + SL + " ~" + HL + " ~" + T + " ~";
 								reportarr.add(reportstr);
 
 							}

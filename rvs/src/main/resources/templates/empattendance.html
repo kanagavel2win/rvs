@@ -194,6 +194,14 @@
 	border: 1px #ccc solid;
 }
 
+.attendancelisttable td:nth-child(7) button {
+	padding: 2px;
+	padding-right: 10px;
+	padding-left: 10px;
+	font-size: 13px;
+	border: 1px #ccc solid;
+}
+
 .btn, .btn-outline-info, .btn-outline-danger, .btn-outline-warning {
 	border: 0px #B5B5B5 solid;
 	color: #B5B5B5;
@@ -399,35 +407,43 @@
 
 
 													<td th:if="${#strings.arraySplit(emp,'||')[3]}=='P'"
-														width="15%"><button type="button"
+														width="10%"><button type="button"
 															th:name=" ${stat.index}"
 															class="btn btnp cp btn-success text-white ">P</button></td>
 													<td th:unless="${#strings.arraySplit(emp,'||')[3]}=='P'"
-														width="15%"><button type="button"
+														width="10%"><button type="button"
 															th:name=" ${stat.index}" class="btn btnp ">P</button></td>
 
 													<td th:if="${#strings.arraySplit(emp,'||')[3]}=='A'"
-														width="15%"><button type="button"
+														width="10%"><button type="button"
 															th:name="${stat.index}"
 															class="btn btna ca btn-danger text-white">A</button></td>
 													<td th:unless="${#strings.arraySplit(emp,'||')[3]}=='A'"
-														width="15%"><button type="button"
+														width="10%"><button type="button"
 															th:name="${stat.index}" class="btn btna ">A</button></td>
+															
+													<td th:if="${#strings.arraySplit(emp,'||')[3]}=='SL'"
+														width="10%"><button type="button"
+															th:name="${stat.index}"
+															class="btn btnsl csl btn-danger text-white">SL</button></td>
+													<td th:unless="${#strings.arraySplit(emp,'||')[3]}=='SL'"
+														width="10%"><button type="button"
+															th:name="${stat.index}" class="btn btnsl ">SL</button></td>
 
 													<td th:if="${#strings.arraySplit(emp,'||')[3]}=='T'"
-														width="15%"><button type="button"
+														width="10%"><button type="button"
 															th:name="${stat.index}"
 															class="btn btnt ct btn-warning text-white ">T</button></td>
 													<td th:unless="${#strings.arraySplit(emp,'||')[3]}=='T'"
-														width="15%"><button type="button"
+														width="10%"><button type="button"
 															th:name="${stat.index}" class="btn btnt ">T</button></td>
 
 													<td th:if="${#strings.arraySplit(emp,'||')[3]}=='HL'"
-														width="15%"><button type="button"
+														width="10%"><button type="button"
 															th:name="${stat.index}"
 															class="btn btnhl chl btn-secondary text-white">HL</button></td>
 													<td th:unless="${#strings.arraySplit(emp,'||')[3]}=='HL'"
-														width="15%"><button type="button"
+														width="10%"><button type="button"
 															th:name="${stat.index}" class="btn btnhl ">HL</button></td>
 													<td><i class="bx bx-trash" th:name="${stat.index}"></i>
 													</td>
@@ -642,7 +658,8 @@
 			var selected_val=$('#atten_status_change').val();
 		
 			$('.btnp').removeClass("cp btn-success text-white");
-			$('.btna').removeClass("ca btn-danger text-white");				
+			$('.btna').removeClass("ca btn-danger text-white");	
+			$('.btnsl').removeClass("ca btn-danger text-white");	
 			$('.btnt').removeClass("ct btn-warning text-white");					
 			$('.btnhl').removeClass("chl btn-secondary text-white");
 			
@@ -654,6 +671,7 @@
 				{
 					$('.btna').toggleClass("ca btn-danger text-white");
 				}
+				
 				if(selected_val=="Tardy")
 				{
 					$('.btnt').toggleClass("ct btn-warning text-white");					
@@ -678,6 +696,13 @@
 			remover_atten_status(empid_name);		
 			$(this).toggleClass(" ca btn-danger text-white");
 		});
+		$(".btnsl").click(function()
+				{
+					var empid_name=$(this).attr('name');							
+					remover_atten_status(empid_name);		
+					$(this).toggleClass(" csl btn-danger text-white");
+		});
+		
 		$(".btnt").click(function()
 		{
 			var empid_name=$(this).attr('name');							
@@ -727,7 +752,8 @@
 		{
 			
 			$('.btnp[name='+empid_name+']').removeClass("cp btn-success text-white");
-			$('.btna[name='+empid_name+']').removeClass("ca btn-danger text-white");				
+			$('.btna[name='+empid_name+']').removeClass("ca btn-danger text-white");
+			$('.btna[name='+empid_name+']').removeClass("csl btn-danger text-white");
 			$('.btnt[name='+empid_name+']').removeClass("ct btn-warning text-white");
 			$('.btnhl[name='+empid_name+']').removeClass("chl btn-secondary text-white");		
 			
@@ -745,17 +771,20 @@
 			//------------------------------------------------------------------------------
 			// Update calendar as per the attendance count
 			var P=0;
-			var A=0; 
+			var A=0;
+			var SL=0;
 			var T=0;
 			var HL=0; 
 			
 			P=document.querySelectorAll('.cp').length;
 			A=document.querySelectorAll('.ca').length;
+			SL=document.querySelectorAll('.csl').length;
 			T=document.querySelectorAll('.ct').length;
 			HL=document.querySelectorAll('.chl').length;
 			 
 			$('.cal_innerp' + currentdd).text(P);
 			$('.cal_innera' + currentdd).text(A);
+			$('.cal_innersl' + currentdd).text(SL);
 			$('.cal_innert' + currentdd).text(T);
 			$('.cal_innerhl' + currentdd).text(HL);
 			//------------------------------------------------------------------------------
@@ -775,6 +804,13 @@
 			    var note=$('#remark'+ rowindex).val();
 			    var attendid=$('#attid'+ rowindex).val();
 			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|A|" + attendid +"~";
+			});
+			$(".csl").each(function() {
+			    var rowindex =$(this).attr('name');
+			    var empid=$('#emp'+ rowindex).val();
+			    var note=$('#remark'+ rowindex).val();
+			    var attendid=$('#attid'+ rowindex).val();
+			    attendancestr += branchid +"|" + currentdate +"|" +empid +"|" + note +"|SL|" + attendid +"~";
 			});
 			$(".ct").each(function() {
 			    var rowindex =$(this).attr('name');

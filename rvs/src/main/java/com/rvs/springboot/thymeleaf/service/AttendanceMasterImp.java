@@ -222,4 +222,11 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 		
 	}
 
+	@Override
+	public int checkAttendanceisthereforFurtureDate(int empid, String effdate) {
+		String sql = "select count(employeeid) as acount from attendancemaster where attendance_date >= '"
+				+ effdate + "-01 00:00:00' and employeeid ="+ empid ;
+		return  JdbcTemplate.queryForObject(sql,Integer.class);
+	}
+
 }

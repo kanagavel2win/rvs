@@ -508,7 +508,8 @@ var tblemployeeadvanceid=0;
 								   }
 								//--------------------------------------------------------------------------------------------------------------------------------------
 								$('#AdvanceInformation').on('submit',function(event) {
-									if (event.target.checkValidity()) {
+									
+									if (event.target.checkValidity() && $('#advancedate').val()!='') {
 										$('.editAdvancesubmit').prop("disabled",true);
 										$('.editAdvancesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
 										const formData = new FormData(document.querySelector("#AdvanceInformation"));
@@ -533,6 +534,7 @@ var tblemployeeadvanceid=0;
 											}
 										});
 									} else {
+										alert("Fill the mandatory fields");
 										$('.editAdvancesubmit').prop("disabled",false);
 									}
 								});

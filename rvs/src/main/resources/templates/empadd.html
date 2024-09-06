@@ -615,7 +615,7 @@
 											<tbody>
 
 												<tr th:each="lan : ${employeemaster.employeeLanguage}"
-													th:id="${lan.empLanguid}">
+													th:class="'Lang'+ ${lan.empLanguid}" th:id="${lan.empLanguid}">
 
 													<td class="text-nowrap pop_cursor"
 														th:text="${lan.language}"
@@ -660,7 +660,7 @@
 											<ul class="timeline timeline-dashed mt-4 timelinequf">
 
 												<li th:each="obj : ${employeemaster.employeeEducation}"
-													class="timeline-item timeline-item-primary mb-4 "
+													th:class="'timeline-item timeline-item-primary mb-4 qualificat' + ${obj.empEduid}"
 													onclick="editExper(event);" th:id="${obj.empEduid}"><span
 													class="timeline-indicator timeline-indicator-primary">
 														<i class="bx bxs-graduation"></i>
@@ -683,12 +683,8 @@
 																<span th:text="${obj.Percentage_GPA}"
 																	th:id="'span2_' + ${obj.empEduid}"></span>
 															</div>
-
 														</div>
-														<!-- <a href="javascript:void(0)">
-			                              <i class="bx bx-link"></i>
-			                              bookingCard.pdf
-			                            </a> -->
+													
 													</div></li>
 
 											</ul>
@@ -712,7 +708,7 @@
 										<div class="card-body">
 											<ul class="timeline mt-3 timeline-exp">
 												<li th:each="obj : ${employeemaster.employeeExperience}"
-													class="timeline-item timeline-item-transparent "
+													th:class="'timeline-item timeline-item-transparent experience'+ ${obj.empExperienceid}"
 													onclick="editExperience(event);"
 													th:id="${obj.empExperienceid}"><span
 													class="timeline-point timeline-point-primary"></span>
@@ -1442,6 +1438,9 @@
 													class="btn btn-label-secondary btn-reset"
 													data-bs-dismiss="modal" aria-label="Close"
 													onclick="langclose();">Cancel</button>
+												<button type="button"
+													class="btn btn-label-danger"
+													onclick="editlanguageDelete()">Delete</button>
 											</div>
 										</form>
 									</div>
@@ -1482,7 +1481,7 @@
 											<div class="mb-3 col-lg-6 col-md-12">
 												<input type="hidden" id="empEduid"> <label
 													class="form-label" for="Degree">Degree </label> <select
-													class="form-control modaldegree" id="Degree" name="Degree">
+													class="form-control modaldegree" id="Degree" name="Degree"  required="required">
 													<option value="">-</option>
 													<th:block th:each="str :${DEGREE}">
 														<option th:value="${str}" th:text="${str}"></option>
@@ -1494,7 +1493,7 @@
 											<div class="mb-3 col-lg-6 col-md-12">
 												<label class="form-label" for="Major">Major /
 													Specialization</label> <input class="form-control" id="Major"
-													name="Major" type="text" />
+													name="Major" type="text" required="required"/>
 
 
 											</div>
@@ -1527,6 +1526,9 @@
 												<button type="sumbit" class="btn btn-primary me-sm-3 me-1">Save</button>
 												<button type="reset" class="btn btn-label-secondary"
 													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+												<button type="button"
+													class="btn btn-label-danger"
+													onclick="editQualicationdataDelete()">Delete</button>
 											</div>
 										</form>
 									</div>
@@ -1589,6 +1591,9 @@
 												<button type="sumbit" class="btn btn-primary me-sm-3 me-1">Save</button>
 												<button type="reset" class="btn btn-label-secondary"
 													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+												<button type="button"
+													class="btn btn-label-danger"
+													onclick="editExperiencedataDelete()">Delete</button>
 											</div>
 										</form>
 									</div>
@@ -1736,532 +1741,533 @@
 	<script>
 	
 	const Qualificationfrom = flatpickr("#Qualificationfrom", {
-		  altInput: true,
-	      altFormat: 'F j, Y',
-	      dateFormat: 'Y-m-d'
-	     });
-	
+	    altInput: true,
+	    altFormat: 'F j, Y',
+	    dateFormat: 'Y-m-d'
+	});
+
 	const Qualificationto = flatpickr("#Qualificationto", {
-		  altInput: true,
-	      altFormat: 'F j, Y',
-	      dateFormat: 'Y-m-d'
-	     });
-	
-	
+	    altInput: true,
+	    altFormat: 'F j, Y',
+	    dateFormat: 'Y-m-d'
+	});
+
+
 	const Experiencefrom = flatpickr("#Experiencefrom", {
-		  altInput: true,
-	      altFormat: 'F j, Y',
-	      dateFormat: 'Y-m-d'
-	     });
-	
+	    altInput: true,
+	    altFormat: 'F j, Y',
+	    dateFormat: 'Y-m-d'
+	});
+
 	const Experiencento = flatpickr("#Experiencento", {
-		  altInput: true,
-	      altFormat: 'F j, Y',
-	      dateFormat: 'Y-m-d'
-	     });
-	
-    $(document).ready(function() {  
-    	//--------------------------------------------------------------------------------------------------------------------------------------
-    	
-		//--------------------------------------------------------------------------------------------------------------------------------------		 		
+	    altInput: true,
+	    altFormat: 'F j, Y',
+	    dateFormat: 'Y-m-d'
+	});
 
-		$(function() {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
-			$(document).ajaxSend(function(e, xhr, options) {
-				xhr.setRequestHeader(header, token);
-			});
-		});
-		//--------------------------------------------------------------------------------------------------------------------------------------
-		function validationformuserp1reset()
-   		{
-   			$('.edituserdatap1close').click();
-			$('.edituserdatap1submit').prop("disabled",false);
-   			$('.edituserdatap1submit').html("Submit");
-   		}
-		//-----------------------------------------------------------------------------------------------------------------------------------
-		$(".addNewEmgAddress").click(function() {
-			$("#empEmgContactid").val('');
-		});
-		$(".AddLanguages").click(function() {
-			$("#lanid").val('');
-		});
-		$(".AddQualification").click(function() {
-			$("#Qualid").val('');
-		});
-		$(".AddExperience").click(function() {
-			$("#expid").val('');
-		});
-		//--------------------------------------------------------------------------------------------------------------------------------------		 
-		$('#editEmployeedetailsForm').on('submit', function(event){
-  			   	 
-  			   		$('.edituserdatap1submit').prop("disabled",true);
-  			   	    $('.edituserdatap1submit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-		    	    if(event.target.checkValidity()){
-		    	    
-		    	    	const formdata= new FormData(document.querySelector("#editEmployeedetailsForm"));
-		    	    	formdata.append("empMasterid", $('#empMasterid').val())
-		    	    	$.ajax({
-	  						type : "POST",url : "employeep1json",
-	  						data : formdata, contentType: false,
-			   	              processData: false,success : function(result) {
-			   	            	  
-			   	            	var bmobj = JSON.parse(JSON.stringify(result));
-			   	            	$('#Lbl_StaffName').text(bmobj.staffName);
-			   	            	$('#Lbl_Father_HusbandName').text(bmobj.father_HusbandName);
-			   	            	$('#Lbl_Gender').text(bmobj.gender);
-			   	            	$('#Lbl_MaritalStatus').text(bmobj.maritalStatus);
-			   	            	$('#Lbl_DateofBirth').text(bmobj.dobMMformat);
-			   	            	$('#Lbl_BloodGroup').text(bmobj.bloodGroup);
-			   	            	$('#Lbl_Height').text(bmobj.height);
-			   	            	$('#Lbl_Weight').text(bmobj.weight);
-			   	            	$('#Lbl_ShirtSize').text(bmobj.pantSize);
-			   	            	$('#Lbl_ShoeSize').text(bmobj.shoeSize);
-			   	            	$('#Lbl_PantSize').text(bmobj.pantSize);
-			   	            	$('#Lbl_Accommodation').text(bmobj.accommodation);
-			   	            	validationformuserp1reset();
-	  						},
-			    	    	error : function(e) {
-	  							console.log("Error" + e);
-	  						}
-		    	    	});
-		    	    }
-		});
-		//--------------------------------------------------------------------------------------------------------------------------------------
-		 $('.editbranchAddressdatasubmit').on('click', function(event){
+	$(document).ready(function() {
+	    //--------------------------------------------------------------------------------------------------------------------------------------
 
-	    	  $('.editbranchAddressdatasubmit').prop("disabled",true);
-	    	  
-	    	    if(event.target.checkValidity()){
-	    	    	$('.editbranchAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-	    	    	var empMasterid=$("#empMasterid").val();
-	    	    	var modalAddressCountry =$('#modalAddressCountry').val();
-	    	    	var modalAddressAddress1 =$('#modalAddressAddress1').val();
-	    	    	var modalAddressAddress2 =$('#modalAddressAddress2').val();
-	    	    	var modalAddressLandmark =$('#modalAddressLandmark').val();
-	    	    	var modalAddressVillage =$('#modalAddressVillage').val();
-	    	    	var modalAddressCity =$('#modalAddressCity').val();
-	    	    	var modalAddressState =$('#modalAddressState').val();
-	    	    	var modalAddressZipCode =$('#modalAddressZipCode').val();
-	    	    	var formData = {
-	  	        			 empMasterid: empMasterid,
-	  	        			AddressCountry : modalAddressCountry,
-	  	        			AddressAddress1 : modalAddressAddress1,
-	  	        			AddressAddress2 : modalAddressAddress2,
-	  	        			AddressLandmark : modalAddressLandmark,
-	  	        			AddressVillage : modalAddressVillage,
-	  	        			AddressCity : modalAddressCity,
-	  	        			AddressState : modalAddressState,
-	  	        			AddressZipCode : modalAddressZipCode,
-	  	        			functiontype : 'Employee'
-	  				 }
-	  				 $.ajax({
-	  						type : "POST",url : "Addressupdatejson",
-	  						data : formData, success : function(result) {
-	  							var bmobj = JSON.parse(JSON.stringify(result));
-	  							console.log(bmobj);
-	  							$('#Lbl_AddressCountry').text(bmobj.address_Country);
-	  							$('#Lbl_AddressAddress1').text(bmobj.address_Street1);
-	  							$('#Lbl_AddressAddress2').text(bmobj.address_Street2);
-	  							$('#Lbl_AddressLandmark').text(bmobj.address_Landmark);
-	  							$('#Lbl_AddressVillage').text(bmobj.address_Village);
-	  							$('#Lbl_AddressCity').text(bmobj.address_City);
-	  							$('#Lbl_AddressState').text(bmobj.address_State);
-	  							$('#Lbl_AddressZipCode').text(bmobj.address_ZIP);
-								validationformaddressreset();
-	  						},
-	  						error : function(e) {
-	  							console.log("Error" + e);
-	  						}
-	  					});
-	  	        }	
-	    	    else
-	        	{
-	    	    	$('.editbranchAddressdatasubmit').prop("disabled",false);
-	        	}
-	      });
- 		// --------------------------------------------------------------------
- 			function validationformempemgreset()
-			{
-				$('.editemgAddressdataclose').click();
-  				$('.editemgAddressdatasubmit').prop("disabled",false);
-	   			$('.editemgAddressdatasubmit').html("Submit");
-			}
-	   		function validationformreset()
-		   {
-	   				$('.editbranchdataclose').click();
-	   				$('.editbranchdatasubmit').prop("disabled",false);
-		   			$('.editbranchdatasubmit').html("Submit");
-		   }
-	   		function validationformaddressreset()
-		   {
-	   				$('.editbranchAddressdataclose').click();
-	   				$('.editbranchAddressdatasubmit').prop("disabled",false);
-		   			$('.editbranchAddressdatasubmit').html("Submit");
-		   }
-	   		function validationformContactreset()
-			   {
-		   				$('.contactclosebtn').click();
-		   				$('.contactsavebtn').prop("disabled",false);
-			   			$('.contactsavebtn').html("Submit");
-			   }
-	   		
-	   		function validationformfilereset()
-			   {
-		   				$('.documentclose').click();
-		   				$('.documentsave').prop("disabled",false);
-			   			$('.documentsave').html("Submit");
-			   }
-	   		function validationformbankaccreset()
-	   		{
-	   			$('.BankDetailsclose').click();
-  				$('.BankDetailssave').prop("disabled",false);
-	   			$('.BankDetailssave').html("Submit");
-	   		}
-	   		
-	   	// --------------------------------------------------------------------
-	   	 
-			  $(".addcontactbtn").click(function(){
-				$('#modalcontactid').val("-");
-			  });
-			  
-			// --------------------------------------------------------------------
-			
-			 
-	  			   	$('#addContactform').on('submit', function(event){
-	  			   	
-	  			   		formData={
-	  			    	    empMasterid: $("#empMasterid").val(),
-							src : "Employee",
-							modalcontactid : $('#modalcontactid').val()								
-					}
-	  			  $.ajax({
-					type : "GET",url : "checkPrimaryContactisPresant",
-					data :formData ,success : function(result) {
-							if(result == true && $("#modalcontactprimary").is(':checked'))
-								{
-									Swal.fire({
-								        title: '',
-								        text: "Primary Contact it already exists",
-								        confirmButtonText: 'Ok',
-								        customClass: {
-								          confirmButton: 'btn btn-primary'
-								        },
-								        buttonsStyling: false
-								      });
-									document.getElementById("radioHead-Office").checked=false;
-									
-								}else
-								{
-	  			   	
-						  			   		$('.contactsavebtn').prop("disabled",true);
-								    	  
-								    	    if(event.target.checkValidity()){
-								    	    	$('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-								    	    	var empMasterid=$("#empMasterid").val();
-								    	    	var modalcontactid =$('#modalcontactid').val();
-								    	    	var modalcontacttype =$('#modalcontacttype').val();
-								    	    	var modalcontactPhone =$('#modalcontactPhone').val();
-								    	    	var modalContactemail =$('#modalContactemail').val();
-								    	    	var primarycontact =$("#modalcontactprimary").is(':checked');
-								    	  
-								    	    	
-								    	    	var formData = {
-								  	        			 empMasterid: empMasterid,
-								  	        			 contactid: modalcontactid,
-								  	        			 contacttype : modalcontacttype,
-								  	        			 contactPhone : modalcontactPhone,
-								  	        			 contactemail : modalContactemail,
-								  	        			 primarycontact: primarycontact,
-								  	        			functiontype : 'Employee'
-								  				 }
-								  				 $.ajax({
-								  						type : "POST",url : "Contactupdatejson",
-								  						data : formData, success : function(result) {
-								  							var bmobj = JSON.parse(JSON.stringify(result));
-								  							
-								  							if(modalcontactid == '-')
-							  								{
-								  								let tempresultid=bmobj;
-								  								let parameters= tempresultid +",'"+ modalcontacttype +"','"+ modalcontactPhone +"','"+ modalContactemail +"','"+ primarycontact +"'";
-									  							let tempresult ='<div class="cardMaster border p-3 rounded mb-3 card'+ tempresultid +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
-									  							tempresult += '<input type="hidden" class="primarycontact'+ tempresultid +'" value="'+ primarycontact +'"/><h6 class="mb-3 contacteditbtn contacttype'+  tempresultid +'"  onClick="reply_click('+ parameters +')">'+ modalcontacttype +'</h6>';
-									  							tempresult += '<h6 class="mb-1 phonenumber'+  tempresultid +'">'+ modalcontactPhone +'</h6><span class="card-number email'+ tempresultid +'">'+ modalContactemail +'</span>';
-									  							
-									  							tempresult += '<span class="primarycontactlablecontainer'+  tempresultid +'">';
-									  							if(primarycontact)
-								  								{
-									  								tempresult += '<span class="primarycontacttxt'+  tempresultid +'"><span class="badge bg-label-primary ">Primary</span></span>';
-								  								}
-									  							tempresult += '</span>'; 
-									  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
-									  							//tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
-									  							tempresult += '<button class="btn btn-label-secondary"  id="'+ tempresultid +'" name="'+ tempresultid +'"  onClick="contactdeleteoperation('+ tempresultid +')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
-									  						
-									  							$('#contactaddidv').before(tempresult);
-									  						    
-							  								}
-								  							else
-							  								{
-								  								
-								  								if(primarycontact)
-								  								{
-								  									$('.primarycontactlablecontainer'+modalcontactid).html("<span class='badge bg-label-primary'>Primary</span>");
-								  									
-								  								}else
-							  									{
-								  									$('.primarycontactlablecontainer'+modalcontactid).html("");
-								  										 
-							  									}
-								  								$('.contacttype'+modalcontactid).text(modalcontacttype);
-								  								$('.phonenumber'+modalcontactid).text(modalcontactPhone);
-								  								$('.email'+modalcontactid).text(modalContactemail);
-								  								$('.primarycontact'+modalcontactid).val(primarycontact);
-								  								
-							  								}
-									  							validationformContactreset();
-								  						},
-								  						error : function(e) {
-								  							console.log("Error" + e);
-								  						}
-								  					});
-								  	        }	
-								    	    else
-								        	{
-								    	    	$('.contactsavebtn').prop("disabled",false);
-								        	}
-										}
-								 }
-						 });
-	  			   	});	
-			// --------------------------------------------------------------------
-			   $('.contacteditbtn').on('click', function(event){
-	  				$('.contactsavebtn').prop("disabled",false);
-		   			$('.contactsavebtn').html("Submit");
-		   			
-	  				let id=$(this).attr("name");
-	  				$('#modalcontactid').val(id);
-					$('#modalcontacttype').val($('.contacttype'+id).text());
-					$('#modalcontactPhone').val($('.phonenumber'+id).text());
-					$('#modalContactemail').val($('.email'+id).text());
-					if($('.primarycontact'+id).val()=='true')
-					{
-						$('#modalcontactprimary').prop("checked",true);	
-					}else
-					{
-						$('#modalcontactprimary').prop("checked",false);
-					}
-					 
-					$('#addNewContact').modal('show');
-	  			  });
-			// --------------------------------------------------------------------
-			
-		
-			// --------------------------------------------------------------------
-  			$('.collapsetogglebtn').click(function(){
-  				 $('#collapsetoggleicon').toggleClass('bx-chevron-down bx-chevron-up'); 
-  			});
-		    // --------------------------------------------------------------------
-			// File uploading 		  
-					 const addNewdocumentForm =document.getElementById("addNewdocument");
-					 const modalFile =document.getElementById("modalFile");
-					 addNewdocumentForm.addEventListener("submit", e =>{
-						 
-						$('.documentsave').prop("disabled",true);
-						$('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-						const endpoint ="fileuploadjson";
-						const formdata= new FormData();
-						//console.log(modalFile.files);
-						formdata.append("File_Attach",modalFile.files[0]);
-						formdata.append("empMasterid",$('#empMasterid').val());
-						formdata.append("Documenttype",$('#modalDocumenttype').val());
-						formdata.append("DocNo",$('#modalDocNo').val());
-						formdata.append("functiontype","Employee");
-						  $.ajax({
-			   					type : "POST",url : endpoint,
-			   					data : formdata,
-			   					contentType: false,
-			   	              processData: false,
-			   					success : function(result) {
-			   						
-			   					tempobj =JSON.parse(JSON.stringify(result));
-			   						
-			   					console.log(tempobj);
-								
-			   					let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard'+ tempobj.filesid  +'"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';		                              
-	  							tempresult += '<h6 class="mb-1">'+ tempobj.documentType +'</h6>';
-	  							tempresult += '<span class="card-number">'+ tempobj.documentNo +'</span>';
-	  							if(tempobj.filePath != '')
-  							{
-  								tempresult += '<br/><a href="'+ tempobj.filePath +'" target="_blank">';
-  								if(tempobj.filePath.split(".")[1] == 'pdf')
-									{
-  									tempresult += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
-									}else
-									{
-										tempresult += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
-									}
-  								tempresult += '<span class="text-body"> ' + tempobj.filePath.split("/")[1].substring(15) + '</span>';
-  								tempresult += '</a>';
-  							}
-	  							tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
-	  							
-	  							tempresult += '<button class="btn btn-label-secondary filedeletebtn" name="'+ tempobj.filesid +'"   onClick="filedeleteoperation('+ tempobj.filesid +')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
-	  								
- 							$('#fileaddidv').before(tempresult);
- 							
-			   					validationformfilereset();
-			   					},
-			   					error : function(e) {
-			   						console.log("Error" + e);
-			   					}
-			   				}); 
-					 });
-				// --------------------------------------------------------------------
-				
-				$(".additem").click(function() {
-				var name = $(this).attr('name');
-				var labeltext = "";
-				if (name == "addmodalcontacttype") {
-					labeltext = "New Contact Type";
-				}else if(name == "addmodaldocumenttype")
-				{
-					labeltext = "New Document Type";
-				}else if(name == "addmodallanguage")
-				{
-					labeltext = "New Language Type";
-				}else if(name == "addmodalrelation")
-				{
-					labeltext = "New Relation Type";
-				}else if(name == "addmodaldegree")
-				{
-					labeltext = "New Degree";
-				}
-				
-				
-				
-				$('#additemalltxt').text(labeltext);
-				$('#ItemStatusScrollable').modal('toggle');
+	    //--------------------------------------------------------------------------------------------------------------------------------------		 		
 
-			});
+	    $(function() {
+	        var token = $("meta[name='_csrf']").attr("content");
+	        var header = $("meta[name='_csrf_header']").attr("content");
+	        $(document).ajaxSend(function(e, xhr, options) {
+	            xhr.setRequestHeader(header, token);
+	        });
+	    });
+	    //--------------------------------------------------------------------------------------------------------------------------------------
+	    function validationformuserp1reset() {
+	        $('.edituserdatap1close').click();
+	        $('.edituserdatap1submit').prop("disabled", false);
+	        $('.edituserdatap1submit').html("Submit");
+	    }
+	    //-----------------------------------------------------------------------------------------------------------------------------------
+	    $(".addNewEmgAddress").click(function() {
+	        $("#empEmgContactid").val('');
+	    });
+	    $(".AddLanguages").click(function() {
+	        $("#lanid").val('');
+	    });
+	    $(".AddQualification").click(function() {
+	        $("#Qualid").val('');
+	    });
+	    $(".AddExperience").click(function() {
+	        $("#expid").val('');
+	    });
+	    //--------------------------------------------------------------------------------------------------------------------------------------		 
+	    $('#editEmployeedetailsForm').on('submit', function(event) {
 
-			$("#additemallsavebtn").click(
-					function() {
-				if ($("#additemall").val() != '') {
-					var name = $('#additemalltxt').text();
-					var labeltext = "";
-					if (name == "New Contact Type") {
-						labeltext = "modalcontacttype";
-					}else if (name == "New Document Type") {
-						labeltext = "modalDocumenttype";
-					}else if (name == "New Language Type") {
-						labeltext = "modallanguage";
-					}else if (name == "New Relation Type") {
-						labeltext = "modalrelation";
-					}else if (name == "New Degree") {
-						labeltext = "modaldegree";
-					}
-					
-					
-					$('.' + labeltext).append(
-							"<option value='"
-									+ $("#additemall").val()
-									+ "'>"
-									+ $("#additemall").val()
-									+ "</option>");
-					//$('.' + labeltext).val($("#additemall").val());
-					$("#additemall").val('');
-					$('#ItemStatusScrollable').modal(
-							'toggle');
-				}
-			});
-				
-				// --------------------------------------------------------------------
-				
-			   	$('#addNewBankDetails').on('submit', function(event){
-			   	 
-		   		if($('#model_acno').val() ==  $('#model_acno_confirm').val())
-  		    	 {
-			   		$('.BankDetailssave').prop("disabled",true);
-	    	  
-		    	    if(event.target.checkValidity()){
-		    	    	$('.BankDetailssave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-		    	    	var empMasterid=$("#empMasterid").val();
-		    	    	var model_acid =$('#model_branchAccnoid').val();
-		    	    	var model_acno =$('#model_acno').val();
-		    	    	var model_acname =$('#model_acname').val();
-		    	    	var model_bankname =$('#model_bankname').val();
-		    	    	var model_branchname =$('#model_branchname').val();
-		    	    	var model_ifsccode =$('#model_ifsccode').val();
-		    	    	var formData = {
-		  	        			empMasterid: empMasterid,
-		  	        			acid: model_acid,
-		  	        			acno: model_acno,
-		  	        			acname : model_acname,
-		  	        			bankname : model_bankname,
-		  	        			branchname : model_branchname,
-		  	        			ifsccode : model_ifsccode,
-		  	        			functiontype : 'Employee'
-		  				 }
-		    	    	
-		  				 $.ajax({
-		  						type : "POST",url : "Bankaccupdatejson",
-		  						data : formData, success : function(result) {
-		  							var bmobj = JSON.parse(JSON.stringify(result));
-		  							console.log(bmobj);
-		  							$('#Lbl_acno').text(model_acno);
-		  							$('#Lbl_acname').text(model_acname);
-		  							$('#Lbl_bankname').text(model_bankname);
-		  							$('#Lbl_branchname').text(model_branchname);
-		  							$('#Lbl_ifsccode').text(model_ifsccode); 
-		  							validationformbankaccreset();
-		  						},
-		  						error : function(e) {
-		  							console.log("Error" + e);
-		  						}
-		  					});
-		  	        }	
-		    	    else
-		        	{
-		    	    	$('.BankDetailssave').prop("disabled",false);
-		        	}
-	    	    
-  		    	 }else{
-  		   			 Swal.fire({
-				        title: '',
-					        text: 'Account number is not match!',
-					        confirmButtonText: 'Ok',
-					        customClass: {
-					          confirmButton: 'btn btn-primary'
-					        },
-					        buttonsStyling: false
-					      });
-		   		 }
-		   		
-			   	});	
-			// --------------------------------------------------------------------
-			
-	    }); // Jquery
+	        $('.edituserdatap1submit').prop("disabled", true);
+	        $('.edituserdatap1submit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+	        if (event.target.checkValidity()) {
 
-	    function reply_click(id, contacttype, phonenumber, email, primarycontact)
+	            const formdata = new FormData(document.querySelector("#editEmployeedetailsForm"));
+	            formdata.append("empMasterid", $('#empMasterid').val())
+	            $.ajax({
+	                type: "POST",
+	                url: "employeep1json",
+	                data: formdata,
+	                contentType: false,
+	                processData: false,
+	                success: function(result) {
 
-	    {
+	                    var bmobj = JSON.parse(JSON.stringify(result));
+	                    $('#Lbl_StaffName').text(bmobj.staffName);
+	                    $('#Lbl_Father_HusbandName').text(bmobj.father_HusbandName);
+	                    $('#Lbl_Gender').text(bmobj.gender);
+	                    $('#Lbl_MaritalStatus').text(bmobj.maritalStatus);
+	                    $('#Lbl_DateofBirth').text(bmobj.dobMMformat);
+	                    $('#Lbl_BloodGroup').text(bmobj.bloodGroup);
+	                    $('#Lbl_Height').text(bmobj.height);
+	                    $('#Lbl_Weight').text(bmobj.weight);
+	                    $('#Lbl_ShirtSize').text(bmobj.pantSize);
+	                    $('#Lbl_ShoeSize').text(bmobj.shoeSize);
+	                    $('#Lbl_PantSize').text(bmobj.pantSize);
+	                    $('#Lbl_Accommodation').text(bmobj.accommodation);
+	                    validationformuserp1reset();
+	                },
+	                error: function(e) {
+	                    console.log("Error" + e);
+	                }
+	            });
+	        }
+	    });
+	    //--------------------------------------------------------------------------------------------------------------------------------------
+	    $('.editbranchAddressdatasubmit').on('click', function(event) {
+
+	        $('.editbranchAddressdatasubmit').prop("disabled", true);
+
+	        if (event.target.checkValidity()) {
+	            $('.editbranchAddressdatasubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+	            var empMasterid = $("#empMasterid").val();
+	            var modalAddressCountry = $('#modalAddressCountry').val();
+	            var modalAddressAddress1 = $('#modalAddressAddress1').val();
+	            var modalAddressAddress2 = $('#modalAddressAddress2').val();
+	            var modalAddressLandmark = $('#modalAddressLandmark').val();
+	            var modalAddressVillage = $('#modalAddressVillage').val();
+	            var modalAddressCity = $('#modalAddressCity').val();
+	            var modalAddressState = $('#modalAddressState').val();
+	            var modalAddressZipCode = $('#modalAddressZipCode').val();
+	            var formData = {
+	                empMasterid: empMasterid,
+	                AddressCountry: modalAddressCountry,
+	                AddressAddress1: modalAddressAddress1,
+	                AddressAddress2: modalAddressAddress2,
+	                AddressLandmark: modalAddressLandmark,
+	                AddressVillage: modalAddressVillage,
+	                AddressCity: modalAddressCity,
+	                AddressState: modalAddressState,
+	                AddressZipCode: modalAddressZipCode,
+	                functiontype: 'Employee'
+	            }
+	            $.ajax({
+	                type: "POST",
+	                url: "Addressupdatejson",
+	                data: formData,
+	                success: function(result) {
+	                    var bmobj = JSON.parse(JSON.stringify(result));
+	                    console.log(bmobj);
+	                    $('#Lbl_AddressCountry').text(bmobj.address_Country);
+	                    $('#Lbl_AddressAddress1').text(bmobj.address_Street1);
+	                    $('#Lbl_AddressAddress2').text(bmobj.address_Street2);
+	                    $('#Lbl_AddressLandmark').text(bmobj.address_Landmark);
+	                    $('#Lbl_AddressVillage').text(bmobj.address_Village);
+	                    $('#Lbl_AddressCity').text(bmobj.address_City);
+	                    $('#Lbl_AddressState').text(bmobj.address_State);
+	                    $('#Lbl_AddressZipCode').text(bmobj.address_ZIP);
+	                    validationformaddressreset();
+	                },
+	                error: function(e) {
+	                    console.log("Error" + e);
+	                }
+	            });
+	        } else {
+	            $('.editbranchAddressdatasubmit').prop("disabled", false);
+	        }
+	    });
+	    // --------------------------------------------------------------------
+
+
+
+	    // --------------------------------------------------------------------
+
+	    $(".addcontactbtn").click(function() {
+	        $('#modalcontactid').val("-");
+	    });
+
+	    // --------------------------------------------------------------------
+
+
+	    $('#addContactform').on('submit', function(event) {
+
+	        formData = {
+	            empMasterid: $("#empMasterid").val(),
+	            src: "Employee",
+	            modalcontactid: $('#modalcontactid').val()
+	        }
+	        $.ajax({
+	            type: "GET",
+	            url: "checkPrimaryContactisPresant",
+	            data: formData,
+	            success: function(result) {
+	                if (result == true && $("#modalcontactprimary").is(':checked')) {
+	                    Swal.fire({
+	                        title: '',
+	                        text: "Primary Contact it already exists",
+	                        confirmButtonText: 'Ok',
+	                        customClass: {
+	                            confirmButton: 'btn btn-primary'
+	                        },
+	                        buttonsStyling: false
+	                    });
+	                    document.getElementById("radioHead-Office").checked = false;
+
+	                } else {
+
+	                    $('.contactsavebtn').prop("disabled", true);
+
+	                    if (event.target.checkValidity()) {
+	                        $('.contactsavebtn').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+	                        var empMasterid = $("#empMasterid").val();
+	                        var modalcontactid = $('#modalcontactid').val();
+	                        var modalcontacttype = $('#modalcontacttype').val();
+	                        var modalcontactPhone = $('#modalcontactPhone').val();
+	                        var modalContactemail = $('#modalContactemail').val();
+	                        var primarycontact = $("#modalcontactprimary").is(':checked');
+
+
+	                        var formData = {
+	                            empMasterid: empMasterid,
+	                            contactid: modalcontactid,
+	                            contacttype: modalcontacttype,
+	                            contactPhone: modalcontactPhone,
+	                            contactemail: modalContactemail,
+	                            primarycontact: primarycontact,
+	                            functiontype: 'Employee'
+	                        }
+	                        $.ajax({
+	                            type: "POST",
+	                            url: "Contactupdatejson",
+	                            data: formData,
+	                            success: function(result) {
+	                                var bmobj = JSON.parse(JSON.stringify(result));
+
+	                                if (modalcontactid == '-') {
+	                                    let tempresultid = bmobj;
+	                                    let parameters = tempresultid + ",'" + modalcontacttype + "','" + modalcontactPhone + "','" + modalContactemail + "','" + primarycontact + "'";
+	                                    let tempresult = '<div class="cardMaster border p-3 rounded mb-3 card' + tempresultid + '"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
+	                                    tempresult += '<input type="hidden" class="primarycontact' + tempresultid + '" value="' + primarycontact + '"/><h6 class="mb-3 contacteditbtn contacttype' + tempresultid + '"  onClick="reply_click(' + parameters + ')">' + modalcontacttype + '</h6>';
+	                                    tempresult += '<h6 class="mb-1 phonenumber' + tempresultid + '">' + modalcontactPhone + '</h6><span class="card-number email' + tempresultid + '">' + modalContactemail + '</span>';
+
+	                                    tempresult += '<span class="primarycontactlablecontainer' + tempresultid + '">';
+	                                    if (primarycontact) {
+	                                        tempresult += '<span class="primarycontacttxt' + tempresultid + '"><span class="badge bg-label-primary ">Primary</span></span>';
+	                                    }
+	                                    tempresult += '</span>';
+	                                    tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+	                                    //tempresult += '<button class="btn btn-label-primary me-3 " name="'+ tempresultid +'" onClick="reply_click('+ parameters +')"><i class="bx bxs-edit-alt"></i></button><br/>';
+	                                    tempresult += '<button class="btn btn-label-secondary"  id="' + tempresultid + '" name="' + tempresultid + '"  onClick="contactdeleteoperation(' + tempresultid + ')"  ><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+
+	                                    $('#contactaddidv').before(tempresult);
+
+	                                } else {
+
+	                                    if (primarycontact) {
+	                                        $('.primarycontactlablecontainer' + modalcontactid).html("<span class='badge bg-label-primary'>Primary</span>");
+
+	                                    } else {
+	                                        $('.primarycontactlablecontainer' + modalcontactid).html("");
+
+	                                    }
+	                                    $('.contacttype' + modalcontactid).text(modalcontacttype);
+	                                    $('.phonenumber' + modalcontactid).text(modalcontactPhone);
+	                                    $('.email' + modalcontactid).text(modalContactemail);
+	                                    $('.primarycontact' + modalcontactid).val(primarycontact);
+
+	                                }
+	                                validationformContactreset();
+	                            },
+	                            error: function(e) {
+	                                console.log("Error" + e);
+	                            }
+	                        });
+	                    } else {
+	                        $('.contactsavebtn').prop("disabled", false);
+	                    }
+	                }
+	            }
+	        });
+	    });
+	    // --------------------------------------------------------------------
+	    $('.contacteditbtn').on('click', function(event) {
+	        $('.contactsavebtn').prop("disabled", false);
+	        $('.contactsavebtn').html("Submit");
+
+	        let id = $(this).attr("name");
 	        $('#modalcontactid').val(id);
-	        $('#modalcontacttype').val(contacttype);
-	        $('#modalcontactPhone').val(phonenumber);
-	        $('#modalContactemail').val(email);
-	        if (primarycontact == 'true') {
+	        $('#modalcontacttype').val($('.contacttype' + id).text());
+	        $('#modalcontactPhone').val($('.phonenumber' + id).text());
+	        $('#modalContactemail').val($('.email' + id).text());
+	        if ($('.primarycontact' + id).val() == 'true') {
 	            $('#modalcontactprimary').prop("checked", true);
 	        } else {
 	            $('#modalcontactprimary').prop("checked", false);
 	        }
 
-
 	        $('#addNewContact').modal('show');
+	    });
+	    // --------------------------------------------------------------------
+
+
+	    // --------------------------------------------------------------------
+	    $('.collapsetogglebtn').click(function() {
+	        $('#collapsetoggleicon').toggleClass('bx-chevron-down bx-chevron-up');
+	    });
+	    // --------------------------------------------------------------------
+	    // File uploading 		  
+	    const addNewdocumentForm = document.getElementById("addNewdocument");
+	    const modalFile = document.getElementById("modalFile");
+	    addNewdocumentForm.addEventListener("submit", e => {
+
+	        $('.documentsave').prop("disabled", true);
+	        $('.documentsave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+	        const endpoint = "fileuploadjson";
+	        const formdata = new FormData();
+	        //console.log(modalFile.files);
+	        formdata.append("File_Attach", modalFile.files[0]);
+	        formdata.append("empMasterid", $('#empMasterid').val());
+	        formdata.append("Documenttype", $('#modalDocumenttype').val());
+	        formdata.append("DocNo", $('#modalDocNo').val());
+	        formdata.append("functiontype", "Employee");
+	        $.ajax({
+	            type: "POST",
+	            url: endpoint,
+	            data: formdata,
+	            contentType: false,
+	            processData: false,
+	            success: function(result) {
+
+	                tempobj = JSON.parse(JSON.stringify(result));
+
+	                console.log(tempobj);
+
+	                let tempresult = '<div class="cardMaster border p-3 rounded mb-3 filecard' + tempobj.filesid + '"><div class="d-flex justify-content-between flex-sm-row flex-column"><div class="card-information">';
+	                tempresult += '<h6 class="mb-1">' + tempobj.documentType + '</h6>';
+	                tempresult += '<span class="card-number">' + tempobj.documentNo + '</span>';
+	                if (tempobj.filePath != '') {
+	                    tempresult += '<br/><a href="' + tempobj.filePath + '" target="_blank">';
+	                    if (tempobj.filePath.split(".")[1] == 'pdf') {
+	                        tempresult += '<img src="assets/img/icons/misc/pdf.png" alt="PDF image" width="20" class="me-2">';
+	                    } else {
+	                        tempresult += '<img src="assets/img/icons/misc/jpg.png" alt="jp image" width="20" class="me-2">';
+	                    }
+	                    tempresult += '<span class="text-body"> ' + tempobj.filePath.split("/")[1].substring(15) + '</span>';
+	                    tempresult += '</a>';
+	                }
+	                tempresult += '</div><div class="d-flex flex-column text-start text-lg-end"><div class="d-flex order-sm-0 order-1 mt-3">';
+
+	                tempresult += '<button class="btn btn-label-secondary filedeletebtn" name="' + tempobj.filesid + '"   onClick="filedeleteoperation(' + tempobj.filesid + ')"><i class="bx bxs-trash-alt"></i></button></div></div></div></div>';
+
+	                $('#fileaddidv').before(tempresult);
+
+	                validationformfilereset();
+	            },
+	            error: function(e) {
+	                console.log("Error" + e);
+	            }
+	        });
+	    });
+	    // --------------------------------------------------------------------
+
+	    $(".additem").click(function() {
+	        var name = $(this).attr('name');
+	        var labeltext = "";
+	        if (name == "addmodalcontacttype") {
+	            labeltext = "New Contact Type";
+	        } else if (name == "addmodaldocumenttype") {
+	            labeltext = "New Document Type";
+	        } else if (name == "addmodallanguage") {
+	            labeltext = "New Language Type";
+	        } else if (name == "addmodalrelation") {
+	            labeltext = "New Relation Type";
+	        } else if (name == "addmodaldegree") {
+	            labeltext = "New Degree";
+	        }
+
+
+
+	        $('#additemalltxt').text(labeltext);
+	        $('#ItemStatusScrollable').modal('toggle');
+
+	    });
+
+	    $("#additemallsavebtn").click(
+	        function() {
+	            if ($("#additemall").val() != '') {
+	                var name = $('#additemalltxt').text();
+	                var labeltext = "";
+	                if (name == "New Contact Type") {
+	                    labeltext = "modalcontacttype";
+	                } else if (name == "New Document Type") {
+	                    labeltext = "modalDocumenttype";
+	                } else if (name == "New Language Type") {
+	                    labeltext = "modallanguage";
+	                } else if (name == "New Relation Type") {
+	                    labeltext = "modalrelation";
+	                } else if (name == "New Degree") {
+	                    labeltext = "modaldegree";
+	                }
+
+
+	                $('.' + labeltext).append(
+	                    "<option value='" +
+	                    $("#additemall").val() +
+	                    "'>" +
+	                    $("#additemall").val() +
+	                    "</option>");
+	                //$('.' + labeltext).val($("#additemall").val());
+	                $("#additemall").val('');
+	                $('#ItemStatusScrollable').modal(
+	                    'toggle');
+	            }
+	        });
+
+	    // --------------------------------------------------------------------
+
+	    $('#addNewBankDetails').on('submit', function(event) {
+
+	        if ($('#model_acno').val() == $('#model_acno_confirm').val()) {
+	            $('.BankDetailssave').prop("disabled", true);
+
+	            if (event.target.checkValidity()) {
+	                $('.BankDetailssave').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+	                var empMasterid = $("#empMasterid").val();
+	                var model_acid = $('#model_branchAccnoid').val();
+	                var model_acno = $('#model_acno').val();
+	                var model_acname = $('#model_acname').val();
+	                var model_bankname = $('#model_bankname').val();
+	                var model_branchname = $('#model_branchname').val();
+	                var model_ifsccode = $('#model_ifsccode').val();
+	                var formData = {
+	                    empMasterid: empMasterid,
+	                    acid: model_acid,
+	                    acno: model_acno,
+	                    acname: model_acname,
+	                    bankname: model_bankname,
+	                    branchname: model_branchname,
+	                    ifsccode: model_ifsccode,
+	                    functiontype: 'Employee'
+	                }
+
+	                $.ajax({
+	                    type: "POST",
+	                    url: "Bankaccupdatejson",
+	                    data: formData,
+	                    success: function(result) {
+	                        var bmobj = JSON.parse(JSON.stringify(result));
+	                        console.log(bmobj);
+	                        $('#Lbl_acno').text(model_acno);
+	                        $('#Lbl_acname').text(model_acname);
+	                        $('#Lbl_bankname').text(model_bankname);
+	                        $('#Lbl_branchname').text(model_branchname);
+	                        $('#Lbl_ifsccode').text(model_ifsccode);
+	                        validationformbankaccreset();
+	                    },
+	                    error: function(e) {
+	                        console.log("Error" + e);
+	                    }
+	                });
+	            } else {
+	                $('.BankDetailssave').prop("disabled", false);
+	            }
+
+	        } else {
+	            Swal.fire({
+	                title: '',
+	                text: 'Account number is not match!',
+	                confirmButtonText: 'Ok',
+	                customClass: {
+	                    confirmButton: 'btn btn-primary'
+	                },
+	                buttonsStyling: false
+	            });
+	        }
+
+	    });
+	    // --------------------------------------------------------------------
+
+	}); // Jquery
+
+	function reply_click(id, contacttype, phonenumber, email, primarycontact)
+
+	{
+	    $('#modalcontactid').val(id);
+	    $('#modalcontacttype').val(contacttype);
+	    $('#modalcontactPhone').val(phonenumber);
+	    $('#modalContactemail').val(email);
+	    if (primarycontact == 'true') {
+	        $('#modalcontactprimary').prop("checked", true);
+	    } else {
+	        $('#modalcontactprimary').prop("checked", false);
 	    }
 
 
-	    function contactdeleteoperation(id) {
+	    $('#addNewContact').modal('show');
+	}
+
+
+	function contactdeleteoperation(id) {
+	    Swal.fire({
+	        title: 'Are you sure?',
+	        text: "You won't be able to revert this!",
+	        icon: 'warning',
+	        showCancelButton: true,
+	        confirmButtonText: 'Yes, delete it!',
+	        customClass: {
+	            confirmButton: 'btn btn-primary me-3',
+	            cancelButton: 'btn btn-label-secondary'
+	        },
+	        buttonsStyling: false
+	    }).then(function(result) {
+	        if (result.value) {
+	            var formData = {
+	                contactid: id,
+	                functiontype: 'Employee'
+	            }
+	            $.ajax({
+	                type: "POST",
+	                url: "Contactdeletejson",
+	                data: formData,
+	                success: function(result) {
+	                    $('.card' + id).remove();
+	                    Swal.fire({
+	                        icon: 'success',
+	                        title: 'Deleted!',
+	                        text: 'Contact has been deleted.',
+	                        customClass: {
+	                            confirmButton: 'btn btn-success'
+	                        }
+	                    });
+	                },
+	                error: function(e) {
+	                    console.log("Error" + e);
+	                },
+	                complete: function(e) {
+
+	                }
+
+	            });
+
+	        }
+	    });
+	}
+
+	//------------------------------------------------------    
+	function editemgAddressdataDelete() {
+	    let id = $('#empEmgContactid').val();
+	    if (id != '') {
 	        Swal.fire({
 	            title: 'Are you sure?',
 	            text: "You won't be able to revert this!",
@@ -2276,19 +2282,19 @@
 	        }).then(function(result) {
 	            if (result.value) {
 	                var formData = {
-	                    contactid: id,
-	                    functiontype: 'Employee'
+	                    emgid: id,
+	                    empid: $('#empMasterid').val()
 	                }
 	                $.ajax({
 	                    type: "POST",
-	                    url: "Contactdeletejson",
+	                    url: "employeeemgcontactdelete",
 	                    data: formData,
 	                    success: function(result) {
-	                        $('.card' + id).remove();
+	                        $('.editemg' + id).remove();
 	                        Swal.fire({
 	                            icon: 'success',
 	                            title: 'Deleted!',
-	                            text: 'Contact has been deleted.',
+	                            text: 'Emergency  Contact has been deleted.',
 	                            customClass: {
 	                                confirmButton: 'btn btn-success'
 	                            }
@@ -2296,70 +2302,23 @@
 	                    },
 	                    error: function(e) {
 	                        console.log("Error" + e);
-	                    }, complete: function(e) {
-	    	            	
-	    	            }
+	                    },
+	                    complete: function(e) {
 
+	                    }
 	                });
 
 	            }
+	            document.getElementById('addNewEmgAddressForm').reset();
+	            $('#addNewEmgAddress').modal('hide');
 	        });
 	    }
+	}
 
-	    //------------------------------------------------------    
-	    function editemgAddressdataDelete() {
-	    	let id= $('#empEmgContactid').val();
-	    	if(id != '')
-	    	{
-		        Swal.fire({
-		            title: 'Are you sure?',
-		            text: "You won't be able to revert this!",
-		            icon: 'warning',
-		            showCancelButton: true,
-		            confirmButtonText: 'Yes, delete it!',
-		            customClass: {
-		                confirmButton: 'btn btn-primary me-3',
-		                cancelButton: 'btn btn-label-secondary'
-		            },
-		            buttonsStyling: false
-		        }).then(function(result) {
-		            if (result.value) {
-		                var formData = {
-		                    emgid: id,
-		                    empid: $('#empMasterid').val()
-		                }
-		                $.ajax({
-		                    type: "POST",
-		                    url: "employeeemgcontactdelete",
-		                    data: formData,
-		                    success: function(result) {
-		                        $('.editemg' + id).remove();
-		                        Swal.fire({
-		                            icon: 'success',
-		                            title: 'Deleted!',
-		                            text: 'Emergency  Contact has been deleted.',
-		                            customClass: {
-		                                confirmButton: 'btn btn-success'
-		                            }
-		                        });
-		                    },
-		                    error: function(e) {
-		                        console.log("Error" + e);
-		                    }, complete: function(e) {
-		    	            	
-		    	            }
-		                });
-	
-		            }
-
-			        $('#addNewEmgAddress').modal('hide');
-		        });
-	    	}
-	    }
-
-	    //------------------------------------------------------
-	    //------------------------------------------------------    
-	    function filedeleteoperation(id) {
+	//------------------------------------------------------    
+	function editlanguageDelete() {
+	    let id = $('#lanid').val();
+	    if (id != '') {
 	        Swal.fire({
 	            title: 'Are you sure?',
 	            text: "You won't be able to revert this!",
@@ -2374,19 +2333,20 @@
 	        }).then(function(result) {
 	            if (result.value) {
 	                var formData = {
-	                    fileid: id,
-	                    functiontype: 'Employee'
+	                    lanid: id,
+	                    empid: $('#empMasterid').val()
 	                }
 	                $.ajax({
 	                    type: "POST",
-	                    url: "Filedeletejson",
+	                    url: "employeelanguagedelete",
 	                    data: formData,
 	                    success: function(result) {
-	                        $('.filecard' + id).remove();
+
+	                        $('.Lang' + id).closest('tr').remove();
 	                        Swal.fire({
 	                            icon: 'success',
 	                            title: 'Deleted!',
-	                            text: 'File has been deleted.',
+	                            text: 'Language has been deleted.',
 	                            customClass: {
 	                                confirmButton: 'btn btn-success'
 	                            }
@@ -2394,43 +2354,201 @@
 	                    },
 	                    error: function(e) {
 	                        console.log("Error" + e);
-	                    }, complete: function(e) {
-	    	            	
-	    	            }
+	                    },
+	                    complete: function(e) {
+
+	                    }
 	                });
 
 	            }
+	            document.getElementById('LanguageAdd').reset();
+	            $('#AddLanguages').modal('hide');
 	        });
 	    }
+	}
 
-	    //------------------------------------------------------    
+	//------------------------------------------------------    
+	function editExperiencedataDelete() {
+	    let id = $('#expid').val();
+	    if (id != '') {
+	        Swal.fire({
+	            title: 'Are you sure?',
+	            text: "You won't be able to revert this!",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonText: 'Yes, delete it!',
+	            customClass: {
+	                confirmButton: 'btn btn-primary me-3',
+	                cancelButton: 'btn btn-label-secondary'
+	            },
+	            buttonsStyling: false
+	        }).then(function(result) {
+	            if (result.value) {
+	                var formData = {
+	                    expid: id,
+	                    empid: $('#empMasterid').val()
+	                }
+	                $.ajax({
+	                    type: "POST",
+	                    url: "editexperiencedatadelete",
+	                    data: formData,
+	                    success: function(result) {
 
-	    $('.contactdeletebtn').on('click', function(event) {
-	        let id = $(this).attr("name");
-	        contactdeleteoperation(id);
-	    });
-	    //------------------------------------------------------    
-	    $('.filedeletebtn').on('click', function(event) {
-	        let id = $(this).attr("name");
-	        filedeleteoperation(id);
-	    });
-	    //------------------------------------------------------
-	    // Date Format
-	    const flatpickrFriendly = document.querySelector('#Model_STATED_DATE');
-	    // Human Friendly
-	    if (flatpickrFriendly) {
-	        flatpickrFriendly.flatpickr({
-	            altInput: true,
-	            altFormat: 'F j, Y',
-	            dateFormat: 'Y-m-d'
+	                        $('.experience' + id).remove();
+	                        Swal.fire({
+	                            icon: 'success',
+	                            title: 'Deleted!',
+	                            text: 'Experience details has been deleted.',
+	                            customClass: {
+	                                confirmButton: 'btn btn-success'
+	                            }
+	                        });
+	                    },
+	                    error: function(e) {
+	                        console.log("Error" + e);
+	                    },
+	                    complete: function(e) {
+
+	                    }
+	                });
+
+	            }
+	            document.getElementById('Experienceform').reset();
+	            $('#AddExperience').modal('hide');
 	        });
 	    }
+	}
+
+	//-------------------------------------------------------
+	//------------------------------------------------------    
+	function editQualicationdataDelete() {
+	    let id = $('#Qualid').val();
+	    if (id != '') {
+	        Swal.fire({
+	            title: 'Are you sure?',
+	            text: "You won't be able to revert this!",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonText: 'Yes, delete it!',
+	            customClass: {
+	                confirmButton: 'btn btn-primary me-3',
+	                cancelButton: 'btn btn-label-secondary'
+	            },
+	            buttonsStyling: false
+	        }).then(function(result) {
+	            if (result.value) {
+	                var formData = {
+	                    qualid: id,
+	                    empid: $('#empMasterid').val()
+	                }
+	                $.ajax({
+	                    type: "POST",
+	                    url: "editqualicationdatadelete",
+	                    data: formData,
+	                    success: function(result) {
+
+	                        $('.qualificat' + id).remove();
+	                        Swal.fire({
+	                            icon: 'success',
+	                            title: 'Deleted!',
+	                            text: 'Qulification has been deleted.',
+	                            customClass: {
+	                                confirmButton: 'btn btn-success'
+	                            }
+	                        });
+	                    },
+	                    error: function(e) {
+	                        console.log("Error" + e);
+	                    },
+	                    complete: function(e) {
+
+	                    }
+	                });
+
+	            }
+
+	            document.getElementById('Qualificationform').reset();
+	            $('#AddQualification').modal('hide');
+	        });
+	    }
+	}
+	//------------------------------------------------------    
+	function filedeleteoperation(id) {
+	    Swal.fire({
+	        title: 'Are you sure?',
+	        text: "You won't be able to revert this!",
+	        icon: 'warning',
+	        showCancelButton: true,
+	        confirmButtonText: 'Yes, delete it!',
+	        customClass: {
+	            confirmButton: 'btn btn-primary me-3',
+	            cancelButton: 'btn btn-label-secondary'
+	        },
+	        buttonsStyling: false
+	    }).then(function(result) {
+	        if (result.value) {
+	            var formData = {
+	                fileid: id,
+	                functiontype: 'Employee'
+	            }
+	            $.ajax({
+	                type: "POST",
+	                url: "Filedeletejson",
+	                data: formData,
+	                success: function(result) {
+	                    $('.filecard' + id).remove();
+	                    Swal.fire({
+	                        icon: 'success',
+	                        title: 'Deleted!',
+	                        text: 'File has been deleted.',
+	                        customClass: {
+	                            confirmButton: 'btn btn-success'
+	                        }
+	                    });
+	                },
+	                error: function(e) {
+	                    console.log("Error" + e);
+	                },
+	                complete: function(e) {
+
+	                }
+	            });
+
+	        }
+	    });
+	}
+
+	//------------------------------------------------------    
+
+	$('.contactdeletebtn').on('click', function(event) {
+	    let id = $(this).attr("name");
+	    contactdeleteoperation(id);
+	});
+	//------------------------------------------------------    
+	$('.filedeletebtn').on('click', function(event) {
+	    let id = $(this).attr("name");
+	    filedeleteoperation(id);
+	});
+	//------------------------------------------------------
+	// Date Format
+	const flatpickrFriendly = document.querySelector('#Model_STATED_DATE');
+	// Human Friendly
+	if (flatpickrFriendly) {
+	    flatpickrFriendly.flatpickr({
+	        altInput: true,
+	        altFormat: 'F j, Y',
+	        dateFormat: 'Y-m-d'
+	    });
+	}
 
 
-	    
 
-	    function addlang(e) {
-	        e.preventDefault();
+
+	function addlang(e) {
+	    e.preventDefault();
+	    if ($('#Read').is(':checked') || $('#Write').is(':checked') || $('#Speak').is(':checked')) {
+
+
 	        const formData = new FormData(e.target);
 	        var lanid = $('#lanid').val();
 	        var Language = $('#Language').val();
@@ -2438,8 +2556,8 @@
 
 	        const obj = {};
 	        for (const [key, value] of formData.entries()) {
-	                obj[key] = value;
-	           	        }
+	            obj[key] = value;
+	        }
 	        //--------------------------------------
 	        console.log(obj);
 	        var newid = "";
@@ -2453,403 +2571,454 @@
 	            data: formDataX,
 	            success: function(result) {
 	                newid = result;
-	                
+
 	                //--------------------------------------------------------
-	                  
-	    	     if(newid >0)
-	    	     {
-	    	        if (lanid != '') {
-	    	            $('#language' + lanid).text(Language);
-	    	        
-	    	            if ($('#Read').is(':checked')) {
-	    	                $('#lan_read' + lanid).html('<i class="bx bx-check-circle"></i>');
-	    	            } else {
-	    	                $('#lan_read' + lanid).html('');
-	    	            }
-	    	            if ($('#Write').is(':checked')) {
-	    	                $('#lan_write' + lanid).html('<i class="bx bx-check-circle"></i>');
-	    	            } else {
-	    	                $('#lan_write' + lanid).html('');
-	    	            }
 
-	    	            if ($('#Speak').is(':checked')) {
-	    	                $('#lan_speak' + lanid).html('<i class="bx bx-check-circle"></i>');
-	    	            } else {
-	    	                $('#lan_speak' + lanid).html('');
-	    	            }
+	                if (newid > 0) {
+	                    if (lanid != '') {
+	                        $('#language' + lanid).text(Language);
 
+	                        if ($('#Read').is(':checked')) {
+	                            $('#lan_read' + lanid).html('<i class="bx bx-check-circle"></i>');
+	                        } else {
+	                            $('#lan_read' + lanid).html('');
+	                        }
+	                        if ($('#Write').is(':checked')) {
+	                            $('#lan_write' + lanid).html('<i class="bx bx-check-circle"></i>');
+	                        } else {
+	                            $('#lan_write' + lanid).html('');
+	                        }
 
-	    	        } else {
+	                        if ($('#Speak').is(':checked')) {
+	                            $('#lan_speak' + lanid).html('<i class="bx bx-check-circle"></i>');
+	                        } else {
+	                            $('#lan_speak' + lanid).html('');
+	                        }
 
 
-	    	            var len = $(`#Languagetable tr:last`).attr('id');
-	    	            len = newid; //Number(len) + 1;
+	                    } else {
 
-	    	            var data = `<tr id="${len}"><td class="text-nowrap pop_cursor" onclick="editlang(event);" id="language${len}">${Language}</td>`;
-	    	            if ($('#Read').is(':checked')) {
-	    	                data += `<td class="text-center" id="lan_read${len}"><i class="bx bx-check-circle"></i></td>`;
-	    	            } else {
-	    	                data += `<td id="lan_read${len}"></td>`;
-	    	            }
 
-	    	            if ($('#Write').is(':checked')) {
-	    	                data += `<td class="text-center" id="lan_write${len}"><i class="bx bx-check-circle"></i></td>`;
-	    	            } else {
-	    	                data += `<td id="lan_write${len}"></td>`;
-	    	            }
+	                        var len = $(`#Languagetable tr:last`).attr('id');
+	                        len = newid; //Number(len) + 1;
 
-	    	            if ($('#Speak').is(':checked')) {
-	    	                data += `<td class="text-center" id="lan_speak${len}"><i class="bx bx-check-circle"></i></td>`;
-	    	            } else {
-	    	                data += `<td id="lan_speak${len}"></td>`;
-	    	            }
-	    	            data += `</tr>`;
-	    	            $(`#Languagetable tbody`).append(data);
-	    	        }
-	    	     } 
+	                        var data = `<tr id="${len}"><td class="text-nowrap pop_cursor" onclick="editlang(event);" id="language${len}">${Language}</td>`;
+	                        if ($('#Read').is(':checked')) {
+	                            data += `<td class="text-center" id="lan_read${len}"><i class="bx bx-check-circle"></i></td>`;
+	                        } else {
+	                            data += `<td id="lan_read${len}"></td>`;
+	                        }
+
+	                        if ($('#Write').is(':checked')) {
+	                            data += `<td class="text-center" id="lan_write${len}"><i class="bx bx-check-circle"></i></td>`;
+	                        } else {
+	                            data += `<td id="lan_write${len}"></td>`;
+	                        }
+
+	                        if ($('#Speak').is(':checked')) {
+	                            data += `<td class="text-center" id="lan_speak${len}"><i class="bx bx-check-circle"></i></td>`;
+	                        } else {
+	                            data += `<td id="lan_speak${len}"></td>`;
+	                        }
+	                        data += `</tr>`;
+	                        $(`#Languagetable tbody`).append(data);
+	                        location.reload();
+
+	                    }
+	                }
 	            },
 	            error: function(e) {
 	                console.log("Error" + e);
 	            },
 	            complete: function(e) {
-	            	langclose();
-	    	        $(e.target)[0].reset();
-	    	        $('#lanid').val(''); 
-	    	       
+	                langclose();
+	                $(e.target)[0].reset();
+	                $('#lanid').val('');
+
 	            }
 
 	        });
-	       
+	        document.getElementById('LanguageAdd').reset();
 	        $('#AddLanguages').modal('hide');
-	        
+	    } else {
+	        alert("Please select anyone (write,read,speak) ");
+	    }
+	}
+
+	function addQualificationitem(e) {
+	    e.preventDefault();
+	    var Qualid = $(`#Qualid`).val();
+	    const formData = new FormData(e.target);
+	    formData.append("empMasterid", $('#empMasterid').val());
+
+	    const data = {};
+	    for (const [key, value] of formData.entries()) {
+	        data[key] = value;
 	    }
 
-	    function addQualificationitem(e) {
-	        e.preventDefault();
-	        var Qualid = $(`#Qualid`).val();
-	        const formData = new FormData(e.target);
-	        formData.append("empMasterid", $('#empMasterid').val());
-
-	        const data = {};
-	        for (const [key, value] of formData.entries()) {
-	            data[key] = value;
-	        }
-	        
-	      //--------------------------------------
-	        console.log(data);
-	        var newid = "";
-	        var formDataX = {
-	            edu: data
-	        }
-	        $.ajax({
-	            type: "POST",
-	            url: "employeeQualificationjson",
-
-	            data: formDataX,
-	            success: function(result) {
-	                newid = result;
-	                
-	                
-	    	        if (Qualid != '') {
-	    	            $("#h6" + Qualid).text(data.Degree+"_"+ data.Major);
-	    	            $("#small" + Qualid).text(data.Qualificationfrom+"_"+data.Qualificationto);
-	    	            $("#span1_" + Qualid).text(data.Institution);
-	    	            $("#span2_" + Qualid).text(data.Percentage);
-	    	        } else {
-	    	            console.log(data);
-	    	            var len = $(`.timelinequf li:first`).attr('id');
-	    	            len = Number(len) + 1;
-
-	    	            $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);" id='${len}'><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="h6${len}">${data.Degree
-	    	    	} _ ${data.Major}</h6><small class="text-muted" id="small${len}">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="span1_${len}"> ${data.Institution}</span></div><div><span id="span2_${len}">${data.Percentage}</span></div></div></div></li>`);
-	    	        }
-	            },
-	            error: function(e) {
-	                console.log("Error" + e);
-	            }, complete: function(e) {
-	            	 $(e.target)[0].reset();
-	     	        $('#Qualid').val('');
-	     	     
-	            }
-	        });
-	        //--------------------------------------------------------
-	       
-	        $('#AddQualification').modal('hide');
-	       
-
+	    //--------------------------------------
+	    console.log(data);
+	    var newid = "";
+	    var formDataX = {
+	        edu: data
 	    }
+	    $.ajax({
+	        type: "POST",
+	        url: "employeeQualificationjson",
 
-	    function editlang(e) {
-	        const parent = $(e.target).parents('tr');
-	        const texts = [];
-	        var innerText;
-	        $(parent).children().each(function() {
-	            innerText = $(this).text();
-	            if ($(this).children().length > 0) {
-	                texts.push('checked');
+	        data: formDataX,
+	        success: function(result) {
+	            newid = result;
+
+
+	            if (Qualid != '') {
+	                $("#h6" + Qualid).text(data.Degree + "_" + data.Major);
+	                $("#small" + Qualid).text(data.Qualificationfrom + "_" + data.Qualificationto);
+	                $("#span1_" + Qualid).text(data.Institution);
+	                $("#span2_" + Qualid).text(data.Percentage);
 	            } else {
-	                texts.push(innerText);
+	                console.log(data);
+	                var len = $(`.timelinequf li:first`).attr('id');
+	                len = Number(len) + 1;
+
+	                $(`.timelinequf`).append(`<li class="timeline-item timeline-item-primary mb-4" onclick="editExper(event);" id='${len}'><span class="timeline-indicator timeline-indicator-primary"><i class="bx bxs-graduation"></i></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="h6${len}">${data.Degree
+		    	    	} _ ${data.Major}</h6><small class="text-muted" id="small${len}">${data.Qualificationfrom} _ ${data.Qualificationto} </small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="span1_${len}"> ${data.Institution}</span></div><div><span id="span2_${len}">${data.Percentage}</span></div></div></div></li>`);
+	                location.reload();
+
 	            }
-	        })
-	        $('#lanid').val($(parent).attr('id'));
-	        $('#Language').val(texts[0]);
-	        if (texts[1] != '') {
-	            $('#Read').attr('checked', true);
-	        } else {
-	            $('#Read').attr('checked', false);
-	        }
-	        if (texts[2] != '') {
-	            $('#Write').attr('checked', true);
-	        } else {
-	            $('#Write').attr('checked', false);
-	        }
-	        if (texts[3] != '') {
-	            $('#Speak').attr('checked', true);
-	        } else {
-	            $('#Speak').attr('checked', false);
-	        }
-	        $('#AddLanguages').modal('show');
+	        },
+	        error: function(e) {
+	            console.log("Error" + e);
+	        },
+	        complete: function(e) {
+	            $(e.target)[0].reset();
+	            $('#Qualid').val('');
 
-	    }
+	        }
+	    });
+	    //--------------------------------------------------------
+	    document.getElementById('Qualificationform').reset();
+	    $('#AddQualification').modal('hide');
 
-	    function langclose() {
+
+	}
+
+	function editlang(e) {
+	    const parent = $(e.target).parents('tr');
+	    const texts = [];
+	    var innerText;
+	    $(parent).children().each(function() {
+	        innerText = $(this).text();
+	        if ($(this).children().length > 0) {
+	            texts.push('checked');
+	        } else {
+	            texts.push(innerText);
+	        }
+	    })
+	    $('#lanid').val($(parent).attr('id'));
+	    $('#Language').val(texts[0]);
+	    if (texts[1] != '') {
+	        $('#Read').attr('checked', true);
+	    } else {
 	        $('#Read').attr('checked', false);
-	        $('#Speak').attr('checked', false);
+	    }
+	    if (texts[2] != '') {
+	        $('#Write').attr('checked', true);
+	    } else {
 	        $('#Write').attr('checked', false);
 	    }
-
-	    function editExper(e) {
-	        const parent = $(e.target).parents('li');
-	        const texts = [];
-	        texts.push($(parent).children().find('h6').text());
-	        texts.push($(parent).children().find('small').text());
-	        $(parent).children().find('span').each(function() {
-	            texts.push($(this).text());
-	        })
-	        $('#Qualid').val($(parent).attr('id'));
-	        var Degree = texts[0].split('_');
-	        $('#Degree').val(Degree[0].trim());
-	        $('#Major').val(Degree[1].trim());
-	        $('#Institution').val(texts[2].trim());
-	        var date = texts[1].split('_');
-	        Qualificationfrom.setDate(date[0]);
-	        Qualificationto.setDate(date[1]);
-	        $('#Percentage').val(texts[3].trim());
-	        console.log(texts);
-	        $('#AddQualification').modal('show');
-
+	    if (texts[3] != '') {
+	        $('#Speak').attr('checked', true);
+	    } else {
+	        $('#Speak').attr('checked', false);
 	    }
+	    $('#AddLanguages').modal('show');
 
-	    function addExper(e) {
-	        e.preventDefault();
-	        var expid = $(`#expid`).val();
-	        const formData = new FormData(e.target);
-	        formData.append("empMasterid", $('#empMasterid').val());
-	        const obj = {};
-	        for (const [key, value] of formData.entries()) {
-	            obj[key] = value;
-	        }
-	        
-	        
-		      //--------------------------------------
-		        console.log(obj);
-		        var newid = "";
-		        var formDataX = {
-		            exp: obj
-		        }
-		        $.ajax({
-		            type: "POST",
-		            url: "employeeExperiencejson",
+	}
 
-		            data: formDataX,
-		            success: function(result) {
-		                newid = result;
-		                
-		                if (expid != '') {
-		    	            $('#Exph6' + expid).text(`${obj.Role}`);
-		    	            $('#Expsmall' + expid).text(`${obj.Experiencefrom}_ ${obj.Experiencento}`);
-		    	            $('#Expspan1' + expid).text(`${obj.Company}`);
-		    	            $('#Expspan2' + expid).text(`${obj.Location}`);
-		    	        } else {
-		    	            var len = $(`.timeline-exp li:first`).attr('id');
-		    	            len = newid; //Number(len) + 1;
+	function langclose() {
+	    $('#Read').attr('checked', false);
+	    $('#Speak').attr('checked', false);
+	    $('#Write').attr('checked', false);
+	}
 
-		    	            $('.timeline-exp').append(`<li class="timeline-item timeline-item-transparent" onclick="editExperience(event);" id="${len}"><spanclass="timeline-point timeline-point-primary"></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="Exph6${len}">${obj.Role}</h6><small class="text-muted" id="Expsmall${len}">${obj.Experiencefrom}_ ${obj.Experiencento}</small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="Expspan1${len}">${obj.Company}</span></div><div><span class="text-muted" id="Expspan2${len}">${obj.Location}</span></div></div></div></li>`);
-		    	        }
+	function editExper(e) {
+	    const parent = $(e.target).parents('li');
+	    const texts = [];
+	    texts.push($(parent).children().find('h6').text());
+	    texts.push($(parent).children().find('small').text());
+	    $(parent).children().find('span').each(function() {
+	        texts.push($(this).text());
+	    })
+	    $('#Qualid').val($(parent).attr('id'));
+	    var Degree = texts[0].split('_');
+	    $('#Degree').val(Degree[0].trim());
+	    $('#Major').val(Degree[1].trim());
+	    $('#Institution').val(texts[2].trim());
+	    var date = texts[1].split('_');
+	    Qualificationfrom.setDate(date[0]);
+	    Qualificationto.setDate(date[1]);
+	    $('#Percentage').val(texts[3].trim());
+	    console.log(texts);
+	    $('#AddQualification').modal('show');
 
-		                
-		            },
-		            error: function(e) {
-		                console.log("Error" + e);
-		            }
-		        });
-		        //--------------------------------------------------------
-		        
-	       
-	        $(e.target)[0].reset();
-	        $(`#expid`).val('');
-	        $('#AddExperience').modal('hide');
+	}
+
+	function addExper(e) {
+	    e.preventDefault();
+	    var expid = $(`#expid`).val();
+	    const formData = new FormData(e.target);
+	    formData.append("empMasterid", $('#empMasterid').val());
+	    const obj = {};
+	    for (const [key, value] of formData.entries()) {
+	        obj[key] = value;
 	    }
 
 
-
-	    function editExperience(e) {
-	        const parent = $(e.target).parents('li');
-	        const texts = [];
-	        texts.push($(parent).children().find('h6').text());
-	        texts.push($(parent).children().find('small').text());
-	        $(parent).children().find('span').each(function() {
-	            texts.push($(this).text());
-	        })
-	        $('#expid').val($(parent).attr('id'));
-	        var date = texts[1].split('_');
-	        Experiencefrom.setDate(date[0]);
-	        Experiencento.setDate(date[1]);
-	        $('#Company').val(texts[2].trim());
-	        $('#Location').val(texts[3].trim());
-	        $('#Role').val(texts[0].trim());
-	        $('#AddExperience').modal('show');
-	        console.log(texts);
+	    //--------------------------------------
+	    console.log(obj);
+	    var newid = "";
+	    var formDataX = {
+	        exp: obj
 	    }
+	    $.ajax({
+	        type: "POST",
+	        url: "employeeExperiencejson",
 
-	    function emgAddressdata(e) {
-	        e.preventDefault();
-	        var formData = new FormData(e.target);
-	        formData.append("empMasterid", $('#empMasterid').val());
+	        data: formDataX,
+	        success: function(result) {
+	            newid = result;
 
-	        const obj = {};
-	        for (const [key, value] of formData.entries()) {
-	            if (key != '_Emg_InsuranceNominee') {
-	                obj[key] = value;
+	            if (expid != '') {
+	                $('#Exph6' + expid).text(`${obj.Role}`);
+	                $('#Expsmall' + expid).text(`${obj.Experiencefrom}_ ${obj.Experiencento}`);
+	                $('#Expspan1' + expid).text(`${obj.Company}`);
+	                $('#Expspan2' + expid).text(`${obj.Location}`);
+	            } else {
+	                var len = $(`.timeline-exp li:first`).attr('id');
+	                len = newid; //Number(len) + 1;
+
+	                $('.timeline-exp').append(`<li class="timeline-item timeline-item-transparent" onclick="editExperience(event);" id="${len}"><spanclass="timeline-point timeline-point-primary"></span><div class="timeline-event"><div class="timeline-header border-bottom mb-3"><h6 class="mb-0 pop_cursor" id="Exph6${len}">${obj.Role}</h6><small class="text-muted" id="Expsmall${len}">${obj.Experiencefrom}_ ${obj.Experiencento}</small></div><div class="d-flex justify-content-between flex-wrap mb-2"><div><span id="Expspan1${len}">${obj.Company}</span></div><div><span class="text-muted" id="Expspan2${len}">${obj.Location}</span></div></div></div></li>`);
+	                location.reload();
+
 	            }
 
+
+	        },
+	        error: function(e) {
+	            console.log("Error" + e);
 	        }
-	        //--------------------------------------
-	        var newid = "";
-	        var formDataX = {
-	            emgcontact: obj
+	    });
+	    //--------------------------------------------------------
+
+
+	    $(e.target)[0].reset();
+	    $(`#expid`).val('');
+	    $('#AddExperience').modal('hide');
+	}
+
+
+
+	function editExperience(e) {
+	    const parent = $(e.target).parents('li');
+	    const texts = [];
+	    texts.push($(parent).children().find('h6').text());
+	    texts.push($(parent).children().find('small').text());
+	    $(parent).children().find('span').each(function() {
+	        texts.push($(this).text());
+	    })
+	    $('#expid').val($(parent).attr('id'));
+	    var date = texts[1].split('_');
+	    Experiencefrom.setDate(date[0]);
+	    Experiencento.setDate(date[1]);
+	    $('#Company').val(texts[2].trim());
+	    $('#Location').val(texts[3].trim());
+	    $('#Role').val(texts[0].trim());
+	    $('#AddExperience').modal('show');
+	    console.log(texts);
+	}
+
+	function emgAddressdata(e) {
+	    e.preventDefault();
+	    var formData = new FormData(e.target);
+	    formData.append("empMasterid", $('#empMasterid').val());
+
+	    const obj = {};
+	    for (const [key, value] of formData.entries()) {
+	        if (key != '_Emg_InsuranceNominee') {
+	            obj[key] = value;
 	        }
-	        $.ajax({
-	            type: "POST",
-	            url: "employeeemgaddressjson",
-
-	            data: formDataX,
-	            success: function(result) {
-	                newid = result;
-	                
-	                var eid = $('#empEmgContactid').val();
-	    	        if (eid != '') {
-	    	            $('#Emg_Name' + eid).text(`${obj.Emg_Name}`);
-	    	            $('#Emg_Relation' + eid).text(`${obj.Emg_Relation}`);
-	    	            $('#Emg_Street1' + eid).text(`${obj.Emg_Street1}`);
-	    	            $('#Emg_Street2' + eid).text(`${obj.Emg_Street2}`);
-	    	            $('#Emg_Landmark' + eid).text(`${obj.Emg_Landmark}`);
-	    	            $('#Emg_PersonalPhone' + eid).text(`${obj.Emg_PersonalPhone}`);
-	    	            $('#Emg_Village' + eid).text(`${obj.Emg_Village}`);
-	    	            $('#Emg_City' + eid).text(`${obj.Emg_City}`);
-	    	            $('#Emg_State' + eid).text(`${obj.Emg_State}`);
-	    	            $('#Emg_ZIP' + eid).text(`${obj.Emg_ZIP}`);
-	    	            $('#Emg_Country' + eid).text(`${obj.Emg_Country}`);
-	    	            if ($('#InsuranceNominee').is(':checked')) {
-	    	                $('#Emg_Nominee' + eid).html('<br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button>');
-	    	            } else {
-	    	                $('#Emg_Nominee' + eid).html("");
-	    	            }
-	    	        } else {
-	    	            var len = $(`#addNewEmg .editemg:last`).attr('id');
-	    	            len =newid; //  Number(len) + 1;
-
-	    	            var text = `<div class="row editemg" id="${len}"><hr><div class="col-xl-7 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Name: <input type="hidden" id="empEmgContactid${len}" value="${newid}"> <input type="hidden" id="Emg_InsuranceNominee${len}" value="true"></dt><dd class="col-sm-8"><span id="Emg_Name${len}" class="pop_cursor" onclick="editemgAddressdata(event);">${obj.Emg_Name}</span>`;
-
-	    	            if ($('#InsuranceNominee').is(':checked')) {
-	    	                text += `<span  id="Emg_Nominee${len}"><br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>`;
-	    	            }
-
-	    	            text += `</dd><dt class="col-sm-4 mb-3 text-nowrap">Relationship:</dt><dd class="col-sm-8" id="Emg_Relation${len}">${obj.Emg_Relation}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line1:</dt><dd class="col-sm-8" id="Emg_Street1${len}">${obj.Emg_Street1}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line2:</dt><dd class="col-sm-8" id="Emg_Street2${len}">${obj.Emg_Street2}</dd><dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt><dd class="col-sm-8" id="Emg_Landmark${len}">${obj.Emg_Landmark}</dd></dl></div><div class="col-xl-5 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Contact No:</dt><dd class="col-sm-8" id="Emg_PersonalPhone${len}">${obj.Emg_PersonalPhone}</dd><dt class="col-sm-4 mb-3 text-nowrap">Village:</dt><dd class="col-sm-8" id="Emg_Village${len}">${obj.Emg_Village}</dd><dt class="col-sm-4 mb-3 text-nowrap">City:</dt><dd class="col-sm-8" id="Emg_City${len}">${obj.Emg_City}</dd><dt class="col-sm-4 mb-3 text-nowrap">State:</dt><dd class="col-sm-8" id="Emg_State${len}">${obj.Emg_State}</dd><dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt><dd class="col-sm-8" id="Emg_ZIP${len}">${obj.Emg_ZIP}</dd><dt class="col-sm-4 mb-3 text-nowrap">Country:</dt><dd class="col-sm-8" id="Emg_Country${len}">${obj.Emg_Country}</dd></dl></div></div>`;
-
-	    	            $('#addNewEmg').append(text);
-	    	        }
-	    	        //------------------------------------------
-	            },
-	            error: function(e) {
-	                console.log("Error" + e);
-	            }, complete: function(e) {
-
-	    	        $(e.target)[0].reset();
-	    	        $('#empEmgContactid').val('');
-	    	      	
-	            	
-		         }
-	        });
-	        //--------------------------------------------------------
-	       // console.log(obj);
-	      
-	        $('#addNewEmgAddress').modal('hide');
 
 	    }
-
-	    function editemgAddressdata(e) {
-	        const parent = $(e.target).parents('.editemg');
-	        console.log(parent);
-	        const texts = [];
-	        $('#empEmgContactid').val($(parent).attr('id'));
-	        $(parent).children().find('dd').each(function() {
-	            texts.push($(this).text());
-	        })
-
-	        $(parent).children().find('span').each(function() {
-	            texts.push($(this).text());
-	        })
-
-	        $(parent).children().find('button').each(function() {
-	            texts.push($(this).text());
-	        })
-
-
-	        if (texts.length > 13) {
-	            $('#InsuranceNominee').attr('checked', true);
-	        } else {
-	            $('#InsuranceNominee').attr('checked', false);
-	        }
-	        $('#modalEmg_Name').val(texts[11]);
-	        $('#modalEmg_PersonalPhone').val(texts[5]);
-	        $('#modalEmg_RelationEmg').val(texts[1]);
-	        $('#modalAddressAddress1Emg').val(texts[2]);
-	        $('#modalAddressAddress2Emg').val(texts[3]);
-	        $('#modalAddressLandmarkEmg').val(texts[4]);
-	        $('#modalAddressVillageEmg').val(texts[6]);
-	        $('#modalAddressCityEmg').val(texts[7]);
-	        $('#modalAddressStateEmg').val(texts[8]);
-	        $('#modalAddressZipCodeEmg').val(texts[9]);
-	        $('#modalAddressCountryEmg').val(texts[10]).change();
-	        $('#addNewEmgAddress').modal('show');
-
-	        console.log(texts);
-
+	    //--------------------------------------
+	    var newid = "";
+	    var formDataX = {
+	        emgcontact: obj
 	    }
-	    
-	    
-	 // Phone
-		 const phoneMask = document.querySelector('.phone-number-otp-mask');
+	    $.ajax({
+	        type: "POST",
+	        url: "employeeemgaddressjson",
 
-	    // Phone Number Input Mask
-	    if (phoneMask) {
-	      new Cleave(phoneMask, {
+	        data: formDataX,
+	        success: function(result) {
+	            newid = result;
+
+	            var eid = $('#empEmgContactid').val();
+	            if (eid != '') {
+	                $('#Emg_Name' + eid).text(`${obj.Emg_Name}`);
+	                $('#Emg_Relation' + eid).text(`${obj.Emg_Relation}`);
+	                $('#Emg_Street1' + eid).text(`${obj.Emg_Street1}`);
+	                $('#Emg_Street2' + eid).text(`${obj.Emg_Street2}`);
+	                $('#Emg_Landmark' + eid).text(`${obj.Emg_Landmark}`);
+	                $('#Emg_PersonalPhone' + eid).text(`${obj.Emg_PersonalPhone}`);
+	                $('#Emg_Village' + eid).text(`${obj.Emg_Village}`);
+	                $('#Emg_City' + eid).text(`${obj.Emg_City}`);
+	                $('#Emg_State' + eid).text(`${obj.Emg_State}`);
+	                $('#Emg_ZIP' + eid).text(`${obj.Emg_ZIP}`);
+	                $('#Emg_Country' + eid).text(`${obj.Emg_Country}`);
+	                if ($('#InsuranceNominee').is(':checked')) {
+	                    $('#Emg_Nominee' + eid).html('<br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button>');
+	                } else {
+	                    $('#Emg_Nominee' + eid).html("");
+	                }
+	            } else {
+	                var len = $(`#addNewEmg .editemg:last`).attr('id');
+	                len = newid; //  Number(len) + 1;
+
+	                var text = `<div class="row editemg" id="${len}"><hr><div class="col-xl-7 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Name: <input type="hidden" id="empEmgContactid${len}" value="${newid}"> <input type="hidden" id="Emg_InsuranceNominee${len}" value="true"></dt><dd class="col-sm-8"><span id="Emg_Name${len}" class="pop_cursor" onclick="editemgAddressdata(event);">${obj.Emg_Name}</span>`;
+
+	                if ($('#InsuranceNominee').is(':checked')) {
+	                    text += `<span  id="Emg_Nominee${len}"><br><button type="button" class="btn btn-xs rounded-pill btn-label-dark">Nominee</button></span>`;
+	                }
+
+	                text += `</dd><dt class="col-sm-4 mb-3 text-nowrap">Relationship:</dt><dd class="col-sm-8" id="Emg_Relation${len}">${obj.Emg_Relation}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line1:</dt><dd class="col-sm-8" id="Emg_Street1${len}">${obj.Emg_Street1}</dd><dt class="col-sm-4 mb-3 text-nowrap">Address Line2:</dt><dd class="col-sm-8" id="Emg_Street2${len}">${obj.Emg_Street2}</dd><dt class="col-sm-4 mb-3 text-nowrap">Landmark:</dt><dd class="col-sm-8" id="Emg_Landmark${len}">${obj.Emg_Landmark}</dd></dl></div><div class="col-xl-5 col-12"><dl class="row mb-0"><dt class="col-sm-4 mb-3 text-nowrap">Contact No:</dt><dd class="col-sm-8" id="Emg_PersonalPhone${len}">${obj.Emg_PersonalPhone}</dd><dt class="col-sm-4 mb-3 text-nowrap">Village:</dt><dd class="col-sm-8" id="Emg_Village${len}">${obj.Emg_Village}</dd><dt class="col-sm-4 mb-3 text-nowrap">City:</dt><dd class="col-sm-8" id="Emg_City${len}">${obj.Emg_City}</dd><dt class="col-sm-4 mb-3 text-nowrap">State:</dt><dd class="col-sm-8" id="Emg_State${len}">${obj.Emg_State}</dd><dt class="col-sm-4 mb-3 text-nowrap">Pincode:</dt><dd class="col-sm-8" id="Emg_ZIP${len}">${obj.Emg_ZIP}</dd><dt class="col-sm-4 mb-3 text-nowrap">Country:</dt><dd class="col-sm-8" id="Emg_Country${len}">${obj.Emg_Country}</dd></dl></div></div>`;
+
+	                $('#addNewEmg').append(text);
+	                location.reload();
+
+	            }
+	            //------------------------------------------
+	        },
+	        error: function(e) {
+	            console.log("Error" + e);
+	        },
+	        complete: function(e) {
+
+	            $(e.target)[0].reset();
+	            $('#empEmgContactid').val('');
+
+
+	        }
+	    });
+	    //--------------------------------------------------------
+	    // console.log(obj);
+	    validationformempemgreset();
+	    $('#addNewEmgAddress').modal('hide');
+
+	}
+
+	function editemgAddressdata(e) {
+	    const parent = $(e.target).parents('.editemg');
+	    console.log(parent);
+	    const texts = [];
+	    $('#empEmgContactid').val($(parent).attr('id'));
+	    $(parent).children().find('dd').each(function() {
+	        texts.push($(this).text());
+	    })
+
+	    $(parent).children().find('span').each(function() {
+	        texts.push($(this).text());
+	    })
+
+	    $(parent).children().find('button').each(function() {
+	        texts.push($(this).text());
+	    })
+
+
+	    if (texts.length > 13) {
+	        $('#InsuranceNominee').attr('checked', true);
+	    } else {
+	        $('#InsuranceNominee').attr('checked', false);
+	    }
+	    $('#modalEmg_Name').val(texts[11]);
+	    $('#modalEmg_PersonalPhone').val(texts[5]);
+	    $('#modalEmg_RelationEmg').val(texts[1]);
+	    $('#modalAddressAddress1Emg').val(texts[2]);
+	    $('#modalAddressAddress2Emg').val(texts[3]);
+	    $('#modalAddressLandmarkEmg').val(texts[4]);
+	    $('#modalAddressVillageEmg').val(texts[6]);
+	    $('#modalAddressCityEmg').val(texts[7]);
+	    $('#modalAddressStateEmg').val(texts[8]);
+	    $('#modalAddressZipCodeEmg').val(texts[9]);
+	    $('#modalAddressCountryEmg').val(texts[10]).change();
+	    $('#addNewEmgAddress').modal('show');
+
+	    console.log(texts);
+
+	}
+
+
+	// Phone
+	const phoneMask = document.querySelector('.phone-number-otp-mask');
+
+	// Phone Number Input Mask
+	if (phoneMask) {
+	    new Cleave(phoneMask, {
 	        phone: true,
 	        phoneRegionCode: 'US'
-	      });
-	    }
-	    
-	    // Phone
-		 const phoneMask1 = document.querySelector('.phone-number-otp-mask1');
+	    });
+	}
 
-	    // Phone Number Input Mask
-	    if (phoneMask1) {
-	      new Cleave(phoneMask1, {
+	// Phone
+	const phoneMask1 = document.querySelector('.phone-number-otp-mask1');
+
+	// Phone Number Input Mask
+	if (phoneMask1) {
+	    new Cleave(phoneMask1, {
 	        phone: true,
 	        phoneRegionCode: 'US'
-	      });
-	    }
+	    });
+	}
+
+	function validationformempemgreset() {
+
+	    document.getElementById('addNewEmgAddressForm').reset();
+	    $('.editemgAddressdataclose').click();
+	    $('.editemgAddressdatasubmit').prop("disabled", false);
+	    $('.editemgAddressdatasubmit').html("Submit");
+
+
+	}
+
+	function validationformreset() {
+	    $('.editbranchdataclose').click();
+	    $('.editbranchdatasubmit').prop("disabled", false);
+	    $('.editbranchdatasubmit').html("Submit");
+	}
+
+	function validationformaddressreset() {
+	    $('.editbranchAddressdataclose').click();
+	    $('.editbranchAddressdatasubmit').prop("disabled", false);
+	    $('.editbranchAddressdatasubmit').html("Submit");
+	}
+
+	function validationformContactreset() {
+	    $('.contactclosebtn').click();
+	    $('.contactsavebtn').prop("disabled", false);
+	    $('.contactsavebtn').html("Submit");
+	}
+
+	function validationformfilereset() {
+	    $('.documentclose').click();
+	    $('.documentsave').prop("disabled", false);
+	    $('.documentsave').html("Submit");
+	}
+
+	function validationformbankaccreset() {
+	    $('.BankDetailsclose').click();
+	    $('.BankDetailssave').prop("disabled", false);
+	    $('.BankDetailssave').html("Submit");
+	}
 </script>
 </body>
 </html>

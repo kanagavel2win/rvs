@@ -12,13 +12,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.rvs.springboot.thymeleaf.dao.EmployeeMasterRepository;
-import com.rvs.springboot.thymeleaf.entity.AssetMaster;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
@@ -41,7 +41,9 @@ public class EmployeeMasterImp implements EmployeeMasterService {
 	Date date = new Date();
 
 	@Override
+	@CacheEvict(value = "entities", key = "#entity.id")
 	public EmployeeMaster save(EmployeeMaster obj) {
+		
 		return employeeRepo.save(obj);
 	}
 

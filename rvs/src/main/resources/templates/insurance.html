@@ -402,6 +402,9 @@ width: 100%;
 												<button type="reset"
 													class="btn btn-label-secondary editDependentDetailsdataclose"
 													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+												<button type="button"
+													class="btn btn-label-danger"
+													onclick="editDependancedataDelete()">Delete</button>
 											</div>
 										</form>
 									</div>
@@ -545,6 +548,9 @@ width: 100%;
 												<button type="reset"
 													class="btn btn-label-secondary editpolicyDetailsdataclose"
 													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+												<button type="button"
+													class="btn btn-label-danger"
+													onclick="editpolicyDetailsdataDelete()">Delete</button>
 											</div>
 										</form>
 									</div>
@@ -570,7 +576,7 @@ width: 100%;
 											onsubmit="return false">
 											<div class="col-12 col-md-6">
 												<label class="form-label" for="modalEmg_Name">Policy No
-													</label> <select class="form-control" id="policyNo" name="policyNo">
+													</label> <select class="form-control" id="policyNo" name="policyNo" required="required">
 													<option value="">-</option>
 													<th:block th:each="vmobj :${insurancemaster.InsuranceDetails}">
 														<option th:value="${vmobj.PolicyNo}"
@@ -1412,6 +1418,106 @@ flatpickr("#pdate" +coverdetailsRowi, {
 		
 	}
 	 
+	//------------------------------------------------------------------------------------------------------------------------
+	 function editDependancedataDelete() {
+	    	let id= $('#InsuranceDependentsid').val();
+	    	if(id != '')
+	    	{
+		        Swal.fire({
+		            title: 'Are you sure?',
+		            text: "You won't be able to revert this!",
+		            icon: 'warning',
+		            showCancelButton: true,
+		            confirmButtonText: 'Yes, delete it!',
+		            customClass: {
+		                confirmButton: 'btn btn-primary me-3',
+		                cancelButton: 'btn btn-label-secondary'
+		            },
+		            buttonsStyling: false
+		        }).then(function(result) {
+		            if (result.value) {
+		                var formData = {
+		                    depid: id,
+		                    insid: "[[${insurancemaster['Insuranceid']}]]"
+		                }
+		                $.ajax({
+		                    type: "POST",
+		                    url: "editdependancedatadelete",
+		                    data: formData,
+		                    success: function(result) {
+		                        
+		                        Swal.fire({
+		                            icon: 'success',
+		                            title: 'Deleted!',
+		                            text: 'Dependance has been deleted.',
+		                            customClass: {
+		                                confirmButton: 'btn btn-success'
+		                            }
+		                        });
+		                    },
+		                    error: function(e) {
+		                        console.log("Error" + e);
+		                    }, complete: function(e) {
+		    	            	
+		    	            }
+		                });
+	
+		            }
+		            location.reload();
+			      //  $('#addNewEmgAddress').modal('hide');
+		        });
+	    	}
+	    }
+	//------------------------------------------------------------------------------------------------------------------------
+	function editpolicyDetailsdataDelete() {
+	    	let id= $('#InsuranceDetailsid').val();
+	    	if(id != '')
+	    	{
+		        Swal.fire({
+		            title: 'Are you sure?',
+		            text: "You won't be able to revert this!",
+		            icon: 'warning',
+		            showCancelButton: true,
+		            confirmButtonText: 'Yes, delete it!',
+		            customClass: {
+		                confirmButton: 'btn btn-primary me-3',
+		                cancelButton: 'btn btn-label-secondary'
+		            },
+		            buttonsStyling: false
+		        }).then(function(result) {
+		            if (result.value) {
+		                var formData = {
+		                    polid: id,
+		                    insid: "[[${insurancemaster['Insuranceid']}]]"
+		                }
+		                $.ajax({
+		                    type: "POST",
+		                    url: "editpolicydetailsdatadelete",
+		                    data: formData,
+		                    success: function(result) {
+		                        
+		                        Swal.fire({
+		                            icon: 'success',
+		                            title: 'Deleted!',
+		                            text: 'Dependance has been deleted.',
+		                            customClass: {
+		                                confirmButton: 'btn btn-success'
+		                            }
+		                        });
+		                    },
+		                    error: function(e) {
+		                        console.log("Error" + e);
+		                    }, complete: function(e) {
+		    	            	
+		    	            }
+		                });
+	
+		            }
+		            location.reload();
+			      //  $('#addNewEmgAddress').modal('hide');
+		        });
+	    	}
+	    }
 	//------------------------------------------------------------------------------------------------------------------------
 	
 </script>

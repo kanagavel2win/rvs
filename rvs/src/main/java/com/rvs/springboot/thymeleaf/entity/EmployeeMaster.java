@@ -2,6 +2,7 @@ package com.rvs.springboot.thymeleaf.entity;
 
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,6 +27,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Cacheable(value = false)
 @Table(name = "employeemaster")
 public class EmployeeMaster {
 

@@ -1465,9 +1465,97 @@ public class HomeController {
 			empemgContls.removeIf(O -> O.getEmpEmgContactid() == emgid);
 			empObj.setEmployeeEmgContact(empemgContls);
 			employeeMasterService.save(empObj);
-		}else 
-		{
+		} else {
 			throw new RuntimeException("Emg contact delete operation is invalid");
+		}
+		return 0;
+	}
+
+	@ResponseBody
+	@PostMapping("employeelanguagedelete")
+	public int employeelanguagedelete(@RequestParam Map<String, String> params) {
+		int lanid = Integer.parseInt(params.get("lanid"));
+		int empid = Integer.parseInt(params.get("empid"));
+		if (lanid > 0 && empid > 0) {
+
+			EmployeeMaster empObj = employeeMasterService.findById(empid);
+			List<EmployeeLanguage> emplanguagels = empObj.getEmployeeLanguage();
+			emplanguagels.removeIf(O -> O.getEmpLanguid() == lanid);
+			empObj.setEmployeeLanguage(emplanguagels);
+			employeeMasterService.save(empObj);
+		} else {
+			throw new RuntimeException("Language delete operation is invalid");
+		}
+		return 0;
+	}
+
+	@ResponseBody
+	@PostMapping("editqualicationdatadelete")
+	public int editqualicationdatadelete(@RequestParam Map<String, String> params) {
+		int qualid = Integer.parseInt(params.get("qualid"));
+		int empid = Integer.parseInt(params.get("empid"));
+		if (qualid > 0 && empid > 0) {
+
+			EmployeeMaster empObj = employeeMasterService.findById(empid);
+			List<EmployeeEducation> emplanguagels = empObj.getEmployeeEducation();
+			emplanguagels.removeIf(O -> O.getEmpEduid() == qualid);
+			empObj.setEmployeeEducation(emplanguagels);
+			employeeMasterService.save(empObj);
+		} else {
+			throw new RuntimeException("Qualification delete operation is invalid");
+		}
+		return 0;
+	}
+
+	@ResponseBody
+	@PostMapping("editexperiencedatadelete")
+	public int editexperiencedatadelete(@RequestParam Map<String, String> params) {
+		int expid = Integer.parseInt(params.get("expid"));
+		int empid = Integer.parseInt(params.get("empid"));
+		if (expid > 0 && empid > 0) {
+
+			EmployeeMaster empObj = employeeMasterService.findById(empid);
+			List<EmployeeExperience> emplanguagels = empObj.getEmployeeExperience();
+			emplanguagels.removeIf(O -> O.getEmpExperienceid() == expid);
+			empObj.setEmployeeExperience(emplanguagels);
+			employeeMasterService.save(empObj);
+		} else {
+			throw new RuntimeException("Exprience delete operation is invalid");
+		}
+		return 0;
+	}
+
+	@ResponseBody
+	@PostMapping("editdependancedatadelete")
+	public int editdependancedatadelete(@RequestParam Map<String, String> params) {
+		int insid = Integer.parseInt(params.get("insid"));
+		int depid = Integer.parseInt(params.get("depid"));
+		if (depid > 0 && insid > 0) {
+			InsuranceMaster insObj = insuranceMasterService.findById(insid);
+			List<InsuranceDependents> insdepls = insObj.getInsuranceDependents();
+			insdepls.removeIf(O -> O.getInsuranceDependentsid() == depid);
+			insObj.setInsuranceDependents(insdepls);
+			insuranceMasterService.save(insObj);
+		} else {
+			throw new RuntimeException("Insurance delete operation is invalid");
+		}
+		return 0;
+	}
+
+	@ResponseBody
+	@PostMapping("editpolicydetailsdatadelete")
+	public int editpolicydetailsdatadelete(@RequestParam Map<String, String> params) {
+		int insid = Integer.parseInt(params.get("insid"));
+		int polid = Integer.parseInt(params.get("polid"));
+		if (polid > 0 && insid > 0) {
+
+			InsuranceMaster insObj = insuranceMasterService.findById(insid);
+			List<InsuranceDetails> insdepls = insObj.getInsuranceDetails();
+			insdepls.removeIf(O -> O.getInsuranceDetailsid() == polid);
+			insObj.setInsuranceDetails(insdepls);
+			insuranceMasterService.save(insObj);
+		} else {
+			throw new RuntimeException("Insurance delete operation is invalid");
 		}
 		return 0;
 	}
@@ -2017,6 +2105,7 @@ public class HomeController {
 	@ResponseBody
 	@GetMapping("employeelistjson")
 	public List<EmployeeMaster> employeelistjson(Model themodel) {
+
 		List<EmployeeMaster> empList = employeeMasterService.findAll();
 		List<BranchMaster> bmList = branchMasterService.findAll();
 
@@ -3220,33 +3309,53 @@ public class HomeController {
 		return "Success" + obj.getEmployeehireid();
 	}
 
+	private boolean check_emp_can_terminate_effDate(int empid,String effDate)
+	{
+		if(attendanceMasterService.checkAttendanceisthereforFurtureDate(empid, effDate)>0)
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	@PostMapping("employeeemploymentupdate")
 	@ResponseBody
 	public String employeeemploymentupdate(@RequestParam Map<String, String> params) {
 
 		int empid = Integer.parseInt(params.get("empid"));
 		String effDate = params.get("empstatus_effectivedate");
-		EmployeeJobempstatus obj = new EmployeeJobempstatus();
-
-		obj.setEmployeeid(empid);
-
-		obj.setEmpstatus_effectivedate(effDate);
-		obj.setEmpstatus_employmentstatus(params.get("empstatus_employmentstatus"));
-		obj.setEmpstatus_rehire(params.get("empstatus_rehire"));
-		obj.setEmpstatus_remarks(params.get("empstatus_remarks"));
-		obj.setEmpstatus_terminationreason(params.get("empstatus_terminationreason"));
-		obj.setEmpstatus_terminationtype(params.get("empstatus_terminationtype"));
-
-		if (params.get("employeeJobempstatusid") != null && params.get("employeeJobempstatusid") != "") {
-			obj.setEmployeejobempstatusid(Integer.parseInt(params.get("employeeJobempstatusid")));
+		String status = params.get("empstatus_employmentstatus");
+		boolean allower = true;
+		
+		if(status.equalsIgnoreCase("Terminated")) {
+			allower = check_emp_can_terminate_effDate(empid,effDate);
 		}
+		
+		if (allower) {
+			EmployeeJobempstatus obj = new EmployeeJobempstatus();
 
-		itemlistService.savesingletxt(obj.getEmpstatus_employmentstatus(), "EmploymentStatus");
-		itemlistService.savesingletxt(obj.getEmpstatus_terminationreason(), "TerminationReason");
-		itemlistService.savesingletxt(obj.getEmpstatus_terminationtype(), "TerminationType");
+			obj.setEmployeeid(empid);
 
-		employeeJobempstatusService.save(obj);
-		return "Success" + obj.getEmployeejobempstatusid();
+			obj.setEmpstatus_effectivedate(effDate);
+			obj.setEmpstatus_employmentstatus(params.get("empstatus_employmentstatus"));
+			obj.setEmpstatus_rehire(params.get("empstatus_rehire"));
+			obj.setEmpstatus_remarks(params.get("empstatus_remarks"));
+			obj.setEmpstatus_terminationreason(params.get("empstatus_terminationreason"));
+			obj.setEmpstatus_terminationtype(params.get("empstatus_terminationtype"));
+
+			if (params.get("employeeJobempstatusid") != null && params.get("employeeJobempstatusid") != "") {
+				obj.setEmployeejobempstatusid(Integer.parseInt(params.get("employeeJobempstatusid")));
+			}
+
+			itemlistService.savesingletxt(obj.getEmpstatus_employmentstatus(), "EmploymentStatus");
+			itemlistService.savesingletxt(obj.getEmpstatus_terminationreason(), "TerminationReason");
+			itemlistService.savesingletxt(obj.getEmpstatus_terminationtype(), "TerminationType");
+
+			employeeJobempstatusService.save(obj);
+			return "Success" + obj.getEmployeejobempstatusid();
+		} else {
+			return  "Attendance should not be there for Termination effective date and above";
+		}
 	}
 
 	@PostMapping("employeejobinformationupdate")

@@ -1214,6 +1214,13 @@ var tblemployeecompensationid=0;
 														success : function(
 																result) {
 													console.log(result);
+															if(result.includes("not"))
+															{
+																$('#modeljqueryresult').text("Error" + result);
+																alert("Error" + result);
+															}
+															else
+															{
 															var objid = result
 																	.replace(
 																			"Success",
@@ -1282,6 +1289,7 @@ var tblemployeecompensationid=0;
 																				empstatus_remarks);
 																$('#editEmployeestatus').modal('hide');
 																$('#addempstatus')[0].reset();
+															}
 															}
 														},
 														error : function(e) {

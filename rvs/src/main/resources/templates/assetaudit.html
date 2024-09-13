@@ -116,7 +116,12 @@
 	                                    <div class="card-body">
 	                                    <div th:if="${printstr}" class="form-group col-12" align="center">
 												<button type="button" class="btn mb-1 btn-success btn-lg btn-block">Asset Audit details are saved successfully</button>
-											
+										
+												<form th:action="@{/assetauditprint}" target="blank" method="POST"
+												class="wizard-horizontal" enctype="multipart/form-data">
+													<button type="submit" class="btn btn-primary mr-1 mb-1"
+														style="width: 200px;">Print Receipt</button>
+											</form>
 											</div>
 											
 											<div class="row">
@@ -391,6 +396,7 @@
 			$(document).ajaxSend(function(e, xhr, options) {
 				xhr.setRequestHeader(header, token);
 			});
+			toggleCustodianColumn();
 		});
 		//--------------------------------------------------------------------------------------------------------------------------------------		 
 		
@@ -473,8 +479,17 @@
 			});
 
 
-			console.log(dt_basic_table.row);
-			
+			function toggleCustodianColumn() {
+				var type = $('input[name="Status"]:checked').val();
+				if (type === 'InStock'){
+					dt_basic_table.column(2).visible(false);
+				}
+				else{
+				dt_basic_table.column(2).visible(true);
+				}
+			}
+
+			$('input[name="Status"]').on('change', toggleCustodianColumn);
 			
 			$("#Search").click(function(){
 				var Statussr=$("input[name='Status']:checked").val();

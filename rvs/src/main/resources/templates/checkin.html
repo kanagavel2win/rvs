@@ -131,13 +131,11 @@
 									<button type="button"
 										class="btn mb-1 btn-success btn-lg btn-block">Check
 										In details are saved successfully</button>
+										<!-- <p th:text="${printstr}"></p> -->
 									<form th:action="@{/checkinprint}" target="blank" method="POST"
 										class="wizard-horizontal" enctype="multipart/form-data">
-
-										<center>
 											<button type="submit" class="btn btn-primary mr-1 mb-1"
-												style="width: 200px">Print Receipt</button>
-										</center>
+												style="width: 200px;">Print Receipt</button>
 									</form>
 								</div>
 
@@ -208,7 +206,7 @@
 																<td></td>
 																<td><input type="checkbox" class="form-check-input"
 																	th:id="'checkboxGlow'+ ${stat.index+1} "
-																	name="checkbox" checked required> <label
+																	name="checkbox"> <label
 																	th:for="'checkboxGlow'+ ${stat.index+1}"></label></td>
 																
 																<td><input type="hidden"
@@ -391,7 +389,7 @@
 										searchable : false,
 										checkboxes : true,
 										render : function() {
-											return '<input type="checkbox" class="dt-checkboxes form-check-input" name="checkbox" required>';
+											return '<input type="checkbox" class="dt-checkboxes form-check-input" name="checkbox">';
 										},
 										checkboxes : {
 											selectAllRender : '<input type="checkbox" class="form-check-input">'

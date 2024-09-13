@@ -5683,7 +5683,7 @@ public class HomeController {
 		}
 		// -----------------------------------------
 		String sysdate = displaydatetimeFormat.format(new Date());
-		for (int i = 0; i < AssetId.length; i++) {
+		for (int i = 0; i < checkbox.length; i++) {
 			if (checkbox[i] == true) {
 
 				CheckIn obj = new CheckIn();
@@ -5895,6 +5895,16 @@ public class HomeController {
 		themodel.addAttribute("EmployeeMasterobj", EffectiveEmployee(EmployeeMasterobj));
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("assetaudit"));
 		return "assetaudit";
+	}
+
+
+	@PostMapping("assetauditprint")
+	public String assetauditprint(Model themodel, HttpSession session, HttpServletRequest request) {
+		ArrayList<String> printstr = (ArrayList<String>) request.getSession().getAttribute("printassetauditstr");
+
+		themodel.addAttribute("printstr", printstr);
+		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("asset"));
+		return "assetauditprint";
 	}
 
 	@GetMapping("insurancelist")

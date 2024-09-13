@@ -127,8 +127,9 @@ border: solid 1px #fff;
 						alt="branding logo"> 	
 					</p>
 				<div class="col-md-12"  >
-			
-						Assets List:<br/>
+
+						<h4>Asset Audit Receipt</h4>
+						Assets List:
 				</div>
 	
 
@@ -151,15 +152,15 @@ border: solid 1px #fff;
 														<tbody>
 															<tr th:each="str,i : ${printstr}">
 																<td  th:text="${i.index+1}"></td>
-																<td  th:text="${#strings.arraySplit(str,'|')[0]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[1]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[2]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[3]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[4]}"></td>
 																<td  th:text="${#strings.arraySplit(str,'|')[5]}"></td>
+																<td  th:text="${#strings.arraySplit(str,'|')[6]}"></td>
 																
 																
-																
+													
 															</tr>
 															
 															<tr style="border: none;">

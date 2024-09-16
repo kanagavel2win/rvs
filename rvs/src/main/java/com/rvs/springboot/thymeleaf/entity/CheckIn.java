@@ -30,12 +30,7 @@ public class CheckIn {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int CheckInID;
-	
-	@Column
-	private String StaffID;
-	@Column
-	private String CheckInDate;
+	private int CheckInID;		
 	@Column
 	private String AssetId;
 	@Column

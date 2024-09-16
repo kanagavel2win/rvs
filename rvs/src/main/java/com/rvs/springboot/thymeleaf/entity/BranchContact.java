@@ -32,4 +32,6 @@ public class BranchContact {
 	@Column(columnDefinition = "boolean default false")	
 	private Boolean primarycontact;	
 	
+	private int partent_id;
+		
 	}

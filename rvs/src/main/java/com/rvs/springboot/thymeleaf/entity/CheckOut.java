@@ -32,12 +32,6 @@ public class CheckOut {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int CheckOutID;
 	@Column
-	private String BranchID;
-	@Column
-	private String StaffID;
-	@Column
-	private String CheckOutDate;
-	@Column
 	private String vendor;
 	@Column
 	private String Status;
@@ -49,8 +43,7 @@ public class CheckOut {
 	private String acondition;
 	@Column
 	private String Comments;
-	@Column
-	private String sysdate;
+	
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CheckOutID")

@@ -15,6 +15,7 @@ import java.time.Month;
 import java.time.Period;
 import java.time.Year;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
@@ -3309,15 +3310,13 @@ public class HomeController {
 		return "Success" + obj.getEmployeehireid();
 	}
 
-	private boolean check_emp_can_terminate_effDate(int empid,String effDate)
-	{
-		if(attendanceMasterService.checkAttendanceisthereforFurtureDate(empid, effDate)>0)
-		{
+	private boolean check_emp_can_terminate_effDate(int empid, String effDate) {
+		if (attendanceMasterService.checkAttendanceisthereforFurtureDate(empid, effDate) > 0) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	@PostMapping("employeeemploymentupdate")
 	@ResponseBody
 	public String employeeemploymentupdate(@RequestParam Map<String, String> params) {
@@ -3326,11 +3325,11 @@ public class HomeController {
 		String effDate = params.get("empstatus_effectivedate");
 		String status = params.get("empstatus_employmentstatus");
 		boolean allower = true;
-		
-		if(status.equalsIgnoreCase("Terminated")) {
-			allower = check_emp_can_terminate_effDate(empid,effDate);
+
+		if (status.equalsIgnoreCase("Terminated")) {
+			allower = check_emp_can_terminate_effDate(empid, effDate);
 		}
-		
+
 		if (allower) {
 			EmployeeJobempstatus obj = new EmployeeJobempstatus();
 
@@ -3354,7 +3353,7 @@ public class HomeController {
 			employeeJobempstatusService.save(obj);
 			return "Success" + obj.getEmployeejobempstatusid();
 		} else {
-			return  "Attendance should not be there for Termination effective date and above";
+			return "Attendance should not be there for Termination effective date and above";
 		}
 	}
 
@@ -4603,7 +4602,10 @@ public class HomeController {
 		monthstr = yearstr + "-" + month;
 
 		final String monthstr1 = monthstr;
-
+		final LocalDate lastDayOfMonth = LocalDate
+				.parse(monthstr1 + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+				.with(TemporalAdjusters.lastDayOfMonth());
+		
 		// -------------------------------------------------------
 		// Get Attendance details for particular month
 		// -------------------------------------------------------
@@ -4627,7 +4629,7 @@ public class HomeController {
 
 			List<EmployeeJobinfo> infoobj = employeeJobinfoService
 					.findByEmployeeid(Integer.parseInt(rowMap.get("employeeid").toString()));
-
+			
 			if (infoobj.size() > 0) {
 				try {
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -4637,10 +4639,7 @@ public class HomeController {
 							.collect(Collectors.toList());
 
 					if (infoobjgreen.size() == 0) {
-						LocalDate lastDayOfMonth = LocalDate
-								.parse(monthstr1 + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
-								.with(TemporalAdjusters.lastDayOfMonth());
-						// System.out.println(lastDayOfMonth);
+						
 
 						infoobjgreen = infoobj.stream().filter(c -> {
 							try {
@@ -4662,7 +4661,8 @@ public class HomeController {
 								|| branchid.equalsIgnoreCase("all")) {
 
 							if (!calculateTerminatedstatus(Integer.parseInt(rowMap.get("employeeid").toString()),
-									dateforeffectemp)) {
+									 Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant())
+							)) {
 
 								reportstr += rowMap.get("staff_name").toString() + " ~";
 								reportstr += rowMap.get("employeeid").toString() + " ~";
@@ -5512,9 +5512,9 @@ public class HomeController {
 		String sysdate = displaydatetimeFormat.format(new Date());
 		for (int i = 0; i < assetypeinstcokitem.length; i++) {
 			CheckOut obj = new CheckOut();
-			obj.setBranchID(BranchID);
-			obj.setStaffID(StaffID);
-			obj.setCheckOutDate(CheckOutDate);
+						obj.setBranchID(BranchID);
+			 obj.setStaffID(StaffID);
+			 obj.setCheckOutDate(CheckOutDate);
 			obj.setVendor(vendor);
 			obj.setStatus(Status);
 			obj.setWhichLocation(WhichLocation);
@@ -5523,7 +5523,7 @@ public class HomeController {
 				obj.setAcondition(ACondition[i]);
 			}
 			obj.setAssetId(assetypeinstcokitem[i]);
-			obj.setSysdate(sysdate);
+			 obj.setSysdate(sysdate);
 
 			if (Comments.length > 0) {
 				obj.setComments(Comments[i]);
@@ -5563,8 +5563,8 @@ public class HomeController {
 		for (CheckOut obj : CheckOutobj) {
 			String str = "";
 
-			int staffid = Integer.parseInt(obj.getStaffID());
-			int assetid = Integer.parseInt(obj.getAssetId());
+			int staffid =  Integer.parseInt(obj.getStaffID());
+			int assetid = 	 Integer.parseInt(obj.getAssetId());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
 					.collect(Collectors.toList()).get(0);
 
@@ -5688,7 +5688,7 @@ public class HomeController {
 
 				CheckIn obj = new CheckIn();
 				obj.setAssetId(AssetId[i]);
-				obj.setStaffID(StaffID);
+	obj.setStaffID(StaffID);
 				obj.setCheckInDate(CheckInDate);
 				obj.setStatus(Status[i]);
 				obj.setACondition(Condition[i]);
@@ -5730,8 +5730,8 @@ public class HomeController {
 		for (CheckIn obj : CheckInobj) {
 			String str = "";
 
-			int staffid = Integer.parseInt(obj.getStaffID());
-			int assetid = Integer.parseInt(obj.getAssetId());
+			int staffid = 	Integer.parseInt(obj.getStaffID());
+			int assetid =  Integer.parseInt(obj.getAssetId());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
 					.collect(Collectors.toList()).get(0);
 
@@ -5896,7 +5896,6 @@ public class HomeController {
 		themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("assetaudit"));
 		return "assetaudit";
 	}
-
 
 	@PostMapping("assetauditprint")
 	public String assetauditprint(Model themodel, HttpSession session, HttpServletRequest request) {

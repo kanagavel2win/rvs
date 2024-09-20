@@ -523,11 +523,12 @@ public class EmployeeController {
 				}
 
 				objList.add(obj);
+				CheckInMaster.setCheckIn(objList);
 			}
 		}
 		ArrayList<String> printstr = new ArrayList<String>();
 
-		List<CheckIn> CheckInobj = homeController.checkinService.saveall(objList);
+		List<CheckIn> CheckInobj = CheckInMaster.getCheckIn();
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
 		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
 		String Empname = "";

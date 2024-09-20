@@ -5515,7 +5515,7 @@ public class HomeController {
 		checkOutMaster.setStaffID(StaffID);
 		checkOutMaster.setCheckOutDate(CheckOutDate);
 		checkOutMaster.setCheckOutDateTime(displaydateFormathhmm.format(new Date()));
-		checkOutMaster.setSysdate(displaydatetimeFormat.format(new Date()));
+		checkOutMaster.setSysdate(displaydateFormatAMPM.format(new Date()));
 		checkOutMaster = checkOutMasterService.save(checkOutMaster);
 		
 
@@ -5532,7 +5532,8 @@ public class HomeController {
 			obj.setVendor(vendor);
 			obj.setStatus(Status);
 			obj.setWhichLocation(WhichLocation);
-
+			
+			
 			if (ACondition.length > 0) {
 				obj.setAcondition(ACondition[i]);
 			}
@@ -5566,11 +5567,12 @@ public class HomeController {
 			// -----------------------------------------------------
 
 			objList.add(obj);
+			checkOutMaster.setCheckout(objList);
 			assetMasterService.updatetheAssetStatus(Status, Integer.parseInt(assetypeinstcokitem[i]), sysdate, StaffID);
 		}
 		ArrayList<String> printstr = new ArrayList<String>();
 
-		List<CheckOut> CheckOutobj = checkoutService.saveall(objList);
+		List<CheckOut> CheckOutobj = checkOutMaster.getCheckout();
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
 		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
 
@@ -5688,7 +5690,7 @@ public class HomeController {
 		CheckInMaster CheckInMaster = new CheckInMaster();
 		CheckInMaster.setStaffID(StaffID);
 		CheckInMaster.setCheckInDate(CheckInDate);
-		CheckInMaster.setCheckInDateTime(displaydateFormathhmm.format(new Date()));
+		CheckInMaster.setCheckInDateTime(displaydateFormatAMPM.format(new Date()));
 		CheckInMaster.setSysdate(displaydatetimeFormat.format(new Date()));
 		CheckInMaster = checkInMasterService.save(CheckInMaster);
 
@@ -5739,11 +5741,12 @@ public class HomeController {
 				}
 
 				objList.add(obj);
+				CheckInMaster.setCheckIn(objList);
 			}
 		}
 		ArrayList<String> printstr = new ArrayList<String>();
 
-		List<CheckIn> CheckInobj = checkinService.saveall(objList);
+		List<CheckIn> CheckInobj = CheckInMaster.getCheckIn();
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
 		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
 		String Empname = "";

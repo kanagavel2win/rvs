@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.Period;
 import java.time.Year;
@@ -166,8 +167,9 @@ import com.rvs.springboot.thymeleaf.service.AssetServiceService;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
 import com.rvs.springboot.thymeleaf.service.CheckInService;
-import com.rvs.springboot.thymeleaf.service.CheckInService;
+import com.rvs.springboot.thymeleaf.service.CheckInMasterService;
 import com.rvs.springboot.thymeleaf.service.CheckOutService;
+import com.rvs.springboot.thymeleaf.service.CheckOutMasterService;
 import com.rvs.springboot.thymeleaf.service.ContactOrganizationService;
 import com.rvs.springboot.thymeleaf.service.ContactPersonService;
 import com.rvs.springboot.thymeleaf.service.DealMasterService;
@@ -5498,11 +5500,18 @@ public class HomeController {
 			@RequestParam(name = "AssetName") String[] assetypeinstcokitem,
 			@RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
-			HttpServletRequest request) {
+			HttpServletRequest request,CheckOutMasterService checkOutMasterService) {
 
 		// -----------------------------------------
 		// File Uploading
 		String profilephotouploadRootPath = request.getServletContext().getRealPath("checkoutphoto");
+		CheckOutMaster checkOutMaster = new CheckOutMaster();
+		checkOutMaster.setBranchID(BranchID);
+		checkOutMaster.setStaffID(StaffID);
+		checkOutMaster.setCheckOutDate(CheckOutDate);
+		checkOutMaster.setCheckOutDateTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+		checkOutMaster.setSysdate(displaydatetimeFormat.format(new Date()));
+		checkOutMaster = checkOutMasterService.save(checkOutMaster);
 
 		File uploadRootDir = new File(profilephotouploadRootPath);
 		// Create directory if it not exists.
@@ -5514,9 +5523,6 @@ public class HomeController {
 		String sysdate = displaydatetimeFormat.format(new Date());
 		for (int i = 0; i < assetypeinstcokitem.length; i++) {
 			CheckOut obj = new CheckOut();
-			obj.setBranchID(BranchID);
-			obj.setStaffID(StaffID);
-			obj.setCheckOutDate(CheckOutDate);
 			obj.setVendor(vendor);
 			obj.setStatus(Status);
 			obj.setWhichLocation(WhichLocation);
@@ -5525,7 +5531,7 @@ public class HomeController {
 				obj.setAcondition(ACondition[i]);
 			}
 			obj.setAssetId(assetypeinstcokitem[i]);
-			 obj.setSysdate(sysdate);
+			
 
 			if (Comments.length > 0) {
 				obj.setComments(Comments[i]);
@@ -5565,7 +5571,7 @@ public class HomeController {
 		for (CheckOut obj : CheckOutobj) {
 			String str = "";
 
-			int staffid =  Integer.parseInt(obj.getStaffID());
+			int staffid =  Integer.parseInt(checkOutMaster.getStaffID());
 			int assetid = 	 Integer.parseInt(obj.getAssetId());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
 					.collect(Collectors.toList()).get(0);
@@ -5670,7 +5676,15 @@ public class HomeController {
 			@RequestParam(name = "AssetName") String[] AssetId, @RequestParam(name = "Status") String[] Status,
 			@RequestParam(name = "ACondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
-			HttpServletRequest request) {
+			HttpServletRequest request,CheckInMasterService CheckInMasterService) {
+
+		
+		CheckInMaster CheckInMaster = new CheckInMaster();
+		CheckInMaster.setStaffID(StaffID);
+		CheckInMaster.setCheckInDate(CheckInDate);
+		CheckInMaster.setCheckInDateTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+		CheckInMaster.setSysdate(displaydatetimeFormat.format(new Date()));
+		CheckInMaster = CheckInMasterService.save(CheckInMaster);
 
 		List<CheckIn> objList = new ArrayList<CheckIn>();
 
@@ -5690,8 +5704,6 @@ public class HomeController {
 
 				CheckIn obj = new CheckIn();
 				obj.setAssetId(AssetId[i]);
-				obj.setStaffID(StaffID);
-				obj.setCheckInDate(CheckInDate);
 				obj.setStatus(Status[i]);
 				obj.setACondition(Condition[i]);
 
@@ -5732,7 +5744,7 @@ public class HomeController {
 		for (CheckIn obj : CheckInobj) {
 			String str = "";
 
-			int staffid = 	Integer.parseInt(obj.getStaffID());
+			int staffid = 	Integer.parseInt(CheckInMaster.getStaffID());
 			int assetid =  Integer.parseInt(obj.getAssetId());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
 					.collect(Collectors.toList()).get(0);

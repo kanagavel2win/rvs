@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,6 +37,7 @@ import com.rvs.springboot.thymeleaf.entity.AssetMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckIn;
 import com.rvs.springboot.thymeleaf.entity.CheckInFiles;
+import com.rvs.springboot.thymeleaf.entity.CheckInMaster;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
@@ -52,6 +55,7 @@ import com.rvs.springboot.thymeleaf.pojo.menuactivelist;
 import com.rvs.springboot.thymeleaf.service.AssetMasterService;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
+import com.rvs.springboot.thymeleaf.service.CheckInMasterService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobHireService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobcompensationService;
 import com.rvs.springboot.thymeleaf.service.EmployeeJobempstatusService;
@@ -461,7 +465,14 @@ public class EmployeeController {
 			@RequestParam(name = "checkbox") boolean[] checkbox, @RequestParam(name = "AssetName") String[] AssetId,
 			@RequestParam(name = "ACondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
-			HttpServletRequest request) {
+			HttpServletRequest request,CheckInMasterService CheckInMasterService) {
+		
+		CheckInMaster CheckInMaster = new CheckInMaster();
+		CheckInMaster.setStaffID(StaffID);
+		CheckInMaster.setCheckInDate(CheckInDate);
+		CheckInMaster.setCheckInDateTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+		CheckInMaster.setSysdate(displaydatetimeFormat.format(new Date()));
+		CheckInMaster = CheckInMasterService.save(CheckInMaster);
 
 		List<CheckIn> objList = new ArrayList<CheckIn>();
 
@@ -481,8 +492,6 @@ public class EmployeeController {
 
 				CheckIn obj = new CheckIn();
 				obj.setAssetId(AssetId[i]);
-				obj.setStaffID(StaffID);
-				obj.setCheckInDate(CheckInDate);
 				obj.setStatus("In Stock");
 				obj.setACondition(Condition[i]);
 				obj.setStaffIDto(StaffIDto);
@@ -526,7 +535,7 @@ public class EmployeeController {
 		for (CheckIn obj : CheckInobj) {
 			String str = "";
 
-			int staffid = Integer.parseInt(obj.getStaffID());
+			int staffid = Integer.parseInt(CheckInMaster.getStaffID());
 			int assetid = Integer.parseInt(obj.getAssetId());
 			int staffidto = Integer.parseInt(obj.getStaffIDto());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)

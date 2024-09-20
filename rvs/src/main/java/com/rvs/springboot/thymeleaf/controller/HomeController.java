@@ -80,8 +80,10 @@ import com.rvs.springboot.thymeleaf.entity.BranchpurchaseItemMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchaseMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchasePaymentMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckIn;
+import com.rvs.springboot.thymeleaf.entity.CheckInMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckInFiles;
 import com.rvs.springboot.thymeleaf.entity.CheckOut;
+import com.rvs.springboot.thymeleaf.entity.CheckOutMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckOutFiles;
 import com.rvs.springboot.thymeleaf.entity.ContactPerson;
 import com.rvs.springboot.thymeleaf.entity.ContactPersonAccNo;
@@ -163,6 +165,7 @@ import com.rvs.springboot.thymeleaf.service.AssetMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetServiceService;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
+import com.rvs.springboot.thymeleaf.service.CheckInService;
 import com.rvs.springboot.thymeleaf.service.CheckInService;
 import com.rvs.springboot.thymeleaf.service.CheckOutService;
 import com.rvs.springboot.thymeleaf.service.ContactOrganizationService;
@@ -5491,7 +5494,6 @@ public class HomeController {
 			@RequestParam(name = "StaffID") String StaffID, @RequestParam(name = "CheckOutDate") String CheckOutDate,
 			@RequestParam(name = "vendor") String vendor, @RequestParam(name = "Status") String Status,
 			@RequestParam(name = "WhichLocation") String WhichLocation,
-
 			@RequestParam(name = "ACondition") String[] ACondition,
 			@RequestParam(name = "AssetName") String[] assetypeinstcokitem,
 			@RequestParam(name = "Comments") String[] Comments,
@@ -5512,9 +5514,9 @@ public class HomeController {
 		String sysdate = displaydatetimeFormat.format(new Date());
 		for (int i = 0; i < assetypeinstcokitem.length; i++) {
 			CheckOut obj = new CheckOut();
-						obj.setBranchID(BranchID);
-			 obj.setStaffID(StaffID);
-			 obj.setCheckOutDate(CheckOutDate);
+			obj.setBranchID(BranchID);
+			obj.setStaffID(StaffID);
+			obj.setCheckOutDate(CheckOutDate);
 			obj.setVendor(vendor);
 			obj.setStatus(Status);
 			obj.setWhichLocation(WhichLocation);
@@ -5688,7 +5690,7 @@ public class HomeController {
 
 				CheckIn obj = new CheckIn();
 				obj.setAssetId(AssetId[i]);
-	obj.setStaffID(StaffID);
+				obj.setStaffID(StaffID);
 				obj.setCheckInDate(CheckInDate);
 				obj.setStatus(Status[i]);
 				obj.setACondition(Condition[i]);

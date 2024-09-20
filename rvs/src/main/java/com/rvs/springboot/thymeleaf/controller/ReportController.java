@@ -23,7 +23,7 @@ public class ReportController {
 	menuactivelist menuactivelistobj;
 	
 	@GetMapping("reportprojectplan")
-    public String blog(Model themodel,HttpServletRequest request,HttpSession session) {
+    public String reportprojectplan(Model themodel,HttpServletRequest request,HttpSession session) {
 		 themodel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist(""));
 		 themodel.addAttribute("dataLoginEmpprofiileimg",request.getSession().getAttribute("dataLoginEmpprofiileimg"));
 		 themodel.addAttribute("dataLoginEmpID",request.getSession().getAttribute("dataLoginEmpID"));

@@ -5517,6 +5517,7 @@ public class HomeController {
 		checkOutMaster.setCheckOutDateTime(displaydateFormathhmm.format(new Date()));
 		checkOutMaster.setSysdate(displaydatetimeFormat.format(new Date()));
 		checkOutMaster = checkOutMasterService.save(checkOutMaster);
+		
 
 		File uploadRootDir = new File(profilephotouploadRootPath);
 		// Create directory if it not exists.
@@ -11341,8 +11342,6 @@ public class HomeController {
 				projectMaster.setTdateMMddYYY(displaydateFormatFirstMMMddYYY
 						.format(displaydateFormatrev.parse(projectMaster.getTdate())).toString());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				// logger.error(e); e.printStackTrace();
 			}
 		}
 

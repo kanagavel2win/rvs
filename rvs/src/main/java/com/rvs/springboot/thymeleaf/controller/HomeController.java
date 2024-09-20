@@ -11,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.Month;
 import java.time.Period;
 import java.time.Year;
@@ -279,6 +278,12 @@ public class HomeController {
 
 	@Autowired
 	SnoService snoservice;
+
+	@Autowired
+	CheckOutMasterService checkOutMasterService;
+
+	@Autowired
+	CheckInMasterService checkInMasterService;
 
 	DateFormat displaydateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat displaydateFormatrev = new SimpleDateFormat("yyyy-MM-dd");
@@ -5500,7 +5505,7 @@ public class HomeController {
 			@RequestParam(name = "AssetName") String[] assetypeinstcokitem,
 			@RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
-			HttpServletRequest request,CheckOutMasterService checkOutMasterService) {
+			HttpServletRequest request) {
 
 		// -----------------------------------------
 		// File Uploading
@@ -5509,7 +5514,7 @@ public class HomeController {
 		checkOutMaster.setBranchID(BranchID);
 		checkOutMaster.setStaffID(StaffID);
 		checkOutMaster.setCheckOutDate(CheckOutDate);
-		checkOutMaster.setCheckOutDateTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+		checkOutMaster.setCheckOutDateTime(displaydateFormathhmm.format(new Date()));
 		checkOutMaster.setSysdate(displaydatetimeFormat.format(new Date()));
 		checkOutMaster = checkOutMasterService.save(checkOutMaster);
 
@@ -5676,15 +5681,15 @@ public class HomeController {
 			@RequestParam(name = "AssetName") String[] AssetId, @RequestParam(name = "Status") String[] Status,
 			@RequestParam(name = "ACondition") String[] Condition, @RequestParam(name = "Comments") String[] Comments,
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
-			HttpServletRequest request,CheckInMasterService CheckInMasterService) {
+			HttpServletRequest request) {
 
 		
 		CheckInMaster CheckInMaster = new CheckInMaster();
 		CheckInMaster.setStaffID(StaffID);
 		CheckInMaster.setCheckInDate(CheckInDate);
-		CheckInMaster.setCheckInDateTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+		CheckInMaster.setCheckInDateTime(displaydateFormathhmm.format(new Date()));
 		CheckInMaster.setSysdate(displaydatetimeFormat.format(new Date()));
-		CheckInMaster = CheckInMasterService.save(CheckInMaster);
+		CheckInMaster = checkInMasterService.save(CheckInMaster);
 
 		List<CheckIn> objList = new ArrayList<CheckIn>();
 

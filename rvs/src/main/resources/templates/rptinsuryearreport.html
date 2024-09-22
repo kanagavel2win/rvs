@@ -16,7 +16,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="ICC">
-<title>Insurance Remainder Report</title>
+<title>Insurance Yearly Report</title>
 <link rel="apple-touch-icon"
 	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
 <link rel="shortcut icon" type="image/x-icon"
@@ -104,9 +104,11 @@ body, td, table {
 	text-align: center;
 	border: solid 1px #fff;
 }
-i{
-color: #e67e22;
+
+i {
+	color: #e67e22;
 }
+
 a {
 	color: inherit; /* Inherit color from parent */
 	text-decoration: none; /* Remove underline */
@@ -126,73 +128,53 @@ a {
 			<div class="card-body">
 
 				<div class="col-md-12">
-					<center> <b>Insurance Remainder Report : <i><span
-						th:text="${monthFirtDate} +' to ' +${monthLastDate}"></span></i>
-					</b>
+					<center>
+						<b>Insurance Yearly Report : <i><span
+								th:text="${currentYear}"></span></i>
+						</b>
 					</center>
-					<br /><br />
-					<b>Total Premium Amount : <i><span
-						th:text="${total_esti_amount} +'.00'"></span> </i>
-						(<span
-						th:text="${#lists.size(insls)} "></span> No's)
-					</b>
 					<br />
-					<br />
+					<br /> <b>Total Premium Amount : <i><span
+							th:text="${total_esti_amount} +'.00'"></span> </i>
+
+					</b> <br /> <br />
 
 				</div>
 
 
 				<div class="col-md-12">
 
-					<table class="tablex"style="width: 100%">
+					<table class="tablex" style="width: 100%">
 						<thead>
 							<tr>
 								<th class="sticky-col first-col td1">S.No</th>
-								<th>Name/Asset</th>
-								<th>Expire Date & Policy</th>
-								<th>Vendor Name</th>
+								<th>Month</th>
+								<th>No.of.Policy Expire</th>
 								<th>Total Premium</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="insurance, i : ${insls}">
+							<tr th:each="insurance, i : ${monthls}">
 								<td th:text="${i.index+1}"></td>
-								<td><th:block th:if="${insurance.staffID} != ''">
-										<a th:href="@{'emp?id=' + ${insurance.staffID}}"
-											th:text="${insurance.staffassetname}"></a>
-									</th:block> <th:block th:if="${insurance.assetNameID} != ''">
-										<a th:href="@{'assetview?id=' + ${insurance.assetNameID}}"
-											th:text="${insurance.staffassetname}"></a>
-									</th:block></td>
-								<td><th:block
-										th:each="indls : ${insurance.insuranceDetails}">
-										<th:block th:each="pcover : ${indls.insurancePolicyCover}">
-											<span th:text="${pcover.duedateformate}"></span>
-											<span th:text="${pcover.cover}"></span>
-											<br />
-										</th:block>
-									</th:block></td>
-								<td><th:block
-										th:each="indls : ${insurance.insuranceDetails}">
-										<a
-											th:href="@{'contactorganizationview?id=' + ${indls.vendorName}}"
-											th:text="${indls.vendorNamestr}"></a>
-											<br />
-									</th:block></td>
+								<td><span th:text="${insurance.key}"></span> <span
+									th:text="'(' + ${monthname.get(insurance.key)} +')'"></span></td>
+								<td><a
+									th:href="@{'rptinsurremainderreport?mn=' + ${insurance.key} + '&selecttype='+ ${selecttype}}"
+									th:text="${insurance.value}" target="_blank"></a></td>
+								<td align='right'><a
+									th:href="@{'rptinsurremainderreport?mn=' + ${insurance.key} + '&selecttype='+ ${selecttype}}"
+									th:text="${amountls.get(insurance.key)} + '.00'"
+									target="_blank"></a></td>
 
-								<td align="right"> <span th:text="${insurance.totalPermium}+ '.00'"></span>
-								
-								</td>
+
 
 							</tr>
 							<tr>
-								<td colspan="5" align="right">
-									<b>Total Premium Amount : <i><span
-						th:text="${total_esti_amount} +'.00'"></span></i>
-					</b>
-								</td>
+								<td colspan="4" align="right"><b>Total Premium Amount :
+										<i><span th:text="${total_esti_amount} +'.00'"></span></i>
+								</b></td>
 							</tr>
-							
+
 						</tbody>
 					</table>
 

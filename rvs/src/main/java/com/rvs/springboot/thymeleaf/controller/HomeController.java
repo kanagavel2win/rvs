@@ -15686,15 +15686,16 @@ public class HomeController {
 
 		LinkedHashMap<String, Integer> monthls = new LinkedHashMap<>();
 		LinkedHashMap<String, Integer> amountls = new LinkedHashMap<>();
+		LinkedHashMap<String, String> monthname = new LinkedHashMap<>();
+		String[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+				"October", "November", "December" };
+
 		String currentYear = mn1.split("-")[0];
 		for (int i = 1; i <= 12; i++) {
 			monthls.put(currentYear + "-" + String.format("%02d", i), 0);
 			amountls.put(currentYear + "-" + String.format("%02d", i), 0);
+			monthname.put(currentYear + "-" + String.format("%02d", i), monthNames[i-1]);
 		}
-
-		monthls.forEach((k, v) -> {
-			System.out.println(k + " - " + v);
-		});
 
 		List<InsuranceMaster> lnsurancels = insuranceMasterService.findAll();
 
@@ -15736,6 +15737,7 @@ public class HomeController {
 						.filter(C -> C.getId() == Integer.parseInt(objindetail.getVendorName()))
 						.collect(Collectors.toList()).get(0).getOrgname());
 
+				boolean firstentry = true;
 				for (InsurancePolicyCover inpcobj : objindetail.getInsurancePolicyCover()) {
 					if (!String.valueOf(inpcobj.getPTo()).equalsIgnoreCase("")) {
 
@@ -15755,8 +15757,25 @@ public class HomeController {
 							/// Before and after date check
 							tempmonth = inpcobj.getPTo().substring(0, 7).toString();
 
+							if (empallower & firstentry & tempmonth.substring(0, 4).toString().equalsIgnoreCase(currentYear)) {
+								// allower = true;
+								monthls.put(tempmonth, monthls.getOrDefault(tempmonth, 0) + 1);
+								firstentry = false;
+
+								// ----------------------------------------------
+								final int[] totalPermium = { 0 };
+								obj.getInsuranceDetails().stream().forEach(c -> {
+
+									totalPermium[0] += Integer.parseInt(c.getPremium().replaceAll("[^0-9]", ""));
+								});
+
+								obj.setTotalPermium(totalPermium[0]);
+								total_esti_amount += totalPermium[0];
+								amountls.put(tempmonth, amountls.getOrDefault(tempmonth, 0) + totalPermium[0]);
+								// ----------------------------------------------
+							}
 							if (tempmonth.substring(0, 4).toString().equalsIgnoreCase(currentYear)) {
-								allower = true;
+
 							}
 
 						} catch (ParseException e) {
@@ -15770,29 +15789,22 @@ public class HomeController {
 
 			}
 
-			if (allower && empallower) {
-				final int[] totalPermium = { 0 };
-				obj.getInsuranceDetails().stream().forEach(c -> {
-
-					totalPermium[0] += Integer.parseInt(c.getPremium().replaceAll("[^0-9]", ""));
-				});
-
-				obj.setTotalPermium(totalPermium[0]);
-				total_esti_amount += totalPermium[0];
-				amountls.put(tempmonth, monthls.getOrDefault(tempmonth, 0) + total_esti_amount);
-				monthls.put(tempmonth, monthls.getOrDefault(tempmonth, 0) + 1);
-			}
-
 		}
 
-		monthls.forEach((k, v) -> {
-			System.out.println(k + " - " + v);
-		});
-		theModel.addAttribute("insls", lnsurancels_temp);
+		/*
+		 * monthls.forEach((k, v) -> { System.out.println(k + " - " + v); });
+		 * 
+		 * amountls.forEach((k, v) -> { System.out.println(k + " - " + v); });
+		 */
+		
+		theModel.addAttribute("selecttype", selecttype);
+		theModel.addAttribute("monthls", monthls);
+		theModel.addAttribute("amountls", amountls);
+		theModel.addAttribute("monthname", monthname);		
 		theModel.addAttribute("total_esti_amount", total_esti_amount);
 		theModel.addAttribute("currentYear", currentYear);
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("insurancereport"));
-		return "rptinsurremainderreport";
+		return "rptinsuryearreport";
 
 	}
 

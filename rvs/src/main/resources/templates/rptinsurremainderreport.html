@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en"
+	data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="ICC">
+<title>Insurance Remainder Report</title>
+<link rel="apple-touch-icon"
+	th:href="@{/app-assets/images/ico/apple-icon-120.png}">
+<link rel="shortcut icon" type="image/x-icon"
+	th:href="@{/app-assets/images/ico/favicon.ico}">
+<link
+	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+	rel="stylesheet}">
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/vendors.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/charts/apexcharts.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/vendors/css/extensions/dragula.min.css}">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/bootstrap-extended.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/colors.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/components.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/dark-layout.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/themes/semi-dark-layout.css}">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/app-assets/css/pages/dashboard-analytics.css}">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+<!-- END: Custom CSS-->
+<style>
+body, td, table {
+	font-family: verdana;
+	color: #000;
+	border-collapse: collapse;
+}
+
+.title {
+	text-align: center;
+	font-size: 15px;
+}
+
+.img-fluid {
+	height: 45px;
+}
+
+.tablex, .tablex th, .tablex td, .tablex tr {
+	font-size: 12px;
+	padding: .5rem 0.5rem;
+}
+
+.tablex thead th {
+	background-color: #ebebeb;
+	border-color: transparent;
+	color: #555;
+	font-weight: 700;
+	transition: background-color .15s ease-in-out;
+}
+
+.tablex td, .tablex tr, .tablex thead th {
+	border: solid 1px #000;
+	border-bottom: solid 1px #000;
+	border-spacing: 0px;
+	border-collapse: collapse;
+	font-family: verdana;
+}
+
+.td1 {
+	text-align: left;
+}
+
+.td2 {
+	text-align: center;
+	border: solid 1px #fff;
+}
+i{
+color: #e67e22;
+}
+a {
+	color: inherit; /* Inherit color from parent */
+	text-decoration: none; /* Remove underline */
+}
+</style>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body style="background: #fff">
+
+	<div class="content-body">
+
+		<div class="card-content">
+
+			<div class="card-body">
+
+				<div class="col-md-12">
+					<center> <b>Insurance Remainder Report : <i><span
+						th:text="${monthFirtDate} +' to ' +${monthLastDate}"></span></i>
+					</b>
+					</center>
+					<br /><br />
+					<b>Total Premium Amount : <i><span
+						th:text="${total_esti_amount} +'.00'"></span> </i>
+						(<span
+						th:text="${#lists.size(insls)} "></span> No's)
+					</b>
+					<br />
+					<br />
+
+				</div>
+
+
+				<div class="col-md-12">
+
+					<table class="tablex"style="width: 100%">
+						<thead>
+							<tr>
+								<th class="sticky-col first-col td1">S.No</th>
+								<th>Name/Asset</th>
+								<th>Expire Date & Policy</th>
+								<th>Vendor Name</th>
+								<th>Total Premium</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="insurance, i : ${insls}">
+								<td th:text="${i.index+1}"></td>
+								<td><th:block th:if="${insurance.staffID} != ''">
+										<a th:href="@{'emp?id=' + ${insurance.staffID}}"
+											th:text="${insurance.staffassetname}"></a>
+									</th:block> <th:block th:if="${insurance.assetNameID} != ''">
+										<a th:href="@{'assetview?id=' + ${insurance.assetNameID}}"
+											th:text="${insurance.staffassetname}"></a>
+									</th:block></td>
+								<td><th:block
+										th:each="indls : ${insurance.insuranceDetails}">
+										<th:block th:each="pcover : ${indls.insurancePolicyCover}">
+											<span th:text="${pcover.duedateformate}"></span>
+											<span th:text="${pcover.cover}"></span>
+											<br />
+										</th:block>
+									</th:block></td>
+								<td><th:block
+										th:each="indls : ${insurance.insuranceDetails}">
+										<a
+											th:href="@{'contactorganizationview?id=' + ${indls.vendorName}}"
+											th:text="${indls.vendorNamestr}"></a>
+											<br />
+									</th:block></td>
+
+								<td> <span th:text="${insurance.totalPermium}"></span>
+								
+								</td>
+
+							</tr>
+							<tr>
+								<td colspan="5" align="right">
+									<b>Total Premium Amount : <i><span
+						th:text="${total_esti_amount} +'.00'"></span></i>
+					</b>
+								</td>
+							</tr>
+							
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- BEGIN: Vendor JS-->
+	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/vendors.min.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js}"></script>
+	<script
+		th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js}"></script>
+	<script th:src="@{/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js}"></script>
+	<!-- BEGIN Vendor JS-->
+
+	<!-- BEGIN: Page Vendor JS-->
+	<script th:src="@{/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
+	<script th:src="@{/app-assets/vendors/js/extensions/dragula.min.js}"></script>
+	<!-- END: Page Vendor JS-->
+
+	<!-- BEGIN: Theme JS-->
+	<script th:src="@{/app-assets/js/core/app-menu.js}"></script>
+	<script th:src="@{/app-assets/js/core/app.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/components.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/footer.js}"></script>
+	<!-- END: Theme JS-->
+
+	<!-- BEGIN: Page JS-->
+	<script th:src="@{/app-assets/js/scripts/pages/dashboard-analytics.js}"></script>
+	<script th:src="@{/app-assets/js/scripts/modal/components-modal.js}"></script>
+	<!-- END: Page JS-->
+</body>
+<!-- END: Body-->
+
+
+
+</html>
+
+
+

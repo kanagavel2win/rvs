@@ -18,227 +18,228 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class menuactivelist {
-	
-	
 
-	public HashMap<String,Boolean> activemenus = new HashMap<>();
-	
-	public HashMap<String,Boolean> getactivemenulist(String menutitle) {
+	public HashMap<String, Boolean> activemenus = new HashMap<>();
+
+	public HashMap<String, Boolean> getactivemenulist(String menutitle) {
 		activemenus.clear();
-		
-		
-		switch (menutitle)
-		{
+
+		switch (menutitle) {
 		case "index":
-		
+
 			activemenus.put("index", true);
-		break;	
+			break;
 		case "admin_hr_employeelist":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Employee", true);
-			break;	
+			break;
 		case "admin_branchlist":
-		
-			
+
 			activemenus.put("Administration", true);
 			activemenus.put("Branches", true);
 			break;
-			
+
 		case "admin_hr_Hire":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Hire", true);
 			break;
 		case "admin_hr_Insurance":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Insurance", true);
 			break;
 		case "admin_hr_Attendance_Daily Attendance":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
-			activemenus.put("Daily Attendance", true);	
+			activemenus.put("Daily Attendance", true);
 			break;
 		case "admin_hr_Attendance_Attendance Report":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
-			activemenus.put("Attendance Report", true);	
+			activemenus.put("Attendance Report", true);
 			break;
 		case "admin_hr_Attendance_Holiday":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
-			activemenus.put("Holiday", true);						
+			activemenus.put("Holiday", true);
 		case "admin_hr_Attendance_Leave Approval":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
-			activemenus.put("Leave Approval", true);						
+			activemenus.put("Leave Approval", true);
 		case "admin_hr_Attendance_Leave History":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
 			activemenus.put("Leave History", true);
 			break;
 		case "admin_hr_Payroll":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Payroll", true);
 			break;
-		case "admin_AssetManagement" :
-		
+		case "admin_AssetManagement":
+
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			break;
-					
+
 		case "contact_People":
-		
+
 			activemenus.put("Contact", true);
 			activemenus.put("People", true);
 			break;
-					
+
 		case "contact_Organization":
-		
+
 			activemenus.put("Contact", true);
 			activemenus.put("Organization", true);
 			break;
-					
+
 		case "lead":
-		
+
 			activemenus.put("WorkItem", true);
 			activemenus.put("lead", true);
-			break;	
-					
+			break;
+
 		case "deal":
-		
+
 			activemenus.put("WorkItem", true);
 			activemenus.put("deal", true);
-			break;	
-					
+			break;
+
 		case "project":
-		
-			activemenus.put("WorkItem", true);
-			activemenus.put("project", true);
-			break;	
-					
-		case "projectplan":
-		
-			activemenus.put("WorkItem", true);
-			activemenus.put("projectplan", true);
-			break;	
-					
-		case "projecttemplatelist":
-		
+
 			activemenus.put("WorkItem", true);
 			activemenus.put("project", true);
 			break;
-					
+
+		case "projectplan":
+
+			activemenus.put("WorkItem", true);
+			activemenus.put("projectplan", true);
+			break;
+
+		case "projecttemplatelist":
+
+			activemenus.put("WorkItem", true);
+			activemenus.put("project", true);
+			break;
+
 		case "Insurance":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Insurance", true);
 			break;
 		case "Invoice":
-		
+
 			activemenus.put("Invoice", true);
-		break;
+			break;
 		case "AccountTransfer":
-		
+
 			activemenus.put("AccountTransfer", true);
-		break;	
+			break;
 		case "Income":
-		
+
 			activemenus.put("Income", true);
-		break;	
+			break;
 		case "Asset List":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			activemenus.put("Asset List", true);
 			break;
-			
+
 		case "Check Out":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			activemenus.put("Check Out", true);
-			break;	
+			break;
 		case "Check In":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			activemenus.put("Check In", true);
 			break;
 		case "assetaudit":
-		
+
 			activemenus.put("Administration", true);
 			activemenus.put("AssetManagement", true);
 			activemenus.put("assetaudit", true);
 			break;
 		case "accountsMain":
-		
+
 			activemenus.put("Accounts", true);
 			activemenus.put("accountsMain", true);
 			break;
-		case "PendingPayments": 
-		
+		case "PendingPayments":
+
 			activemenus.put("Accounts", true);
 			activemenus.put("PendingPayments", true);
-		
+
 			break;
-			
-		case "accountInvoicels" :
+
+		case "accountInvoicels":
 			activemenus.put("Accounts", true);
 			activemenus.put("accInvoice", true);
-			
+
 			break;
-			
-		case "accountReceiptls" :
+
+		case "accountReceiptls":
 			activemenus.put("Accounts", true);
 			activemenus.put("accReceipt", true);
-			
+
 			break;
-		
-		case "accProject Expense" :
+
+		case "accProject Expense":
 			activemenus.put("Accounts", true);
 			activemenus.put("accGeneral", true);
 			activemenus.put("accProject Expense", true);
-			
+
 			break;
-		case "accGeneral Expense" :
+		case "accGeneral Expense":
 			activemenus.put("Accounts", true);
 			activemenus.put("accGeneral", true);
 			activemenus.put("accGeneral Expense", true);
-			
+
 			break;
-		case "accGeneral Purchanse" :
+		case "accGeneral Purchanse":
 			activemenus.put("Accounts", true);
 			activemenus.put("accGeneralPurchanse", true);
 			activemenus.put("accGeneral Purchanse", true);
-			
+
 			break;
-		case "accProject Purchanse" :
+		case "accProject Purchanse":
 			activemenus.put("Accounts", true);
 			activemenus.put("accGeneralPurchanse", true);
 			activemenus.put("accProject Purchanse", true);
-			
+
 			break;
+
+		case "insurancereport":
+			activemenus.put("Reports", true);
+			activemenus.put("insurancestatus", true);
+			break;
+		
 		}
-			
+
 		return activemenus;
 	}
-	
+
 }

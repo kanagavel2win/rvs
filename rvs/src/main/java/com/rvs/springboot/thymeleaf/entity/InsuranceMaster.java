@@ -55,5 +55,8 @@ public class InsuranceMaster {
 	@Transient
 	private String staffassetname;
 	
+	@Transient
+	private int totalPermium;
+	
 	
 }

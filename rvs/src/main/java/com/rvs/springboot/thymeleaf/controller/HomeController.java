@@ -80,11 +80,11 @@ import com.rvs.springboot.thymeleaf.entity.BranchpurchaseItemMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchaseMaster;
 import com.rvs.springboot.thymeleaf.entity.BranchpurchasePaymentMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckIn;
-import com.rvs.springboot.thymeleaf.entity.CheckInMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckInFiles;
+import com.rvs.springboot.thymeleaf.entity.CheckInMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckOut;
-import com.rvs.springboot.thymeleaf.entity.CheckOutMaster;
 import com.rvs.springboot.thymeleaf.entity.CheckOutFiles;
+import com.rvs.springboot.thymeleaf.entity.CheckOutMaster;
 import com.rvs.springboot.thymeleaf.entity.ContactPerson;
 import com.rvs.springboot.thymeleaf.entity.ContactPersonAccNo;
 import com.rvs.springboot.thymeleaf.entity.ContactPersonContact;
@@ -165,10 +165,10 @@ import com.rvs.springboot.thymeleaf.service.AssetMasterService;
 import com.rvs.springboot.thymeleaf.service.AssetServiceService;
 import com.rvs.springboot.thymeleaf.service.AttendanceMasterService;
 import com.rvs.springboot.thymeleaf.service.BranchMasterService;
-import com.rvs.springboot.thymeleaf.service.CheckInService;
 import com.rvs.springboot.thymeleaf.service.CheckInMasterService;
-import com.rvs.springboot.thymeleaf.service.CheckOutService;
+import com.rvs.springboot.thymeleaf.service.CheckInService;
 import com.rvs.springboot.thymeleaf.service.CheckOutMasterService;
+import com.rvs.springboot.thymeleaf.service.CheckOutService;
 import com.rvs.springboot.thymeleaf.service.ContactOrganizationService;
 import com.rvs.springboot.thymeleaf.service.ContactPersonService;
 import com.rvs.springboot.thymeleaf.service.DealMasterService;
@@ -4612,10 +4612,9 @@ public class HomeController {
 		monthstr = yearstr + "-" + month;
 
 		final String monthstr1 = monthstr;
-		final LocalDate lastDayOfMonth = LocalDate
-				.parse(monthstr1 + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+		final LocalDate lastDayOfMonth = LocalDate.parse(monthstr1 + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
 				.with(TemporalAdjusters.lastDayOfMonth());
-		
+
 		// -------------------------------------------------------
 		// Get Attendance details for particular month
 		// -------------------------------------------------------
@@ -4639,7 +4638,7 @@ public class HomeController {
 
 			List<EmployeeJobinfo> infoobj = employeeJobinfoService
 					.findByEmployeeid(Integer.parseInt(rowMap.get("employeeid").toString()));
-			
+
 			if (infoobj.size() > 0) {
 				try {
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -4649,7 +4648,6 @@ public class HomeController {
 							.collect(Collectors.toList());
 
 					if (infoobjgreen.size() == 0) {
-						
 
 						infoobjgreen = infoobj.stream().filter(c -> {
 							try {
@@ -4671,8 +4669,7 @@ public class HomeController {
 								|| branchid.equalsIgnoreCase("all")) {
 
 							if (!calculateTerminatedstatus(Integer.parseInt(rowMap.get("employeeid").toString()),
-									 Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant())
-							)) {
+									Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant()))) {
 
 								reportstr += rowMap.get("staff_name").toString() + " ~";
 								reportstr += rowMap.get("employeeid").toString() + " ~";
@@ -5243,6 +5240,44 @@ public class HomeController {
 		return "deleted";
 	}
 
+	public boolean EffectiveEmployeeSingle(EmployeeMaster obj) {
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateforeffectemp = date;
+
+		List<EmployeeJobempstatus> empstatusobj = new ArrayList<>();
+		empstatusobj = employeeJobempstatusService.findByEmployeeid(obj.getEmpMasterid());
+
+		if (empstatusobj.size() > 0) {
+
+			List<EmployeeJobempstatus> empstatusobjgreen = empstatusobj.stream().filter(
+					c -> dateFormat.format(dateforeffectemp).compareTo(c.getEmpstatus_effectivedate().toString()) >= 0)
+					.collect(Collectors.toList());
+			empstatusobjgreen.sort(Comparator.comparing(EmployeeJobempstatus::getEmpstatus_effectivedate));
+
+			if (empstatusobjgreen.size() > 0 && !(empstatusobjgreen.get(empstatusobjgreen.size() - 1)
+					.getEmpstatus_employmentstatus().equalsIgnoreCase("Terminated"))) {
+
+				List<EmployeeJobinfo> infoobj = new ArrayList<>();
+				infoobj = employeeJobinfoService.findByEmployeeid(obj.getEmpMasterid());
+
+				if (infoobj.size() > 0) {
+					List<EmployeeJobinfo> infoobjgreen = infoobj.stream().filter(
+							c -> dateFormat.format(dateforeffectemp).compareTo(c.getJobeffectivedate().toString()) >= 0)
+							.collect(Collectors.toList());
+					infoobjgreen.sort(Comparator.comparing(EmployeeJobinfo::getJobeffectivedate));
+
+					if (infoobjgreen.size() > 0) {
+
+						return true;
+
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	public List<EmployeeMaster> EffectiveEmployee(List<EmployeeMaster> employeeMasterls) {
 
 		Date date = new Date();
@@ -5517,7 +5552,6 @@ public class HomeController {
 		checkOutMaster.setCheckOutDateTime(displaydateFormathhmm.format(new Date()));
 		checkOutMaster.setSysdate(displaydatetimeFormat.format(new Date()));
 		checkOutMaster = checkOutMasterService.save(checkOutMaster);
-		
 
 		File uploadRootDir = new File(profilephotouploadRootPath);
 		// Create directory if it not exists.
@@ -5537,7 +5571,6 @@ public class HomeController {
 				obj.setAcondition(ACondition[i]);
 			}
 			obj.setAssetId(assetypeinstcokitem[i]);
-			
 
 			if (Comments.length > 0) {
 				obj.setComments(Comments[i]);
@@ -5577,8 +5610,8 @@ public class HomeController {
 		for (CheckOut obj : CheckOutobj) {
 			String str = "";
 
-			int staffid =  Integer.parseInt(checkOutMaster.getStaffID());
-			int assetid = 	 Integer.parseInt(obj.getAssetId());
+			int staffid = Integer.parseInt(checkOutMaster.getStaffID());
+			int assetid = Integer.parseInt(obj.getAssetId());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
 					.collect(Collectors.toList()).get(0);
 
@@ -5684,7 +5717,6 @@ public class HomeController {
 			@RequestParam(name = "Photo_Attach") MultipartFile[] Photo_Attach, HttpSession session,
 			HttpServletRequest request) {
 
-		
 		CheckInMaster CheckInMaster = new CheckInMaster();
 		CheckInMaster.setStaffID(StaffID);
 		CheckInMaster.setCheckInDate(CheckInDate);
@@ -5750,8 +5782,8 @@ public class HomeController {
 		for (CheckIn obj : CheckInobj) {
 			String str = "";
 
-			int staffid = 	Integer.parseInt(CheckInMaster.getStaffID());
-			int assetid =  Integer.parseInt(obj.getAssetId());
+			int staffid = Integer.parseInt(CheckInMaster.getStaffID());
+			int assetid = Integer.parseInt(obj.getAssetId());
 			AssetMaster assobj = AssetMasterobj.stream().filter(C -> C.getAssetId() == assetid)
 					.collect(Collectors.toList()).get(0);
 
@@ -15537,4 +15569,240 @@ public class HomeController {
 	}
 
 //------------------------
+
+	@GetMapping("insurancereport")
+	public String insurancereport(Model theModel) {
+
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("insurancereport"));
+		return "insurancereport";
+
+	}
+
+	@GetMapping("rptinsurremainderreport")
+	public String rptinsurremainderreport(Model theModel, @RequestParam(name = "mn", required = true) String mn,
+			@RequestParam(name = "selecttype", required = true) String selecttype) {
+
+		List<InsuranceMaster> lnsurancels = insuranceMasterService.findAll();
+
+		List<InsuranceMaster> lnsurancels_temp = new ArrayList();
+		int total_esti_amount = 0;
+		for (InsuranceMaster obj : lnsurancels) {
+			boolean allower = false;
+			boolean empallower = true;
+			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
+
+				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
+
+				if (asset != null) {
+					obj.setStaffassetname(asset.getAssetName().toString());
+				} else {
+					continue;
+				}
+
+			} else {
+				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
+
+				if (employee != null) {
+					obj.setStaffassetname(employee.getStaffName().toString());
+					if (selecttype.equalsIgnoreCase("Active")) {
+						if (!EffectiveEmployeeSingle(employee)) {
+							empallower = false;
+						}
+					}
+				} else {
+					continue;
+				}
+
+			}
+
+			for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
+				// Change Ven to Org
+				objindetail.setVendorNamestr(contactOrganizationService.findAll().stream()
+						.filter(C -> C.getId() == Integer.parseInt(objindetail.getVendorName()))
+						.collect(Collectors.toList()).get(0).getOrgname());
+
+				for (InsurancePolicyCover inpcobj : objindetail.getInsurancePolicyCover()) {
+					if (!String.valueOf(inpcobj.getPTo()).equalsIgnoreCase("")) {
+
+						/// Before and after date check
+
+						try {
+							LocalDate ld = LocalDate.parse(inpcobj.getPTo());
+
+							inpcobj.setDuedateformate(displaydateFormatFirstMMMddYYY
+									.format(new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo())));
+
+							long differ_in_time = new Date().getTime()
+									- new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo()).getTime();
+
+							inpcobj.setDueindicatorcolor(insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)));
+
+							/// Before and after date check
+							if ((ld.isBefore(getLastDate(mn)) && ld.isAfter(getFirstDate(mn)))
+									|| (ld.isEqual(getLastDate(mn)) || ld.isEqual(getFirstDate(mn)))) {
+
+								allower = true;
+
+							}
+
+						} catch (ParseException e) {
+						}
+					} else {
+						inpcobj.setDuedateformate("");
+						inpcobj.setDueindicatorcolor("");
+
+					}
+				}
+
+			}
+
+			if (allower && empallower) {
+				final int[] totalPermium = { 0 };
+				obj.getInsuranceDetails().stream().forEach(c -> {
+
+					totalPermium[0] += Integer.parseInt(c.getPremium().replaceAll("[^0-9]", ""));
+				});
+
+				obj.setTotalPermium(totalPermium[0]);
+				total_esti_amount += totalPermium[0];
+				lnsurancels_temp.add(obj);
+			}
+
+		}
+
+		// lnsurancels_temp.stream().forEach(System.out::println);
+		theModel.addAttribute("insls", lnsurancels_temp);
+		theModel.addAttribute("total_esti_amount", total_esti_amount);
+		theModel.addAttribute("monthLastDate", (getLastDate(mn)));
+		theModel.addAttribute("monthFirtDate", (getFirstDate(mn)));
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("insurancereport"));
+		return "rptinsurremainderreport";
+
+	}
+
+	@GetMapping("rptinsuryearlyreport")
+	public String rptinsuryearlyreport(Model theModel, @RequestParam(name = "mn", required = true) String mn1,
+			@RequestParam(name = "selecttype", required = true) String selecttype) {
+
+		LinkedHashMap<String, Integer> monthls = new LinkedHashMap<>();
+		LinkedHashMap<String, Integer> amountls = new LinkedHashMap<>();
+		String currentYear = mn1.split("-")[0];
+		for (int i = 1; i <= 12; i++) {
+			monthls.put(currentYear + "-" + String.format("%02d", i), 0);
+			amountls.put(currentYear + "-" + String.format("%02d", i), 0);
+		}
+
+		monthls.forEach((k, v) -> {
+			System.out.println(k + " - " + v);
+		});
+
+		List<InsuranceMaster> lnsurancels = insuranceMasterService.findAll();
+
+		List<InsuranceMaster> lnsurancels_temp = new ArrayList();
+		int total_esti_amount = 0;
+		for (InsuranceMaster obj : lnsurancels) {
+			boolean allower = false;
+			boolean empallower = true;
+			String tempmonth = "";
+			if (obj.getInsuranceTo().equalsIgnoreCase("Asset")) {
+
+				AssetMaster asset = assetMasterService.findById(Integer.parseInt(obj.getAssetNameID()));
+
+				if (asset != null) {
+					obj.setStaffassetname(asset.getAssetName().toString());
+				} else {
+					continue;
+				}
+
+			} else {
+				EmployeeMaster employee = employeeMasterService.findById(Integer.parseInt(obj.getStaffID()));
+
+				if (employee != null) {
+					obj.setStaffassetname(employee.getStaffName().toString());
+					if (selecttype.equalsIgnoreCase("Active")) {
+						if (!EffectiveEmployeeSingle(employee)) {
+							empallower = false;
+						}
+					}
+				} else {
+					continue;
+				}
+
+			}
+
+			for (InsuranceDetails objindetail : obj.getInsuranceDetails()) {
+				// Change Ven to Org
+				objindetail.setVendorNamestr(contactOrganizationService.findAll().stream()
+						.filter(C -> C.getId() == Integer.parseInt(objindetail.getVendorName()))
+						.collect(Collectors.toList()).get(0).getOrgname());
+
+				for (InsurancePolicyCover inpcobj : objindetail.getInsurancePolicyCover()) {
+					if (!String.valueOf(inpcobj.getPTo()).equalsIgnoreCase("")) {
+
+						/// Before and after date check
+
+						try {
+							LocalDate ld = LocalDate.parse(inpcobj.getPTo());
+
+							inpcobj.setDuedateformate(displaydateFormatFirstMMMddYYY
+									.format(new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo())));
+
+							long differ_in_time = new Date().getTime()
+									- new SimpleDateFormat("yyyy-MM-dd").parse(inpcobj.getPTo()).getTime();
+
+							inpcobj.setDueindicatorcolor(insuranetimecolor((differ_in_time) / (1000 * 60 * 60 * 24)));
+
+							/// Before and after date check
+							tempmonth = inpcobj.getPTo().substring(0, 7).toString();
+
+							if (tempmonth.substring(0, 4).toString().equalsIgnoreCase(currentYear)) {
+								allower = true;
+							}
+
+						} catch (ParseException e) {
+						}
+					} else {
+						inpcobj.setDuedateformate("");
+						inpcobj.setDueindicatorcolor("");
+
+					}
+				}
+
+			}
+
+			if (allower && empallower) {
+				final int[] totalPermium = { 0 };
+				obj.getInsuranceDetails().stream().forEach(c -> {
+
+					totalPermium[0] += Integer.parseInt(c.getPremium().replaceAll("[^0-9]", ""));
+				});
+
+				obj.setTotalPermium(totalPermium[0]);
+				total_esti_amount += totalPermium[0];
+				amountls.put(tempmonth, monthls.getOrDefault(tempmonth, 0) + total_esti_amount);
+				monthls.put(tempmonth, monthls.getOrDefault(tempmonth, 0) + 1);
+			}
+
+		}
+
+		monthls.forEach((k, v) -> {
+			System.out.println(k + " - " + v);
+		});
+		theModel.addAttribute("insls", lnsurancels_temp);
+		theModel.addAttribute("total_esti_amount", total_esti_amount);
+		theModel.addAttribute("currentYear", currentYear);
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("insurancereport"));
+		return "rptinsurremainderreport";
+
+	}
+
+	private LocalDate getLastDate(String selectedmonth) {
+		return LocalDate.parse(selectedmonth + "-01", DateTimeFormatter.ofPattern("yyyy-M-dd"))
+				.with(TemporalAdjusters.lastDayOfMonth());
+	}
+
+	private LocalDate getFirstDate(String selectedmonth) {
+		return LocalDate.parse(selectedmonth + "-01");
+	}
+
 }

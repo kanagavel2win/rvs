@@ -5568,7 +5568,8 @@ public class HomeController {
 			obj.setVendor(vendor);
 			obj.setStatus(Status);
 			obj.setWhichLocation(WhichLocation);
-
+			
+			
 			if (ACondition.length > 0) {
 				obj.setAcondition(ACondition[i]);
 			}

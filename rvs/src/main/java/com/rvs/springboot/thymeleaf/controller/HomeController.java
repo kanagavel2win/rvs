@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -5550,7 +5552,7 @@ public class HomeController {
 		checkOutMaster.setStaffID(StaffID);
 		checkOutMaster.setCheckOutDate(CheckOutDate);
 		checkOutMaster.setCheckOutDateTime(displaydateFormathhmm.format(new Date()));
-		checkOutMaster.setSysdate(displaydatetimeFormat.format(new Date()));
+		checkOutMaster.setSysdate(displaydateFormatAMPM.format(new Date()));
 		checkOutMaster = checkOutMasterService.save(checkOutMaster);
 
 		File uploadRootDir = new File(profilephotouploadRootPath);
@@ -5599,11 +5601,12 @@ public class HomeController {
 			// -----------------------------------------------------
 
 			objList.add(obj);
+			checkOutMaster.setCheckout(objList);
 			assetMasterService.updatetheAssetStatus(Status, Integer.parseInt(assetypeinstcokitem[i]), sysdate, StaffID);
 		}
 		ArrayList<String> printstr = new ArrayList<String>();
 
-		List<CheckOut> CheckOutobj = checkoutService.saveall(objList);
+		List<CheckOut> CheckOutobj = checkOutMaster.getCheckout();
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
 		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
 
@@ -5720,7 +5723,7 @@ public class HomeController {
 		CheckInMaster CheckInMaster = new CheckInMaster();
 		CheckInMaster.setStaffID(StaffID);
 		CheckInMaster.setCheckInDate(CheckInDate);
-		CheckInMaster.setCheckInDateTime(displaydateFormathhmm.format(new Date()));
+		CheckInMaster.setCheckInDateTime(displaydateFormatAMPM.format(new Date()));
 		CheckInMaster.setSysdate(displaydatetimeFormat.format(new Date()));
 		CheckInMaster = checkInMasterService.save(CheckInMaster);
 
@@ -5771,11 +5774,12 @@ public class HomeController {
 				}
 
 				objList.add(obj);
+				CheckInMaster.setCheckIn(objList);
 			}
 		}
 		ArrayList<String> printstr = new ArrayList<String>();
 
-		List<CheckIn> CheckInobj = checkinService.saveall(objList);
+		List<CheckIn> CheckInobj = CheckInMaster.getCheckIn();
 		List<AssetMaster> AssetMasterobj = assetMasterService.findAll();
 		List<EmployeeMaster> EmployeeMasterobj = employeeMasterService.findAll();
 		String Empname = "";
@@ -15694,7 +15698,7 @@ public class HomeController {
 		for (int i = 1; i <= 12; i++) {
 			monthls.put(currentYear + "-" + String.format("%02d", i), 0);
 			amountls.put(currentYear + "-" + String.format("%02d", i), 0);
-			monthname.put(currentYear + "-" + String.format("%02d", i), monthNames[i-1]);
+			monthname.put(currentYear + "-" + String.format("%02d", i), monthNames[i - 1]);
 		}
 
 		List<InsuranceMaster> lnsurancels = insuranceMasterService.findAll();
@@ -15757,7 +15761,8 @@ public class HomeController {
 							/// Before and after date check
 							tempmonth = inpcobj.getPTo().substring(0, 7).toString();
 
-							if (empallower & firstentry & tempmonth.substring(0, 4).toString().equalsIgnoreCase(currentYear)) {
+							if (empallower & firstentry
+									& tempmonth.substring(0, 4).toString().equalsIgnoreCase(currentYear)) {
 								// allower = true;
 								monthls.put(tempmonth, monthls.getOrDefault(tempmonth, 0) + 1);
 								firstentry = false;
@@ -15796,11 +15801,11 @@ public class HomeController {
 		 * 
 		 * amountls.forEach((k, v) -> { System.out.println(k + " - " + v); });
 		 */
-		
+
 		theModel.addAttribute("selecttype", selecttype);
 		theModel.addAttribute("monthls", monthls);
 		theModel.addAttribute("amountls", amountls);
-		theModel.addAttribute("monthname", monthname);		
+		theModel.addAttribute("monthname", monthname);
 		theModel.addAttribute("total_esti_amount", total_esti_amount);
 		theModel.addAttribute("currentYear", currentYear);
 		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("insurancereport"));
@@ -15815,6 +15820,120 @@ public class HomeController {
 
 	private LocalDate getFirstDate(String selectedmonth) {
 		return LocalDate.parse(selectedmonth + "-01");
+	}
+
+	@GetMapping("empattendanceperform")
+	public String empattendanceperform(Model themodel) {
+		List<BranchMaster> bmList = branchMasterService.findAll();
+		themodel.addAttribute("branchlist", bmList);
+		themodel.addAttribute("menuactivelist",
+				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Attendance_performanceReport"));
+		return "empattendanceperform";
+	}
+
+	@GetMapping("rptattendanceperformancereport")
+	public String empattendanceperformrpt(Model themodel, @RequestParam("dateRange") String dateRange,
+			@RequestParam("branch") String branch) {
+		String[] dates = dateRange.split("to");
+		String sr_startdate = dates[0].trim();
+		String sr_enddate = dates[1].trim();
+
+		int workingdays = attendanceMasterService.getWorkingDayscountExceptsundays(sr_startdate, sr_enddate);
+		int holidaycount = attendanceMasterService.getHolidayCount(sr_startdate, sr_enddate, branch);
+
+		// Define the date format
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		// Parse the dates
+		LocalDate startDate = LocalDate.parse(sr_startdate, formatter);
+		LocalDate endDate = LocalDate.parse(sr_enddate, formatter);
+
+		// Calculate the number of days between the two dates
+		long totaldays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+
+		long holidaySunday = (totaldays - workingdays) + holidaycount;
+
+		String branchsql = "";
+		if (!branch.equalsIgnoreCase("All")) {
+			branchsql = "am.branch_masterid = " + branch + " and ";
+		}
+
+		List<Map<String, Object>> ls = attendanceMasterService.getPerformancerpt(sr_startdate, sr_enddate, branchsql);
+
+		List<String> opls = new ArrayList<>();
+
+		ls.forEach(rowMap -> {
+			String employeeid = String.valueOf(rowMap.get("employeeid"));
+			String branch_masterid = String.valueOf(rowMap.get("branch_masterid"));
+			String branch_name = String.valueOf(rowMap.get("branch_name"));
+			String staff_name = String.valueOf(rowMap.get("staff_name"));
+			String P = String.valueOf(rowMap.get("P"));
+			String A = String.valueOf(rowMap.get("A"));
+			String SL = String.valueOf(rowMap.get("SL"));
+			String T = String.valueOf(rowMap.get("T"));
+			String HL = String.valueOf(rowMap.get("HL"));
+
+			opls.add(employeeid + "-" + branch_masterid + "-" + staff_name + "-" + branch_name + "-" + workingdays + "-"
+					+ holidaySunday + "-" + P + "-" + A + "-" + SL + "-" + T + "-" + HL);
+		});
+
+		try {
+			themodel.addAttribute("sr_startdate",
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(sr_startdate)));
+			themodel.addAttribute("sr_enddate",
+					displaydateFormatFirstMMMddYYY.format(displaydateFormatrev.parse(sr_enddate)));
+		} catch (ParseException e) {
+
+		}
+
+		themodel.addAttribute("datals", opls);
+
+		return "rptattendanceperformancereport";
+	}
+
+	@GetMapping("incrementanalysisrpt")
+	public String incrementanalysisrpt(Model themodel) {
+		List<EmployeeMaster> emls = EffectiveEmployee(employeeMasterService.findAll());
+		List<String> ls = new ArrayList();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+
+		for (EmployeeMaster em : emls) {
+			String str = "";
+			
+			str += "RVS" + String.format("%04d", em.getEmpMasterid()) + "~";
+			str += em.getStaffName() + "~";
+			// ------------------------------------------------
+			List<EmployeeJobcompensation> compenobj = new ArrayList<>();
+			compenobj = employeeJobcompensationService.findByEmployeeid(em.getEmpMasterid());
+
+			if (compenobj.size() > 0) {
+				List<EmployeeJobcompensation> Compenobjjobgreen = compenobj.stream()
+						.filter(c -> dateFormat.format(date).compareTo(c.getComeffectivedate().toString()) >= 0)
+						.collect(Collectors.toList());
+				Compenobjjobgreen.sort(Comparator.comparing(EmployeeJobcompensation::getComeffectivedate));
+				if (Compenobjjobgreen.size() > 0) {
+
+					str += Compenobjjobgreen.get(Compenobjjobgreen.size() - 1).getCompayrate() + "~";
+					str += getTimeage(Compenobjjobgreen.get(Compenobjjobgreen.size() - 1).getComeffectivedate()) + "~";
+
+					try {
+						str += displaydateFormatFirstMMMddYYY
+								.format(displaydateFormatrev.parse(
+										Compenobjjobgreen.get(Compenobjjobgreen.size() - 1).getComeffectivedate()))
+								.toString() + "~";
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}
+			ls.add(str);
+			// ------------------------------------------------
+		}
+		themodel.addAttribute("list", ls);
+
+		return "rptincrementanalysis";
 	}
 
 }

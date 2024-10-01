@@ -229,4 +229,29 @@ public class AttendanceMasterImp implements AttendanceMasterService {
 		return  JdbcTemplate.queryForObject(sql,Integer.class);
 	}
 
+	@Override
+	public int getWorkingDayscountExceptsundays(String startdate, String enddate) {
+		String sql = "SELECT COUNT(*) AS count_days"
+				+ " FROM (SELECT DATE_ADD('"+ startdate +"', INTERVAL n DAY) AS date  FROM (   SELECT @rownum := @rownum + 1 AS n         FROM (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4               UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t1,             (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4               UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,             (SELECT @rownum := -1) r        ) AS numbers    ) AS date_range    WHERE date BETWEEN '"+ startdate +"' AND '"+ enddate +"'      AND DAYOFWEEK(date) != 1 "; 
+		//System.out.println(sql);
+		return  JdbcTemplate.queryForObject(sql,Integer.class);
+	}
+
+	@Override
+	public int getHolidayCount(String startdate, String enddate,String branch) {
+		String sql = "SELECT count(*) holidays FROM holiday  hd  inner join holidayextended_props hex on hex.holidayextended_propsid =hd.holidayid  where hex.branch ='"+ branch +"' and hd.start >= '"+ startdate +" 12:00:00'  and  hd.end <='"+ enddate +" 12:00:00' ";
+		//System.out.println(sql);
+		return  JdbcTemplate.queryForObject(sql,Integer.class);
+	}
+
+	@Override
+	public List<Map<String, Object>> getPerformancerpt(String startdate, String enddate, String branchsql) {
+		
+		String sql = "SELECT am.employeeid,am.branch_masterid, bm.branch_name,em.staff_name, sum(case when am.attstatus='P' then 1 else 0 end) as P,sum(case when am.attstatus='A' then 1 else 0 end) as A,sum(case when am.attstatus='SL' then 1 else 0 end) as SL,sum(case when am.attstatus='T' then 1 else 0 end) as T,sum(case when am.attstatus='HL' then 1 else 0 end) as HL FROM attendancemaster am inner join branch_master bm on am.branch_masterid = bm.id  inner join employeemaster em on am.employeeid = em.emp_masterid  where "+ branchsql +" am.attendance_date between '"+ startdate +" 00:00:00'  and '"+ enddate +" 00:00:00' group by am.employeeid,am.branch_masterid order by P desc;";
+		
+		//System.out.println(sql);
+		List<Map<String, Object>> atm = JdbcTemplate.queryForList(sql);
+		return atm;
+	}
+
 }

@@ -67,6 +67,13 @@ public class menuactivelist {
 			activemenus.put("Attendance", true);
 			activemenus.put("Attendance Report", true);
 			break;
+		case "admin_hr_Attendance_Attendance_performanceReport":
+
+			activemenus.put("Administration", true);
+			activemenus.put("HR Management", true);
+			activemenus.put("Attendance", true);
+			activemenus.put("performanceReport", true);
+			break;
 		case "admin_hr_Attendance_Holiday":
 
 			activemenus.put("Administration", true);

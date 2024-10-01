@@ -114,6 +114,11 @@
 										<div data-i18n="Attendance Report">Attendance Report</div>
 								</a></li>
 								<li class="menu-item"
+									th:classappend="${menuactivelist.get('performanceReport')} ? ' active' :'' "><a
+									href="empattendanceperform" class="menu-link">
+										<div data-i18n="Performance Report">Performance Report</div>
+								</a></li>
+								<li class="menu-item"
 									th:classappend="${menuactivelist.get('Holiday')} ? ' active' :'' "><a
 									href="holidaydefine" class="menu-link">
 										<div data-i18n="Holiday">Holiday</div>
@@ -278,9 +283,14 @@
 			<ul class="menu-sub">
 				<li class="menu-item"><a href="reportprojectplan"
 					class="menu-link"> Project Status </a></li>
+				<li class="menu-item"><a href="checkinregister" class="menu-link"> Checkin Register </a></li>
+				
 				<li class="menu-item"
 					th:classappend="${menuactivelist.get('insurancestatus')} ? ' active open' :''"><a
 					href="insurancereport" class="menu-link"> Insurance Report </a></li>
+				<li class="menu-item"
+					th:classappend="${menuactivelist.get('IncrementAnalysis')} ? ' active open' :''"><a
+					href="incrementanalysisrpt" class="menu-link"> For Increment Analysis</a></li>
 			</ul>
 		</li>
 	</ul>

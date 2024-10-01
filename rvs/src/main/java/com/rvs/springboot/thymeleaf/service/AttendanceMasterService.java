@@ -18,4 +18,8 @@ public interface AttendanceMasterService {
 	public void deleteById(int attendid);
 	
 	public int checkAttendanceisthereforFurtureDate(int empid,String effdate);
+	
+	public int getWorkingDayscountExceptsundays(String startdate ,String enddate);
+	public int getHolidayCount(String startdate ,String enddate,String branch);
+	public  List<Map<String, Object>> getPerformancerpt(String startdate ,String enddate, String branchsql);
 }

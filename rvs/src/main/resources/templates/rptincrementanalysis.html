@@ -139,16 +139,12 @@ padding: 10px;
 					<img th:src="@{/assets/img/logo/favicon.ico}" /> <span
 						class="app-brand-text h3 mb-0 fw-bold">RVS
 						Land Surveyors</span><br/>
-						<b>Insurance Yearly Report : <i><span
-								th:text="${currentYear}"></span></i>
+						<b>Employee Increments Report 
 						</b>
 					
 
 				</div>
-<b >Total Premium Amount : <i><span
-							th:text="${total_esti_amount} +'.00'"></span> </i>
 
-					</b>
 
 				<div class="col-md-12">
 
@@ -156,32 +152,24 @@ padding: 10px;
 						<thead>
 							<tr>
 								<th class="sticky-col first-col td1">S.No</th>
-								<th>Month</th>
-								<th>No.of.Policy Expire</th>
-								<th>Total Premium</th>
+								<th>Employee ID</th>
+								<th>Name</th>
+								<th>Time Line</th>
+								<th>Last Incremented Date</th>
+								<th>Current Pay</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="insurance, i : ${monthls}">
-								<td th:text="${i.index+1}"></td>
-								<td><span th:text="${insurance.key}"></span> <span
-									th:text="'(' + ${monthname.get(insurance.key)} +')'"></span></td>
-								<td><a
-									th:href="@{'rptinsurremainderreport?mn=' + ${insurance.key} + '&selecttype='+ ${selecttype}}"
-									th:text="${insurance.value}" target="_blank"></a></td>
-								<td align='right'><a
-									th:href="@{'rptinsurremainderreport?mn=' + ${insurance.key} + '&selecttype='+ ${selecttype}}"
-									th:text="${amountls.get(insurance.key)} + '.00'"
-									target="_blank"></a></td>
-
-
-
+							<tr th:each="rpt,stat : ${list}">
+								<td th:text="${stat.index+1}"></td>
+								<td th:text="${#strings.arraySplit(rpt,'~')[0] }"></td>
+								<td th:text="${#strings.arraySplit(rpt,'~')[1] }"></td>
+								
+								<td class="td3" th:text="${#strings.arraySplit(rpt,'~')[3] }"></td>
+								<td class="td3" th:text="${#strings.arraySplit(rpt,'~')[4] }"></td>
+								<td class="td3" th:text="${#strings.arraySplit(rpt,'~')[2] }"></td>
 							</tr>
-							<tr>
-								<td colspan="4" align="right"><b>Total Premium Amount :
-										<i><span th:text="${total_esti_amount} +'.00'"></span></i>
-								</b></td>
-							</tr>
+							
 
 						</tbody>
 					</table>

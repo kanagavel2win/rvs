@@ -24,6 +24,10 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
 	rel="stylesheet}">
+	
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/vendor/css/rtl/core.css}"
+	class="template-customizer-core-css" />
 <!-- BEGIN: Vendor CSS-->
 <link rel="stylesheet" type="text/css"
 	th:href="@{/app-assets/vendors/css/vendors.min.css}">
@@ -111,6 +115,10 @@ a {
 	color: inherit; /* Inherit color from parent */
 	text-decoration: none; /* Remove underline */
 }
+.card-body
+{
+padding: 10px;
+}
 </style>
 </head>
 <!-- END: Head-->
@@ -125,22 +133,20 @@ a {
 
 			<div class="card-body">
 
-				<div class="col-md-12">
-					<center> <b>Insurance Remainder Report : <i><span
+				<div class="col-md-12" align="center" >
+					<img th:src="@{/assets/img/logo/favicon.ico}" /> <span
+						class="app-brand-text h3 mb-0 fw-bold">RVS
+						Land Surveyors</span><br/>
+						 <b>Insurance Remainder Report : <i><span
 						th:text="${monthFirtDate} +' to ' +${monthLastDate}"></span></i>
 					</b>
-					</center>
-					<br /><br />
-					<b>Total Premium Amount : <i><span
+
+				</div>
+<b>Total Premium Amount : <i><span
 						th:text="${total_esti_amount} +'.00'"></span> </i>
 						(<span
 						th:text="${#lists.size(insls)} "></span> No's)
 					</b>
-					<br />
-					<br />
-
-				</div>
-
 
 				<div class="col-md-12">
 

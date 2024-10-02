@@ -25,7 +25,6 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -104,6 +102,7 @@ import com.rvs.springboot.thymeleaf.entity.EmployeeEducation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeEmgContact;
 import com.rvs.springboot.thymeleaf.entity.EmployeeExperience;
 import com.rvs.springboot.thymeleaf.entity.EmployeeFiles;
+import com.rvs.springboot.thymeleaf.entity.EmployeeIncentive;
 import com.rvs.springboot.thymeleaf.entity.EmployeeJobHire;
 import com.rvs.springboot.thymeleaf.entity.EmployeeJobcompensation;
 import com.rvs.springboot.thymeleaf.entity.EmployeeJobempstatus;
@@ -3570,16 +3569,22 @@ public class HomeController {
 			long t = 0;
 			long hl = 0;
 
-			p = attls.stream().filter(c -> c.getAttstatus().equalsIgnoreCase("P")
-					&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid)).count();
-			a = attls.stream()
-					.filter(c -> c.getAttstatus().equalsIgnoreCase("A") || c.getAttstatus().equalsIgnoreCase("SL")
+			p = attls.stream()
+					.filter(c -> c.getAttstatus().equalsIgnoreCase("P")
 							&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid))
-					.count();
-			t = attls.stream().filter(c -> c.getAttstatus().equalsIgnoreCase("T")
-					&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid)).count();
-			hl = attls.stream().filter(c -> c.getAttstatus().equalsIgnoreCase("HL")
-					&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid)).count();
+					.collect(Collectors.toList()).size();
+			a = attls.stream()
+					.filter(c -> (c.getAttstatus().equalsIgnoreCase("A") || c.getAttstatus().equalsIgnoreCase("SL"))
+							&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid))
+					.collect(Collectors.toList()).size();
+			t = attls.stream()
+					.filter(c -> c.getAttstatus().equalsIgnoreCase("T")
+							&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid))
+					.collect(Collectors.toList()).size();
+			hl = attls.stream()
+					.filter(c -> c.getAttstatus().equalsIgnoreCase("HL")
+							&& String.valueOf(c.getBranchMasterid()).equalsIgnoreCase(branchid))
+					.collect(Collectors.toList()).size();
 
 			calhtml = calhtml + "<div class='cal_inner_holder' id='" + i + "_div1'>" + "<a class='cal_inner cal_innerp"
 					+ i + "' style='background:#8FBC8F;color:#fff'>" + p + "</a>" + "<a class='cal_inner cal_innera" + i
@@ -4247,6 +4252,9 @@ public class HomeController {
 		String prd[] = lastDayOfMonth.toString().split("-");
 		int totaldayofmonth = Integer.parseInt(prd[2]);
 
+		String sdateInc = selectedmonth + "-01";
+		String edateInc = prd[0] + "-" + prd[1] + "-" + prd[2];
+
 		String prdenddate = prd[2] + "." + prd[1] + "." + prd[0];
 		String prdStartdate = "01." + prd[1] + "." + prd[0];
 
@@ -4381,7 +4389,28 @@ public class HomeController {
 					selectedmonth);
 			// Advance=Advance+currentmonthadvance;
 			// -----------------------------------------------------
+			// Incentive Calculation
+			double real_incentive =0;
+			try {
+				Date d1 = displaydateFormatrev.parse(sdateInc);
+				Date d2 = displaydateFormatrev.parse(edateInc);
 
+				real_incentive = empobj.getEmployeeIncentive().stream().filter(c ->
+				{
+					try {
+						return (d1.compareTo(displaydateFormatrev.parse(c.getIncentivedate().toString())) <=0 &&
+						d2.compareTo(displaydateFormatrev.parse(c.getIncentivedate().toString())) >=0
+						);
+					} catch (ParseException e) {
+						
+					}
+					return false;
+				})
+						.mapToDouble(EmployeeIncentive::getAmount).sum();
+			} catch (ParseException e) {
+
+			}
+			// -----------------------------------------------------
 			Totalholidays = holidaylist.size();
 			TotalWWorkingDays = (P - HOLIDAYP - SUNDAYP) + T + (HL - HOLIDAYHL - SUNDAYHL);
 			Totalsundaywrkdays = SUNDAYP + SUNDAYHL;
@@ -4427,13 +4456,14 @@ public class HomeController {
 			EPF = Math.round(BasicSalary * (0.12) * 0);
 			TOTALDeduction = ESI + EPF + currentmonthadvance;
 			Monthlyincentives = Math.round(ExtraWorkingDays * (ctc / 26));
-			net = Math.round((TOTALGROSS - TOTALDeduction) + Monthlyincentives);
+			net = Math.round((TOTALGROSS - TOTALDeduction) + Monthlyincentives + real_incentive);
 
 			String str = employeeid + "-" + staff_name + "-" + ctc + "-" + (WorkingDays + ExtraWorkingDays) + "-"
 					+ Absent + "-" + WorkingDays + "-" + ExtraWorkingDays;
 			str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance
 					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net + "-" + currentmonthadvance + "-"
-					+ branchMasterService.findById(Integer.parseInt(branch_masterid_str)).getBranchCode();
+					+ branchMasterService.findById(Integer.parseInt(branch_masterid_str)).getBranchCode() + "-"
+					+ real_incentive +"-";
 
 			report.add(str);
 			totalnet.set(0, totalnet.get(0) + net);
@@ -4464,7 +4494,7 @@ public class HomeController {
 				payslipboj.setTotalWorkingDays(String.valueOf(WorkingDays + ExtraWorkingDays));
 				payslipboj.setWorkingDays(String.valueOf(WorkingDays));
 				payslipboj.setBranchid(String.valueOf(branch_masterid_str));
-
+				payslipboj.setRealincentives(real_incentive);
 				payslipserive.save(payslipboj);
 				themodel.addAttribute("save", "save");
 
@@ -5568,8 +5598,7 @@ public class HomeController {
 			obj.setVendor(vendor);
 			obj.setStatus(Status);
 			obj.setWhichLocation(WhichLocation);
-			
-			
+
 			if (ACondition.length > 0) {
 				obj.setAcondition(ACondition[i]);
 			}
@@ -15901,7 +15930,7 @@ public class HomeController {
 
 		for (EmployeeMaster em : emls) {
 			String str = "";
-			
+
 			str += "RVS" + String.format("%04d", em.getEmpMasterid()) + "~";
 			str += em.getStaffName() + "~";
 			// ------------------------------------------------
@@ -15937,4 +15966,94 @@ public class HomeController {
 		return "rptincrementanalysis";
 	}
 
+	@GetMapping("empincentive")
+	public String empincentive(Model theModel, @RequestParam("id") int empid) {
+
+		EmployeeMaster emobj = fillemployeeobject(empid);
+
+		List<EmployeeIncentive> advobj = new ArrayList<>();
+		advobj = emobj.getEmployeeIncentive();
+
+		theModel.addAttribute("employeeincentive", advobj);
+		theModel.addAttribute("empid", empid);
+		theModel.addAttribute("employeemaster", emobj);
+
+		theModel.addAttribute("emptitle",
+				emobj.getEmpid() + "000" + emobj.getEmpMasterid() + " - " + emobj.getStaffName());
+		theModel.addAttribute("menuactivelist", menuactivelistobj.getactivemenulist("admin_hr_employeelist"));
+
+		return "empincentive";
+	}
+
+	@ResponseBody
+	@PostMapping("employeeincentivesave")
+	public EmployeeMaster employeeincentivesave(@RequestParam Map<String, String> params) {
+
+		EmployeeMaster em = employeeMasterService.findById(Integer.parseInt(params.get("empid")));
+
+		List<EmployeeIncentive> eadvls = new ArrayList();
+
+		String tempreceiptid = nullremover(String.valueOf(params.get("employeeincentiveid")));
+
+		if (!tempreceiptid.equalsIgnoreCase("")) {
+			List<EmployeeIncentive> ls = new ArrayList();
+
+			for (EmployeeIncentive invm : em.getEmployeeIncentive()) {
+				if (invm.getEmployeeIncentiveid() == Integer.parseInt(tempreceiptid)) {
+					invm.setIncentivedate(String.valueOf(params.get("incentivedate")));
+					invm.setAmount(Double.parseDouble(params.get("amount")));
+					invm.setComments(String.valueOf(params.get("comments")));
+				}
+				ls.add(invm);
+			}
+			em.setEmployeeIncentive(ls);
+
+		} else {
+			EmployeeIncentive invm = new EmployeeIncentive();
+			invm.setIncentivedate(String.valueOf(params.get("incentivedate")));
+			invm.setAmount(Double.parseDouble(params.get("amount")));
+			invm.setComments(String.valueOf(params.get("comments")));
+
+			em.getEmployeeIncentive().add(invm);
+		}
+
+		return employeeMasterService.save(em);
+	}
+
+	@PostMapping("getemployeeincentivelist")
+	@ResponseBody
+	public List<EmployeeIncentive> getemployeeincentivelist(@RequestParam Map<String, String> params) {
+
+		List<EmployeeIncentive> empincentiveObj = employeeMasterService
+				.findById(Integer.parseInt(params.get("mastercategoryid"))).getEmployeeIncentive();
+
+		for (EmployeeIncentive empadv : empincentiveObj) {
+			try {
+				empadv.setIncentivedate_DDMMMYYYY(displaydateFormatFirstMMMddYYY
+						.format(displaydateFormatrev.parse(empadv.getIncentivedate())).toString());
+			} catch (ParseException e) {
+				logger.error(e);
+				e.printStackTrace();
+			}
+
+		}
+
+		if (empincentiveObj.size() > 0) {
+			empincentiveObj.sort(Comparator.comparing(EmployeeIncentive::getEmployeeIncentiveid).reversed());
+		}
+		return empincentiveObj;
+	}
+
+	@PostMapping("getincentiveitem")
+	@ResponseBody
+	public EmployeeIncentive getincentiveitem(@RequestParam Map<String, String> params) {
+
+		EmployeeIncentive obj = employeeMasterService.findById(Integer.parseInt(params.get("mastercategoryid")))
+				.getEmployeeIncentive().stream()
+				.filter(C -> C.getEmployeeIncentiveid() == Integer.parseInt(params.get("incentiveid")))
+				.collect(Collectors.toList()).get(0);
+
+		return obj;
+
+	}
 }

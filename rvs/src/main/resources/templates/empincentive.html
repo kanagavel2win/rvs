@@ -13,7 +13,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title th:text="${employeemaster.StaffName} + ' Advance'"></title>
+<title th:text="${employeemaster.StaffName} + ' Incentive'"></title>
 
 <meta name="description" content="" />
 
@@ -96,7 +96,7 @@
 	float: right;
 }
 
-.editempadvanceinfo{
+.editempincentiveinfo{
 	cursor: pointer;
 
 }
@@ -104,7 +104,7 @@
 
 <script type="text/javascript">
 
-var tblemployeeadvanceid=0;
+var tblemployeeincentiveid=0;
 </script>
 </head>
 
@@ -194,8 +194,8 @@ var tblemployeeadvanceid=0;
 									<li class="nav-item"><a class="nav-link"
 															th:href="'empjob?id=' + ${employeemaster['empMasterid']}"><i
 																class="bx bx-grid-alt"></i> Benefits</a></li>
-									<li class="nav-item"><a class="nav-link active"><i class='bx bx-money-withdraw'></i>  Advance</a></li>
-									<li class="nav-item"><a class="nav-link" th:href="'empincentive?id=' + ${employeemaster['empMasterid']}"><i class='bx bx-money-withdraw'></i>  Incentive</a></li>
+									<li class="nav-item"><a class="nav-link" th:href="'empadvance?id=' + ${employeemaster['empMasterid']}"><i class='bx bx-money-withdraw'></i>  Advance</a></li>
+									<li class="nav-item"><a class="nav-link active"><i class='bx bx-money-withdraw'></i>  Incentive</a></li>
 								</ul>
 							</div>
 						</div>
@@ -206,12 +206,12 @@ var tblemployeeadvanceid=0;
 								<div class="card mb-4">
 									<div class="card-header align-items-center">
 										<h6 class="card-action-title mb-0">
-											Salary Advance details
+											Salary Incentive details
 											<div class="card-action-element" style="float: right">
 												<button
-													class="btn btn-primary btn-sm newempadvancestatus"
+													class="btn btn-primary btn-sm newempincentivestatus"
 													type="button" name="-" data-bs-toggle="modal"
-													data-bs-target="#advanceScrollable">
+													data-bs-target="#incentiveScrollable">
 													<i class="bx bx-plus bx-xs me-1"></i>
 												</button>
 											</div>
@@ -221,18 +221,15 @@ var tblemployeeadvanceid=0;
 									<div class="card-body">
 										<div class="table-responsive mt-2">
 											<table class="table table-hover table-bordered mb-0"
-												id="tbl_advance_information">
+												id="tbl_incentive_information">
 												<thead>
 													<tr>
 														<th>Date</th>
 														<th>Amount</th>
-														<th>Purpose</th>
-														<th>Paid Through</th>
-														<th>Repay Months</th>
 														<th colspan="2">Comments</th>
 													</tr>
 												</thead>
-												<tbody id="advancelist">
+												<tbody id="incentivelist">
 												  
 												</tbody>
 											</table>
@@ -248,7 +245,7 @@ var tblemployeeadvanceid=0;
 						<!-- Modal -->
 					
 						<!-- Edit COMPENSATION Modal -->
-						<div class="modal fade" id="advanceScrollable" tabindex="-1"
+						<div class="modal fade" id="incentiveScrollable" tabindex="-1"
 							aria-hidden="true">
 							<div
 								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
@@ -258,21 +255,16 @@ var tblemployeeadvanceid=0;
 										<button type="button" class="btn-close"
 											data-bs-dismiss="modal" aria-label="Close"></button>
 										<div class="text-center mb-4">
-											<h5>Advance Information</h5>
+											<h5>Incentive Information</h5>
 										</div>
-										<form id="AdvanceInformation" onsubmit="return false">
+										<form id="IncentiveInformation" onsubmit="return false">
 											<div class="col-12">
-												<label class="form-label" for="advancedate">Advance
+												<label class="form-label" for="incentivedate">Incentive
 													Date </label> <input type="hidden" class="form-control"
-													id="employeeadvanceid" name="employeeadvanceid" />  <input
-													type="date" class="form-control" id="advancedate" name="advancedate" required />
+													id="employeeincentiveid" name="employeeincentiveid" />  <input
+													type="date" class="form-control" id="incentivedate" name="incentivedate" required />
 											</div>
-											<div class="col-12">
-												<label class="form-label" for="purpose">Purpose </label>
-													 <input
-													type="text" class="form-control"
-													 id="purpose" name="purpose"  required/> 
-											</div>
+											
 											<div class="col-12 ">
 												<label for="amount">Pay Amount </label> 
 												<input
@@ -280,43 +272,16 @@ var tblemployeeadvanceid=0;
 													 id="amount" name="amount" required />
 											</div>
 											<div class="col-12">
-												<label for="compayratetype">Pay from</label><br />  
-													<select
-													class="form-select"
-													style="width: 50%; float: left" id="paidfrom" name="paidfrom" required>
-													<option>-</option>
-													<th:block th:each="obj1 : ${accountlist}">
-															<option th:value="${obj1.accountheadid}"
-															th:text="${obj1.category}"></option>
-													</th:block>
-												</select>
-												
-													<select
-													class="form-select"
-													style="width: 50%; float: right" id="modeofpayment" name="modeofpayment" required>
-													<option>-</option>
-													<th:block th:each="str :${ModeofPayment}">
-														<option th:value="${str}" th:text="${str}"></option>
-													</th:block>
-												</select>
-											</div>
-											<div class="col-12 ">
-												<label for="amount">Repayment months </label> 
-												<input
-													type="number" step="any" class="form-control"
-													 id="repaymentmonths" name="repaymentmonths" />
-											</div>
-											<div class="col-12">
-												<label for="repaymentcomments">Repayment Comments </label> 
+												<label for="comments">Comments </label> 
 												<input
 													type="text" class="form-control"
-													 id="repaymentcomments"  name="repaymentcomments"/>
+													 id="comments"  name="comments"/>
 											</div>
 											<div class="col-12 text-center mt-4">
-												<button type="submit" class="btn btn-primary  me-sm-3 me-1 editAdvancesubmit"
+												<button type="submit" class="btn btn-primary  me-sm-3 me-1 editIncentivesubmit"
 													>Submit</button>
 												<button type="reset"
-													class="btn btn-label-secondary tbl_jobadvance_close"
+													class="btn btn-label-secondary tbl_jobincentive_close"
 													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
 											</div>
 										</form>
@@ -420,7 +385,7 @@ var tblemployeeadvanceid=0;
 	<script>
 	
 	 
-	const flatpickrFriendlycomeffectivedate = flatpickr("#advancedate", {
+	const flatpickrFriendlycomeffectivedate = flatpickr("#incentivedate", {
 		  altInput: true,
 	      altFormat: 'F j, Y',
 	      dateFormat: 'Y-m-d'
@@ -452,7 +417,7 @@ var tblemployeeadvanceid=0;
 						
 						//--------------------------------------------------------------------------------------------------------------------------------------		 
 						// ----------------------------------------------------------------------------------------------------------------------------------------
-								function getadvancelist() {
+								function getincentivelist() {
 									
 									var formData = {
 										mastercategoryid : "[[${employeemaster['empMasterid']}]]"
@@ -460,7 +425,7 @@ var tblemployeeadvanceid=0;
 	
 									$.ajax({
 										type : "POST",
-										url : "getemployeeadvancelist",
+										url : "getemployeeincentivelist",
 										data : formData,
 										success : function(result) {
 											var htmlop="";
@@ -471,15 +436,14 @@ var tblemployeeadvanceid=0;
 											bmobj.forEach((element, index, array) =>
 								           	{
 								           		var sub_total=0;
-								           	     htmlop +="<tr><td class='text-nowrap editempadvanceinfo' onclick='editempadvanceinfo(this)' id='"+element.employeeadvanceid +"'>"+element.advancedate_DDMMMYYYY+"</td>";
-									           	 htmlop +="<td class='text-nowrap'>"+element.amount +"</td><td class='text-nowrap'>"+element.purpose +"</td><td class='text-nowrap'>"+element.modeofpayment +"</td><td>"+element.repaymentmonths +"</td>";
-									           	 htmlop +="<td>"+element.repaymentcomments +"</td></tr>";
-									           	 total +=parseFloat(element.amount);
+								           	     htmlop +="<tr><td class='text-nowrap editempincentiveinfo' onclick='editempincentiveinfo(this)' id='"+element.employeeIncentiveid +"'>"+element.incentivedate_DDMMMYYYY+"</td>";
+									           	 htmlop +="<td class='text-nowrap'>"+element.amount +"</td>";
+									           	 htmlop +="<td>"+element.comments +"</td></tr>";
+									           	
 								            });
 											
-											 htmlop += "<tr> <td colspan='4' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(2) +"</p> </td> </tr>";
-												
-											$('#advancelist').html(htmlop);
+											 	
+											$('#incentivelist').html(htmlop);
 										},
 										error : function(e) {
 											console.log("Error" + e);
@@ -495,30 +459,30 @@ var tblemployeeadvanceid=0;
 						//-------------------------------------------
 								$(document).ready(function(){
 								    setTimeout(function(){
-								    	getadvancelist();
+								    	getincentivelist();
 								     },20); // milliseconds
 								});
 								
 								//--------------------------------------------
 								function validationreceiptformreset()
 								   {
-									$('.tbl_jobadvance_close').click();
-					   				$('.editAdvancesubmit').prop("disabled",false);
-						   			$('.editAdvancesubmit').html("Save");
+									$('.tbl_jobincentive_close').click();
+					   				$('.editIncentivesubmit').prop("disabled",false);
+						   			$('.editIncentivesubmit').html("Save");
 								   			
 								   }
 								//--------------------------------------------------------------------------------------------------------------------------------------
-								$('#AdvanceInformation').on('submit',function(event) {
+								$('#IncentiveInformation').on('submit',function(event) {
 									
-									if (event.target.checkValidity() && $('#advancedate').val()!='') {
-										$('.editAdvancesubmit').prop("disabled",true);
-										$('.editAdvancesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
-										const formData = new FormData(document.querySelector("#AdvanceInformation"));
+									if (event.target.checkValidity() && $('#incentivedate').val()!='') {
+										$('.editIncentivesubmit').prop("disabled",true);
+										$('.editIncentivesubmit').html('<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...');
+										const formData = new FormData(document.querySelector("#IncentiveInformation"));
 										formData.append("empid","[[${employeemaster['empMasterid']}]]");
 										
 										$.ajax({
 											type : "POST",
-											url : "employeeadvancesave",
+											url : "employeeincentivesave",
 											processData : false,
 											contentType : false,
 											data : formData,
@@ -527,7 +491,7 @@ var tblemployeeadvanceid=0;
 												
 												validationreceiptformreset();
 												
-												getadvancelist();
+												getincentivelist();
 
 											},
 											error : function(e) {
@@ -536,7 +500,7 @@ var tblemployeeadvanceid=0;
 										});
 									} else {
 										alert("Fill the mandatory fields");
-										$('.editAdvancesubmit').prop("disabled",false);
+										$('.editIncentivesubmit').prop("disabled",false);
 									}
 								});
 								// --------------------------------------------------------------------
@@ -545,38 +509,33 @@ var tblemployeeadvanceid=0;
 	
 	//------------------------------------------------------------------------------------
 	
-	 function editempadvanceinfo(e){
-			var advanceid= e.getAttribute("id");
+	 function editempincentiveinfo(e){
+			var incentiveid= e.getAttribute("id");
 			
 				var formData = {
-					advanceid : advanceid,
+					incentiveid : incentiveid,
 					mastercategoryid:  "[[${employeemaster['empMasterid']}]]"
 				}
 
 				$.ajax({
 					type : "POST",
-					url : "getadvanceitem",
+					url : "getincentiveitem",
 					data : formData,
 					success : function(result) {
 						var bmobj = JSON.parse(JSON.stringify(result));
 						console.log(bmobj);
 						
-						$("#employeeadvanceid").val(bmobj.employeeadvanceid);
-						//$("#advancedate").val(bmobj.advancedate);
-						$("#purpose").val(bmobj.purpose);
+						$("#employeeincentiveid").val(bmobj.employeeincentiveid);
 						$("#amount").val(bmobj.amount);
-						$("#paidfrom").val(bmobj.paidfrom).change();
-						$("#modeofpayment").val(bmobj.modeofpayment).change();
-						$("#repaymentmonths").val(bmobj.repaymentmonths);
-						$("#repaymentcomments").val(bmobj.repaymentcomments);
-						flatpickrFriendlycomeffectivedate.setDate(bmobj.advancedate);
+						$("#comments").val(bmobj.comments);
+						flatpickrFriendlycomeffectivedate.setDate(bmobj.incentivedate);
 					},
 					error : function(e) {
 						console.log("Error" + e);
 					}
 					
 				});
-				$("#advanceScrollable").modal('toggle');
+				$("#incentiveScrollable").modal('toggle');
 			
 		}
 		//------------------------------------------------------

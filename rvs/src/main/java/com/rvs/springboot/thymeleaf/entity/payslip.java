@@ -67,6 +67,8 @@ public class payslip implements Comparable<payslip> {
 	@Column
 	String monthlyincentives;
 	@Column
+	double realincentives;
+	@Column
 	String net;
 	@Column
 	String branchid;

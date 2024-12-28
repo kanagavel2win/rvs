@@ -80,13 +80,14 @@ public class menuactivelist {
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
 			activemenus.put("Holiday", true);
-		case "admin_hr_Attendance_Leave Approval":
+		case "admin_hr_Attendance_Leave_Approval":
 
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);
 			activemenus.put("Attendance", true);
 			activemenus.put("Leave Approval", true);
-		case "admin_hr_Attendance_Leave History":
+			
+		case "admin_hr_Attendance_Leave_History":
 
 			activemenus.put("Administration", true);
 			activemenus.put("HR Management", true);

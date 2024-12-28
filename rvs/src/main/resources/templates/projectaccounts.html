@@ -108,6 +108,12 @@
 	display: inline-block;
 }
 
+.bx-trash
+{
+color: red;
+}
+
+
 .tooltipx .tooltiptextx {
 	visibility: hidden;
 	font-size: 12px;
@@ -167,7 +173,7 @@
 }
 
 input:read-only {
-  background-color:#F3F2F2;
+	background-color: #F3F2F2;
 }
 </style>
 <script th:inline="javascript">
@@ -240,7 +246,8 @@ input:read-only {
 													class="bx bx-rupee bx-sm"></i></span>
 												<div>
 													<h6 class="mb-0">
-														Rs.<span th:text="${projectMaster.projecttotalvaluefromItem}"
+														Rs.<span
+															th:text="${projectMaster.projecttotalvaluefromItem}"
 															id="Lbl_projectvaluetotal"></span>
 													</h6>
 													<span>Project Value</span>
@@ -257,22 +264,23 @@ input:read-only {
 												</div>
 											</div>
 										</div>
-											 <!-- Options -->
-							                <div class="demo-vertical-spacingx">
-							                  	Days <span th:if="${projectMaster.noofdaysRemainingPercentage}" style="float:right" th:text=" ${projectMaster.noofdaysRemainingPercentage} +' % Completed' "> </span>
-							                    <div class="progress">
-							                      <div
-							                        class="progress-bar"
-							                        role="progressbar"
-							                        th:style="'width:'+ ${projectMaster.noofdaysRemainingPercentage} +'%'"
-							                        aria-valuemin="0"
-							                        aria-valuemax="100"
-							                      ></div>
-							                    </div>
-							                    <span  th:text="${projectMaster.noofdaysRemaining}"></span> Days Remaining
-							                   </div>
-							               <br/>
-							              <!--/ Options -->
+										<!-- Options -->
+										<div class="demo-vertical-spacingx">
+											Days <span
+												th:if="${projectMaster.noofdaysRemainingPercentage}"
+												style="float: right"
+												th:text=" ${projectMaster.noofdaysRemainingPercentage} +' % Completed' ">
+											</span>
+											<div class="progress">
+												<div class="progress-bar" role="progressbar"
+													th:style="'width:'+ ${projectMaster.noofdaysRemainingPercentage} +'%'"
+													aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+											<span th:text="${projectMaster.noofdaysRemaining}"></span>
+											Days Remaining
+										</div>
+										<br />
+										<!--/ Options -->
 
 
 										<h5 class="pb-2 border-bottom mb-4">Details</h5>
@@ -324,7 +332,7 @@ input:read-only {
 												<li class="mb-3"><span class="fw-bold me-2">Reference:</span>
 													<span th:text="${projectMaster.ReferenceName}"
 													id="Lbl_Reference"></span>
-												<hr /></li>
+													<hr /></li>
 
 												<li class="mb-3"><span class="fw-bold me-2">Board:</span>
 													<span th:text="${projectMaster.boardName}" id="Lbl_board"></span>
@@ -464,11 +472,11 @@ input:read-only {
 											<h5 class="card-action-title mb-0">
 												Invoice List
 												<div class="card-action-element" style="float: right">
-													<button class="btn btn-primary btn-sm addNewInvoicebtn"
+												<!-- 	<button class="btn btn-primary btn-sm addNewInvoicebtn"
 														type="button" data-bs-toggle="modal"
 														data-bs-target="#invoicemodel">
 														<i class="bx bx-plus bx-xs me-1"></i>
-													</button>
+													</button> -->
 												</div>
 											</h5>
 										</div>
@@ -554,14 +562,16 @@ input:read-only {
 																<div class="col-md-4">
 																	<dl class="row mb-2">
 																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-																			<span class="text-capitalize mb-0 text-nowrap">Invoice No#</span>
+																			<span class="text-capitalize mb-0 text-nowrap">Invoice
+																				No#</span>
 																		</dt>
 																		<dd class="col-sm-6 d-flex justify-content-md-end">
 																			<div class="w-px-150">
 																				<input type="text" class="form-control"
-																					id="invoiceNo" name="invoiceNo" placeholder="Will auto generate"  readonly disabled /> <input
-																					type="hidden" class="form-control" id="invoiceid"
-																					name="invoiceid" />
+																					id="invoiceNo" name="invoiceNo"
+																					placeholder="Will auto generate" readonly disabled />
+																				<input type="hidden" class="form-control"
+																					id="invoiceid" name="invoiceid" />
 																			</div>
 																		</dd>
 																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
@@ -583,8 +593,8 @@ input:read-only {
 
 																	</dl>
 																</div>
-																<div class="col-md-4">
-																	<dl class="row mb-2">
+																<dl class="row mb-2">
+																	<div class="col-md-4">
 																		<dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
 																			<span class=" text-capitalize mb-0 text-nowrap">
 																				Date:</span>
@@ -611,813 +621,802 @@ input:read-only {
 																					<option value="45 Days">45 Days</option>
 																					<option value="60 Days">60 Days</option>
 																					<option value="90 Days">90 Days</option>
-																				</select>
-																				<input type="hidden" class="form-control date-picker"
-																					id="dueDate" name="dueDate" />
+																				</select> <input type="hidden"
+																					class="form-control date-picker" id="dueDate"
+																					name="dueDate" />
 																			</div>
 																		</dd>
-
-																	</dl>
-																</div>
+																</dl>
 															</div>
+														</div>
 
-															<hr />
+														<hr />
 
-															<div class="row p-sm-3 p-0">
-																<div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-4 "
-																	style="padding-right: 3%;">
-																	<h6 class="pb-2">Customer:</h6>
-																	<p class="row mb-1">
-																		<input type="text" class="col-12 form-control lxd"
-																			name="invoiceaddressline1" id="invoiceaddressline1"
-																			Placeholder="Address Line1"  readonly disabled />
-																	</p>
-																	<p class="row mb-1">
-																		<input type="text" class="col-12 form-control lxd"
-																			name="invoiceaddressline2" id="invoiceaddressline2"
-																			Placeholder="Address Line2"  readonly disabled/>
-																	</p>
-																	<p class="row mb-1">
-																		<input type="text" class="col-6 form-control lxd"
-																			name="invoiceaddresscity" id="invoiceaddresscity"
-																			Placeholder="City / District" style="width: 50%"  readonly disabled/>
-																		<input type="text" class="col-6 form-control lxd"
-																			name="invoiceaddresspincode"
-																			id="invoiceaddresspincode" Placeholder="Pincode"
-																			style="width: 50%"  readonly disabled/>
-																	</p>
-																	<p class="row mb-1">
-																		<input type="text" class="col-6 form-control lxd"
-																			name="invoiceaddressState" id="invoiceaddressState"
-																			Placeholder="State" style="width: 50%"  readonly disabled/> <input
-																			type="text" class="col-6 form-control lxd"
-																			name="invoiceGSTNo" id="invoiceGSTNo"
-																			Placeholder="GST" style="width: 50%"  readonly disabled/>
-																	</p>
+														<div class="row p-sm-3 p-0">
+															<div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-4 "
+																style="padding-right: 3%;">
+																<h6 class="pb-2">Customer:</h6>
+																<p class="row mb-1">
+																	<input type="text" class="col-12 form-control lxd"
+																		name="invoiceaddressline1" id="invoiceaddressline1"
+																		Placeholder="Address Line1" readonly disabled />
+																</p>
+																<p class="row mb-1">
+																	<input type="text" class="col-12 form-control lxd"
+																		name="invoiceaddressline2" id="invoiceaddressline2"
+																		Placeholder="Address Line2" readonly disabled />
+																</p>
+																<p class="row mb-1">
+																	<input type="text" class="col-6 form-control lxd"
+																		name="invoiceaddresscity" id="invoiceaddresscity"
+																		Placeholder="City / District" style="width: 50%"
+																		readonly disabled /> <input type="text"
+																		class="col-6 form-control lxd"
+																		name="invoiceaddresspincode"
+																		id="invoiceaddresspincode" Placeholder="Pincode"
+																		style="width: 50%" readonly disabled />
+																</p>
+																<p class="row mb-1">
+																	<input type="text" class="col-6 form-control lxd"
+																		name="invoiceaddressState" id="invoiceaddressState"
+																		Placeholder="State" style="width: 50%" readonly
+																		disabled /> <input type="text"
+																		class="col-6 form-control lxd" name="invoiceGSTNo"
+																		id="invoiceGSTNo" Placeholder="GST" style="width: 50%"
+																		readonly disabled />
+																</p>
 
-																</div>
-																<div class="col-md-6 col-sm-7">
-																	<h6 class="pb-2">
-																		Bill To: <label for="sameasInvoiceto"
-																			class="sameasInvoiceto">Same as Invoice to
-																			Address</label> <input type="checkbox"
-																			class="sameasInvoiceto" id="sameasInvoiceto"
-																			name="sameasInvoiceto" value="sameasInvoiceto">
-
-																	</h6>
-																	<p class="row mb-1">
-																		<input type="text" class="col-12 form-control lxd"
-																			name="billaddressline1" id="billaddressline1"
-																			Placeholder="Address Line1"  readonly disabled/>
-																	</p>
-																	<p class="row mb-1">
-																		<input type="text" class="col-12 form-control lxd"
-																			name="billaddressline2" id="billaddressline2"
-																			Placeholder="Address Line2"  readonly disabled/>
-																	</p>
-																	<p class="row mb-1">
-																		<input type="text" class="col-6 form-control lxd"
-																			name="billaddresscity" id="billaddresscity"
-																			Placeholder="City / District" style="width: 50%"  readonly disabled/>
-																		<input type="text" class="col-6 form-control lxd"
-																			name="billaddresspincode" id="billaddresspincode"
-																			Placeholder="Pincode" style="width: 50%"  readonly disabled/>
-																	</p>
-																	<p class="row mb-1">
-																		<input type="text" class="col-6 form-control lxd"
-																			name="billaddressState" id="billaddressState"
-																			Placeholder="State" style="width: 50%"  readonly disabled/> <input
-																			type="text" class="col-6 form-control lxd"
-																			name="billGSTNo" id="billGSTNo" Placeholder="GST"
-																			style="width: 50%"  readonly disabled/>
-																	</p>
-
-																</div>
 															</div>
+															<div class="col-md-6 col-sm-7">
+																<h6 class="pb-2">
+																	Bill To: <label for="sameasInvoiceto"
+																		class="sameasInvoiceto">Same as Invoice to
+																		Address</label> <input type="checkbox" class="sameasInvoiceto"
+																		id="sameasInvoiceto" name="sameasInvoiceto"
+																		value="sameasInvoiceto">
 
-															<hr class="mx-n4" />
-
-															<div class="mb-3" data-repeater-list="group-a">
-																<div class="repeater-wrapper pt-0 pt-md-4"
-																	id="invoiceitemlist"></div>
-															</div>
-															<div class="row">
-																<div class="col-12">
-																	<button type="button" class="btn btn-primary"
-																		id="addnewinvoiceitem">Add
-																		Item</button>
-																</div>
-															</div>
-
-
-															<hr class="my-4 mx-n4" />
-
-															<div class="row py-sm-3">
-																<div class="col-6">
-																	<div class="mb-3">
-																		<label for="note" class="form-label fw-semibold">Note:</label>
-																		<textarea class="form-control" rows="2" id="note"
-																			name="note" placeholder="Invoice note"></textarea>
-																	</div>
-																</div>
-																<div class="col-md-6 d-flex justify-content-end">
-																	<div class="invoice-calculations">
-																		<div class="d-flex justify-content-between mb-2">
-																			<span class="w-px-100">Total:</span> <span
-																				class="fw-semibold" id="totalamtwithouttax">0.00</span>
-																		</div>
-																		<div
-																			class="d-flex justify-content-between mb-2 totaldiscountamountdiv">
-																			<span class="w-px-100">Discount:</span> <span
-																				class="fw-semibold" id=totaldiscountamount>0.00</span>
-																		</div>
-																		<div
-																			class="d-flex justify-content-between mb-2 totalCGSTdiv">
-																			<span class="w-px-100">CGST:</span> <span
-																				class="fw-semibold" id="totalCGST">0.00</span>
-																		</div>
-																		<div
-																			class="d-flex justify-content-between mb-2 totalSGSTdiv">
-																			<span class="w-px-100">SGST:</span> <span
-																				class="fw-semibold" id="totalSGST">0.00</span>
-																		</div>
-																		<div
-																			class="d-flex justify-content-between mb-2 totalIGSTdiv">
-																			<span class="w-px-100">IGST:</span> <span
-																				class="fw-semibold" id="totalIGST">0.00</span>
-																		</div>
-																		<hr />
-																		<div class="d-flex justify-content-between">
-																			<span class="w-px-100">Total Amount:</span> <span
-																				class="fw-semibold" id="totalamount">0.00</span>
-																			<input type="hidden" id="totalamount_hid" name="totalamount_hid" />
-																		</div>
-
-																	</div>
-																</div>
-															</div>
-															<div align="center">
-																<button type="submit"
-																	class="btn btn-primary editInvoicesubmit me-sm-3 me-1">Save
-																</button>
-
-																<button type="reset"
-																	class="btn btn-label-secondary editInvoiceclose"
-																	data-bs-dismiss="modal" aria-label="Close">
-																	Cancel</button>
+																</h6>
+																<p class="row mb-1">
+																	<input type="text" class="col-12 form-control lxd"
+																		name="billaddressline1" id="billaddressline1"
+																		Placeholder="Address Line1" readonly disabled />
+																</p>
+																<p class="row mb-1">
+																	<input type="text" class="col-12 form-control lxd"
+																		name="billaddressline2" id="billaddressline2"
+																		Placeholder="Address Line2" readonly disabled />
+																</p>
+																<p class="row mb-1">
+																	<input type="text" class="col-6 form-control lxd"
+																		name="billaddresscity" id="billaddresscity"
+																		Placeholder="City / District" style="width: 50%"
+																		readonly disabled /> <input type="text"
+																		class="col-6 form-control lxd"
+																		name="billaddresspincode" id="billaddresspincode"
+																		Placeholder="Pincode" style="width: 50%" readonly
+																		disabled />
+																</p>
+																<p class="row mb-1">
+																	<input type="text" class="col-6 form-control lxd"
+																		name="billaddressState" id="billaddressState"
+																		Placeholder="State" style="width: 50%" readonly
+																		disabled /> <input type="text"
+																		class="col-6 form-control lxd" name="billGSTNo"
+																		id="billGSTNo" Placeholder="GST" style="width: 50%"
+																		readonly disabled />
+																</p>
 
 															</div>
 														</div>
+
+														<hr class="mx-n4" />
+
+														<div class="mb-3" data-repeater-list="group-a">
+															<div class="repeater-wrapper pt-0 pt-md-4"
+																id="invoiceitemlist"></div>
+														</div>
+														<div class="row">
+															<div class="col-12">
+																<button type="button" class="btn btn-primary"
+																	id="addnewinvoiceitem">Add Item</button>
+															</div>
+														</div>
+
+
+														<hr class="my-4 mx-n4" />
+
+														<div class="row py-sm-3">
+															<div class="col-6">
+																<div class="mb-3">
+																	<label for="note" class="form-label fw-semibold">Note:</label>
+																	<textarea class="form-control" rows="2" id="note"
+																		name="note" placeholder="Invoice note"></textarea>
+																</div>
+															</div>
+															<div class="col-md-6 d-flex justify-content-end">
+																<div class="invoice-calculations">
+																	<div class="d-flex justify-content-between mb-2">
+																		<span class="w-px-100">Total:</span> <span
+																			class="fw-semibold" id="totalamtwithouttax">0.00</span>
+																	</div>
+																	<div
+																		class="d-flex justify-content-between mb-2 totaldiscountamountdiv">
+																		<span class="w-px-100">Discount:</span> <span
+																			class="fw-semibold" id=totaldiscountamount>0.00</span>
+																	</div>
+																	<div
+																		class="d-flex justify-content-between mb-2 totalCGSTdiv">
+																		<span class="w-px-100">CGST:</span> <span
+																			class="fw-semibold" id="totalCGST">0.00</span>
+																	</div>
+																	<div
+																		class="d-flex justify-content-between mb-2 totalSGSTdiv">
+																		<span class="w-px-100">SGST:</span> <span
+																			class="fw-semibold" id="totalSGST">0.00</span>
+																	</div>
+																	<div
+																		class="d-flex justify-content-between mb-2 totalIGSTdiv">
+																		<span class="w-px-100">IGST:</span> <span
+																			class="fw-semibold" id="totalIGST">0.00</span>
+																	</div>
+																	<hr />
+																	<div class="d-flex justify-content-between">
+																		<span class="w-px-100">Total Amount:</span> <span
+																			class="fw-semibold" id="totalamount">0.00</span> <input
+																			type="hidden" id="totalamount_hid"
+																			name="totalamount_hid" />
+																	</div>
+
+																</div>
+															</div>
+														</div>
+														<div align="center">
+															<button type="submit"
+																class="btn btn-primary editInvoicesubmit me-sm-3 me-1">Save
+															</button>
+
+															<button type="reset"
+																class="btn btn-label-secondary editInvoiceclose"
+																data-bs-dismiss="modal" aria-label="Close">
+																Cancel</button>
+
+														</div>
 													</div>
 												</div>
-												<!-- /Invoice Add-->
-												<!-- -------- -->
-											</form>
 										</div>
+										<!-- /Invoice Add-->
+										<!-- -------- -->
+										</form>
 									</div>
 								</div>
-
 							</div>
-							<!--/ Add Invoice -->
-							<!-- Edit Receipt Modal -->
-							<div class="modal fade" id="receiptmodel" tabindex="-1"
-								aria-hidden="true">
-								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
-									<div class="modal-content p-3 p-md-5">
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h5>Payment Receipt</h5>
+
+						</div>
+						<!--/ Add Invoice -->
+						<!-- Edit Receipt Modal -->
+						<div class="modal fade" id="receiptmodel" tabindex="-1"
+							aria-hidden="true">
+							<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+								<div class="modal-content p-3 p-md-5">
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h5>Payment Receipt</h5>
+										</div>
+										<form class="row g-3 needs-validation" id="editreceiptformx"
+											onsubmit="return false">
+											<div class="row p-sm-3 p-0">
+												<div class="col-md-6 mb-md-0 mb-4">
+
+													<p class="mb-1">
+														<b>Invoice No# :</b> <span id="invoiceNotxt"></span> <input
+															type="hidden" id="recepitid" name="recepitid" /> <input
+															type="hidden" id="recinvoiceid" name="recinvoiceid"
+															required />
+													</p>
+													<p class="mb-1">
+														<b>Due Date :</b> <span id="duedatetxt"></span>
+													</p>
+													<p class="mb-0"></p>
+												</div>
+												<div class="col-md-6">
+													<p class="mb-1" align="right">
+														<b>Amount :</b> <span id="invoiceamounttxt"></span>
+													</p>
+													<p class="mb-1" align="right">
+														<b>Total paid :</b> <span id="invoicetotalpaidNotxt"></span>
+													</p>
+													<p class="mb-0" align="right">
+														<b>Balance Due :</b> <span id="invoiceBalancetxt"></span>
+													</p>
+												</div>
+
 											</div>
-											<form class="row g-3 needs-validation" id="editreceiptformx"
-												onsubmit="return false">
-												<div class="row p-sm-3 p-0">
-													<div class="col-md-6 mb-md-0 mb-4">
 
-														<p class="mb-1">
-															<b>Invoice No# :</b> <span id="invoiceNotxt"></span> <input
-																type="hidden" id="recepitid" name="recepitid" /> <input
-																type="hidden" id="recinvoiceid" name="recinvoiceid"
-																required />
-														</p>
-														<p class="mb-1">
-															<b>Due Date :</b> <span id="duedatetxt"></span>
-														</p>
-														<p class="mb-0"></p>
-													</div>
-													<div class="col-md-6">
-														<p class="mb-1" align="right">
-															<b>Amount :</b> <span id="invoiceamounttxt"></span>
-														</p>
-														<p class="mb-1" align="right">
-															<b>Total paid :</b> <span id="invoicetotalpaidNotxt"></span>
-														</p>
-														<p class="mb-0" align="right">
-															<b>Balance Due :</b> <span id="invoiceBalancetxt"></span>
-														</p>
-													</div>
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="recepitNo"> Receipt #</label>
+												<input type="text" id="recepitNo" name="recepitNo"
+													class="form-control" placeholder="Will auto generate" />
+											</div>
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="recepitDate">Date</label> <input
+													type="date" id="recepitDate" name="recepitDate"
+													class="form-control" required />
+											</div>
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="depositedto">Deposited
+													To</label> <select id="depositedto" name="depositedto"
+													class="form-select" aria-label="Default select example"
+													required>
+													<option value="">-</option>
+													<th:block th:each="obj1 : ${accountlist}">
+														<option th:value="${obj1.accountheadid}"
+															th:text="${obj1.category}"></option>
+													</th:block>
+
+												</select>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="modeofPayment">Mode
+													of Payment</label> <select id="modeofPayment" name="modeofPayment"
+													class="form-select" aria-label="Default select example"
+													required>
+													<option value="">-</option>
+													<th:block th:each="str :${ModeofPayment}">
+														<option th:value="${str}" th:text="${str}"></option>
+													</th:block>
+												</select>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="amount">Amount </label> <input
+													type="number" id="amount" name="amount" step="any"
+													class="form-control modal-edit-tax-id" required />
+											</div>
+											<div class="col-12 col-md-6">
+												<br /> <label class="switch"> <input
+													type="checkbox" class="switch-input" id="payfull" /> <span
+													class="switch-toggle-slider"> <span
+														class="switch-on"></span> <span class="switch-off"></span>
+												</span> <span class="switch-label">Pay in Full</span>
+												</label>
+											</div>
+											<div class="col-12">
+												<label class="form-label" for="notes">Notes </label> <input
+													type="text" id="notes" name="notes"
+													class="form-control modal-edit-tax-id" />
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
+												</button>
+
+												<button type="reset"
+													class="btn btn-label-secondary editReceiptclose"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+
+						<!--/ Edit User Modal -->
+
+						<!-- Edit User Modal -->
+						<div class="modal fade" id="editprojectMasterdetails"
+							tabindex="-1" aria-hidden="true">
+							<div class="modal-dialog modal-lg modal-simple modal-edit-user">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Edit Project Information</h3>
+											<p>Update Project Basic Information</p>
+										</div>
+										<form id="editprojectMasterdetailsForm"
+											th:object="${projectMaster}" class="row g-3 needs-validation"
+											onsubmit="return false">
+											<input type="hidden" th:value="${projectMaster['id']}"
+												id="projectMasterID" name="projectMasterID" />
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Title">Project ID</label>
+												<div>
+													<input type="text" id="ProjectID" th:field="*{projectID}"
+														class="form-control  capitalize"
+														th:value="${projectMaster['projectID']}" required>
 
 												</div>
 
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Title">TITLE</label>
+												<div>
+													<input type="text" id="Title" th:field="*{Title}"
+														class="form-control  capitalize"
+														th:value="${projectMaster['Title']}" required>
 
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitNo">
-														Receipt #</label> <input type="text" id="recepitNo"
-														name="recepitNo" class="form-control" placeholder="Will auto generate" />
 												</div>
 
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="recepitDate">Date</label> <input
-														type="date" id="recepitDate" name="recepitDate"
-														class="form-control" required />
-												</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="organization">ORAGNIZATION</label>
+												<div>
+													<input id="organization" name="organization"
+														class="form-control"
+														th:value="${projectMaster['OrganizationName']}"
+														placeholder="select Organization" />
 
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="depositedto">Deposited
-														To</label> <select id="depositedto" name="depositedto"
-														class="form-select" aria-label="Default select example"
-														required>
-														<option value="">-</option>
-														<th:block th:each="obj1 : ${accountlist}">
-															<option th:value="${obj1.accountheadid}"
-																th:text="${obj1.category}"></option>
+													<div class="invalid-feedback">Please select
+														ORAGNIZATION.</div>
+												</div>
+											</div>
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="board">Board</label>
+												<div>
+													<select class="form-control" id="board" th:field="*{board}">
+
+														<th:block th:each="str :${board}">
+															<option th:value="${str.id}" th:text="${str.boardName}"></option>
 														</th:block>
-
 													</select>
 												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="modeofPayment">Mode
-														of Payment</label> <select id="modeofPayment" name="modeofPayment"
-														class="form-select" aria-label="Default select example"
-														required>
-														<option value="">-</option>
-														<th:block th:each="str :${ModeofPayment}">
+											</div>
+											<hr />
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="NatureofWork">Nature
+													Of Work</label>
+												<div>
+													<select class="form-control" id="NatureofWork"
+														th:field="*{NatureofWork}"
+														th:value="${projectMaster['NatureofWork']}">
+														<th:block th:each="str :${NATUREOFWORK}">
 															<option th:value="${str}" th:text="${str}"></option>
 														</th:block>
 													</select>
 												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="amount">Amount </label> <input
-														type="number" id="amount" name="amount" step="any"
-														class="form-control modal-edit-tax-id" required />
-												</div>
-												<div class="col-12 col-md-6">
-													<br /> <label class="switch"> <input
-														type="checkbox" class="switch-input" id="payfull" /> <span
-														class="switch-toggle-slider"> <span
-															class="switch-on"></span> <span class="switch-off"></span>
-													</span> <span class="switch-label">Pay in Full</span>
-													</label>
-												</div>
-												<div class="col-12">
-													<label class="form-label" for="notes">Notes </label> <input
-														type="text" id="notes" name="notes"
-														class="form-control modal-edit-tax-id" />
-												</div>
 
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary editReceiptsubmit me-sm-3 me-1">Save
-													</button>
-
-													<button type="reset"
-														class="btn btn-label-secondary editReceiptclose"
-														data-bs-dismiss="modal" aria-label="Close">
-														Cancel</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-
-
-
-
-							<!--/ Edit User Modal -->
-
-							<!-- Edit User Modal -->
-							<div class="modal fade" id="editprojectMasterdetails"
-								tabindex="-1" aria-hidden="true">
-								<div class="modal-dialog modal-lg modal-simple modal-edit-user">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Edit Project Information</h3>
-												<p>Update Project Basic Information</p>
 											</div>
-											<form id="editprojectMasterdetailsForm"
-												th:object="${projectMaster}"
-												class="row g-3 needs-validation" onsubmit="return false">
-												<input type="hidden" th:value="${projectMaster['id']}"
-													id="projectMasterID" name="projectMasterID" />
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="Title">Project ID</label>
-													<div>
-														<input type="text" id="ProjectID" th:field="*{projectID}"
-															class="form-control  capitalize"
-															th:value="${projectMaster['projectID']}" required>
-
-													</div>
-
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="Title">TITLE</label>
-													<div>
-														<input type="text" id="Title" th:field="*{Title}"
-															class="form-control  capitalize"
-															th:value="${projectMaster['Title']}" required>
-
-													</div>
-
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="organization">ORAGNIZATION</label>
-													<div>
-														<input
-							                            id="organization"
-							                            name="organization"
-							                            class="form-control"
-							                            th:value="${projectMaster['OrganizationName']}"
-							                            placeholder="select Organization"
-							                            
-							                          />
-
-														<div class="invalid-feedback">Please select
-															ORAGNIZATION.</div>
-													</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Area">Area</label>
+												<div>
+													<input type="number" id="Area" step="any"
+														th:field="*{Area}" class="form-control  capitalize"
+														th:value="${projectMaster['Area']}">
 												</div>
 
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="board">Board</label>
-													<div>
-														<select class="form-control" id="board"
-															th:field="*{board}">
-															
-															<th:block th:each="str :${board}">
-																<option th:value="${str.id}" th:text="${str.boardName}"></option>
-															</th:block>
-														</select>
-													</div>
-												</div>
-												<hr />
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="NatureofWork">Nature
-														Of Work</label>
-													<div>
-														<select class="form-control" id="NatureofWork"
-															th:field="*{NatureofWork}"
-															th:value="${projectMaster['NatureofWork']}">
-															<th:block th:each="str :${NATUREOFWORK}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-														</select>
-													</div>
-
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="Area">Area</label>
-													<div>
-														<input type="number" id="Area" step="any"
-															th:field="*{Area}" class="form-control  capitalize"
-															th:value="${projectMaster['Area']}">
-													</div>
-
-												</div>
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="NatureofWork">Unit</label>
-													<div>
-														<select class="form-control" id="UNITS"
-															th:field="*{UNITS}" th:value="${projectMaster['UNITS']}">
-															<th:block th:each="str :${UNITS}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-														</select>
-													</div>
-
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="Location">Location</label>
-													<div>
-														<input type="text" id="Location" th:field="*{Location}"
-															class="form-control  capitalize"
-															th:value="${projectMaster['Location']}">
-													</div>
-
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="tdate">T.Date</label>
-													<div>
-														<input type="text" id="tdate" th:field="*{tdate}"
-															th:value="${projectMaster['tdate']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="Source">T.Estimate</label>
-													<div>
-														<input type="number" id="projectvalue" step="any"
-															th:field="*{projectvalue}"
-															class="form-control  capitalize"
-															th:value="${projectMaster['projectvalue']}">
-													</div>
-
-												</div>
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="pipeline">Phase </label>
-													<div>
-														<select class="form-control" id="pipeline"
-															th:field="*{pipeline}"
-															th:value="${projectMaster['pipeline']}">
-															<th:block th:each="str :${Phase}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-														</select>
-													</div>
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="purpose">PURPOSE </label>
-													<div>
-														<select class="form-control  addpurposedata" id="purpose"
-															th:field="*{purpose}"
-															th:value="${projectMaster['purpose']}">
-															<th:block th:each="str :${PURPOSE}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-														</select>
-													</div>
-
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="Source">SOURCE </label>
-													<div>
-														<select class="form-control  addsourcedata" id="Source"
-															th:field="*{Source}"
-															th:value="${projectMaster['Source']}">
-															<th:block th:each="str :${SOURCE}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-														</select>
-													</div>
-
-												</div>
-
-												<div class="col-12 col-md-6 Referencediv">
-													<label class="form-label" for="Reference">REFERENCE</label>
-													<div>
-
-														<select class="select2 form-select" id="Reference"
-															th:field="*{Reference}"
-															th:value="${projectMaster['Reference']}">
-															<option value="">-</option>
-															<th:block th:each="str :${personlist}">
-																<option th:value="${str.id}" th:text="${str.peoplename}"></option>
-															</th:block>
-														</select>
-													</div>
-
-												</div>
-												<hr />
-
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="label">LABEL </label>
-													<div>
-														<select class="form-control" id="label"
-															th:field="*{label}" th:value="${projectMaster['label']}">
-															<th:block th:each="str :${Label}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-
-														</select>
-													</div>
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="phonenumber">BRANCH</label>
-													<div>
-														<select class="form-select  form-control " id="branch"
-															th:field="*{branch}"
-															th:value="${projectMaster['branch']}" required>
-															<th:block th:each="str :${branchlist}">
-																<option th:value="${str.id}"
-																	th:text="${str.BRANCH_NAME}"></option>
-															</th:block>
-														</select>
-
-													</div>
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="followers">FOLLOWER</label>
-													<div>
-														<select
-															class="select2  form-select followers form-control "
-															id="followers" name="follower" multiple="multiple"
-															required>
-															<th:block th:each="str :${employeelist}">
-																<option th:value="${str.empMasterid}"
-																	th:text="${str.StaffName}"></option>
-															</th:block>
-														</select>
-
-														<div class="invalid-feedback">Please select
-															follower.</div>
-													</div>
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="Status">Status</label>
-													<div>
-														<select class="form-control" id="Status"
-															th:field="*{Status}"
-															th:value="${projectMaster['Status']}">
-															<th:block th:each="str :${ProjectStatus}">
-																<option th:value="${str}" th:text="${str}"></option>
-															</th:block>
-														</select>
-													</div>
-
-												</div>
-												
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="startdateX1">
-														Project In Date</label>
-													<div>
-
-														<input type="text" id="startdateX1"
-															th:field="*{startdate}"
-															th:value="${projectMaster['startdate']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
-												<div class="col-12 col-md-6">
-													<label class="form-label" for="expectedclosingdate">
-														Due Date</label>
-													<div>
-
-														<input type="text" id="expectedclosingdate"
-															th:field="*{expectedclosingdate}"
-															th:value="${projectMaster['expectedclosingdate']}"
-															class="form-control  capitalize">
-													</div>
-												</div>
-
-
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary editorganizationdatasubmit me-sm-3 me-1">Update</button>
-													<button type="button"
-														class="btn btn-label-secondary editorganizationdataclose"
-														data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit User Modal -->
-							<!-- Edit People Modal -->
-							<div class="modal fade" id="addNewperson" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Create People Information</h3>
-												<p>Update People Basic Information</p>
 											</div>
-											<form id="editPeopledetailsForm"
-												class="row g-3 needs-validation" onsubmit="return false">
 
-												<div class="col-12 ">
-
-
-													<label class="form-label" for="Model_peoplename">Name</label>
-													<input type="text" class="form-control"
-														id="Model_peoplename" required />
-													<div class="invalid-feedback">Please enter Person
-														Name.</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="NatureofWork">Unit</label>
+												<div>
+													<select class="form-control" id="UNITS" th:field="*{UNITS}"
+														th:value="${projectMaster['UNITS']}">
+														<th:block th:each="str :${UNITS}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+													</select>
 												</div>
 
-												<div class="col-12">
-													<label class="form-label" for="Model_peoplecontact">Contact
-														Number </label> <input type="text"
-														class="form-control phone-number-otp-mask" pattern=".{12}"
-														id="Model_peoplecontact" required />
-													<div class="invalid-feedback">Please enter Contact.</div>
-												</div>
-
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary editpeopledatasubmit me-sm-3 me-1">ADD</button>
-													<button type="reset"
-														class="btn btn-label-secondary editpeopledataclose"
-														data-bs-dismiss="modal" aria-label="Close">
-														Cancel</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit People Modal -->
-							<!-- Edit People Modal -->
-							<div class="modal fade" id="linkperson" tabindex="-1"
-								aria-hidden="true">
-								<div
-									class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-									<div class="modal-content p-3 p-md-5">
-
-										<div class="modal-body">
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-											<div class="text-center mb-4">
-												<h3>Link People Information</h3>
-												<p>Update People Basic Information</p>
 											</div>
-											<form id="linkPeopledetailsForm" class="row g-3"
-												onsubmit="return false">
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Location">Location</label>
+												<div>
+													<input type="text" id="Location" th:field="*{Location}"
+														class="form-control  capitalize"
+														th:value="${projectMaster['Location']}">
+												</div>
 
-												<div class="col-12 ">
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="tdate">T.Date</label>
+												<div>
+													<input type="text" id="tdate" th:field="*{tdate}"
+														th:value="${projectMaster['tdate']}"
+														class="form-control  capitalize">
+												</div>
+											</div>
 
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Source">T.Estimate</label>
+												<div>
+													<input type="number" id="projectvalue" step="any"
+														th:field="*{projectvalue}"
+														class="form-control  capitalize"
+														th:value="${projectMaster['projectvalue']}">
+												</div>
 
-													<label class="form-label" for="Model_linkpeoplename">People
-														Name</label> <select class="form-select"
-														aria-label="Default select example"
-														id="Model_linkpeoplename" required>
+											</div>
 
-														<option th:each="obj : ${contactPeopleList}"
-															th:value="${obj.id}" th:text="${obj.peoplename}"></option>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="pipeline">Phase </label>
+												<div>
+													<select class="form-control" id="pipeline"
+														th:field="*{pipeline}"
+														th:value="${projectMaster['pipeline']}">
+														<th:block th:each="str :${Phase}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+													</select>
+												</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="purpose">PURPOSE </label>
+												<div>
+													<select class="form-control  addpurposedata" id="purpose"
+														th:field="*{purpose}"
+														th:value="${projectMaster['purpose']}">
+														<th:block th:each="str :${PURPOSE}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+													</select>
+												</div>
 
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Source">SOURCE </label>
+												<div>
+													<select class="form-control  addsourcedata" id="Source"
+														th:field="*{Source}" th:value="${projectMaster['Source']}">
+														<th:block th:each="str :${SOURCE}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+													</select>
+												</div>
+
+											</div>
+
+											<div class="col-12 col-md-6 Referencediv">
+												<label class="form-label" for="Reference">REFERENCE</label>
+												<div>
+
+													<select class="select2 form-select" id="Reference"
+														th:field="*{Reference}"
+														th:value="${projectMaster['Reference']}">
+														<option value="">-</option>
+														<th:block th:each="str :${personlist}">
+															<option th:value="${str.id}" th:text="${str.peoplename}"></option>
+														</th:block>
+													</select>
+												</div>
+
+											</div>
+											<hr />
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="label">LABEL </label>
+												<div>
+													<select class="form-control" id="label" th:field="*{label}"
+														th:value="${projectMaster['label']}">
+														<th:block th:each="str :${Label}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+
+													</select>
+												</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="phonenumber">BRANCH</label>
+												<div>
+													<select class="form-select  form-control " id="branch"
+														th:field="*{branch}" th:value="${projectMaster['branch']}"
+														required>
+														<th:block th:each="str :${branchlist}">
+															<option th:value="${str.id}" th:text="${str.BRANCH_NAME}"></option>
+														</th:block>
 													</select>
 
 												</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="followers">FOLLOWER</label>
+												<div>
+													<select
+														class="select2  form-select followers form-control "
+														id="followers" name="follower" multiple="multiple"
+														required>
+														<th:block th:each="str :${employeelist}">
+															<option th:value="${str.empMasterid}"
+																th:text="${str.StaffName}"></option>
+														</th:block>
+													</select>
 
-
-												<div class="col-12 text-center mt-4">
-													<button type="submit"
-														class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
-													<button type="reset"
-														class="btn btn-label-secondary linkpeopledataclose"
-														data-bs-dismiss="modal" aria-label="Close">
-														Cancel</button>
+													<div class="invalid-feedback">Please select follower.</div>
 												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--/ Edit People Modal -->
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="Status">Status</label>
+												<div>
+													<select class="form-control" id="Status"
+														th:field="*{Status}" th:value="${projectMaster['Status']}">
+														<th:block th:each="str :${ProjectStatus}">
+															<option th:value="${str}" th:text="${str}"></option>
+														</th:block>
+													</select>
+												</div>
 
-							<!--scrolling content Modal -->
-							<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
-								role="dialog" aria-labelledby="ItemStatusScrollableTitle"
-								aria-hidden="true">
-								<div class="modal-dialog modal-dialog-scrollable"
-									role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body">
-											<div class="col-md-12">
-												<div class="form-group">
-													<label for="addmodel" id="additemalltxt"></label>
-													<div class="position-relative">
-														<fieldset class="form-group">
-															<input type="text" id="additemall" name="addmodel"
-																class="form-control capitalize">
-														</fieldset>
-													</div>
+											</div>
+
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="startdateX1"> Project
+													In Date</label>
+												<div>
+
+													<input type="text" id="startdateX1" th:field="*{startdate}"
+														th:value="${projectMaster['startdate']}"
+														class="form-control  capitalize">
+												</div>
+											</div>
+											<div class="col-12 col-md-6">
+												<label class="form-label" for="expectedclosingdate">
+													Due Date</label>
+												<div>
+
+													<input type="text" id="expectedclosingdate"
+														th:field="*{expectedclosingdate}"
+														th:value="${projectMaster['expectedclosingdate']}"
+														class="form-control  capitalize">
 												</div>
 											</div>
 
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-light-secondary"
-												data-bs-dismiss="modal">
-												<i class="bx bx-x d-block d-sm-none"></i> <span
-													class="d-none d-sm-block">Close</span>
-											</button>
-											<button type="button" class="btn btn-primary ml-1"
-												id="additemallsavebtn">
-												<i class="bx bx-check d-block d-sm-none"></i> <span
-													class="d-none d-sm-block">ADD</span>
-											</button>
-										</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary editorganizationdatasubmit me-sm-3 me-1">Update</button>
+												<button type="button"
+													class="btn btn-label-secondary editorganizationdataclose"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
-							<!--scrolling content Modal -->
-
-							<!-- /Modal -->
-
 						</div>
-						<!-- / Content -->
-
-						<!-- Footer -->
-						<footer class="content-footer footer bg-footer-theme">
+						<!--/ Edit User Modal -->
+						<!-- Edit People Modal -->
+						<div class="modal fade" id="addNewperson" tabindex="-1"
+							aria-hidden="true">
 							<div
-								class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-								<div class="mb-2 mb-md-0"></div>
-								<div></div>
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
+
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Create People Information</h3>
+											<p>Update People Basic Information</p>
+										</div>
+										<form id="editPeopledetailsForm"
+											class="row g-3 needs-validation" onsubmit="return false">
+
+											<div class="col-12 ">
+
+
+												<label class="form-label" for="Model_peoplename">Name</label>
+												<input type="text" class="form-control"
+													id="Model_peoplename" required />
+												<div class="invalid-feedback">Please enter Person
+													Name.</div>
+											</div>
+
+											<div class="col-12">
+												<label class="form-label" for="Model_peoplecontact">Contact
+													Number </label> <input type="text"
+													class="form-control phone-number-otp-mask" pattern=".{12}"
+													id="Model_peoplecontact" required />
+												<div class="invalid-feedback">Please enter Contact.</div>
+											</div>
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary editpeopledatasubmit me-sm-3 me-1">ADD</button>
+												<button type="reset"
+													class="btn btn-label-secondary editpeopledataclose"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
 							</div>
+						</div>
+						<!--/ Edit People Modal -->
+						<!-- Edit People Modal -->
+						<div class="modal fade" id="linkperson" tabindex="-1"
+							aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+								<div class="modal-content p-3 p-md-5">
 
-						</footer>
-						<!-- / Footer -->
+									<div class="modal-body">
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+										<div class="text-center mb-4">
+											<h3>Link People Information</h3>
+											<p>Update People Basic Information</p>
+										</div>
+										<form id="linkPeopledetailsForm" class="row g-3"
+											onsubmit="return false">
 
-						<div class="content-backdrop fade"></div>
+											<div class="col-12 ">
+
+
+												<label class="form-label" for="Model_linkpeoplename">People
+													Name</label> <select class="form-select"
+													aria-label="Default select example"
+													id="Model_linkpeoplename" required>
+
+													<option th:each="obj : ${contactPeopleList}"
+														th:value="${obj.id}" th:text="${obj.peoplename}"></option>
+
+												</select>
+
+											</div>
+
+
+											<div class="col-12 text-center mt-4">
+												<button type="submit"
+													class="btn btn-primary linkpeopledatasubmit me-sm-3 me-1">ADD</button>
+												<button type="reset"
+													class="btn btn-label-secondary linkpeopledataclose"
+													data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Edit People Modal -->
+
+						<!--scrolling content Modal -->
+						<div class="modal fade" id="ItemStatusScrollable" tabindex="-1"
+							role="dialog" aria-labelledby="ItemStatusScrollableTitle"
+							aria-hidden="true">
+							<div class="modal-dialog modal-dialog-scrollable" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title white" id="ItemStatusScrollableTitle"></h5>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="addmodel" id="additemalltxt"></label>
+												<div class="position-relative">
+													<fieldset class="form-group">
+														<input type="text" id="additemall" name="addmodel"
+															class="form-control capitalize">
+													</fieldset>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-light-secondary"
+											data-bs-dismiss="modal">
+											<i class="bx bx-x d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Close</span>
+										</button>
+										<button type="button" class="btn btn-primary ml-1"
+											id="additemallsavebtn">
+											<i class="bx bx-check d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">ADD</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--scrolling content Modal -->
+
+						<!-- /Modal -->
+
 					</div>
-					<!-- Content wrapper -->
+					<!-- / Content -->
+
+					<!-- Footer -->
+					<footer class="content-footer footer bg-footer-theme">
+						<div
+							class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+							<div class="mb-2 mb-md-0"></div>
+							<div></div>
+						</div>
+
+					</footer>
+					<!-- / Footer -->
+
+					<div class="content-backdrop fade"></div>
 				</div>
-				<!-- / Layout page -->
+				<!-- Content wrapper -->
 			</div>
-
-			<!-- Overlay -->
-			<div class="layout-overlay layout-menu-toggle"></div>
-
-			<!-- Drag Target Area To SlideIn Menu On Small Screens -->
-			<div class="drag-target"></div>
+			<!-- / Layout page -->
 		</div>
-		<!-- / Layout wrapper -->
+
+		<!-- Overlay -->
+		<div class="layout-overlay layout-menu-toggle"></div>
+
+		<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+		<div class="drag-target"></div>
+	</div>
+	<!-- / Layout wrapper -->
 
 
-		<!-- Core JS -->
-		<!-- build:js assets/vendor/js/core.js -->
-		<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
-		<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
-		<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<!-- Core JS -->
+	<!-- build:js assets/vendor/js/core.js -->
+	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
 
-		<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+	<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 
-		<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
-		<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+	<script th:src="@{/assets/vendor/libs/i18n/i18n.js}"></script>
+	<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 
-		<script th:src="@{/assets/vendor/js/menu.js}"></script>
-		<!-- endbuild -->
+	<script th:src="@{/assets/vendor/js/menu.js}"></script>
+	<!-- endbuild -->
 
-		<!-- Vendors JS -->
-		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
-		<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
-		<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
-		<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
-		<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
-		<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
-		<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
-		<script th:src="@{/assets/vendor/libs/toastr/toastr.js}"></script>
-		<!-- Main JS -->
-		<script th:src="@{/assets/js/main.js}"></script>
+	<!-- Vendors JS -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/datatables/jquery.dataTables.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive/datatables.responsive.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/datatables-buttons.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js}"></script>
+	<script th:src="@{/assets/vendor/libs/jszip/jszip.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pdfmake/pdfmake.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.html5.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/datatables-buttons/buttons.print.js}"></script>
+	<script th:src="@{/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+	<script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+	<script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+	<script th:src="@{/assets/vendor/libs/toastr/toastr.js}"></script>
+	<!-- Main JS -->
+	<script th:src="@{/assets/js/main.js}"></script>
 
-		<!-- Flat Picker -->
-		<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
-		<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
-		<script
-			th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
-		<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
-		<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
-		<script th:src="@{/assets/js/forms-selects.js}"></script>
-		<!-- Page JS -->
-		<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
-		<script th:src="@{/assets/js/app-user-view.js}"></script>
-		<script th:src="@{/assets/js/app-user-view-account.js}"></script>
+	<!-- Flat Picker -->
+	<script th:src="@{/assets/vendor/libs/moment/moment.js}"></script>
+	<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js}"></script>
+	<script th:src="@{/assets/vendor/libs/pickr/pickr.js}"></script>
+	<script th:src="@{/assets/vendor/libs/tagify/tagify.js}"></script>
+	<script th:src="@{/assets/js/forms-selects.js}"></script>
+	<!-- Page JS -->
+	<!-- <script th:src="@{/assets/js/modal-edit-user.js}"></script> -->
+	<script th:src="@{/assets/js/app-user-view.js}"></script>
+	<script th:src="@{/assets/js/app-user-view-account.js}"></script>
 
-		<script th:src="@{/assets/js/ui-popover.js}"></script>
-		<script th:src="@{/assets/js/ui-toasts.js}"></script>
-		<script>
+	<script th:src="@{/assets/js/ui-popover.js}"></script>
+	<script th:src="@{/assets/js/ui-toasts.js}"></script>
+	<script>
 		var invoiceIncre=1;
 		
 			$(document)
@@ -1814,10 +1813,11 @@ input:read-only {
 									           		sub_total +=elementx.taxableAmount + elementx.cgstamount + elementx.sgstamount+ elementx.igstamount; 
 									           	  });
 									           	  
-									           	 htmlop +="<tr><td class='text-nowrap editprojectprj' onclick='editinvoiceinfo(this)' id='"+element.invoiceid +"'>"+element.invoiceNo+"</td>";
-									           	 htmlop +="<td class='text-nowrap'>"+element.invoiceType +" <a href='prjinvoiceprint?id="+ ids +"&inv="+ element.invoiceid + "' target='_blank'><i class='bx bx-printer'></i></a></td><td class='text-nowrap'>"+element.invoiceDateMMMddyyyy +"</td><td>"+element.dueDateMMMddyyyy +"</td>";
-									           	 htmlop +="<td>"+sub_total.toFixed(0) +" <i class='bx bx-receipt  generatenewreceipt' onclick='generatereceipt("+element.invoiceid +")'  ></i></td></tr>";
-									           	 total +=parseFloat(sub_total);
+								           	 htmlop +="<tr id='invoiceRow"+index+"'><td class='text-nowrap editprojectprj' onclick='editinvoiceinfo(this)' id='"+element.invoiceid +"'>"+element.invoiceNo+"</td>";
+								           	 htmlop +="<td class='text-nowrap'>"+element.invoiceType +" <a href='prjinvoiceprint?id="+ ids +"&inv="+ element.invoiceid + "' target='_blank'><i class='bx bx-printer'></i></a></td><td class='text-nowrap'>"+element.invoiceDateMMMddyyyy;
+								           	 htmlop +="<a onclick='deleteinvoice("+element.invoiceid +","+index+","+  ids +")'  class='generatenewreceipt'><i class='bx bx-trash'></i></a></td><td>"+element.dueDateMMMddyyyy +"</td>";
+								           	 htmlop +="<td>"+sub_total.toFixed(0) +" <i style='visibility:hidden' class='bx bx-receipt  generatenewreceipt' onclick='generatereceipt("+element.invoiceid +")'  ></i></td></tr>";
+								           total +=parseFloat(sub_total);
 								            });
 											
 											 htmlop += "<tr> <td colspan='3' class='align-top px-4 py-3'> </td> <td class='text-end px-4 py-3'> <p class='mb-0'>Total:</p> </td>  <td class='px-4 py-3'> <p class='fw-semibold mb-0'>Rs. "+ total.toFixed(0) +"</p> </td> </tr>";
@@ -2691,6 +2691,59 @@ input:read-only {
 						}
 			  });
 				//------------------------------------------------------
+				
+			function deleteinvoice(invoiceid,rowid,projectid)
+			{
+				
+				Swal.fire({
+		             title: 'Are you sure? Delete the Invoice',
+		             text: "You won't be able to revert this!",
+		             icon: 'warning',
+		             showCancelButton: true,
+		             confirmButtonText: 'Yes, delete it!',
+		             customClass: {
+		               confirmButton: 'btn btn-primary me-3',
+		               cancelButton: 'btn btn-label-secondary'
+		             },
+		             buttonsStyling: false
+		           }).then(function (result) {
+		        	   
+		             if (result.value) {
+		            	 
+		            	 var formData = {
+		 						invoiceid : invoiceid,
+		 						mastercategoryid: "[[${projectMaster['id']}]]"
+		 					}
+
+		 					$.ajax({
+		 						type : "POST",
+		 						url : "deleteinvoice",
+		 						data : formData,
+		 						success : function(result) {
+		 							var bmobj = JSON.parse(JSON.stringify(result));
+		 							
+		 							 Swal.fire({
+		 						        title: 'Invoice has been delete. Please wait page is reloading',
+		 						        customClass: {
+		 						          confirmButton: 'btn btn-primary'
+		 						        },
+		 						        buttonsStyling: false
+		 						      });
+		 							location.reload();
+		 							
+		 						},
+		 						error : function(e) {
+		 							console.log("Error" + e);
+		 						}
+		 					});
+		            	 
+		            	
+				   			
+		               }
+		           });
+				
+								
+			}
 			
 		</script>
 </body>

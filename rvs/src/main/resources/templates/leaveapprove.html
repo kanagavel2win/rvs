@@ -410,8 +410,8 @@ if (isRtl) {
 }
 
 const today = moment();
-const startOfMonth = today.startOf('month').format('YYYY-MM-DD');
-const endOfMonth = today.endOf('month').format('YYYY-MM-DD');
+const startOfMonth = today.startOf('month').clone().subtract(6, 'months').format('YYYY-MM-DD');
+const endOfMonth = today.endOf('month').clone().add(6, 'months').format('YYYY-MM-DD');
 
 console.log(startOfMonth)
 console.log(endOfMonth)

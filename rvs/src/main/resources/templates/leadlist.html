@@ -237,8 +237,11 @@
 
 											<!-- Custom Suggestions: Inline -->
 											<div class="col-sm-12">
-												<input id="ContactPersonTagify" name="ContactPersonTagify"
-													 class="form-control" required />
+												<!-- <input id="ContactPersonTagify1" name="ContactPersonTagify1"
+													 class="form-control"   /> -->
+												<select id="ContactPersonTagify" name="ContactPersonTagify" class="select2 form-select form-select-lg" data-allow-clear="true" required>
+												
+												</select>
 											</div>
 											<!-- Custom Suggestions: List -->
 
@@ -617,18 +620,33 @@
 								
 								const ContactPersonTagifyEl = document.querySelector('#ContactPersonTagify');
 								 
-								  const whitelist = result;
+								const newOption1 = document.createElement("option");  
+								 newOption1.value = ""; 
+								    newOption1.text = "-";
+			                    ContactPersonTagifyEl.append(newOption1);
+			                    
+								result.forEach(option => {
+									//console.log(option);
+									const newOption = document.createElement("option");  
+									 newOption.value = option.code; 
+									    newOption.text = option.value;
+				                    ContactPersonTagifyEl.append(newOption);
+				                });
+
+					
+								
+								  /* const whitelist = result;
 								  // Inline
 								  let ContactPersonTagify = new Tagify(ContactPersonTagifyEl, {
 								    whitelist: whitelist,
 								    maxTags: 1,
 								    dropdown: {
 								      maxItems: 20,
-								      classname: 'tags-inline',
+								      classname: 'tags-inline1',
 								      enabled: 0,
 								      closeOnSelect: false
 								    }
-								  });
+								  }); */
 								
 							}
 	   });
@@ -1069,7 +1087,7 @@
 						 selectval : selectval
 				 }
 				 $.ajax({
-						type : "POST",url : "contactpersondetails",
+						type : "POST",url : "contactpersondetails_temp",
 						data : formData, success : function(result) {
 						
 							var bmobj = JSON.parse(JSON.stringify(result));

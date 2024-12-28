@@ -149,8 +149,9 @@
 td {
 	line-height: 20px;
 }
-.red{
- color: red;
+
+.red {
+	color: red;
 }
 </style>
 </head>
@@ -232,8 +233,13 @@ td {
 
 											<!-- Custom Suggestions: Inline -->
 											<div class="col-sm-12">
-												<input id="ContactPersonTagify" name="ContactPersonTagify"
-													class="form-control" required />
+												<!-- <input id="ContactPersonTagify1" name="ContactPersonTagify1"
+													 class="form-control"   /> -->
+												<select id="ContactPersonTagify" name="ContactPersonTagify"
+													class="select2 form-select form-select-lg"
+													data-allow-clear="true" required>
+
+												</select>
 											</div>
 											<!-- Custom Suggestions: List -->
 
@@ -243,16 +249,16 @@ td {
 									<div class="col-sm-12">
 										<label class="form-label" for="organization">organization</label>
 										<div>
-											<fieldset class="form-group">	
+											<fieldset class="form-group">
 												<select class="select2 form-control "
-														id="organization" name="organization"
-														>
-														<option value="">-</option>
-														<th:block th:each="str :${organizationlist}">
-															<option th:value="${str.id}"
-																th:text="${str.orgname}"></option>
-														</th:block>
-												</select>
+													id="organization" name="organization"
+													>
+													<option value="">-</option>
+													<th:block th:each="str :${organizationlist}">
+														<option th:value="${str.id}"
+															th:text="${str.orgname}"></option>
+													</th:block>
+											</select>
 											</fieldset>
 										</div>
 
@@ -298,7 +304,8 @@ td {
 										</div>
 									</div>
 									<div class="col-sm-12">
-										<label class="form-label" for="NatureofWork">Nature of Work</label>
+										<label class="form-label" for="NatureofWork">Nature of
+											Work</label>
 										<div>
 
 											<select class="form-control" id="NatureofWork"
@@ -633,18 +640,20 @@ td {
 								
 								const ContactPersonTagifyEl = document.querySelector('#ContactPersonTagify');
 								 
-								  const whitelist = result;
-								  // Inline
-								  let ContactPersonTagify = new Tagify(ContactPersonTagifyEl, {
-								    whitelist: whitelist,
-								    maxTags: 1,
-								    dropdown: {
-								      maxItems: 20,
-								      classname: 'tags-inline',
-								      enabled: 0,
-								      closeOnSelect: false
-								    }
-								  });
+								const newOption1 = document.createElement("option");  
+								 newOption1.value = ""; 
+								    newOption1.text = "-";
+			                    ContactPersonTagifyEl.append(newOption1);
+			                    
+								result.forEach(option => {
+									//console.log(option);
+									const newOption = document.createElement("option");  
+									 newOption.value = option.code; 
+									    newOption.text = option.value;
+				                    ContactPersonTagifyEl.append(newOption);
+				                });
+
+					
 								
 							}
 	   });
@@ -1114,7 +1123,7 @@ td {
 						 selectval : selectval
 				 }
 				 $.ajax({
-						type : "POST",url : "contactpersondetails",
+						type : "POST",url : "contactpersondetails_temp",
 						data : formData, success : function(result) {
 						
 							var bmobj = JSON.parse(JSON.stringify(result));
@@ -1124,7 +1133,7 @@ td {
 							{
 								$("#phonenumber").val(bmobj.primarymob);
 								$("#followers").val(bmobj.followers);
-								$('#organization').val(bmobj.organizationname).change();	
+								$('#organization').val(bmobj.organization).change();	
 							}
 							  $(".spinner-border").css("visibility","hidden");
 						},
@@ -1141,7 +1150,7 @@ td {
 			$("#organization").change(function(){
 				var st1= $(this).val().replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]", "").replace("\"", "").split(",");
 				
-				$('#Title').val(st1[0] + ' Project');
+				$('#Title').val(st1[0] + ' Lead');
 				
 			});
 			//------------------------------------------------------------

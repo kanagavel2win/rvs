@@ -3971,7 +3971,7 @@ public class HomeController {
 	@GetMapping("leaveapprove")
 	public String leaveapprove(Model theModel) {
 		theModel.addAttribute("menuactivelist",
-				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave Approval"));
+				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave_Approval"));
 		return "leaveapprove";
 	}
 
@@ -4045,7 +4045,7 @@ public class HomeController {
 	@GetMapping("leavehistory")
 	public String leavehistory(Model theModel) {
 		theModel.addAttribute("menuactivelist",
-				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave History"));
+				menuactivelistobj.getactivemenulist("admin_hr_Attendance_Leave_History"));
 
 		return "leavehistory";
 	}
@@ -4161,14 +4161,17 @@ public class HomeController {
 
 	private long cal_sundays(LocalDate startDate, LocalDate endDate) {
 
-		LocalDate firstSunday = startDate.with(DayOfWeek.SUNDAY);
-		if (firstSunday.isBefore(startDate)) {
-			firstSunday = firstSunday.plusWeeks(1);
-		}
+		long count = 0;
+        LocalDate currentDate = startDate;
 
-		long daysBetween = ChronoUnit.DAYS.between(firstSunday, endDate);
-		return daysBetween / 7 + 1;
+        while (!currentDate.isAfter(endDate)) {
+            if (currentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                count++;
+            }
+            currentDate = currentDate.plusDays(1);
+        }
 
+        return count;
 	}
 
 	public int get_notavailable_days(EmployeeMaster empobj, String selectedmonth) {
@@ -4206,7 +4209,7 @@ public class HomeController {
 
 					Period period = Period.between(terminationDate, lastDayOfMonth);
 					int sundayCount = (int) cal_sundays(terminationDate, lastDayOfMonth);
-					return period.getDays() + 1 - sundayCount;
+					return period.getDays() - sundayCount;
 				}
 			}
 
@@ -4335,6 +4338,11 @@ public class HomeController {
 		atm.forEach(rowMap -> {
 
 			int employeeid = (int) rowMap.get("employeeid");
+			
+			if(employeeid==116)
+			{
+				System.out.println("");
+			}
 			double P = Double.parseDouble(rowMap.get("P").toString());
 			double A = Double.parseDouble(rowMap.get("A").toString());
 			double SL = Double.parseDouble(rowMap.get("SL").toString());
@@ -4390,23 +4398,20 @@ public class HomeController {
 			// Advance=Advance+currentmonthadvance;
 			// -----------------------------------------------------
 			// Incentive Calculation
-			double real_incentive =0;
+			double real_incentive = 0;
 			try {
 				Date d1 = displaydateFormatrev.parse(sdateInc);
 				Date d2 = displaydateFormatrev.parse(edateInc);
 
-				real_incentive = empobj.getEmployeeIncentive().stream().filter(c ->
-				{
+				real_incentive = empobj.getEmployeeIncentive().stream().filter(c -> {
 					try {
-						return (d1.compareTo(displaydateFormatrev.parse(c.getIncentivedate().toString())) <=0 &&
-						d2.compareTo(displaydateFormatrev.parse(c.getIncentivedate().toString())) >=0
-						);
+						return (d1.compareTo(displaydateFormatrev.parse(c.getIncentivedate().toString())) <= 0
+								&& d2.compareTo(displaydateFormatrev.parse(c.getIncentivedate().toString())) >= 0);
 					} catch (ParseException e) {
-						
+
 					}
 					return false;
-				})
-						.mapToDouble(EmployeeIncentive::getAmount).sum();
+				}).mapToDouble(EmployeeIncentive::getAmount).sum();
 			} catch (ParseException e) {
 
 			}
@@ -4463,7 +4468,7 @@ public class HomeController {
 			str += "-" + BasicSalary + "-" + DA + "-" + HRA + "-" + TOTALGROSS + "-" + ESI + "-" + EPF + "-" + Advance
 					+ "-" + TOTALDeduction + "-" + Monthlyincentives + "-" + net + "-" + currentmonthadvance + "-"
 					+ branchMasterService.findById(Integer.parseInt(branch_masterid_str)).getBranchCode() + "-"
-					+ real_incentive +"-";
+					+ real_incentive + "-";
 
 			report.add(str);
 			totalnet.set(0, totalnet.get(0) + net);
@@ -7444,7 +7449,7 @@ public class HomeController {
 							.format(displaydateFormatrev.parse(tmp1obj.getStartdate())).toString());
 				}
 			} catch (ParseException e) {
-				logger.error(e);
+				// logger.error(e);
 				e.printStackTrace();
 			}
 			if (!nullremover(String.valueOf(tmp1obj.getExpectedclosingdate())).equalsIgnoreCase("")) {
@@ -7453,7 +7458,8 @@ public class HomeController {
 							.format(displaydateFormatrev.parse(tmp1obj.getExpectedclosingdate())).toString());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					// logger.error(e); e.printStackTrace();
+					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 			tmp1obj.setProjecttotalvaluefromItem("0");
@@ -8931,6 +8937,36 @@ public class HomeController {
 		return obj;
 	}
 
+	@PostMapping("contactpersondetails_temp")
+	@ResponseBody
+	public ContactPerson contactpersondetails_temp(@RequestParam Map<String, String> params) {
+
+		// System.out.println(params);
+		ContactPerson obj = new ContactPerson();
+		String str = params.get("selectval").replace("[", "").replace("]", "");
+		str = str.replace("\"", "");
+		// System.out.println(str);
+		// String[] strarr = str.split(",");
+
+		String strarr1 = str; // strarr[1];
+		obj = contactPersonService.findById(Integer.parseInt(strarr1));
+		// Set primary contact
+		List<ContactPersonContact> bcls = obj.getContactPersonContact().stream()
+				.filter(C -> C.getPrimarycontact() == true).collect(Collectors.toList());
+		if (bcls.size() > 0) {
+			obj.setPrimarymob(bcls.get(0).getPhonenumber());
+			obj.setPrimaryemail(bcls.get(0).getEmail());
+
+			if (!nullremover(String.valueOf(obj.getOrganization())).equalsIgnoreCase("")) {
+				obj.setOrganizationname(
+						contactOrganizationService.findById(Integer.parseInt(obj.getOrganization())).getOrgname());
+			}
+			;
+		}
+
+		return obj;
+	}
+
 	@PostMapping("getActivityMaster")
 	@ResponseBody
 	public ActivityMaster getActivityMaster(@RequestParam("id") int id) {
@@ -9749,96 +9785,16 @@ public class HomeController {
 		String NatureofWork = params.get("NatureofWork");
 
 		int branch = Integer.parseInt(params.get("branch"));
-		// ---------------------------------------
-		ContactPerson cp = new ContactPerson();
-		String str = params.get("ContactPerson").replace("[{\"value\":\"", "").replace("\"code\":\"", "")
-				.replace("\"}]", "");
-		str = str.replace("\"", "");
-		String[] strarr = str.split(",");
-
-		if (strarr.length > 1) {
-			String strarr1 = strarr[1];
-			cp = contactPersonService.findById(Integer.parseInt(strarr1));
-			// ----------------------------------------------
-			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
-
-				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
-						"");
-				strorg = strorg.replace("\"", "");
-				String[] strarrorg = strorg.split(",");
-
-				if (strarrorg.length > 1) {
-
-					cp.setOrganization(String.valueOf(strarrorg[1]));
-
-				} else {
-					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-						OrganizationContacts contactOrganization = new OrganizationContacts();
-						contactOrganization.setOrgname(strarrorg[0]);
-						contactOrganization.setBranchid(branch);
-						contactOrganization.setCustomer_supplier("Customer");
-						contactOrganization.setFollowers(params.get("followers"));
-						contactOrganization = contactOrganizationService.save(contactOrganization);
-
-						cp.setOrganization(String.valueOf(contactOrganization.getId()));
-					}
-				}
-			} else {
-				cp.setOrganization("");
-			}
-			// ----------------------------------------
-		} else {
-			cp.setBranchid(1);
-			cp.setCustomer_supplier("Customer");
-			cp.setFollowers(params.get("followers"));
-
-			cp.setPeoplename(strarr[0]);
-			ContactPersonContact cpc = new ContactPersonContact();
-			cpc.setDepartment("Personal");
-			cpc.setPhonenumber(phonenumber);
-			cpc.setPrimarycontact(true);
-			List<ContactPersonContact> cpcls = new ArrayList();
-			cpcls.add(cpc);
-			cp.setContactPersonContact(cpcls);
-			// -------------------------------------------------
-			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
-				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
-						"");
-				strorg = strorg.replace("\"", "");
-				String[] strarrorg = strorg.split(",");
-
-				if (strarrorg.length > 1) {
-
-					cp.setOrganization(String.valueOf(strarrorg[1]));
-
-				} else {
-					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-						OrganizationContacts contactOrganization = new OrganizationContacts();
-						contactOrganization.setOrgname(strarrorg[0]);
-						contactOrganization.setBranchid(branch);
-						contactOrganization.setCustomer_supplier("Customer");
-						contactOrganization.setFollowers(params.get("followers"));
-						contactOrganization = contactOrganizationService.save(contactOrganization);
-						cp.setOrganization(String.valueOf(contactOrganization.getId()));
-					}
-				}
-			} else {
-				cp.setOrganization("");
-			}
-			// --------------------------------------------------------------
-
-		}
-		cp = contactPersonService.save(cp);
 
 		// ----------------------------
 		LeadMaster leadMaster = new LeadMaster();
 		List<LeadContact> lclist = new ArrayList<LeadContact>();
 		LeadContact lc = new LeadContact();
-		lc.setContactPerson(cp.getId());
+		lc.setContactPerson(Integer.parseInt(ContactPerson));
 		lclist.add(lc);
 
 		leadMaster.setLeadContact(lclist);
-		leadMaster.setOrganization(cp.getOrganization());
+		leadMaster.setOrganization(Organization);
 		leadMaster.setTitle(Title);
 		leadMaster.setSource(Source);
 		leadMaster.setReference(Reference);
@@ -9902,99 +9858,16 @@ public class HomeController {
 		}
 
 		int branch = Integer.parseInt(params.get("branch"));
-		// ---------------------------------------
-		ContactPerson cp = new ContactPerson();
-		String str = params.get("ContactPerson").replace("[{\"value\":\"", "").replace("\"code\":\"", "")
-				.replace("\"}]", "");
-		str = str.replace("\"", "");
-		String[] strarr = str.split(",");
-
-		if (strarr.length > 1) {
-			String strarr1 = strarr[1];
-			cp = contactPersonService.findById(Integer.parseInt(strarr1));
-			// ----------------------------------------------
-			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
-
-				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
-						"");
-				strorg = strorg.replace("\"", "");
-				String[] strarrorg = strorg.split(",");
-
-				if (strarrorg.length > 1) {
-
-					cp.setOrganization(String.valueOf(strarrorg[1]));
-
-				} else {
-					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-						OrganizationContacts contactOrganization = new OrganizationContacts();
-						contactOrganization.setOrgname(strarrorg[0]);
-						contactOrganization.setBranchid(branch);
-						contactOrganization.setCustomer_supplier("Customer");
-						contactOrganization.setFollowers(params.get("followers"));
-						contactOrganization = contactOrganizationService.save(contactOrganization);
-
-						cp.setOrganization(String.valueOf(contactOrganization.getId()));
-					}
-				}
-			} else {
-				cp.setOrganization("");
-			}
-
-			// ----------------------------------------
-		} else {
-			cp.setBranchid(1);
-			cp.setCustomer_supplier("Customer");
-			cp.setFollowers(params.get("followers"));
-
-			cp.setPeoplename(strarr[0]);
-			ContactPersonContact cpc = new ContactPersonContact();
-			cpc.setDepartment("Personal");
-			cpc.setPhonenumber(phonenumber);
-			cpc.setPrimarycontact(true);
-			List<ContactPersonContact> cpcls = new ArrayList();
-			cpcls.add(cpc);
-			cp.setContactPersonContact(cpcls);
-			// -------------------------------------------------
-			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
-				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
-						"");
-				strorg = strorg.replace("\"", "");
-				String[] strarrorg = strorg.split(",");
-
-				if (strarrorg.length > 1) {
-
-					cp.setOrganization(String.valueOf(strarrorg[1]));
-
-				} else {
-					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-						OrganizationContacts contactOrganization = new OrganizationContacts();
-						contactOrganization.setOrgname(strarrorg[0]);
-						contactOrganization.setBranchid(branch);
-						contactOrganization.setCustomer_supplier("Customer");
-						contactOrganization.setFollowers(params.get("followers"));
-						contactOrganization = contactOrganizationService.save(contactOrganization);
-						cp.setOrganization(String.valueOf(contactOrganization.getId()));
-					}
-				}
-
-			} else {
-				cp.setOrganization("");
-			}
-
-			// --------------------------------------------------------------
-
-		}
-		cp = contactPersonService.save(cp);
 
 		// ----------------------------
 		DealMaster dealMaster = new DealMaster();
 		List<DealContact> lclist = new ArrayList<DealContact>();
 		DealContact lc = new DealContact();
-		lc.setContactPerson(cp.getId());
+		lc.setContactPerson(Integer.parseInt(ContactPerson));
 		lclist.add(lc);
 
 		dealMaster.setDealContact(lclist);
-		dealMaster.setOrganization(cp.getOrganization());
+		dealMaster.setOrganization(Organization);
 		dealMaster.setTitle(Title);
 		dealMaster.setSource(Source);
 		dealMaster.setReference(Reference);
@@ -10059,87 +9932,6 @@ public class HomeController {
 		}
 
 		int branch = Integer.parseInt(params.get("branch"));
-		// ---------------------------------------
-		ContactPerson cp = new ContactPerson();
-		String str = params.get("ContactPerson").replace("[{\"value\":\"", "").replace("\"code\":\"", "")
-				.replace("\"}]", "");
-		str = str.replace("\"", "");
-		String[] strarr = str.split(",");
-
-		if (strarr.length > 1) {
-			String strarr1 = strarr[1];
-			cp = contactPersonService.findById(Integer.parseInt(strarr1));
-			// ----------------------------------------------
-			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
-				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
-						"");
-				strorg = strorg.replace("\"", "");
-				String[] strarrorg = strorg.split(",");
-
-				if (strarrorg.length > 1) {
-
-					cp.setOrganization(String.valueOf(strarrorg[1]));
-
-				} else {
-					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-						OrganizationContacts contactOrganization = new OrganizationContacts();
-						contactOrganization.setOrgname(strarrorg[0]);
-						contactOrganization.setBranchid(branch);
-						contactOrganization.setCustomer_supplier("Customer");
-						contactOrganization.setFollowers(params.get("followers"));
-						contactOrganization = contactOrganizationService.save(contactOrganization);
-
-						cp.setOrganization(String.valueOf(contactOrganization.getId()));
-					}
-				}
-
-			} else {
-				cp.setOrganization("");
-			}
-			// ----------------------------------------
-		} else {
-			cp.setBranchid(1);
-			cp.setCustomer_supplier("Customer");
-			cp.setFollowers(params.get("followers"));
-
-			cp.setPeoplename(strarr[0]);
-			ContactPersonContact cpc = new ContactPersonContact();
-			cpc.setDepartment("Personal");
-			cpc.setPhonenumber(phonenumber);
-			cpc.setPrimarycontact(true);
-			List<ContactPersonContact> cpcls = new ArrayList();
-			cpcls.add(cpc);
-			cp.setContactPersonContact(cpcls);
-			// -------------------------------------------------
-			if (!nullremover(String.valueOf(Organization)).equalsIgnoreCase("")) {
-				String strorg = Organization.replace("[{\"value\":\"", "").replace("\"code\":\"", "").replace("\"}]",
-						"");
-				strorg = strorg.replace("\"", "");
-				String[] strarrorg = strorg.split(",");
-
-				if (strarrorg.length > 1) {
-
-					cp.setOrganization(String.valueOf(strarrorg[1]));
-
-				} else {
-					if (!nullremover(String.valueOf(strarrorg[0])).equalsIgnoreCase("")) {
-						OrganizationContacts contactOrganization = new OrganizationContacts();
-						contactOrganization.setOrgname(strarrorg[0]);
-						contactOrganization.setBranchid(branch);
-						contactOrganization.setCustomer_supplier("Customer");
-						contactOrganization.setFollowers(params.get("followers"));
-						contactOrganization = contactOrganizationService.save(contactOrganization);
-						cp.setOrganization(String.valueOf(contactOrganization.getId()));
-					}
-				}
-
-			} else {
-				cp.setOrganization("");
-			}
-			// --------------------------------------------------------------
-
-		}
-		cp = contactPersonService.save(cp);
 
 		// ------------------------------------------------------------------------------------
 		List<ProjectPhases> prjphasels = new ArrayList();
@@ -10195,11 +9987,11 @@ public class HomeController {
 		ProjectMaster projectMaster = new ProjectMaster();
 		List<ProjectContact> lclist = new ArrayList<ProjectContact>();
 		ProjectContact lc = new ProjectContact();
-		lc.setContactPerson(cp.getId());
+		lc.setContactPerson(Integer.parseInt(ContactPerson));
 		lclist.add(lc);
 
 		projectMaster.setProjectContact(lclist);
-		projectMaster.setOrganization(cp.getOrganization());
+		projectMaster.setOrganization(Organization);
 		projectMaster.setTitle(Title);
 		projectMaster.setSource(Source);
 		projectMaster.setReference(Reference);
@@ -11820,8 +11612,9 @@ public class HomeController {
 							- new SimpleDateFormat("yyyy-MM-dd").parse(projectMaster.getStartdate()).getTime();
 
 					NoofdaysRemaining_fromNow = NoofdaysRemaining_fromNow / (1000 * 60 * 60 * 24);
-
-					int NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
+					int NoofdaysRemaining_fromNow_per = 0;
+					if (totaldays > 0)
+						NoofdaysRemaining_fromNow_per = Math.round((NoofdaysRemaining_fromNow * 100 / totaldays));
 
 					if (NoofdaysRemaining_fromNow_per > 100) {
 						NoofdaysRemaining_fromNow_per = 100;
@@ -16056,4 +15849,31 @@ public class HomeController {
 		return obj;
 
 	}
+
+	// ---------------------------------------------------------------------------
+	@PostMapping("deleteinvoice")
+	@ResponseBody
+	public void deleteinvoice(@RequestParam Map<String, String> params) throws Exception {
+
+		Map<String, String> map = new HashMap<>();
+
+		ProjectMaster pm = projectMasterService.findById(Integer.parseInt(params.get("mastercategoryid")));
+		int invoiceid = Integer.parseInt(params.get("invoiceid"));
+
+		for (InvoiceReceiptMaster receipt : pm.getReceiptList()) {
+			if (receipt.getInvoiceid().equalsIgnoreCase(String.valueOf(invoiceid))) {
+				throw new Exception("Receipt has been generated for this invoice");
+			}
+		}
+		List<InvoiceMaster> imLs = new ArrayList<>();
+		for (InvoiceMaster im : pm.getInvoiceList()) {
+			if (im.getInvoiceid() != invoiceid)
+				imLs.add(im);
+		}
+
+		pm.setInvoiceList(imLs);
+		projectMasterService.save(pm);
+
+	}
+	// ---------------------------------------------------------------------------
 }

@@ -21,7 +21,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Leave Approval</title>
+    <title>Leave History</title>
 
     <meta name="description" content="" />
 
@@ -204,10 +204,10 @@
     
     <script>
     
- 
     const today = moment();
-    const startOfMonth = today.startOf('month').format('YYYY-MM-DD');
-    const endOfMonth = today.endOf('month').format('YYYY-MM-DD');
+    const startOfMonth = today.startOf('month').clone().subtract(6, 'months').format('YYYY-MM-DD');
+    const endOfMonth = today.endOf('month').clone().add(6, 'months').format('YYYY-MM-DD');
+
     
     var dt_adv_filter_table  = $('.dt-advanced-search');
     var startDateEle = $('.start_date'),endDateEle = $('.end_date');
